@@ -10,7 +10,7 @@ class AuthService extends BaseRequest {
     public login(data: IUserInput): Promise<any> {
         const {username, password} = data;
         return new Promise((resolve, reject) => {
-            Axios.post(this.baseURL + 'ugo/admins-api/login',
+            Axios.post(this.baseURL + 'ugo-admin/login',
                 { email: username, password },
                 { headers: headersRequest })
                 .then((response) => {
