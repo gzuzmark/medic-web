@@ -1,0 +1,12 @@
+.Menu {
+  padding: 20px 10px;
+  &-item {
+    padding-left: 6px;
+    & + .Menu-item {
+      &:before {
+        content: '>';
+        padding-right: 6px;
+      }
+    }
+  }
+}

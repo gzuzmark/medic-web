@@ -1,0 +1,51 @@
+/* Webfont: LatoLatin-Regular */
+@font-face {
+  font-family: 'Lato';
+  src: url('Lato/LatoLatin-Regular.eot'); /* IE9 Compat Modes */
+  src: url('Lato/LatoLatin-Regular.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+  url('Lato/LatoLatin-Regular.woff2') format('woff2'), /* Modern Browsers */
+  url('Lato/LatoLatin-Regular.woff') format('woff'), /* Modern Browsers */
+  url('Lato/LatoLatin-Regular.ttf') format('truetype');
+  font-style: normal;
+  font-weight: 400;
+  text-rendering: optimizeLegibility;
+}
+
+/* Webfont: LatoLatin-Bold */
+@font-face {
+  font-family: 'Lato';
+  src: url('Lato/LatoLatin-Bold.eot'); /* IE9 Compat Modes */
+  src: url('Lato/LatoLatin-Bold.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+  url('Lato/LatoLatin-Bold.woff2') format('woff2'), /* Modern Browsers */
+  url('Lato/LatoLatin-Bold.woff') format('woff'), /* Modern Browsers */
+  url('Lato/LatoLatin-Bold.ttf') format('truetype');
+  font-style: normal;
+  font-weight: 700;
+  text-rendering: optimizeLegibility;
+}
+
+/* Webfont: CircularStd-Book */
+@font-face {
+  font-family: 'CircularStd';
+  src: url('CircularStd/CircularStd-Book.eot'); /* IE9 Compat Modes */
+  src: url('CircularStd/CircularStd-Book.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+  url('CircularStd/CircularStd-Book.woff2') format('woff2'), /* Modern Browsers */
+  url('CircularStd/CircularStd-Book.woff') format('woff'), /* Modern Browsers */
+  url('CircularStd/CircularStd-Book.ttf') format('truetype');
+  font-style: normal;
+  font-weight: 400;
+  text-rendering: optimizeLegibility;
+}
+
+/* Webfont: CircularStd-Bold */
+@font-face {
+  font-family: 'CircularStd';
+  src: url('CircularStd/CircularStd-Bold.eot'); /* IE9 Compat Modes */
+  src: url('CircularStd/CircularStd-Bold.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+  url('CircularStd/CircularStd-Bold.woff2') format('woff2'), /* Modern Browsers */
+  url('CircularStd/CircularStd-Bold.woff') format('woff'), /* Modern Browsers */
+  url('CircularStd/CircularStd-Bold.ttf') format('truetype');
+  font-style: normal;
+  font-weight: 700;
+  text-rendering: optimizeLegibility;
+}

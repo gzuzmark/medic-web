@@ -1,0 +1,20 @@
+.MentorItem {
+  display: flex;
+  flex-direction: row;
+  &-basicInformation {
+    margin-left: 25px;
+  }
+  &-text {
+    font-size: 15px;
+  }
+  &-tagWrapper {
+    margin-bottom: 10px;
+  }
+  &-tag {
+    display: inline-block;
+    font-size: 11px;
+    padding: 4px 8px;
+    margin-top: 7px;
+    margin-right: 10px;
+  }
+}
