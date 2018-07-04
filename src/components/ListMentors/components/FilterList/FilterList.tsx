@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { findDOMNode } from 'react-dom';
 import { Text } from '../../../../common/ConsoleText';
-import { ISkill } from '../../../../interfaces/MentorSession.interface';
+import { ISkill } from '../../../../interfaces/Mentor.interface';
 import './FilterList.scss';
 
 interface IPropsFilterList {

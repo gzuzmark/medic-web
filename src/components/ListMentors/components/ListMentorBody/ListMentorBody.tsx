@@ -1,7 +1,7 @@
 import * as React from 'react';
 import calendar from '../../../../assets/images/calendar.png';
 import { BoldText } from '../../../../common/ConsoleText';
-import { IMentorSession } from '../../../../interfaces/MentorSession.interface';
+import { IMentorSession } from '../../../../interfaces/Mentor.interface';
 import MentorItem from '../MentorItem/MentorItem';
 
 

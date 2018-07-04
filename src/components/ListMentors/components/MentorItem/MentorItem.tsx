@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Avatar from '../../../../common/Avatar/Avatar';
 import { BoldText, Text } from '../../../../common/ConsoleText';
-import { ISkill } from '../../../../interfaces/MentorSession.interface';
+import { ISkill } from '../../../../interfaces/Mentor.interface';
 import './MentorItem.scss';
 
 export interface IPropsMentorSession {
