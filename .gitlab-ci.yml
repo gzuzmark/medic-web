@@ -21,10 +21,10 @@ install_stage:
     - qa
     - prod
 
-build_stage:
+build_stage_qa:
   stage: build
   script:
-    - yarn build
+    - REACT_ENV=quality yarn build
   dependencies:
     - install_stage
   artifacts:
@@ -32,6 +32,16 @@ build_stage:
     - build/
   only:
     - qa
+build_stage_prod:
+  stage: build
+  script:
+    - REACT_ENV=production yarn build
+  dependencies:
+    - install_stage
+  artifacts:
+    paths:
+    - build/
+  only:
     - prod
 test_stage:
   stage: test
