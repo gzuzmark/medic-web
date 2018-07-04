@@ -1,7 +1,7 @@
-import { IMentorSession } from '../../interfaces/MentorSession.interface';
+import { IMentorSession } from '../../interfaces/Mentor.interface';
 import BaseRequest from '../BaseRequest';
 
-class MentorSessionService extends BaseRequest {
+class MentorService extends BaseRequest {
 
     public list(skillName?: string): Promise<IMentorSession[]> {
         return new Promise((resolve, reject) => {
@@ -20,4 +20,4 @@ class MentorSessionService extends BaseRequest {
     }
 }
 
-export default MentorSessionService;
+export default MentorService;

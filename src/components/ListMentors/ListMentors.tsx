@@ -4,9 +4,8 @@ import Layout from '../../common/Layout/Layout';
 import Loader from '../../common/Loader/Loader';
 import Menu from '../../common/Menu/Menu';
 import Sticky from '../../common/Sticky/Sticky';
-import { IMentorSession, SkillsDummy } from '../../interfaces/MentorSession.interface';
-import UserRepository from "../../repository/UserRepository";
-import MentorSessionService from '../../services/MentorSession/MentorSession.service';
+import { IMentorSession, SkillsDummy } from '../../interfaces/Mentor.interface';
+import MentorService from '../../services/Mentor/Mentor.service';
 import FilterList from './components/FilterList/FilterList';
 import ListMentorsBody from './components/ListMentorBody/ListMentorBody';
 import ListMentorsHeader from './components/ListMentorHeader/ListMentorHeader';
@@ -19,11 +18,11 @@ interface IStateListMentor {
 
 class ListMentors extends React.Component <{}, IStateListMentor> {
     public state: IStateListMentor;
-    private mentorSessionService: MentorSessionService;
+    private mentorService: MentorService;
 
     constructor(props: any) {
         super(props);
-        this.mentorSessionService = new MentorSessionService();
+        this.mentorService = new MentorService();
         this.state = {
             loading: true,
             mentors: []
@@ -38,7 +37,7 @@ class ListMentors extends React.Component <{}, IStateListMentor> {
     public renderMenu() {
         return (
             <Sticky height={140} top={60}>
-                <Menu textNavigation={'Calendario de sesiones de ' + UserRepository.getUser().name}/>
+                <Menu textNavigation={'Mentores'}/>
                 <FilterList onChange={this._searchMentors} skills={SkillsDummy} />
                 <ListMentorsHeader header={[
                     'Nombre de mentor',
@@ -82,7 +81,7 @@ class ListMentors extends React.Component <{}, IStateListMentor> {
 
     private _searchMentors(skillName: string) {
         this.setState({loading: true}, () => {
-            this.mentorSessionService.list(skillName).then((mentors: IMentorSession[]) => {
+            this.mentorService.list(skillName).then((mentors: IMentorSession[]) => {
                 this.setState({
                     loading: false,
                     mentors,
