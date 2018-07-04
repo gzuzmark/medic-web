@@ -24,7 +24,7 @@ install_stage:
 build_stage_qa:
   stage: build
   script:
-    - REACT_ENV=quality yarn build
+    - REACT_ENV=stage yarn build
   dependencies:
     - install_stage
   artifacts:
