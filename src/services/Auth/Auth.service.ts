@@ -28,10 +28,14 @@ class AuthService extends BaseRequest {
     }
 
     public loadUser(): Promise<any> {
-        return new Promise((resolve, reject) => {
-            this.instance.get('ugo/admins-api/me')
+        return new Promise((resolve) => {
+            this.instance.get('ugo-admin/admins/me')
                 .then((response: any) => {
                     if (response.status === 200 && response.data) {
+                        // tslint:disable:no-console
+                        console.log('response', response);
+                        console.log(response);
+                        console.log(response.data.user);
                         UserRepository.setUser(response.data.user);
                         resolve(true);
                     } else {

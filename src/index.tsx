@@ -5,12 +5,14 @@ import './assets/fonts/fonts.scss';
 import './assets/styles/styles.scss';
 import ListMentors from './components/ListMentors/ListMentors';
 import Login from './components/Login/Login';
+import Logout from './components/Logout/Logout';
 import MentorSession from './components/MentorSession/MentorSession';
 import registerServiceWorker from './registerServiceWorker';
 
 ReactDOM.render(
     <Router>
         <div>
+            <Route exact={true} path="/logout" component={Logout} />
             <Route exact={true} path="/" component={Login} />
             <Route exact={true} path="/admin" component={ListMentors} />
             <Route exact={true} path="/admin/mentores" component={ListMentors} />
