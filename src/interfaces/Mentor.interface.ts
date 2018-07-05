@@ -14,7 +14,6 @@ export interface IMentor {
     }
     status: string;
     skills: ISkill[];
-};
 }
 
 export interface IMentorSession {
