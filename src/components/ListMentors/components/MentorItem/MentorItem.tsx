@@ -16,8 +16,6 @@ class MentorItem extends React.Component<IPropsMentorSession, {}> {
     }
 
     public render() {
-        // tslint:disable-next-line:no-console
-        console.log(this.props.skills);
         return (
             <div className="MentorItem">
                 <Avatar size={50} source={this.props.image}/>

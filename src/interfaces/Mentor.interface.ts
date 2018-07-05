@@ -4,7 +4,7 @@ export interface ISkill {
     name: string;
 }
 
-export interface IMentorSession {
+export interface IMentor {
     id: string;
     name: string;
     email: string;
@@ -14,22 +14,17 @@ export interface IMentorSession {
     }
     status: string;
     skills: ISkill[];
-};
+}
 
-export const SkillsDummy: ISkill[] = [
-    {
-        color: 'rgb(228, 255, 196)',
-        id: '8802e337-aee5-4ba7-a0d7-56d308823744',
-        name : 'Consejería Psicológica',
-    },
-    {
-        color: 'rgb(232, 252, 248)',
-        id: '09ccaaa9-4f17-4895-92c7-061b84a986e5',
-        name : 'Clases de Videojuegos'
-    },
-    {
-        color: 'rgb(255, 218, 223)',
-        id: '5bbe7fd3-714b-4dfe-8b34-764812b62693',
-        name : 'Estadística descriptiva y probabilidades'
-    }
-];
+export interface IMentorSession {
+    from: string;
+    id: string;
+    skill: string;
+    to: string;
+    type: string;
+    bookedStudents: number;
+    maxStudents: number;
+    locationId: string;
+    site: string;
+    location: string;
+}

@@ -13,6 +13,11 @@ interface IPropsLayout {
 }
 
 class Layout extends React.Component<IPropsLayout, {}> {
+
+    constructor(props: IPropsLayout) {
+        super(props);
+    }
+
     public render() {
         return (
             <React.Fragment>
@@ -24,7 +29,7 @@ class Layout extends React.Component<IPropsLayout, {}> {
                             </div>
                             <div className="Header-section">
                                 <Text className="Header-text">{UserRepository.getUser().name}</Text>
-                                <Avatar size={30} source={'https://pbs.twimg.com/profile_images/2323118702/7zb1vuusp6knkqxj5kuu.jpeg'}/>
+                                <Avatar size={30} source={UserRepository.getUser().photo}/>
                             </div>
                         </div>
                     </div>

@@ -14,7 +14,13 @@ class BaseRequest {
         this.instance = Axios.create({
             baseURL: process.env.REACT_APP_BASE_URL,
             headers: {...headersRequest, 'Authorization': 'Bearer ' + UserRepository.getToken()},
-            timeout: 5000
+        });
+    }
+
+    public refreshHeader() {
+        this.instance = Axios.create({
+            baseURL: process.env.REACT_APP_BASE_URL,
+            headers: {...headersRequest, 'Authorization': 'Bearer ' + UserRepository.getToken()},
         });
     }
 

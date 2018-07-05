@@ -1,7 +1,35 @@
+@import "../../assets/styles/01-settings/settings";
+
 .Menu {
   padding: 20px 10px;
+  &-navbar {
+    position: relative;
+    &:before {
+      border: 1px solid $grey-light;
+      content: '';
+      height: 10px;
+      left: -7px;
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 7px;
+    }
+    &:after {
+      border-bottom: 1px solid $grey-light;
+      bottom: 7px;
+      content: '';
+      height: 3px;
+      left: -6px;
+      position: absolute;
+      width: 7px;
+    }
+  }
   &-item {
     padding-left: 6px;
+    &--link {
+      color: $grey-light!important;
+      text-decoration: none!important;
+    }
     & + .Menu-item {
       &:before {
         content: '>';

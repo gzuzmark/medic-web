@@ -32,15 +32,15 @@
       border: 1px solid rgb(56, 52, 53);
     }
     &--username {
-      background: url('../../../../assets/images/pencil_inactive.png') no-repeat scroll 96%;
+      background: url('../../../../assets/images/pencil_inactive.png') no-repeat scroll 96%/20px;
       &:focus {
-        background: url('../../../../assets/images/pencil_active.png') no-repeat scroll 96%;
+        background: url('../../../../assets/images/pencil_active.png') no-repeat scroll 96%/20px;
       }
     }
     &--password {
-      background: url('../../../../assets/images/locked_inactive.png') no-repeat scroll 96%;
+      background: url('../../../../assets/images/locked_inactive.png') no-repeat scroll 96%/20px;
       &:focus {
-        background: url('../../../../assets/images/locked_active.png') no-repeat scroll 96%;
+        background: url('../../../../assets/images/locked_active.png') no-repeat scroll 96%/20px;
       }
     }
   }

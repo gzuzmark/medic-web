@@ -11,6 +11,7 @@ interface IPropsFilterList {
 
 interface IStateFilterList {
     showFilters: boolean;
+    name: string;
 }
 
 class FilterList extends React.Component <IPropsFilterList, IStateFilterList> {
@@ -18,7 +19,8 @@ class FilterList extends React.Component <IPropsFilterList, IStateFilterList> {
     constructor(props: IPropsFilterList) {
         super(props);
         this.state = {
-            showFilters: false
+            name: '',
+            showFilters: false,
         };
         this.toggleBox = this.toggleBox.bind(this);
         this.removeFilters = this.removeFilters.bind(this);
@@ -35,26 +37,27 @@ class FilterList extends React.Component <IPropsFilterList, IStateFilterList> {
 
     public render() {
         const hiddenClass = this.state.showFilters ? '' : 'FilterList-list--hidden';
-        return <div className="FilterList u-LayoutMargin u-ListMentors-padding">
-            <Text color="textNormalSoft"
-                  className="FilterList-field"
+        const activeClass = this.state.showFilters ? 'FilterList-field--active' : '';
+        const color = this.state.name !== '' ? 'textNormal' : 'textNormalSoft';
+        return <div className="FilterList">
+            <Text color={color}
+                  className={'FilterList-field ' + activeClass}
                   onClick={this.toggleBox}  >
-                Filtrar por curso
+                {this.state.name === '' ? 'Filtrar por curso' : this.state.name}
             </Text>
             <ul className={'FilterList-list ' + hiddenClass}>
                 <li className="FilterList-list_item" onClick={this.removeFilters}>
-                    <Text>Mostrar todo</Text>
+                    <Text className="FilterList-list_item--text">Mostrar todo</Text>
                 </li>
                 {this.props.skills.map((item, index) => {
                     const click = () => {
-                        this.props.onChange(item.id);
-                        this.setState({showFilters: false});
+                        this.filterMentors(item.id, item.name);
                     };
                     return (
                         <li key={'filter-list-' + index}
                             className="FilterList-list_item"
                             onClick={click}>
-                            <Text>{item.name}</Text>
+                            <Text className="FilterList-list_item--text">{item.name}</Text>
                         </li>
                     );
                 })}
@@ -69,15 +72,21 @@ class FilterList extends React.Component <IPropsFilterList, IStateFilterList> {
                 showFilters : false
             });
         }
-    }
+    };
 
     private toggleBox() {
         this.setState({showFilters: !this.state.showFilters})
     }
 
+    private filterMentors(id: string, name: string) {
+        if (name !== this.state.name) {
+            this.props.onChange(id);
+        }
+        this.setState({showFilters: false, name});
+    };
+
     private removeFilters() {
-        this.props.onChange('all');
-        this.setState({showFilters: false});
+        this.filterMentors('all', '');
     };
 }
 
