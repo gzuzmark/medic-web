@@ -24,11 +24,11 @@ class ListMentorsBody extends React.Component <IMentor, {}> {
                 </div>
                 <div className="ListMentors-column">
                     <Link to={'/admin/mentores/sessiones/' + id}>
-                        <img src={calendar} width="24" />
+                        <img src={calendar} width="22" />
                     </Link>
                 </div>
                 <div className="ListMentors-column">
-                    <img src={add}  width="24" />
+                    <img src={add}  width="22" />
                 </div>
             </React.Fragment>
         );

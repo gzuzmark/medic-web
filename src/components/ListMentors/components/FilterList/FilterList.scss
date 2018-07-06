@@ -39,6 +39,9 @@
       list-style-type: none;
       padding: 9px 12px;
       &:hover {
+        background: rgb(245, 247, 250);
+      }
+      &:focus, &:active {
         background: $primary-color;
         .FilterList-list_item--text {
           color: white!important;

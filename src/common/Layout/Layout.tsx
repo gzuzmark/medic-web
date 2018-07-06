@@ -28,7 +28,7 @@ class Layout extends React.Component<IPropsLayout, {}> {
                                 <Text className="Header-text">Administrador</Text>
                             </div>
                             <div className="Header-section">
-                                <Text className="Header-text">{UserRepository.getUser().name}</Text>
+                                <Text className="Header-text">Hola, {UserRepository.getUser().name}</Text>
                                 <Avatar size={30} source={UserRepository.getUser().photo}/>
                             </div>
                         </div>
