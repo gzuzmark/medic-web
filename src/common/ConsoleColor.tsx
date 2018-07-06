@@ -4,9 +4,13 @@
 ============================================================================= */
 
 const NAMED_COLORS = {
+    blueMetal: 'rgb(74, 144, 226)',
     greyDark: 'rgb(112, 112, 112)',
     greyLight: 'rgb(193, 193, 193)',
-    white: 'rgb(255, 255, 255)'
+    orangeDark: 'rgb(245, 166, 35)',
+    purpleDark: 'rgb(62, 38, 143)',
+    purpleLight: 'rgb(144, 19, 254)',
+    white: 'rgb(255, 255, 255)',
 };
 
 const TEXT_COLORS = {

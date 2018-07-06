@@ -2,9 +2,9 @@
 
 //colors
 $color_mountain_mist_approx: #999999;
-$mercury: #e5e5e5;
-$color_silver_approx: #c1c1c1;
-$solitude: #eaf6ff;
+$mercury: rgb(212, 220, 224);
+$color_silver_approx: rgb(216, 216, 216);
+$solitude: rgb(238, 242, 246);
 $color_tuna_approx: #373a3c;
 $color_celeste_approx: #ccc;
 $black_12_5: rgba(0, 0, 0, 0.125);
@@ -87,7 +87,7 @@ button {
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  height: 680px;
+  height: 740px;
   * {
     //Instead of the line below you could use @include box-sizing($bs)
     box-sizing: inherit;
@@ -247,6 +247,7 @@ button {
     flex-grow: 1;
     padding: 0 10px;
     text-align: center;
+    text-transform: capitalize;
   }
   button {
     background: none;
@@ -384,7 +385,10 @@ button {
 .rbc-row {
   display: flex;
   flex-direction: row;
-  height: 30px;
+  height: 36px;
+  &:first-child {
+    height: 22px;
+  }
 }
 .rbc-selected-cell {
   background-color: $black_10;
@@ -416,6 +420,7 @@ button {
 }
 .rbc-date-cell {
   flex: 1 1 0;
+  font-size: 13px;
   min-width: 0;
   padding-right: 5px;
   text-align: right;
@@ -473,8 +478,33 @@ button {
       padding-right: 15px;
       text-transform: lowercase;
     }
+    tbody {
+      position: relative;
+      &:empty{
+        &:after {
+          display: contents;
+          content: " ";
+          white-space: pre;
+        }
+        &:before {
+          position: absolute;
+          content: 'No hay sessiones para hoy.';
+          left: 50%;
+          transform: translateX(-50%);
+          color: $color_silver_approx;
+        }
+      }
+    }
+
     tbody > tr {
+      background-color: white!important;
+      border: 0!important;
+      border-radius: 0!important;
+      color: black!important;
+      display: table-row!important;
+      padding: 0!important;
       > td {
+        border-bottom: 1pt solid $color_silver_approx;
         padding: 5px 10px;
         vertical-align: top;
         + td {

@@ -1,13 +1,13 @@
+
 import * as React from 'react';
 
-const defaultEvent = ({ event }: any) => {
+const weekEvent = ({ event }: any) => {
     return (
         <div>
             <div className={'MentorSession_text-overflow'}>{event.title}</div>
-            <div className={'MentorSession_text-overflow'}>{event.site}</div>
         </div>
     )
 };
 
 
-export default defaultEvent;
+export default weekEvent;

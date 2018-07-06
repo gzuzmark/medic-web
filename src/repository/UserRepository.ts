@@ -13,15 +13,19 @@ export const UserRepository = {
     },
 
     setUser: (data: any) => {
-        // tslint:disable:no-console
-        console.log('setUser.!!', JSON.stringify(data));
         const user = JSON.stringify(data);
         localStorage.setItem(keyUser, user);
     },
 
     getUser: ():IUser => {
         const data = localStorage.getItem(keyUser) || '';
-        return JSON.parse(data);
+        let user;
+        if (data !== '') {
+            user = JSON.parse(data)
+        } else {
+            user = {}
+        }
+        return user;
     }
 };
 

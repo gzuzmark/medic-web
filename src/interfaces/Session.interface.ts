@@ -5,4 +5,5 @@ export interface ISession {
     title: string;
     location: string;
     site: string;
+    type: string;
 }
