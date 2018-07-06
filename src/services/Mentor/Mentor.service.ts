@@ -5,7 +5,7 @@ class MentorService extends BaseRequest {
 
     public list(skillName?: string): Promise<IMentor[]> {
         return new Promise((resolve, reject) => {
-            this.instance.get('ugo-admin/mentors?skill=' + skillName)
+            this.instance.get('ugo-admin/mentors?status=PUBLISHED&skill=' + skillName)
                 .then((response: any) => {
                     if (response.status === 200 && response.data) {
                         resolve(response.data.items);
@@ -14,6 +14,7 @@ class MentorService extends BaseRequest {
                     }
                 })
                 .catch((error: any) => {
+                    this.validSession();
                     reject(error);
                 });
         });
@@ -21,7 +22,8 @@ class MentorService extends BaseRequest {
 
     public sessions(month: number, idMentor: string): Promise<IMentorSession[]> {
         return new Promise((resolve, reject) => {
-            this.instance.get('ugo-admin/mentors/' + idMentor + '/sessions?month=' + month + '&year=2018')
+            // ?month=' + month + '&year=2018
+            this.instance.get('ugo-admin/mentors/' + idMentor + '/sessions')
                 .then((response: any) => {
                     if (response.status === 200 && response.data) {
                         resolve(response.data.items);
@@ -30,6 +32,7 @@ class MentorService extends BaseRequest {
                     }
                 })
                 .catch((error: any) => {
+                    this.validSession();
                     reject(error);
                 });
         });

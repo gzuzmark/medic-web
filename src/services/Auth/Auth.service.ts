@@ -39,6 +39,7 @@ class AuthService extends BaseRequest {
                         UserRepository.setUser(response.data.user);
                         resolve(true);
                     } else {
+                        this.validSession();
                         resolve(false);
                     }
                 })

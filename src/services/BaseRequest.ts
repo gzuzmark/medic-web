@@ -27,6 +27,13 @@ class BaseRequest {
     get request() {
         return this.instance;
     }
+
+    public validSession() {
+        const exist = UserRepository.getToken() && UserRepository.getUser();
+        if (!exist) {
+            window.location.assign('/');
+        }
+    }
 }
 
 export default BaseRequest;
