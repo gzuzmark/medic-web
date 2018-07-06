@@ -50,7 +50,7 @@ class ListMentors extends React.Component <{}, IStateListMentor> {
                 <ListMentorsHeader header={[
                     'Nombre de mentor',
                     'Sesiones semanales',
-                    'Ver seiones',
+                    'Ver sesiones',
                     'Agregar sesión',
                 ]}/>
             </Sticky>
