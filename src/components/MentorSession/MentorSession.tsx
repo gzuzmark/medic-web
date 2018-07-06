@@ -164,7 +164,7 @@ class MentorSession extends React.Component<IPropsMentorSession, IStateMentorSes
             if (mentorSessions.length > 0) {
                 const sessions: ISession[] = mentorSessions.map(
                     (mentorSession: IMentorSession): ISession => {
-                        const title = `${mentorSession.skill} ${mentorSession.bookedStudents}/${mentorSession.maxStudents}`;
+                        const title = `${mentorSession.skill} ${mentorSession.bookedStudents}/${mentorSession.maxStudents} inscritos`;
                         const location = `${mentorSession.type === 'VIRTUAL' ? 'Videoconferencia' : mentorSession.location}`;
                         const site = `${mentorSession.type === 'VIRTUAL' ? 'Videoconferencia' : mentorSession.site}`;
                         return {
