@@ -1,4 +1,4 @@
-import {IMentor, IMentorSession} from '../../interfaces/Mentor.interface';
+import {IMentor, IMentorDescription, IMentorSession} from '../../interfaces/Mentor.interface';
 import BaseRequest from '../BaseRequest';
 
 class MentorService extends BaseRequest {
@@ -9,6 +9,23 @@ class MentorService extends BaseRequest {
                 .then((response: any) => {
                     if (response.status === 200 && response.data) {
                         resolve(response.data.items);
+                    } else {
+                        reject(null);
+                    }
+                })
+                .catch((error: any) => {
+                    this.validSession();
+                    reject(error);
+                });
+        });
+    }
+
+    public mentor(idMentor: string): Promise<IMentorDescription> {
+        return new Promise((resolve, reject) => {
+            this.instance.get('ugo-admin/mentors/' + idMentor)
+                .then((response: any) => {
+                    if (response.status === 200 && response.data) {
+                        resolve(response.data);
                     } else {
                         reject(null);
                     }

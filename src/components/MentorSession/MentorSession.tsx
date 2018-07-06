@@ -3,22 +3,21 @@ import 'moment/locale/es'
 import * as React from 'react';
 import BigCalendar from 'react-big-calendar';
 import ConsoleColor from "../../common/ConsoleColor";
-import { Text } from '../../common/ConsoleText';
 import Layout from '../../common/Layout/Layout';
 import Loader from '../../common/Loader/Loader';
 import Menu from '../../common/Menu/Menu';
 import Sticky from '../../common/Sticky/Sticky';
 import { IMatchParam } from '../../interfaces/MatchParam.interface';
-import { IMentorSession } from '../../interfaces/Mentor.interface';
+import {IMentorDescription, IMentorSession} from '../../interfaces/Mentor.interface';
 import { ISession } from '../../interfaces/Session.interface';
-import UserRepository from '../../repository/UserRepository';
 import MentorService from '../../services/Mentor/Mentor.service';
 import './BigCalendar.scss';
 import { messages } from './BigCalendarSettings';
-import agendaEvent from './components/agendaEvent/agendaEvent';
-import dayEvent from './components/dayEvent/dayEvent';
-import defaultEvent from "./components/defaultEvent/defaultEvent";
-import weekEvent from './components/weekEvent/weekEvent';
+import agendaEvent from './components/event/agendaEvent';
+import dayEvent from './components/event/dayEvent';
+import defaultEvent from "./components/event/defaultEvent";
+import weekEvent from './components/event/weekEvent';
+import LegendSessions from "./components/LegendSessions/LegendSessions";
 import './MentorSession.scss';
 
 BigCalendar.momentLocalizer(moment);
@@ -26,6 +25,7 @@ BigCalendar.momentLocalizer(moment);
 interface IStateMentorSession {
     loading: boolean;
     sessions: ISession[];
+    mentor?: IMentorDescription;
 }
 
 interface IPropsMentorSession {
@@ -36,22 +36,44 @@ class MentorSession extends React.Component<IPropsMentorSession, IStateMentorSes
     public state: IStateMentorSession;
     private idMentor: string;
     private mentorService = new MentorService();
+    private legendSession = [
+        {
+            color: this._getBackground('PHYSICAL'),
+            name: 'Tutoría presencial',
+        },
+        {
+            color: this._getBackground('VIRTUAL'),
+            name: 'Tutoría virtual',
+        },
+        {
+            color: this._getBackground('TALLER'),
+            name: 'Taller',
+        },
+        {
+            color: this._getBackground('UNDEFINED'),
+            name: 'Indefinido',
+        },
+
+    ];
     constructor(props: IPropsMentorSession) {
         super(props);
         this.state = {
             loading: true,
-            sessions: []
+            mentor: undefined,
+            sessions: [],
         };
         this.idMentor = this.props.match.params.id;
         this._eventStyleGetter = this._eventStyleGetter.bind(this);
     }
 
     public renderMenu() {
+        const textNavigation = this.state.mentor ?
+            'Calendario de sesiones de ' + this.state.mentor.user.name : 'Calendario de sesiones';
         return (
             <Sticky height={60} top={60}>
                 <Menu baseText={'Mentores'}
                       url={'/admin/mentores'}
-                      textNavigation={'Calendario de sesiones de ' + UserRepository.getUser().name}/>
+                      textNavigation={textNavigation}/>
             </Sticky>
         )
     }
@@ -65,39 +87,15 @@ class MentorSession extends React.Component<IPropsMentorSession, IStateMentorSes
             <Layout menu={this.renderMenu()}>
                 <div className="u-LayoutMargin">
                     <div className="MentorSession">
-                        <ul className="MentorSession-list">
-                            <li className="MentorSession-list_item">
-                                <div className='MentorSession-list_item--before'
-                                     style={{background: this._getBackground('PHYSICAL')}}>&nbsp;</div>
-                                <Text>Tutoría presencial</Text>
-                            </li>
-                            <li className="MentorSession-list_item">
-                                <div className='MentorSession-list_item--before'
-                                     style={{background: this._getBackground('VIRTUAL')}}>&nbsp;</div>
-                                <Text>Tutoría virtual</Text>
-                            </li>
-                            <li className="MentorSession-list_item">
-                                <div className='MentorSession-list_item--before'
-                                     style={{background: this._getBackground('TALLER')}}>&nbsp;</div>
-                                <Text>Taller</Text>
-                            </li>
-                            <li className="MentorSession-list_item">
-                                <div className='MentorSession-list_item--before'
-                                     style={{background: this._getBackground('UNDEFINED')}}>&nbsp;</div>
-                                <Text>Indefinido</Text>
-                            </li>
-                        </ul>
+                        <LegendSessions legend={this.legendSession}/>
                         <button className="u-Button MentorSession-button">
-                            Agregar sessiones
+                            Agregar sesiones
                         </button>
                     </div>
                     {
                         this.state.loading ?
                         <Loader top={50} height={100}/> :
                         <BigCalendar
-                            culture='es'
-                            events={this.state.sessions}
-                            messages={messages}
                             components={{
                                 agenda: {
                                     event: agendaEvent,
@@ -112,7 +110,10 @@ class MentorSession extends React.Component<IPropsMentorSession, IStateMentorSes
                                     event: weekEvent,
                                 },
                             }}
+                            culture='es'
                             eventPropGetter={(this._eventStyleGetter)}
+                            events={this.state.sessions}
+                            messages={messages}
                         />
                     }
 
@@ -136,8 +137,8 @@ class MentorSession extends React.Component<IPropsMentorSession, IStateMentorSes
         };
     }
 
-    private _getBackground(type: string) {
-        let background;
+    private _getBackground(type: string): string {
+        let background: string = '';
         switch (type) {
             case 'UNDEFINED':
                 background = ConsoleColor.TEXT_COLORS.orangeDark;
@@ -156,6 +157,9 @@ class MentorSession extends React.Component<IPropsMentorSession, IStateMentorSes
     }
 
     private _getSessions(month: number) {
+        this.mentorService.mentor(this.idMentor).then((mentor: IMentorDescription) => {
+            this.setState({mentor});
+        });
         this.mentorService.sessions(month, this.idMentor).then((mentorSessions: IMentorSession[]) => {
             if (mentorSessions.length > 0) {
                 const sessions: ISession[] = mentorSessions.map(

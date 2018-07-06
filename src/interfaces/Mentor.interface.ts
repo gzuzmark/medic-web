@@ -16,6 +16,22 @@ export interface IMentor {
     skills: ISkill[];
 }
 
+export interface IMentorDescription {
+    id: string;
+    user: {
+        id: string;
+        email: string;
+        name: string;
+        status: string;
+        timeZone: string;
+    },
+    title: string;
+    company: string;
+    description:  string;
+    shortDescription: string;
+    status: string;
+}
+
 export interface IMentorSession {
     from: string;
     id: string;
