@@ -14,6 +14,7 @@ class SkillService extends BaseRequest {
                     }
                 })
                 .catch((error: any) => {
+                    this.validSession();
                     reject(error);
                 });
         });

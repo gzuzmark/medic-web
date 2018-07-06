@@ -3,8 +3,8 @@ import * as React from 'react';
 const agendaEvent = ({ event }: any) => {
     return (
         <React.Fragment>
-            <div>{event.title}</div>
-            <div>{event.location}</div>
+            <div className={'MentorSession_text-overflow'}>{event.title}</div>
+            <div className={'MentorSession_text-overflow'}>{event.location}</div>
         </React.Fragment>
     )
 };

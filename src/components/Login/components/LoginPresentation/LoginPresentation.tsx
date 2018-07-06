@@ -15,7 +15,7 @@ class LoginPresentation extends React.Component<{}, {}> {
                         <Heading1>Bienvenido</Heading1>
                         <Heading5>Por favor, ingresa tu correo y contraseña de UTP.</Heading5>
                         {this.props.children}
-                        <Heading6>
+                        <Heading6 className="Login-section--password">
                             ¿Olvidaste tu contraseña? Para recuperarla escríbenos a ugoadministrador@ugo.com.pe
                         </Heading6>
                     </div>

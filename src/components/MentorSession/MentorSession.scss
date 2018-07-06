@@ -5,9 +5,32 @@
   &-list {
     display: flex;
     list-style-type: none;
+    margin-left: 15px;
     padding: 0;
   }
+  &-button {
+    height: 30px;
+    width: 170px;
+    font-size: 13px;
+  }
   &-list_item {
-    padding-right: 20px;
+    padding-right: 30px;
+    position: relative;
+    &--before {
+      background: #3d278d;
+      border-radius: 50%;
+      content: '';
+      height: 10px;
+      left: -15px;
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 10px;
+    }
+  }
+  &_text-overflow {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 }
