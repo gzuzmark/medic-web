@@ -46,9 +46,6 @@ class FilterList extends React.Component <IPropsFilterList, IStateFilterList> {
                 {this.state.name === '' ? 'Filtrar por curso' : this.state.name}
             </Text>
             <ul className={'FilterList-list ' + hiddenClass}>
-                <li className="FilterList-list_item" onClick={this.removeFilters}>
-                    <Text className="FilterList-list_item--text">Mostrar todo</Text>
-                </li>
                 {this.props.skills.map((item, index) => {
                     const click = () => {
                         this.filterMentors(item.id, item.name);
@@ -61,6 +58,9 @@ class FilterList extends React.Component <IPropsFilterList, IStateFilterList> {
                         </li>
                     );
                 })}
+                <li className="FilterList-list_item" onClick={this.removeFilters}>
+                    <Text className="FilterList-list_item--text">Mostrar todo</Text>
+                </li>
             </ul>
         </div>;
     }
