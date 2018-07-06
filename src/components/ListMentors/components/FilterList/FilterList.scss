@@ -2,8 +2,10 @@
 
 .FilterList {
   position: relative;
+  display: inline-block;
   &-field {
     border-bottom: 1px solid $grey-light;
+    cursor: pointer;
     display: block;
     font-size: 13px;
     padding: 5px;
@@ -36,9 +38,14 @@
     &_item {
       list-style-type: none;
       padding: 9px 12px;
-      transition: background ease-in 0.2s;
       &:hover {
         background: rgb(245, 247, 250);
+      }
+      &:focus, &:active {
+        background: $primary-color;
+        .FilterList-list_item--text {
+          color: white!important;
+        }
       }
     }
     &--hidden {

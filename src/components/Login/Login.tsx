@@ -3,7 +3,7 @@ import * as React from 'react';
 import { IUserInput } from '../../interfaces/User.interface';
 import UserRepository from "../../repository/UserRepository";
 import AuthService from '../../services/Auth/Auth.service';
-import { errorLoginMessage, schema } from './components/LoginForm.validation';
+import { schema } from './components/LoginForm.validation';
 import LoginForm from './components/LoginForm/LoginForm';
 import LoginPresentation from './components/LoginPresentation/LoginPresentation';
 import './Login.scss';
@@ -11,6 +11,7 @@ import './Login.scss';
 
 interface IStateLoginForm {
     buttonAttr: any;
+    isLogin: boolean;
 }
 
 type typeSetSubmitting = (isSubmitting: boolean) => void;
@@ -26,13 +27,22 @@ class Login extends React.Component <{}, IStateLoginForm> {
         this._errorLogin = this._errorLogin.bind(this);
         this.userService = new AuthService();
         this.state = {
-            buttonAttr: {}
+            buttonAttr: {},
+            isLogin: false
         };
+        if (UserRepository.getToken() && UserRepository.getUser()) {
+            this.setState({isLogin: true});
+            window.location.assign('/admin');
+        } else {
+            this.setState({isLogin: false});
+            UserRepository.setUser('');
+            UserRepository.setToken('');
+        }
     }
 
     public render() {
         return (
-            <LoginPresentation>
+            !(UserRepository.getToken() && UserRepository.getUser()) && <LoginPresentation>
                 <Formik
                     initialValues={{ username: '', password: '' }}
                     validationSchema={schema}
@@ -43,15 +53,12 @@ class Login extends React.Component <{}, IStateLoginForm> {
         );
     }
 
-    public componentDidMount() {
-        UserRepository.setToken('');
-    }
-
     private _onSubmit(values: IUserInput, actions: any) {
         this.setState({buttonAttr: {disabled: true}});
         this.userService.login(values)
             .then((response) => {
                 if (response) {
+                    this.userService.refreshHeader();
                     this.userService.loadUser().then(() => {
                         if (response) {
                             window.location.assign('/admin');
@@ -66,14 +73,14 @@ class Login extends React.Component <{}, IStateLoginForm> {
                     this._errorLogin(
                         actions.setSubmitting,
                         actions.setFieldError,
-                        errorLoginMessage);
+                        'Correo y/o contraseña incorrectos.');
                 }
             })
             .catch(() => {
                 this._errorLogin(
                     actions.setSubmitting,
                     actions.setFieldError,
-                    'Error en el servidor.');
+                    'Correo y/o contraseña incorrectos.');
             });
     }
 

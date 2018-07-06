@@ -4,42 +4,49 @@ import Layout from '../../common/Layout/Layout';
 import Loader from '../../common/Loader/Loader';
 import Menu from '../../common/Menu/Menu';
 import Sticky from '../../common/Sticky/Sticky';
-import { IMentorSession, SkillsDummy } from '../../interfaces/MentorSession.interface';
-import UserRepository from "../../repository/UserRepository";
-import MentorSessionService from '../../services/MentorSession/MentorSession.service';
+import { IMentor, ISkill } from '../../interfaces/Mentor.interface';
+import MentorService from '../../services/Mentor/Mentor.service';
+import SkillService from "../../services/Skill/Skill.service";
 import FilterList from './components/FilterList/FilterList';
 import ListMentorsBody from './components/ListMentorBody/ListMentorBody';
 import ListMentorsHeader from './components/ListMentorHeader/ListMentorHeader';
 import './ListMentors.scss';
 
 interface IStateListMentor {
-    mentors: IMentorSession[];
+    mentors: IMentor[];
+    skills: ISkill[];
     loading: boolean;
 }
 
 class ListMentors extends React.Component <{}, IStateListMentor> {
     public state: IStateListMentor;
-    private mentorSessionService: MentorSessionService;
+    private mentorService: MentorService;
+    private skillService: SkillService;
 
     constructor(props: any) {
         super(props);
-        this.mentorSessionService = new MentorSessionService();
+        this.mentorService = new MentorService();
+        this.skillService = new SkillService();
         this.state = {
             loading: true,
-            mentors: []
+            mentors: [],
+            skills: []
         };
         this._searchMentors = this._searchMentors.bind(this);
     }
 
     public componentDidMount() {
         this._searchMentors('all');
+        this._listSkills();
     }
 
     public renderMenu() {
         return (
             <Sticky height={140} top={60}>
-                <Menu textNavigation={'Calendario de sesiones de ' + UserRepository.getUser().name}/>
-                <FilterList onChange={this._searchMentors} skills={SkillsDummy} />
+                <Menu baseText={'Mentores'} url={'/admin/mentores'}/>
+                <div className='u-LayoutMargin u-ListMentors-padding'>
+                    <FilterList onChange={this._searchMentors} skills={this.state.skills} />
+                </div>
                 <ListMentorsHeader header={[
                     'Nombre de mentor',
                     'Sesiones semanales',
@@ -82,12 +89,20 @@ class ListMentors extends React.Component <{}, IStateListMentor> {
 
     private _searchMentors(skillName: string) {
         this.setState({loading: true}, () => {
-            this.mentorSessionService.list(skillName).then((mentors: IMentorSession[]) => {
+            this.mentorService.list(skillName).then((mentors: IMentor[]) => {
                 this.setState({
                     loading: false,
                     mentors,
                 })
             });
+        });
+    }
+
+    private _listSkills() {
+        this.skillService.list().then((skills: ISkill[]) => {
+            this.setState({
+                skills
+            })
         });
     }
 }

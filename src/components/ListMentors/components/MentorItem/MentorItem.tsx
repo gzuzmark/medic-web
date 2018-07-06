@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Avatar from '../../../../common/Avatar/Avatar';
 import { BoldText, Text } from '../../../../common/ConsoleText';
-import { ISkill } from '../../../../interfaces/MentorSession.interface';
+import { ISkill } from '../../../../interfaces/Mentor.interface';
 import './MentorItem.scss';
 
 export interface IPropsMentorSession {
@@ -16,8 +16,6 @@ class MentorItem extends React.Component<IPropsMentorSession, {}> {
     }
 
     public render() {
-        // tslint:disable-next-line:no-console
-        console.log(this.props.skills);
         return (
             <div className="MentorItem">
                 <Avatar size={50} source={this.props.image}/>

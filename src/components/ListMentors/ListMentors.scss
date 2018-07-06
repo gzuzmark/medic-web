@@ -11,7 +11,7 @@
     margin-top: 10px;
   }
   &-row {
-    align-items: flex-start;
+    align-items: center;
     margin-bottom: 14px;
     &--center {
       display: flex;
@@ -48,14 +48,14 @@
     height: 1px;
   }
   &-separator {
-    align-items: flex-start;
+    align-items: center;
     border-right: 1px solid rgb(193, 193, 193);
     display: flex;
-    height: 60px;
+    height: 45px;
     padding-top: 2px;
   }
   &-bigtext {
-    font-size: 20px;
+    font-size: 22px;
   }
 }
 

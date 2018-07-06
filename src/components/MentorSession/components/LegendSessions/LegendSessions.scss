@@ -1,0 +1,21 @@
+.LegendSessions {
+  display: flex;
+  list-style-type: none;
+  margin-left: 15px;
+  padding: 0;
+  &-item {
+    padding-right: 30px;
+    position: relative;
+    &--before {
+      background: #3d278d;
+      border-radius: 50%;
+      content: '';
+      height: 10px;
+      left: -15px;
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 10px;
+    }
+  }
+}

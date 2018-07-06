@@ -42,7 +42,7 @@ class LoginForm extends React.Component<IPropsForm, {}> {
                     <InputError error={this.props.errors.username} touched={this.props.touched.username}/>}
                 {!this.props.errors.username && this.props.errors.password &&
                     <InputError error={this.props.errors.password} touched={this.props.touched.password}/>}
-                <button className="LoginForm-button"
+                <button className="u-Button LoginForm-button"
                         type="submit"
                         {...this.props.buttonAttr}>
                     {!this.props.buttonAttr.disabled ? 'Ingresar': ''}</button>

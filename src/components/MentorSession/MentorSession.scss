@@ -1,0 +1,20 @@
+.MentorSession {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  &-button {
+    height: 30px;
+    width: 170px;
+    font-size: 13px;
+  }
+  &_text {
+    &--bold {
+      font-weight: bold;
+    }
+    &--overflow {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  }
+}

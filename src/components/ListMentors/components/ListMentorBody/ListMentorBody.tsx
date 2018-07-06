@@ -1,17 +1,19 @@
 import * as React from 'react';
+import { Link } from "react-router-dom";
+import add from '../../../../assets/images/add.png';
 import calendar from '../../../../assets/images/calendar.png';
 import { BoldText } from '../../../../common/ConsoleText';
-import { IMentorSession } from '../../../../interfaces/MentorSession.interface';
+import { IMentor } from '../../../../interfaces/Mentor.interface';
 import MentorItem from '../MentorItem/MentorItem';
 
 
-class ListMentorsBody extends React.Component <IMentorSession, {}> {
-    constructor(props: IMentorSession) {
+class ListMentorsBody extends React.Component <IMentor, {}> {
+    constructor(props: IMentor) {
         super(props);
     }
 
     public render() {
-        const { sessions, skills, photo, name} = this.props;
+        const { sessions, skills, photo, name, id} = this.props;
         return (
             <React.Fragment>
                 <div className="ListMentors-column ListMentors-column--mentor">
@@ -21,10 +23,12 @@ class ListMentorsBody extends React.Component <IMentorSession, {}> {
                     <BoldText className="ListMentors-bigtext">{this.getTime(sessions.totalMinutes)}</BoldText>
                 </div>
                 <div className="ListMentors-column">
-                    <img src={calendar} width="24" />
+                    <Link to={'/admin/mentores/sessiones/' + id}>
+                        <img src={calendar} width="22" />
+                    </Link>
                 </div>
                 <div className="ListMentors-column">
-                    <img src={calendar}  width="24" />
+                    <img src={add}  width="22" />
                 </div>
             </React.Fragment>
         );
@@ -33,10 +37,14 @@ class ListMentorsBody extends React.Component <IMentorSession, {}> {
     public getTime(minutes: number) {
         const base = 60;
         const hours = parseInt((minutes / base).toString(), 10);
-        const text = hours + 'h' + (minutes - (hours * base)) + 'm';
+        const text = this.lpad(hours, 2) + 'h ' + this.lpad((minutes - (hours * base)), 2) + 'm';
         return text;
     }
 
+    private lpad(value: number, padding: number) {
+        const zeroes = new Array(padding+1).join("0");
+        return (zeroes + value).slice(-padding);
+    }
 }
 
 export default ListMentorsBody;
