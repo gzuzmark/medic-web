@@ -1,0 +1,72 @@
+.WeekendPicker {
+  margin-bottom: 35px;
+  margin-top: 25px;
+  max-height: 343px;
+  overflow: scroll;
+  &-row {
+    align-items: center;
+    border-left: 1px solid #c1c1c1;
+    border-right: 1px solid #c1c1c1;
+    border-top: 1px solid #c1c1c1;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    &:nth-child(n + 2) {
+      .WeekendPicker-column {
+        height: 40px;
+      }
+    }
+    &:last-child {
+      border-bottom: 1px solid #c1c1c1;
+    }
+  }
+  &-text {
+    height: 40px;
+    line-height: 40px;
+  }
+  &-title {
+    height: 20px;
+    line-height: 20px;
+  }
+  &--box-selection {
+    cursor: pointer;
+    position: relative;
+    input {
+      &:checked {
+        &:after {
+          background: #6f839e;
+        }
+      }
+      &:hover {
+        &:not(:checked) {
+          &:after {
+            background: #eef2f6;
+          }
+        }
+      }
+      &:after {
+        background: white;
+        content: '';
+        cursor: pointer;
+        height: 100%;
+        left: 0;
+        position: absolute;
+        top: 0;
+        transition: background ease-in 0.2s;
+        width: 100%;
+      }
+    }
+  }
+  &-column {
+    display: block;
+    flex-grow: 1;
+    text-align: center;
+    width: 80px;
+    &:nth-child(n + 2) {
+      border-left: 1px solid #c1c1c1;
+    }
+    &:first-child {
+      flex-basis: 150px;
+    }
+  }
+}

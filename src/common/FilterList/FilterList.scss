@@ -1,4 +1,4 @@
-@import "../../../../assets/styles/01-settings/settings";
+@import "../../assets/styles/01-settings/settings";
 
 .FilterList {
   position: relative;
@@ -7,10 +7,10 @@
     border-bottom: 1px solid $grey-light;
     cursor: pointer;
     display: block;
-    font-size: 13px;
-    padding: 5px;
+    font-size: 16px;
+    padding: 0 11px;
     position: relative;
-    width: 370px;
+    width: 100%;
     &--active {
       border-bottom: 1px solid $primary-color;
     }
@@ -35,9 +35,10 @@
     position: absolute;
     top: 16px;
     width: 372px;
+    z-index: 2;
     &_item {
       list-style-type: none;
-      padding: 9px 12px;
+      padding: 12px 10px;
       &:hover {
         background: rgb(245, 247, 250);
       }

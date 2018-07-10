@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Avatar from '../../../../common/Avatar/Avatar';
-import { BoldText, Text } from '../../../../common/ConsoleText';
+import { Heading2, Text } from '../../../../common/ConsoleText';
 import { ISkill } from '../../../../interfaces/Mentor.interface';
 import './MentorItem.scss';
 
@@ -18,9 +18,9 @@ class MentorItem extends React.Component<IPropsMentorSession, {}> {
     public render() {
         return (
             <div className="MentorItem">
-                <Avatar size={50} source={this.props.image}/>
+                <Avatar size={48} source={this.props.image} style={{marginTop: 16}}/>
                 <div className='MentorItem-basicInformation'>
-                    <BoldText className='MentorItem-text'>{this.props.name}</BoldText>
+                    <Heading2 className='MentorItem-text'>{this.props.name}</Heading2>
                     <div className='MentorItem-tagWrapper'>
                         {this.props.skills && this.props.skills.map((item, index) => {
                            return (

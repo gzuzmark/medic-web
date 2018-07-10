@@ -2,7 +2,8 @@ import * as moment from 'moment';
 import 'moment/locale/es'
 import * as React from 'react';
 import BigCalendar from 'react-big-calendar';
-import ConsoleColor from "../../common/ConsoleColor";
+import { Link } from 'react-router-dom';
+import ConsoleColor from '../../common/ConsoleColor';
 import Layout from '../../common/Layout/Layout';
 import Loader from '../../common/Loader/Loader';
 import Menu from '../../common/Menu/Menu';
@@ -15,7 +16,7 @@ import './BigCalendar.scss';
 import { messages } from './BigCalendarSettings';
 import agendaEvent from './components/event/agendaEvent';
 import dayEvent from './components/event/dayEvent';
-import defaultEvent from "./components/event/defaultEvent";
+import defaultEvent from './components/event/defaultEvent';
 import weekEvent from './components/event/weekEvent';
 import LegendSessions from "./components/LegendSessions/LegendSessions";
 import './MentorSession.scss';
@@ -70,7 +71,7 @@ class MentorSession extends React.Component<IPropsMentorSession, IStateMentorSes
         const textNavigation = this.state.mentor ?
             'Calendario de sesiones de ' + this.state.mentor.user.name : 'Calendario de sesiones';
         return (
-            <Sticky height={60} top={60}>
+            <Sticky height={90} top={80}>
                 <Menu baseText={'Mentores'}
                       url={'/admin/mentores'}
                       textNavigation={textNavigation}/>
@@ -88,9 +89,9 @@ class MentorSession extends React.Component<IPropsMentorSession, IStateMentorSes
                 <div className="u-LayoutMargin">
                     <div className="MentorSession">
                         <LegendSessions legend={this.legendSession}/>
-                        <button className="u-Button MentorSession-button">
+                        <Link to={'sesiones/agendar'} className="u-Button MentorSession-button">
                             Agregar sesiones
-                        </button>
+                        </Link>
                     </div>
                     {
                         this.state.loading ?

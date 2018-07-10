@@ -23,12 +23,12 @@ class ListMentorsBody extends React.Component <IMentor, {}> {
                     <BoldText className="ListMentors-bigtext">{this.getTime(sessions.totalMinutes)}</BoldText>
                 </div>
                 <div className="ListMentors-column">
-                    <Link to={'/admin/mentores/sessiones/' + id}>
-                        <img src={calendar} width="22" />
+                    <Link to={'/admin/mentores/' + id + '/sesiones'}>
+                        <img src={calendar} width="24" />
                     </Link>
                 </div>
                 <div className="ListMentors-column">
-                    <img src={add}  width="22" />
+                    <img src={add}  width="24" />
                 </div>
             </React.Fragment>
         );

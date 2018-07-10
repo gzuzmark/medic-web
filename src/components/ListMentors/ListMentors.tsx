@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { BoldText } from '../../common/ConsoleText';
+import FilterList from '../../common/FilterList/FilterList';
 import Layout from '../../common/Layout/Layout';
 import Loader from '../../common/Loader/Loader';
 import Menu from '../../common/Menu/Menu';
@@ -7,7 +8,6 @@ import Sticky from '../../common/Sticky/Sticky';
 import { IMentor, ISkill } from '../../interfaces/Mentor.interface';
 import MentorService from '../../services/Mentor/Mentor.service';
 import SkillService from "../../services/Skill/Skill.service";
-import FilterList from './components/FilterList/FilterList';
 import ListMentorsBody from './components/ListMentorBody/ListMentorBody';
 import ListMentorsHeader from './components/ListMentorHeader/ListMentorHeader';
 import './ListMentors.scss';
@@ -42,10 +42,15 @@ class ListMentors extends React.Component <{}, IStateListMentor> {
 
     public renderMenu() {
         return (
-            <Sticky height={140} top={60}>
+            <Sticky height={194} top={80}>
                 <Menu baseText={'Mentores'} url={'/admin/mentores'}/>
                 <div className='u-LayoutMargin u-ListMentors-padding'>
-                    <FilterList onChange={this._searchMentors} skills={this.state.skills} />
+                    <FilterList
+                        onChange={this._searchMentors}
+                        skills={this.state.skills}
+                        defaultText="Filtrar por curso"
+                        enableClearSearch={true}
+                        style={{width: 504, marginBottom: 30}}/>
                 </div>
                 <ListMentorsHeader header={[
                     'Nombre de mentor',

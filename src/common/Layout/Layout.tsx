@@ -20,15 +20,15 @@ class Layout extends React.Component<IPropsLayout, {}> {
     public render() {
         return (
             <React.Fragment>
-                <Sticky height={60} top={60}>
+                <Sticky height={80} top={80}>
                     <div className="Header">
                         <div className="Header-wrapper u-LayoutMargin">
                             <div className="Header-section">
-                                <Text className="Header-text"><img src={logo_header} height='16'/></Text>
+                                <Text className="Header-text"><img src={logo_header} height='18'/></Text>
                             </div>
                             <div className="Header-section">
                                 <Text className="Header-text">Hola, {UserRepository.getUser().name}</Text>
-                                <Avatar size={30} source={UserRepository.getUser().photo}/>
+                                <Avatar size={32} source={UserRepository.getUser().photo}/>
                             </div>
                         </div>
                     </div>

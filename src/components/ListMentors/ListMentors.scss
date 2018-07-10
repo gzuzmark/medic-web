@@ -1,7 +1,7 @@
 @import "../../assets/styles/01-settings/settings";
 
 .ListMentors {
-  padding: 15px 70px 0 70px;
+  padding: 0 70px;
   &-header, &-row {
     display: flex;
     flex-direction: row;
@@ -12,7 +12,6 @@
   }
   &-row {
     align-items: center;
-    margin-bottom: 14px;
     &--center {
       display: flex;
       justify-content: center;
@@ -38,14 +37,12 @@
       width: 15%;
     }
   }
-  &-text {
-    font-size: 12px;
-  }
   &-line {
     background: $grey-light;
     border: 0;
     box-shadow: 0 1px 6px 0 darken($grey-light, 10%);
     height: 1px;
+    margin: 2px 0;
   }
   &-separator {
     align-items: center;
@@ -55,10 +52,11 @@
     padding-top: 2px;
   }
   &-bigtext {
-    font-size: 22px;
+    font-size: 24px;
+    line-height: 48px;
   }
 }
 
 .u-ListMentors-padding {
-  padding: 0 60px;
+  padding: 0 70px;
 }

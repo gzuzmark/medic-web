@@ -7,6 +7,7 @@ import ListMentors from './components/ListMentors/ListMentors';
 import Login from './components/Login/Login';
 import Logout from './components/Logout/Logout';
 import MentorSession from './components/MentorSession/MentorSession';
+import ScheduleSession from "./components/ScheduleSession/ScheduleSession";
 import registerServiceWorker from './registerServiceWorker';
 
 ReactDOM.render(
@@ -16,7 +17,8 @@ ReactDOM.render(
             <Route exact={true} path="/" component={Login} />
             <Route exact={true} path="/admin" component={ListMentors} />
             <Route exact={true} path="/admin/mentores" component={ListMentors} />
-            <Route exact={true} path="/admin/mentores/sessiones/:id" component={MentorSession} />
+            <Route exact={true} path="/admin/mentores/:id/sesiones" component={MentorSession} />
+            <Route exact={true} path="/admin/mentores/:id/sesiones/agendar" component={ScheduleSession} />
         </div>
     </Router>,
   document.getElementById('root') as HTMLElement
