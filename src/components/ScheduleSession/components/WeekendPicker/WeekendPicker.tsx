@@ -1,11 +1,14 @@
 import * as React from 'react';
+import { SessionBean } from '../../../../beans/Session.bean';
 import { Text } from '../../../../common/ConsoleText';
-import { IMatchParam } from '../../../../interfaces/MatchParam.interface';
+import {getFullHour, getHour} from '../../../../common/ConsoleUtils';
 import { IMentorDescription } from '../../../../interfaces/Mentor.interface';
+import { ISessionSchedule } from '../../../../interfaces/Session.interface';
+import ScheduleSessionContext, {IScheduleContext} from '../../ScheduleSession.context';
 import './WeekendPicker.scss';
 
 interface IPropsWeekendPicker {
-    match?: IMatchParam;
+    onChange(sessionSchedule: ISessionSchedule): void;
 }
 
 
@@ -13,10 +16,27 @@ interface IStateWeekendPicker {
     mentor?: IMentorDescription;
 }
 
+const ColumnTable: React.StatelessComponent<{type: string, style?: React.CSSProperties}> = ({children, type, style}) => {
+    return (
+        <div className="WeekendPicker-column">
+            <Text style={{...style}} className={`WeekendPicker-${type}`}>{children}</Text>
+        </div>
+    );
+};
+
+const ColumnInput: React.StatelessComponent<{value: string, onChange(): void}> = ({value, onChange}) => {
+    return (
+        <label className="WeekendPicker-column WeekendPicker--box-selection">
+            <input type="checkbox" value={value} name="WeekendPickerInput" onChange={onChange}/>
+        </label>
+    );
+};
 
 class WeekendPicker extends React.Component <IPropsWeekendPicker, IStateWeekendPicker> {
     public state: IStateWeekendPicker;
-
+    private header = [
+        'Hora', 'Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'
+    ];
     constructor(props: IPropsWeekendPicker) {
         super(props);
         this.state = {
@@ -26,165 +46,64 @@ class WeekendPicker extends React.Component <IPropsWeekendPicker, IStateWeekendP
 
     public render() {
         return (
-            <React.Fragment>
-                <Text>Haz click en el calendario para seleccionar la hora y el día</Text>
-                <div className="WeekendPicker">
-                    <div className="WeekendPicker-row">
-                        <div className="WeekendPicker-column">
-                            <Text style={{fontWeight: 700}} className="WeekendPicker-title">Hora</Text
-                            ></div>
-                        <div className="WeekendPicker-column">
-                            <Text style={{fontWeight: 700}} className="WeekendPicker-title">Lunes</Text>
-                        </div>
-                        <div className="WeekendPicker-column">
-                            <Text style={{fontWeight: 700}} className="WeekendPicker-title">Martes</Text>
-                        </div>
-                        <div className="WeekendPicker-column">
-                            <Text style={{fontWeight: 700}} className="WeekendPicker-title">Miércoles</Text>
-                        </div>
-                        <div className="WeekendPicker-column">
-                            <Text style={{fontWeight: 700}} className="WeekendPicker-title">Jueves</Text>
-                        </div>
-                        <div className="WeekendPicker-column">
-                            <Text style={{fontWeight: 700}} className="WeekendPicker-title">Viernes</Text>
-                        </div>
-                        <div className="WeekendPicker-column">
-                            <Text style={{fontWeight: 700}} className="WeekendPicker-title">Sábado</Text>
-                        </div>
-                        <div className="WeekendPicker-column">
-                            <Text style={{fontWeight: 700}} className="WeekendPicker-title">Domingo</Text>
-                        </div>
-                    </div>
-                    <div className="WeekendPicker-row">
-                        <div className="WeekendPicker-column">
-                            <Text className="WeekendPicker-text">09:00 am - 09:45 am</Text></div>
-                        <label className="WeekendPicker-column WeekendPicker--box-selection">
-                            <input type="checkbox"/>
-                        </label>
-                        <label className="WeekendPicker-column WeekendPicker--box-selection">
-                            <input type="checkbox"/>
-                        </label>
-                        <label className="WeekendPicker-column WeekendPicker--box-selection">
-                            <input type="checkbox"/>
-                        </label>
-                        <label className="WeekendPicker-column WeekendPicker--box-selection">
-                            <input type="checkbox"/>
-                        </label>
-                        <label className="WeekendPicker-column WeekendPicker--box-selection">
-                            <input type="checkbox"/>
-                        </label>
-                        <label className="WeekendPicker-column WeekendPicker--box-selection">
-                            <input type="checkbox"/>
-                        </label>
-                        <label className="WeekendPicker-column WeekendPicker--box-selection">
-                            <input type="checkbox"/>
-                        </label>
-                    </div>
-                    <div className="WeekendPicker-row">
-                        <div className="WeekendPicker-column ">
-                            <Text className="WeekendPicker-text">09:45 am - 10:30 am</Text></div>
-                        <label className="WeekendPicker-column WeekendPicker--box-selection">
-                            <input type="checkbox"/>
-                        </label>
-                        <label className="WeekendPicker-column WeekendPicker--box-selection">
-                            <input type="checkbox"/>
-                        </label>
-                        <label className="WeekendPicker-column WeekendPicker--box-selection">
-                            <input type="checkbox"/>
-                        </label>
-                        <label className="WeekendPicker-column WeekendPicker--box-selection">
-                            <input type="checkbox"/>
-                        </label>
-                        <label className="WeekendPicker-column WeekendPicker--box-selection">
-                            <input type="checkbox"/>
-                        </label>
-                        <label className="WeekendPicker-column WeekendPicker--box-selection">
-                            <input type="checkbox"/>
-                        </label>
-                        <label className="WeekendPicker-column WeekendPicker--box-selection">
-                            <input type="checkbox"/>
-                        </label>
-                    </div>
-                    <div className="WeekendPicker-row">
-                        <div className="WeekendPicker-column ">
-                            <Text className="WeekendPicker-text">10:30 am - 11:15 am</Text></div>
-                        <label className="WeekendPicker-column WeekendPicker--box-selection">
-                            <input type="checkbox"/>
-                        </label>
-                        <label className="WeekendPicker-column WeekendPicker--box-selection">
-                            <input type="checkbox"/>
-                        </label>
-                        <label className="WeekendPicker-column WeekendPicker--box-selection">
-                            <input type="checkbox"/>
-                        </label>
-                        <label className="WeekendPicker-column WeekendPicker--box-selection">
-                            <input type="checkbox"/>
-                        </label>
-                        <label className="WeekendPicker-column WeekendPicker--box-selection">
-                            <input type="checkbox"/>
-                        </label>
-                        <label className="WeekendPicker-column WeekendPicker--box-selection">
-                            <input type="checkbox"/>
-                        </label>
-                        <label className="WeekendPicker-column WeekendPicker--box-selection">
-                            <input type="checkbox"/>
-                        </label>
-                    </div>
-
-                    <div className="WeekendPicker-row">
-                        <div className="WeekendPicker-column ">
-                            <Text className="WeekendPicker-text">10:30 am - 11:15 am</Text></div>
-                        <label className="WeekendPicker-column WeekendPicker--box-selection">
-                            <input type="checkbox"/>
-                        </label>
-                        <label className="WeekendPicker-column WeekendPicker--box-selection">
-                            <input type="checkbox"/>
-                        </label>
-                        <label className="WeekendPicker-column WeekendPicker--box-selection">
-                            <input type="checkbox"/>
-                        </label>
-                        <label className="WeekendPicker-column WeekendPicker--box-selection">
-                            <input type="checkbox"/>
-                        </label>
-                        <label className="WeekendPicker-column WeekendPicker--box-selection">
-                            <input type="checkbox"/>
-                        </label>
-                        <label className="WeekendPicker-column WeekendPicker--box-selection">
-                            <input type="checkbox"/>
-                        </label>
-                        <label className="WeekendPicker-column WeekendPicker--box-selection">
-                            <input type="checkbox"/>
-                        </label>
-                    </div>
-
-                    <div className="WeekendPicker-row">
-                        <div className="WeekendPicker-column ">
-                            <Text className="WeekendPicker-text">10:30 am - 11:15 am</Text></div>
-                        <label className="WeekendPicker-column WeekendPicker--box-selection">
-                            <input type="checkbox"/>
-                        </label>
-                        <label className="WeekendPicker-column WeekendPicker--box-selection">
-                            <input type="checkbox"/>
-                        </label>
-                        <label className="WeekendPicker-column WeekendPicker--box-selection">
-                            <input type="checkbox"/>
-                        </label>
-                        <label className="WeekendPicker-column WeekendPicker--box-selection">
-                            <input type="checkbox"/>
-                        </label>
-                        <label className="WeekendPicker-column WeekendPicker--box-selection">
-                            <input type="checkbox"/>
-                        </label>
-                        <label className="WeekendPicker-column WeekendPicker--box-selection">
-                            <input type="checkbox"/>
-                        </label>
-                        <label className="WeekendPicker-column WeekendPicker--box-selection">
-                            <input type="checkbox"/>
-                        </label>
-                    </div>
-                </div>
-            </React.Fragment>
+            <ScheduleSessionContext.Consumer>
+                {
+                    (scheduleSessionContext: IScheduleContext) => {
+                        return (
+                            <React.Fragment>
+                                <Text>Haz click en el calendario para seleccionar la hora y el día</Text>
+                                <div className="WeekendPicker">
+                                    <div className="WeekendPicker-row">
+                                        {this.header.map((text, index) =>
+                                            <ColumnTable style={{fontWeight: 700}}
+                                                         key={`HeaderColumn_${index}`}
+                                                         type={'title'}>{text}</ColumnTable>
+                                        )}
+                                    </div>
+                                    {this._renderBody(scheduleSessionContext.session)}
+                                </div>
+                            </React.Fragment>
+                        )
+                    }
+                }
+            </ScheduleSessionContext.Consumer>
         );
+    }
+
+    private _renderBody(session: SessionBean): JSX.Element[] {
+        const firstSession = 540;
+        const nextSession = 60;
+        const lastSession = 1365;
+        const duration = 45;
+        const rows = [];
+        for(let timer = firstSession; timer <= lastSession; timer += nextSession) {
+            rows.push(
+                <div className="WeekendPicker-row" key={`WeekendPicker-row_${timer}`}>
+                    {this._renderRow(timer, duration)}
+                </div>
+            )
+        }
+        return rows;
+    }
+
+    private _renderRow(timer: number, duration: number) {
+        const firstDay = 1;
+        const lastDay = 7;
+        const row = [
+            <ColumnTable key={`BodyColumn_${'1'}`} type={'text'}>{getFullHour(timer)} - {getFullHour(timer + duration)}</ColumnTable>
+        ];
+        for(let i = firstDay; i <= lastDay; i++) {
+            const from = getHour(timer);
+            const to = getHour(timer + duration);
+            const weekDay = i;
+            const onChange = () => {
+                this.props.onChange({from, to, weekDay});
+            };
+            row.push(
+                <ColumnInput key={`${from}@${to}@${weekDay}`} value={`${from}@${to}@${weekDay}`} onChange={onChange}/>
+            )
+        }
+        return row
     }
 }
 

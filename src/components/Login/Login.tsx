@@ -53,7 +53,7 @@ class Login extends React.Component <{}, IStateLoginForm> {
     }
 
     private _onSubmit(values: IUserInput, actions: any) {
-        this.setState({buttonAttr: {disabled: true}});
+        this.setState({buttonAttr: {disabled: true, loading: true}});
         this.userService.login(values)
             .then((response) => {
                 if (response) {

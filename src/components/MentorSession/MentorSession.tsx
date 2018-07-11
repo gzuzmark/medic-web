@@ -4,13 +4,21 @@ import * as React from 'react';
 import BigCalendar from 'react-big-calendar';
 import { Link } from 'react-router-dom';
 import ConsoleColor from '../../common/ConsoleColor';
+import { IListItem } from '../../common/FilterList/FilterList';
 import Layout from '../../common/Layout/Layout';
 import Loader from '../../common/Loader/Loader';
 import Menu from '../../common/Menu/Menu';
 import Sticky from '../../common/Sticky/Sticky';
+import { IEvent } from '../../interfaces/Event.interface';
 import { IMatchParam } from '../../interfaces/MatchParam.interface';
-import {IMentorDescription, IMentorSession} from '../../interfaces/Mentor.interface';
-import { ISession } from '../../interfaces/Session.interface';
+import { IMentor, IMentorSession } from '../../interfaces/Mentor.interface';
+import {
+    SESSION_PHYSICAL,
+    SESSION_TYPES_TUTORIES,
+    SESSION_UNDEFINED,
+    SESSION_VIRTUAL,
+    SESSION_WORKSHOP,
+} from "../../repository/SessionTypeConstants";
 import MentorService from '../../services/Mentor/Mentor.service';
 import './BigCalendar.scss';
 import { messages } from './BigCalendarSettings';
@@ -18,15 +26,15 @@ import agendaEvent from './components/event/agendaEvent';
 import dayEvent from './components/event/dayEvent';
 import defaultEvent from './components/event/defaultEvent';
 import weekEvent from './components/event/weekEvent';
-import LegendSessions from "./components/LegendSessions/LegendSessions";
+import LegendSessions from './components/LegendSessions/LegendSessions';
 import './MentorSession.scss';
 
 BigCalendar.momentLocalizer(moment);
 
 interface IStateMentorSession {
     loading: boolean;
-    sessions: ISession[];
-    mentor?: IMentorDescription;
+    sessions: IEvent[];
+    mentor?: IMentor;
 }
 
 interface IPropsMentorSession {
@@ -37,25 +45,13 @@ class MentorSession extends React.Component<IPropsMentorSession, IStateMentorSes
     public state: IStateMentorSession;
     private idMentor: string;
     private mentorService = new MentorService();
-    private legendSession = [
-        {
-            color: this._getBackground('PHYSICAL'),
-            name: 'Tutoría presencial',
-        },
-        {
-            color: this._getBackground('VIRTUAL'),
-            name: 'Tutoría virtual',
-        },
-        {
-            color: this._getBackground('TALLER'),
-            name: 'Taller',
-        },
-        {
-            color: this._getBackground('UNDEFINED'),
-            name: 'Indefinido',
-        },
+    private legendSession = SESSION_TYPES_TUTORIES.map((item: IListItem) => {
+        return {
+            color: this._getBackground(item.id),
+            name: item.name
+        }
+    });
 
-    ];
     constructor(props: IPropsMentorSession) {
         super(props);
         this.state = {
@@ -69,7 +65,7 @@ class MentorSession extends React.Component<IPropsMentorSession, IStateMentorSes
 
     public renderMenu() {
         const textNavigation = this.state.mentor ?
-            'Calendario de sesiones de ' + this.state.mentor.user.name : 'Calendario de sesiones';
+            'Calendario de sesiones de ' + this.state.mentor.name : 'Calendario de sesiones';
         return (
             <Sticky height={90} top={80}>
                 <Menu baseText={'Mentores'}
@@ -123,7 +119,7 @@ class MentorSession extends React.Component<IPropsMentorSession, IStateMentorSes
         );
     }
 
-    private _eventStyleGetter(event: ISession) {
+    private _eventStyleGetter(event: IEvent) {
         const background = this._getBackground(event.type);
         const style = {
             backgroundColor: background,
@@ -141,16 +137,16 @@ class MentorSession extends React.Component<IPropsMentorSession, IStateMentorSes
     private _getBackground(type: string): string {
         let background: string = '';
         switch (type) {
-            case 'UNDEFINED':
+            case SESSION_UNDEFINED:
                 background = ConsoleColor.TEXT_COLORS.orangeDark;
                 break;
-            case 'PHYSICAL':
+            case SESSION_PHYSICAL:
                 background = ConsoleColor.TEXT_COLORS.purpleDark;
                 break;
-            case 'VIRTUAL':
+            case SESSION_VIRTUAL:
                 background = ConsoleColor.TEXT_COLORS.blueMetal;
                 break;
-            case 'TALLER':
+            case SESSION_WORKSHOP:
                 background = ConsoleColor.TEXT_COLORS.purpleLight;
                 break;
         }
@@ -158,13 +154,13 @@ class MentorSession extends React.Component<IPropsMentorSession, IStateMentorSes
     }
 
     private _getSessions(month: number) {
-        this.mentorService.mentor(this.idMentor).then((mentor: IMentorDescription) => {
+        this.mentorService.mentor(this.idMentor).then((mentor: IMentor) => {
             this.setState({mentor});
         });
         this.mentorService.sessions(month, this.idMentor).then((mentorSessions: IMentorSession[]) => {
             if (mentorSessions.length > 0) {
-                const sessions: ISession[] = mentorSessions.map(
-                    (mentorSession: IMentorSession): ISession => {
+                const sessions: IEvent[] = mentorSessions.map(
+                    (mentorSession: IMentorSession): IEvent => {
                         const title = `${mentorSession.skill} ${mentorSession.bookedStudents}/${mentorSession.maxStudents} inscritos`;
                         const location = `${mentorSession.type === 'VIRTUAL' ? 'Videoconferencia' : mentorSession.location}`;
                         const site = `${mentorSession.type === 'VIRTUAL' ? 'Videoconferencia' : mentorSession.site}`;

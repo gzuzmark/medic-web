@@ -15,8 +15,8 @@ class Avatar extends React.Component<IPropsAvatar, {}> {
                  style={
                      {
                          'backgroundImage': `url(${this.props.source ? this.props.source : user_image })`,
-                         'height': `${this.props.size}px`,
                          'maxWidth': `${this.props.size}px`,
+                         'minHeight': `${this.props.size}px`,
                          'minWidth': `${this.props.size}px`,
                          ...this.props.style
                      }

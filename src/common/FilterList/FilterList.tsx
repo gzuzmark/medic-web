@@ -3,23 +3,22 @@ import { findDOMNode } from 'react-dom';
 import { Text } from '../ConsoleText';
 import './FilterList.scss';
 
-interface IListItem {
+export interface IListItem {
     id: string;
     name: string;
 }
 
 interface IPropsFilterList {
-    onChange: (skill: string) => void;
-    skills: IListItem[];
+    onChange: (item: IListItem) => void;
+    list: IListItem[];
     defaultText: string;
     enableClearSearch: boolean;
-    name?: string;
+    name: string;
     style?: React.CSSProperties;
 }
 
 interface IStateFilterList {
     showFilters: boolean;
-    name: string;
 }
 
 class FilterList extends React.Component <IPropsFilterList, IStateFilterList> {
@@ -27,15 +26,11 @@ class FilterList extends React.Component <IPropsFilterList, IStateFilterList> {
     constructor(props: IPropsFilterList) {
         super(props);
         this.state = {
-            name: '',
             showFilters: false,
         };
         this.toggleBox = this.toggleBox.bind(this);
         this.removeFilters = this.removeFilters.bind(this);
         this.handleClickOutside = this.handleClickOutside.bind(this);
-        if (this.props.name) {
-            this.setState({name: this.props.name})
-        }
     }
 
     public componentDidMount() {
@@ -47,20 +42,22 @@ class FilterList extends React.Component <IPropsFilterList, IStateFilterList> {
     }
 
     public render() {
+        const disabledClass = this.props.list.length === 0 ? 'FilterList-field--disabled' : '';
         const hiddenClass = this.state.showFilters ? '' : 'FilterList-list--hidden';
         const activeClass = this.state.showFilters ? 'FilterList-field--active' : '';
-        const color = this.state.name !== '' ? 'textNormal' : 'textNormalSoft';
+        const color = this.props.name !== '' ? 'textNormal' : 'textNormalSoft';
+        const notEmptyClass = this.props.name === '' ? '' : 'FilterList-field--not-empty';
         return (
             <div className="FilterList" style={{...this.props.style}}>
                 <Text color={color}
-                      className={'FilterList-field ' + activeClass}
+                      className={`FilterList-field ${activeClass} ${notEmptyClass} ${disabledClass}`}
                       onClick={this.toggleBox}  >
-                    {this.state.name === '' ? this.props.defaultText : this.state.name}
+                    {this.props.name === '' ? this.props.defaultText : this.props.name}
                 </Text>
                 <ul className={'FilterList-list ' + hiddenClass}>
-                    {this.props.skills.map((item, index) => {
+                    {this.props.list.map((item, index) => {
                         const click = () => {
-                            this.filterMentors(item.id, item.name);
+                            this.filter(item.id, item.name);
                         };
                         return (
                             <li key={'filter-list-' + index}
@@ -89,18 +86,20 @@ class FilterList extends React.Component <IPropsFilterList, IStateFilterList> {
     };
 
     private toggleBox() {
-        this.setState({showFilters: !this.state.showFilters})
+        if (this.props.list.length > 0 ) {
+            this.setState({showFilters: !this.state.showFilters});
+        }
     }
 
-    private filterMentors(id: string, name: string) {
-        if (name !== this.state.name) {
-            this.props.onChange(id);
+    private filter(id: string, name: string) {
+        if (name !== this.props.name) {
+            this.props.onChange({id, name});
         }
-        this.setState({showFilters: false, name});
+        this.setState({ showFilters: false });
     };
 
     private removeFilters() {
-        this.filterMentors('all', '');
+        this.filter('all', '');
     };
 }
 

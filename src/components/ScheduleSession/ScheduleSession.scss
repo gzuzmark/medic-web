@@ -1,7 +1,9 @@
+@import "../../assets/styles/01-settings/settings";
+
 .ScheduleSession {
   display: flex;
   flex-direction: column;
-  padding-bottom: 50px;
+  padding-bottom: 250px;
   padding-left: 410px;
   padding-top: 25px;
   &-button_container {
@@ -27,6 +29,9 @@
   &-input {
     &--range {
       width: 88px;
+      &:not([value='']) {
+        border: 1px solid $primary-color!important;
+      }
     }
   }
   &-separator {

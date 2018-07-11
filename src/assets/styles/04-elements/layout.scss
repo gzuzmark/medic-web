@@ -37,6 +37,9 @@ input:-webkit-autofill:active {
   width: 280px;
   &[disabled] {
     background: rgb(193, 193, 193)!important;
+  }
+  &[loading],
+  &[data-loading] {
     &:before {
       display: block;
       filter: progid:DXImageTransform.Microsoft.Alpha(enabled=false);
