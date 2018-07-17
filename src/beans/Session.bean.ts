@@ -47,7 +47,8 @@ export class SessionBean implements ISession {
             const initialDay = new Date(this.from);
             const from = this.getTime(initialDay, item.from);
             const to = this.getTime(initialDay, item.to);
-            const weekDay = this.hasDayChange(initialDay, item.to) ? item.weekDay - 1: item.weekDay;
+            let weekDay = this.hasDayChange(initialDay, item.to) ? item.weekDay - 1: item.weekDay;
+            weekDay = weekDay > 7 ? 1 : weekDay;
             return {
                 from,
                 to,
@@ -62,7 +63,8 @@ export class SessionBean implements ISession {
             const initialDay = new Date(this.from);
             const from = this.getUTCTime(initialDay, item.from);
             const to = this.getUTCTime(initialDay, item.to);
-            const weekDay = this.hasDayChange(initialDay, item.to) ? item.weekDay + 1 : item.weekDay ;
+            let weekDay = this.hasDayChange(initialDay, item.to) ? item.weekDay + 1 : item.weekDay ;
+            weekDay = weekDay > 7 ? 1 : weekDay;
             return {
                 from,
                 to,
