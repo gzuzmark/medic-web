@@ -64,6 +64,8 @@ class SessionDetail extends React.Component <IPropsSessionDetail, IStateSessionD
         this.getMaxStudentsVirtual = this.getMaxStudentsVirtual.bind(this);
         this._updateRooms = this._updateRooms.bind(this);
         this._updateSites = this._updateSites.bind(this);
+        this._onInputMaxStudents = this._onInputMaxStudents.bind(this);
+        this._onFocusMaxStudents = this._onFocusMaxStudents.bind(this);
     }
 
     public componentDidMount() {
@@ -140,7 +142,8 @@ class SessionDetail extends React.Component <IPropsSessionDetail, IStateSessionD
                                                     min={1}
                                                     max={this.state.maxStudents}
                                                     value={session.maxStudents}
-                                                    onChange={this._onChangeMaxStudents}/>
+                                                    onInput={this._onInputMaxStudents}
+                                                    onFocus={this._onFocusMaxStudents}/>
                                             </FormColumn>,
                                         ]}/>
                                     </FormColumn>
@@ -261,9 +264,24 @@ class SessionDetail extends React.Component <IPropsSessionDetail, IStateSessionD
         });
     }
 
+    private _onInputMaxStudents(event: any) {
+        this._onChangeMaxStudents(event.target.value)
+    }
+
+    private _onFocusMaxStudents(event: any) {
+        if (event && event.target && event.target.select) {
+            event.target.select();
+        }
+    }
+
     private _onChangeMaxStudents(value: number) {
-        const max = value.toString();
-        this.props.onChange(SESSION_MAX_STUDENTS, {id: max, name: max});
+        let max = 1;
+        if (value && !isNaN(value)) {
+            if(value <= this.state.maxStudents) {
+                max = value
+            }
+        }
+        this.props.onChange(SESSION_MAX_STUDENTS, {id: max.toString(), name: max.toString()});
     }
 }
 
