@@ -139,8 +139,8 @@ class ScheduleSession extends React.Component<IPropsScheduleSession, IStateSched
     private _onClickSaveBulk() {
         this.setState({savingData: true});
         const session: any = {...this.state.session};
-        session.to = session.to.toISOString();
-        session.from = session.from.toISOString();
+        session.from = session.from.setHours(0,0,0, 0).toISOString();
+        session.to = session.to.setDate(session.to.getDate() + 1).setHours(0,0,0,0).toISOString();
         this.mentorService.bulk(this.mentorId, session).then((items: any[]) => {
             if (items.length > 0 ) {
                 window.location.assign('/admin');
