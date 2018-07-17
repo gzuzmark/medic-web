@@ -32,10 +32,6 @@ class AuthService extends BaseRequest {
             this.instance.get('ugo-admin/admins/me')
                 .then((response: any) => {
                     if (response.status === 200 && response.data) {
-                        // tslint:disable:no-console
-                        console.log('response', response);
-                        console.log(response);
-                        console.log(response.data.user);
                         UserRepository.setUser(response.data.user);
                         resolve(true);
                     } else {

@@ -1,0 +1,49 @@
+@import "../../assets/styles/01-settings/settings";
+@import "../../assets/styles/04-elements/input";
+
+.FilterList {
+  @extend %formInput;
+  &-field {
+    @extend %formInput_input;
+    &--not-empty,
+    &--active {
+      @extend %formInput_input--active;
+    }
+    &:after {
+      @extend %formInput_arrow;
+    }
+    &--disabled {
+      &:after {
+        border: solid $grey-light;
+        border-width: 0 2px 2px 0;
+      }
+    }
+  }
+  &-list {
+    background: white;
+    box-shadow: 1px 1px 2px 1px rgba(193, 193, 193, 0.5);
+    cursor: pointer;
+    padding: 0;
+    position: absolute;
+    top: 16px;
+    width: 372px;
+    z-index: 2;
+    &_item {
+      list-style-type: none;
+      padding: 12px 10px;
+      &:hover {
+        background: rgb(245, 247, 250);
+      }
+      &:focus, &:active {
+        background: $primary-color;
+        .FilterList-list_item--text {
+          color: white!important;
+        }
+      }
+    }
+    &--hidden {
+      display: none;
+    }
+  }
+
+}

@@ -20,30 +20,35 @@
     border: 1px solid rgb(193, 193, 193);
     border-radius: 5px;
     color: rgb(56, 52, 53);
+    font-size: 14px;
+    height: 56px;
     margin-bottom: 20px;
     padding: 10px 35px 10px 14px;
     text-align: center;
     transition: all ease-out 0.5s;
-    width: 280px;
+    width: 328px;
     @include placeholder(rgb(193, 193, 193));
     &:focus {
       border: 1px solid rgb(56, 52, 53);
     }
     &--username {
-      background: url('../../../../assets/images/pencil_inactive.png') no-repeat scroll 96%/20px;
+      background: url('../../../../assets/images/pencil_inactive.png') no-repeat scroll 96%/24px;
       &:focus {
-        background: url('../../../../assets/images/pencil_active.png') no-repeat scroll 96%/20px;
+        background: url('../../../../assets/images/pencil_active.png') no-repeat scroll 96%/24px;
       }
     }
     &--password {
-      background: url('../../../../assets/images/locked_inactive.png') no-repeat scroll 96%/20px;
+      background: url('../../../../assets/images/locked_inactive.png') no-repeat scroll 96%/24px;
       &:focus {
-        background: url('../../../../assets/images/locked_active.png') no-repeat scroll 96%/20px;
+        background: url('../../../../assets/images/locked_active.png') no-repeat scroll 96%/24px;
       }
     }
   }
   &-button {
+    width: 328px;
     margin-top: 20px;
+    height: 56px;
+    font-size: 18px;
   }
 }
 

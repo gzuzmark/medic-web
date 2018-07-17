@@ -1,9 +1,18 @@
 export interface ISession {
-    end: Date;
-    id: string;
-    start: Date;
-    title: string;
-    location: string;
-    site: string;
+    from: Date;
+    to: Date;
+    mentorId: string;
+    skillId: string;
+    skillName?: string;
     type: string;
+    location: string;
+    credits: number;
+    maxStudents: number;
+    sessions: ISessionSchedule[]
+}
+
+export interface ISessionSchedule {
+    weekDay: number;
+    from: string;
+    to: string;
 }

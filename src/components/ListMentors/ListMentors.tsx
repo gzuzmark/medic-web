@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { BoldText } from '../../common/ConsoleText';
+import FilterList, {IListItem} from '../../common/FilterList/FilterList';
 import Layout from '../../common/Layout/Layout';
 import Loader from '../../common/Loader/Loader';
 import Menu from '../../common/Menu/Menu';
@@ -7,7 +8,6 @@ import Sticky from '../../common/Sticky/Sticky';
 import { IMentor, ISkill } from '../../interfaces/Mentor.interface';
 import MentorService from '../../services/Mentor/Mentor.service';
 import SkillService from "../../services/Skill/Skill.service";
-import FilterList from './components/FilterList/FilterList';
 import ListMentorsBody from './components/ListMentorBody/ListMentorBody';
 import ListMentorsHeader from './components/ListMentorHeader/ListMentorHeader';
 import './ListMentors.scss';
@@ -16,6 +16,7 @@ interface IStateListMentor {
     mentors: IMentor[];
     skills: ISkill[];
     loading: boolean;
+    selectedFilter: string;
 }
 
 class ListMentors extends React.Component <{}, IStateListMentor> {
@@ -30,26 +31,33 @@ class ListMentors extends React.Component <{}, IStateListMentor> {
         this.state = {
             loading: true,
             mentors: [],
-            skills: []
+            selectedFilter: '',
+            skills: [],
         };
         this._searchMentors = this._searchMentors.bind(this);
     }
 
     public componentDidMount() {
-        this._searchMentors('all');
+        this._searchMentors({id: 'all', name: ''});
         this._listSkills();
     }
 
     public renderMenu() {
         return (
-            <Sticky height={140} top={60}>
+            <Sticky height={194} top={80}>
                 <Menu baseText={'Mentores'} url={'/admin/mentores'}/>
                 <div className='u-LayoutMargin u-ListMentors-padding'>
-                    <FilterList onChange={this._searchMentors} skills={this.state.skills} />
+                    <FilterList
+                        onChange={this._searchMentors}
+                        list={this.state.skills}
+                        defaultText="Filtrar por curso"
+                        name={this.state.selectedFilter}
+                        enableClearSearch={true}
+                        style={{width: 504, marginBottom: 30}}/>
                 </div>
                 <ListMentorsHeader header={[
                     'Nombre de mentor',
-                    'Sesiones semanales',
+                    'Horas semanales',
                     'Ver sesiones',
                     'Agregar sesión',
                 ]}/>
@@ -87,9 +95,9 @@ class ListMentors extends React.Component <{}, IStateListMentor> {
     }
 
 
-    private _searchMentors(skillName: string) {
-        this.setState({loading: true}, () => {
-            this.mentorService.list(skillName).then((mentors: IMentor[]) => {
+    private _searchMentors(item: IListItem) {
+        this.setState({loading: true, selectedFilter: item.name}, () => {
+            this.mentorService.list(item.id).then((mentors: IMentor[]) => {
                 this.setState({
                     loading: false,
                     mentors,
