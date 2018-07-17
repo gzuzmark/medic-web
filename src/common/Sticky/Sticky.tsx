@@ -9,12 +9,13 @@ interface IPropsSticky {
 class Sticky extends React.Component<IPropsSticky, {}> {
     public render() {
         return (
-            <div>
+            <React.Fragment>
                 <div style={{'width': '100%', 'height': this.props.height}}>&nbsp;</div>
                 <div className="Sticky" style={{'top': this.props.top}}>
                     {this.props.children}
                 </div>
-            </div>
+
+            </React.Fragment>
         );
     }
 }

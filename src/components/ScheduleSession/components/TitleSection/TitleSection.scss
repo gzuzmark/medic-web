@@ -1,0 +1,17 @@
+.TitleSection {
+  padding-left: 15px;
+  position: relative;
+  &--ellipsis {
+    &:after {
+      background: #923dff;
+      border-radius: 50%;
+      content: '';
+      height: 8px;
+      left: 0;
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 8px;
+    }
+  }
+}

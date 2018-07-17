@@ -4,11 +4,18 @@ export interface ISkill {
     name: string;
 }
 
+export interface IArea {
+    id: string;
+    name: string;
+    type: string;
+}
+
 export interface IMentor {
     id: string;
     name: string;
     email: string;
     photo: string;
+    interestAreas?: IArea[];
     sessions: {
         totalMinutes: number;
     }

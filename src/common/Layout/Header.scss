@@ -1,19 +1,19 @@
 .Header {
   background: linear-gradient(to left, rgb(61, 39, 141), rgb(86, 24, 163));
-  height: 60px;
+  height: 80px;
   position: fixed;
   top: 0;
   width: 100%;
   z-index: 999;
   &-space {
     display: block;
-    height: 60px;
+    height: 80px;
     width: 100%;
   }
   &-wrapper {
     align-items: center;
     display: flex;
-    height: 60px;
+    height: 80px;
     justify-content: space-between;
   }
   &-section {
@@ -23,7 +23,7 @@
   }
   &-text {
     color: white!important;
-    font-size: 12px!important;;
+    font-size: 16px!important;;
     padding: 0 14px;
   }
 }

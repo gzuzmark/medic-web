@@ -6,8 +6,6 @@ import AuthService from '../../services/Auth/Auth.service';
 import { schema } from './components/LoginForm.validation';
 import LoginForm from './components/LoginForm/LoginForm';
 import LoginPresentation from './components/LoginPresentation/LoginPresentation';
-import './Login.scss';
-
 
 interface IStateLoginForm {
     buttonAttr: any;
@@ -42,7 +40,8 @@ class Login extends React.Component <{}, IStateLoginForm> {
 
     public render() {
         return (
-            !(UserRepository.getToken() && UserRepository.getUser()) && <LoginPresentation>
+            !(UserRepository.getToken() && UserRepository.getUser()) &&
+            <LoginPresentation>
                 <Formik
                     initialValues={{ username: '', password: '' }}
                     validationSchema={schema}
@@ -54,7 +53,7 @@ class Login extends React.Component <{}, IStateLoginForm> {
     }
 
     private _onSubmit(values: IUserInput, actions: any) {
-        this.setState({buttonAttr: {disabled: true}});
+        this.setState({buttonAttr: {disabled: true, loading: true}});
         this.userService.login(values)
             .then((response) => {
                 if (response) {
