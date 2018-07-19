@@ -17,16 +17,17 @@ export class SessionBean implements ISession {
 
     constructor(session?: ISession) {
         if (session) {
-            this.from = session.from;
-            this.to = session.to;
-            this.type = session.type;
-            this.credits = session.credits;
-            this.location = session.location;
-            this.maxStudents = session.maxStudents;
-            this.mentorId = session.mentorId;
-            this.sessions = session.sessions;
-            this.skillId = session.skillId;
-            this.skillName = session.skillName || '';
+            const s = {...session};
+            this.from = new Date(s.from);
+            this.to = new Date(s.to);
+            this.type = s.type;
+            this.credits = s.credits;
+            this.location = s.location;
+            this.maxStudents = s.maxStudents;
+            this.mentorId = s.mentorId;
+            this.sessions = Array.from(s.sessions);
+            this.skillId = s.skillId;
+            this.skillName = s.skillName || '';
         } else {
             const date = new Date();
             const endOfWeek = 6 - date.getDay() + 1;
@@ -75,7 +76,7 @@ export class SessionBean implements ISession {
     }
 
     public isValid() {
-        return this.from < this.to &&
+        return this.from <= this.to &&
                this.type !== '' &&
                (this.location !== '' || this.type === SESSION_VIRTUAL) &&
                this.maxStudents > 0 &&

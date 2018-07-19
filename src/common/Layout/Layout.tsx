@@ -4,6 +4,7 @@ import { Text } from '../../common/ConsoleText';
 import UserRepository from '../../repository/UserRepository';
 import Avatar from '../Avatar/Avatar';
 import Sticky from '../Sticky/Sticky';
+import './Footer.scss';
 import './Header.scss';
 import './Layout.scss';
 
@@ -12,9 +13,10 @@ interface IPropsLayout {
 }
 
 class Layout extends React.Component<IPropsLayout, {}> {
-
+    private date: Date;
     constructor(props: IPropsLayout) {
         super(props);
+        this.date = new Date()
     }
 
     public render() {
@@ -36,6 +38,16 @@ class Layout extends React.Component<IPropsLayout, {}> {
                 {this.props.menu}
                 <div className="Layout">
                     <div>{this.props.children}</div>
+                </div>
+                <div className="Footer">
+                    <div className="Footer-wrapper u-LayoutMargin">
+                        <div className="Footer-section">
+                            <Text className="Footer-text">UGO Administrador {this.date.getFullYear()} . Todos los derechos reservados</Text>
+                        </div>
+                        <div className="Footer-section">
+                            <a className="Footer-link" href="mailto:ugoadministrador@ugo.com.pe"><Text className="Footer-text">ugoadministrador@ugo.com.pe</Text></a>
+                        </div>
+                    </div>
                 </div>
             </React.Fragment>
         );

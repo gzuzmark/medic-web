@@ -44,7 +44,7 @@ class ListMentors extends React.Component <{}, IStateListMentor> {
 
     public renderMenu() {
         return (
-            <Sticky height={194} top={80}>
+            <Sticky height={194} top={80} style={{background: 'white'}}>
                 <Menu baseText={'Mentores'} url={'/admin/mentores'}/>
                 <div className='u-LayoutMargin u-ListMentors-padding'>
                     <FilterList

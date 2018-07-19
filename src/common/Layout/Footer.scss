@@ -1,0 +1,24 @@
+.Footer {
+  background: linear-gradient(to left, rgb(61, 39, 141), rgb(86, 24, 163));
+  height: 56px;
+  width: 100%;
+  z-index: 999;
+  &-wrapper {
+    align-items: center;
+    display: flex;
+    height: 56px;
+    justify-content: space-between;
+  }
+  &-section {
+    align-items: center;
+    display: flex;
+    justify-content: flex-end;
+  }
+  &-text {
+    color: white!important;
+    padding: 0 14px;
+  }
+  &-link {
+    text-decoration: none;
+  }
+}

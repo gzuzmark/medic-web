@@ -1,12 +1,12 @@
 import * as React from 'react';
 import './FormRow.scss';
 
-interface IPropsTitleSection {
+interface IPropsFormRow {
     columns: JSX.Element[];
     style?: React.CSSProperties;
 }
 
-const FormRow: React.StatelessComponent<IPropsTitleSection> = (props) => {
+const FormRow: React.StatelessComponent<IPropsFormRow> = (props) => {
     return (
         <div className='FormRow' style={{...props.style}}>
             {props.columns.map((column) => column)}

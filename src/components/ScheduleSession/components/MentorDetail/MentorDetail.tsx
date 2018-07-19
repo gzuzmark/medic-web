@@ -20,8 +20,8 @@ class MentorDetail extends React.Component <IPropsMentorDetail, {}> {
     public render() {
         const profile = this.props.mentor ? this.props.mentor.photo : '';
         return (
-            <div className="MentorDetail">
-                <div className="MentorDetail-container" style={{height: 'calc(100vh - 60px)'}}>
+            <div className="MentorDetail u-LayoutMargin">
+                <div className="MentorDetail-container">
                     <div className="MentorDetail-profile">
                         <Avatar size={94} source={profile} style={{marginBottom: 24}}/>
                         <Heading2 color="textLight" className="MentorDetail-name">{this.props.mentor? this.props.mentor.name : ''}</Heading2>

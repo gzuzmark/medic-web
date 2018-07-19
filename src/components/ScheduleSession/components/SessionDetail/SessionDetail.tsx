@@ -65,7 +65,6 @@ class SessionDetail extends React.Component <IPropsSessionDetail, IStateSessionD
         this._updateRooms = this._updateRooms.bind(this);
         this._updateSites = this._updateSites.bind(this);
         this._onInputMaxStudents = this._onInputMaxStudents.bind(this);
-        this._onFocusMaxStudents = this._onFocusMaxStudents.bind(this);
     }
 
     public componentDidMount() {
@@ -92,7 +91,7 @@ class SessionDetail extends React.Component <IPropsSessionDetail, IStateSessionD
                         const session = scheduleSessionContext.session;
                         let counter = 0;
                         return (
-                            <React.Fragment>
+                            <div style={{width: '80%'}}>
                                 <FormRow columns={[
                                     <FormColumn key={`SessionDetailRow${++counter}`}  width={2}>
                                         <Text className='FormSession-label'>Sesión</Text>
@@ -142,13 +141,12 @@ class SessionDetail extends React.Component <IPropsSessionDetail, IStateSessionD
                                                     min={1}
                                                     max={this.state.maxStudents}
                                                     value={session.maxStudents}
-                                                    onInput={this._onInputMaxStudents}
-                                                    onFocus={this._onFocusMaxStudents}/>
+                                                    onChange={this._onChangeMaxStudents}/>
                                             </FormColumn>,
                                         ]}/>
                                     </FormColumn>
                                 ]}/>
-                            </React.Fragment>
+                            </div>
                         )
                     }
                 }
@@ -268,18 +266,28 @@ class SessionDetail extends React.Component <IPropsSessionDetail, IStateSessionD
         this._onChangeMaxStudents(event.target.value)
     }
 
-    private _onFocusMaxStudents(event: any) {
-        if (event && event.target && event.target.select) {
-            event.target.select();
+    private _onChangeMaxStudents(numberValue: number) {
+        let max = '';
+        let stringValue = numberValue ? numberValue.toString() : '';
+        const lengthValue = stringValue.length;
+        if (this.state.maxStudents < 10) {
+            stringValue = lengthValue > 1 ? stringValue[0] : stringValue;
+            max = stringValue;
+        } else {
+            stringValue = lengthValue > 2 ? stringValue[0] + stringValue[1] : stringValue;
+            max = stringValue;
         }
-    }
-
-    private _onChangeMaxStudents(value: number) {
-        let max = 1;
-        if (value && !isNaN(value)) {
-            if(value <= this.state.maxStudents) {
-                max = value
+        if (numberValue && !isNaN(numberValue)) {
+            max = '1';
+            if(parseInt(stringValue, 10) > 0 && parseInt(stringValue, 10) <= this.state.maxStudents) {
+                max = parseInt(stringValue, 10).toString();
+            } else if (parseInt(stringValue, 10) > this.state.maxStudents) {
+                max = this.state.maxStudents.toString();
             }
+        }
+
+        if (max === '') {
+            max = '1'
         }
         this.props.onChange(SESSION_MAX_STUDENTS, {id: max.toString(), name: max.toString()});
     }

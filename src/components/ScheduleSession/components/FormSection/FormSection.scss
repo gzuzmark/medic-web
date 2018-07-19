@@ -1,4 +1,4 @@
-.TitleSection {
+.FormSection {
   padding-left: 15px;
   position: relative;
   &--ellipsis {
@@ -13,5 +13,8 @@
       transform: translateY(-50%);
       width: 8px;
     }
+  }
+  &-item {
+    padding-left: 10px;
   }
 }
