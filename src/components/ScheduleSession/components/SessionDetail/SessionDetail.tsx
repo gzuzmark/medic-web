@@ -115,7 +115,7 @@ class SessionDetail extends React.Component <IPropsSessionDetail, IStateSessionD
 
                                 <FormRow columns={[
                                     <FormColumn key={`SessionDetailRow${++counter}`} width={2}>
-                                        <Text className='FormSession-label'>Campus</Text>
+                                        <Text className='FormSession-label'>Sede</Text>
                                         <FilterList
                                             onChange={this._onChangeSite}
                                             name={this.state.selectedSite}
