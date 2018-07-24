@@ -51,6 +51,7 @@ class ScheduleDuration extends React.Component <IPropsScheduleSession, IStateSch
     public render() {
         let counter = 0;
         return (
+            <div style={{marginTop: 30}}>
             <FormRow columns={[
                 <FormColumn key={`ScheduleDuration${++counter}`}  width={4}>
                     <RepeatSessionInput repeatSession={this.state.repeatSession} onChange={this._onRepeatChange}/>
@@ -90,6 +91,7 @@ class ScheduleDuration extends React.Component <IPropsScheduleSession, IStateSch
                     }
                 </FormColumn>
             ]}/>
+            </div>
         );
     }
 
