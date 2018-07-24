@@ -33,7 +33,8 @@ class MentorDetail extends React.Component <IPropsMentorDetail, {}> {
                                         <path id="a" d="M12 23C5.925 23 1 18.075 1 12S5.925 1 12 1s11 4.925 11 11-4.925 11-11 11zm0-2a9 9 0 1 0 0-18 9 9 0 0 0 0 18zm1-15v5.586l2.707 2.707a1 1 0 0 1-1.414 1.414l-3-3A1 1 0 0 1 11 12V6a1 1 0 0 1 2 0z"/>
                                     </svg>
                                     <Text color="textLight" style={{paddingLeft: 7}}>
-                                        {getTime(this.props.mentor.sessions.totalMinutes) + ' agendadas'} </Text>
+                                        {getTime(this.props.mentor.sessions.totalMinutes)}
+                                    </Text>
                                 </div>
                             </React.Fragment>
                         }

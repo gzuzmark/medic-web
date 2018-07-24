@@ -42,7 +42,7 @@ class Layout extends React.Component<IPropsLayout, {}> {
                 <div className="Footer">
                     <div className="Footer-wrapper u-LayoutMargin">
                         <div className="Footer-section">
-                            <Text className="Footer-text">UGO Administrador {this.date.getFullYear()} . Todos los derechos reservados</Text>
+                            <Text className="Footer-text">UGO Administrador {this.date.getFullYear()}. Todos los derechos reservados</Text>
                         </div>
                         <div className="Footer-section">
                             <a className="Footer-link" href="mailto:ugoadministrador@ugo.com.pe"><Text className="Footer-text">ugoadministrador@ugo.com.pe</Text></a>
