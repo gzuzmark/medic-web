@@ -4,6 +4,7 @@ import './Sticky.scss';
 interface IPropsSticky {
     top: number;
     height: number;
+    style?: React.CSSProperties;
 }
 
 class Sticky extends React.Component<IPropsSticky, {}> {
@@ -11,7 +12,7 @@ class Sticky extends React.Component<IPropsSticky, {}> {
         return (
             <React.Fragment>
                 <div style={{'width': '100%', 'height': this.props.height}}>&nbsp;</div>
-                <div className="Sticky" style={{'top': this.props.top}}>
+                <div className="Sticky" style={{'top': this.props.top, ...this.props.style}}>
                     {this.props.children}
                 </div>
 
