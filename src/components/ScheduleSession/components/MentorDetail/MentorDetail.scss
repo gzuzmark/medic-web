@@ -6,10 +6,8 @@
     padding: 0 40px;
     text-align: center;
     text-overflow: ellipsis;
-    /* autoprefixer: off */
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
-    /* autoprefixer: on */
   }
   &-container {
     align-items: center;
