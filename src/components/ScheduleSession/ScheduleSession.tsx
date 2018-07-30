@@ -67,7 +67,7 @@ class ScheduleSession extends React.Component<IPropsScheduleSession, IStateSched
 
     public renderMenu() {
         const textNavigation = this.state.mentor ?
-            'Crear sesiones para ' + this.state.mentor.name : 'Crear sesiones';
+            'Crear sesiones para ' + this.state.mentor.user.name : 'Crear sesiones';
         return (
             <React.Fragment>
                 <Sticky height={90} top={80}>

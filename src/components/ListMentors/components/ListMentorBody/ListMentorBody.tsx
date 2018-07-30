@@ -14,11 +14,11 @@ class ListMentorsBody extends React.Component <IMentor, {}> {
     }
 
     public render() {
-        const { sessions, skills, photo, name, id} = this.props;
+        const { sessions, skills, user, id} = this.props;
         return (
             <React.Fragment>
                 <div className="ListMentors-column ListMentors-column--mentor">
-                    <MentorItem skills={skills} image={photo} name={name} />
+                    <MentorItem skills={skills} image={user.photo} name={user.name} />
                 </div>
                 <div className="ListMentors-column ListMentors-separator">
                     <BoldText className="ListMentors-bigtext">{getTime(sessions.totalMinutes)}</BoldText>

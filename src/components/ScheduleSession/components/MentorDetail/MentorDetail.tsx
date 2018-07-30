@@ -18,13 +18,13 @@ class MentorDetail extends React.Component <IPropsMentorDetail, {}> {
     }
 
     public render() {
-        const profile = this.props.mentor ? this.props.mentor.photo : '';
+        const profile = this.props.mentor ? this.props.mentor.user.photo : '';
         return (
             <div className="MentorDetail u-LayoutMargin">
                 <div className="MentorDetail-container">
                     <div className="MentorDetail-profile">
                         <Avatar size={94} source={profile} style={{marginBottom: 24}}/>
-                        <Heading2 color="textLight" className="MentorDetail-name">{this.props.mentor? this.props.mentor.name : ''}</Heading2>
+                        <Heading2 color="textLight" className="MentorDetail-name">{this.props.mentor? this.props.mentor.user.name : ''}</Heading2>
                         {this.props.mentor &&
                             <React.Fragment>
                                 <Text color="textLight" style={{margin: "auto 0 0 0"}}>Horas semanales agendadas</Text>
