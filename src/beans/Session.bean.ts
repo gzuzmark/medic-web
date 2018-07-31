@@ -39,8 +39,8 @@ export class SessionBean implements ISession {
     }
 
     public typeName(listType: IListItem[]): string {
-        const type = listType.filter(item => item.id === this.type);
-        return type.length === 1 ? type[0].name : '';
+        const type = listType.find(item => item.id === this.type);
+        return type ? type.name : '';
     }
 
     get listSessions(): ISessionSchedule[] {

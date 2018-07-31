@@ -30,12 +30,12 @@ class ScheduleSessionForm extends React.Component<IPropsScheduleSessionForm, {}>
     }
 
     public render() {
-        const areaType = this.props.mentor && this.props.mentor.interestAreas && this.props.mentor.interestAreas[0].type || 'VIRTUAL';
         return (
             <ScheduleSessionContext.Consumer>
             {
                 (scheduleSessionContext: IScheduleContext) => {
                     const session = scheduleSessionContext.session;
+                    const sessionTypes = this.props.mentor && this.props.mentor.interestAreas ? this.props.mentor.interestAreas[0].sessionTypes : [];
                     return (
                         <React.Fragment>
                             {this.props.loading &&
@@ -47,10 +47,15 @@ class ScheduleSessionForm extends React.Component<IPropsScheduleSessionForm, {}>
                                     <SessionDetail
                                         skills={this.props.mentor ? this.props.mentor.skills : []}
                                         locations={this.props.locations}
-                                        areaType={areaType}
+                                        sessionTypes={sessionTypes}
                                         onChange={this.props.onChangeSessionDetail}/>
                                 </FormSection>
                                 <hr className='FormSession-separator' />
+
+                                <FormSection title={'Agenda fecha y hora'} style={{marginTop: 30}}>
+                                    <Text>Elige la fecha y hora de la sesión</Text>
+                                    
+                                </FormSection>
                                 <FormSection title={'Agenda fecha y hora'} style={{marginTop: 30}}>
                                     <WeekendPicker onChange={this.props.onChangeWeekendPicker}/>
                                 </FormSection>

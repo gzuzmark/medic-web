@@ -1,7 +1,6 @@
 import * as moment from "moment";
 import * as React from 'react';
 import {SessionBean} from '../../beans/Session.bean';
-import { IListItem } from '../../common/FilterList/FilterList';
 import Layout from '../../common/Layout/Layout';
 import Menu from '../../common/Menu/Menu';
 import Sticky from '../../common/Sticky/Sticky';
@@ -173,7 +172,7 @@ class ScheduleSession extends React.Component<IPropsScheduleSession, IStateSched
 
     }
 
-    private _onChangeSessionDetail(type: string, item:IListItem) {
+    private _onChangeSessionDetail(type: string, item:any) {
         const session = {...this.state.session};
         switch (type) {
             case SESSION_SKILL:

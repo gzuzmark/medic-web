@@ -10,6 +10,13 @@ export interface IArea {
     id: string;
     name: string;
     type: string;
+    sessionTypes: ISessionTypes[]
+}
+
+export interface ISessionTypes {
+    name: string;
+    type: string;
+    key: string;
 }
 
 export interface IMentor {
