@@ -16,6 +16,7 @@ class AuthService extends BaseRequest {
                 .then((response) => {
                     if (response.status === 200 && response.data) {
                         UserRepository.setToken(response.data.token);
+                        UserRepository.setRefreshToken(response.data.refreshToken);
                         resolve(true);
                     } else {
                         resolve(false);
