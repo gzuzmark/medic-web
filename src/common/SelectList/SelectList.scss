@@ -1,0 +1,26 @@
+@import "../../assets/styles/01-settings/settings";
+@import "../../assets/styles/04-elements/input";
+
+.SelectList {
+  background: white;
+  box-shadow: 1px 1px 2px 1px rgba(193, 193, 193, 0.5);
+  cursor: pointer;
+  padding: 0;
+  position: absolute;
+  top: 16px;
+  width: 372px;
+  z-index: 2;
+  &-item {
+    list-style-type: none;
+    padding: 12px 10px;
+    &:hover {
+      background: rgb(245, 247, 250);
+    }
+    &:focus, &:active {
+      background: $primary-color;
+      .SelectList-item_text {
+        color: white!important;
+      }
+    }
+  }
+}

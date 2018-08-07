@@ -4,6 +4,7 @@ import { Text } from '../../common/ConsoleText';
 import UserRepository from '../../repository/UserRepository';
 import Avatar from '../Avatar/Avatar';
 import Sticky from '../Sticky/Sticky';
+import MenuTop from "./components/MenuTop/MenuTop";
 import './Footer.scss';
 import './Header.scss';
 import './Layout.scss';
@@ -22,7 +23,7 @@ class Layout extends React.Component<IPropsLayout, {}> {
     public render() {
         return (
             <React.Fragment>
-                <Sticky height={80} top={80}>
+                <Sticky height={80} top={80} style={{'zIndex': 6}}>
                     <div className="Header">
                         <div className="Header-wrapper u-LayoutMargin">
                             <div className="Header-section">
@@ -31,6 +32,7 @@ class Layout extends React.Component<IPropsLayout, {}> {
                             <div className="Header-section">
                                 <Text className="Header-text">Hola, {UserRepository.getUser().name}</Text>
                                 <Avatar size={32} source={UserRepository.getUser().photo}/>
+                                <MenuTop />
                             </div>
                         </div>
                     </div>

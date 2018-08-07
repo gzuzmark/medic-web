@@ -3,11 +3,6 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@types/prop-types": "15.5.3",
-    "@types/react-dates": "16.7.0",
-    "@types/react-numeric-input": "2.2.1",
-    "@types/react-router-dom": "4.2.7",
-    "@types/yup": "0.24.7",
     "autoprefixer": "7.1.6",
     "axios": "0.18.0",
     "babel-jest": "22.4.4",
@@ -65,6 +60,11 @@
     "deploy:prod": "yarn build && firebase deploy -P production"
   },
   "devDependencies": {
+    "@types/prop-types": "15.5.3",
+    "@types/react-dates": "16.7.0",
+    "@types/react-numeric-input": "2.2.1",
+    "@types/react-router-dom": "4.2.7",
+    "@types/yup": "0.24.7",
     "@types/chai": "4.1.4",
     "@types/enzyme": "3.1.11",
     "@types/enzyme-adapter-react-16": "1.0.2",
