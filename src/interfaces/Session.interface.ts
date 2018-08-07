@@ -5,6 +5,7 @@ export interface ISession {
     skillId: string;
     skillName?: string;
     type: string;
+    typeKey?: string;
     location: string;
     credits: number;
     maxStudents: number;

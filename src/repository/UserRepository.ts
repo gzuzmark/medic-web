@@ -1,6 +1,7 @@
 import { IUser } from '../interfaces/User.interface';
 
 const keyToken = 'TOKEN_AUTH';
+const keyRefreshToken = 'REFRESH_TOKEN_AUTH';
 const keyUser = 'USER_INF';
 
 export const UserRepository = {
@@ -10,6 +11,14 @@ export const UserRepository = {
 
     getToken: () => {
         return localStorage.getItem(keyToken) || '';
+    },
+
+    setRefreshToken: (value: any) => {
+        localStorage.setItem(keyRefreshToken, value);
+    },
+
+    getRefreshToken: () => {
+        return localStorage.getItem(keyRefreshToken) || '';
     },
 
     setUser: (data: any) => {

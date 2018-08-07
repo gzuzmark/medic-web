@@ -57,7 +57,7 @@ class Login extends React.Component <{}, IStateLoginForm> {
         this.userService.login(values)
             .then((response) => {
                 if (response) {
-                    this.userService.refreshHeader();
+                    this.userService.setTokenHeader();
                     this.userService.loadUser().then(() => {
                         if (response) {
                             window.location.assign('/admin');

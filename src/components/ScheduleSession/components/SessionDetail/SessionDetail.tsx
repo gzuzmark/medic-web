@@ -3,10 +3,10 @@ import * as NumericInput from 'react-numeric-input';
 import { Text } from '../../../../common/ConsoleText';
 import FilterList, {IListItem} from '../../../../common/FilterList/FilterList';
 import {ILocationPhysical, ILocationPhysicalRoom} from '../../../../interfaces/Location.interface';
-import {IMentorDescription, ISkill} from '../../../../interfaces/Mentor.interface';
+import {IMentorDescription, ISessionTypes, ISkill} from '../../../../interfaces/Mentor.interface';
 import {
-    AREA_TYPE_SERVICE, SESSION_PHYSICAL, SESSION_TYPES_SERVICES,
-    SESSION_TYPES_TUTORIES, SESSION_UNDEFINED, SESSION_VIRTUAL
+    SESSION_PHYSICAL,
+    SESSION_UNDEFINED, SESSION_VIRTUAL
 } from '../../../../repository/SessionTypeConstants';
 import {
     SESSION_MAX_STUDENTS, SESSION_ROOM, SESSION_SITE, SESSION_SKILL,
@@ -19,13 +19,16 @@ import './SessionDetail.scss';
 
 interface IPropsSessionDetail {
     skills: ISkill[];
-    areaType: string;
+    sessionTypes: ISessionTypes[];
     locations: any;
     onChange: (field: string, item: IListItem) => void;
 }
 
 interface IRooms extends IListItem {
     maxStudents: number;
+}
+interface IListSessionTypes extends IListItem {
+    type: string;
 }
 
 interface ISites extends IListItem {
@@ -71,15 +74,13 @@ class SessionDetail extends React.Component <IPropsSessionDetail, IStateSessionD
         if (this.props.skills.length === 1) {
             this._onChangeSkill(this.props.skills[0]);
         }
-        const keyLocations = Object.keys(this.props.locations);
-        const listSessionType = this.props.areaType === AREA_TYPE_SERVICE ? SESSION_TYPES_SERVICES : SESSION_TYPES_TUTORIES;
-        const listSession  = keyLocations.map((key: string) => {
-            return listSessionType.find((element) => element.id === key)
+        const listSession = this.props.sessionTypes.map((item) => {
+            return {
+                id: item.key,
+                name: item.name,
+                type: item.type
+            }
         });
-        if (Object.keys(this.props.locations).length > 1) {
-            listSession.push(
-                listSessionType.find((element) => element.id === SESSION_UNDEFINED));
-        }
         this.setState({listSession});
     }
 
@@ -154,13 +155,19 @@ class SessionDetail extends React.Component <IPropsSessionDetail, IStateSessionD
         );
     }
 
-    private _updateSites(item: IListItem) {
+    private _updateSites(item: IListSessionTypes) {
         let locations = [];
         let sites: ISites[] = [];
         let maxStudents = 1;
-        const isPhysical = item.id === SESSION_PHYSICAL || item.id === SESSION_UNDEFINED;
-        if (isPhysical) {
-            locations = this.props.locations[SESSION_PHYSICAL];
+        const isVirtual = item.type === SESSION_VIRTUAL;
+        if (isVirtual) {
+            sites.push({
+                id: 'videoconferencia',
+                name: 'Videoconferencia',
+                rooms: []
+            });
+        } else {
+            locations = this.props.locations[item.type];
             sites = locations.map((location: ILocationPhysical, index: number) => {
                 return {
                     id: `${item.id}_${index}`,
@@ -168,18 +175,12 @@ class SessionDetail extends React.Component <IPropsSessionDetail, IStateSessionD
                     rooms: location.rooms
                 }
             });
-        } else {
-            sites.push({
-                id: 'videoconferencia',
-                name: 'Videoconferencia',
-                rooms: []
-            })
         }
         let rooms = [] as IRooms[];
 
         if (sites.length === 1) {
             rooms = sites[0].rooms;
-            if (!isPhysical) {
+            if (isVirtual) {
                 maxStudents = this.getMaxStudentsVirtual();
             }
             this.setState({sites, selectedRoom: '', maxStudents, rooms}, () => {
@@ -243,7 +244,7 @@ class SessionDetail extends React.Component <IPropsSessionDetail, IStateSessionD
         this.props.onChange(SESSION_SKILL, item);
     }
 
-    private _onChangeType(item: IListItem) {
+    private _onChangeType(item: IListSessionTypes) {
         this._updateSites(item);
         this.props.onChange(SESSION_TYPE, item);
     }

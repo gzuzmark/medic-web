@@ -57,7 +57,7 @@ class FilterList extends React.Component <IPropsFilterList, IStateFilterList> {
                 <ul className={'FilterList-list ' + hiddenClass}>
                     {this.props.list.map((item, index) => {
                         const click = () => {
-                            this.filter(item.id, item.name);
+                            this.filter(item);
                         };
                         return (
                             <li key={'filter-list-' + index}
@@ -91,15 +91,15 @@ class FilterList extends React.Component <IPropsFilterList, IStateFilterList> {
         }
     }
 
-    private filter(id: string, name: string) {
-        if (name !== this.props.name) {
-            this.props.onChange({id, name});
+    private filter(item: any) {
+        if (item.name !== this.props.name) {
+            this.props.onChange(item);
         }
         this.setState({ showFilters: false });
     };
 
     private removeFilters() {
-        this.filter('all', '');
+        this.filter({id: 'all', name: ''});
     };
 }
 

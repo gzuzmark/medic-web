@@ -3,12 +3,16 @@ export interface IUserInput {
     password: string;
 }
 
-export interface IUser {
-    dni: string;
-    email: string;
-    id: string;
+
+export interface IBaseUser {
     name: string;
+    email: string;
+    photo: string;
+}
+
+export interface IUser extends IBaseUser{
+    dni: string;
+    id: string;
     status: string;
     timeZone: string;
-    photo?: string;
 }
