@@ -35,7 +35,7 @@ interface IStateScheduleSession {
 class ScheduleSession extends React.Component<IPropsScheduleSession, IStateScheduleSession> {
     public state: IStateScheduleSession;
     private mentorId: string;
-    private mentorService = new MentorService();
+    private mentorService: MentorService = new MentorService();
     private locationsService = new LocationService();
 
     constructor(props: IPropsScheduleSession) {
@@ -123,11 +123,11 @@ class ScheduleSession extends React.Component<IPropsScheduleSession, IStateSched
             if (items.length > 0 ) {
                 window.location.assign('/admin');
             } else {
-                alert('Hay Conflictos de Horarios')
+                alert('Hay Conflictos de Horarios');
             }
             this.setState({savingData: false});
         }, () => {
-            alert('Hay Conflictos de Horarios')
+            alert('Hay Conflictos de Horarios');
             this.setState({savingData: false});
         });
 
@@ -197,7 +197,7 @@ class ScheduleSession extends React.Component<IPropsScheduleSession, IStateSched
     }
 
     private _getMentor() {
-        this.mentorService.mentor(this.mentorId).then((mentor: IMentor) => {
+        this.mentorService.mentor(this.mentorId).then((mentor: any) => {
             this.setState({mentor});
             const idArea = mentor.interestAreas ? mentor.interestAreas[0].id : '';
             if (idArea !== '') {
