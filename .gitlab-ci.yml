@@ -1,7 +1,7 @@
 image: node:8.9.4
 
 cache:
-  key: yarnyarnyarngoodyarn
+  key: ${CI_COMMIT_REF_SLUG}
   paths:
   - mkdir .cache_yarn && cd ./.cache_yarn
 
