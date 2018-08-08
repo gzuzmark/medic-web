@@ -7,6 +7,8 @@ import './FilterList.scss';
 export interface IListItem {
     id: string;
     name: string;
+    icon?: string;
+    extra?: any;
 }
 
 interface IPropsFilterList {

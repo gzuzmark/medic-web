@@ -1,4 +1,4 @@
-import { mount } from 'enzyme';
+import { shallow } from 'enzyme';
 import 'jest-localstorage-mock';
 import * as React from 'react';
 import SelectList from './SelectList';
@@ -9,7 +9,7 @@ describe('SelectList Test',() => {
     let mountedSelectList: any;
     const selectList = () => {
         if (!mountedSelectList) {
-            mountedSelectList = mount(
+            mountedSelectList = shallow(
                 <SelectList {...props} />
             );
         }
