@@ -108,7 +108,7 @@ class SessionDetail extends React.Component <IPropsSessionDetail, IStateSessionD
                                         <FilterList
                                             onChange={this._onChangeType}
                                             name={session.typeName(this.state.listSession)}
-                                            list={this.state.listSession}
+                                            list={this.state.listSession.filter((item) => !item.name.startsWith('Taller'))}
                                             defaultText='Taller, tutoría, etc.'
                                             enableClearSearch={false}/>
                                     </FormColumn>,
