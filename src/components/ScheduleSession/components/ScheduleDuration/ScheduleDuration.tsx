@@ -7,7 +7,6 @@ import FormRow from './../../components/FormRow/FormRow';
 import { BaseConfigCalendar } from './components/Calendar.const';
 import RangeWeekendSelector from './components/RangeWeekendSelector/RangeWeekendSelector';
 import RepeatSessionInput from './components/RepeatSessionInput/RepeatSessionInput';
-import './datepicker.scss';
 
 interface IPropsScheduleSession {
     endDate: moment.Moment;

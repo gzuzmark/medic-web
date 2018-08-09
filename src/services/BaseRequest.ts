@@ -2,9 +2,7 @@ import Axios from 'axios';
 import UserRepository from "../repository/UserRepository";
 
 export const headersRequest = {
-    'Content-Type': 'application/json',
-    'installedVersion': '2.0.0',
-    'platformName': 'android',
+    'Content-Type': 'application/json'
 };
 
 class BaseRequest {
