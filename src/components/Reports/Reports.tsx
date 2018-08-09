@@ -1,6 +1,7 @@
 import * as moment from "moment";
 import * as React from "react";
 import { ReportRequestBean} from "../../beans/ReportRequest.bean";
+import ConsoleInputRadio from "../../common/ConsoleInputRadio/ConsoleInputRadio";
 import { Text } from '../../common/ConsoleText';
 import Loader from "../../common/Loader/Loader";
 import {IReportForSession} from "../../interfaces/Reports.interface";
@@ -58,13 +59,31 @@ class Reports extends React.Component <{}, IStateReports> {
                     ]}/>
                 </FormSection>
                 <hr className='u-Separator' />
-                <FormSection title={'Reportes'} style={{marginTop: 32, marginBottom: 18}}>
+                <FormSection title={'Reportes'} style={{marginTop: 32, marginBottom: 18}} itemStyle={{width: 350}}>
                     <Text>Selecciona el tipo de reporte que te gustaría ver</Text>
+                    <FormRow style={{marginTop: 20}} columns={[
+                        <FormColumn key={`Reports_${++counter}`}  width={2}>
+                            <ConsoleInputRadio
+                                title={'Reporte de sesiones'}
+                                name={'repeat'}
+                                value={'false'}
+                                checked={true}
+                                onChange={this.updateState}/>
+                        </FormColumn>,
+                        <FormColumn key={`Reports_${++counter}`}  width={2}>
+                            <ConsoleInputRadio
+                                title={'Reporte de alumnos'}
+                                name={'repeat'}
+                                value={'false'}
+                                checked={true}
+                                onChange={this.updateState}/>
+                        </FormColumn>
+                    ]}/>
                 </FormSection>
                 {this.state.loading && <Loader top={50} height={100}/>}
-                {!this.state.clean && !this.state.loading && this.state.results.length ?
+                {!this.state.clean && !this.state.loading && (this.state.results.length ?
                     <div className="Report-table">Datos</div> :
-                    <div className="Report-empty">No hay datos</div>}
+                    <div className="Report-empty">No hay datos</div>)}
             </div>
         )
     }
