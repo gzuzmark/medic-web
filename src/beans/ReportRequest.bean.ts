@@ -20,6 +20,14 @@ export class ReportRequestBean implements IReportRequestBean {
             const b = {...reportRequest};
             if (b.endDate < b.startDate) {
                 b.endDate = b.startDate;
+            } else {
+                const time = b.endDate.getTime() - b.startDate.getTime();
+                const diff = new Date(time);
+                if (Math.abs(diff.getFullYear() - 1970) >= 1) {
+                    const startDate = new Date(b.startDate);
+                    startDate.setFullYear(b.startDate.getFullYear() + 1);
+                    b.endDate = startDate;
+                }
             }
             this.startDate = new Date(b.startDate);
             this.endDate = new Date(b.endDate);
