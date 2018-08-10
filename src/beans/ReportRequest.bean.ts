@@ -1,6 +1,9 @@
 
 export type ReportType = 'SESSIONS' | 'STUDENTS' | '';
 
+export const REPORT_SESSIONS = 'SESSIONS' as ReportType;
+export const REPORT_STUDENTS = 'STUDENTS' as ReportType;
+
 export interface IReportRequestBean {
     startDate: Date;
     endDate: Date;
@@ -35,11 +38,16 @@ export class ReportRequestBean implements IReportRequestBean {
     }
 
     public toParams(page: number): string {
+        const from = new Date(this.startDate);
+        const to = new Date(this.endDate);
+        from.setHours(0,0,0, 0);
+        to.setDate(to.getDate() + 1);
+        to.setHours(0,0,0,0);
         const params = {
-            from: this.startDate,
+            from: from.toISOString(),
             pageNumber: page,
             pageSize: 20,
-            to: this.endDate
+            to: to.toISOString()
         };
         return Object.keys(params).map((key) => {
             return key + '=' + encodeURIComponent(params[key]);

@@ -3,7 +3,7 @@ import 'jest-localstorage-mock';
 import * as moment from "moment";
 import * as moxios from 'moxios';
 import * as React from 'react';
-import { ReportRequestBean, ReportType } from "../../beans/ReportRequest.bean";
+import {REPORT_SESSIONS, ReportRequestBean} from "../../beans/ReportRequest.bean";
 import Dummy from "./Report.dummy"
 import Reports from "./Reports";
 
@@ -64,7 +64,7 @@ describe('Reports Test',() => {
     it("methods: searchResults should update table with no data", (done) => {
         const component = report();
         const object = new ReportRequestBean();
-        object.type = 'SESSIONS' as ReportType;
+        object.type = REPORT_SESSIONS;
         component.instance().searchResults(object);
         moxios.wait(() => {
             const request = moxios.requests.mostRecent()
@@ -79,14 +79,5 @@ describe('Reports Test',() => {
             })
         })
     });
-
-    /*
-    it("methods: getParams should return params", () => {
-        const component = report();
-        const object = new Object({});
-        const params = component.instance().getParams(object);
-        expect(params).toEqual('from=2018-08-07T16:30:00.000Z&to=2019-08-07T16:30:00.000Z&pageSize=20&pageNumber=1')
-    })
-     */
 
 });

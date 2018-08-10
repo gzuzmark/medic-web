@@ -1,7 +1,6 @@
 import * as moment from "moment";
 import * as React from "react";
-import { ReportRequestBean} from "../../beans/ReportRequest.bean";
-import ConsoleInputRadio from "../../common/ConsoleInputRadio/ConsoleInputRadio";
+import {REPORT_SESSIONS, REPORT_STUDENTS, ReportRequestBean, ReportType} from "../../beans/ReportRequest.bean";
 import { Text } from '../../common/ConsoleText';
 import Loader from "../../common/Loader/Loader";
 import {IReportForSession} from "../../interfaces/Reports.interface";
@@ -10,6 +9,7 @@ import FormColumn from "../ScheduleSession/components/FormRow/components/FormCol
 import FormRow from "../ScheduleSession/components/FormRow/FormRow";
 import FormSection from "../ScheduleSession/components/FormSection/FormSection";
 import InputDatePicker from "./components/InputDatePicker/InputDatePicker";
+import InputRadioReports from "./components/InputRadioReports/InputRadioReports";
 
 interface IStateReports {
     clean: boolean;
@@ -18,6 +18,20 @@ interface IStateReports {
     reportRequest: ReportRequestBean;
     results: any[];
 }
+
+export interface IInputRadioReports {
+    title: string;
+    value: ReportType;
+}
+const inputRadioValues = [
+    {
+        title: 'Reporte de sesiones',
+        value: REPORT_SESSIONS
+    }, {
+        title: 'Reporte de alumnos',
+        value: REPORT_STUDENTS
+    }
+] as IInputRadioReports[];
 
 class Reports extends React.Component <{}, IStateReports> {
     public state: IStateReports;
@@ -61,24 +75,11 @@ class Reports extends React.Component <{}, IStateReports> {
                 <hr className='u-Separator' />
                 <FormSection title={'Reportes'} style={{marginTop: 32, marginBottom: 18}} itemStyle={{width: 350}}>
                     <Text>Selecciona el tipo de reporte que te gustaría ver</Text>
-                    <FormRow style={{marginTop: 20}} columns={[
-                        <FormColumn key={`Reports_${++counter}`}  width={2}>
-                            <ConsoleInputRadio
-                                title={'Reporte de sesiones'}
-                                name={'repeat'}
-                                value={'false'}
-                                checked={true}
-                                onChange={this.updateState}/>
-                        </FormColumn>,
-                        <FormColumn key={`Reports_${++counter}`}  width={2}>
-                            <ConsoleInputRadio
-                                title={'Reporte de alumnos'}
-                                name={'repeat'}
-                                value={'false'}
-                                checked={true}
-                                onChange={this.updateState}/>
-                        </FormColumn>
-                    ]}/>
+                    <InputRadioReports
+                        name={'type'}
+                        type={this.state.reportRequest.type}
+                        inputs={inputRadioValues}
+                        updateState={this.updateState}/>
                 </FormSection>
                 {this.state.loading && <Loader top={50} height={100}/>}
                 {!this.state.clean && !this.state.loading && (this.state.results.length ?
