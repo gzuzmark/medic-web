@@ -1,9 +1,10 @@
+import {PAGE_ITEMS_RANGE} from "../common/ConsolePager/ConsolePager.const";
+import Utilities from "../common/Utilities";
 
 export type ReportType = 'SESSIONS' | 'STUDENTS' | '';
 
 export const REPORT_SESSIONS = 'SESSIONS' as ReportType;
 export const REPORT_STUDENTS = 'STUDENTS' as ReportType;
-
 export interface IReportRequestBean {
     startDate: Date;
     endDate: Date;
@@ -54,11 +55,36 @@ export class ReportRequestBean implements IReportRequestBean {
         const params = {
             from: from.toISOString(),
             pageNumber: page,
-            pageSize: 20,
+            pageSize: PAGE_ITEMS_RANGE,
             to: to.toISOString()
         };
         return Object.keys(params).map((key) => {
             return key + '=' + encodeURIComponent(params[key]);
         }).join('&');
+    }
+
+    public toReportParams(): object {
+        const from = new Date(this.startDate);
+        const to = new Date(this.endDate);
+        from.setHours(0,0,0, 0);
+        to.setDate(to.getDate() + 1);
+        to.setHours(0,0,0,0);
+        const params = {
+            from: from.toISOString(),
+            to: to.toISOString()
+        };
+        return params;
+    }
+
+    public getName(): string {
+        let type = '';
+        if (this.type === REPORT_STUDENTS) {
+            type = 'alumnos';
+        } else if (this.type === REPORT_SESSIONS) {
+            type = 'sesiones';
+        }
+        const startDate = Utilities.getDateFormatted(this.startDate);
+        const endDate = Utilities.getDateFormatted(this.endDate);
+        return `Reporte de ${type} del ${startDate} hasta ${endDate}`;
     }
 }

@@ -19,6 +19,23 @@ class StudentService extends BaseRequest {
                 });
         });
     }
+
+    public getReportLink(params: object): Promise<string> {
+        return new Promise((resolve, reject) => {
+            this.instance.post(`ugo-admin/sessions/students/report`, params)
+                .then((response: any) => {
+                    if (response.status === 200 && response.data && response.data.data) {
+                        resolve(response.data.data);
+                    } else {
+                        reject(null);
+                    }
+                })
+                .catch((error: any) => {
+                    this.validSession();
+                    reject(error);
+                });
+        });
+    }
 }
 
 export default StudentService;

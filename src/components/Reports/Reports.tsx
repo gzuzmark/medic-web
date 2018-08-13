@@ -1,8 +1,10 @@
 import * as moment from "moment";
 import * as React from "react";
 import {REPORT_SESSIONS, REPORT_STUDENTS, ReportRequestBean, ReportType} from "../../beans/ReportRequest.bean";
+import BoxMessage from "../../common/BoxMessage/BoxMessage";
+import ConsolePager from "../../common/ConsolePager/ConsolePager";
 import { Text } from '../../common/ConsoleText';
-import Loader from "../../common/Loader/Loader";
+import Utilities from "../../common/Utilities";
 import {IReportForSession, IReportForStudent} from "../../interfaces/Reports.interface";
 import SessionService from "../../services/Session/Session.service";
 import StudentService from "../../services/Student/Student.service";
@@ -11,7 +13,9 @@ import FormRow from "../ScheduleSession/components/FormRow/FormRow";
 import FormSection from "../ScheduleSession/components/FormSection/FormSection";
 import InputDatePicker from "./components/InputDatePicker/InputDatePicker";
 import InputRadioReports from "./components/InputRadioReports/InputRadioReports";
+import ReportsLoader from "./components/ReportsLoader/ReportsLoader";
 import ReportTable from "./components/ReportTable/ReportTable";
+import './Reports.scss';
 
 interface IStateReports {
     clean: boolean;
@@ -19,6 +23,8 @@ interface IStateReports {
     loading: boolean;
     reportRequest: ReportRequestBean;
     results: any[];
+    pageSize: number;
+    totalItemsCount: number;
 }
 
 export interface IInputRadioReports {
@@ -45,53 +51,82 @@ class Reports extends React.Component <{}, IStateReports> {
             clean: true,
             currentPage: 1,
             loading: false,
+            pageSize: 0,
             reportRequest: new ReportRequestBean(),
             results: [],
+            totalItemsCount: 0
         };
         this.updateState = this.updateState.bind(this);
         this.searchResults = this.searchResults.bind(this);
         this.isDayBlocked = this.isDayBlocked.bind(this);
+        this.handlePageChange = this.handlePageChange.bind(this);
+        this.downloadResults = this.downloadResults.bind(this);
     }
 
     public render() {
         let counter = 0;
-        const shouldShowTable = !this.state.clean && !this.state.loading;
+        let propsTableContainer = {};
+        const shouldShowTable = !this.state.clean && this.state.results.length > 0;
+        const shouldShowError = !this.state.clean && this.state.results.length === 0 && !this.state.loading;
+        if (this.state.loading && shouldShowTable) {
+            propsTableContainer = {
+                ['data-disabled']: true
+            }
+        }
         return (
             <div className="u-LayoutMargin">
-                <FormSection title={'Fecha'} style={{marginTop: 10, marginBottom: 10, display: 'block'}} itemStyle={{width: 650}}>
-                    <Text>Elige las semanas de las sesiones que quieres ver</Text>
-                    <FormRow style={{marginTop: 20}} columns={[
-                        <FormColumn key={`Reports_${++counter}`}  width={2}>
-                            <Text style={{paddingLeft: 12, paddingBottom: 6}}>Desde el:</Text>
-                            <InputDatePicker
-                                id={'startDate'}
-                                date={this.state.reportRequest.startDate}
-                                updateState={this.updateState}
-                                configDate={{"isOutsideRange": () => false}}/>
-                        </FormColumn>,
-                        <FormColumn key={`Reports_${++counter}`}  width={2}>
-                            <Text style={{paddingLeft: 12, paddingBottom: 6}}>Hasta el:</Text>
-                            <InputDatePicker
-                                id={'endDate'}
-                                date={this.state.reportRequest.endDate}
-                                updateState={this.updateState}
-                                configDate={{"isDayBlocked": this.isDayBlocked, "isOutsideRange": () => false}}/>
-                        </FormColumn>
-                    ]}/>
-                </FormSection>
-                <hr className='u-Separator' />
-                <FormSection title={'Reportes'} style={{marginTop: 32, marginBottom: 18}} itemStyle={{width: 350}}>
-                    <Text>Selecciona el tipo de reporte que te gustaría ver</Text>
-                    <InputRadioReports
-                        name={'type'}
-                        type={this.state.reportRequest.type}
-                        inputs={inputRadioValues}
-                        updateState={this.updateState}/>
-                </FormSection>
-                {this.state.loading && <Loader top={50} height={100}/>}
-                {shouldShowTable && (this.state.results.length ?
-                    <ReportTable items={this.state.results} type={this.state.reportRequest.type} /> :
-                    <div className="Report-empty">No hay datos</div>)}
+                <div className='Reports'>
+                    <FormSection title={'Fecha'} style={{marginTop: 10, marginBottom: 10, display: 'block'}} itemStyle={{width: 650}}>
+                        <Text>Elige las semanas de las sesiones que quieres ver</Text>
+                        <FormRow style={{marginTop: 20}} columns={[
+                            <FormColumn key={`Reports_${++counter}`}  width={2}>
+                                <Text style={{paddingLeft: 12, paddingBottom: 6}}>Desde el:</Text>
+                                <InputDatePicker
+                                    id={'startDate'}
+                                    date={this.state.reportRequest.startDate}
+                                    updateState={this.updateState}
+                                    configDate={{"isOutsideRange": () => false}}/>
+                            </FormColumn>,
+                            <FormColumn key={`Reports_${++counter}`}  width={2}>
+                                <Text style={{paddingLeft: 12, paddingBottom: 6}}>Hasta el:</Text>
+                                <InputDatePicker
+                                    id={'endDate'}
+                                    date={this.state.reportRequest.endDate}
+                                    updateState={this.updateState}
+                                    configDate={{"isDayBlocked": this.isDayBlocked, "isOutsideRange": () => false}}/>
+                            </FormColumn>
+                        ]}/>
+                    </FormSection>
+                    <hr className='u-Separator' />
+                    <FormSection title={'Reportes'} style={{marginTop: 32, marginBottom: 18}} itemStyle={{width: 350}}>
+                        <Text>Selecciona el tipo de reporte que te gustaría ver</Text>
+                        <InputRadioReports
+                            name={'type'}
+                            type={this.state.reportRequest.type}
+                            inputs={inputRadioValues}
+                            updateState={this.updateState}/>
+                    </FormSection>
+                    <div className='Reports-table_container' {...propsTableContainer}>
+                        <ReportsLoader loading={this.state.loading} center={shouldShowTable}>
+                            Espera un momento mientras buscamos las sesiones
+                        </ReportsLoader>
+                        {shouldShowTable &&
+                        <ReportTable items={this.state.results}
+                                     type={this.state.reportRequest.type} />}
+                        {shouldShowTable &&
+                        <button className="u-Button Reports-button"
+                                disabled={false}
+                                onClick={this.downloadResults}>
+                            Descarga en Excel
+                        </button>
+                        }
+                        <ConsolePager activePage={this.state.currentPage}
+                                      pageSize={this.state.pageSize}
+                                      totalItemsCount={this.state.totalItemsCount}
+                                      onChange={this.handlePageChange} />
+                        <BoxMessage type={'error'} show={shouldShowError}>No se encontraron sesiones en las fechas solicitadas</BoxMessage>
+                    </div>
+                </div>
             </div>
         )
     }
@@ -99,11 +134,44 @@ class Reports extends React.Component <{}, IStateReports> {
     private updateState(params: object) {
         const reportRequest = {...this.state.reportRequest};
         const newReportRequest = Object.assign(reportRequest, params);
-        this.setState({reportRequest:  new ReportRequestBean(newReportRequest)}, () => {
+        this.setState({reportRequest:  new ReportRequestBean(newReportRequest), currentPage: 1}, () => {
             if (this.state.reportRequest.isValid()) {
                 this.searchResults(this.state.reportRequest);
             }
         });
+    }
+
+    private handlePageChange(pageNumber: number) {
+        const previousPage = this.state.currentPage;
+        this.setState({currentPage: pageNumber}, async () => {
+            try {
+                await this.searchResults(this.state.reportRequest)
+            } catch (e) {
+                this.setState({currentPage: previousPage});
+            }
+        });
+    }
+
+    private async downloadResults() {
+        const report = this.state.reportRequest;
+        const params = this.state.reportRequest.toReportParams();
+        let response: string = '';
+        this.setState({loading: true});
+        try {
+            if (report.type === REPORT_SESSIONS) {
+                response = await this.sessionService.getReportLink(params);
+            } else if (report.type === REPORT_STUDENTS){
+                response = await this.studentService.getReportLink(params);
+            }
+            if (!!response) {
+                // tslint:disable:no-console
+                console.log(response)
+                Utilities.donwloadLink(response, report.getName(), 'xls')
+            }
+            this.setState({loading: false});
+        } catch (e) {
+            this.setState({loading: false});
+        }
     }
 
     private async searchResults(report: ReportRequestBean) {
@@ -116,10 +184,16 @@ class Reports extends React.Component <{}, IStateReports> {
             } else if (report.type === REPORT_STUDENTS){
                 data = await this.studentService.listReport(params) as IReportForStudent;
             }
-            const results = data && data.items ? data.items : [];
-            this.setState({clean: false, loading: false, results});
+            if (data) {
+                const results = data && data.items ? data.items : [];
+                this.setState({
+                    clean: false,
+                    loading: false,
+                    pageSize: data.pageSize,
+                    results,
+                    totalItemsCount: data.totalItems});
+            }
         } catch (e) {
-            alert("Hubo un error");
             this.setState({clean: false, loading: false});
         }
     }

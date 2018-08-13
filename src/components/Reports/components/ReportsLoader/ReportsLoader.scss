@@ -1,0 +1,11 @@
+.ReportsLoader {
+  align-items: center;
+  display: flex;
+  width: 360px;
+  &--center {
+    left: 50%;
+    position: absolute;
+    transform: translateX(-50%);
+    z-index: 1;
+  }
+}

@@ -23,6 +23,7 @@ const ConsoleDatePicker: React.StatelessComponent<IPropsConsoleDatePicker> = (pr
             onFocusChange={props.onDateFocusChange} // PropTypes.func.isRequired
             id={props.id} // PropTypes.string.isRequired,
             verticalSpacing={0}
+            readOnly={true}
             {...baseConfigCalendar}
             {...props.configs}
         />

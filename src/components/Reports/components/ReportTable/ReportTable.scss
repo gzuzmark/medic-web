@@ -29,6 +29,9 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    &:first-letter {
+      text-transform: uppercase;
+    }
   }
   &-column {
 

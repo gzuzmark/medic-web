@@ -17,15 +17,15 @@ interface IReportTableHeader {
 
 const tableBase = [{
     name: 'Día',
-    value: (row: any) => moment(row.from).format('d'),
-    width: 84.5
+    value: (row: any) => moment(row.from).format('ddd DD/MM/Y'),
+    width: 124.5
 },{
     name: 'Hora de inicio',
-    value: (row: any) => moment(row.from).format('hh:mm'),
+    value: (row: any) => moment(row.from).format('hh:mm a'),
     width: 88.7
 },{
     name: 'Hora de fin',
-    value: (row: any) => moment(row.to).format('hh:mm'),
+    value: (row: any) => moment(row.to).format('hh:mm a'),
     width: 88.7
 },{
     name: 'Sesión',
@@ -66,9 +66,6 @@ const tableStudents = [...tableBase, {
     value: (row: any) => row.studentAttended ? 'Sí' : 'No',
     width: 72.6
 }] as IReportTableHeader[];
-
-
-
 
 const ReportTable: React.StatelessComponent<IPropsReportTable> = (props) => {
     const table = props.type === REPORT_SESSIONS ? tableBase : tableStudents;

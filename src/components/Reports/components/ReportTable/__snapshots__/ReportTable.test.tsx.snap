@@ -1,0 +1,2957 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ReportTable Test render: render ReportTable 1`] = `
+ShallowWrapper {
+  "length": 1,
+  Symbol(enzyme.__root__): [Circular],
+  Symbol(enzyme.__unrendered__): <ReportTable
+    items={
+      Array [
+        Object {
+          "from": "2018-08-14T03:00:00.000Z",
+          "maxStudents": 1,
+          "mentorName": "Juan Luis Magallanes Rodríguez",
+          "room": "Piso 2, oficina DACE",
+          "sede": "Torres tecnológicas",
+          "skillName": "Principios de algoritmos",
+          "to": "2018-08-14T03:45:00.000Z",
+          "type": "Tutoría Presencial",
+        },
+      ]
+    }
+    type="SESSIONS"
+  />,
+  Symbol(enzyme.__renderer__): Object {
+    "batchedUpdates": [Function],
+    "getNode": [Function],
+    "render": [Function],
+    "simulateEvent": [Function],
+    "unmount": [Function],
+  },
+  Symbol(enzyme.__node__): Object {
+    "instance": null,
+    "key": undefined,
+    "nodeType": "host",
+    "props": Object {
+      "children": Array [
+        <div
+          className="ReportTable-header"
+        >
+          <div
+            className="ReportTable-row"
+          >
+            <div
+              className="ReportTable-column"
+              style={
+                Object {
+                  "maxWidth": 124.5,
+                  "minWidth": 124.5,
+                }
+              }
+            >
+              <styled.span
+                color="textLight"
+              >
+                Día
+              </styled.span>
+            </div>
+            <div
+              className="ReportTable-column"
+              style={
+                Object {
+                  "maxWidth": 88.7,
+                  "minWidth": 88.7,
+                }
+              }
+            >
+              <styled.span
+                color="textLight"
+              >
+                Hora de inicio
+              </styled.span>
+            </div>
+            <div
+              className="ReportTable-column"
+              style={
+                Object {
+                  "maxWidth": 88.7,
+                  "minWidth": 88.7,
+                }
+              }
+            >
+              <styled.span
+                color="textLight"
+              >
+                Hora de fin
+              </styled.span>
+            </div>
+            <div
+              className="ReportTable-column"
+              style={
+                Object {
+                  "maxWidth": 161.3,
+                  "minWidth": 161.3,
+                }
+              }
+            >
+              <styled.span
+                color="textLight"
+              >
+                Sesión
+              </styled.span>
+            </div>
+            <div
+              className="ReportTable-column"
+              style={
+                Object {
+                  "maxWidth": 72.6,
+                  "minWidth": 72.6,
+                }
+              }
+            >
+              <styled.span
+                color="textLight"
+              >
+                Tipo
+              </styled.span>
+            </div>
+            <div
+              className="ReportTable-column"
+              style={
+                Object {
+                  "maxWidth": 104,
+                  "minWidth": 104,
+                }
+              }
+            >
+              <styled.span
+                color="textLight"
+              >
+                Tutor
+              </styled.span>
+            </div>
+            <div
+              className="ReportTable-column"
+              style={
+                Object {
+                  "maxWidth": 113.3,
+                  "minWidth": 113.3,
+                }
+              }
+            >
+              <styled.span
+                color="textLight"
+              >
+                Sede
+              </styled.span>
+            </div>
+            <div
+              className="ReportTable-column"
+              style={
+                Object {
+                  "maxWidth": 62.6,
+                  "minWidth": 62.6,
+                }
+              }
+            >
+              <styled.span
+                color="textLight"
+              >
+                Aula
+              </styled.span>
+            </div>
+            <div
+              className="ReportTable-column"
+              style={
+                Object {
+                  "maxWidth": 42.6,
+                  "minWidth": 42.6,
+                }
+              }
+            >
+              <styled.span
+                color="textLight"
+              >
+                Cap.
+              </styled.span>
+            </div>
+          </div>
+        </div>,
+        <div
+          className="ReportTable-body"
+        >
+          <div
+            className="ReportTable-row ReportTable-row--line"
+          >
+            <div
+              className="ReportTable-column"
+              style={
+                Object {
+                  "maxWidth": 124.5,
+                  "minWidth": 124.5,
+                }
+              }
+            >
+              <styled.span
+                className="ReportTable-text"
+              >
+                Mon 13/08/2018
+              </styled.span>
+            </div>
+            <div
+              className="ReportTable-column"
+              style={
+                Object {
+                  "maxWidth": 88.7,
+                  "minWidth": 88.7,
+                }
+              }
+            >
+              <styled.span
+                className="ReportTable-text"
+              >
+                10:00 pm
+              </styled.span>
+            </div>
+            <div
+              className="ReportTable-column"
+              style={
+                Object {
+                  "maxWidth": 88.7,
+                  "minWidth": 88.7,
+                }
+              }
+            >
+              <styled.span
+                className="ReportTable-text"
+              >
+                10:45 pm
+              </styled.span>
+            </div>
+            <div
+              className="ReportTable-column"
+              style={
+                Object {
+                  "maxWidth": 161.3,
+                  "minWidth": 161.3,
+                }
+              }
+            >
+              <styled.span
+                className="ReportTable-text"
+              >
+                Principios de algoritmos
+              </styled.span>
+            </div>
+            <div
+              className="ReportTable-column"
+              style={
+                Object {
+                  "maxWidth": 72.6,
+                  "minWidth": 72.6,
+                }
+              }
+            >
+              <styled.span
+                className="ReportTable-text"
+              >
+                Tutoría Presencial
+              </styled.span>
+            </div>
+            <div
+              className="ReportTable-column"
+              style={
+                Object {
+                  "maxWidth": 104,
+                  "minWidth": 104,
+                }
+              }
+            >
+              <styled.span
+                className="ReportTable-text"
+              >
+                Juan Luis Magallanes Rodríguez
+              </styled.span>
+            </div>
+            <div
+              className="ReportTable-column"
+              style={
+                Object {
+                  "maxWidth": 113.3,
+                  "minWidth": 113.3,
+                }
+              }
+            >
+              <styled.span
+                className="ReportTable-text"
+              >
+                Torres tecnológicas
+              </styled.span>
+            </div>
+            <div
+              className="ReportTable-column"
+              style={
+                Object {
+                  "maxWidth": 62.6,
+                  "minWidth": 62.6,
+                }
+              }
+            >
+              <styled.span
+                className="ReportTable-text"
+              >
+                Piso 2, oficina DACE
+              </styled.span>
+            </div>
+            <div
+              className="ReportTable-column"
+              style={
+                Object {
+                  "maxWidth": 42.6,
+                  "minWidth": 42.6,
+                }
+              }
+            >
+              <styled.span
+                className="ReportTable-text"
+              >
+                1
+              </styled.span>
+            </div>
+          </div>
+        </div>,
+      ],
+      "className": "ReportTable",
+    },
+    "ref": null,
+    "rendered": Array [
+      Object {
+        "instance": null,
+        "key": undefined,
+        "nodeType": "host",
+        "props": Object {
+          "children": <div
+            className="ReportTable-row"
+          >
+            <div
+              className="ReportTable-column"
+              style={
+                Object {
+                  "maxWidth": 124.5,
+                  "minWidth": 124.5,
+                }
+              }
+            >
+              <styled.span
+                color="textLight"
+              >
+                Día
+              </styled.span>
+            </div>
+            <div
+              className="ReportTable-column"
+              style={
+                Object {
+                  "maxWidth": 88.7,
+                  "minWidth": 88.7,
+                }
+              }
+            >
+              <styled.span
+                color="textLight"
+              >
+                Hora de inicio
+              </styled.span>
+            </div>
+            <div
+              className="ReportTable-column"
+              style={
+                Object {
+                  "maxWidth": 88.7,
+                  "minWidth": 88.7,
+                }
+              }
+            >
+              <styled.span
+                color="textLight"
+              >
+                Hora de fin
+              </styled.span>
+            </div>
+            <div
+              className="ReportTable-column"
+              style={
+                Object {
+                  "maxWidth": 161.3,
+                  "minWidth": 161.3,
+                }
+              }
+            >
+              <styled.span
+                color="textLight"
+              >
+                Sesión
+              </styled.span>
+            </div>
+            <div
+              className="ReportTable-column"
+              style={
+                Object {
+                  "maxWidth": 72.6,
+                  "minWidth": 72.6,
+                }
+              }
+            >
+              <styled.span
+                color="textLight"
+              >
+                Tipo
+              </styled.span>
+            </div>
+            <div
+              className="ReportTable-column"
+              style={
+                Object {
+                  "maxWidth": 104,
+                  "minWidth": 104,
+                }
+              }
+            >
+              <styled.span
+                color="textLight"
+              >
+                Tutor
+              </styled.span>
+            </div>
+            <div
+              className="ReportTable-column"
+              style={
+                Object {
+                  "maxWidth": 113.3,
+                  "minWidth": 113.3,
+                }
+              }
+            >
+              <styled.span
+                color="textLight"
+              >
+                Sede
+              </styled.span>
+            </div>
+            <div
+              className="ReportTable-column"
+              style={
+                Object {
+                  "maxWidth": 62.6,
+                  "minWidth": 62.6,
+                }
+              }
+            >
+              <styled.span
+                color="textLight"
+              >
+                Aula
+              </styled.span>
+            </div>
+            <div
+              className="ReportTable-column"
+              style={
+                Object {
+                  "maxWidth": 42.6,
+                  "minWidth": 42.6,
+                }
+              }
+            >
+              <styled.span
+                color="textLight"
+              >
+                Cap.
+              </styled.span>
+            </div>
+          </div>,
+          "className": "ReportTable-header",
+        },
+        "ref": null,
+        "rendered": Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "host",
+          "props": Object {
+            "children": Array [
+              <div
+                className="ReportTable-column"
+                style={
+                  Object {
+                    "maxWidth": 124.5,
+                    "minWidth": 124.5,
+                  }
+                }
+              >
+                <styled.span
+                  color="textLight"
+                >
+                  Día
+                </styled.span>
+              </div>,
+              <div
+                className="ReportTable-column"
+                style={
+                  Object {
+                    "maxWidth": 88.7,
+                    "minWidth": 88.7,
+                  }
+                }
+              >
+                <styled.span
+                  color="textLight"
+                >
+                  Hora de inicio
+                </styled.span>
+              </div>,
+              <div
+                className="ReportTable-column"
+                style={
+                  Object {
+                    "maxWidth": 88.7,
+                    "minWidth": 88.7,
+                  }
+                }
+              >
+                <styled.span
+                  color="textLight"
+                >
+                  Hora de fin
+                </styled.span>
+              </div>,
+              <div
+                className="ReportTable-column"
+                style={
+                  Object {
+                    "maxWidth": 161.3,
+                    "minWidth": 161.3,
+                  }
+                }
+              >
+                <styled.span
+                  color="textLight"
+                >
+                  Sesión
+                </styled.span>
+              </div>,
+              <div
+                className="ReportTable-column"
+                style={
+                  Object {
+                    "maxWidth": 72.6,
+                    "minWidth": 72.6,
+                  }
+                }
+              >
+                <styled.span
+                  color="textLight"
+                >
+                  Tipo
+                </styled.span>
+              </div>,
+              <div
+                className="ReportTable-column"
+                style={
+                  Object {
+                    "maxWidth": 104,
+                    "minWidth": 104,
+                  }
+                }
+              >
+                <styled.span
+                  color="textLight"
+                >
+                  Tutor
+                </styled.span>
+              </div>,
+              <div
+                className="ReportTable-column"
+                style={
+                  Object {
+                    "maxWidth": 113.3,
+                    "minWidth": 113.3,
+                  }
+                }
+              >
+                <styled.span
+                  color="textLight"
+                >
+                  Sede
+                </styled.span>
+              </div>,
+              <div
+                className="ReportTable-column"
+                style={
+                  Object {
+                    "maxWidth": 62.6,
+                    "minWidth": 62.6,
+                  }
+                }
+              >
+                <styled.span
+                  color="textLight"
+                >
+                  Aula
+                </styled.span>
+              </div>,
+              <div
+                className="ReportTable-column"
+                style={
+                  Object {
+                    "maxWidth": 42.6,
+                    "minWidth": 42.6,
+                  }
+                }
+              >
+                <styled.span
+                  color="textLight"
+                >
+                  Cap.
+                </styled.span>
+              </div>,
+            ],
+            "className": "ReportTable-row",
+          },
+          "ref": null,
+          "rendered": Array [
+            Object {
+              "instance": null,
+              "key": "ReportTable-header_0",
+              "nodeType": "host",
+              "props": Object {
+                "children": <styled.span
+                  color="textLight"
+                >
+                  Día
+                </styled.span>,
+                "className": "ReportTable-column",
+                "style": Object {
+                  "maxWidth": 124.5,
+                  "minWidth": 124.5,
+                },
+              },
+              "ref": null,
+              "rendered": Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "class",
+                "props": Object {
+                  "children": "Día",
+                  "color": "textLight",
+                },
+                "ref": null,
+                "rendered": "Día",
+                "type": [Function],
+              },
+              "type": "div",
+            },
+            Object {
+              "instance": null,
+              "key": "ReportTable-header_1",
+              "nodeType": "host",
+              "props": Object {
+                "children": <styled.span
+                  color="textLight"
+                >
+                  Hora de inicio
+                </styled.span>,
+                "className": "ReportTable-column",
+                "style": Object {
+                  "maxWidth": 88.7,
+                  "minWidth": 88.7,
+                },
+              },
+              "ref": null,
+              "rendered": Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "class",
+                "props": Object {
+                  "children": "Hora de inicio",
+                  "color": "textLight",
+                },
+                "ref": null,
+                "rendered": "Hora de inicio",
+                "type": [Function],
+              },
+              "type": "div",
+            },
+            Object {
+              "instance": null,
+              "key": "ReportTable-header_2",
+              "nodeType": "host",
+              "props": Object {
+                "children": <styled.span
+                  color="textLight"
+                >
+                  Hora de fin
+                </styled.span>,
+                "className": "ReportTable-column",
+                "style": Object {
+                  "maxWidth": 88.7,
+                  "minWidth": 88.7,
+                },
+              },
+              "ref": null,
+              "rendered": Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "class",
+                "props": Object {
+                  "children": "Hora de fin",
+                  "color": "textLight",
+                },
+                "ref": null,
+                "rendered": "Hora de fin",
+                "type": [Function],
+              },
+              "type": "div",
+            },
+            Object {
+              "instance": null,
+              "key": "ReportTable-header_3",
+              "nodeType": "host",
+              "props": Object {
+                "children": <styled.span
+                  color="textLight"
+                >
+                  Sesión
+                </styled.span>,
+                "className": "ReportTable-column",
+                "style": Object {
+                  "maxWidth": 161.3,
+                  "minWidth": 161.3,
+                },
+              },
+              "ref": null,
+              "rendered": Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "class",
+                "props": Object {
+                  "children": "Sesión",
+                  "color": "textLight",
+                },
+                "ref": null,
+                "rendered": "Sesión",
+                "type": [Function],
+              },
+              "type": "div",
+            },
+            Object {
+              "instance": null,
+              "key": "ReportTable-header_4",
+              "nodeType": "host",
+              "props": Object {
+                "children": <styled.span
+                  color="textLight"
+                >
+                  Tipo
+                </styled.span>,
+                "className": "ReportTable-column",
+                "style": Object {
+                  "maxWidth": 72.6,
+                  "minWidth": 72.6,
+                },
+              },
+              "ref": null,
+              "rendered": Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "class",
+                "props": Object {
+                  "children": "Tipo",
+                  "color": "textLight",
+                },
+                "ref": null,
+                "rendered": "Tipo",
+                "type": [Function],
+              },
+              "type": "div",
+            },
+            Object {
+              "instance": null,
+              "key": "ReportTable-header_5",
+              "nodeType": "host",
+              "props": Object {
+                "children": <styled.span
+                  color="textLight"
+                >
+                  Tutor
+                </styled.span>,
+                "className": "ReportTable-column",
+                "style": Object {
+                  "maxWidth": 104,
+                  "minWidth": 104,
+                },
+              },
+              "ref": null,
+              "rendered": Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "class",
+                "props": Object {
+                  "children": "Tutor",
+                  "color": "textLight",
+                },
+                "ref": null,
+                "rendered": "Tutor",
+                "type": [Function],
+              },
+              "type": "div",
+            },
+            Object {
+              "instance": null,
+              "key": "ReportTable-header_6",
+              "nodeType": "host",
+              "props": Object {
+                "children": <styled.span
+                  color="textLight"
+                >
+                  Sede
+                </styled.span>,
+                "className": "ReportTable-column",
+                "style": Object {
+                  "maxWidth": 113.3,
+                  "minWidth": 113.3,
+                },
+              },
+              "ref": null,
+              "rendered": Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "class",
+                "props": Object {
+                  "children": "Sede",
+                  "color": "textLight",
+                },
+                "ref": null,
+                "rendered": "Sede",
+                "type": [Function],
+              },
+              "type": "div",
+            },
+            Object {
+              "instance": null,
+              "key": "ReportTable-header_7",
+              "nodeType": "host",
+              "props": Object {
+                "children": <styled.span
+                  color="textLight"
+                >
+                  Aula
+                </styled.span>,
+                "className": "ReportTable-column",
+                "style": Object {
+                  "maxWidth": 62.6,
+                  "minWidth": 62.6,
+                },
+              },
+              "ref": null,
+              "rendered": Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "class",
+                "props": Object {
+                  "children": "Aula",
+                  "color": "textLight",
+                },
+                "ref": null,
+                "rendered": "Aula",
+                "type": [Function],
+              },
+              "type": "div",
+            },
+            Object {
+              "instance": null,
+              "key": "ReportTable-header_8",
+              "nodeType": "host",
+              "props": Object {
+                "children": <styled.span
+                  color="textLight"
+                >
+                  Cap.
+                </styled.span>,
+                "className": "ReportTable-column",
+                "style": Object {
+                  "maxWidth": 42.6,
+                  "minWidth": 42.6,
+                },
+              },
+              "ref": null,
+              "rendered": Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "class",
+                "props": Object {
+                  "children": "Cap.",
+                  "color": "textLight",
+                },
+                "ref": null,
+                "rendered": "Cap.",
+                "type": [Function],
+              },
+              "type": "div",
+            },
+          ],
+          "type": "div",
+        },
+        "type": "div",
+      },
+      Object {
+        "instance": null,
+        "key": undefined,
+        "nodeType": "host",
+        "props": Object {
+          "children": Array [
+            <div
+              className="ReportTable-row ReportTable-row--line"
+            >
+              <div
+                className="ReportTable-column"
+                style={
+                  Object {
+                    "maxWidth": 124.5,
+                    "minWidth": 124.5,
+                  }
+                }
+              >
+                <styled.span
+                  className="ReportTable-text"
+                >
+                  Mon 13/08/2018
+                </styled.span>
+              </div>
+              <div
+                className="ReportTable-column"
+                style={
+                  Object {
+                    "maxWidth": 88.7,
+                    "minWidth": 88.7,
+                  }
+                }
+              >
+                <styled.span
+                  className="ReportTable-text"
+                >
+                  10:00 pm
+                </styled.span>
+              </div>
+              <div
+                className="ReportTable-column"
+                style={
+                  Object {
+                    "maxWidth": 88.7,
+                    "minWidth": 88.7,
+                  }
+                }
+              >
+                <styled.span
+                  className="ReportTable-text"
+                >
+                  10:45 pm
+                </styled.span>
+              </div>
+              <div
+                className="ReportTable-column"
+                style={
+                  Object {
+                    "maxWidth": 161.3,
+                    "minWidth": 161.3,
+                  }
+                }
+              >
+                <styled.span
+                  className="ReportTable-text"
+                >
+                  Principios de algoritmos
+                </styled.span>
+              </div>
+              <div
+                className="ReportTable-column"
+                style={
+                  Object {
+                    "maxWidth": 72.6,
+                    "minWidth": 72.6,
+                  }
+                }
+              >
+                <styled.span
+                  className="ReportTable-text"
+                >
+                  Tutoría Presencial
+                </styled.span>
+              </div>
+              <div
+                className="ReportTable-column"
+                style={
+                  Object {
+                    "maxWidth": 104,
+                    "minWidth": 104,
+                  }
+                }
+              >
+                <styled.span
+                  className="ReportTable-text"
+                >
+                  Juan Luis Magallanes Rodríguez
+                </styled.span>
+              </div>
+              <div
+                className="ReportTable-column"
+                style={
+                  Object {
+                    "maxWidth": 113.3,
+                    "minWidth": 113.3,
+                  }
+                }
+              >
+                <styled.span
+                  className="ReportTable-text"
+                >
+                  Torres tecnológicas
+                </styled.span>
+              </div>
+              <div
+                className="ReportTable-column"
+                style={
+                  Object {
+                    "maxWidth": 62.6,
+                    "minWidth": 62.6,
+                  }
+                }
+              >
+                <styled.span
+                  className="ReportTable-text"
+                >
+                  Piso 2, oficina DACE
+                </styled.span>
+              </div>
+              <div
+                className="ReportTable-column"
+                style={
+                  Object {
+                    "maxWidth": 42.6,
+                    "minWidth": 42.6,
+                  }
+                }
+              >
+                <styled.span
+                  className="ReportTable-text"
+                >
+                  1
+                </styled.span>
+              </div>
+            </div>,
+          ],
+          "className": "ReportTable-body",
+        },
+        "ref": null,
+        "rendered": Array [
+          Object {
+            "instance": null,
+            "key": "ReportTable-body_0",
+            "nodeType": "host",
+            "props": Object {
+              "children": Array [
+                <div
+                  className="ReportTable-column"
+                  style={
+                    Object {
+                      "maxWidth": 124.5,
+                      "minWidth": 124.5,
+                    }
+                  }
+                >
+                  <styled.span
+                    className="ReportTable-text"
+                  >
+                    Mon 13/08/2018
+                  </styled.span>
+                </div>,
+                <div
+                  className="ReportTable-column"
+                  style={
+                    Object {
+                      "maxWidth": 88.7,
+                      "minWidth": 88.7,
+                    }
+                  }
+                >
+                  <styled.span
+                    className="ReportTable-text"
+                  >
+                    10:00 pm
+                  </styled.span>
+                </div>,
+                <div
+                  className="ReportTable-column"
+                  style={
+                    Object {
+                      "maxWidth": 88.7,
+                      "minWidth": 88.7,
+                    }
+                  }
+                >
+                  <styled.span
+                    className="ReportTable-text"
+                  >
+                    10:45 pm
+                  </styled.span>
+                </div>,
+                <div
+                  className="ReportTable-column"
+                  style={
+                    Object {
+                      "maxWidth": 161.3,
+                      "minWidth": 161.3,
+                    }
+                  }
+                >
+                  <styled.span
+                    className="ReportTable-text"
+                  >
+                    Principios de algoritmos
+                  </styled.span>
+                </div>,
+                <div
+                  className="ReportTable-column"
+                  style={
+                    Object {
+                      "maxWidth": 72.6,
+                      "minWidth": 72.6,
+                    }
+                  }
+                >
+                  <styled.span
+                    className="ReportTable-text"
+                  >
+                    Tutoría Presencial
+                  </styled.span>
+                </div>,
+                <div
+                  className="ReportTable-column"
+                  style={
+                    Object {
+                      "maxWidth": 104,
+                      "minWidth": 104,
+                    }
+                  }
+                >
+                  <styled.span
+                    className="ReportTable-text"
+                  >
+                    Juan Luis Magallanes Rodríguez
+                  </styled.span>
+                </div>,
+                <div
+                  className="ReportTable-column"
+                  style={
+                    Object {
+                      "maxWidth": 113.3,
+                      "minWidth": 113.3,
+                    }
+                  }
+                >
+                  <styled.span
+                    className="ReportTable-text"
+                  >
+                    Torres tecnológicas
+                  </styled.span>
+                </div>,
+                <div
+                  className="ReportTable-column"
+                  style={
+                    Object {
+                      "maxWidth": 62.6,
+                      "minWidth": 62.6,
+                    }
+                  }
+                >
+                  <styled.span
+                    className="ReportTable-text"
+                  >
+                    Piso 2, oficina DACE
+                  </styled.span>
+                </div>,
+                <div
+                  className="ReportTable-column"
+                  style={
+                    Object {
+                      "maxWidth": 42.6,
+                      "minWidth": 42.6,
+                    }
+                  }
+                >
+                  <styled.span
+                    className="ReportTable-text"
+                  >
+                    1
+                  </styled.span>
+                </div>,
+              ],
+              "className": "ReportTable-row ReportTable-row--line",
+            },
+            "ref": null,
+            "rendered": Array [
+              Object {
+                "instance": null,
+                "key": "ReportTable-body_0",
+                "nodeType": "host",
+                "props": Object {
+                  "children": <styled.span
+                    className="ReportTable-text"
+                  >
+                    Mon 13/08/2018
+                  </styled.span>,
+                  "className": "ReportTable-column",
+                  "style": Object {
+                    "maxWidth": 124.5,
+                    "minWidth": 124.5,
+                  },
+                },
+                "ref": null,
+                "rendered": Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "class",
+                  "props": Object {
+                    "children": "Mon 13/08/2018",
+                    "className": "ReportTable-text",
+                  },
+                  "ref": null,
+                  "rendered": "Mon 13/08/2018",
+                  "type": [Function],
+                },
+                "type": "div",
+              },
+              Object {
+                "instance": null,
+                "key": "ReportTable-body_1",
+                "nodeType": "host",
+                "props": Object {
+                  "children": <styled.span
+                    className="ReportTable-text"
+                  >
+                    10:00 pm
+                  </styled.span>,
+                  "className": "ReportTable-column",
+                  "style": Object {
+                    "maxWidth": 88.7,
+                    "minWidth": 88.7,
+                  },
+                },
+                "ref": null,
+                "rendered": Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "class",
+                  "props": Object {
+                    "children": "10:00 pm",
+                    "className": "ReportTable-text",
+                  },
+                  "ref": null,
+                  "rendered": "10:00 pm",
+                  "type": [Function],
+                },
+                "type": "div",
+              },
+              Object {
+                "instance": null,
+                "key": "ReportTable-body_2",
+                "nodeType": "host",
+                "props": Object {
+                  "children": <styled.span
+                    className="ReportTable-text"
+                  >
+                    10:45 pm
+                  </styled.span>,
+                  "className": "ReportTable-column",
+                  "style": Object {
+                    "maxWidth": 88.7,
+                    "minWidth": 88.7,
+                  },
+                },
+                "ref": null,
+                "rendered": Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "class",
+                  "props": Object {
+                    "children": "10:45 pm",
+                    "className": "ReportTable-text",
+                  },
+                  "ref": null,
+                  "rendered": "10:45 pm",
+                  "type": [Function],
+                },
+                "type": "div",
+              },
+              Object {
+                "instance": null,
+                "key": "ReportTable-body_3",
+                "nodeType": "host",
+                "props": Object {
+                  "children": <styled.span
+                    className="ReportTable-text"
+                  >
+                    Principios de algoritmos
+                  </styled.span>,
+                  "className": "ReportTable-column",
+                  "style": Object {
+                    "maxWidth": 161.3,
+                    "minWidth": 161.3,
+                  },
+                },
+                "ref": null,
+                "rendered": Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "class",
+                  "props": Object {
+                    "children": "Principios de algoritmos",
+                    "className": "ReportTable-text",
+                  },
+                  "ref": null,
+                  "rendered": "Principios de algoritmos",
+                  "type": [Function],
+                },
+                "type": "div",
+              },
+              Object {
+                "instance": null,
+                "key": "ReportTable-body_4",
+                "nodeType": "host",
+                "props": Object {
+                  "children": <styled.span
+                    className="ReportTable-text"
+                  >
+                    Tutoría Presencial
+                  </styled.span>,
+                  "className": "ReportTable-column",
+                  "style": Object {
+                    "maxWidth": 72.6,
+                    "minWidth": 72.6,
+                  },
+                },
+                "ref": null,
+                "rendered": Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "class",
+                  "props": Object {
+                    "children": "Tutoría Presencial",
+                    "className": "ReportTable-text",
+                  },
+                  "ref": null,
+                  "rendered": "Tutoría Presencial",
+                  "type": [Function],
+                },
+                "type": "div",
+              },
+              Object {
+                "instance": null,
+                "key": "ReportTable-body_5",
+                "nodeType": "host",
+                "props": Object {
+                  "children": <styled.span
+                    className="ReportTable-text"
+                  >
+                    Juan Luis Magallanes Rodríguez
+                  </styled.span>,
+                  "className": "ReportTable-column",
+                  "style": Object {
+                    "maxWidth": 104,
+                    "minWidth": 104,
+                  },
+                },
+                "ref": null,
+                "rendered": Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "class",
+                  "props": Object {
+                    "children": "Juan Luis Magallanes Rodríguez",
+                    "className": "ReportTable-text",
+                  },
+                  "ref": null,
+                  "rendered": "Juan Luis Magallanes Rodríguez",
+                  "type": [Function],
+                },
+                "type": "div",
+              },
+              Object {
+                "instance": null,
+                "key": "ReportTable-body_6",
+                "nodeType": "host",
+                "props": Object {
+                  "children": <styled.span
+                    className="ReportTable-text"
+                  >
+                    Torres tecnológicas
+                  </styled.span>,
+                  "className": "ReportTable-column",
+                  "style": Object {
+                    "maxWidth": 113.3,
+                    "minWidth": 113.3,
+                  },
+                },
+                "ref": null,
+                "rendered": Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "class",
+                  "props": Object {
+                    "children": "Torres tecnológicas",
+                    "className": "ReportTable-text",
+                  },
+                  "ref": null,
+                  "rendered": "Torres tecnológicas",
+                  "type": [Function],
+                },
+                "type": "div",
+              },
+              Object {
+                "instance": null,
+                "key": "ReportTable-body_7",
+                "nodeType": "host",
+                "props": Object {
+                  "children": <styled.span
+                    className="ReportTable-text"
+                  >
+                    Piso 2, oficina DACE
+                  </styled.span>,
+                  "className": "ReportTable-column",
+                  "style": Object {
+                    "maxWidth": 62.6,
+                    "minWidth": 62.6,
+                  },
+                },
+                "ref": null,
+                "rendered": Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "class",
+                  "props": Object {
+                    "children": "Piso 2, oficina DACE",
+                    "className": "ReportTable-text",
+                  },
+                  "ref": null,
+                  "rendered": "Piso 2, oficina DACE",
+                  "type": [Function],
+                },
+                "type": "div",
+              },
+              Object {
+                "instance": null,
+                "key": "ReportTable-body_8",
+                "nodeType": "host",
+                "props": Object {
+                  "children": <styled.span
+                    className="ReportTable-text"
+                  >
+                    1
+                  </styled.span>,
+                  "className": "ReportTable-column",
+                  "style": Object {
+                    "maxWidth": 42.6,
+                    "minWidth": 42.6,
+                  },
+                },
+                "ref": null,
+                "rendered": Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "class",
+                  "props": Object {
+                    "children": 1,
+                    "className": "ReportTable-text",
+                  },
+                  "ref": null,
+                  "rendered": 1,
+                  "type": [Function],
+                },
+                "type": "div",
+              },
+            ],
+            "type": "div",
+          },
+        ],
+        "type": "div",
+      },
+    ],
+    "type": "div",
+  },
+  Symbol(enzyme.__nodes__): Array [
+    Object {
+      "instance": null,
+      "key": undefined,
+      "nodeType": "host",
+      "props": Object {
+        "children": Array [
+          <div
+            className="ReportTable-header"
+          >
+            <div
+              className="ReportTable-row"
+            >
+              <div
+                className="ReportTable-column"
+                style={
+                  Object {
+                    "maxWidth": 124.5,
+                    "minWidth": 124.5,
+                  }
+                }
+              >
+                <styled.span
+                  color="textLight"
+                >
+                  Día
+                </styled.span>
+              </div>
+              <div
+                className="ReportTable-column"
+                style={
+                  Object {
+                    "maxWidth": 88.7,
+                    "minWidth": 88.7,
+                  }
+                }
+              >
+                <styled.span
+                  color="textLight"
+                >
+                  Hora de inicio
+                </styled.span>
+              </div>
+              <div
+                className="ReportTable-column"
+                style={
+                  Object {
+                    "maxWidth": 88.7,
+                    "minWidth": 88.7,
+                  }
+                }
+              >
+                <styled.span
+                  color="textLight"
+                >
+                  Hora de fin
+                </styled.span>
+              </div>
+              <div
+                className="ReportTable-column"
+                style={
+                  Object {
+                    "maxWidth": 161.3,
+                    "minWidth": 161.3,
+                  }
+                }
+              >
+                <styled.span
+                  color="textLight"
+                >
+                  Sesión
+                </styled.span>
+              </div>
+              <div
+                className="ReportTable-column"
+                style={
+                  Object {
+                    "maxWidth": 72.6,
+                    "minWidth": 72.6,
+                  }
+                }
+              >
+                <styled.span
+                  color="textLight"
+                >
+                  Tipo
+                </styled.span>
+              </div>
+              <div
+                className="ReportTable-column"
+                style={
+                  Object {
+                    "maxWidth": 104,
+                    "minWidth": 104,
+                  }
+                }
+              >
+                <styled.span
+                  color="textLight"
+                >
+                  Tutor
+                </styled.span>
+              </div>
+              <div
+                className="ReportTable-column"
+                style={
+                  Object {
+                    "maxWidth": 113.3,
+                    "minWidth": 113.3,
+                  }
+                }
+              >
+                <styled.span
+                  color="textLight"
+                >
+                  Sede
+                </styled.span>
+              </div>
+              <div
+                className="ReportTable-column"
+                style={
+                  Object {
+                    "maxWidth": 62.6,
+                    "minWidth": 62.6,
+                  }
+                }
+              >
+                <styled.span
+                  color="textLight"
+                >
+                  Aula
+                </styled.span>
+              </div>
+              <div
+                className="ReportTable-column"
+                style={
+                  Object {
+                    "maxWidth": 42.6,
+                    "minWidth": 42.6,
+                  }
+                }
+              >
+                <styled.span
+                  color="textLight"
+                >
+                  Cap.
+                </styled.span>
+              </div>
+            </div>
+          </div>,
+          <div
+            className="ReportTable-body"
+          >
+            <div
+              className="ReportTable-row ReportTable-row--line"
+            >
+              <div
+                className="ReportTable-column"
+                style={
+                  Object {
+                    "maxWidth": 124.5,
+                    "minWidth": 124.5,
+                  }
+                }
+              >
+                <styled.span
+                  className="ReportTable-text"
+                >
+                  Mon 13/08/2018
+                </styled.span>
+              </div>
+              <div
+                className="ReportTable-column"
+                style={
+                  Object {
+                    "maxWidth": 88.7,
+                    "minWidth": 88.7,
+                  }
+                }
+              >
+                <styled.span
+                  className="ReportTable-text"
+                >
+                  10:00 pm
+                </styled.span>
+              </div>
+              <div
+                className="ReportTable-column"
+                style={
+                  Object {
+                    "maxWidth": 88.7,
+                    "minWidth": 88.7,
+                  }
+                }
+              >
+                <styled.span
+                  className="ReportTable-text"
+                >
+                  10:45 pm
+                </styled.span>
+              </div>
+              <div
+                className="ReportTable-column"
+                style={
+                  Object {
+                    "maxWidth": 161.3,
+                    "minWidth": 161.3,
+                  }
+                }
+              >
+                <styled.span
+                  className="ReportTable-text"
+                >
+                  Principios de algoritmos
+                </styled.span>
+              </div>
+              <div
+                className="ReportTable-column"
+                style={
+                  Object {
+                    "maxWidth": 72.6,
+                    "minWidth": 72.6,
+                  }
+                }
+              >
+                <styled.span
+                  className="ReportTable-text"
+                >
+                  Tutoría Presencial
+                </styled.span>
+              </div>
+              <div
+                className="ReportTable-column"
+                style={
+                  Object {
+                    "maxWidth": 104,
+                    "minWidth": 104,
+                  }
+                }
+              >
+                <styled.span
+                  className="ReportTable-text"
+                >
+                  Juan Luis Magallanes Rodríguez
+                </styled.span>
+              </div>
+              <div
+                className="ReportTable-column"
+                style={
+                  Object {
+                    "maxWidth": 113.3,
+                    "minWidth": 113.3,
+                  }
+                }
+              >
+                <styled.span
+                  className="ReportTable-text"
+                >
+                  Torres tecnológicas
+                </styled.span>
+              </div>
+              <div
+                className="ReportTable-column"
+                style={
+                  Object {
+                    "maxWidth": 62.6,
+                    "minWidth": 62.6,
+                  }
+                }
+              >
+                <styled.span
+                  className="ReportTable-text"
+                >
+                  Piso 2, oficina DACE
+                </styled.span>
+              </div>
+              <div
+                className="ReportTable-column"
+                style={
+                  Object {
+                    "maxWidth": 42.6,
+                    "minWidth": 42.6,
+                  }
+                }
+              >
+                <styled.span
+                  className="ReportTable-text"
+                >
+                  1
+                </styled.span>
+              </div>
+            </div>
+          </div>,
+        ],
+        "className": "ReportTable",
+      },
+      "ref": null,
+      "rendered": Array [
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "host",
+          "props": Object {
+            "children": <div
+              className="ReportTable-row"
+            >
+              <div
+                className="ReportTable-column"
+                style={
+                  Object {
+                    "maxWidth": 124.5,
+                    "minWidth": 124.5,
+                  }
+                }
+              >
+                <styled.span
+                  color="textLight"
+                >
+                  Día
+                </styled.span>
+              </div>
+              <div
+                className="ReportTable-column"
+                style={
+                  Object {
+                    "maxWidth": 88.7,
+                    "minWidth": 88.7,
+                  }
+                }
+              >
+                <styled.span
+                  color="textLight"
+                >
+                  Hora de inicio
+                </styled.span>
+              </div>
+              <div
+                className="ReportTable-column"
+                style={
+                  Object {
+                    "maxWidth": 88.7,
+                    "minWidth": 88.7,
+                  }
+                }
+              >
+                <styled.span
+                  color="textLight"
+                >
+                  Hora de fin
+                </styled.span>
+              </div>
+              <div
+                className="ReportTable-column"
+                style={
+                  Object {
+                    "maxWidth": 161.3,
+                    "minWidth": 161.3,
+                  }
+                }
+              >
+                <styled.span
+                  color="textLight"
+                >
+                  Sesión
+                </styled.span>
+              </div>
+              <div
+                className="ReportTable-column"
+                style={
+                  Object {
+                    "maxWidth": 72.6,
+                    "minWidth": 72.6,
+                  }
+                }
+              >
+                <styled.span
+                  color="textLight"
+                >
+                  Tipo
+                </styled.span>
+              </div>
+              <div
+                className="ReportTable-column"
+                style={
+                  Object {
+                    "maxWidth": 104,
+                    "minWidth": 104,
+                  }
+                }
+              >
+                <styled.span
+                  color="textLight"
+                >
+                  Tutor
+                </styled.span>
+              </div>
+              <div
+                className="ReportTable-column"
+                style={
+                  Object {
+                    "maxWidth": 113.3,
+                    "minWidth": 113.3,
+                  }
+                }
+              >
+                <styled.span
+                  color="textLight"
+                >
+                  Sede
+                </styled.span>
+              </div>
+              <div
+                className="ReportTable-column"
+                style={
+                  Object {
+                    "maxWidth": 62.6,
+                    "minWidth": 62.6,
+                  }
+                }
+              >
+                <styled.span
+                  color="textLight"
+                >
+                  Aula
+                </styled.span>
+              </div>
+              <div
+                className="ReportTable-column"
+                style={
+                  Object {
+                    "maxWidth": 42.6,
+                    "minWidth": 42.6,
+                  }
+                }
+              >
+                <styled.span
+                  color="textLight"
+                >
+                  Cap.
+                </styled.span>
+              </div>
+            </div>,
+            "className": "ReportTable-header",
+          },
+          "ref": null,
+          "rendered": Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "host",
+            "props": Object {
+              "children": Array [
+                <div
+                  className="ReportTable-column"
+                  style={
+                    Object {
+                      "maxWidth": 124.5,
+                      "minWidth": 124.5,
+                    }
+                  }
+                >
+                  <styled.span
+                    color="textLight"
+                  >
+                    Día
+                  </styled.span>
+                </div>,
+                <div
+                  className="ReportTable-column"
+                  style={
+                    Object {
+                      "maxWidth": 88.7,
+                      "minWidth": 88.7,
+                    }
+                  }
+                >
+                  <styled.span
+                    color="textLight"
+                  >
+                    Hora de inicio
+                  </styled.span>
+                </div>,
+                <div
+                  className="ReportTable-column"
+                  style={
+                    Object {
+                      "maxWidth": 88.7,
+                      "minWidth": 88.7,
+                    }
+                  }
+                >
+                  <styled.span
+                    color="textLight"
+                  >
+                    Hora de fin
+                  </styled.span>
+                </div>,
+                <div
+                  className="ReportTable-column"
+                  style={
+                    Object {
+                      "maxWidth": 161.3,
+                      "minWidth": 161.3,
+                    }
+                  }
+                >
+                  <styled.span
+                    color="textLight"
+                  >
+                    Sesión
+                  </styled.span>
+                </div>,
+                <div
+                  className="ReportTable-column"
+                  style={
+                    Object {
+                      "maxWidth": 72.6,
+                      "minWidth": 72.6,
+                    }
+                  }
+                >
+                  <styled.span
+                    color="textLight"
+                  >
+                    Tipo
+                  </styled.span>
+                </div>,
+                <div
+                  className="ReportTable-column"
+                  style={
+                    Object {
+                      "maxWidth": 104,
+                      "minWidth": 104,
+                    }
+                  }
+                >
+                  <styled.span
+                    color="textLight"
+                  >
+                    Tutor
+                  </styled.span>
+                </div>,
+                <div
+                  className="ReportTable-column"
+                  style={
+                    Object {
+                      "maxWidth": 113.3,
+                      "minWidth": 113.3,
+                    }
+                  }
+                >
+                  <styled.span
+                    color="textLight"
+                  >
+                    Sede
+                  </styled.span>
+                </div>,
+                <div
+                  className="ReportTable-column"
+                  style={
+                    Object {
+                      "maxWidth": 62.6,
+                      "minWidth": 62.6,
+                    }
+                  }
+                >
+                  <styled.span
+                    color="textLight"
+                  >
+                    Aula
+                  </styled.span>
+                </div>,
+                <div
+                  className="ReportTable-column"
+                  style={
+                    Object {
+                      "maxWidth": 42.6,
+                      "minWidth": 42.6,
+                    }
+                  }
+                >
+                  <styled.span
+                    color="textLight"
+                  >
+                    Cap.
+                  </styled.span>
+                </div>,
+              ],
+              "className": "ReportTable-row",
+            },
+            "ref": null,
+            "rendered": Array [
+              Object {
+                "instance": null,
+                "key": "ReportTable-header_0",
+                "nodeType": "host",
+                "props": Object {
+                  "children": <styled.span
+                    color="textLight"
+                  >
+                    Día
+                  </styled.span>,
+                  "className": "ReportTable-column",
+                  "style": Object {
+                    "maxWidth": 124.5,
+                    "minWidth": 124.5,
+                  },
+                },
+                "ref": null,
+                "rendered": Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "class",
+                  "props": Object {
+                    "children": "Día",
+                    "color": "textLight",
+                  },
+                  "ref": null,
+                  "rendered": "Día",
+                  "type": [Function],
+                },
+                "type": "div",
+              },
+              Object {
+                "instance": null,
+                "key": "ReportTable-header_1",
+                "nodeType": "host",
+                "props": Object {
+                  "children": <styled.span
+                    color="textLight"
+                  >
+                    Hora de inicio
+                  </styled.span>,
+                  "className": "ReportTable-column",
+                  "style": Object {
+                    "maxWidth": 88.7,
+                    "minWidth": 88.7,
+                  },
+                },
+                "ref": null,
+                "rendered": Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "class",
+                  "props": Object {
+                    "children": "Hora de inicio",
+                    "color": "textLight",
+                  },
+                  "ref": null,
+                  "rendered": "Hora de inicio",
+                  "type": [Function],
+                },
+                "type": "div",
+              },
+              Object {
+                "instance": null,
+                "key": "ReportTable-header_2",
+                "nodeType": "host",
+                "props": Object {
+                  "children": <styled.span
+                    color="textLight"
+                  >
+                    Hora de fin
+                  </styled.span>,
+                  "className": "ReportTable-column",
+                  "style": Object {
+                    "maxWidth": 88.7,
+                    "minWidth": 88.7,
+                  },
+                },
+                "ref": null,
+                "rendered": Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "class",
+                  "props": Object {
+                    "children": "Hora de fin",
+                    "color": "textLight",
+                  },
+                  "ref": null,
+                  "rendered": "Hora de fin",
+                  "type": [Function],
+                },
+                "type": "div",
+              },
+              Object {
+                "instance": null,
+                "key": "ReportTable-header_3",
+                "nodeType": "host",
+                "props": Object {
+                  "children": <styled.span
+                    color="textLight"
+                  >
+                    Sesión
+                  </styled.span>,
+                  "className": "ReportTable-column",
+                  "style": Object {
+                    "maxWidth": 161.3,
+                    "minWidth": 161.3,
+                  },
+                },
+                "ref": null,
+                "rendered": Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "class",
+                  "props": Object {
+                    "children": "Sesión",
+                    "color": "textLight",
+                  },
+                  "ref": null,
+                  "rendered": "Sesión",
+                  "type": [Function],
+                },
+                "type": "div",
+              },
+              Object {
+                "instance": null,
+                "key": "ReportTable-header_4",
+                "nodeType": "host",
+                "props": Object {
+                  "children": <styled.span
+                    color="textLight"
+                  >
+                    Tipo
+                  </styled.span>,
+                  "className": "ReportTable-column",
+                  "style": Object {
+                    "maxWidth": 72.6,
+                    "minWidth": 72.6,
+                  },
+                },
+                "ref": null,
+                "rendered": Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "class",
+                  "props": Object {
+                    "children": "Tipo",
+                    "color": "textLight",
+                  },
+                  "ref": null,
+                  "rendered": "Tipo",
+                  "type": [Function],
+                },
+                "type": "div",
+              },
+              Object {
+                "instance": null,
+                "key": "ReportTable-header_5",
+                "nodeType": "host",
+                "props": Object {
+                  "children": <styled.span
+                    color="textLight"
+                  >
+                    Tutor
+                  </styled.span>,
+                  "className": "ReportTable-column",
+                  "style": Object {
+                    "maxWidth": 104,
+                    "minWidth": 104,
+                  },
+                },
+                "ref": null,
+                "rendered": Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "class",
+                  "props": Object {
+                    "children": "Tutor",
+                    "color": "textLight",
+                  },
+                  "ref": null,
+                  "rendered": "Tutor",
+                  "type": [Function],
+                },
+                "type": "div",
+              },
+              Object {
+                "instance": null,
+                "key": "ReportTable-header_6",
+                "nodeType": "host",
+                "props": Object {
+                  "children": <styled.span
+                    color="textLight"
+                  >
+                    Sede
+                  </styled.span>,
+                  "className": "ReportTable-column",
+                  "style": Object {
+                    "maxWidth": 113.3,
+                    "minWidth": 113.3,
+                  },
+                },
+                "ref": null,
+                "rendered": Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "class",
+                  "props": Object {
+                    "children": "Sede",
+                    "color": "textLight",
+                  },
+                  "ref": null,
+                  "rendered": "Sede",
+                  "type": [Function],
+                },
+                "type": "div",
+              },
+              Object {
+                "instance": null,
+                "key": "ReportTable-header_7",
+                "nodeType": "host",
+                "props": Object {
+                  "children": <styled.span
+                    color="textLight"
+                  >
+                    Aula
+                  </styled.span>,
+                  "className": "ReportTable-column",
+                  "style": Object {
+                    "maxWidth": 62.6,
+                    "minWidth": 62.6,
+                  },
+                },
+                "ref": null,
+                "rendered": Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "class",
+                  "props": Object {
+                    "children": "Aula",
+                    "color": "textLight",
+                  },
+                  "ref": null,
+                  "rendered": "Aula",
+                  "type": [Function],
+                },
+                "type": "div",
+              },
+              Object {
+                "instance": null,
+                "key": "ReportTable-header_8",
+                "nodeType": "host",
+                "props": Object {
+                  "children": <styled.span
+                    color="textLight"
+                  >
+                    Cap.
+                  </styled.span>,
+                  "className": "ReportTable-column",
+                  "style": Object {
+                    "maxWidth": 42.6,
+                    "minWidth": 42.6,
+                  },
+                },
+                "ref": null,
+                "rendered": Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "class",
+                  "props": Object {
+                    "children": "Cap.",
+                    "color": "textLight",
+                  },
+                  "ref": null,
+                  "rendered": "Cap.",
+                  "type": [Function],
+                },
+                "type": "div",
+              },
+            ],
+            "type": "div",
+          },
+          "type": "div",
+        },
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "host",
+          "props": Object {
+            "children": Array [
+              <div
+                className="ReportTable-row ReportTable-row--line"
+              >
+                <div
+                  className="ReportTable-column"
+                  style={
+                    Object {
+                      "maxWidth": 124.5,
+                      "minWidth": 124.5,
+                    }
+                  }
+                >
+                  <styled.span
+                    className="ReportTable-text"
+                  >
+                    Mon 13/08/2018
+                  </styled.span>
+                </div>
+                <div
+                  className="ReportTable-column"
+                  style={
+                    Object {
+                      "maxWidth": 88.7,
+                      "minWidth": 88.7,
+                    }
+                  }
+                >
+                  <styled.span
+                    className="ReportTable-text"
+                  >
+                    10:00 pm
+                  </styled.span>
+                </div>
+                <div
+                  className="ReportTable-column"
+                  style={
+                    Object {
+                      "maxWidth": 88.7,
+                      "minWidth": 88.7,
+                    }
+                  }
+                >
+                  <styled.span
+                    className="ReportTable-text"
+                  >
+                    10:45 pm
+                  </styled.span>
+                </div>
+                <div
+                  className="ReportTable-column"
+                  style={
+                    Object {
+                      "maxWidth": 161.3,
+                      "minWidth": 161.3,
+                    }
+                  }
+                >
+                  <styled.span
+                    className="ReportTable-text"
+                  >
+                    Principios de algoritmos
+                  </styled.span>
+                </div>
+                <div
+                  className="ReportTable-column"
+                  style={
+                    Object {
+                      "maxWidth": 72.6,
+                      "minWidth": 72.6,
+                    }
+                  }
+                >
+                  <styled.span
+                    className="ReportTable-text"
+                  >
+                    Tutoría Presencial
+                  </styled.span>
+                </div>
+                <div
+                  className="ReportTable-column"
+                  style={
+                    Object {
+                      "maxWidth": 104,
+                      "minWidth": 104,
+                    }
+                  }
+                >
+                  <styled.span
+                    className="ReportTable-text"
+                  >
+                    Juan Luis Magallanes Rodríguez
+                  </styled.span>
+                </div>
+                <div
+                  className="ReportTable-column"
+                  style={
+                    Object {
+                      "maxWidth": 113.3,
+                      "minWidth": 113.3,
+                    }
+                  }
+                >
+                  <styled.span
+                    className="ReportTable-text"
+                  >
+                    Torres tecnológicas
+                  </styled.span>
+                </div>
+                <div
+                  className="ReportTable-column"
+                  style={
+                    Object {
+                      "maxWidth": 62.6,
+                      "minWidth": 62.6,
+                    }
+                  }
+                >
+                  <styled.span
+                    className="ReportTable-text"
+                  >
+                    Piso 2, oficina DACE
+                  </styled.span>
+                </div>
+                <div
+                  className="ReportTable-column"
+                  style={
+                    Object {
+                      "maxWidth": 42.6,
+                      "minWidth": 42.6,
+                    }
+                  }
+                >
+                  <styled.span
+                    className="ReportTable-text"
+                  >
+                    1
+                  </styled.span>
+                </div>
+              </div>,
+            ],
+            "className": "ReportTable-body",
+          },
+          "ref": null,
+          "rendered": Array [
+            Object {
+              "instance": null,
+              "key": "ReportTable-body_0",
+              "nodeType": "host",
+              "props": Object {
+                "children": Array [
+                  <div
+                    className="ReportTable-column"
+                    style={
+                      Object {
+                        "maxWidth": 124.5,
+                        "minWidth": 124.5,
+                      }
+                    }
+                  >
+                    <styled.span
+                      className="ReportTable-text"
+                    >
+                      Mon 13/08/2018
+                    </styled.span>
+                  </div>,
+                  <div
+                    className="ReportTable-column"
+                    style={
+                      Object {
+                        "maxWidth": 88.7,
+                        "minWidth": 88.7,
+                      }
+                    }
+                  >
+                    <styled.span
+                      className="ReportTable-text"
+                    >
+                      10:00 pm
+                    </styled.span>
+                  </div>,
+                  <div
+                    className="ReportTable-column"
+                    style={
+                      Object {
+                        "maxWidth": 88.7,
+                        "minWidth": 88.7,
+                      }
+                    }
+                  >
+                    <styled.span
+                      className="ReportTable-text"
+                    >
+                      10:45 pm
+                    </styled.span>
+                  </div>,
+                  <div
+                    className="ReportTable-column"
+                    style={
+                      Object {
+                        "maxWidth": 161.3,
+                        "minWidth": 161.3,
+                      }
+                    }
+                  >
+                    <styled.span
+                      className="ReportTable-text"
+                    >
+                      Principios de algoritmos
+                    </styled.span>
+                  </div>,
+                  <div
+                    className="ReportTable-column"
+                    style={
+                      Object {
+                        "maxWidth": 72.6,
+                        "minWidth": 72.6,
+                      }
+                    }
+                  >
+                    <styled.span
+                      className="ReportTable-text"
+                    >
+                      Tutoría Presencial
+                    </styled.span>
+                  </div>,
+                  <div
+                    className="ReportTable-column"
+                    style={
+                      Object {
+                        "maxWidth": 104,
+                        "minWidth": 104,
+                      }
+                    }
+                  >
+                    <styled.span
+                      className="ReportTable-text"
+                    >
+                      Juan Luis Magallanes Rodríguez
+                    </styled.span>
+                  </div>,
+                  <div
+                    className="ReportTable-column"
+                    style={
+                      Object {
+                        "maxWidth": 113.3,
+                        "minWidth": 113.3,
+                      }
+                    }
+                  >
+                    <styled.span
+                      className="ReportTable-text"
+                    >
+                      Torres tecnológicas
+                    </styled.span>
+                  </div>,
+                  <div
+                    className="ReportTable-column"
+                    style={
+                      Object {
+                        "maxWidth": 62.6,
+                        "minWidth": 62.6,
+                      }
+                    }
+                  >
+                    <styled.span
+                      className="ReportTable-text"
+                    >
+                      Piso 2, oficina DACE
+                    </styled.span>
+                  </div>,
+                  <div
+                    className="ReportTable-column"
+                    style={
+                      Object {
+                        "maxWidth": 42.6,
+                        "minWidth": 42.6,
+                      }
+                    }
+                  >
+                    <styled.span
+                      className="ReportTable-text"
+                    >
+                      1
+                    </styled.span>
+                  </div>,
+                ],
+                "className": "ReportTable-row ReportTable-row--line",
+              },
+              "ref": null,
+              "rendered": Array [
+                Object {
+                  "instance": null,
+                  "key": "ReportTable-body_0",
+                  "nodeType": "host",
+                  "props": Object {
+                    "children": <styled.span
+                      className="ReportTable-text"
+                    >
+                      Mon 13/08/2018
+                    </styled.span>,
+                    "className": "ReportTable-column",
+                    "style": Object {
+                      "maxWidth": 124.5,
+                      "minWidth": 124.5,
+                    },
+                  },
+                  "ref": null,
+                  "rendered": Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "class",
+                    "props": Object {
+                      "children": "Mon 13/08/2018",
+                      "className": "ReportTable-text",
+                    },
+                    "ref": null,
+                    "rendered": "Mon 13/08/2018",
+                    "type": [Function],
+                  },
+                  "type": "div",
+                },
+                Object {
+                  "instance": null,
+                  "key": "ReportTable-body_1",
+                  "nodeType": "host",
+                  "props": Object {
+                    "children": <styled.span
+                      className="ReportTable-text"
+                    >
+                      10:00 pm
+                    </styled.span>,
+                    "className": "ReportTable-column",
+                    "style": Object {
+                      "maxWidth": 88.7,
+                      "minWidth": 88.7,
+                    },
+                  },
+                  "ref": null,
+                  "rendered": Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "class",
+                    "props": Object {
+                      "children": "10:00 pm",
+                      "className": "ReportTable-text",
+                    },
+                    "ref": null,
+                    "rendered": "10:00 pm",
+                    "type": [Function],
+                  },
+                  "type": "div",
+                },
+                Object {
+                  "instance": null,
+                  "key": "ReportTable-body_2",
+                  "nodeType": "host",
+                  "props": Object {
+                    "children": <styled.span
+                      className="ReportTable-text"
+                    >
+                      10:45 pm
+                    </styled.span>,
+                    "className": "ReportTable-column",
+                    "style": Object {
+                      "maxWidth": 88.7,
+                      "minWidth": 88.7,
+                    },
+                  },
+                  "ref": null,
+                  "rendered": Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "class",
+                    "props": Object {
+                      "children": "10:45 pm",
+                      "className": "ReportTable-text",
+                    },
+                    "ref": null,
+                    "rendered": "10:45 pm",
+                    "type": [Function],
+                  },
+                  "type": "div",
+                },
+                Object {
+                  "instance": null,
+                  "key": "ReportTable-body_3",
+                  "nodeType": "host",
+                  "props": Object {
+                    "children": <styled.span
+                      className="ReportTable-text"
+                    >
+                      Principios de algoritmos
+                    </styled.span>,
+                    "className": "ReportTable-column",
+                    "style": Object {
+                      "maxWidth": 161.3,
+                      "minWidth": 161.3,
+                    },
+                  },
+                  "ref": null,
+                  "rendered": Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "class",
+                    "props": Object {
+                      "children": "Principios de algoritmos",
+                      "className": "ReportTable-text",
+                    },
+                    "ref": null,
+                    "rendered": "Principios de algoritmos",
+                    "type": [Function],
+                  },
+                  "type": "div",
+                },
+                Object {
+                  "instance": null,
+                  "key": "ReportTable-body_4",
+                  "nodeType": "host",
+                  "props": Object {
+                    "children": <styled.span
+                      className="ReportTable-text"
+                    >
+                      Tutoría Presencial
+                    </styled.span>,
+                    "className": "ReportTable-column",
+                    "style": Object {
+                      "maxWidth": 72.6,
+                      "minWidth": 72.6,
+                    },
+                  },
+                  "ref": null,
+                  "rendered": Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "class",
+                    "props": Object {
+                      "children": "Tutoría Presencial",
+                      "className": "ReportTable-text",
+                    },
+                    "ref": null,
+                    "rendered": "Tutoría Presencial",
+                    "type": [Function],
+                  },
+                  "type": "div",
+                },
+                Object {
+                  "instance": null,
+                  "key": "ReportTable-body_5",
+                  "nodeType": "host",
+                  "props": Object {
+                    "children": <styled.span
+                      className="ReportTable-text"
+                    >
+                      Juan Luis Magallanes Rodríguez
+                    </styled.span>,
+                    "className": "ReportTable-column",
+                    "style": Object {
+                      "maxWidth": 104,
+                      "minWidth": 104,
+                    },
+                  },
+                  "ref": null,
+                  "rendered": Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "class",
+                    "props": Object {
+                      "children": "Juan Luis Magallanes Rodríguez",
+                      "className": "ReportTable-text",
+                    },
+                    "ref": null,
+                    "rendered": "Juan Luis Magallanes Rodríguez",
+                    "type": [Function],
+                  },
+                  "type": "div",
+                },
+                Object {
+                  "instance": null,
+                  "key": "ReportTable-body_6",
+                  "nodeType": "host",
+                  "props": Object {
+                    "children": <styled.span
+                      className="ReportTable-text"
+                    >
+                      Torres tecnológicas
+                    </styled.span>,
+                    "className": "ReportTable-column",
+                    "style": Object {
+                      "maxWidth": 113.3,
+                      "minWidth": 113.3,
+                    },
+                  },
+                  "ref": null,
+                  "rendered": Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "class",
+                    "props": Object {
+                      "children": "Torres tecnológicas",
+                      "className": "ReportTable-text",
+                    },
+                    "ref": null,
+                    "rendered": "Torres tecnológicas",
+                    "type": [Function],
+                  },
+                  "type": "div",
+                },
+                Object {
+                  "instance": null,
+                  "key": "ReportTable-body_7",
+                  "nodeType": "host",
+                  "props": Object {
+                    "children": <styled.span
+                      className="ReportTable-text"
+                    >
+                      Piso 2, oficina DACE
+                    </styled.span>,
+                    "className": "ReportTable-column",
+                    "style": Object {
+                      "maxWidth": 62.6,
+                      "minWidth": 62.6,
+                    },
+                  },
+                  "ref": null,
+                  "rendered": Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "class",
+                    "props": Object {
+                      "children": "Piso 2, oficina DACE",
+                      "className": "ReportTable-text",
+                    },
+                    "ref": null,
+                    "rendered": "Piso 2, oficina DACE",
+                    "type": [Function],
+                  },
+                  "type": "div",
+                },
+                Object {
+                  "instance": null,
+                  "key": "ReportTable-body_8",
+                  "nodeType": "host",
+                  "props": Object {
+                    "children": <styled.span
+                      className="ReportTable-text"
+                    >
+                      1
+                    </styled.span>,
+                    "className": "ReportTable-column",
+                    "style": Object {
+                      "maxWidth": 42.6,
+                      "minWidth": 42.6,
+                    },
+                  },
+                  "ref": null,
+                  "rendered": Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "class",
+                    "props": Object {
+                      "children": 1,
+                      "className": "ReportTable-text",
+                    },
+                    "ref": null,
+                    "rendered": 1,
+                    "type": [Function],
+                  },
+                  "type": "div",
+                },
+              ],
+              "type": "div",
+            },
+          ],
+          "type": "div",
+        },
+      ],
+      "type": "div",
+    },
+  ],
+  Symbol(enzyme.__options__): Object {
+    "adapter": ReactSixteenAdapter {
+      "options": Object {
+        "enableComponentDidUpdateOnSetState": true,
+      },
+    },
+  },
+}
+`;

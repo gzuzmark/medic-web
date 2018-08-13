@@ -3,6 +3,7 @@ import 'jest-localstorage-mock';
 import * as moxios from 'moxios';
 import * as React from 'react';
 import {REPORT_SESSIONS, REPORT_STUDENTS, ReportRequestBean} from "../../beans/ReportRequest.bean";
+import ReportTable from "./components/ReportTable/ReportTable";
 import Dummy from "./Report.dummy"
 import Reports from "./Reports";
 
@@ -54,7 +55,7 @@ describe('Reports Test',() => {
                 status: 200
             }).then(() => {
                 component.update();
-                const divs = component.find(".Report-table");
+                const divs = component.find(ReportTable);
                 expect(divs.length).toEqual(1);
                 done()
             })
@@ -73,8 +74,8 @@ describe('Reports Test',() => {
                 status: 200
             }).then(() => {
                 component.update();
-                const divs = component.find(".Report-empty");
-                expect(divs.length).toEqual(1);
+                const divs = component.find(ReportTable);
+                expect(divs.length).toEqual(0);
                 done()
             })
         })
