@@ -1,6 +1,6 @@
 import * as moment from "moment";
 import * as React from 'react';
-import { Text } from '../../../../../../common/ConsoleText';
+import ConsoleInputRadio from "../../../../../../common/ConsoleInputRadio/ConsoleInputRadio";
 import './RepeatSessionInput.scss';
 
 interface IPropsRepeatSessionInput {
@@ -28,26 +28,18 @@ class RepeatSessionInput extends React.Component <IPropsRepeatSessionInput, ISta
     public render() {
         return (
             <React.Fragment>
-                <label className="InputRadio">
-                    <Text>No se repite</Text>
-                    <input className="InputRadio--input"
-                           type="radio"
-                           name="repeat"
-                           value='false'
-                           checked={!this.props.repeatSession}
-                           onChange={this._onRepeatChange}/>
-                    <span className="InputRadio--radio">&nbsp;</span>
-                </label>
-                <label className="InputRadio">
-                    <Text>Repetir semanalmente</Text>
-                    <input className="InputRadio--input"
-                           type="radio"
-                           name="repeat"
-                           value='true'
-                           checked={this.props.repeatSession}
-                           onChange={this._onRepeatChange}/>
-                    <span className="InputRadio--radio">&nbsp;</span>
-                </label>
+                <ConsoleInputRadio
+                    title={'No se repite'}
+                    name={'repeat'}
+                    value={'false'}
+                    checked={!this.props.repeatSession}
+                    onChange={this._onRepeatChange}/>
+                <ConsoleInputRadio
+                    title={'Repetir semanalmente'}
+                    name={'repeat'}
+                    value={'true'}
+                    checked={this.props.repeatSession}
+                    onChange={this._onRepeatChange}/>
             </React.Fragment>
         );
     }

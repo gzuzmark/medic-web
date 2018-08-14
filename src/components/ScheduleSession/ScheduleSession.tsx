@@ -2,7 +2,7 @@ import * as moment from "moment";
 import * as React from 'react';
 import {SessionBean} from '../../beans/Session.bean';
 import Layout from '../../common/Layout/Layout';
-import Menu from '../../common/Menu/Menu';
+import MenuAside from '../../common/MenuAside/MenuAside';
 import Sticky from '../../common/Sticky/Sticky';
 import { IMatchParam } from '../../interfaces/MatchParam.interface';
 import { IMentor } from '../../interfaces/Mentor.interface';
@@ -75,9 +75,9 @@ class ScheduleSession extends React.Component<IPropsScheduleSession, IStateSched
                             minWidth: 395,
                             position: 'relative',
                         }}/>
-                        <Menu baseText={'Mentores'}
-                              url={'/admin/mentores'}
-                              textNavigation={textNavigation} />
+                        <MenuAside baseText={'Mentores'}
+                                   url={'/admin/mentores'}
+                                   textNavigation={textNavigation} />
                     </div>
                 </Sticky>
             </React.Fragment>

@@ -4,27 +4,28 @@ import './Loader.scss';
 interface IPropsLoader {
     top: number;
     height: number;
+    style?: React.CSSProperties;
 }
 
-class Loader extends React.Component<IPropsLoader, {}> {
-    public render() {
-        return (
-            <div className="Loader">
-                <div className="Loader Loader-child" />
-                <div className="Loader Loader-child" />
-                <div className="Loader Loader-child" />
-                <div className="Loader Loader-child" />
-                <div className="Loader Loader-child" />
-                <div className="Loader Loader-child" />
-                <div className="Loader Loader-child" />
-                <div className="Loader Loader-child" />
-                <div className="Loader Loader-child" />
-                <div className="Loader Loader-child" />
-                <div className="Loader Loader-child" />
-                <div className="Loader Loader-child" />
-            </div>
-        );
-    }
+const Loader: React.StatelessComponent<IPropsLoader> = (props) => {
+    return (
+        <div className="Loader" style={{...props.style}}>
+            <div className="Loader Loader-child" />
+            <div className="Loader Loader-child" />
+            <div className="Loader Loader-child" />
+            <div className="Loader Loader-child" />
+            <div className="Loader Loader-child" />
+            <div className="Loader Loader-child" />
+            <div className="Loader Loader-child" />
+            <div className="Loader Loader-child" />
+            <div className="Loader Loader-child" />
+            <div className="Loader Loader-child" />
+            <div className="Loader Loader-child" />
+            <div className="Loader Loader-child" />
+        </div>
+    );
 }
 
 export default Loader;
+
+

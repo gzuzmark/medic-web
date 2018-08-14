@@ -1,0 +1,47 @@
+@import "../../assets/styles/01-settings/settings";
+
+$softPageColor: #d8d8d8;
+$activePageColor: #707070;
+
+.ConsolePager {
+  margin: 25px 0;
+  width: 100%;
+  .pagination {
+    display: flex;
+    flex-wrap: wrap;
+    list-style-type: none;
+    padding-left: 0;
+    li {
+      a {
+        border: 1px solid $softPageColor;
+        color: $activePageColor;
+        display: block;
+        margin-right: -1px;
+        padding: 10px;
+        text-align: center;
+        transition: background 0.3s ease-in-out;
+        vertical-align: middle;
+        width: 45px;
+        &:hover {
+          background: #eaeaea;
+        }
+      }
+      &.active {
+        a {
+          background: $activePageColor;
+          border: 1px solid $activePageColor;
+          color: white;
+        }
+      }
+      &.disabled {
+        a {
+          color: $softPageColor;
+          &:hover {
+            background: white;
+          }
+        }
+      }
+    }
+
+  }
+}

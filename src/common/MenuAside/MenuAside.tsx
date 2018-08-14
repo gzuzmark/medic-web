@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Link } from 'react-router-dom';
 import { HighlightText, HighlightTextHeading1 } from '../../common/ConsoleText'
-import './Menu.scss';
+import './MenuAside.scss';
 
 interface IPropsListMentors {
     baseText: string;
@@ -9,7 +9,7 @@ interface IPropsListMentors {
     textNavigation?: string;
 }
 
-class Menu extends React.Component<IPropsListMentors, {}> {
+class MenuAside extends React.Component<IPropsListMentors, {}> {
 
     constructor(props: IPropsListMentors) {
         super(props);
@@ -34,4 +34,4 @@ class Menu extends React.Component<IPropsListMentors, {}> {
     }
 }
 
-export default Menu;
+export default MenuAside;

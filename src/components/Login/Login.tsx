@@ -28,6 +28,9 @@ class Login extends React.Component <{}, IStateLoginForm> {
             buttonAttr: {},
             isLogin: false
         };
+    }
+
+    public componentDidMount() {
         if (UserRepository.getToken() && UserRepository.getUser()) {
             this.setState({isLogin: true});
             window.location.assign('/admin');

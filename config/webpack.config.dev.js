@@ -117,7 +117,6 @@ module.exports = {
       // TODO: Disable require.ensure as it's not a standard language feature.
       // We are waiting for https://github.com/facebookincubator/create-react-app/issues/2176.
       // { parser: { requireEnsure: false } },
-
       {
         test: /\.(js|jsx|mjs)$/,
         loader: require.resolve('source-map-loader'),
@@ -139,6 +138,10 @@ module.exports = {
               limit: 10000,
               name: 'static/media/[name].[hash:8].[ext]',
             },
+          },
+          {
+            test: /\.svg$/,
+            loader: 'svg-sprite-loader',
           },
           {
             test: /\.(js|jsx|mjs)$/,

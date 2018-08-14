@@ -7,7 +7,7 @@ import ConsoleColor from '../../common/ConsoleColor';
 import { IListItem } from '../../common/FilterList/FilterList';
 import Layout from '../../common/Layout/Layout';
 import Loader from '../../common/Loader/Loader';
-import Menu from '../../common/Menu/Menu';
+import MenuAside from '../../common/MenuAside/MenuAside';
 import Sticky from '../../common/Sticky/Sticky';
 import { IEvent } from '../../interfaces/Event.interface';
 import { IMatchParam } from '../../interfaces/MatchParam.interface';
@@ -68,9 +68,9 @@ class MentorSession extends React.Component<IPropsMentorSession, IStateMentorSes
             'Calendario de sesiones de ' + this.state.mentor.user.name : 'Calendario de sesiones';
         return (
             <Sticky height={90} top={80}>
-                <Menu baseText={'Mentores'}
-                      url={'/admin/mentores'}
-                      textNavigation={textNavigation}/>
+                <MenuAside baseText={'Mentores'}
+                           url={'/admin/mentores'}
+                           textNavigation={textNavigation}/>
             </Sticky>
         )
     }

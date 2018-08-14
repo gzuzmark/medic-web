@@ -1,0 +1,169 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ConsoleInputRadio Test render: render ConsoleInputRadio 1`] = `
+ShallowWrapper {
+  "length": 1,
+  Symbol(enzyme.__root__): [Circular],
+  Symbol(enzyme.__unrendered__): <ConsoleInputRadio
+    checked={false}
+    name="demo"
+    onChange={[Function]}
+    title="Demo"
+    value="value"
+  />,
+  Symbol(enzyme.__renderer__): Object {
+    "batchedUpdates": [Function],
+    "getNode": [Function],
+    "render": [Function],
+    "simulateEvent": [Function],
+    "unmount": [Function],
+  },
+  Symbol(enzyme.__node__): Object {
+    "instance": null,
+    "key": undefined,
+    "nodeType": "host",
+    "props": Object {
+      "children": Array [
+        <styled.span>
+          Demo
+        </styled.span>,
+        <input
+          checked={false}
+          className="ConsoleInputRadio--input"
+          name="demo"
+          onChange={[Function]}
+          type="radio"
+          value="value"
+        />,
+        <span
+          className="ConsoleInputRadio--radio"
+        >
+           
+        </span>,
+      ],
+      "className": "ConsoleInputRadio",
+    },
+    "ref": null,
+    "rendered": Array [
+      Object {
+        "instance": null,
+        "key": undefined,
+        "nodeType": "class",
+        "props": Object {
+          "children": "Demo",
+        },
+        "ref": null,
+        "rendered": "Demo",
+        "type": [Function],
+      },
+      Object {
+        "instance": null,
+        "key": undefined,
+        "nodeType": "host",
+        "props": Object {
+          "checked": false,
+          "className": "ConsoleInputRadio--input",
+          "name": "demo",
+          "onChange": [Function],
+          "type": "radio",
+          "value": "value",
+        },
+        "ref": null,
+        "rendered": null,
+        "type": "input",
+      },
+      Object {
+        "instance": null,
+        "key": undefined,
+        "nodeType": "host",
+        "props": Object {
+          "children": " ",
+          "className": "ConsoleInputRadio--radio",
+        },
+        "ref": null,
+        "rendered": " ",
+        "type": "span",
+      },
+    ],
+    "type": "label",
+  },
+  Symbol(enzyme.__nodes__): Array [
+    Object {
+      "instance": null,
+      "key": undefined,
+      "nodeType": "host",
+      "props": Object {
+        "children": Array [
+          <styled.span>
+            Demo
+          </styled.span>,
+          <input
+            checked={false}
+            className="ConsoleInputRadio--input"
+            name="demo"
+            onChange={[Function]}
+            type="radio"
+            value="value"
+          />,
+          <span
+            className="ConsoleInputRadio--radio"
+          >
+             
+          </span>,
+        ],
+        "className": "ConsoleInputRadio",
+      },
+      "ref": null,
+      "rendered": Array [
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "class",
+          "props": Object {
+            "children": "Demo",
+          },
+          "ref": null,
+          "rendered": "Demo",
+          "type": [Function],
+        },
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "host",
+          "props": Object {
+            "checked": false,
+            "className": "ConsoleInputRadio--input",
+            "name": "demo",
+            "onChange": [Function],
+            "type": "radio",
+            "value": "value",
+          },
+          "ref": null,
+          "rendered": null,
+          "type": "input",
+        },
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "host",
+          "props": Object {
+            "children": " ",
+            "className": "ConsoleInputRadio--radio",
+          },
+          "ref": null,
+          "rendered": " ",
+          "type": "span",
+        },
+      ],
+      "type": "label",
+    },
+  ],
+  Symbol(enzyme.__options__): Object {
+    "adapter": ReactSixteenAdapter {
+      "options": Object {
+        "enableComponentDidUpdateOnSetState": true,
+      },
+    },
+  },
+}
+`;

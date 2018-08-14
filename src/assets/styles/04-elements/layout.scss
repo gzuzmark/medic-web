@@ -3,15 +3,21 @@
 body {
   font-family: Lato, sans-serif;
   margin: 0;
-  min-width: 1280px;
+  min-width: 1024px;
   padding: 0;
 }
 
 .u-LayoutMargin {
   margin: 0 auto;
-  width: 1280px;
+  width: 1024px;
 }
 
+.u-Separator {
+  background: #eef2f6;
+  border: 0;
+  height: 2px;
+  margin: 22px 0;
+}
 input:-webkit-autofill,
 input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,
