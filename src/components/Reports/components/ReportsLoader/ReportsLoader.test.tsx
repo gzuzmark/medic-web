@@ -33,7 +33,7 @@ describe('ReportsLoader Test',() => {
             center: true,
             loading: true
         };
-        const component = getComponent().find('.Reports-loader--center');
+        const component = getComponent().find('.ReportsLoader--center');
         expect(component.length).toBe(1);
     });
 
