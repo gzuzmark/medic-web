@@ -53,7 +53,8 @@ class ListMentors extends React.Component <{}, IStateListMentor> {
                         defaultText="Filtrar por curso"
                         name={this.state.selectedFilter}
                         enableClearSearch={true}
-                        style={{width: 504, marginBottom: 30}}/>
+                        style={{width: 504, marginBottom: 30}}
+                        removeFilters={true}/>
                 </div>
                 <ListMentorsHeader header={[
                     'Nombre de mentor',

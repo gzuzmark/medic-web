@@ -10,7 +10,8 @@ export interface IReportRequestBean {
     endDate: Date;
     type: ReportType;
 }
-
+const day = 86400000;
+const initYear = 1970;
 export class ReportRequestBean implements IReportRequestBean {
     public startDate = new Date();
     public endDate = new Date();
@@ -25,11 +26,12 @@ export class ReportRequestBean implements IReportRequestBean {
                 b.endDate = b.startDate;
             } else {
                 const time = b.endDate.getTime() - b.startDate.getTime();
-                const diff = new Date(time);
-                const years = (diff.getFullYear() - 1970);
+                const diff = new Date(time + day);
+                const years = (diff.getFullYear() - initYear);
                 if (years >= 1) {
                     const startDate = new Date(b.startDate);
                     startDate.setFullYear(b.startDate.getFullYear() + 1);
+                    startDate.setDate(startDate.getDate() - 1);
                     b.endDate = startDate;
                 }
             }

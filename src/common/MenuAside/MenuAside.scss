@@ -5,25 +5,6 @@
   background: white;
   &-navbar {
     position: relative;
-    &:before {
-      border: 1px solid $grey-light;
-      content: '';
-      height: 15px;
-      left: -7px;
-      position: absolute;
-      top: 48%;
-      transform: translateY(-50%);
-      width: 7px;
-    }
-    &:after {
-      border-bottom: 1px solid $grey-light;
-      bottom: 13px;
-      content: '';
-      height: 3px;
-      left: -6px;
-      position: absolute;
-      width: 7px;
-    }
   }
   &-item {
     padding-left: 6px;

@@ -16,7 +16,7 @@ import registerServiceWorker from './registerServiceWorker';
 
 const PageReports = (props: any) => {
     const LayoutReports = HOCLayout(Reports);
-    return <LayoutReports baseText={'Reportes'} url={'/admin/reportes'} {...props} />;
+    return <LayoutReports baseText={'Reportes'} url={'/admin/reportes'} {...props} keyPage={'report'}/>;
 };
 
 ReactDOM.render(
@@ -26,7 +26,7 @@ ReactDOM.render(
             <Route exact={true} path="/" component={Login} />
             <Route exact={true} path="/admin" component={ListMentors} />
             <Route exact={true} path="/admin/mentores" component={ListMentors} />
-            <Route exact={true} path="/admin/reportes"  render={PageReports}/>
+            <Route exact={true} path="/admin/reportes" render={PageReports}/>
             <Route exact={true} path="/admin/mentores/:id/sesiones" component={MentorSession}  />
             <Route exact={true} path="/admin/mentores/:id/sesiones/agendar" component={AddScheduleSession} />
         </div>
