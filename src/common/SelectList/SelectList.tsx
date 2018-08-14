@@ -1,5 +1,4 @@
 // TODO: Hola Carlos del futuro esto quizas te sirva para mejorar el buscador de la lista => https://react-select.com/home#async
-
 import * as React from 'react';
 import { Text } from '../ConsoleText';
 import {IListItem} from "../FilterList/FilterList";
