@@ -28,7 +28,9 @@ ShallowWrapper {
           style={
             Object {
               "fill": "white",
+              "height": 30,
               "paddingRight": 10,
+              "width": 30,
             }
           }
         />,
@@ -50,7 +52,9 @@ ShallowWrapper {
           "name": "exclamation",
           "style": Object {
             "fill": "white",
+            "height": 30,
             "paddingRight": 10,
+            "width": 30,
           },
         },
         "ref": null,
@@ -84,7 +88,9 @@ ShallowWrapper {
             style={
               Object {
                 "fill": "white",
+                "height": 30,
                 "paddingRight": 10,
+                "width": 30,
               }
             }
           />,
@@ -106,7 +112,9 @@ ShallowWrapper {
             "name": "exclamation",
             "style": Object {
               "fill": "white",
+              "height": 30,
               "paddingRight": 10,
+              "width": 30,
             },
           },
           "ref": null,
