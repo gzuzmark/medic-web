@@ -25,7 +25,7 @@ const BoxMessage: React.StatelessComponent<IPropsBoxMessage> = (props) => {
     }
     return (
         <div className={`BoxMessage BoxMessage--${props.type}`}>
-            <Icon name={getKeyIcon(props.type)} style={{fill: 'white', paddingRight: 10}}/>
+            <Icon name={getKeyIcon(props.type)} style={{fill: 'white', paddingRight: 10, height: 30, width: 30}}/>
             <Text color={'LightText'}>{props.children}</Text>
         </div>
     );

@@ -1,4 +1,5 @@
 import * as React from 'react';
+import {findDOMNode} from "react-dom";
 import {IListItem} from "../../../FilterList/FilterList";
 import SelectList from "../../../SelectList/SelectList";
 import './MenuTop.scss';
@@ -37,6 +38,15 @@ class MenuTop extends React.Component <{}, IStateMenu> {
            open: false
        };
        this.toggleMenu = this.toggleMenu.bind(this);
+        this.handleClickOutside = this.handleClickOutside.bind(this);
+    }
+
+    public componentDidMount() {
+        document.addEventListener('click', this.handleClickOutside, true);
+    }
+
+    public componentWillUnmount() {
+        document.removeEventListener('click', this.handleClickOutside, true);
     }
 
     public render() {
@@ -56,6 +66,15 @@ class MenuTop extends React.Component <{}, IStateMenu> {
             </div>
         )
     }
+
+    private handleClickOutside = (event: any) => {
+        const domNode = findDOMNode(this);
+        if (!domNode || !domNode.contains(event.target)) {
+            this.setState({
+                open: false
+            });
+        }
+    };
 
     private toggleMenu() {
         const state = {...this.state};
