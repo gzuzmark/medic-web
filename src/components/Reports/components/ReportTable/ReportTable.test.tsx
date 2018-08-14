@@ -26,11 +26,6 @@ describe('ReportTable Test',() => {
         mountedReportTable = undefined;
     });
 
-    it("render: render ReportTable", () => {
-        const component = getComponent();
-        expect(component).toMatchSnapshot();
-    });
-
     it("render: render ReportTable Header", () => {
         const component = getComponent().find('.ReportTable-header');
         expect(component.length).toEqual(1)
