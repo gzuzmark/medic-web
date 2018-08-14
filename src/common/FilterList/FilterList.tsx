@@ -18,6 +18,7 @@ interface IPropsFilterList {
     enableClearSearch: boolean;
     name: string;
     style?: React.CSSProperties;
+    removeFilters?: boolean;
 }
 
 interface IStateFilterList {
@@ -50,6 +51,10 @@ class FilterList extends React.Component <IPropsFilterList, IStateFilterList> {
         const activeClass = this.state.showFilters ? 'FilterList-field--active' : '';
         const color = this.props.name !== '' ? 'textNormal' : 'textNormalSoft';
         const notEmptyClass = this.props.name === '' ? '' : 'FilterList-field--not-empty';
+        const extraPropsSelectList: any = {};
+        if (!!this.props.removeFilters) {
+            extraPropsSelectList.removeFilters = this.removeFilters;
+        }
         return (
             <div className="FilterList" style={{...this.props.style}}>
                 <Text color={color}
@@ -61,7 +66,7 @@ class FilterList extends React.Component <IPropsFilterList, IStateFilterList> {
                     <SelectList
                         list={this.props.list}
                         onChange={this.filter}
-                        removeFilters={this.removeFilters}/> }
+                        {...extraPropsSelectList}/> }
             </div>
         );
     }

@@ -200,7 +200,7 @@ class Reports extends React.Component <{}, IStateReports> {
 
     private isDayBlocked(day: moment.Moment) {
         const startDate = new Date(this.state.reportRequest.startDate);
-        return day < moment(startDate) || moment(startDate).add(1, 'year').add(1, 'day') < day;
+        return day < moment(startDate) || moment(startDate).add(1, 'year') < day;
     }
 }
 

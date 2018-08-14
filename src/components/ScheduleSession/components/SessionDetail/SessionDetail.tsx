@@ -101,7 +101,7 @@ class SessionDetail extends React.Component <IPropsSessionDetail, IStateSessionD
                                             name={session.skillName}
                                             list={this.props.skills}
                                             defaultText='Química, Física, etc'
-                                            enableClearSearch={false} />
+                                            enableClearSearch={false}/>
                                     </FormColumn>,
                                     <FormColumn key={`SessionDetailRow${++counter}`} width={2}>
                                         <Text className='FormSession-label'>Tipo</Text>
