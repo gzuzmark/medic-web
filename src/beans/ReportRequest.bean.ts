@@ -19,12 +19,15 @@ export class ReportRequestBean implements IReportRequestBean {
     constructor(reportRequest?: IReportRequestBean) {
         if (reportRequest) {
             const b = {...reportRequest};
+            b.endDate.setHours(0, 0, 0, 0);
+            b.startDate.setHours(0, 0, 0, 0);
             if (b.endDate < b.startDate) {
                 b.endDate = b.startDate;
             } else {
                 const time = b.endDate.getTime() - b.startDate.getTime();
                 const diff = new Date(time);
-                if (Math.abs(diff.getFullYear() - 1970) >= 1) {
+                const years = (diff.getFullYear() - 1970);
+                if (years >= 1) {
                     const startDate = new Date(b.startDate);
                     startDate.setFullYear(b.startDate.getFullYear() + 1);
                     b.endDate = startDate;
@@ -34,10 +37,13 @@ export class ReportRequestBean implements IReportRequestBean {
             this.endDate = new Date(b.endDate);
             this.type = b.type;
         } else {
-            const date = new Date();
-            date.setDate(date.getDate() + 6);
-            this.startDate = new Date();
-            this.endDate = date;
+            const startDate = new Date();
+            const endDate = new Date();
+            endDate.setDate(endDate.getDate() + 6);
+            endDate.setHours(0, 0, 0, 0);
+            startDate.setHours(0, 0, 0, 0);
+            this.startDate = startDate;
+            this.endDate = endDate;
             this.type = '' as ReportType;
         }
     }
