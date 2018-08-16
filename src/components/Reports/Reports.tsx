@@ -21,6 +21,7 @@ interface IStateReports {
     clean: boolean;
     currentPage: number;
     loading: boolean;
+    loadingText: string;
     reportRequest: ReportRequestBean;
     results: any[];
     pageSize: number;
@@ -41,6 +42,9 @@ const inputRadioValues = [
     }
 ] as IInputRadioReports[];
 
+const loadingTextSearch = 'Espera un momento mientras buscamos las sesiones';
+const loadingTextDownload = 'Espera un momento mientras descargamos el excel';
+
 class Reports extends React.Component <{}, IStateReports> {
     public state: IStateReports;
     private sessionService = new SessionService();
@@ -51,6 +55,7 @@ class Reports extends React.Component <{}, IStateReports> {
             clean: true,
             currentPage: 1,
             loading: false,
+            loadingText: '',
             pageSize: 0,
             reportRequest: new ReportRequestBean(),
             results: [],
@@ -76,7 +81,7 @@ class Reports extends React.Component <{}, IStateReports> {
         return (
             <div className="u-LayoutMargin">
                 <div className='Reports'>
-                    <FormSection title={'Fecha'} style={{marginTop: 10, marginBottom: 10, display: 'block'}} itemStyle={{width: 650}}>
+                    <FormSection title={'Fecha'} style={{marginTop: 10, marginBottom: 12, display: 'block'}} itemStyle={{width: 650}}>
                         <Text>Elige las semanas de las sesiones que quieres ver</Text>
                         <FormRow style={{marginTop: 20}} columns={[
                             <FormColumn key={`Reports_${++counter}`}  width={2}>
@@ -98,7 +103,7 @@ class Reports extends React.Component <{}, IStateReports> {
                         ]}/>
                     </FormSection>
                     <hr className='u-Separator' />
-                    <FormSection title={'Reportes'} style={{marginTop: 32, marginBottom: 18}} itemStyle={{width: 350}}>
+                    <FormSection title={'Reportes'} style={{marginTop: 32, marginBottom: 12, display: 'block'}} itemStyle={{width: 450}}>
                         <Text>Selecciona el tipo de reporte que te gustaría ver</Text>
                         <InputRadioReports
                             name={'type'}
@@ -108,14 +113,13 @@ class Reports extends React.Component <{}, IStateReports> {
                     </FormSection>
                     <div className='Reports-table_container' {...propsTableContainer}>
                         <ReportsLoader loading={this.state.loading} center={shouldShowTable}>
-                            Espera un momento mientras buscamos las sesiones
+                            {this.state.loadingText}
                         </ReportsLoader>
                         {shouldShowTable &&
                         <ReportTable items={this.state.results}
                                      type={this.state.reportRequest.type} />}
                         {shouldShowTable &&
                         <button className="u-Button Reports-button"
-                                disabled={false}
                                 onClick={this.downloadResults}>
                             Descarga en Excel
                         </button>
@@ -156,7 +160,7 @@ class Reports extends React.Component <{}, IStateReports> {
         const report = this.state.reportRequest;
         const params = this.state.reportRequest.toReportParams();
         let response: string = '';
-        this.setState({loading: true});
+        this.setState({loading: true, loadingText: loadingTextDownload});
         try {
             if (report.type === REPORT_SESSIONS) {
                 response = await this.sessionService.getReportLink(params);
@@ -164,8 +168,6 @@ class Reports extends React.Component <{}, IStateReports> {
                 response = await this.studentService.getReportLink(params);
             }
             if (!!response) {
-                // tslint:disable:no-console
-                console.log(response)
                 Utilities.donwloadLink(response, report.getName(), 'xls')
             }
             this.setState({loading: false});
@@ -177,7 +179,7 @@ class Reports extends React.Component <{}, IStateReports> {
     private async searchResults(report: ReportRequestBean) {
         const params = report.toParams(this.state.currentPage);
         let data: IReportForSession | IReportForStudent | null = null;
-        this.setState({loading: true});
+        this.setState({loading: true, loadingText: loadingTextSearch });
         try {
             if (report.type === REPORT_SESSIONS) {
                 data = await this.sessionService.listReport(params) as IReportForSession;
