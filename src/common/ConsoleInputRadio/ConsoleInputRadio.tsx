@@ -12,7 +12,7 @@ interface IPropsConsoleInputRadio {
 const ConsoleInputRadio: React.StatelessComponent<IPropsConsoleInputRadio> = (props) => {
     return (
         <label className="ConsoleInputRadio">
-            <Text>{props.title}</Text>
+            <Text style={{fontSize: 16}}>{props.title}</Text>
             <input className="ConsoleInputRadio--input"
                    type="radio"
                    name={props.name}
