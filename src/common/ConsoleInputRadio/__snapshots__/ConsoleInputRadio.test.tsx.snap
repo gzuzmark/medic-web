@@ -24,7 +24,13 @@ ShallowWrapper {
     "nodeType": "host",
     "props": Object {
       "children": Array [
-        <styled.span>
+        <styled.span
+          style={
+            Object {
+              "fontSize": 16,
+            }
+          }
+        >
           Demo
         </styled.span>,
         <input
@@ -51,6 +57,9 @@ ShallowWrapper {
         "nodeType": "class",
         "props": Object {
           "children": "Demo",
+          "style": Object {
+            "fontSize": 16,
+          },
         },
         "ref": null,
         "rendered": "Demo",
@@ -94,7 +103,13 @@ ShallowWrapper {
       "nodeType": "host",
       "props": Object {
         "children": Array [
-          <styled.span>
+          <styled.span
+            style={
+              Object {
+                "fontSize": 16,
+              }
+            }
+          >
             Demo
           </styled.span>,
           <input
@@ -121,6 +136,9 @@ ShallowWrapper {
           "nodeType": "class",
           "props": Object {
             "children": "Demo",
+            "style": Object {
+              "fontSize": 16,
+            },
           },
           "ref": null,
           "rendered": "Demo",
