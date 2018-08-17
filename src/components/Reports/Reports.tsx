@@ -24,6 +24,7 @@ interface IStateReports {
     loadingText: string;
     reportRequest: ReportRequestBean;
     results: any[];
+    type: ReportType;
     pageSize: number;
     totalItemsCount: number;
 }
@@ -59,7 +60,8 @@ class Reports extends React.Component <{}, IStateReports> {
             pageSize: 0,
             reportRequest: new ReportRequestBean(),
             results: [],
-            totalItemsCount: 0
+            totalItemsCount: 0,
+            type: ''
         };
         this.updateState = this.updateState.bind(this);
         this.searchResults = this.searchResults.bind(this);
@@ -117,7 +119,7 @@ class Reports extends React.Component <{}, IStateReports> {
                         </ReportsLoader>
                         {shouldShowTable &&
                         <ReportTable items={this.state.results}
-                                     type={this.state.reportRequest.type} />}
+                                     type={this.state.type}/>}
                         {shouldShowTable &&
                         <button className="u-Button Reports-button"
                                 onClick={this.downloadResults}>
@@ -193,7 +195,8 @@ class Reports extends React.Component <{}, IStateReports> {
                     loading: false,
                     pageSize: data.pageSize,
                     results,
-                    totalItemsCount: data.totalItems});
+                    totalItemsCount: data.totalItems,
+                    type: report.type});
             }
         } catch (e) {
             this.setState({clean: false, loading: false});
