@@ -1,11 +1,14 @@
 import * as React from 'react';
 import { findDOMNode } from 'react-dom';
 import { Text } from '../ConsoleText';
+import SelectList from "../SelectList/SelectList";
 import './FilterList.scss';
 
 export interface IListItem {
     id: string;
     name: string;
+    icon?: string;
+    extra?: any;
 }
 
 interface IPropsFilterList {
@@ -15,6 +18,7 @@ interface IPropsFilterList {
     enableClearSearch: boolean;
     name: string;
     style?: React.CSSProperties;
+    removeFilters?: boolean;
 }
 
 interface IStateFilterList {
@@ -30,6 +34,7 @@ class FilterList extends React.Component <IPropsFilterList, IStateFilterList> {
         };
         this.toggleBox = this.toggleBox.bind(this);
         this.removeFilters = this.removeFilters.bind(this);
+        this.filter = this.filter.bind(this);
         this.handleClickOutside = this.handleClickOutside.bind(this);
     }
 
@@ -43,10 +48,13 @@ class FilterList extends React.Component <IPropsFilterList, IStateFilterList> {
 
     public render() {
         const disabledClass = this.props.list.length === 0 ? 'FilterList-field--disabled' : '';
-        const hiddenClass = this.state.showFilters ? '' : 'FilterList-list--hidden';
         const activeClass = this.state.showFilters ? 'FilterList-field--active' : '';
         const color = this.props.name !== '' ? 'textNormal' : 'textNormalSoft';
         const notEmptyClass = this.props.name === '' ? '' : 'FilterList-field--not-empty';
+        const extraPropsSelectList: any = {};
+        if (!!this.props.removeFilters) {
+            extraPropsSelectList.removeFilters = this.removeFilters;
+        }
         return (
             <div className="FilterList" style={{...this.props.style}}>
                 <Text color={color}
@@ -54,24 +62,11 @@ class FilterList extends React.Component <IPropsFilterList, IStateFilterList> {
                       onClick={this.toggleBox}  >
                     {this.props.name === '' ? this.props.defaultText : this.props.name}
                 </Text>
-                <ul className={'FilterList-list ' + hiddenClass}>
-                    {this.props.list.map((item, index) => {
-                        const click = () => {
-                            this.filter(item);
-                        };
-                        return (
-                            <li key={'filter-list-' + index}
-                                className="FilterList-list_item"
-                                onClick={click}>
-                                <Text className="FilterList-list_item--text">{item.name}</Text>
-                            </li>
-                        );
-                    })}
-                    {this.props.enableClearSearch &&
-                    <li className="FilterList-list_item" onClick={this.removeFilters}>
-                        <Text className="FilterList-list_item--text">Mostrar todo</Text>
-                    </li>}
-                </ul>
+                {this.state.showFilters &&
+                    <SelectList
+                        list={this.props.list}
+                        onChange={this.filter}
+                        {...extraPropsSelectList}/> }
             </div>
         );
     }

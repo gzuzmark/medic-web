@@ -146,6 +146,10 @@ module.exports = {
             },
           },
           {
+            test: /\.svg$/,
+            loader: 'svg-sprite-loader',
+          },
+          {
             test: /\.(js|jsx|mjs)$/,
             include: paths.appSrc,
             loader: require.resolve('babel-loader'),

@@ -3,7 +3,7 @@ import { BoldText } from '../../common/ConsoleText';
 import FilterList, {IListItem} from '../../common/FilterList/FilterList';
 import Layout from '../../common/Layout/Layout';
 import Loader from '../../common/Loader/Loader';
-import Menu from '../../common/Menu/Menu';
+import MenuAside from '../../common/MenuAside/MenuAside';
 import Sticky from '../../common/Sticky/Sticky';
 import { IMentor, ISkill } from '../../interfaces/Mentor.interface';
 import MentorService from '../../services/Mentor/Mentor.service';
@@ -45,7 +45,7 @@ class ListMentors extends React.Component <{}, IStateListMentor> {
     public renderMenu() {
         return (
             <Sticky height={194} top={80} style={{background: 'white'}}>
-                <Menu baseText={'Mentores'} url={'/admin/mentores'}/>
+                <MenuAside baseText={'Mentores'} url={'/admin/mentores'}/>
                 <div className='u-LayoutMargin u-ListMentors-padding'>
                     <FilterList
                         onChange={this._searchMentors}
@@ -53,7 +53,8 @@ class ListMentors extends React.Component <{}, IStateListMentor> {
                         defaultText="Filtrar por curso"
                         name={this.state.selectedFilter}
                         enableClearSearch={true}
-                        style={{width: 504, marginBottom: 30}}/>
+                        style={{width: 504, marginBottom: 30}}
+                        removeFilters={true}/>
                 </div>
                 <ListMentorsHeader header={[
                     'Nombre de mentor',

@@ -50,12 +50,8 @@ class ScheduleSessionForm extends React.Component<IPropsScheduleSessionForm, {}>
                                         sessionTypes={sessionTypes}
                                         onChange={this.props.onChangeSessionDetail}/>
                                 </FormSection>
-                                <hr className='FormSession-separator' />
+                                <hr className='u-Separator' />
 
-                                <FormSection title={'Agenda fecha y hora'} style={{marginTop: 30}}>
-                                    <Text>Elige la fecha y hora de la sesión</Text>
-                                    
-                                </FormSection>
                                 <FormSection title={'Agenda fecha y hora'} style={{marginTop: 30}}>
                                     <WeekendPicker onChange={this.props.onChangeWeekendPicker}/>
                                 </FormSection>

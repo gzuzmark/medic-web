@@ -1,0 +1,22 @@
+@import "../../assets/styles/01-settings/settings";
+
+.Menu {
+  padding: 28px 10px;
+  background: white;
+  &-navbar {
+    position: relative;
+  }
+  &-item {
+    padding-left: 6px;
+    &--link {
+      color: $grey-light!important;
+      text-decoration: none!important;
+    }
+    & + .Menu-item {
+      &:before {
+        content: '>';
+        padding-right: 6px;
+      }
+    }
+  }
+}

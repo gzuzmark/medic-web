@@ -101,14 +101,14 @@ class SessionDetail extends React.Component <IPropsSessionDetail, IStateSessionD
                                             name={session.skillName}
                                             list={this.props.skills}
                                             defaultText='Química, Física, etc'
-                                            enableClearSearch={false} />
+                                            enableClearSearch={false}/>
                                     </FormColumn>,
                                     <FormColumn key={`SessionDetailRow${++counter}`} width={2}>
                                         <Text className='FormSession-label'>Tipo</Text>
                                         <FilterList
                                             onChange={this._onChangeType}
                                             name={session.typeName(this.state.listSession)}
-                                            list={this.state.listSession}
+                                            list={this.state.listSession.filter((item) => !item.name.startsWith('Taller'))}
                                             defaultText='Taller, tutoría, etc.'
                                             enableClearSearch={false}/>
                                     </FormColumn>,

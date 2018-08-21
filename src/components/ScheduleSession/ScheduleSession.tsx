@@ -2,7 +2,7 @@ import * as moment from "moment";
 import * as React from 'react';
 import {SessionBean} from '../../beans/Session.bean';
 import Layout from '../../common/Layout/Layout';
-import Menu from '../../common/Menu/Menu';
+import MenuAside from '../../common/MenuAside/MenuAside';
 import Sticky from '../../common/Sticky/Sticky';
 import { IMatchParam } from '../../interfaces/MatchParam.interface';
 import { IMentor } from '../../interfaces/Mentor.interface';
@@ -35,7 +35,7 @@ interface IStateScheduleSession {
 class ScheduleSession extends React.Component<IPropsScheduleSession, IStateScheduleSession> {
     public state: IStateScheduleSession;
     private mentorId: string;
-    private mentorService = new MentorService();
+    private mentorService: MentorService = new MentorService();
     private locationsService = new LocationService();
 
     constructor(props: IPropsScheduleSession) {
@@ -75,9 +75,9 @@ class ScheduleSession extends React.Component<IPropsScheduleSession, IStateSched
                             minWidth: 395,
                             position: 'relative',
                         }}/>
-                        <Menu baseText={'Mentores'}
-                              url={'/admin/mentores'}
-                              textNavigation={textNavigation} />
+                        <MenuAside baseText={'Mentores'}
+                                   url={'/admin/mentores'}
+                                   textNavigation={textNavigation} />
                     </div>
                 </Sticky>
             </React.Fragment>
@@ -123,11 +123,11 @@ class ScheduleSession extends React.Component<IPropsScheduleSession, IStateSched
             if (items.length > 0 ) {
                 window.location.assign('/admin');
             } else {
-                alert('Hay Conflictos de Horarios')
+                alert('Hay Conflictos de Horarios');
             }
             this.setState({savingData: false});
         }, () => {
-            alert('Hay Conflictos de Horarios')
+            alert('Hay Conflictos de Horarios');
             this.setState({savingData: false});
         });
 
@@ -197,7 +197,7 @@ class ScheduleSession extends React.Component<IPropsScheduleSession, IStateSched
     }
 
     private _getMentor() {
-        this.mentorService.mentor(this.mentorId).then((mentor: IMentor) => {
+        this.mentorService.mentor(this.mentorId).then((mentor: any) => {
             this.setState({mentor});
             const idArea = mentor.interestAreas ? mentor.interestAreas[0].id : '';
             if (idArea !== '') {

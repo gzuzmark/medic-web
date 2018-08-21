@@ -6,6 +6,7 @@ interface IPropsFormSection {
     title: string;
     style?: React.CSSProperties;
     main?: boolean;
+    itemStyle?: React.CSSProperties;
 }
 
 const FormSection: React.StatelessComponent<IPropsFormSection> = (props) => {
@@ -13,7 +14,7 @@ const FormSection: React.StatelessComponent<IPropsFormSection> = (props) => {
     return (
         <React.Fragment>
             <BoldText className={`FormSection ${ellipsis}`} style={{...props.style}}>{props.title}</BoldText>
-            <div className='FormSection-item'>
+            <div className='FormSection-item' style={{...props.itemStyle}}>
                 {props.children}
             </div>
         </React.Fragment>

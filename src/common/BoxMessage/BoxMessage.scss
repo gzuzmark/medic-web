@@ -1,0 +1,11 @@
+.BoxMessage {
+  align-items: center;
+  border-radius: 8px;
+  color: white;
+  display: flex;
+  height: 40px;
+  padding: 0 24px;
+  &--error {
+    background: #ee5c7d;
+  }
+}

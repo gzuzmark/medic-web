@@ -1,15 +1,25 @@
-export interface ISession {
+interface ISessionBase {
     from: Date;
     to: Date;
+    type: string;
+    maxStudents: number;
+}
+
+export interface ISession extends ISessionBase {
     mentorId: string;
     skillId: string;
     skillName?: string;
-    type: string;
     typeKey?: string;
     location: string;
     credits: number;
-    maxStudents: number;
     sessions: ISessionSchedule[]
+}
+
+export interface ISessionReport extends ISessionBase {
+    skillName: string;
+    mentorName: string,
+    sede: string,
+    room: string,
 }
 
 export interface ISessionSchedule {
