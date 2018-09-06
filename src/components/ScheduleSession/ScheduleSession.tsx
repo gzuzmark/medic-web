@@ -12,7 +12,7 @@ import MentorService from '../../services/Mentor/Mentor.service';
 import MentorDetail from './components/MentorDetail/MentorDetail';
 import ScheduleSessionForm from "./components/ScheduleSessionForm/ScheduleSessionForm";
 import {
-    SESSION_MAX_STUDENTS, SESSION_ROOM,
+    SESSION_MAX_STUDENTS, SESSION_ROOM, SESSION_SELECTED,
     SESSION_SITE, SESSION_SKILL,
     SESSION_TYPE
 } from './ScheduleSession.constants';
@@ -88,7 +88,7 @@ class ScheduleSession extends React.Component<IPropsScheduleSession, IStateSched
         return (
             <ScheduleSessionContext.Provider value={{session: this.state.session, listSession: this.state.listSession}} >
                 <Layout menu={this.renderMenu()}>
-                    <Sticky height={80} top={80} style={{zIndex: -1}}>
+                    <Sticky height={0} top={80} style={{zIndex: -1}}>
                         <MentorDetail mentor={this.state.mentor}/>
                     </Sticky>
                     <div className="u-LayoutMargin">
@@ -173,8 +173,14 @@ class ScheduleSession extends React.Component<IPropsScheduleSession, IStateSched
     }
 
     private _onChangeSessionDetail(type: string, item:any) {
-        const session = {...this.state.session};
+        let session = {...this.state.session};
         switch (type) {
+            case SESSION_SELECTED:
+                session = new SessionBean();
+                session.interestAreaId = item.id;
+                session.interestAreaName = item.name;
+                this.loadLocations(item.id);
+                break;
             case SESSION_SKILL:
                 session.skillName = item.name;
                 session.skillId = item.id;
@@ -199,13 +205,21 @@ class ScheduleSession extends React.Component<IPropsScheduleSession, IStateSched
     private _getMentor() {
         this.mentorService.mentor(this.mentorId).then((mentor: any) => {
             this.setState({mentor});
-            const idArea = mentor.interestAreas ? mentor.interestAreas[0].id : '';
-            if (idArea !== '') {
-                this.locationsService.list(idArea).then((locations) => {
-                    this.setState({locations, loading: false})
-                })
+            const area = mentor.interestAreas ? mentor.interestAreas[0] : {};
+            if (area.id !== '') {
+                const session = {...this.state.session};
+                session.interestAreaId = area.id;
+                session.interestAreaName = area.name;
+                this.setState({session: new SessionBean(session)});
+                this.loadLocations(area.id);
             }
         });
+    }
+
+    private loadLocations(idArea: string) {
+        this.locationsService.list(idArea).then((locations) => {
+            this.setState({locations, loading: false})
+        })
     }
 }
 

@@ -104,7 +104,7 @@ class SessionDetail extends React.Component <IPropsSessionDetail, IStateSessionD
                                             enableClearSearch={false}/>
                                     </FormColumn>,
                                     <FormColumn key={`SessionDetailRow${++counter}`} width={2}>
-                                        <Text className='FormSession-label'>Tipo</Text>
+                                        <Text className='FormSession-label'>Modalidad</Text>
                                         <FilterList
                                             onChange={this._onChangeType}
                                             name={session.typeName(this.state.listSession)}

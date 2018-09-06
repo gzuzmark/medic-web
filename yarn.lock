@@ -52,7 +52,7 @@
   version "23.1.1"
   resolved "https://registry.yarnpkg.com/@types/jest/-/jest-23.1.1.tgz#c54ab1a5f41aa693c0957222dd10414416d0c87b"
 
-"@types/moxios@^0.4.8":
+"@types/moxios@0.4.8":
   version "0.4.8"
   resolved "https://registry.yarnpkg.com/@types/moxios/-/moxios-0.4.8.tgz#b478ae7127779be2a8de55e71a5a11333273b06f"
   dependencies:
@@ -86,7 +86,7 @@
     "@types/node" "*"
     "@types/react" "*"
 
-"@types/react-js-pagination@^3.0.1":
+"@types/react-js-pagination@3.0.1":
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/@types/react-js-pagination/-/react-js-pagination-3.0.1.tgz#5dd082e9e12b4aaac651d338932faf6dc18f6225"
   dependencies:
@@ -2741,6 +2741,10 @@ execa@^0.7.0:
     signal-exit "^3.0.0"
     strip-eof "^1.0.0"
 
+exenv@^1.2.0:
+  version "1.2.2"
+  resolved "https://registry.yarnpkg.com/exenv/-/exenv-1.2.2.tgz#2ae78e85d9894158670b03d47bec1f03bd91bb9d"
+
 exit@^0.1.2:
   version "0.1.2"
   resolved "https://registry.yarnpkg.com/exit/-/exit-0.1.2.tgz#0632638f8d877cc82107d30a0fff1a17cba1cd0c"
@@ -5179,7 +5183,7 @@ move-concurrently@^1.0.1:
     rimraf "^2.5.4"
     run-queue "^1.0.3"
 
-moxios@^0.4.0:
+moxios@0.4.0:
   version "0.4.0"
   resolved "https://registry.yarnpkg.com/moxios/-/moxios-0.4.0.tgz#fc0da2c65477d725ca6b9679d58370ed0c52f53b"
 
@@ -6525,6 +6529,19 @@ react-js-pagination@^3.0.2:
     paginator "^1.0.0"
     prop-types "15.x.x - 16.x.x"
     react "15.x.x - 16.x.x"
+
+react-lifecycles-compat@^3.0.0:
+  version "3.0.4"
+  resolved "https://registry.yarnpkg.com/react-lifecycles-compat/-/react-lifecycles-compat-3.0.4.tgz#4f1a273afdfc8f3488a8c516bfda78f872352362"
+
+react-modal@^3.5.1:
+  version "3.5.1"
+  resolved "https://registry.yarnpkg.com/react-modal/-/react-modal-3.5.1.tgz#33d38527def90ea324848f7d63e53acc4468a451"
+  dependencies:
+    exenv "^1.2.0"
+    prop-types "^15.5.10"
+    react-lifecycles-compat "^3.0.0"
+    warning "^3.0.0"
 
 react-moment-proptypes@^1.6.0:
   version "1.6.0"

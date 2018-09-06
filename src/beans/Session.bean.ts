@@ -13,7 +13,9 @@ export class SessionBean implements ISession {
     public mentorId = '';
     public sessions = [] as ISessionSchedule[];
     public skillId = '';
+    public interestAreaId = '';
     public skillName = '';
+    public interestAreaName = '';
 
     constructor(session?: ISession) {
         if (session) {
@@ -27,7 +29,9 @@ export class SessionBean implements ISession {
             this.mentorId = s.mentorId;
             this.sessions = Array.from(s.sessions);
             this.skillId = s.skillId;
+            this.interestAreaId = s.interestAreaId;
             this.skillName = s.skillName || '';
+            this.interestAreaName = s.interestAreaName || '';
         } else {
             const date = new Date();
             const endOfWeek = 6 - date.getDay() + 1;

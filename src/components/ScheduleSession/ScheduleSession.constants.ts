@@ -1,3 +1,4 @@
+export const SESSION_SELECTED = 'session';
 export const SESSION_SKILL = 'skills';
 export const SESSION_TYPE = 'type';
 export const SESSION_SITE = 'site';

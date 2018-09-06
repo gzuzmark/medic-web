@@ -8,14 +8,59 @@ export const headersRequest = {
 class BaseRequest {
     protected instance: any;
     private baseUrl = '';
-
+    private source: any;
     constructor() {
         this.baseUrl = process.env.REACT_APP_BASE_URL || '';
         this.instance = Axios.create({
             baseURL: this.baseUrl,
             headers: {...headersRequest, 'Authorization': 'Bearer ' + UserRepository.getToken()},
         });
+        this.source = Axios.CancelToken.source();
+        this.onResponseError();
+    }
 
+    public refreshToken() {
+
+        return new Promise((resolve, reject) => {
+
+            Axios.post('/ugo-admin/refreshToken', {},
+                {
+                    baseURL: this.baseUrl,
+                    cancelToken: this.source.token,
+                    headers:{'Authorization':'Bearer ' + UserRepository.getRefreshToken()}}
+                ).then((response) => {
+                    UserRepository.setRefreshToken(response.data.refreshToken);
+                    UserRepository.setToken(response.data.token);
+                    this.source.cancel('New token was given.');
+                    resolve();
+                }).catch((error)=> {
+                    if (Axios.isCancel(error)) {
+                        resolve();
+                    } else {
+                        UserRepository.setRefreshToken('');
+                        UserRepository.setToken('');
+                        window.location.assign('/');
+                        reject();
+                    }
+                });
+        });
+    }
+
+    public setTokenHeader() {
+        this.instance = Axios.create({
+            baseURL: this.baseUrl,
+            headers: {...headersRequest, 'Authorization': 'Bearer ' + UserRepository.getToken()},
+        });
+    }
+
+    public validSession() {
+        const exist = UserRepository.getToken() && UserRepository.getUser();
+        if (!exist) {
+            window.location.assign('/');
+        }
+    }
+
+    private  onResponseError() {
         this.instance.interceptors.response.use((response:any) => {
             return response;
         }, async (error:any) => {
@@ -32,47 +77,6 @@ class BaseRequest {
             }
             return Promise.reject(error);
         });
-
-    }
-
-    public refreshToken() {
-
-        return new Promise((resolve, reject) => {
-
-            Axios.post('/ugo-admin/refreshToken', {},
-                {
-                    baseURL: this.baseUrl,
-                    headers:{'Authorization':'Bearer ' + UserRepository.getRefreshToken()}}
-                ).then((response) => {
-                    UserRepository.setRefreshToken(response.data.refreshToken);
-                    UserRepository.setToken(response.data.token);
-                    resolve();
-                }).catch((error)=> {
-                    UserRepository.setRefreshToken('');
-                    UserRepository.setToken('');
-                    window.location.assign('/');
-                    reject();
-                });
-        });
-    }
-
-    public setTokenHeader() {
-        this.instance = Axios.create({
-            baseURL: this.baseUrl,
-            headers: {...headersRequest, 'Authorization': 'Bearer ' + UserRepository.getToken()},
-        });
-    }
-
-    get request() {
-        return this.instance;
-    }
-
-
-    public validSession() {
-        const exist = UserRepository.getToken() && UserRepository.getUser();
-        if (!exist) {
-            window.location.assign('/');
-        }
     }
 }
 
