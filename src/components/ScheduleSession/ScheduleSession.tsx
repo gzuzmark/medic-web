@@ -92,7 +92,7 @@ class ScheduleSession extends React.Component<IPropsScheduleSession, IStateSched
     public render() {
         return (
             <ScheduleSessionContext.Provider value={{session: this.state.session, listSession: this.state.listSession}} >
-                <ConsoleModalConfirm show={this.state.showModal} onCloseModal={this._onCancel} title={'Estás apunto de crear las siguientes sesiones'}>
+                <ConsoleModalConfirm show={false} onCloseModal={this._onCancel} title={'Estás apunto de crear las siguientes sesiones'}>
                     <div>
                         <div>
                             <span>Hola señor aqui esta la tabla</span>
@@ -143,7 +143,7 @@ class ScheduleSession extends React.Component<IPropsScheduleSession, IStateSched
                                 locations={this.state.locations}
                                 savingData={this.state.savingData}
                                 loading={this.state.loading}
-                                onClickSaveBulk={this._onClickSaveBulk}
+                                onClickSaveBulk={this._onConfirm}
                                 onChangeDuration={this._onChangeDuration}
                                 mentor={this.state.mentor}
                                 onChangeSessionDetail={this._onChangeSessionDetail}
