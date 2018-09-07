@@ -67,15 +67,32 @@ const tableStudents = [...tableBase, {
     width: 72.6
 }] as IReportTableHeader[];
 
+const tableRating = [{
+    name: 'Estado',
+    value: (row: any) => row.status,
+    width: 120
+},{
+    name: 'Calificación',
+    value: (row: any) => row.rating ? row.rating : '--',
+    width: 70
+}] as IReportTableHeader[];
+
+const tableRatingComment = [...tableRating, {
+    name: 'Comentario',
+    value: (row: any) => row.comment,
+    width: 140
+}] as IReportTableHeader[];
+
 const ReportTable: React.StatelessComponent<IPropsReportTable> = (props) => {
-    const table = props.type === REPORT_SESSIONS ? tableBase : tableStudents;
+    let table = props.type === REPORT_SESSIONS ? tableBase : tableStudents;
+    table = props.type === REPORT_SESSIONS ? table.concat(tableRating) : table.concat(tableRatingComment);
     return (
         <div className="ReportTable">
             <div className="ReportTable-header">
                 <div className="ReportTable-row">
                 {table.map((header, i) =>
                     <div key={`ReportTable-header_${i}`} className="ReportTable-column" style={{minWidth: header.width, maxWidth: header.width}}>
-                        <Text color="textLight">{header.name}</Text>
+                        <Text color="textLight" style={{lineHeight: '14px'}}>{header.name}</Text>
                     </div>
                 )}
                 </div>
