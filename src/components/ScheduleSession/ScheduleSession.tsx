@@ -1,6 +1,7 @@
 import * as moment from "moment";
 import * as React from 'react';
 import {SessionBean} from '../../beans/Session.bean';
+import ConsoleModalConfirm from "../../common/ConsoleModal/ConsoleModalConfirm";
 import Layout from '../../common/Layout/Layout';
 import MenuAside from '../../common/MenuAside/MenuAside';
 import Sticky from '../../common/Sticky/Sticky';
@@ -12,9 +13,9 @@ import MentorService from '../../services/Mentor/Mentor.service';
 import MentorDetail from './components/MentorDetail/MentorDetail';
 import ScheduleSessionForm from "./components/ScheduleSessionForm/ScheduleSessionForm";
 import {
-    SESSION_MAX_STUDENTS, SESSION_ROOM, SESSION_SELECTED,
-    SESSION_SITE, SESSION_SKILL,
-    SESSION_TYPE
+SESSION_MAX_STUDENTS, SESSION_ROOM, SESSION_SELECTED,
+SESSION_SITE, SESSION_SKILL,
+SESSION_TYPE
 } from './ScheduleSession.constants';
 import ScheduleSessionContext from './ScheduleSession.context';
 import './ScheduleSession.scss';
@@ -87,6 +88,9 @@ class ScheduleSession extends React.Component<IPropsScheduleSession, IStateSched
     public render() {
         return (
             <ScheduleSessionContext.Provider value={{session: this.state.session, listSession: this.state.listSession}} >
+                <ConsoleModalConfirm show={true} onCloseModal={this.closeModal} title={'soy un titulo'}>
+                    <span>Hola que talx</span>
+                </ConsoleModalConfirm>
                 <Layout menu={this.renderMenu()}>
                     <Sticky height={0} top={80} style={{zIndex: -1}}>
                         <MentorDetail mentor={this.state.mentor}/>
@@ -110,10 +114,14 @@ class ScheduleSession extends React.Component<IPropsScheduleSession, IStateSched
         );
     }
 
+    private closeModal() {
+        // tslint:disable:no-console
+        console.log("close modal")
+    }
+
     private _onClickSaveBulk() {
         this.setState({savingData: true});
         const session: any = new SessionBean(this.state.session);
-
         session.from.setHours(0,0,0, 0);
         session.to.setDate(session.to.getDate() + 1);
         session.to.setHours(0,0,0,0);
