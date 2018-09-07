@@ -31,6 +31,7 @@ interface IStateScheduleSession {
     mentor?: IMentor;
     savingData: boolean;
     session: SessionBean;
+    showModal: boolean;
 }
 
 class ScheduleSession extends React.Component<IPropsScheduleSession, IStateScheduleSession> {
@@ -47,7 +48,8 @@ class ScheduleSession extends React.Component<IPropsScheduleSession, IStateSched
             locations: {},
             mentor: undefined,
             savingData: false,
-            session: new SessionBean()
+            session: new SessionBean(),
+            showModal: false
         };
         this.mentorId = this.props.match.params.id;
         this._getMentor = this._getMentor.bind(this);
@@ -55,6 +57,8 @@ class ScheduleSession extends React.Component<IPropsScheduleSession, IStateSched
         this._onChangeWeekendPicker = this._onChangeWeekendPicker.bind(this);
         this._onChangeDuration = this._onChangeDuration.bind(this);
         this._onClickSaveBulk = this._onClickSaveBulk.bind(this);
+        this._onConfirm = this._onConfirm.bind(this);
+        this._onCancel = this._onCancel.bind(this);
     }
 
     public componentDidMount() {
@@ -88,8 +92,46 @@ class ScheduleSession extends React.Component<IPropsScheduleSession, IStateSched
     public render() {
         return (
             <ScheduleSessionContext.Provider value={{session: this.state.session, listSession: this.state.listSession}} >
-                <ConsoleModalConfirm show={true} onCloseModal={this.closeModal} title={'soy un titulo'}>
-                    <span>Hola que talx</span>
+                <ConsoleModalConfirm show={this.state.showModal} onCloseModal={this._onCancel} title={'Estás apunto de crear las siguientes sesiones'}>
+                    <div>
+                        <div>
+                            <span>Hola señor aqui esta la tabla</span>
+                        </div>
+
+                        <div>
+                            <div>
+                                <div>
+                                <div>Sesión</div>
+                                <div>Tipo</div>
+                                <div>Sede</div>
+                                <div>Cap.</div>
+                                <div>Aula</div>
+                                <div>Día</div>
+                                <div>Hora</div>
+                                </div>
+                            </div>
+                            <div>
+                                {this.state.session.listSessions.map((item: ISessionSchedule, index: number) => {
+                                    return (
+                                        <div key={`ModalTable-${index}`}>
+                                            <div>{this.state.session.skillName}</div>
+                                            <div>Tutoria</div>
+                                            <div>{this.state.session.location}</div>
+                                            <div>{this.state.session.maxStudents}</div>
+                                            <div>{item.weekDay}</div>
+                                            <div>{item.from} - {item.to}</div>
+                                        </div>
+                                    )
+                                })}
+                            </div>
+                        </div>
+
+                        <div>
+                            <button className="u-Button u-Button--white" onClick={this._onCancel}>Cancelar</button>
+                            <button className="u-Button" onClick={this._onConfirm}>Aceptar</button>
+
+                        </div>
+                    </div>
                 </ConsoleModalConfirm>
                 <Layout menu={this.renderMenu()}>
                     <Sticky height={0} top={80} style={{zIndex: -1}}>
@@ -114,12 +156,11 @@ class ScheduleSession extends React.Component<IPropsScheduleSession, IStateSched
         );
     }
 
-    private closeModal() {
-        // tslint:disable:no-console
-        console.log("close modal")
+    private _onCancel() {
+        this.setState({showModal: false})
     }
 
-    private _onClickSaveBulk() {
+    private _onConfirm() {
         this.setState({savingData: true});
         const session: any = new SessionBean(this.state.session);
         session.from.setHours(0,0,0, 0);
@@ -138,7 +179,10 @@ class ScheduleSession extends React.Component<IPropsScheduleSession, IStateSched
             alert('Hay Conflictos de Horarios');
             this.setState({savingData: false});
         });
+    }
 
+    private _onClickSaveBulk() {
+        this.setState({showModal: true});
     }
 
     private _onChangeDuration(startDate: moment.Moment, endDate: moment.Moment, action: string) {

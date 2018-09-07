@@ -54,7 +54,8 @@ class ScheduleSessionForm extends React.Component<IPropsScheduleSessionForm, {}>
             {
                 (scheduleSessionContext: IScheduleContext) => {
                     const session = scheduleSessionContext.session;
-                    const sessionTypes = this.props.mentor && this.props.mentor.interestAreas ? this.props.mentor.interestAreas[0].sessionTypes : [];
+                    const currentArea = this.props.mentor ? this.props.mentor.interestAreas.filter((area: IArea) => area.id === session.interestAreaId)[0] : false;
+                    const sessionTypes = currentArea ? currentArea.sessionTypes : [];
                     return (
                         <React.Fragment>
                             {this.props.loading &&
