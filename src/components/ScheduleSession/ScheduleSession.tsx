@@ -1,6 +1,7 @@
 import * as moment from "moment";
 import * as React from 'react';
 import {SessionBean} from '../../beans/Session.bean';
+import ConsoleModalConfirm from "../../common/ConsoleModal/ConsoleModalConfirm";
 import Layout from '../../common/Layout/Layout';
 import MenuAside from '../../common/MenuAside/MenuAside';
 import Sticky from '../../common/Sticky/Sticky';
@@ -12,9 +13,9 @@ import MentorService from '../../services/Mentor/Mentor.service';
 import MentorDetail from './components/MentorDetail/MentorDetail';
 import ScheduleSessionForm from "./components/ScheduleSessionForm/ScheduleSessionForm";
 import {
-    SESSION_MAX_STUDENTS, SESSION_ROOM,
-    SESSION_SITE, SESSION_SKILL,
-    SESSION_TYPE
+SESSION_MAX_STUDENTS, SESSION_ROOM, SESSION_SELECTED,
+SESSION_SITE, SESSION_SKILL,
+SESSION_TYPE
 } from './ScheduleSession.constants';
 import ScheduleSessionContext from './ScheduleSession.context';
 import './ScheduleSession.scss';
@@ -30,6 +31,7 @@ interface IStateScheduleSession {
     mentor?: IMentor;
     savingData: boolean;
     session: SessionBean;
+    showModal: boolean;
 }
 
 class ScheduleSession extends React.Component<IPropsScheduleSession, IStateScheduleSession> {
@@ -46,7 +48,8 @@ class ScheduleSession extends React.Component<IPropsScheduleSession, IStateSched
             locations: {},
             mentor: undefined,
             savingData: false,
-            session: new SessionBean()
+            session: new SessionBean(),
+            showModal: false
         };
         this.mentorId = this.props.match.params.id;
         this._getMentor = this._getMentor.bind(this);
@@ -54,6 +57,8 @@ class ScheduleSession extends React.Component<IPropsScheduleSession, IStateSched
         this._onChangeWeekendPicker = this._onChangeWeekendPicker.bind(this);
         this._onChangeDuration = this._onChangeDuration.bind(this);
         this._onClickSaveBulk = this._onClickSaveBulk.bind(this);
+        this._onConfirm = this._onConfirm.bind(this);
+        this._onCancel = this._onCancel.bind(this);
     }
 
     public componentDidMount() {
@@ -87,8 +92,49 @@ class ScheduleSession extends React.Component<IPropsScheduleSession, IStateSched
     public render() {
         return (
             <ScheduleSessionContext.Provider value={{session: this.state.session, listSession: this.state.listSession}} >
+                <ConsoleModalConfirm show={false} onCloseModal={this._onCancel} title={'Estás apunto de crear las siguientes sesiones'}>
+                    <div>
+                        <div>
+                            <span>Hola señor aqui esta la tabla</span>
+                        </div>
+
+                        <div>
+                            <div>
+                                <div>
+                                <div>Sesión</div>
+                                <div>Tipo</div>
+                                <div>Sede</div>
+                                <div>Cap.</div>
+                                <div>Aula</div>
+                                <div>Día</div>
+                                <div>Hora</div>
+                                </div>
+                            </div>
+                            <div>
+                                {this.state.session.listSessions.map((item: ISessionSchedule, index: number) => {
+                                    return (
+                                        <div key={`ModalTable-${index}`}>
+                                            <div>{this.state.session.skillName}</div>
+                                            <div>Tutoria</div>
+                                            <div>{this.state.session.location}</div>
+                                            <div>{this.state.session.maxStudents}</div>
+                                            <div>{item.weekDay}</div>
+                                            <div>{item.from} - {item.to}</div>
+                                        </div>
+                                    )
+                                })}
+                            </div>
+                        </div>
+
+                        <div>
+                            <button className="u-Button u-Button--white" onClick={this._onCancel}>Cancelar</button>
+                            <button className="u-Button" onClick={this._onConfirm}>Aceptar</button>
+
+                        </div>
+                    </div>
+                </ConsoleModalConfirm>
                 <Layout menu={this.renderMenu()}>
-                    <Sticky height={80} top={80} style={{zIndex: -1}}>
+                    <Sticky height={0} top={80} style={{zIndex: -1}}>
                         <MentorDetail mentor={this.state.mentor}/>
                     </Sticky>
                     <div className="u-LayoutMargin">
@@ -97,7 +143,7 @@ class ScheduleSession extends React.Component<IPropsScheduleSession, IStateSched
                                 locations={this.state.locations}
                                 savingData={this.state.savingData}
                                 loading={this.state.loading}
-                                onClickSaveBulk={this._onClickSaveBulk}
+                                onClickSaveBulk={this._onConfirm}
                                 onChangeDuration={this._onChangeDuration}
                                 mentor={this.state.mentor}
                                 onChangeSessionDetail={this._onChangeSessionDetail}
@@ -110,10 +156,13 @@ class ScheduleSession extends React.Component<IPropsScheduleSession, IStateSched
         );
     }
 
-    private _onClickSaveBulk() {
+    private _onCancel() {
+        this.setState({showModal: false})
+    }
+
+    private _onConfirm() {
         this.setState({savingData: true});
         const session: any = new SessionBean(this.state.session);
-
         session.from.setHours(0,0,0, 0);
         session.to.setDate(session.to.getDate() + 1);
         session.to.setHours(0,0,0,0);
@@ -130,7 +179,10 @@ class ScheduleSession extends React.Component<IPropsScheduleSession, IStateSched
             alert('Hay Conflictos de Horarios');
             this.setState({savingData: false});
         });
+    }
 
+    private _onClickSaveBulk() {
+        this.setState({showModal: true});
     }
 
     private _onChangeDuration(startDate: moment.Moment, endDate: moment.Moment, action: string) {
@@ -173,8 +225,14 @@ class ScheduleSession extends React.Component<IPropsScheduleSession, IStateSched
     }
 
     private _onChangeSessionDetail(type: string, item:any) {
-        const session = {...this.state.session};
+        let session = {...this.state.session};
         switch (type) {
+            case SESSION_SELECTED:
+                session = new SessionBean();
+                session.interestAreaId = item.id;
+                session.interestAreaName = item.name;
+                this.loadLocations(item.id);
+                break;
             case SESSION_SKILL:
                 session.skillName = item.name;
                 session.skillId = item.id;
@@ -199,13 +257,21 @@ class ScheduleSession extends React.Component<IPropsScheduleSession, IStateSched
     private _getMentor() {
         this.mentorService.mentor(this.mentorId).then((mentor: any) => {
             this.setState({mentor});
-            const idArea = mentor.interestAreas ? mentor.interestAreas[0].id : '';
-            if (idArea !== '') {
-                this.locationsService.list(idArea).then((locations) => {
-                    this.setState({locations, loading: false})
-                })
+            const area = mentor.interestAreas ? mentor.interestAreas[0] : {};
+            if (area.id !== '') {
+                const session = {...this.state.session};
+                session.interestAreaId = area.id;
+                session.interestAreaName = area.name;
+                this.setState({session: new SessionBean(session)});
+                this.loadLocations(area.id);
             }
         });
+    }
+
+    private loadLocations(idArea: string) {
+        this.locationsService.list(idArea).then((locations) => {
+            this.setState({locations, loading: false})
+        })
     }
 }
 

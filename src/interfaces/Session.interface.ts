@@ -8,7 +8,9 @@ interface ISessionBase {
 export interface ISession extends ISessionBase {
     mentorId: string;
     skillId: string;
+    interestAreaId: string;
     skillName?: string;
+    interestAreaName?: string;
     typeKey?: string;
     location: string;
     credits: number;
