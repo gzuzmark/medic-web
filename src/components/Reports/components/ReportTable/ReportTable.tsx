@@ -28,11 +28,15 @@ const tableBase = [{
     value: (row: any) => moment(row.to).format('hh:mm a'),
     width: 88.7
 },{
+    name: 'Tipo',
+    value: (row: any) => row.interestArea,
+    width: 75
+},{
     name: 'Sesión',
     value: (row: any) => row.skillName,
     width: 161.3
 },{
-    name: 'Tipo',
+    name: 'Modalidad',
     value: (row: any) => row.type,
     width: 72.6
 },{
@@ -72,14 +76,14 @@ const tableRating = [{
     value: (row: any) => row.status,
     width: 120
 },{
-    name: 'Calificación',
+    name: 'Calif.',
     value: (row: any) => row.rating ? row.rating : '--',
-    width: 70
+    width: 40
 }] as IReportTableHeader[];
 
 const tableRatingComment = [...tableRating, {
     name: 'Comentario',
-    value: (row: any) => row.comment,
+    value: (row: any) => row.studentComment,
     width: 140
 }] as IReportTableHeader[];
 
