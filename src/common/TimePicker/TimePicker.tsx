@@ -27,7 +27,7 @@ const listTimes = (from = moment(), to = moment(), step = 15): IListItem[] => {
     return times
 };
 
-const TimeRangePicker: React.StatelessComponent<IPropTimePicker> = (props) => {
+const TimePicker: React.StatelessComponent<IPropTimePicker> = (props) => {
     return (
         <FilterList
             onChange={props.onChange}
@@ -38,13 +38,13 @@ const TimeRangePicker: React.StatelessComponent<IPropTimePicker> = (props) => {
     );
 };
 
-TimeRangePicker.defaultProps = {
+TimePicker.defaultProps = {
     from: moment(),
     step: 15,
     to: moment()
 };
 
 
-export default TimeRangePicker;
+export default TimePicker;
 
 

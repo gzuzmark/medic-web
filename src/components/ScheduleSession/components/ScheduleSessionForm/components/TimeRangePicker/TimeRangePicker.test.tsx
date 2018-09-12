@@ -1,7 +1,6 @@
 import { shallow } from 'enzyme';
 import 'jest-localstorage-mock';
 import * as React from 'react';
-import {REPORT_SESSIONS} from "../../../../../../beans/ReportRequest.bean";
 import TimeRangePicker from "./TimeRangePicker";
 
 
@@ -19,14 +18,15 @@ describe('TimeRangePicker Test',() => {
 
     beforeEach(() => {
         props = {
-            type: REPORT_SESSIONS
+            date: new Date("2017-01-26"),
+            onChange: void(0)
         };
         mountedTimeRangePicker = undefined;
     });
 
-    it("render: render TimeRangePicker Header", () => {
-        const component = getComponent().find('.TimeRangePicker-header');
-        expect(component.length).toEqual(1)
+    it("render: render TimeRangePicker default", () => {
+        const component = getComponent();
+        expect(component).toMatchSnapshot();
     });
 
 });

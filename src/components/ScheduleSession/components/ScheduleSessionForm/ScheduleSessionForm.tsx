@@ -10,12 +10,12 @@ import FormSection from '../../components/FormSection/FormSection';
 import { SESSION_SELECTED } from "../../ScheduleSession.constants";
 import ScheduleSessionContext, {IScheduleContext} from '../../ScheduleSession.context';
 import FormColumn from '../FormRow/components/FormColumn/FormColumn';
-import TimeRangePicker from "./components/TimeRangePicker/TimeRangePicker";
 import FormRow from './../../components/FormRow/FormRow';
+import './../../ScheduleSession.scss';
 import ScheduleDuration from './components/ScheduleDuration/ScheduleDuration';
 import SessionDetail from './components/SessionDetail/SessionDetail';
+// import TimeRangePicker from "./components/TimeRangePicker/TimeRangePicker";
 import WeekendPicker from './components/WeekendPicker/WeekendPicker';
-import './../../ScheduleSession.scss';
 
 interface IPropsScheduleSessionForm {
     locations: any;
@@ -86,11 +86,12 @@ class ScheduleSessionForm extends React.Component<IPropsScheduleSessionForm, {}>
                                         sessionTypes={sessionTypes}
                                         onChange={this.props.onChangeSessionDetail}/>
                                 </FormSection>
-
+                                {/*
                                 <hr className='u-Separator' />
                                 <FormSection title={'Agenda fecha y hora'} style={{marginTop: 30}}>
-                                    <TimeRangePicker onChange={this.props.onChangeWeekendPicker}/>
+                                    <TimeRangePicker onChange={this.props.onChangeWeekendPicker} date={new Date()}/>
                                 </FormSection>
+                                */}
 
                                 <hr className='u-Separator' />
                                 <FormSection title={'Agenda fecha y hora'} style={{marginTop: 30}}>
