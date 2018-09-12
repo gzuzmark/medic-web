@@ -38,7 +38,11 @@ class ScheduleSessionForm extends React.Component<IPropsScheduleSessionForm, {}>
     public render() {
         let areas: IListItem[] = [];
         if (this.props.mentor && this.props.mentor.interestAreas) {
-            areas = this.props.mentor.interestAreas.map((area: IArea): IListItem => {
+            areas = this.props.mentor.interestAreas
+                .filter((item: IArea) => {
+                    return item.name.indexOf("aller") === -1;
+                })
+                .map((area: IArea): IListItem => {
                 return  {
                     extra: {
                         skills: area.skills,

@@ -114,17 +114,7 @@ class SessionDetail extends React.Component <IPropsSessionDetail, IStateSessionD
                                     </FormColumn>,
                                 ]} style={{marginBottom: 70}}/>
 
-                                <FormRow columns={[
-                                    <FormColumn key={`SessionDetailRow${++counter}`} width={2}>
-                                        <Text className='FormSession-label'>Modalidad</Text>
-                                        <FilterList
-                                            onChange={this._onChangeType}
-                                            name={session.typeName(this.state.listSession)}
-                                            list={this.state.listSession.filter((item) => !item.name.startsWith('Taller'))}
-                                            defaultText='Presencial, Virtual, etc'
-                                            enableClearSearch={false}/>
-                                    </FormColumn>
-                                ]}/>
+                               
                                 <FormRow columns={[
                                     <FormColumn key={`SessionDetailRow${++counter}`} width={2}>
                                         <Text className='FormSession-label'>Sede</Text>

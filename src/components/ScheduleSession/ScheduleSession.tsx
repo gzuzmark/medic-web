@@ -5,7 +5,7 @@ import Layout from '../../common/Layout/Layout';
 import MenuAside from '../../common/MenuAside/MenuAside';
 import Sticky from '../../common/Sticky/Sticky';
 import { IMatchParam } from '../../interfaces/MatchParam.interface';
-import { IMentor } from '../../interfaces/Mentor.interface';
+import {IArea, IMentor} from '../../interfaces/Mentor.interface';
 import { ISessionSchedule } from '../../interfaces/Session.interface';
 import LocationService from "../../services/Location/Location.service";
 import MentorService from '../../services/Mentor/Mentor.service';
@@ -184,11 +184,14 @@ class ScheduleSession extends React.Component<IPropsScheduleSession, IStateSched
 
     private _onChangeSessionDetail(type: string, item:any) {
         let session = {...this.state.session};
+        // tslint:disable:no-console
+        console.log(session)
         switch (type) {
             case SESSION_SELECTED:
                 session = new SessionBean();
                 session.interestAreaId = item.id;
                 session.interestAreaName = item.name;
+                session.mentorId = this.mentorId;
                 this.loadLocations(item.id);
                 break;
             case SESSION_SKILL:
@@ -215,11 +218,15 @@ class ScheduleSession extends React.Component<IPropsScheduleSession, IStateSched
     private _getMentor() {
         this.mentorService.mentor(this.mentorId).then((mentor: any) => {
             this.setState({mentor});
-            const area = mentor.interestAreas ? mentor.interestAreas[0] : {};
+            const listAreas = mentor.interestAreas ? mentor.interestAreas.filter((item: IArea) => {
+                return item.name.indexOf("aller") === -1;
+            }) : [];
+            const area = listAreas.length > 0 ? listAreas[0] : {};
             if (area.id !== '') {
                 const session = {...this.state.session};
                 session.interestAreaId = area.id;
                 session.interestAreaName = area.name;
+                session.mentorId = this.mentorId;
                 this.setState({session: new SessionBean(session)});
                 this.loadLocations(area.id);
             }
