@@ -8,7 +8,7 @@ import TimePicker from "./TimePicker";
 describe('TimePicker Test',() => {
     let props: any;
     let mountedTimePicker: any;
-    const currentDate = Date.UTC(2018, 1, 20);
+    const currentDate = new Date(Date.UTC(2012,3,13,1,31,38));
     const getComponent = () => {
         if (!mountedTimePicker) {
             mountedTimePicker = shallow(
