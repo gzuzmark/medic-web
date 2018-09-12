@@ -1,7 +1,6 @@
 import * as moment from "moment";
 import * as React from 'react';
 import {SessionBean} from '../../beans/Session.bean';
-import ConsoleModalConfirm from "../../common/ConsoleModal/ConsoleModalConfirm";
 import Layout from '../../common/Layout/Layout';
 import MenuAside from '../../common/MenuAside/MenuAside';
 import Sticky from '../../common/Sticky/Sticky';
@@ -32,6 +31,7 @@ interface IStateScheduleSession {
     savingData: boolean;
     session: SessionBean;
     showModal: boolean;
+
 }
 
 class ScheduleSession extends React.Component<IPropsScheduleSession, IStateScheduleSession> {
@@ -52,7 +52,6 @@ class ScheduleSession extends React.Component<IPropsScheduleSession, IStateSched
             showModal: false
         };
         this.mentorId = this.props.match.params.id;
-        this._getMentor = this._getMentor.bind(this);
         this._onChangeSessionDetail = this._onChangeSessionDetail.bind(this);
         this._onChangeWeekendPicker = this._onChangeWeekendPicker.bind(this);
         this._onChangeDuration = this._onChangeDuration.bind(this);
@@ -92,47 +91,6 @@ class ScheduleSession extends React.Component<IPropsScheduleSession, IStateSched
     public render() {
         return (
             <ScheduleSessionContext.Provider value={{session: this.state.session, listSession: this.state.listSession}} >
-                <ConsoleModalConfirm show={false} onCloseModal={this._onCancel} title={'Estás apunto de crear las siguientes sesiones'}>
-                    <div>
-                        <div>
-                            <span>Hola señor aqui esta la tabla</span>
-                        </div>
-
-                        <div>
-                            <div>
-                                <div>
-                                <div>Sesión</div>
-                                <div>Tipo</div>
-                                <div>Sede</div>
-                                <div>Cap.</div>
-                                <div>Aula</div>
-                                <div>Día</div>
-                                <div>Hora</div>
-                                </div>
-                            </div>
-                            <div>
-                                {this.state.session.listSessions.map((item: ISessionSchedule, index: number) => {
-                                    return (
-                                        <div key={`ModalTable-${index}`}>
-                                            <div>{this.state.session.skillName}</div>
-                                            <div>Tutoria</div>
-                                            <div>{this.state.session.location}</div>
-                                            <div>{this.state.session.maxStudents}</div>
-                                            <div>{item.weekDay}</div>
-                                            <div>{item.from} - {item.to}</div>
-                                        </div>
-                                    )
-                                })}
-                            </div>
-                        </div>
-
-                        <div>
-                            <button className="u-Button u-Button--white" onClick={this._onCancel}>Cancelar</button>
-                            <button className="u-Button" onClick={this._onConfirm}>Aceptar</button>
-
-                        </div>
-                    </div>
-                </ConsoleModalConfirm>
                 <Layout menu={this.renderMenu()}>
                     <Sticky height={0} top={80} style={{zIndex: -1}}>
                         <MentorDetail mentor={this.state.mentor}/>

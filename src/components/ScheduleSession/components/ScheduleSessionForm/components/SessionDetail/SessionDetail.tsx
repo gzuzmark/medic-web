@@ -1,20 +1,20 @@
 import * as React from 'react';
 import * as NumericInput from 'react-numeric-input';
-import { Text } from '../../../../common/ConsoleText';
-import FilterList, {IListItem} from '../../../../common/FilterList/FilterList';
-import {ILocationPhysical, ILocationPhysicalRoom} from '../../../../interfaces/Location.interface';
-import {IMentorDescription, ISessionTypes, ISkill} from '../../../../interfaces/Mentor.interface';
+import { Text } from '../../../../../../common/ConsoleText';
+import FilterList, {IListItem} from '../../../../../../common/FilterList/FilterList';
+import {ILocationPhysical, ILocationPhysicalRoom} from '../../../../../../interfaces/Location.interface';
+import {IMentorDescription, ISessionTypes, ISkill} from '../../../../../../interfaces/Mentor.interface';
 import {
     SESSION_PHYSICAL,
     SESSION_UNDEFINED, SESSION_VIRTUAL
-} from '../../../../repository/SessionTypeConstants';
+} from '../../../../../../repository/SessionTypeConstants';
 import {
     SESSION_MAX_STUDENTS, SESSION_ROOM, SESSION_SITE, SESSION_SKILL,
     SESSION_TYPE
-} from '../../ScheduleSession.constants';
-import ScheduleSessionContext, {IScheduleContext} from '../../ScheduleSession.context';
-import FormColumn from '../FormRow/components/FormColumn/FormColumn';
-import FormRow from './../../components/FormRow/FormRow';
+} from '../../../../ScheduleSession.constants';
+import ScheduleSessionContext, {IScheduleContext} from '../../../../ScheduleSession.context';
+import FormColumn from '../../../FormRow/components/FormColumn/FormColumn';
+import FormRow from '../../../FormRow/FormRow';
 import './SessionDetail.scss';
 
 interface IPropsSessionDetail {
@@ -109,11 +109,22 @@ class SessionDetail extends React.Component <IPropsSessionDetail, IStateSessionD
                                             onChange={this._onChangeType}
                                             name={session.typeName(this.state.listSession)}
                                             list={this.state.listSession.filter((item) => !item.name.startsWith('Taller'))}
-                                            defaultText='Taller, tutoría, etc.'
+                                            defaultText='Presencial, Virtual, etc'
                                             enableClearSearch={false}/>
                                     </FormColumn>,
                                 ]} style={{marginBottom: 70}}/>
 
+                                <FormRow columns={[
+                                    <FormColumn key={`SessionDetailRow${++counter}`} width={2}>
+                                        <Text className='FormSession-label'>Modalidad</Text>
+                                        <FilterList
+                                            onChange={this._onChangeType}
+                                            name={session.typeName(this.state.listSession)}
+                                            list={this.state.listSession.filter((item) => !item.name.startsWith('Taller'))}
+                                            defaultText='Presencial, Virtual, etc'
+                                            enableClearSearch={false}/>
+                                    </FormColumn>
+                                ]}/>
                                 <FormRow columns={[
                                     <FormColumn key={`SessionDetailRow${++counter}`} width={2}>
                                         <Text className='FormSession-label'>Sede</Text>

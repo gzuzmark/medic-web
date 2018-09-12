@@ -10,10 +10,11 @@ import FormSection from '../../components/FormSection/FormSection';
 import { SESSION_SELECTED } from "../../ScheduleSession.constants";
 import ScheduleSessionContext, {IScheduleContext} from '../../ScheduleSession.context';
 import FormColumn from '../FormRow/components/FormColumn/FormColumn';
+import TimeRangePicker from "./components/TimeRangePicker/TimeRangePicker";
 import FormRow from './../../components/FormRow/FormRow';
-import ScheduleDuration from './../../components/ScheduleDuration/ScheduleDuration';
-import SessionDetail from './../../components/SessionDetail/SessionDetail';
-import WeekendPicker from './../../components/WeekendPicker/WeekendPicker';
+import ScheduleDuration from './components/ScheduleDuration/ScheduleDuration';
+import SessionDetail from './components/SessionDetail/SessionDetail';
+import WeekendPicker from './components/WeekendPicker/WeekendPicker';
 import './../../ScheduleSession.scss';
 
 interface IPropsScheduleSessionForm {
@@ -85,8 +86,13 @@ class ScheduleSessionForm extends React.Component<IPropsScheduleSessionForm, {}>
                                         sessionTypes={sessionTypes}
                                         onChange={this.props.onChangeSessionDetail}/>
                                 </FormSection>
-                                <hr className='u-Separator' />
 
+                                <hr className='u-Separator' />
+                                <FormSection title={'Agenda fecha y hora'} style={{marginTop: 30}}>
+                                    <TimeRangePicker onChange={this.props.onChangeWeekendPicker}/>
+                                </FormSection>
+
+                                <hr className='u-Separator' />
                                 <FormSection title={'Agenda fecha y hora'} style={{marginTop: 30}}>
                                     <WeekendPicker onChange={this.props.onChangeWeekendPicker}/>
                                 </FormSection>
@@ -99,7 +105,7 @@ class ScheduleSessionForm extends React.Component<IPropsScheduleSessionForm, {}>
                                 <div className="ScheduleSession-button_container">
                                     <button className="u-Button u-Button--white ScheduleSession-button">Cancelar</button>
                                     <button className="u-Button ScheduleSession-button"
-                                            disabled={!session.isValid() || this.props.savingData}
+                                            disabled={!session.isSessionValid() || this.props.savingData}
                                             onClick={this.props.onClickSaveBulk}
                                             data-loading={this.props.savingData ? true : undefined}>{this.props.savingData ? '' : 'Aceptar'}</button>
                                 </div>

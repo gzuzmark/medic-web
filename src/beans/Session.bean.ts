@@ -79,7 +79,7 @@ export class SessionBean implements ISession {
         return this.sessions;
     }
 
-    public isValid() {
+    public isSessionValid() {
         return this.from <= this.to &&
                this.type !== '' &&
                (this.location !== '' || this.type === SESSION_VIRTUAL) &&
@@ -87,6 +87,17 @@ export class SessionBean implements ISession {
                this.mentorId !== '' &&
                this.sessions.length > 0 &&
                this.skillId !== '';
+    }
+
+    public isWorkShopValid() {
+        return this.from <= this.to &&
+            this.type !== '' &&
+            (this.location !== '' || this.type === SESSION_VIRTUAL) &&
+            this.maxStudents > 0 &&
+            this.mentorId !== '' &&
+            this.sessions.length > 0 &&
+            this.skillId !== '';
+
     }
 
     private getTime(initialDay: Date, utcTime: string) {
