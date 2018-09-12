@@ -18,7 +18,7 @@ describe('TimeRangePicker Test',() => {
 
     beforeEach(() => {
         props = {
-            date: new Date("2017-01-26"),
+            date: Date.UTC(2018, 1, 20),
             onChange: void(0)
         };
         mountedTimeRangePicker = undefined;
