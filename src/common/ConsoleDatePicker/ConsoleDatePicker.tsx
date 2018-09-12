@@ -2,7 +2,7 @@
 import * as moment from "moment";
 import * as React from 'react';
 import { SingleDatePicker } from 'react-dates';
-import {BaseConfigCalendar} from "../../components/ScheduleSession/components/ScheduleDuration/components/Calendar.const";
+import {BaseConfigCalendar} from "../../components/ScheduleSession/components/ScheduleSessionForm/components/ScheduleDuration/components/Calendar.const";
 
 
 interface IPropsConsoleDatePicker {

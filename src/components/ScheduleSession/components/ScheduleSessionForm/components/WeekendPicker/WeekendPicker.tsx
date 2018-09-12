@@ -1,10 +1,10 @@
 import * as React from 'react';
-import { SessionBean } from '../../../../beans/Session.bean';
-import { Text } from '../../../../common/ConsoleText';
-import {getFullHour, getHour} from '../../../../common/ConsoleUtils';
-import { IMentorDescription } from '../../../../interfaces/Mentor.interface';
-import { ISessionSchedule } from '../../../../interfaces/Session.interface';
-import ScheduleSessionContext, {IScheduleContext} from '../../ScheduleSession.context';
+import { SessionBean } from '../../../../../../beans/Session.bean';
+import { Text } from '../../../../../../common/ConsoleText';
+import {getFullHour, getHour} from '../../../../../../common/ConsoleUtils';
+import { IMentorDescription } from '../../../../../../interfaces/Mentor.interface';
+import { ISessionSchedule } from '../../../../../../interfaces/Session.interface';
+import ScheduleSessionContext, {IScheduleContext} from '../../../../ScheduleSession.context';
 import './WeekendPicker.scss';
 
 interface IPropsWeekendPicker {

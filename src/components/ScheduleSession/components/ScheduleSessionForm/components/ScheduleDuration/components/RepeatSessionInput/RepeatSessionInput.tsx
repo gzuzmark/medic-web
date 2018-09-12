@@ -1,6 +1,6 @@
 import * as moment from "moment";
 import * as React from 'react';
-import ConsoleInputRadio from "../../../../../../common/ConsoleInputRadio/ConsoleInputRadio";
+import ConsoleInputRadio from "../../../../../../../../common/ConsoleInputRadio/ConsoleInputRadio";
 import './RepeatSessionInput.scss';
 
 interface IPropsRepeatSessionInput {
