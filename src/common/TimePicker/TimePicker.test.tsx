@@ -8,6 +8,7 @@ import TimePicker from "./TimePicker";
 describe('TimePicker Test',() => {
     let props: any;
     let mountedTimePicker: any;
+    const currentDate = Date.UTC(2018, 1, 20);
     const getComponent = () => {
         if (!mountedTimePicker) {
             mountedTimePicker = shallow(
@@ -20,11 +21,11 @@ describe('TimePicker Test',() => {
     beforeEach(() => {
         props = {
             defaultText: '11:00',
-            from: moment('20111031'),
+            from: moment(currentDate),
             name: 'Inicio',
             onChange: void(0),
             step: 15,
-            to: moment('20111031')
+            to: moment(currentDate)
         };
         mountedTimePicker = undefined;
     });
@@ -35,8 +36,8 @@ describe('TimePicker Test',() => {
     });
 
     it("render: render TimePicker 1 day", () => {
-        const to = moment('20111031');
-        const from = moment('20111031');
+        const to = moment(currentDate);
+        const from = moment(currentDate);
         to.add(1, 'days').set('minutes', 0);
         from.set('minutes', 0);
         props = {

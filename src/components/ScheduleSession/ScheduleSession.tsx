@@ -184,8 +184,6 @@ class ScheduleSession extends React.Component<IPropsScheduleSession, IStateSched
 
     private _onChangeSessionDetail(type: string, item:any) {
         let session = {...this.state.session};
-        // tslint:disable:no-console
-        console.log(session)
         switch (type) {
             case SESSION_SELECTED:
                 session = new SessionBean();
