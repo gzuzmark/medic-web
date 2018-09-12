@@ -5,7 +5,7 @@ ShallowWrapper {
   "length": 1,
   Symbol(enzyme.__root__): [Circular],
   Symbol(enzyme.__unrendered__): <TimeRangePicker
-    date={1519084800000}
+    date={2012-04-13T01:31:38.000Z}
     onChange={undefined}
   />,
   Symbol(enzyme.__renderer__): Object {
@@ -27,7 +27,7 @@ ShallowWrapper {
               width={4}
             >
               <InputDatePicker
-                date={1519084800000}
+                date={2012-04-13T01:31:38.000Z}
                 id="startDate"
                 updateState={undefined}
               />
@@ -37,11 +37,11 @@ ShallowWrapper {
             >
               <TimePicker
                 defaultText="11:00 am"
-                from={"2018-02-19T05:00:00.000Z"}
+                from={"2012-04-12T05:00:00.000Z"}
                 name="Inicia"
                 onChange={undefined}
                 step={15}
-                to={"2018-02-20T04:59:00.000Z"}
+                to={"2012-04-13T04:59:00.000Z"}
               />
             </FormColumn>,
             <FormColumn
@@ -49,11 +49,11 @@ ShallowWrapper {
             >
               <TimePicker
                 defaultText="11:00 am"
-                from={"2018-02-19T05:00:00.000Z"}
+                from={"2012-04-12T05:00:00.000Z"}
                 name="Termina"
                 onChange={undefined}
                 step={15}
-                to={"2018-02-20T04:59:00.000Z"}
+                to={"2012-04-13T04:59:00.000Z"}
               />
             </FormColumn>,
             <FormColumn
@@ -79,7 +79,7 @@ ShallowWrapper {
             width={4}
           >
             <InputDatePicker
-              date={1519084800000}
+              date={2012-04-13T01:31:38.000Z}
               id="startDate"
               updateState={undefined}
             />
@@ -89,11 +89,11 @@ ShallowWrapper {
           >
             <TimePicker
               defaultText="11:00 am"
-              from={"2018-02-19T05:00:00.000Z"}
+              from={"2012-04-12T05:00:00.000Z"}
               name="Inicia"
               onChange={undefined}
               step={15}
-              to={"2018-02-20T04:59:00.000Z"}
+              to={"2012-04-13T04:59:00.000Z"}
             />
           </FormColumn>,
           <FormColumn
@@ -101,11 +101,11 @@ ShallowWrapper {
           >
             <TimePicker
               defaultText="11:00 am"
-              from={"2018-02-19T05:00:00.000Z"}
+              from={"2012-04-12T05:00:00.000Z"}
               name="Termina"
               onChange={undefined}
               step={15}
-              to={"2018-02-20T04:59:00.000Z"}
+              to={"2012-04-13T04:59:00.000Z"}
             />
           </FormColumn>,
           <FormColumn
@@ -134,7 +134,7 @@ ShallowWrapper {
                 width={4}
               >
                 <InputDatePicker
-                  date={1519084800000}
+                  date={2012-04-13T01:31:38.000Z}
                   id="startDate"
                   updateState={undefined}
                 />
@@ -144,11 +144,11 @@ ShallowWrapper {
               >
                 <TimePicker
                   defaultText="11:00 am"
-                  from={"2018-02-19T05:00:00.000Z"}
+                  from={"2012-04-12T05:00:00.000Z"}
                   name="Inicia"
                   onChange={undefined}
                   step={15}
-                  to={"2018-02-20T04:59:00.000Z"}
+                  to={"2012-04-13T04:59:00.000Z"}
                 />
               </FormColumn>,
               <FormColumn
@@ -156,11 +156,11 @@ ShallowWrapper {
               >
                 <TimePicker
                   defaultText="11:00 am"
-                  from={"2018-02-19T05:00:00.000Z"}
+                  from={"2012-04-12T05:00:00.000Z"}
                   name="Termina"
                   onChange={undefined}
                   step={15}
-                  to={"2018-02-20T04:59:00.000Z"}
+                  to={"2012-04-13T04:59:00.000Z"}
                 />
               </FormColumn>,
               <FormColumn
@@ -186,7 +186,7 @@ ShallowWrapper {
               width={4}
             >
               <InputDatePicker
-                date={1519084800000}
+                date={2012-04-13T01:31:38.000Z}
                 id="startDate"
                 updateState={undefined}
               />
@@ -196,11 +196,11 @@ ShallowWrapper {
             >
               <TimePicker
                 defaultText="11:00 am"
-                from={"2018-02-19T05:00:00.000Z"}
+                from={"2012-04-12T05:00:00.000Z"}
                 name="Inicia"
                 onChange={undefined}
                 step={15}
-                to={"2018-02-20T04:59:00.000Z"}
+                to={"2012-04-13T04:59:00.000Z"}
               />
             </FormColumn>,
             <FormColumn
@@ -208,11 +208,11 @@ ShallowWrapper {
             >
               <TimePicker
                 defaultText="11:00 am"
-                from={"2018-02-19T05:00:00.000Z"}
+                from={"2012-04-12T05:00:00.000Z"}
                 name="Termina"
                 onChange={undefined}
                 step={15}
-                to={"2018-02-20T04:59:00.000Z"}
+                to={"2012-04-13T04:59:00.000Z"}
               />
             </FormColumn>,
             <FormColumn
