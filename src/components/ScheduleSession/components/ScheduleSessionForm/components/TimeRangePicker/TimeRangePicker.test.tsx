@@ -4,7 +4,7 @@ import * as React from 'react';
 import TimeRangePicker from "./TimeRangePicker";
 
 
-describe('TimeRangePicker Test',() => {
+describe.skip('TimeRangePicker Test',() => {
     let props: any;
     let mountedTimeRangePicker: any;
     const getComponent = () => {
