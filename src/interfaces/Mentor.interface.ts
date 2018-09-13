@@ -10,7 +10,8 @@ export interface IArea {
     id: string;
     name: string;
     type: string;
-    sessionTypes: ISessionTypes[]
+    sessionTypes: ISessionTypes[];
+    skills: string[];
 }
 
 export interface ISessionTypes {
@@ -22,7 +23,7 @@ export interface ISessionTypes {
 export interface IMentor {
     id: string;
     user: IBaseUser;
-    interestAreas?: IArea[];
+    interestAreas: IArea[];
     sessions: {
         totalMinutes: number;
     }

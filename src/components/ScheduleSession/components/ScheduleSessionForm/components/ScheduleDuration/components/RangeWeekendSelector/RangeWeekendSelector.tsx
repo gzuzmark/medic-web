@@ -2,7 +2,7 @@ import * as moment from "moment";
 import * as React from 'react';
 import { DayPickerRangeController } from 'react-dates';
 import {findDOMNode} from 'react-dom';
-import { BaseConfigCalendar } from './../../components/Calendar.const';
+import { BaseConfigCalendar } from '../Calendar.const';
 import './RangeWeekendSelector.scss';
 
 interface IPropsRangeWeekendSelector {

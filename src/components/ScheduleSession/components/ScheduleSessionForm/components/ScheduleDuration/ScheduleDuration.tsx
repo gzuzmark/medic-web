@@ -1,9 +1,9 @@
 import * as moment from "moment";
 import * as React from 'react';
 import { SingleDatePicker } from 'react-dates';
-import { Text } from '../../../../common/ConsoleText';
-import FormColumn from '../FormRow/components/FormColumn/FormColumn';
-import FormRow from './../../components/FormRow/FormRow';
+import { Text } from '../../../../../../common/ConsoleText';
+import FormColumn from '../../../FormRow/components/FormColumn/FormColumn';
+import FormRow from '../../../FormRow/FormRow';
 import { BaseConfigCalendar } from './components/Calendar.const';
 import RangeWeekendSelector from './components/RangeWeekendSelector/RangeWeekendSelector';
 import RepeatSessionInput from './components/RepeatSessionInput/RepeatSessionInput';
