@@ -1,0 +1,29 @@
+.TimeRangePicker {
+  &:first-child:nth-last-child(1) {
+    .TimeRangePicker_option--delete {
+      display: none;
+    }
+  }
+  &:last-child {
+    .TimeRangePicker_option--add {
+      display: flex;
+    }
+  }
+  &_options {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 28px;
+  }
+  &_option {
+    align-items: center;
+    cursor: pointer;
+    display: none;
+    padding: 0 8px;
+    &--delete {
+      display: flex;
+    }
+  }
+  &_option-text {
+    margin-left: 9px;
+  }
+}

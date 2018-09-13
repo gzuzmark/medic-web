@@ -5,7 +5,7 @@ import Layout from '../../common/Layout/Layout';
 import MenuAside from '../../common/MenuAside/MenuAside';
 import Sticky from '../../common/Sticky/Sticky';
 import { IMatchParam } from '../../interfaces/MatchParam.interface';
-import {IArea, IMentor} from '../../interfaces/Mentor.interface';
+import { IMentor } from '../../interfaces/Mentor.interface';
 import { ISessionSchedule } from '../../interfaces/Session.interface';
 import LocationService from "../../services/Location/Location.service";
 import MentorService from '../../services/Mentor/Mentor.service';
@@ -210,23 +210,28 @@ class ScheduleSession extends React.Component<IPropsScheduleSession, IStateSched
                 session.maxStudents = Number(item.name);
                 break;
         }
-        this.setState({session: new SessionBean(session)});
+        this.setState({session: new SessionBean(session)}, () => {
+            if (SESSION_SELECTED === type) {
+                this.loadLocations(item.id);
+            }
+            // tslint:disable:no-console
+            console.log(this.state.session);
+        });
     }
 
     private _getMentor() {
         this.mentorService.mentor(this.mentorId).then((mentor: any) => {
             this.setState({mentor});
-            const listAreas = mentor.interestAreas ? mentor.interestAreas.filter((item: IArea) => {
-                return item.name.indexOf("aller") === -1;
-            }) : [];
+            const listAreas = mentor.interestAreas ? mentor.interestAreas : [];
             const area = listAreas.length > 0 ? listAreas[0] : {};
             if (area.id !== '') {
                 const session = {...this.state.session};
                 session.interestAreaId = area.id;
                 session.interestAreaName = area.name;
                 session.mentorId = this.mentorId;
-                this.setState({session: new SessionBean(session)});
-                this.loadLocations(area.id);
+                this.setState({session: new SessionBean(session)}, () => {
+                    this.loadLocations(area.id);
+                });
             }
         });
     }

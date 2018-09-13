@@ -83,7 +83,19 @@ class SessionDetail extends React.Component <IPropsSessionDetail, IStateSessionD
         });
         this.setState({listSession});
     }
-
+    public reset() {
+        this.setState({
+            listSession: [],
+            maxStudents: 1,
+            mentor: undefined,
+            rooms: [],
+            selectedRoom: '',
+            selectedSite: '',
+            sites: []
+        }, () => {
+            this.componentDidMount();
+        });
+    }
     public render() {
         return (
             <ScheduleSessionContext.Consumer>
