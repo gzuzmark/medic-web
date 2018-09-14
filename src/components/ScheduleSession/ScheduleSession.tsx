@@ -56,6 +56,9 @@ class ScheduleSession extends React.Component<IPropsScheduleSession, IStateSched
         this._onChangeWeekendPicker = this._onChangeWeekendPicker.bind(this);
         this._onChangeDuration = this._onChangeDuration.bind(this);
         this._onClickSaveBulk = this._onClickSaveBulk.bind(this);
+        this._onChangeWorkshop = this._onChangeWorkshop.bind(this);
+        this._onRemoveWorkshop = this._onRemoveWorkshop.bind(this);
+        this._onAddWorkshop = this._onAddWorkshop.bind(this);
         this._onConfirm = this._onConfirm.bind(this);
         this._onCancel = this._onCancel.bind(this);
     }
@@ -106,6 +109,9 @@ class ScheduleSession extends React.Component<IPropsScheduleSession, IStateSched
                                 mentor={this.state.mentor}
                                 onChangeSessionDetail={this._onChangeSessionDetail}
                                 onChangeWeekendPicker={this._onChangeWeekendPicker}
+                                onChangeWorkshop={this._onChangeWorkshop}
+                                onRemoveWorkshop={this._onRemoveWorkshop}
+                                onAddWorkshop={this._onAddWorkshop}
                             />
                         </div>
                     </div>
@@ -158,6 +164,30 @@ class ScheduleSession extends React.Component<IPropsScheduleSession, IStateSched
         session.from = startDate.toDate();
         session.to = endDate.toDate();
         this.setState({session: new SessionBean(session)});
+    }
+
+    private _onChangeWorkshop(id: number, from: Date | null, to: Date | null) {
+        const session = new SessionBean(this.state.session);
+        session.sessions[id] = {
+            from: from ? from.toUTCString() : '',
+            to: to ?  to.toUTCString() : ''
+        };
+        this.setState({session});
+    }
+
+    private _onAddWorkshop(from: Date | null, to: Date | null) {
+        const session = new SessionBean(this.state.session);
+        session.sessions.push({
+            from: from ? from.toUTCString() : '',
+            to: to ?  to.toUTCString() : ''
+        });
+        this.setState({session});
+    }
+
+    private _onRemoveWorkshop(id: number) {
+        const session = new SessionBean(this.state.session);
+        session.sessions.splice(id, 1);
+        this.setState({session});
     }
 
     private _onChangeWeekendPicker(sessionSchedule: ISessionSchedule) {

@@ -25,7 +25,10 @@ interface IPropsScheduleSessionForm {
     onChangeSessionDetail(type: string, item:IListItem): void;
     onChangeWeekendPicker(sessionSchedule: ISessionSchedule): void;
     onChangeDuration(startDate: moment.Moment, endDate: moment.Moment, action: string): void;
+    onChangeWorkshop(id: number, from: Date | null, to: Date | null): void;
     onClickSaveBulk(): void;
+    onRemoveWorkshop(id: number): void;
+    onAddWorkshop(from: Date | null, to: Date | null): void;
 }
 
 class ScheduleSessionForm extends React.Component<IPropsScheduleSessionForm, {}> {
@@ -91,7 +94,16 @@ class ScheduleSessionForm extends React.Component<IPropsScheduleSessionForm, {}>
                                 </FormSection>
                                 <hr className='u-Separator' />
                                 <FormSection title={'Agenda fecha y hora'} style={{marginTop: 30}}>
-                                    <TimeRangePicker onChange={this.props.onChangeWeekendPicker} date={new Date()}/>
+                                    {session.sessions.map((item: ISessionSchedule, index: number) => {
+                                        return (
+                                            <TimeRangePicker
+                                                onChange={this.props.onChangeWorkshop}
+                                                onRemoveWorkshop={this.props.onRemoveWorkshop}
+                                                onAddWorkshop={this.props.onAddWorkshop}
+                                                id={index}
+                                                key={`FormSection-${index}`}/>
+                                        )
+                                    })}
                                 </FormSection>
 
                                 <hr className='u-Separator' />

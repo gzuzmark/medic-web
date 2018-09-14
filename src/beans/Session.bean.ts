@@ -38,6 +38,7 @@ export class SessionBean implements ISession {
             date.setDate(date.getDate() + endOfWeek);
             this.from = new Date();
             this.to = date;
+            this.sessions = [{from: '', to: ''}];
             this.maxStudents = 1;
         }
     }
@@ -52,8 +53,11 @@ export class SessionBean implements ISession {
             const initialDay = new Date(this.from);
             const from = this.getTime(initialDay, item.from);
             const to = this.getTime(initialDay, item.to);
-            let weekDay = this.hasDayChange(initialDay, item.to) ? item.weekDay - 1: item.weekDay;
-            weekDay = weekDay > 7 ? 1 : weekDay;
+            let weekDay = -9999;
+            if (typeof(item.weekDay) !== "undefined") {
+                weekDay = this.hasDayChange(initialDay, item.to) ? item.weekDay - 1: item.weekDay;
+                weekDay = weekDay > 7 ? 1 : weekDay;
+            }
             return {
                 from,
                 to,
@@ -68,8 +72,11 @@ export class SessionBean implements ISession {
             const initialDay = new Date(this.from);
             const from = this.getUTCTime(initialDay, item.from);
             const to = this.getUTCTime(initialDay, item.to);
-            let weekDay = this.hasDayChange(initialDay, item.to) ? item.weekDay + 1 : item.weekDay ;
-            weekDay = weekDay > 7 ? 1 : weekDay;
+            let weekDay = -9999;
+            if (typeof(item.weekDay) !== "undefined") {
+                weekDay = this.hasDayChange(initialDay, item.to) ? item.weekDay + 1 : item.weekDay;
+                weekDay = weekDay > 7 ? 1 : weekDay;
+            }
             return {
                 from,
                 to,
