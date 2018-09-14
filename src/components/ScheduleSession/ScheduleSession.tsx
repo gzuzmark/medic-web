@@ -130,8 +130,7 @@ class ScheduleSession extends React.Component<IPropsScheduleSession, IStateSched
         session.from.setHours(0,0,0, 0);
         session.to.setDate(session.to.getDate() + 1);
         session.to.setHours(0,0,0,0);
-
-        if (session.isWorkshop()) {
+        if (session.isWorkshop) {
             this.mentorService.bulkWorkshop(this.mentorId, session).then((items: any[]) => {
                 if (items.length > 0 ) {
                     window.location.assign('/admin');
