@@ -126,23 +126,38 @@ class ScheduleSession extends React.Component<IPropsScheduleSession, IStateSched
 
     private _onConfirm() {
         this.setState({savingData: true});
-        const session: any = new SessionBean(this.state.session);
+        const session : any= new SessionBean(this.state.session);
         session.from.setHours(0,0,0, 0);
         session.to.setDate(session.to.getDate() + 1);
         session.to.setHours(0,0,0,0);
-        session.from = session.from.toISOString();
-        session.to = session.to.toISOString();
-        this.mentorService.bulk(this.mentorId, session).then((items: any[]) => {
-            if (items.length > 0 ) {
-                window.location.assign('/admin');
-            } else {
+
+        if (session.isWorkshop()) {
+            this.mentorService.bulkWorkshop(this.mentorId, session).then((items: any[]) => {
+                if (items.length > 0 ) {
+                    window.location.assign('/admin');
+                } else {
+                    alert('Hay Conflictos de Horarios');
+                }
+                this.setState({savingData: false});
+            }, () => {
                 alert('Hay Conflictos de Horarios');
-            }
-            this.setState({savingData: false});
-        }, () => {
-            alert('Hay Conflictos de Horarios');
-            this.setState({savingData: false});
-        });
+                this.setState({savingData: false});
+            });
+        } else {
+            session.from = session.from.toISOString();
+            session.to = session.to.toISOString()
+            this.mentorService.bulk(this.mentorId, session).then((items: any[]) => {
+                if (items.length > 0 ) {
+                    window.location.assign('/admin');
+                } else {
+                    alert('Hay Conflictos de Horarios');
+                }
+                this.setState({savingData: false});
+            }, () => {
+                alert('Hay Conflictos de Horarios');
+                this.setState({savingData: false});
+            });
+        }
     }
 
     private _onClickSaveBulk() {
@@ -166,20 +181,23 @@ class ScheduleSession extends React.Component<IPropsScheduleSession, IStateSched
         this.setState({session: new SessionBean(session)});
     }
 
-    private _onChangeWorkshop(id: number, from: Date | null, to: Date | null) {
+    private _onChangeWorkshop(id: number, from: Date | null, to: Date | null, key: string) {
         const session = new SessionBean(this.state.session);
         session.sessions[id] = {
-            from: from ? from.toUTCString() : '',
-            to: to ?  to.toUTCString() : ''
+            from: from ? from.toISOString() : '',
+            key,
+            to: to ?  to.toISOString() : ''
         };
-        this.setState({session});
+        this.setState({session, listSession: {id}});
     }
 
     private _onAddWorkshop(from: Date | null, to: Date | null) {
         const session = new SessionBean(this.state.session);
+        const uniqueKey = Date.now().toString() + session.sessions.length;
         session.sessions.push({
-            from: from ? from.toUTCString() : '',
-            to: to ?  to.toUTCString() : ''
+            from: from ? from.toISOString() : '',
+            key: uniqueKey,
+            to: to ?  to.toISOString() : ''
         });
         this.setState({session});
     }
@@ -244,8 +262,6 @@ class ScheduleSession extends React.Component<IPropsScheduleSession, IStateSched
             if (SESSION_SELECTED === type) {
                 this.loadLocations(item.id);
             }
-            // tslint:disable:no-console
-            console.log(this.state.session);
         });
     }
 

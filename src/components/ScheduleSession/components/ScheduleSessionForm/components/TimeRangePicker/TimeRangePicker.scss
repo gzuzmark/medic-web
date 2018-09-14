@@ -4,6 +4,13 @@
       display: none;
     }
   }
+  /* two items */
+  &:first-child:nth-last-child(5),
+  &:first-child:nth-last-child(5) ~ .TimeRangePicker {
+    .TimeRangePicker_option--add {
+      display: none;
+    }
+  }
   &:last-child {
     .TimeRangePicker_option--add {
       display: flex;

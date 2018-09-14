@@ -25,6 +25,7 @@ export interface ISessionReport extends ISessionBase {
 }
 
 export interface ISessionSchedule {
+    key?: string;
     weekDay?: number;
     from: string;
     to: string;

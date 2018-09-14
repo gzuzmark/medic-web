@@ -13,9 +13,10 @@ import './TimeRangePicker.scss';
 
 interface IPropsTimeRangePicker {
     id: number;
-    onChange: (id: number, from: Date | null, to: Date | null) => void;
+    onChange: (id: number, from: Date | null, to: Date | null, key: string) => void;
     onRemoveWorkshop: (id: number) => void;
     onAddWorkshop: (from: Date | null, to: Date | null) => void;
+    uniqueKey: string;
 }
 
 interface IFormatDates {
@@ -106,7 +107,7 @@ class TimeRangePicker extends React.Component<IPropsTimeRangePicker, {}> {
     }
 
     private onAdd() {
-        this.props.onAddWorkshop(this.state.selectedFromDate, this.state.selectedToDate);
+        this.props.onAddWorkshop(null, null);
     }
 
     private getHour(date: Date | null): string {
@@ -118,7 +119,7 @@ class TimeRangePicker extends React.Component<IPropsTimeRangePicker, {}> {
     }
 
     private updateWorkshops() {
-        this.props.onChange(this.props.id, this.state.selectedFromDate, this.state.selectedToDate);
+        this.props.onChange(this.props.id, this.state.selectedFromDate, this.state.selectedToDate, this.props.uniqueKey);
     }
 
     private updateDate(date: Date, key: string) {
@@ -163,17 +164,19 @@ class TimeRangePicker extends React.Component<IPropsTimeRangePicker, {}> {
         const endDate = moment(date);
         const limitDate = moment();
         const isToday = initDate.format("YYYY-MM-DD") === limitDate.format("YYYY-MM-DD");
-        let extraMinutes = 0;
+        let initMinutes = 0;
+        let endMinutes= 0;
         if (restrict) {
-            extraMinutes = initDate.get('minutes');
+            initMinutes = initDate.get('minutes');
+            endMinutes = 59;
         } else if (isToday) {
             initDate = moment();
-            extraMinutes = this.formatTime(limitDate);
+            initMinutes = this.formatTime(limitDate);
         } else {
             initDate.set('hours', 0);
         }
-        initDate.set('minutes', extraMinutes).set('seconds', 0);
-        endDate.set('hours', 23).set('minutes', 59).set('seconds', 0);
+        initDate.set('minutes', initMinutes).set('seconds', 0);
+        endDate.set('hours', 23).set('minutes', endMinutes).set('seconds', 0);
         return { endDate, initDate }
     }
 
