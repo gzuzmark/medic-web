@@ -15,6 +15,7 @@ const NAMED_COLORS = {
 
 const TEXT_COLORS = {
     ...NAMED_COLORS,
+    actionColor: NAMED_COLORS.purpleDark,
     textLight: NAMED_COLORS.white,
     textNormal: NAMED_COLORS.greyDark,
     textNormalSoft: NAMED_COLORS.greyLight,

@@ -31,11 +31,27 @@ const getDateFormatted = (date: Date) => {
         month = '0' + mm;
     }
     return day + '-' + month + '-' + year;
-}
+};
+
+const getDateFormattedToHour = (date: Date) => {
+    const hh = date.getHours();
+    const mm = date.getMinutes();
+    let hours = hh.toString();
+    let minutes = mm.toString();
+
+    if(hh < 10){
+        hours = '0' + hh;
+    }
+    if(mm < 10){
+        minutes = '0' + mm;
+    }
+    return hours + ':' + minutes ;
+};
 
 const Utilities = {
     donwloadLink,
-    getDateFormatted
+    getDateFormatted,
+    getDateFormattedToHour
 };
 
 export default Utilities;

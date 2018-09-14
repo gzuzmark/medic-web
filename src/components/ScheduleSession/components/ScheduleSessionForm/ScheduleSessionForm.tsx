@@ -14,7 +14,7 @@ import FormRow from './../../components/FormRow/FormRow';
 import './../../ScheduleSession.scss';
 import ScheduleDuration from './components/ScheduleDuration/ScheduleDuration';
 import SessionDetail from './components/SessionDetail/SessionDetail';
-// import TimeRangePicker from "./components/TimeRangePicker/TimeRangePicker";
+import TimeRangePicker from "./components/TimeRangePicker/TimeRangePicker";
 import WeekendPicker from './components/WeekendPicker/WeekendPicker';
 
 interface IPropsScheduleSessionForm {
@@ -25,23 +25,24 @@ interface IPropsScheduleSessionForm {
     onChangeSessionDetail(type: string, item:IListItem): void;
     onChangeWeekendPicker(sessionSchedule: ISessionSchedule): void;
     onChangeDuration(startDate: moment.Moment, endDate: moment.Moment, action: string): void;
+    onChangeWorkshop(id: number, from: Date | null, to: Date | null, key: string): void;
     onClickSaveBulk(): void;
+    onRemoveWorkshop(id: number): void;
+    onAddWorkshop(from: Date | null, to: Date | null): void;
 }
 
 class ScheduleSessionForm extends React.Component<IPropsScheduleSessionForm, {}> {
-
+    private sessionDetailRef: React.RefObject<SessionDetail>;
     constructor(props: IPropsScheduleSessionForm) {
         super(props);
         this._onChangeSession = this._onChangeSession.bind(this);
+        this.sessionDetailRef = React.createRef();
     }
 
     public render() {
         let areas: IListItem[] = [];
         if (this.props.mentor && this.props.mentor.interestAreas) {
             areas = this.props.mentor.interestAreas
-                .filter((item: IArea) => {
-                    return item.name.indexOf("aller") === -1;
-                })
                 .map((area: IArea): IListItem => {
                 return  {
                     extra: {
@@ -85,35 +86,56 @@ class ScheduleSessionForm extends React.Component<IPropsScheduleSessionForm, {}>
                                 </FormSection>
                                 <FormSection title={'Detalles de la sesión'} style={{marginTop: 32, marginBottom: 18}}>
                                     <SessionDetail
+                                        ref={this.sessionDetailRef}
                                         skills={this.getSkills(session)}
                                         locations={this.props.locations}
                                         sessionTypes={sessionTypes}
                                         onChange={this.props.onChangeSessionDetail}/>
                                 </FormSection>
-                                {/*
-                                <hr className='u-Separator' />
-                                <FormSection title={'Agenda fecha y hora'} style={{marginTop: 30}}>
-                                    <TimeRangePicker onChange={this.props.onChangeWeekendPicker} date={new Date()}/>
-                                </FormSection>
-                                */}
-
-                                <hr className='u-Separator' />
-                                <FormSection title={'Agenda fecha y hora'} style={{marginTop: 30}}>
-                                    <WeekendPicker onChange={this.props.onChangeWeekendPicker}/>
-                                </FormSection>
-                                <FormSection title={'¿Cada cuánto te gustaría que se repitan estas sesiones? '} main={false}>
-                                    <ScheduleDuration
-                                        onChangeDuration={this.props.onChangeDuration}
-                                        startDate={moment(session.from)}
-                                        endDate={moment(session.to)}/>
-                                </FormSection>
-                                <div className="ScheduleSession-button_container">
-                                    <button className="u-Button u-Button--white ScheduleSession-button">Cancelar</button>
-                                    <button className="u-Button ScheduleSession-button"
-                                            disabled={!session.isSessionValid() || this.props.savingData}
-                                            onClick={this.props.onClickSaveBulk}
-                                            data-loading={this.props.savingData ? true : undefined}>{this.props.savingData ? '' : 'Aceptar'}</button>
-                                </div>
+                                {session.isWorkshop ?
+                                    <React.Fragment>
+                                        <hr className='u-Separator' />
+                                        <FormSection title={'Agenda fecha y hora'} style={{marginTop: 30}}>
+                                            {session.sessions.map((item: ISessionSchedule, index: number) => {
+                                                return (
+                                                    <TimeRangePicker
+                                                        onChange={this.props.onChangeWorkshop}
+                                                        onRemoveWorkshop={this.props.onRemoveWorkshop}
+                                                        onAddWorkshop={this.props.onAddWorkshop}
+                                                        id={index}
+                                                        uniqueKey={item.key ? item.key : index.toString()}
+                                                        key={`FormSection-${item.key}`}/>
+                                                )
+                                            })}
+                                        </FormSection>
+                                        <div className="ScheduleSession-button_container">
+                                            <button className="u-Button u-Button--white ScheduleSession-button">Cancelar</button>
+                                            <button className="u-Button ScheduleSession-button"
+                                                    disabled={!session.isWorkShopValid() || this.props.savingData}
+                                                    onClick={this.props.onClickSaveBulk}
+                                                    data-loading={this.props.savingData ? true : undefined}>{this.props.savingData ? '' : 'Aceptar'}</button>
+                                        </div>
+                                    </React.Fragment> :
+                                    <React.Fragment>
+                                        <hr className='u-Separator' />
+                                        <FormSection title={'Agenda fecha y hora'} style={{marginTop: 30}}>
+                                            <WeekendPicker onChange={this.props.onChangeWeekendPicker}/>
+                                        </FormSection>
+                                        <FormSection title={'¿Cada cuánto te gustaría que se repitan estas sesiones? '} main={false}>
+                                            <ScheduleDuration
+                                                onChangeDuration={this.props.onChangeDuration}
+                                                startDate={moment(session.from)}
+                                                endDate={moment(session.to)}/>
+                                        </FormSection>
+                                        <div className="ScheduleSession-button_container">
+                                            <button className="u-Button u-Button--white ScheduleSession-button">Cancelar</button>
+                                            <button className="u-Button ScheduleSession-button"
+                                                    disabled={!session.isSessionValid() || this.props.savingData}
+                                                    onClick={this.props.onClickSaveBulk}
+                                                    data-loading={this.props.savingData ? true : undefined}>{this.props.savingData ? '' : 'Aceptar'}</button>
+                                        </div>
+                                    </React.Fragment>
+                                }
                             </React.Fragment>
                             }
                         </React.Fragment>
@@ -125,6 +147,9 @@ class ScheduleSessionForm extends React.Component<IPropsScheduleSessionForm, {}>
     }
 
     private _onChangeSession(item: IListItem) {
+        if (this.sessionDetailRef.current) {
+            this.sessionDetailRef.current.reset();
+        }
         this.props.onChangeSessionDetail(SESSION_SELECTED, item)
     }
 

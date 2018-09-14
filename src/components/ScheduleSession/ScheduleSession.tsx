@@ -5,7 +5,7 @@ import Layout from '../../common/Layout/Layout';
 import MenuAside from '../../common/MenuAside/MenuAside';
 import Sticky from '../../common/Sticky/Sticky';
 import { IMatchParam } from '../../interfaces/MatchParam.interface';
-import {IArea, IMentor} from '../../interfaces/Mentor.interface';
+import { IMentor } from '../../interfaces/Mentor.interface';
 import { ISessionSchedule } from '../../interfaces/Session.interface';
 import LocationService from "../../services/Location/Location.service";
 import MentorService from '../../services/Mentor/Mentor.service';
@@ -56,6 +56,9 @@ class ScheduleSession extends React.Component<IPropsScheduleSession, IStateSched
         this._onChangeWeekendPicker = this._onChangeWeekendPicker.bind(this);
         this._onChangeDuration = this._onChangeDuration.bind(this);
         this._onClickSaveBulk = this._onClickSaveBulk.bind(this);
+        this._onChangeWorkshop = this._onChangeWorkshop.bind(this);
+        this._onRemoveWorkshop = this._onRemoveWorkshop.bind(this);
+        this._onAddWorkshop = this._onAddWorkshop.bind(this);
         this._onConfirm = this._onConfirm.bind(this);
         this._onCancel = this._onCancel.bind(this);
     }
@@ -106,6 +109,9 @@ class ScheduleSession extends React.Component<IPropsScheduleSession, IStateSched
                                 mentor={this.state.mentor}
                                 onChangeSessionDetail={this._onChangeSessionDetail}
                                 onChangeWeekendPicker={this._onChangeWeekendPicker}
+                                onChangeWorkshop={this._onChangeWorkshop}
+                                onRemoveWorkshop={this._onRemoveWorkshop}
+                                onAddWorkshop={this._onAddWorkshop}
                             />
                         </div>
                     </div>
@@ -120,23 +126,38 @@ class ScheduleSession extends React.Component<IPropsScheduleSession, IStateSched
 
     private _onConfirm() {
         this.setState({savingData: true});
-        const session: any = new SessionBean(this.state.session);
+        const session : any= new SessionBean(this.state.session);
         session.from.setHours(0,0,0, 0);
         session.to.setDate(session.to.getDate() + 1);
         session.to.setHours(0,0,0,0);
-        session.from = session.from.toISOString();
-        session.to = session.to.toISOString();
-        this.mentorService.bulk(this.mentorId, session).then((items: any[]) => {
-            if (items.length > 0 ) {
-                window.location.assign('/admin');
-            } else {
+
+        if (session.isWorkshop()) {
+            this.mentorService.bulkWorkshop(this.mentorId, session).then((items: any[]) => {
+                if (items.length > 0 ) {
+                    window.location.assign('/admin');
+                } else {
+                    alert('Hay Conflictos de Horarios');
+                }
+                this.setState({savingData: false});
+            }, () => {
                 alert('Hay Conflictos de Horarios');
-            }
-            this.setState({savingData: false});
-        }, () => {
-            alert('Hay Conflictos de Horarios');
-            this.setState({savingData: false});
-        });
+                this.setState({savingData: false});
+            });
+        } else {
+            session.from = session.from.toISOString();
+            session.to = session.to.toISOString()
+            this.mentorService.bulk(this.mentorId, session).then((items: any[]) => {
+                if (items.length > 0 ) {
+                    window.location.assign('/admin');
+                } else {
+                    alert('Hay Conflictos de Horarios');
+                }
+                this.setState({savingData: false});
+            }, () => {
+                alert('Hay Conflictos de Horarios');
+                this.setState({savingData: false});
+            });
+        }
     }
 
     private _onClickSaveBulk() {
@@ -158,6 +179,33 @@ class ScheduleSession extends React.Component<IPropsScheduleSession, IStateSched
         session.from = startDate.toDate();
         session.to = endDate.toDate();
         this.setState({session: new SessionBean(session)});
+    }
+
+    private _onChangeWorkshop(id: number, from: Date | null, to: Date | null, key: string) {
+        const session = new SessionBean(this.state.session);
+        session.sessions[id] = {
+            from: from ? from.toISOString() : '',
+            key,
+            to: to ?  to.toISOString() : ''
+        };
+        this.setState({session, listSession: {id}});
+    }
+
+    private _onAddWorkshop(from: Date | null, to: Date | null) {
+        const session = new SessionBean(this.state.session);
+        const uniqueKey = Date.now().toString() + session.sessions.length;
+        session.sessions.push({
+            from: from ? from.toISOString() : '',
+            key: uniqueKey,
+            to: to ?  to.toISOString() : ''
+        });
+        this.setState({session});
+    }
+
+    private _onRemoveWorkshop(id: number) {
+        const session = new SessionBean(this.state.session);
+        session.sessions.splice(id, 1);
+        this.setState({session});
     }
 
     private _onChangeWeekendPicker(sessionSchedule: ISessionSchedule) {
@@ -210,23 +258,26 @@ class ScheduleSession extends React.Component<IPropsScheduleSession, IStateSched
                 session.maxStudents = Number(item.name);
                 break;
         }
-        this.setState({session: new SessionBean(session)});
+        this.setState({session: new SessionBean(session)}, () => {
+            if (SESSION_SELECTED === type) {
+                this.loadLocations(item.id);
+            }
+        });
     }
 
     private _getMentor() {
         this.mentorService.mentor(this.mentorId).then((mentor: any) => {
             this.setState({mentor});
-            const listAreas = mentor.interestAreas ? mentor.interestAreas.filter((item: IArea) => {
-                return item.name.indexOf("aller") === -1;
-            }) : [];
+            const listAreas = mentor.interestAreas ? mentor.interestAreas : [];
             const area = listAreas.length > 0 ? listAreas[0] : {};
             if (area.id !== '') {
                 const session = {...this.state.session};
                 session.interestAreaId = area.id;
                 session.interestAreaName = area.name;
                 session.mentorId = this.mentorId;
-                this.setState({session: new SessionBean(session)});
-                this.loadLocations(area.id);
+                this.setState({session: new SessionBean(session)}, () => {
+                    this.loadLocations(area.id);
+                });
             }
         });
     }
