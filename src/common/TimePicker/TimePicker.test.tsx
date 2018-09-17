@@ -1,17 +1,15 @@
-import { shallow } from 'enzyme';
+import { mount } from 'enzyme';
 import 'jest-localstorage-mock';
-import * as moment from 'moment';
 import * as React from 'react';
 import TimePicker from "./TimePicker";
 
 
-describe.skip('TimePicker Test',() => {
+describe('TimePicker Test',() => {
     let props: any;
     let mountedTimePicker: any;
-    const currentDate = new Date(Date.UTC(2012,3,13,1,31,38));
     const getComponent = () => {
         if (!mountedTimePicker) {
-            mountedTimePicker = shallow(
+            mountedTimePicker = mount(
                 <TimePicker {...props} />
             );
         }
@@ -19,36 +17,50 @@ describe.skip('TimePicker Test',() => {
     };
 
     beforeEach(() => {
+        const initDate = new Date(2018, 5, 4, 10, 0, 0);
+        const endDate = new Date(2018, 5, 4, 12, 0, 0);
         props = {
             defaultText: '11:00',
-            from: moment(currentDate),
-            name: 'Inicio',
+            from: initDate,
+            name: 'Fecha',
             onChange: void(0),
             step: 15,
-            to: moment(currentDate)
+            to: endDate
         };
         mountedTimePicker = undefined;
     });
 
-    it("render: render TimePicker default", () => {
+    it("render: render TimePicker with two hours", () => {
         const component = getComponent();
-        expect(component).toMatchSnapshot();
+        component.find(".FilterList-field").first().simulate('click', "");
+        component.update();
+        // 10:00, 10:15, 10:30, 10:45, 11:00, 11:15, 11:30, 11:45, 12:00
+        expect(component.find(".SelectList-item").length).toBe(9)
+
     });
 
-    it("render: render TimePicker 1 day", () => {
-        const to = moment(currentDate);
-        const from = moment(currentDate);
-        to.add(1, 'days').set('minutes', 0);
-        from.set('minutes', 0);
-        props = {
-            defaultText: '11:00',
-            from,
-            name: 'Inicio',
-            onChange: void(0),
-            step: 15,
-            to
-        };
+    it("render: render TimePicker with two hours every thirty minutes", () => {
+        const newProps = {...props};
+        newProps.step = 30;
+        props = newProps;
         const component = getComponent();
-        expect(component).toMatchSnapshot();
+        component.find(".FilterList-field").first().simulate('click', "");
+        component.update();
+        // 10:00, 10:30, 11:00, 11:30, 12:00
+        expect(component.find(".SelectList-item").length).toBe(5)
+
+    });
+
+    it("render: render TimePicker with bad hours", () => {
+        const initDate = new Date(2018, 5, 4, 13, 0, 0);
+        const endDate = new Date(2018, 5, 4, 10, 0, 0);
+        const newProps = {...props};
+        newProps.from = initDate;
+        newProps.to = endDate;
+        props = newProps;
+        const component = getComponent();
+        component.find(".FilterList-field").first().simulate('click', "");
+        component.update();
+        expect(component.find(".SelectList-item").length).toBe(0)
     });
 });

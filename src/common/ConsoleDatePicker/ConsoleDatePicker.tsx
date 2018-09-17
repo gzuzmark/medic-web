@@ -1,7 +1,7 @@
-// TODO: Hola Carlos del futuro esto quizas te sirva para mejorar el buscador de la lista => https://react-select.com/home#async
 import * as moment from "moment";
 import * as React from 'react';
 import { SingleDatePicker } from 'react-dates';
+import 'react-dates/initialize';
 import {BaseConfigCalendar} from "../../components/ScheduleSession/components/ScheduleSessionForm/components/ScheduleDuration/components/Calendar.const";
 
 

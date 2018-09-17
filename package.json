@@ -58,6 +58,7 @@
     "start": "node scripts/start.js",
     "build": "node scripts/build.js",
     "test": "node scripts/test.js --env=jsdom",
+    "test:coverage": "node scripts/test.js --env=jsdom --coverage --coverageDirectory=output/coverage/jest",
     "deploy:qa": "yarn build && firebase deploy -P stage",
     "deploy:prod": "yarn build && firebase deploy -P production"
   },
@@ -80,6 +81,7 @@
     "chai": "4.1.2",
     "enzyme": "3.3.0",
     "enzyme-adapter-react-16": "1.1.1",
+    "jest-junit": "^5.1.0",
     "jest-localstorage-mock": "2.2.0",
     "moxios": "0.4.0",
     "node-sass": "4.9.0",
@@ -97,6 +99,11 @@
     "testMatch": [
       "<rootDir>/src/**/__tests__/**/*.(j|t)s?(x)",
       "<rootDir>/src/**/?(*.)(spec|test).(j|t)s?(x)"
+    ],
+    "reporters": [ "default", "jest-junit" ],
+    "coverageReporters": [
+      "text",
+      "html"
     ],
     "testEnvironment": "node",
     "testURL": "http://localhost",

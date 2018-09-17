@@ -67,7 +67,7 @@ export class SessionBean implements ISession {
         return  list;
     }
 
-    public isWorkshop(): boolean{
+    get isWorkshop(): boolean{
         return this.interestAreaName.indexOf('aller') !== -1;
     }
 

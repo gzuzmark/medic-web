@@ -73,12 +73,12 @@ class ScheduleSessionForm extends React.Component<IPropsScheduleSessionForm, {}>
                                     <div style={{width: '80%'}}>
                                         <FormRow columns={[
                                             <FormColumn width={2} key={'FormColumn-Session'}>
-                                                <Text className='FormSession-label'>Sesión</Text>
+                                                <Text className='FormSession-label'>Tipo</Text>
                                                 <FilterList
                                                     onChange={this._onChangeSession}
                                                     name={session.interestAreaName}
                                                     list={areas}
-                                                    defaultText='Química, Física, etc'
+                                                    defaultText='Taller, tutoría, etc.'
                                                     enableClearSearch={false}/>
                                             </FormColumn>,
                                         ]}/>
