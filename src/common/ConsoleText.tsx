@@ -3,10 +3,122 @@ import ConsoleColor from './ConsoleColor';
 
 const defaultFont = 'Lato, sans-serif';
 const titleFont = 'CircularStd, Helvetica, Arial';
-
+/*
+const pixels = (value: number) => {
+    return value * 1.3333;
+}
+*/
 const getTextColor = (key = 'textNormal') => {
     return ConsoleColor.TEXT_COLORS[key];
 };
+
+export const Title1 = styled.h1`
+  color: ${props => getTextColor(props.color)};
+  font-family: ${titleFont};
+  font-size: 28px;
+  font-style: normal;
+  font-weight: bold;
+  line-height: 40px;
+`;
+
+export const Title2 = styled.h2`
+  color: ${props => getTextColor(props.color)};
+  font-family: ${titleFont};
+  font-size: 24px;
+  font-style: normal;
+  font-weight: bold;
+  line-height: 32px;
+`;
+
+export const Title3 = styled.h3`
+  color: ${props => getTextColor(props.color)};
+  font-family: ${titleFont};
+  font-size: 20px;
+  font-style: normal;
+  font-weight: bold;
+  line-height: 32px;
+`;
+
+export const SubTitle1 = styled.h4`
+  color: ${props => getTextColor(props.color)};
+  font-family: ${titleFont};
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 24px;
+`;
+
+export const SubTitle2 = styled.h5`
+  color: ${props => getTextColor(props.color)};
+  font-family: ${titleFont};
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 24px;
+`;
+
+export const SubTitleBold2 = styled.h5`
+  color: ${props => getTextColor(props.color)};
+  font-family: ${titleFont};
+  font-size: 18px;
+  font-style: normal;
+  font-weight: bold;
+  line-height: 24px;
+`;
+
+export const Text1 = styled.span`
+  color: ${props => getTextColor(props.color)};
+  font-family: ${defaultFont};
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 24px;
+`;
+
+export const TextBold1 = styled.span`
+  color: ${props => getTextColor(props.color)};
+  font-family: ${defaultFont};
+  font-size: 18px;
+  font-style: normal;
+  font-weight: bold;
+  line-height: 24px;
+`;
+
+export const Text2 = styled.span`
+  color: ${props => getTextColor(props.color)};
+  font-family: ${defaultFont};
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 24px;
+`;
+
+export const TextBold3 = styled.span`
+  color: ${props => getTextColor(props.color)};
+  font-family: ${defaultFont};
+  font-size: 14px;
+  font-style: normal;
+  font-weight: bold;
+  line-height: 24px;
+`;
+
+export const Text3 = styled.span`
+  color: ${props => getTextColor(props.color)};
+  font-family: ${defaultFont};
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 24px;
+`;
+
+export const SmallText = styled.span`
+  color: ${props => getTextColor(props.color)};
+  font-family: ${defaultFont};
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 12px;
+`;
 
 export const Heading1 = styled.h1`
   color: ${props => getTextColor(props.color)};
@@ -34,33 +146,6 @@ export const Heading3 = styled.h3`
   font-style: normal;
   font-weight: 400;
   line-height: 24px;
-`;
-
-export const Heading4 = styled.h4`
-  color: ${props => getTextColor(props.color)};
-  font-family: ${defaultFont};
-  font-size: 12px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 24px;
-`;
-
-export const Heading5 = styled.h5`
-  color: ${props => getTextColor(props.color)};
-  font-family: ${defaultFont};
-  font-size: 12px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 14px;
-`;
-
-export const Heading6 = styled.h6`
-  color: ${props => getTextColor(props.color)};
-  font-family: ${defaultFont};
-  font-size: 10px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 11px;
 `;
 
 export const Text = styled.span`

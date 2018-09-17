@@ -27,13 +27,16 @@ import dayEvent from './components/event/dayEvent';
 import defaultEvent from './components/event/defaultEvent';
 import weekEvent from './components/event/weekEvent';
 import LegendSessions from './components/LegendSessions/LegendSessions';
+import ModalSessionHandler from "./components/ModalHandleSession/ModalSessionHandler";
 import './MentorSession.scss';
 
 BigCalendar.momentLocalizer(moment);
 
 interface IStateMentorSession {
+    activeModal: boolean;
     loading: boolean;
     sessions: IEvent[];
+    selectedEvent?: IEvent;
     mentor?: IMentor;
 }
 
@@ -55,12 +58,14 @@ class MentorSession extends React.Component<IPropsMentorSession, IStateMentorSes
     constructor(props: IPropsMentorSession) {
         super(props);
         this.state = {
+            activeModal: false,
             loading: true,
             mentor: undefined,
             sessions: [],
         };
         this.idMentor = this.props.match.params.id;
         this._eventStyleGetter = this._eventStyleGetter.bind(this);
+        this._eventShowSession = this._eventShowSession.bind(this);
     }
 
     public renderMenu() {
@@ -81,41 +86,45 @@ class MentorSession extends React.Component<IPropsMentorSession, IStateMentorSes
 
     public render() {
         return (
-            <Layout menu={this.renderMenu()}>
-                <div className="u-LayoutMargin">
-                    <div className="MentorSession">
-                        <LegendSessions legend={this.legendSession}/>
-                        <Link to={'sesiones/agendar'} className="u-Button MentorSession-button">
-                            Crear varias sesiones
-                        </Link>
+            <React.Fragment>
+                { this.state.selectedEvent &&
+                <ModalSessionHandler title={this.state.selectedEvent.title} show={this.state.activeModal} _onCancel={this.renderMenu}/>}
+                <Layout menu={this.renderMenu()}>
+                    <div className="u-LayoutMargin">
+                        <div className="MentorSession">
+                            <LegendSessions legend={this.legendSession}/>
+                            <Link to={'sesiones/agendar'} className="u-Button MentorSession-button">
+                                Crear varias sesiones
+                            </Link>
+                        </div>
+                        {
+                            this.state.loading ?
+                                <Loader top={50} height={100}/> :
+                                <BigCalendar
+                                    components={{
+                                        agenda: {
+                                            event: agendaEvent,
+                                        },
+                                        day: {
+                                            event: dayEvent,
+                                        },
+                                        month: {
+                                            event: defaultEvent
+                                        },
+                                        week: {
+                                            event: weekEvent,
+                                        },
+                                    }}
+                                    culture='es'
+                                    eventPropGetter={(this._eventStyleGetter)}
+                                    onSelectEvent={this._eventShowSession}
+                                    events={this.state.sessions}
+                                    messages={messages}
+                                />
+                        }
                     </div>
-                    {
-                        this.state.loading ?
-                        <Loader top={50} height={100}/> :
-                        <BigCalendar
-                            components={{
-                                agenda: {
-                                    event: agendaEvent,
-                                },
-                                day: {
-                                    event: dayEvent,
-                                },
-                                month: {
-                                    event: defaultEvent
-                                },
-                                week: {
-                                    event: weekEvent,
-                                },
-                            }}
-                            culture='es'
-                            eventPropGetter={(this._eventStyleGetter)}
-                            events={this.state.sessions}
-                            messages={messages}
-                        />
-                    }
-
-                </div>
-            </Layout>
+                </Layout>
+            </React.Fragment>
         );
     }
 
@@ -132,6 +141,13 @@ class MentorSession extends React.Component<IPropsMentorSession, IStateMentorSes
         return {
             style
         };
+    }
+
+    private _eventShowSession(event: IEvent) {
+        this.setState({
+            activeModal: true,
+            selectedEvent: event
+        });
     }
 
     private _getBackground(type: string): string {

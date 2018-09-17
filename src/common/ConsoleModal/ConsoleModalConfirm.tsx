@@ -1,6 +1,6 @@
 import * as React from 'react';
 import ConsoleColor from "../ConsoleColor";
-import {Heading2} from "../ConsoleText";
+import {Title2} from "../ConsoleText";
 import ConsoleModal from "./ConsoleModal";
 import './ConsoleModalConfirm.scss';
 
@@ -18,7 +18,7 @@ const ConsoleModalConfirm: React.StatelessComponent<IPropsConsoleModalConfirm> =
             styles={{backgroundColor: ConsoleColor.TEXT_COLORS.white, position: 'relative'}}
             onCloseModal={props.onCloseModal}>
             <div className={'ConsoleModalConfirm_header'}>
-                <Heading2 color="purpleDark" style={{fontSize: 24, lineHeight: '32px'}}>{props.title}</Heading2>
+                <Title2 color="purpleDark" style={{fontSize: 24, lineHeight: '32px'}}>{props.title}</Title2>
             </div>
             <div className={'ConsoleModalConfirm_body'}>
                 {props.children}

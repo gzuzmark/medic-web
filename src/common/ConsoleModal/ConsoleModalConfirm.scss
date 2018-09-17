@@ -1,0 +1,13 @@
+.ConsoleModalConfirm {
+  &_header {
+    align-items: center;
+    display: flex;
+    height: 94px;
+    justify-content: center;
+  }
+  &_body {
+    background: #f5f7fa;
+    box-shadow: 0 0 2px 0 #9999;
+    padding: 15px 20px;
+  }
+}

@@ -17,7 +17,7 @@ const ConsoleModal: React.StatelessComponent<IPropsConsoleModal> = (props) => {
             closeOnEsc={false}
             closeOnOverlayClick={false}
             showCloseIcon={false}
-            styles={{modal: props.styles}}>
+            styles={{modal: {padding: 0, borderRadius: 5, ...props.styles}}}>
             {props.children}
         </Modal>
     );
