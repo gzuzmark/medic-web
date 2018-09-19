@@ -20,6 +20,10 @@ class Layout extends React.Component<IPropsLayout, {}> {
         this.date = new Date()
     }
 
+    public componentDidMount() {
+        window.scrollTo(0, 0);
+    }
+
     public render() {
         return (
             <React.Fragment>

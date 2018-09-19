@@ -61,6 +61,7 @@ class ScheduleSession extends React.Component<IPropsScheduleSession, IStateSched
         this._onAddWorkshop = this._onAddWorkshop.bind(this);
         this._onConfirm = this._onConfirm.bind(this);
         this._onCancel = this._onCancel.bind(this);
+        this._return = this._return.bind(this);
     }
 
     public componentDidMount() {
@@ -112,6 +113,7 @@ class ScheduleSession extends React.Component<IPropsScheduleSession, IStateSched
                                 onChangeWorkshop={this._onChangeWorkshop}
                                 onRemoveWorkshop={this._onRemoveWorkshop}
                                 onAddWorkshop={this._onAddWorkshop}
+                                onCancel={this._return}
                             />
                         </div>
                     </div>
@@ -122,6 +124,10 @@ class ScheduleSession extends React.Component<IPropsScheduleSession, IStateSched
 
     private _onCancel() {
         this.setState({showModal: false})
+    }
+
+    private _return() {
+        window.history.back();
     }
 
     private _onConfirm() {

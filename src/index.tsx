@@ -19,6 +19,7 @@ const PageReports = (props: any) => {
     return <LayoutReports baseText={'Reportes'} url={'/admin/reportes'} {...props} keyPage={'report'}/>;
 };
 
+
 ReactDOM.render(
     <Router>
         <div>
