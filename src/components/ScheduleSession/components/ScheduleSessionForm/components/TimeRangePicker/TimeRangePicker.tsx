@@ -67,7 +67,8 @@ class TimeRangePicker extends React.Component<IPropsTimeRangePicker, {}> {
                             updateState={this.onChangeDateBase} />
                     </FormColumn>,
                     <FormColumn key={`TimeRangePicker_${++counter}`} width={5}>
-                        <Text className='FormSession-label'>Inicia</Text>
+                        <Text className='FormSession-label'>
+                            <Icon name={'clock'}/> Inicia</Text>
                         <TimePicker
                             defaultText={"11:00"}
                             name={this.getHour(this.state.selectedFromDate)}
@@ -76,7 +77,8 @@ class TimeRangePicker extends React.Component<IPropsTimeRangePicker, {}> {
                             to={this.state.fromDates.endDate.toDate()}/>
                     </FormColumn>,
                     <FormColumn key={`TimeRangePicker_${++counter}`} width={5}>
-                        <Text className='FormSession-label'>Termina</Text>
+                        <Text className='FormSession-label'>
+                            <Icon name={'clock'}/> Termina</Text>
                         <TimePicker
                             defaultText={"12:00"}
                             name={this.getHour(this.state.selectedToDate)}

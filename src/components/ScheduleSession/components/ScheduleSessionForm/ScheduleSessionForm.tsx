@@ -27,6 +27,7 @@ interface IPropsScheduleSessionForm {
     onChangeDuration(startDate: moment.Moment, endDate: moment.Moment, action: string): void;
     onChangeWorkshop(id: number, from: Date | null, to: Date | null, key: string): void;
     onClickSaveBulk(): void;
+    onCancel(): void;
     onRemoveWorkshop(id: number): void;
     onAddWorkshop(from: Date | null, to: Date | null): void;
 }
@@ -95,7 +96,8 @@ class ScheduleSessionForm extends React.Component<IPropsScheduleSessionForm, {}>
                                 {session.isWorkshop ?
                                     <React.Fragment>
                                         <hr className='u-Separator' />
-                                        <FormSection title={'Agenda fecha y hora'} style={{marginTop: 30}}>
+                                        <FormSection title={'Agenda fecha y hora'} style={{marginTop: 30, marginBottom: 2}}>
+                                            <Text>Elige la fecha y hora de la sesión</Text>
                                             {session.sessions.map((item: ISessionSchedule, index: number) => {
                                                 return (
                                                     <TimeRangePicker
@@ -109,7 +111,8 @@ class ScheduleSessionForm extends React.Component<IPropsScheduleSessionForm, {}>
                                             })}
                                         </FormSection>
                                         <div className="ScheduleSession-button_container">
-                                            <button className="u-Button u-Button--white ScheduleSession-button">Cancelar</button>
+                                            <button className="u-Button u-Button--white ScheduleSession-button"
+                                                    onClick={this.props.onCancel}>Cancelar</button>
                                             <button className="u-Button ScheduleSession-button"
                                                     disabled={!session.isWorkShopValid() || this.props.savingData}
                                                     onClick={this.props.onClickSaveBulk}
@@ -128,7 +131,9 @@ class ScheduleSessionForm extends React.Component<IPropsScheduleSessionForm, {}>
                                                 endDate={moment(session.to)}/>
                                         </FormSection>
                                         <div className="ScheduleSession-button_container">
-                                            <button className="u-Button u-Button--white ScheduleSession-button">Cancelar</button>
+                                            <button className="u-Button u-Button--white ScheduleSession-button"
+                                                    onClick={this.props.onCancel}
+                                                    >Cancelar</button>
                                             <button className="u-Button ScheduleSession-button"
                                                     disabled={!session.isSessionValid() || this.props.savingData}
                                                     onClick={this.props.onClickSaveBulk}
