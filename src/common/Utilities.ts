@@ -48,10 +48,18 @@ const getDateFormattedToHour = (date: Date) => {
     return hours + ':' + minutes ;
 };
 
+const getValue = (value?: string, backup?: string): string  => {
+    if (!value && backup) {
+        value = backup;
+    }
+    return value ? value : '';
+};
+
 const Utilities = {
     donwloadLink,
     getDateFormatted,
-    getDateFormattedToHour
+    getDateFormattedToHour,
+    getValue
 };
 
 export default Utilities;

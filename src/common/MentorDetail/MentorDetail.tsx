@@ -1,8 +1,8 @@
 import * as React from 'react';
-import Avatar from '../../../../common/Avatar/Avatar';
-import { Heading2, Text } from '../../../../common/ConsoleText';
-import { getTime } from '../../../../common/ConsoleUtils';
-import { IMentor } from '../../../../interfaces/Mentor.interface';
+import { IMentor } from '../../interfaces/Mentor.interface';
+import Avatar from '../Avatar/Avatar';
+import { Heading2, Text } from '../ConsoleText';
+import { getTime } from '../ConsoleUtils';
 import './MentorDetail.scss';
 
 

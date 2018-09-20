@@ -4,7 +4,7 @@ import './ConsoleTable.scss';
 
 
 export interface IRowConsoleTable {
-    name: string;
+    name: string | JSX.Element;
     value: (row: object) => string | JSX.Element;
     width: number;
 }

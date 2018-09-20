@@ -15,7 +15,6 @@ interface IPropsFilterList {
     onChange: (item: IListItem) => void;
     list: IListItem[];
     defaultText: string;
-    enableClearSearch: boolean;
     name: string;
     style?: React.CSSProperties;
     removeFilters?: boolean;

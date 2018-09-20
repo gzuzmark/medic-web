@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Link } from 'react-router-dom';
-import { HighlightText, HighlightTextHeading1 } from '../../common/ConsoleText';
-import Icon from "../Icon/Icon";
+import { HighlightText, HighlightTextHeading1 } from '../../../ConsoleText';
+import Icon from "../../../Icon/Icon";
 import './MenuAside.scss';
 
 interface IPropsListMentors {

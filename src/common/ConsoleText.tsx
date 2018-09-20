@@ -3,13 +3,15 @@ import ConsoleColor from './ConsoleColor';
 
 const defaultFont = 'Lato, sans-serif';
 const titleFont = 'CircularStd, Helvetica, Arial';
-/*
-const pixels = (value: number) => {
-    return value * 1.3333;
-}
-*/
+
 const getTextColor = (key = 'textNormal') => {
-    return ConsoleColor.TEXT_COLORS[key];
+    let color ='';
+    if (ConsoleColor.TEXT_COLORS[key]) {
+        color = ConsoleColor.TEXT_COLORS[key];
+    } else {
+        throw Error("El color no existe");
+    }
+    return color;
 };
 
 export const Title1 = styled.h1`

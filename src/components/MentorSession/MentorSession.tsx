@@ -5,9 +5,9 @@ import BigCalendar from 'react-big-calendar';
 import { Link } from 'react-router-dom';
 import ConsoleColor from '../../common/ConsoleColor';
 import { IListItem } from '../../common/FilterList/FilterList';
+import MenuAside from '../../common/Layout/components/MenuAside/MenuAside';
 import Layout from '../../common/Layout/Layout';
 import Loader from '../../common/Loader/Loader';
-import MenuAside from '../../common/MenuAside/MenuAside';
 import Sticky from '../../common/Sticky/Sticky';
 import { IEvent } from '../../interfaces/Event.interface';
 import { IMatchParam } from '../../interfaces/MatchParam.interface';
@@ -93,9 +93,14 @@ class MentorSession extends React.Component<IPropsMentorSession, IStateMentorSes
                     <div className="u-LayoutMargin">
                         <div className="MentorSession">
                             <LegendSessions legend={this.legendSession}/>
-                            <Link to={'sesiones/agendar'} className="u-Button MentorSession-button">
-                                Crear varias sesiones
-                            </Link>
+                            <div className={"MentorSession_options"}>
+                                <Link to={'sesiones/eliminar'} className="u-Button MentorSession_button">
+                                    Eliminar varias sesiones
+                                </Link>
+                                <Link to={'sesiones/agendar'} className="u-Button MentorSession_button">
+                                    Crear varias sesiones
+                                </Link>
+                            </div>
                         </div>
                         {
                             this.state.loading ?

@@ -49,6 +49,7 @@ input:-webkit-autofill:active {
     &:before {
       display: block;
       filter: progid:DXImageTransform.Microsoft.Alpha(enabled=false);
+      margin: 0 auto;
       opacity: 1;
     }
   }

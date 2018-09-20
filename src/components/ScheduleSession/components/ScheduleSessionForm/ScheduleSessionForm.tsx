@@ -79,8 +79,7 @@ class ScheduleSessionForm extends React.Component<IPropsScheduleSessionForm, {}>
                                                     onChange={this._onChangeSession}
                                                     name={session.interestAreaName}
                                                     list={areas}
-                                                    defaultText='Taller, tutoría, etc.'
-                                                    enableClearSearch={false}/>
+                                                    defaultText='Taller, tutoría, etc.'/>
                                             </FormColumn>,
                                         ]}/>
                                     </div>

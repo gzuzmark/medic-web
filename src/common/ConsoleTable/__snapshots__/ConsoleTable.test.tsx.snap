@@ -25,6 +25,13 @@ ShallowWrapper {
           "width": 124.5,
         },
         Object {
+          "name": <div>
+            Titulo
+          </div>,
+          "value": [Function],
+          "width": 124.5,
+        },
+        Object {
           "name": "Hora de inicio",
           "value": [Function],
           "width": 88.7,
@@ -69,6 +76,28 @@ ShallowWrapper {
                 }
               >
                 Día
+              </styled.span>
+            </div>
+            <div
+              className="ConsoleTable-column"
+              style={
+                Object {
+                  "maxWidth": 124.5,
+                  "minWidth": 124.5,
+                }
+              }
+            >
+              <styled.span
+                color="textLight"
+                style={
+                  Object {
+                    "lineHeight": "14px",
+                  }
+                }
+              >
+                <div>
+                  Titulo
+                </div>
               </styled.span>
             </div>
             <div
@@ -120,6 +149,23 @@ ShallowWrapper {
               className="ConsoleTable-column"
               style={
                 Object {
+                  "maxWidth": 124.5,
+                  "minWidth": 124.5,
+                }
+              }
+            >
+              <styled.span
+                className="ConsoleTable-text"
+              >
+                <div>
+                  Elon
+                </div>
+              </styled.span>
+            </div>
+            <div
+              className="ConsoleTable-column"
+              style={
+                Object {
                   "maxWidth": 88.7,
                   "minWidth": 88.7,
                 }
@@ -135,6 +181,23 @@ ShallowWrapper {
           <div
             className="ConsoleTable-row ConsoleTable-row--line"
           >
+            <div
+              className="ConsoleTable-column"
+              style={
+                Object {
+                  "maxWidth": 124.5,
+                  "minWidth": 124.5,
+                }
+              }
+            >
+              <styled.span
+                className="ConsoleTable-text"
+              >
+                <div>
+                  Steve
+                </div>
+              </styled.span>
+            </div>
             <div
               className="ConsoleTable-column"
               style={
@@ -207,6 +270,28 @@ ShallowWrapper {
               className="ConsoleTable-column"
               style={
                 Object {
+                  "maxWidth": 124.5,
+                  "minWidth": 124.5,
+                }
+              }
+            >
+              <styled.span
+                color="textLight"
+                style={
+                  Object {
+                    "lineHeight": "14px",
+                  }
+                }
+              >
+                <div>
+                  Titulo
+                </div>
+              </styled.span>
+            </div>
+            <div
+              className="ConsoleTable-column"
+              style={
+                Object {
                   "maxWidth": 88.7,
                   "minWidth": 88.7,
                 }
@@ -251,6 +336,28 @@ ShallowWrapper {
                   }
                 >
                   Día
+                </styled.span>
+              </div>,
+              <div
+                className="ConsoleTable-column"
+                style={
+                  Object {
+                    "maxWidth": 124.5,
+                    "minWidth": 124.5,
+                  }
+                }
+              >
+                <styled.span
+                  color="textLight"
+                  style={
+                    Object {
+                      "lineHeight": "14px",
+                    }
+                  }
+                >
+                  <div>
+                    Titulo
+                  </div>
                 </styled.span>
               </div>,
               <div
@@ -330,6 +437,59 @@ ShallowWrapper {
                     }
                   }
                 >
+                  <div>
+                    Titulo
+                  </div>
+                </styled.span>,
+                "className": "ConsoleTable-column",
+                "style": Object {
+                  "maxWidth": 124.5,
+                  "minWidth": 124.5,
+                },
+              },
+              "ref": null,
+              "rendered": Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "class",
+                "props": Object {
+                  "children": <div>
+                    Titulo
+                  </div>,
+                  "color": "textLight",
+                  "style": Object {
+                    "lineHeight": "14px",
+                  },
+                },
+                "ref": null,
+                "rendered": Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "host",
+                  "props": Object {
+                    "children": "Titulo",
+                  },
+                  "ref": null,
+                  "rendered": "Titulo",
+                  "type": "div",
+                },
+                "type": [Function],
+              },
+              "type": "div",
+            },
+            Object {
+              "instance": null,
+              "key": "ConsoleTable-header_2",
+              "nodeType": "host",
+              "props": Object {
+                "children": <styled.span
+                  color="textLight"
+                  style={
+                    Object {
+                      "lineHeight": "14px",
+                    }
+                  }
+                >
                   Hora de inicio
                 </styled.span>,
                 "className": "ConsoleTable-column",
@@ -391,6 +551,23 @@ ShallowWrapper {
                 className="ConsoleTable-column"
                 style={
                   Object {
+                    "maxWidth": 124.5,
+                    "minWidth": 124.5,
+                  }
+                }
+              >
+                <styled.span
+                  className="ConsoleTable-text"
+                >
+                  <div>
+                    Elon
+                  </div>
+                </styled.span>
+              </div>
+              <div
+                className="ConsoleTable-column"
+                style={
+                  Object {
                     "maxWidth": 88.7,
                     "minWidth": 88.7,
                   }
@@ -406,6 +583,23 @@ ShallowWrapper {
             <div
               className="ConsoleTable-row ConsoleTable-row--line"
             >
+              <div
+                className="ConsoleTable-column"
+                style={
+                  Object {
+                    "maxWidth": 124.5,
+                    "minWidth": 124.5,
+                  }
+                }
+              >
+                <styled.span
+                  className="ConsoleTable-text"
+                >
+                  <div>
+                    Steve
+                  </div>
+                </styled.span>
+              </div>
               <div
                 className="ConsoleTable-column"
                 style={
@@ -450,6 +644,23 @@ ShallowWrapper {
             "nodeType": "host",
             "props": Object {
               "children": Array [
+                <div
+                  className="ConsoleTable-column"
+                  style={
+                    Object {
+                      "maxWidth": 124.5,
+                      "minWidth": 124.5,
+                    }
+                  }
+                >
+                  <styled.span
+                    className="ConsoleTable-text"
+                  >
+                    <div>
+                      Elon
+                    </div>
+                  </styled.span>
+                </div>,
                 <div
                   className="ConsoleTable-column"
                   style={
@@ -540,6 +751,51 @@ ShallowWrapper {
                   "children": <styled.span
                     className="ConsoleTable-text"
                   >
+                    <div>
+                      Elon
+                    </div>
+                  </styled.span>,
+                  "className": "ConsoleTable-column",
+                  "style": Object {
+                    "maxWidth": 124.5,
+                    "minWidth": 124.5,
+                  },
+                },
+                "ref": null,
+                "rendered": Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "class",
+                  "props": Object {
+                    "children": <div>
+                      Elon
+                    </div>,
+                    "className": "ConsoleTable-text",
+                  },
+                  "ref": null,
+                  "rendered": Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "host",
+                    "props": Object {
+                      "children": "Elon",
+                    },
+                    "ref": null,
+                    "rendered": "Elon",
+                    "type": "div",
+                  },
+                  "type": [Function],
+                },
+                "type": "div",
+              },
+              Object {
+                "instance": null,
+                "key": "ConsoleTable-body_2",
+                "nodeType": "host",
+                "props": Object {
+                  "children": <styled.span
+                    className="ConsoleTable-text"
+                  >
                     Musk
                   </styled.span>,
                   "className": "ConsoleTable-column",
@@ -572,6 +828,23 @@ ShallowWrapper {
             "nodeType": "host",
             "props": Object {
               "children": Array [
+                <div
+                  className="ConsoleTable-column"
+                  style={
+                    Object {
+                      "maxWidth": 124.5,
+                      "minWidth": 124.5,
+                    }
+                  }
+                >
+                  <styled.span
+                    className="ConsoleTable-text"
+                  >
+                    <div>
+                      Steve
+                    </div>
+                  </styled.span>
+                </div>,
                 <div
                   className="ConsoleTable-column"
                   style={
@@ -662,6 +935,51 @@ ShallowWrapper {
                   "children": <styled.span
                     className="ConsoleTable-text"
                   >
+                    <div>
+                      Steve
+                    </div>
+                  </styled.span>,
+                  "className": "ConsoleTable-column",
+                  "style": Object {
+                    "maxWidth": 124.5,
+                    "minWidth": 124.5,
+                  },
+                },
+                "ref": null,
+                "rendered": Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "class",
+                  "props": Object {
+                    "children": <div>
+                      Steve
+                    </div>,
+                    "className": "ConsoleTable-text",
+                  },
+                  "ref": null,
+                  "rendered": Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "host",
+                    "props": Object {
+                      "children": "Steve",
+                    },
+                    "ref": null,
+                    "rendered": "Steve",
+                    "type": "div",
+                  },
+                  "type": [Function],
+                },
+                "type": "div",
+              },
+              Object {
+                "instance": null,
+                "key": "ConsoleTable-body_2",
+                "nodeType": "host",
+                "props": Object {
+                  "children": <styled.span
+                    className="ConsoleTable-text"
+                  >
                     Jobs
                   </styled.span>,
                   "className": "ConsoleTable-column",
@@ -731,6 +1049,28 @@ ShallowWrapper {
                 className="ConsoleTable-column"
                 style={
                   Object {
+                    "maxWidth": 124.5,
+                    "minWidth": 124.5,
+                  }
+                }
+              >
+                <styled.span
+                  color="textLight"
+                  style={
+                    Object {
+                      "lineHeight": "14px",
+                    }
+                  }
+                >
+                  <div>
+                    Titulo
+                  </div>
+                </styled.span>
+              </div>
+              <div
+                className="ConsoleTable-column"
+                style={
+                  Object {
                     "maxWidth": 88.7,
                     "minWidth": 88.7,
                   }
@@ -776,6 +1116,23 @@ ShallowWrapper {
                 className="ConsoleTable-column"
                 style={
                   Object {
+                    "maxWidth": 124.5,
+                    "minWidth": 124.5,
+                  }
+                }
+              >
+                <styled.span
+                  className="ConsoleTable-text"
+                >
+                  <div>
+                    Elon
+                  </div>
+                </styled.span>
+              </div>
+              <div
+                className="ConsoleTable-column"
+                style={
+                  Object {
                     "maxWidth": 88.7,
                     "minWidth": 88.7,
                   }
@@ -791,6 +1148,23 @@ ShallowWrapper {
             <div
               className="ConsoleTable-row ConsoleTable-row--line"
             >
+              <div
+                className="ConsoleTable-column"
+                style={
+                  Object {
+                    "maxWidth": 124.5,
+                    "minWidth": 124.5,
+                  }
+                }
+              >
+                <styled.span
+                  className="ConsoleTable-text"
+                >
+                  <div>
+                    Steve
+                  </div>
+                </styled.span>
+              </div>
               <div
                 className="ConsoleTable-column"
                 style={
@@ -863,6 +1237,28 @@ ShallowWrapper {
                 className="ConsoleTable-column"
                 style={
                   Object {
+                    "maxWidth": 124.5,
+                    "minWidth": 124.5,
+                  }
+                }
+              >
+                <styled.span
+                  color="textLight"
+                  style={
+                    Object {
+                      "lineHeight": "14px",
+                    }
+                  }
+                >
+                  <div>
+                    Titulo
+                  </div>
+                </styled.span>
+              </div>
+              <div
+                className="ConsoleTable-column"
+                style={
+                  Object {
                     "maxWidth": 88.7,
                     "minWidth": 88.7,
                   }
@@ -907,6 +1303,28 @@ ShallowWrapper {
                     }
                   >
                     Día
+                  </styled.span>
+                </div>,
+                <div
+                  className="ConsoleTable-column"
+                  style={
+                    Object {
+                      "maxWidth": 124.5,
+                      "minWidth": 124.5,
+                    }
+                  }
+                >
+                  <styled.span
+                    color="textLight"
+                    style={
+                      Object {
+                        "lineHeight": "14px",
+                      }
+                    }
+                  >
+                    <div>
+                      Titulo
+                    </div>
                   </styled.span>
                 </div>,
                 <div
@@ -986,6 +1404,59 @@ ShallowWrapper {
                       }
                     }
                   >
+                    <div>
+                      Titulo
+                    </div>
+                  </styled.span>,
+                  "className": "ConsoleTable-column",
+                  "style": Object {
+                    "maxWidth": 124.5,
+                    "minWidth": 124.5,
+                  },
+                },
+                "ref": null,
+                "rendered": Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "class",
+                  "props": Object {
+                    "children": <div>
+                      Titulo
+                    </div>,
+                    "color": "textLight",
+                    "style": Object {
+                      "lineHeight": "14px",
+                    },
+                  },
+                  "ref": null,
+                  "rendered": Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "host",
+                    "props": Object {
+                      "children": "Titulo",
+                    },
+                    "ref": null,
+                    "rendered": "Titulo",
+                    "type": "div",
+                  },
+                  "type": [Function],
+                },
+                "type": "div",
+              },
+              Object {
+                "instance": null,
+                "key": "ConsoleTable-header_2",
+                "nodeType": "host",
+                "props": Object {
+                  "children": <styled.span
+                    color="textLight"
+                    style={
+                      Object {
+                        "lineHeight": "14px",
+                      }
+                    }
+                  >
                     Hora de inicio
                   </styled.span>,
                   "className": "ConsoleTable-column",
@@ -1047,6 +1518,23 @@ ShallowWrapper {
                   className="ConsoleTable-column"
                   style={
                     Object {
+                      "maxWidth": 124.5,
+                      "minWidth": 124.5,
+                    }
+                  }
+                >
+                  <styled.span
+                    className="ConsoleTable-text"
+                  >
+                    <div>
+                      Elon
+                    </div>
+                  </styled.span>
+                </div>
+                <div
+                  className="ConsoleTable-column"
+                  style={
+                    Object {
                       "maxWidth": 88.7,
                       "minWidth": 88.7,
                     }
@@ -1062,6 +1550,23 @@ ShallowWrapper {
               <div
                 className="ConsoleTable-row ConsoleTable-row--line"
               >
+                <div
+                  className="ConsoleTable-column"
+                  style={
+                    Object {
+                      "maxWidth": 124.5,
+                      "minWidth": 124.5,
+                    }
+                  }
+                >
+                  <styled.span
+                    className="ConsoleTable-text"
+                  >
+                    <div>
+                      Steve
+                    </div>
+                  </styled.span>
+                </div>
                 <div
                   className="ConsoleTable-column"
                   style={
@@ -1106,6 +1611,23 @@ ShallowWrapper {
               "nodeType": "host",
               "props": Object {
                 "children": Array [
+                  <div
+                    className="ConsoleTable-column"
+                    style={
+                      Object {
+                        "maxWidth": 124.5,
+                        "minWidth": 124.5,
+                      }
+                    }
+                  >
+                    <styled.span
+                      className="ConsoleTable-text"
+                    >
+                      <div>
+                        Elon
+                      </div>
+                    </styled.span>
+                  </div>,
                   <div
                     className="ConsoleTable-column"
                     style={
@@ -1196,6 +1718,51 @@ ShallowWrapper {
                     "children": <styled.span
                       className="ConsoleTable-text"
                     >
+                      <div>
+                        Elon
+                      </div>
+                    </styled.span>,
+                    "className": "ConsoleTable-column",
+                    "style": Object {
+                      "maxWidth": 124.5,
+                      "minWidth": 124.5,
+                    },
+                  },
+                  "ref": null,
+                  "rendered": Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "class",
+                    "props": Object {
+                      "children": <div>
+                        Elon
+                      </div>,
+                      "className": "ConsoleTable-text",
+                    },
+                    "ref": null,
+                    "rendered": Object {
+                      "instance": null,
+                      "key": undefined,
+                      "nodeType": "host",
+                      "props": Object {
+                        "children": "Elon",
+                      },
+                      "ref": null,
+                      "rendered": "Elon",
+                      "type": "div",
+                    },
+                    "type": [Function],
+                  },
+                  "type": "div",
+                },
+                Object {
+                  "instance": null,
+                  "key": "ConsoleTable-body_2",
+                  "nodeType": "host",
+                  "props": Object {
+                    "children": <styled.span
+                      className="ConsoleTable-text"
+                    >
                       Musk
                     </styled.span>,
                     "className": "ConsoleTable-column",
@@ -1228,6 +1795,23 @@ ShallowWrapper {
               "nodeType": "host",
               "props": Object {
                 "children": Array [
+                  <div
+                    className="ConsoleTable-column"
+                    style={
+                      Object {
+                        "maxWidth": 124.5,
+                        "minWidth": 124.5,
+                      }
+                    }
+                  >
+                    <styled.span
+                      className="ConsoleTable-text"
+                    >
+                      <div>
+                        Steve
+                      </div>
+                    </styled.span>
+                  </div>,
                   <div
                     className="ConsoleTable-column"
                     style={
@@ -1313,6 +1897,51 @@ ShallowWrapper {
                 Object {
                   "instance": null,
                   "key": "ConsoleTable-body_1",
+                  "nodeType": "host",
+                  "props": Object {
+                    "children": <styled.span
+                      className="ConsoleTable-text"
+                    >
+                      <div>
+                        Steve
+                      </div>
+                    </styled.span>,
+                    "className": "ConsoleTable-column",
+                    "style": Object {
+                      "maxWidth": 124.5,
+                      "minWidth": 124.5,
+                    },
+                  },
+                  "ref": null,
+                  "rendered": Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "class",
+                    "props": Object {
+                      "children": <div>
+                        Steve
+                      </div>,
+                      "className": "ConsoleTable-text",
+                    },
+                    "ref": null,
+                    "rendered": Object {
+                      "instance": null,
+                      "key": undefined,
+                      "nodeType": "host",
+                      "props": Object {
+                        "children": "Steve",
+                      },
+                      "ref": null,
+                      "rendered": "Steve",
+                      "type": "div",
+                    },
+                    "type": [Function],
+                  },
+                  "type": "div",
+                },
+                Object {
+                  "instance": null,
+                  "key": "ConsoleTable-body_2",
                   "nodeType": "host",
                   "props": Object {
                     "children": <styled.span

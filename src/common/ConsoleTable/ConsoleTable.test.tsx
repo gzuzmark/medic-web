@@ -24,6 +24,10 @@ describe('ConsoleTable Test',() => {
                 value: (row: any) => <div>{row.name}</div>,
                 width: 124.5
             },{
+                name: <div>Titulo</div>,
+                value: (row: any) => <div>{row.name}</div>,
+                width: 124.5
+            },{
                 name: 'Hora de inicio',
                 value: (row: any) => row.lastname,
                 width: 88.7
