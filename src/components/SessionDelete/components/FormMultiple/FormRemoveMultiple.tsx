@@ -84,6 +84,7 @@ const FormRemoveMultiple: React.StatelessComponent<IPropsFormRemoveMultiple> = (
                             error={!props.empty && props.noResults}
                             name={props.currentSession.area && props.currentSession.area.name || ''}
                             list={props.lists.areas}
+                            removeFilters={true}
                             defaultText='Tutorías, Taller, etc.'/>
                     </FormColumn>,
                     <FormColumn key={`FormRemoveMultiple_${++counter}`}  width={2}>
@@ -93,6 +94,7 @@ const FormRemoveMultiple: React.StatelessComponent<IPropsFormRemoveMultiple> = (
                             error={!props.empty && props.noResults}
                             name={props.currentSession.skill && props.currentSession.skill.name || ''}
                             list={props.lists.skills}
+                            removeFilters={true}
                             defaultText='Ingresa un curso'/>
                     </FormColumn>
                 ]}/>
@@ -104,6 +106,7 @@ const FormRemoveMultiple: React.StatelessComponent<IPropsFormRemoveMultiple> = (
                             error={!props.empty && props.noResults}
                             name={props.currentSession.type && props.currentSession.type.name || ''}
                             list={props.lists.types}
+                            removeFilters={true}
                             defaultText='Presencial, Virtual, etc'/>
                     </FormColumn>,
                     <FormColumn key={`FormRemoveMultiple_${++counter}`}  width={2} style={{position: 'relative'}}>
@@ -113,6 +116,7 @@ const FormRemoveMultiple: React.StatelessComponent<IPropsFormRemoveMultiple> = (
                             error={!props.empty && props.noResults}
                             name={props.currentSession.location && props.currentSession.location.name || ''}
                             list={props.lists.locations}
+                            removeFilters={true}
                             defaultText='Torre Arequipa, Torre B, etc.'/>
                         <div className={'FormRemoveMultiple_extra-field'}>
                             <Text3 style={{paddingLeft: 12, paddingBottom: 6}}>Aula</Text3>
@@ -121,6 +125,7 @@ const FormRemoveMultiple: React.StatelessComponent<IPropsFormRemoveMultiple> = (
                                 error={!props.empty && props.noResults}
                                 name={props.currentSession.room && props.currentSession.room.name || ''}
                                 list={props.lists.rooms}
+                                removeFilters={true}
                                 defaultText='A1002'/>
                         </div>
                     </FormColumn>

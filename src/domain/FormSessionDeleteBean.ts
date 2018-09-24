@@ -1,3 +1,4 @@
+import {FILTER_LIST_ALL} from "../common/FilterList/FilterList";
 import Utilities from "../common/Utilities";
 import {
     IInterestAreaDeleteService,
@@ -48,6 +49,14 @@ class FormSessionDeleteBean extends FormSessionBaseBean {
         const to = selectedSession.to ? new Date(selectedSession.to) : new Date();
         if (from > to) {
             selectedSession.to = selectedSession.from;
+        }
+        for (const key in selectedSession) {
+            if (selectedSession.hasOwnProperty(key) && typeof selectedSession[key] === "object") {
+                selectedSession[key].id = selectedSession[key].id === FILTER_LIST_ALL ?
+                    '' : selectedSession[key].id;
+                selectedSession[key].name = selectedSession[key].name === FILTER_LIST_ALL ?
+                    'Mostrar Todo' : selectedSession[key].name ;
+            }
         }
         this.selectedSession = {...selectedSession};
     }
@@ -139,17 +148,23 @@ class FormSessionDeleteBean extends FormSessionBaseBean {
         let list = [] as ISessionsToDelete[];
         if (this.sessions.length > 0) {
             list = this.sessions
-                .filter((session: ISessionsToDelete) =>
-                    this.selectedSession.area ? session.interestAreaId === this.selectedSession.area.id : true
-                ).filter((session: ISessionsToDelete) =>
-                    this.selectedSession.skill ? session.skillId === this.selectedSession.skill.id : true
-                ).filter((session: ISessionsToDelete) =>
-                    this.selectedSession.type ? session.type.toLowerCase() === this.selectedSession.type.name.toLowerCase() : true
-                ).filter((session: ISessionsToDelete) =>
-                    this.selectedSession.location ? session.sede === this.selectedSession.location.name : true
-                ).filter((session: ISessionsToDelete) =>
-                    this.selectedSession.room ? session.locationId === this.selectedSession.room.id : true
-                )
+                .filter((session: ISessionsToDelete) => {
+                    const value = this.selectedSession.area ? this.selectedSession.area.id : '';
+                    return this.isFilterActive(session.interestAreaId, value);
+                }).filter((session: ISessionsToDelete) => {
+                    const value = this.selectedSession.skill ? this.selectedSession.skill.id : '';
+                    return this.isFilterActive(session.skillId, value);
+                }).filter((session: ISessionsToDelete) => {
+                    const value = this.selectedSession.type && this.selectedSession.type.id !== '' ?
+                        this.selectedSession.type.name.toLowerCase()  : '';
+                    return this.isFilterActive(session.type.toLowerCase(), value );
+                }).filter((session: ISessionsToDelete) => {
+                    const value = this.selectedSession.location ? this.selectedSession.location.name : '';
+                    return this.isFilterActive(session.sede, value);
+                }).filter((session: ISessionsToDelete) => {
+                    const value = this.selectedSession.room ? this.selectedSession.room.id : '';
+                    return this.isFilterActive(session.locationId, value)
+                })
         }
         return list
     }
@@ -166,6 +181,10 @@ class FormSessionDeleteBean extends FormSessionBaseBean {
                 name: list[0].name
             };
         }
+    }
+
+    private isFilterActive(id: string, value: string): boolean {
+        return (value && value !== FILTER_LIST_ALL) ? id === value : true
     }
 
     private buildRooms(rooms: IInterestAreaSite[]) {

@@ -4,6 +4,8 @@ import { Text } from '../ConsoleText';
 import SelectList from "../SelectList/SelectList";
 import './FilterList.scss';
 
+export const FILTER_LIST_ALL = 'all';
+
 export interface IListItem {
     id: string;
     name: string;
@@ -94,7 +96,7 @@ class FilterList extends React.Component <IPropsFilterList, IStateFilterList> {
     };
 
     private removeFilters() {
-        this.filter({id: 'all', name: ''});
+        this.filter({id: FILTER_LIST_ALL, name: FILTER_LIST_ALL});
     };
 }
 
