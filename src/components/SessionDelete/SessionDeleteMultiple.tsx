@@ -163,7 +163,7 @@ class SessionDeleteMultiple extends React.Component<IPropsSessionDeleteMultiple,
                                         onSelectAll={this._selectAll}
                                         selection={this.state.selection}/>
                                     <SmallText1 style={{padding: '12px 0 0 20px', display: 'block'}}>
-                                        Solo se muestran las sesiones sin alumnos inscritos. Si deseas eliminar una sesión con alumnos, comunícate con <b>isdciunic@lafaceta.pe </b>
+                                        Solo se muestran las sesiones sin alumnos inscritos. Si deseas eliminar una sesión con alumnos, comunícate con <b>ugomonkeys@lacafetalab.pe</b>
                                     </SmallText1>
                                 </React.Fragment>
                                 }
