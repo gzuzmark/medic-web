@@ -9,7 +9,7 @@ const getTextColor = (key = 'textNormal') => {
     if (ConsoleColor.TEXT_COLORS[key]) {
         color = ConsoleColor.TEXT_COLORS[key];
     } else {
-        throw Error("El color no existe");
+        throw Error("El color no existe " + key);
     }
     return color;
 };
@@ -113,7 +113,16 @@ export const Text3 = styled.span`
   line-height: 24px;
 `;
 
-export const SmallText = styled.span`
+export const SmallText1 = styled.span`
+  color: ${props => getTextColor(props.color)};
+  font-family: ${defaultFont};
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 16px;
+`;
+
+export const SmallText2 = styled.span`
   color: ${props => getTextColor(props.color)};
   font-family: ${defaultFont};
   font-size: 10px;

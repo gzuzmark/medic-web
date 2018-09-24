@@ -3,6 +3,11 @@
 
 .FilterList {
   @extend %formInput;
+  &--error {
+    .FilterList-field {
+      @extend %formInput_input--error;
+    }
+  }
   &-field {
     @extend %formInput_input;
     &--not-empty,

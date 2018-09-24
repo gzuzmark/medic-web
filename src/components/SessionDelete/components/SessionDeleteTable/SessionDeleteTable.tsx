@@ -38,7 +38,7 @@ const SessionDeleteTable: React.StatelessComponent<IPropsSessionDeleteTable> = (
         name: 'Hora',
         value: (row: ISessionsToDelete) =>
             `${moment(row.from).format('hh:mm a')} - ${moment(row.to).format('hh:mm a')}`,
-        width: 88.7
+        width: 160
     },{
         name: 'Tipo',
         value: (row: ISessionsToDelete) => row.interestArea,
@@ -70,7 +70,9 @@ const SessionDeleteTable: React.StatelessComponent<IPropsSessionDeleteTable> = (
     }] as IRowConsoleTable[];
 
     return (
-        <ConsoleTable items={props.items} row={tableBase}/>
+        <div className={"SessionDeleteTable"}>
+            <ConsoleTable items={props.items} row={tableBase}/>
+        </div>
     );
 };
 

@@ -1,3 +1,4 @@
+import {ISessionsToDelete} from "../../domain/FormSessionDeleteBean";
 import { IReportForSession } from "../../interfaces/Reports.interface";
 import BaseRequest from '../BaseRequest';
 
@@ -20,7 +21,7 @@ class SessionService extends BaseRequest {
         });
     }
 
-    public searchSessions(params: string): Promise<IReportForSession> {
+    public searchSessions(params: string): Promise<ISessionsToDelete[]> {
         return new Promise((resolve, reject) => {
             this.instance.get(`ugo-admin/sessions/search?${params}`)
                 .then((response: any) => {

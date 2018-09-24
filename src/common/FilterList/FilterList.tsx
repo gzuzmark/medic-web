@@ -18,6 +18,7 @@ interface IPropsFilterList {
     name: string;
     style?: React.CSSProperties;
     removeFilters?: boolean;
+    error?: boolean;
 }
 
 interface IStateFilterList {
@@ -55,7 +56,7 @@ class FilterList extends React.Component <IPropsFilterList, IStateFilterList> {
             extraPropsSelectList.removeFilters = this.removeFilters;
         }
         return (
-            <div className="FilterList" style={{...this.props.style}}>
+            <div className={`FilterList ${this.props.error ? 'FilterList--error' : ''}`} style={{...this.props.style}}>
                 <Text color={color}
                       className={`FilterList-field ${activeClass} ${notEmptyClass} ${disabledClass}`}
                       onClick={this.toggleBox}  >

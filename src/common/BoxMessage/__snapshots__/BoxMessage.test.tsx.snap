@@ -35,7 +35,7 @@ ShallowWrapper {
           }
         />,
         <styled.span
-          color="LightText"
+          color="textLight"
         >
           Caja de Mensajes
         </styled.span>,
@@ -67,7 +67,7 @@ ShallowWrapper {
         "nodeType": "class",
         "props": Object {
           "children": "Caja de Mensajes",
-          "color": "LightText",
+          "color": "textLight",
         },
         "ref": null,
         "rendered": "Caja de Mensajes",
@@ -95,7 +95,7 @@ ShallowWrapper {
             }
           />,
           <styled.span
-            color="LightText"
+            color="textLight"
           >
             Caja de Mensajes
           </styled.span>,
@@ -127,7 +127,7 @@ ShallowWrapper {
           "nodeType": "class",
           "props": Object {
             "children": "Caja de Mensajes",
-            "color": "LightText",
+            "color": "textLight",
           },
           "ref": null,
           "rendered": "Caja de Mensajes",
