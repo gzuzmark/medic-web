@@ -33,7 +33,6 @@ const TimePicker: React.StatelessComponent<IPropTimePicker> = (props) => {
             onChange={props.onChange}
             list={listTimes(props.from, props.to, props.step)}
             defaultText={props.defaultText}
-            enableClearSearch={false}
             name={props.name} />
     );
 };

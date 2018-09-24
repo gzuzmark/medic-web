@@ -2,14 +2,14 @@ import * as moment from "moment";
 import * as React from 'react';
 import {SessionBean} from '../../beans/Session.bean';
 import Layout from '../../common/Layout/Layout';
-import MenuAside from '../../common/MenuAside/MenuAside';
+import MentorDetail from '../../common/MentorDetail/MentorDetail';
+import MenuLeft from "../../common/MenuLeft/MenuLeft";
 import Sticky from '../../common/Sticky/Sticky';
 import { IMatchParam } from '../../interfaces/MatchParam.interface';
 import { IMentor } from '../../interfaces/Mentor.interface';
 import { ISessionSchedule } from '../../interfaces/Session.interface';
 import LocationService from "../../services/Location/Location.service";
 import MentorService from '../../services/Mentor/Mentor.service';
-import MentorDetail from './components/MentorDetail/MentorDetail';
 import ScheduleSessionForm from "./components/ScheduleSessionForm/ScheduleSessionForm";
 import {
 SESSION_MAX_STUDENTS, SESSION_ROOM, SESSION_SELECTED,
@@ -76,19 +76,10 @@ class ScheduleSession extends React.Component<IPropsScheduleSession, IStateSched
         const textNavigation = this.state.mentor ?
             'Crear sesiones para ' + this.state.mentor.user.name : 'Crear sesiones';
         return (
-            <React.Fragment>
-                <Sticky height={90} top={80}>
-                    <div className="u-LayoutMargin" style={{display: 'flex', flexDirection: 'row'}}>
-                        <div style={{
-                            minWidth: 395,
-                            position: 'relative',
-                        }}/>
-                        <MenuAside baseText={'Mentores'}
-                                   url={'/admin/mentores'}
-                                   textNavigation={textNavigation} />
-                    </div>
-                </Sticky>
-            </React.Fragment>
+            <MenuLeft
+                baseText={'Mentores'}
+                url={'/admin/mentores'}
+                textNavigation={textNavigation} />
         )
     }
 

@@ -1,4 +1,4 @@
-import { shallow } from 'enzyme';
+import { mount } from 'enzyme';
 import 'jest-localstorage-mock';
 import * as React from 'react';
 import {REPORT_SESSIONS} from "../../../../beans/ReportRequest.bean";
@@ -11,7 +11,7 @@ describe('ReportTable Test',() => {
     let mountedReportTable: any;
     const getComponent = () => {
         if (!mountedReportTable) {
-            mountedReportTable = shallow(
+            mountedReportTable = mount(
                 <ReportTable {...props} />
             );
         }
@@ -27,17 +27,17 @@ describe('ReportTable Test',() => {
     });
 
     it("render: render ReportTable Header", () => {
-        const component = getComponent().find('.ReportTable-header');
+        const component = getComponent().find('.ConsoleTable-header');
         expect(component.length).toEqual(1)
     });
 
     it("render: render ReportTable Body", () => {
-        const component = getComponent().find('.ReportTable-body');
+        const component = getComponent().find('.ConsoleTable-body');
         expect(component.length).toEqual(1)
     });
 
     it("render: render ReportTable Row from ReportTable Body 1", () => {
-        const component = getComponent().find('.ReportTable-body .ReportTable-row');
+        const component = getComponent().find('.ConsoleTable-body .ConsoleTable-row');
         expect(component.length).toEqual(1)
     });
 
@@ -45,7 +45,7 @@ describe('ReportTable Test',() => {
         props = {
             items: Dummy.dataAlternative1.items
         };
-        const component = getComponent().find('.ReportTable-body .ReportTable-row');
+        const component = getComponent().find('.ConsoleTable-body .ConsoleTable-row');
         expect(component.length).toEqual(3)
     });
 });

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import MenuAside from "../MenuAside/MenuAside";
+import MenuAside from "./components/MenuAside/MenuAside";
 import Layout from "./Layout";
 
 interface IPropsHOCLayout {

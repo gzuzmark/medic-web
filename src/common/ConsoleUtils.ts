@@ -18,3 +18,7 @@ export const getFullHour = (minutes: number) => { // 540 => 09:00 am
 export const getHour = (minutes: number) => { // 540 => 09:00
     return `${lpad((minutes - minutes%60)/60, 2)}:${lpad(minutes%60, 2)}`
 };
+
+export const backToPagePreviously = () => {
+    window.history.back();
+};

@@ -1,0 +1,21 @@
+.ConsoleModalConfirm {
+  &_header {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    height: auto;
+    justify-content: center;
+    padding: 30px 0;
+    .icon {
+      height: 50px;
+      margin-bottom: 10px;
+      width: 50px;
+      fill: rgb(76, 23, 155);
+    }
+  }
+  &_body {
+    background: #f5f7fa;
+    box-shadow: 0 0 2px 0 #9999;
+    padding: 15px 20px;
+  }
+}

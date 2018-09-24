@@ -1,0 +1,43 @@
+@import "../../assets/styles/01-settings/settings";
+
+.SessionDelete {
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 250px;
+  padding-left: 410px;
+  padding-top: 25px;
+  &-button_container {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 85px;
+  }
+  &-button {
+    width: 256px;
+    &:first-child {
+      margin-right: 40px;
+    }
+  }
+}
+
+.FormSession {
+  &-input {
+    &--range {
+      width: 88px;
+      &:not([value='']) {
+        border: 1px solid $primary-color!important;
+      }
+    }
+  }
+  &-label {
+    color: #383435;
+    margin-bottom: 4px;
+    padding-left: 10px;
+    .icon {
+      height: 12px;
+      width: 12px;
+    }
+  }
+  &-input--range {
+    height: 29px;
+  }
+}
