@@ -12,6 +12,7 @@ const NAMED_COLORS = {
     purple: 'rgb(76, 23, 155)',
     purpleDark: 'rgb(62, 38, 143)',
     purpleLight: 'rgb(144, 19, 254)',
+    purpleLighter: 'rgb(146, 61, 255)',
     white: 'rgb(255, 255, 255)'
 };
 

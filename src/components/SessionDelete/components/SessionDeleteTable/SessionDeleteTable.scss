@@ -1,0 +1,14 @@
+.SessionDeleteTable {
+  .ConsoleTable {
+    &-header {
+      background: #f5f7fa;
+      .ConsoleTable-row {
+        border-bottom: 1px solid #c1c1c1;
+      }
+      span {
+        color: rgb(112,112,112)!important;
+        font-weight: bold!important;
+      }
+    }
+  }
+}

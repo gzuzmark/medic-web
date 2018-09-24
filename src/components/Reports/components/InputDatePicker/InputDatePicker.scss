@@ -1,0 +1,9 @@
+.InputDatePicker {
+  &--error {
+    .DateInput_input {
+      border-bottom: 1px solid #ee5c7d;
+      color: #ee5c7d;
+    }
+
+  }
+}

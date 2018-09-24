@@ -30,7 +30,10 @@
   white-space: nowrap;
   width: 99%;
 }
-
+%formInput_input--error {
+  border-bottom: 1px solid #ee5c7d!important;
+  color: #ee5c7d!important;
+}
 %formInput_input--active {
   border-bottom: 1px solid $primary-color;
 }

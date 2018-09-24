@@ -1,7 +1,8 @@
 .ConsoleTable {
   border-radius: 10px;
+  max-height: 250px;
   max-width: 1280px;
-  overflow-y: scroll;
+  overflow: scroll;
   &-header, &-body {
     display: inline-table;
     padding-left: 22px;

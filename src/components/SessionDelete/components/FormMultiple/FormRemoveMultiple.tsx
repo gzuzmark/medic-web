@@ -20,6 +20,8 @@ interface ISessionLists {
 interface IPropsFormRemoveMultiple {
     currentSession: ISessionItem;
     lists: ISessionLists;
+    empty: boolean;
+    noResults: boolean;
     onSearch(selectedSession: ISessionItem, key: string): void;
     onFilter(selectedSession: ISessionItem, key: string): void;
 }
@@ -39,7 +41,7 @@ const updateFilter = (onFilter: any, key?: string) => {
 
 const isDayBlocked = (toDate: Date) => {
     return (day: moment.Moment) => {
-        return day < moment(toDate) || moment(toDate).add(1, 'year') < day;
+        return day <= moment(toDate) || moment(toDate).add(1, 'year') < day;
     }
 };
 
@@ -51,12 +53,15 @@ const FormRemoveMultiple: React.StatelessComponent<IPropsFormRemoveMultiple> = (
     today.setDate(today.getDate() - 1);
     return (
         <React.Fragment>
-            <FormSection style={{marginBottom: 12, display: 'block'}} itemStyle={{width: 650}}>
+            <FormSection
+                style={{marginBottom: 12, display: 'block'}}
+                itemStyle={{width: 650}}>
                 <FormRow style={{marginTop: 50}} columns={[
                     <FormColumn key={`FormRemoveMultiple_${++counter}`}  width={2}>
                         <Text3 style={{paddingLeft: 12, paddingBottom: 6}}>Desde el:</Text3>
                         <InputDatePicker
                             id={'from'}
+                            error={props.empty}
                             date={fromDate}
                             updateState={updateSearch(props.onSearch)}
                             configDate={{"isDayBlocked": isDayBlocked(today), "isOutsideRange": () => false}}/>
@@ -65,6 +70,7 @@ const FormRemoveMultiple: React.StatelessComponent<IPropsFormRemoveMultiple> = (
                         <Text3 style={{paddingLeft: 12, paddingBottom: 6}}>Hasta el:</Text3>
                         <InputDatePicker
                             id={'to'}
+                            error={props.empty}
                             date={toDate}
                             updateState={updateSearch(props.onSearch)}
                             configDate={{"isDayBlocked": isDayBlocked(fromDate), "isOutsideRange": () => false}}/>
@@ -75,6 +81,7 @@ const FormRemoveMultiple: React.StatelessComponent<IPropsFormRemoveMultiple> = (
                         <Text3 style={{paddingLeft: 12, paddingBottom: 6}}>Tipo</Text3>
                         <FilterList
                             onChange={updateFilter(props.onFilter, 'area')}
+                            error={!props.empty && props.noResults}
                             name={props.currentSession.area && props.currentSession.area.name || ''}
                             list={props.lists.areas}
                             defaultText='Tutorías, Taller, etc.'/>
@@ -83,6 +90,7 @@ const FormRemoveMultiple: React.StatelessComponent<IPropsFormRemoveMultiple> = (
                         <Text3 style={{paddingLeft: 12, paddingBottom: 6}}>Sesión</Text3>
                         <FilterList
                             onChange={updateFilter(props.onFilter, 'skill')}
+                            error={!props.empty && props.noResults}
                             name={props.currentSession.skill && props.currentSession.skill.name || ''}
                             list={props.lists.skills}
                             defaultText='Ingresa un curso'/>
@@ -93,6 +101,7 @@ const FormRemoveMultiple: React.StatelessComponent<IPropsFormRemoveMultiple> = (
                         <Text3 style={{paddingLeft: 12, paddingBottom: 6}}>Modalidad</Text3>
                         <FilterList
                             onChange={updateFilter(props.onFilter, 'type')}
+                            error={!props.empty && props.noResults}
                             name={props.currentSession.type && props.currentSession.type.name || ''}
                             list={props.lists.types}
                             defaultText='Presencial, Virtual, etc'/>
@@ -101,6 +110,7 @@ const FormRemoveMultiple: React.StatelessComponent<IPropsFormRemoveMultiple> = (
                         <Text3 style={{paddingLeft: 12, paddingBottom: 6}}>Sede</Text3>
                         <FilterList
                             onChange={updateFilter(props.onFilter, 'location')}
+                            error={!props.empty && props.noResults}
                             name={props.currentSession.location && props.currentSession.location.name || ''}
                             list={props.lists.locations}
                             defaultText='Torre Arequipa, Torre B, etc.'/>
@@ -108,6 +118,7 @@ const FormRemoveMultiple: React.StatelessComponent<IPropsFormRemoveMultiple> = (
                             <Text3 style={{paddingLeft: 12, paddingBottom: 6}}>Aula</Text3>
                             <FilterList
                                 onChange={updateFilter(props.onFilter, 'room')}
+                                error={!props.empty && props.noResults}
                                 name={props.currentSession.room && props.currentSession.room.name || ''}
                                 list={props.lists.rooms}
                                 defaultText='A1002'/>

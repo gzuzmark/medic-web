@@ -6,16 +6,11 @@
   padding-bottom: 250px;
   padding-left: 410px;
   padding-top: 25px;
-  &-button_container {
+  &_error-box {
     display: flex;
-    justify-content: flex-end;
-    margin-top: 85px;
-  }
-  &-button {
-    width: 256px;
-    &:first-child {
-      margin-right: 40px;
-    }
+    flex-wrap: wrap;
+    margin-top: 35px;
+    position: relative;
   }
 }
 
