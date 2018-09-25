@@ -150,7 +150,7 @@ class MentorSession extends React.Component<IPropsMentorSession, IStateMentorSes
 
     private _eventShowSession(event: IEvent) {
         this.setState({
-            activeModal: true,
+            activeModal: false,
             selectedEvent: event
         });
     }

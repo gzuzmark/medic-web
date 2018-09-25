@@ -20,7 +20,7 @@ const ModalCancel: React.StatelessComponent<IPropsModalCancel> = (props) => {
         <ConsoleModalConfirm
             show={props.show}
             title={props.title}
-            icon={'book'}>
+            icon={'warning'}>
             <div className={'ModalCancel'}>
                 <Title2 color="textBold">Si cancelas, se perderá la información actual.</Title2>
                 <Title2 color="textBold" style={{fontWeight: 'normal'}}>¿Estás seguro?</Title2>

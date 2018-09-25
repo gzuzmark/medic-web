@@ -61,7 +61,7 @@ ShallowWrapper {
           }
         />,
       ],
-      "icon": "book",
+      "icon": "warning",
       "show": true,
       "title": "Titulo de la modal",
     },
@@ -187,7 +187,7 @@ ShallowWrapper {
             }
           />,
         ],
-        "icon": "book",
+        "icon": "warning",
         "show": true,
         "title": "Titulo de la modal",
       },
