@@ -64,7 +64,9 @@ ShallowWrapper {
                 }
               }
             >
-              Si eliminas esta sesión no podrás revertir esta acción más adelante.
+              Si eliminas 
+              estas sesiones
+               no podrás revertir esta acción más adelante.
             </span>
           </styled.h2>
         </div>,
@@ -85,7 +87,7 @@ ShallowWrapper {
       ],
       "show": true,
       "title": "¿Estás seguro que deseas eliminar
-la sesión?",
+las sesiones?",
     },
     "ref": null,
     "rendered": Array [
@@ -129,7 +131,9 @@ la sesión?",
                 }
               }
             >
-              Si eliminas esta sesión no podrás revertir esta acción más adelante.
+              Si eliminas 
+              estas sesiones
+               no podrás revertir esta acción más adelante.
             </span>
           </styled.h2>,
           "className": "ModalConfirmDelete",
@@ -169,7 +173,9 @@ la sesión?",
                   }
                 }
               >
-                Si eliminas esta sesión no podrás revertir esta acción más adelante.
+                Si eliminas 
+                estas sesiones
+                 no podrás revertir esta acción más adelante.
               </span>,
             ],
             "style": Object {
@@ -226,13 +232,21 @@ la sesión?",
               "key": undefined,
               "nodeType": "host",
               "props": Object {
-                "children": "Si eliminas esta sesión no podrás revertir esta acción más adelante.",
+                "children": Array [
+                  "Si eliminas ",
+                  "estas sesiones",
+                  " no podrás revertir esta acción más adelante.",
+                ],
                 "style": Object {
                   "paddingLeft": 25,
                 },
               },
               "ref": null,
-              "rendered": "Si eliminas esta sesión no podrás revertir esta acción más adelante.",
+              "rendered": Array [
+                "Si eliminas ",
+                "estas sesiones",
+                " no podrás revertir esta acción más adelante.",
+              ],
               "type": "span",
             },
           ],
@@ -308,7 +322,9 @@ la sesión?",
                   }
                 }
               >
-                Si eliminas esta sesión no podrás revertir esta acción más adelante.
+                Si eliminas 
+                estas sesiones
+                 no podrás revertir esta acción más adelante.
               </span>
             </styled.h2>
           </div>,
@@ -329,7 +345,7 @@ la sesión?",
         ],
         "show": true,
         "title": "¿Estás seguro que deseas eliminar
-la sesión?",
+las sesiones?",
       },
       "ref": null,
       "rendered": Array [
@@ -373,7 +389,9 @@ la sesión?",
                   }
                 }
               >
-                Si eliminas esta sesión no podrás revertir esta acción más adelante.
+                Si eliminas 
+                estas sesiones
+                 no podrás revertir esta acción más adelante.
               </span>
             </styled.h2>,
             "className": "ModalConfirmDelete",
@@ -413,7 +431,9 @@ la sesión?",
                     }
                   }
                 >
-                  Si eliminas esta sesión no podrás revertir esta acción más adelante.
+                  Si eliminas 
+                  estas sesiones
+                   no podrás revertir esta acción más adelante.
                 </span>,
               ],
               "style": Object {
@@ -470,13 +490,21 @@ la sesión?",
                 "key": undefined,
                 "nodeType": "host",
                 "props": Object {
-                  "children": "Si eliminas esta sesión no podrás revertir esta acción más adelante.",
+                  "children": Array [
+                    "Si eliminas ",
+                    "estas sesiones",
+                    " no podrás revertir esta acción más adelante.",
+                  ],
                   "style": Object {
                     "paddingLeft": 25,
                   },
                 },
                 "ref": null,
-                "rendered": "Si eliminas esta sesión no podrás revertir esta acción más adelante.",
+                "rendered": Array [
+                  "Si eliminas ",
+                  "estas sesiones",
+                  " no podrás revertir esta acción más adelante.",
+                ],
                 "type": "span",
               },
             ],
