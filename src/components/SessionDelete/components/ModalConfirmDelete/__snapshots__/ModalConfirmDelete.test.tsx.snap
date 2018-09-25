@@ -30,19 +30,42 @@ ShallowWrapper {
           className="ModalConfirmDelete"
         >
           <styled.h2
-            color="textBold"
-          >
-            Si cancelas, se perderá la información actual.
-          </styled.h2>
-          <styled.h2
-            color="textBold"
             style={
               Object {
-                "fontWeight": "normal",
+                "color": "#ee5c7d",
               }
             }
           >
-            ¿Estás seguro?
+            <span
+              style={
+                Object {
+                  "position": "relative",
+                }
+              }
+            >
+              <Icon
+                name="exclamation"
+                style={
+                  Object {
+                    "fill": "#ee5c7d",
+                    "height": 24,
+                    "position": "absolute",
+                    "top": 4,
+                    "width": 24,
+                  }
+                }
+              />
+            </span>
+             
+            <span
+              style={
+                Object {
+                  "paddingLeft": 25,
+                }
+              }
+            >
+              Si eliminas esta sesión no podrás revertir esta acción más adelante.
+            </span>
           </styled.h2>
         </div>,
         <ConfirmButtons
@@ -61,7 +84,8 @@ ShallowWrapper {
         />,
       ],
       "show": true,
-      "title": "¿Está seguro que desea eliminar estos talleres?",
+      "title": "¿Estás seguro que deseas eliminar
+la sesión?",
     },
     "ref": null,
     "rendered": Array [
@@ -70,55 +94,150 @@ ShallowWrapper {
         "key": undefined,
         "nodeType": "host",
         "props": Object {
-          "children": Array [
-            <styled.h2
-              color="textBold"
-            >
-              Si cancelas, se perderá la información actual.
-            </styled.h2>,
-            <styled.h2
-              color="textBold"
+          "children": <styled.h2
+            style={
+              Object {
+                "color": "#ee5c7d",
+              }
+            }
+          >
+            <span
               style={
                 Object {
-                  "fontWeight": "normal",
+                  "position": "relative",
                 }
               }
             >
-              ¿Estás seguro?
-            </styled.h2>,
-          ],
+              <Icon
+                name="exclamation"
+                style={
+                  Object {
+                    "fill": "#ee5c7d",
+                    "height": 24,
+                    "position": "absolute",
+                    "top": 4,
+                    "width": 24,
+                  }
+                }
+              />
+            </span>
+             
+            <span
+              style={
+                Object {
+                  "paddingLeft": 25,
+                }
+              }
+            >
+              Si eliminas esta sesión no podrás revertir esta acción más adelante.
+            </span>
+          </styled.h2>,
           "className": "ModalConfirmDelete",
         },
         "ref": null,
-        "rendered": Array [
-          Object {
-            "instance": null,
-            "key": undefined,
-            "nodeType": "class",
-            "props": Object {
-              "children": "Si cancelas, se perderá la información actual.",
-              "color": "textBold",
+        "rendered": Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "class",
+          "props": Object {
+            "children": Array [
+              <span
+                style={
+                  Object {
+                    "position": "relative",
+                  }
+                }
+              >
+                <Icon
+                  name="exclamation"
+                  style={
+                    Object {
+                      "fill": "#ee5c7d",
+                      "height": 24,
+                      "position": "absolute",
+                      "top": 4,
+                      "width": 24,
+                    }
+                  }
+                />
+              </span>,
+              " ",
+              <span
+                style={
+                  Object {
+                    "paddingLeft": 25,
+                  }
+                }
+              >
+                Si eliminas esta sesión no podrás revertir esta acción más adelante.
+              </span>,
+            ],
+            "style": Object {
+              "color": "#ee5c7d",
             },
-            "ref": null,
-            "rendered": "Si cancelas, se perderá la información actual.",
-            "type": [Function],
           },
-          Object {
-            "instance": null,
-            "key": undefined,
-            "nodeType": "class",
-            "props": Object {
-              "children": "¿Estás seguro?",
-              "color": "textBold",
-              "style": Object {
-                "fontWeight": "normal",
+          "ref": null,
+          "rendered": Array [
+            Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "host",
+              "props": Object {
+                "children": <Icon
+                  name="exclamation"
+                  style={
+                    Object {
+                      "fill": "#ee5c7d",
+                      "height": 24,
+                      "position": "absolute",
+                      "top": 4,
+                      "width": 24,
+                    }
+                  }
+                />,
+                "style": Object {
+                  "position": "relative",
+                },
               },
+              "ref": null,
+              "rendered": Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "function",
+                "props": Object {
+                  "name": "exclamation",
+                  "style": Object {
+                    "fill": "#ee5c7d",
+                    "height": 24,
+                    "position": "absolute",
+                    "top": 4,
+                    "width": 24,
+                  },
+                },
+                "ref": null,
+                "rendered": null,
+                "type": [Function],
+              },
+              "type": "span",
             },
-            "ref": null,
-            "rendered": "¿Estás seguro?",
-            "type": [Function],
-          },
-        ],
+            " ",
+            Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "host",
+              "props": Object {
+                "children": "Si eliminas esta sesión no podrás revertir esta acción más adelante.",
+                "style": Object {
+                  "paddingLeft": 25,
+                },
+              },
+              "ref": null,
+              "rendered": "Si eliminas esta sesión no podrás revertir esta acción más adelante.",
+              "type": "span",
+            },
+          ],
+          "type": [Function],
+        },
         "type": "div",
       },
       Object {
@@ -155,19 +274,42 @@ ShallowWrapper {
             className="ModalConfirmDelete"
           >
             <styled.h2
-              color="textBold"
-            >
-              Si cancelas, se perderá la información actual.
-            </styled.h2>
-            <styled.h2
-              color="textBold"
               style={
                 Object {
-                  "fontWeight": "normal",
+                  "color": "#ee5c7d",
                 }
               }
             >
-              ¿Estás seguro?
+              <span
+                style={
+                  Object {
+                    "position": "relative",
+                  }
+                }
+              >
+                <Icon
+                  name="exclamation"
+                  style={
+                    Object {
+                      "fill": "#ee5c7d",
+                      "height": 24,
+                      "position": "absolute",
+                      "top": 4,
+                      "width": 24,
+                    }
+                  }
+                />
+              </span>
+               
+              <span
+                style={
+                  Object {
+                    "paddingLeft": 25,
+                  }
+                }
+              >
+                Si eliminas esta sesión no podrás revertir esta acción más adelante.
+              </span>
             </styled.h2>
           </div>,
           <ConfirmButtons
@@ -186,7 +328,8 @@ ShallowWrapper {
           />,
         ],
         "show": true,
-        "title": "¿Está seguro que desea eliminar estos talleres?",
+        "title": "¿Estás seguro que deseas eliminar
+la sesión?",
       },
       "ref": null,
       "rendered": Array [
@@ -195,55 +338,150 @@ ShallowWrapper {
           "key": undefined,
           "nodeType": "host",
           "props": Object {
-            "children": Array [
-              <styled.h2
-                color="textBold"
-              >
-                Si cancelas, se perderá la información actual.
-              </styled.h2>,
-              <styled.h2
-                color="textBold"
+            "children": <styled.h2
+              style={
+                Object {
+                  "color": "#ee5c7d",
+                }
+              }
+            >
+              <span
                 style={
                   Object {
-                    "fontWeight": "normal",
+                    "position": "relative",
                   }
                 }
               >
-                ¿Estás seguro?
-              </styled.h2>,
-            ],
+                <Icon
+                  name="exclamation"
+                  style={
+                    Object {
+                      "fill": "#ee5c7d",
+                      "height": 24,
+                      "position": "absolute",
+                      "top": 4,
+                      "width": 24,
+                    }
+                  }
+                />
+              </span>
+               
+              <span
+                style={
+                  Object {
+                    "paddingLeft": 25,
+                  }
+                }
+              >
+                Si eliminas esta sesión no podrás revertir esta acción más adelante.
+              </span>
+            </styled.h2>,
             "className": "ModalConfirmDelete",
           },
           "ref": null,
-          "rendered": Array [
-            Object {
-              "instance": null,
-              "key": undefined,
-              "nodeType": "class",
-              "props": Object {
-                "children": "Si cancelas, se perderá la información actual.",
-                "color": "textBold",
+          "rendered": Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "class",
+            "props": Object {
+              "children": Array [
+                <span
+                  style={
+                    Object {
+                      "position": "relative",
+                    }
+                  }
+                >
+                  <Icon
+                    name="exclamation"
+                    style={
+                      Object {
+                        "fill": "#ee5c7d",
+                        "height": 24,
+                        "position": "absolute",
+                        "top": 4,
+                        "width": 24,
+                      }
+                    }
+                  />
+                </span>,
+                " ",
+                <span
+                  style={
+                    Object {
+                      "paddingLeft": 25,
+                    }
+                  }
+                >
+                  Si eliminas esta sesión no podrás revertir esta acción más adelante.
+                </span>,
+              ],
+              "style": Object {
+                "color": "#ee5c7d",
               },
-              "ref": null,
-              "rendered": "Si cancelas, se perderá la información actual.",
-              "type": [Function],
             },
-            Object {
-              "instance": null,
-              "key": undefined,
-              "nodeType": "class",
-              "props": Object {
-                "children": "¿Estás seguro?",
-                "color": "textBold",
-                "style": Object {
-                  "fontWeight": "normal",
+            "ref": null,
+            "rendered": Array [
+              Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "host",
+                "props": Object {
+                  "children": <Icon
+                    name="exclamation"
+                    style={
+                      Object {
+                        "fill": "#ee5c7d",
+                        "height": 24,
+                        "position": "absolute",
+                        "top": 4,
+                        "width": 24,
+                      }
+                    }
+                  />,
+                  "style": Object {
+                    "position": "relative",
+                  },
                 },
+                "ref": null,
+                "rendered": Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "function",
+                  "props": Object {
+                    "name": "exclamation",
+                    "style": Object {
+                      "fill": "#ee5c7d",
+                      "height": 24,
+                      "position": "absolute",
+                      "top": 4,
+                      "width": 24,
+                    },
+                  },
+                  "ref": null,
+                  "rendered": null,
+                  "type": [Function],
+                },
+                "type": "span",
               },
-              "ref": null,
-              "rendered": "¿Estás seguro?",
-              "type": [Function],
-            },
-          ],
+              " ",
+              Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "host",
+                "props": Object {
+                  "children": "Si eliminas esta sesión no podrás revertir esta acción más adelante.",
+                  "style": Object {
+                    "paddingLeft": 25,
+                  },
+                },
+                "ref": null,
+                "rendered": "Si eliminas esta sesión no podrás revertir esta acción más adelante.",
+                "type": "span",
+              },
+            ],
+            "type": [Function],
+          },
           "type": "div",
         },
         Object {
