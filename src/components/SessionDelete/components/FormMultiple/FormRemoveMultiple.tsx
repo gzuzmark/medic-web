@@ -51,6 +51,24 @@ const FormRemoveMultiple: React.StatelessComponent<IPropsFormRemoveMultiple> = (
     const toDate = props.currentSession.to ? new Date(props.currentSession.to) : new Date();
     const today = new Date();
     today.setDate(today.getDate() - 1);
+    let lists = props.lists;
+    let currentSession = props.currentSession;
+    if (props.noResults) {
+        lists = {
+            areas: [],
+            locations: [],
+            rooms: [],
+            skills: [],
+            types: []
+        };
+        currentSession = {
+            area: undefined,
+            location: undefined,
+            room: undefined,
+            skill: undefined,
+            type: undefined
+        };
+    }
     return (
         <React.Fragment>
             <FormSection
@@ -82,8 +100,8 @@ const FormRemoveMultiple: React.StatelessComponent<IPropsFormRemoveMultiple> = (
                         <FilterList
                             onChange={updateFilter(props.onFilter, 'area')}
                             error={!props.empty && props.noResults}
-                            name={props.currentSession.area && props.currentSession.area.name || ''}
-                            list={props.lists.areas}
+                            name={currentSession.area && currentSession.area.name || ''}
+                            list={lists.areas}
                             removeFilters={true}
                             defaultText='Tutorías, Taller, etc.'/>
                     </FormColumn>,
@@ -92,8 +110,8 @@ const FormRemoveMultiple: React.StatelessComponent<IPropsFormRemoveMultiple> = (
                         <FilterList
                             onChange={updateFilter(props.onFilter, 'skill')}
                             error={!props.empty && props.noResults}
-                            name={props.currentSession.skill && props.currentSession.skill.name || ''}
-                            list={props.lists.skills}
+                            name={currentSession.skill && currentSession.skill.name || ''}
+                            list={lists.skills}
                             removeFilters={true}
                             defaultText='Ingresa un curso'/>
                     </FormColumn>
@@ -104,8 +122,8 @@ const FormRemoveMultiple: React.StatelessComponent<IPropsFormRemoveMultiple> = (
                         <FilterList
                             onChange={updateFilter(props.onFilter, 'type')}
                             error={!props.empty && props.noResults}
-                            name={props.currentSession.type && props.currentSession.type.name || ''}
-                            list={props.lists.types}
+                            name={currentSession.type && currentSession.type.name || ''}
+                            list={lists.types}
                             removeFilters={true}
                             defaultText='Presencial, Virtual, etc'/>
                     </FormColumn>,
@@ -114,8 +132,8 @@ const FormRemoveMultiple: React.StatelessComponent<IPropsFormRemoveMultiple> = (
                         <FilterList
                             onChange={updateFilter(props.onFilter, 'location')}
                             error={!props.empty && props.noResults}
-                            name={props.currentSession.location && props.currentSession.location.name || ''}
-                            list={props.lists.locations}
+                            name={currentSession.location && currentSession.location.name || ''}
+                            list={lists.locations}
                             removeFilters={true}
                             defaultText='Torre Arequipa, Torre B, etc.'/>
                         <div className={'FormRemoveMultiple_extra-field'}>
@@ -123,8 +141,8 @@ const FormRemoveMultiple: React.StatelessComponent<IPropsFormRemoveMultiple> = (
                             <FilterList
                                 onChange={updateFilter(props.onFilter, 'room')}
                                 error={!props.empty && props.noResults}
-                                name={props.currentSession.room && props.currentSession.room.name || ''}
-                                list={props.lists.rooms}
+                                name={currentSession.room && currentSession.room.name || ''}
+                                list={lists.rooms}
                                 removeFilters={true}
                                 defaultText='A1002'/>
                         </div>

@@ -123,7 +123,7 @@ class SessionDeleteMultiple extends React.Component<IPropsSessionDeleteMultiple,
                 </Sticky>
                 <ModalCancel
                     show={this.state.modals.cancelModal}
-                    title={"Cancelar sesiones creadas"}
+                    title={"Cancelar eliminar sesiones"}
                     disabled={false} loading={false}
                     onCancel={this._handlerModal("cancelModal", false)}
                     onConfirm={backToPagePreviously} />
@@ -163,7 +163,7 @@ class SessionDeleteMultiple extends React.Component<IPropsSessionDeleteMultiple,
                                         onSelectAll={this._selectAll}
                                         selection={this.state.selection}/>
                                     <SmallText1 style={{padding: '12px 0 0 20px', display: 'block'}}>
-                                        Solo se muestran las sesiones sin alumnos inscritos. Si deseas eliminar una sesión con alumnos, comunícate con <b>ugomonkeys@lacafetalab.pe</b>
+                                        Solo se muestran las sesiones sin alumnos inscritos. Si deseas eliminar una sesión con alumnos, comunícate con <b>usoporteugo@lacafetalab.pe</b>
                                     </SmallText1>
                                 </React.Fragment>
                                 }
@@ -171,7 +171,8 @@ class SessionDeleteMultiple extends React.Component<IPropsSessionDeleteMultiple,
 
                         <div className={'SessionDelete_error-box'}>
                             <BoxMessage type={'error'} show={!this.state.sessions.length && this.state.status.dirty}>
-                                No se encontraron sesiones con estas características
+                                {this.state.status.empty ?
+                                    'No se encontraron sesiones en las fechas solicitadas' : 'No se encontraron sesiones con estas características' }
                             </BoxMessage>
                         </div>
                         <ConfirmButtons
@@ -252,7 +253,7 @@ class SessionDeleteMultiple extends React.Component<IPropsSessionDeleteMultiple,
         this.sessionService.deleteSessions(this.state.selection).then(() => {
             newStateStatus.savingData = false;
             this.setState({status: newStateStatus});
-            window.location.assign('/admin');
+            window.location.assign(`/admin/mentores/${this.mentorId}/sesiones/`);
         }, () => {
             newStateStatus.savingData = false;
             newStateModals.confirmModal = false;
