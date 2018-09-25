@@ -131,6 +131,7 @@ class SessionDeleteMultiple extends React.Component<IPropsSessionDeleteMultiple,
                     show={this.state.modals.confirmModal}
                     disabled={this._isSelectionValid() || this.state.status.savingData}
                     loading={this.state.status.savingData}
+                    totalSessions={this.state.selection.length}
                     onCancel={this._handlerModal("confirmModal", false)}
                     onConfirm={this._onConfirmDelete}/>
                 <div className="u-LayoutMargin">

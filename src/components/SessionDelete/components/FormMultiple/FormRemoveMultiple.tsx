@@ -39,9 +39,15 @@ const updateFilter = (onFilter: any, key?: string) => {
     }
 };
 
-const isDayBlocked = (toDate: Date) => {
+const isDayBlocked = (date: Date, force: boolean) => {
     return (day: moment.Moment) => {
-        return day <= moment(toDate) || moment(toDate).add(1, 'year') < day;
+        date.setHours(0);
+        date.setMinutes(0);
+        date.setSeconds(0);
+        day.hours(0).minutes(0).seconds(0);
+        const initRange = force ? day <= moment(date) : day < moment(date);
+
+        return initRange || moment(date).add(1, 'year') < day;
     }
 };
 
@@ -82,7 +88,7 @@ const FormRemoveMultiple: React.StatelessComponent<IPropsFormRemoveMultiple> = (
                             error={props.empty}
                             date={fromDate}
                             updateState={updateSearch(props.onSearch)}
-                            configDate={{"isDayBlocked": isDayBlocked(today), "isOutsideRange": () => false}}/>
+                            configDate={{"isDayBlocked": isDayBlocked(today, true), "isOutsideRange": () => false}}/>
                     </FormColumn>,
                     <FormColumn key={`FormRemoveMultiple_${++counter}`}  width={2}>
                         <Text3 style={{paddingLeft: 12, paddingBottom: 6}}>Hasta el:</Text3>
@@ -91,7 +97,7 @@ const FormRemoveMultiple: React.StatelessComponent<IPropsFormRemoveMultiple> = (
                             error={props.empty}
                             date={toDate}
                             updateState={updateSearch(props.onSearch)}
-                            configDate={{"isDayBlocked": isDayBlocked(fromDate), "isOutsideRange": () => false}}/>
+                            configDate={{"isDayBlocked": isDayBlocked(fromDate, false), "isOutsideRange": () => false}}/>
                     </FormColumn>
                 ]}/>
                 <FormRow style={{marginTop: 90}} columns={[
