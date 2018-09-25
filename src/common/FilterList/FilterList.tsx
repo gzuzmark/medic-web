@@ -21,6 +21,7 @@ interface IPropsFilterList {
     style?: React.CSSProperties;
     removeFilters?: boolean;
     error?: boolean;
+    disabled?: boolean;
 }
 
 interface IStateFilterList {
@@ -49,7 +50,7 @@ class FilterList extends React.Component <IPropsFilterList, IStateFilterList> {
     }
 
     public render() {
-        const disabledClass = this.props.list.length === 0 ? 'FilterList-field--disabled' : '';
+        const disabledClass = this.props.list.length === 0 || this.props.disabled ? 'FilterList-field--disabled' : '';
         const activeClass = this.state.showFilters ? 'FilterList-field--active' : '';
         const color = this.props.name !== '' ? 'textNormal' : 'textNormalSoft';
         const notEmptyClass = this.props.name === '' ? '' : 'FilterList-field--not-empty';
@@ -64,7 +65,7 @@ class FilterList extends React.Component <IPropsFilterList, IStateFilterList> {
                       onClick={this.toggleBox}  >
                     {this.props.name === '' ? this.props.defaultText : this.props.name}
                 </Text>
-                {this.state.showFilters &&
+                {this.state.showFilters && !this.props.disabled &&
                     <SelectList
                         list={this.props.list}
                         onChange={this.filter}

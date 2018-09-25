@@ -114,7 +114,7 @@ class FormSessionBaseBean {
         const isPhysical = this.selectedSession.type && [SESSION_PHYSICAL, SESSION_UNDEFINED].indexOf(this.selectedSession.type.id) !== -1;
         if (this.selectedSession.type && this.selectedSession.type.id === SESSION_VIRTUAL) {
             locations = [{
-                id: 'Videoconferencia',
+                id: SESSION_VIRTUAL,
                 name: 'Videoconferencia'
             }] as ISessionListForm[];
         } else if (isPhysical) {
