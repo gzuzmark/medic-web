@@ -15,7 +15,9 @@ const ReportsLoader: React.StatelessComponent<IPropsReportsLoader> = (props) => 
     return (
         <div className={`ReportsLoader ${props.center && 'ReportsLoader--center'}`}>
             <Loader top={50} height={100} style={{top: -37}}/>
-            <Heading2 style={{fontWeight: 'bold', marginLeft: 30}}>{props.children}</Heading2>
+            <Heading2 style={{fontWeight: 'bold', marginLeft: 30}}>
+                {props.children}
+            </Heading2>
         </div>
     )
 };
