@@ -1,5 +1,6 @@
 import {FILTER_LIST_ALL} from "../common/FilterList/FilterList";
 import Utilities from "../common/Utilities";
+import {SESSION_VIRTUAL} from "../repository/SessionTypeConstants";
 import {
     IInterestAreaDeleteService,
     IInterestAreaSite
@@ -159,7 +160,10 @@ class FormSessionDeleteBean extends FormSessionBaseBean {
                         this.selectedSession.type.name.toLowerCase()  : '';
                     return this.isFilterActive(session.type.toLowerCase(), value );
                 }).filter((session: ISessionsToDelete) => {
-                    const value = this.selectedSession.location ? this.selectedSession.location.name : '';
+                    let value = this.selectedSession.location ? this.selectedSession.location.name : '';
+                    if (session.type.toLowerCase() === SESSION_VIRTUAL.toLowerCase()) {
+                        value = '';
+                    }
                     return this.isFilterActive(session.sede, value);
                 }).filter((session: ISessionsToDelete) => {
                     const value = this.selectedSession.room ? this.selectedSession.room.id : '';
