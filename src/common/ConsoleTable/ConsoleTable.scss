@@ -5,8 +5,9 @@
   overflow: scroll;
   position: relative;
   &--loading {
+    overflow: hidden;
     &:before {
-      background: rgba(255, 255, 255, 0.6);
+      background: rgba(255, 255, 255, 0.8);
       content: '';
       height: 100%;
       position: absolute;

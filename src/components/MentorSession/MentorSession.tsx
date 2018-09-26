@@ -94,10 +94,10 @@ class MentorSession extends React.Component<IPropsMentorSession, IStateMentorSes
                         <div className="MentorSession">
                             <LegendSessions legend={this.legendSession}/>
                             <div className={"MentorSession_options"}>
-                                <Link to={'sesiones/eliminar'} className="u-Button MentorSession_button">
+                                <Link to={'/admin/mentores/' + this.idMentor + '/sesiones/eliminar'} className="u-Button MentorSession_button">
                                     Eliminar varias sesiones
                                 </Link>
-                                <Link to={'sesiones/agendar'} className="u-Button MentorSession_button">
+                                <Link to={'/admin/mentores/' + this.idMentor + '/sesiones/agendar'} className="u-Button MentorSession_button">
                                     Crear varias sesiones
                                 </Link>
                             </div>

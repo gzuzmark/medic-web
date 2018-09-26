@@ -2,11 +2,11 @@ import * as React from 'react';
 import BoxMessage from "../../common/BoxMessage/BoxMessage";
 import ConfirmButtons from "../../common/ConfirmButtons/ConfirmButtons";
 import ModalCancel from "../../common/ConsoleModal/ModalCancel/ModalCancel";
+import ConsoleTableLoader from "../../common/ConsoleTable/components/ConsoleTableLoader/ConsoleTableLoader";
 import { SmallText1, Text2, Title3 } from '../../common/ConsoleText';
 import {backToPagePreviously} from "../../common/ConsoleUtils";
 import {IListItem} from "../../common/FilterList/FilterList";
 import Layout from "../../common/Layout/Layout";
-import Loader from "../../common/Loader/Loader";
 import MentorDetail from "../../common/MentorDetail/MentorDetail";
 import MenuLeft from "../../common/MenuLeft/MenuLeft";
 import Sticky from "../../common/Sticky/Sticky";
@@ -180,7 +180,10 @@ class SessionDeleteMultiple extends React.Component<IPropsSessionDeleteMultiple,
                                 {this.state.status.empty ?
                                     'No se encontraron sesiones en las fechas solicitadas' : 'No se encontraron sesiones con estas características' }
                             </BoxMessage>
-                            {this.state.status.searching && !this.state.sessions.length && <Loader height={80} top={0} />}
+                            {this.state.status.searching && !this.state.sessions.length &&
+                                <ConsoleTableLoader loading={this.state.status.searching} center={false}>
+                                    Espera un momento mientras buscamos las sesiones
+                                </ConsoleTableLoader>}
                         </div>
                         <ConfirmButtons
                             styles={{justifyContent: 'flex-end'}}

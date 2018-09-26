@@ -3,6 +3,7 @@ import * as React from "react";
 import {REPORT_SESSIONS, REPORT_STUDENTS, ReportRequestBean, ReportType} from "../../beans/ReportRequest.bean";
 import BoxMessage from "../../common/BoxMessage/BoxMessage";
 import ConsolePager from "../../common/ConsolePager/ConsolePager";
+import ConsoleTableLoader from "../../common/ConsoleTable/components/ConsoleTableLoader/ConsoleTableLoader";
 import { Text } from '../../common/ConsoleText';
 import Utilities from "../../common/Utilities";
 import {IReportForSession, IReportForStudent} from "../../interfaces/Reports.interface";
@@ -13,7 +14,6 @@ import FormRow from "../ScheduleSession/components/FormRow/FormRow";
 import FormSection from "../ScheduleSession/components/FormSection/FormSection";
 import InputDatePicker from "./components/InputDatePicker/InputDatePicker";
 import InputRadioReports from "./components/InputRadioReports/InputRadioReports";
-import ReportsLoader from "./components/ReportsLoader/ReportsLoader";
 import ReportTable from "./components/ReportTable/ReportTable";
 import './Reports.scss';
 
@@ -114,12 +114,15 @@ class Reports extends React.Component <{}, IStateReports> {
                             updateState={this.updateState}/>
                     </FormSection>
                     <div className='Reports-table_container' {...propsTableContainer}>
-                        <ReportsLoader loading={this.state.loading} center={shouldShowTable}>
+                        <ConsoleTableLoader loading={this.state.loading} center={shouldShowTable}>
                             {this.state.loadingText}
-                        </ReportsLoader>
+                        </ConsoleTableLoader>
                         {shouldShowTable &&
                         <ReportTable items={this.state.results}
-                                     type={this.state.type}/>}
+                                     type={this.state.type}
+                                     loading={this.state.loading}>
+                            {this.state.loadingText}
+                        </ReportTable>}
                         {shouldShowTable &&
                         <button className="u-Button Reports-button"
                                 onClick={this.downloadResults}>
