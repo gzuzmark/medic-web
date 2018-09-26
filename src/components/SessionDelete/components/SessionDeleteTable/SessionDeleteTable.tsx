@@ -7,6 +7,7 @@ import './SessionDeleteTable.scss';
 interface IPropsSessionDeleteTable {
     items: ISessionsToDelete[];
     selection: string[];
+    loading: boolean;
     onSelectItem(id: string): void;
     onSelectAll():void;
 }
@@ -71,7 +72,7 @@ const SessionDeleteTable: React.StatelessComponent<IPropsSessionDeleteTable> = (
 
     return (
         <div className={"SessionDeleteTable"}>
-            <ConsoleTable items={props.items} row={tableBase}/>
+            <ConsoleTable items={props.items} row={tableBase} loading={props.loading}/>
         </div>
     );
 };

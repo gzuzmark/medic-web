@@ -6,6 +6,7 @@ import { SmallText1, Text2, Title3 } from '../../common/ConsoleText';
 import {backToPagePreviously} from "../../common/ConsoleUtils";
 import {IListItem} from "../../common/FilterList/FilterList";
 import Layout from "../../common/Layout/Layout";
+import Loader from "../../common/Loader/Loader";
 import MentorDetail from "../../common/MentorDetail/MentorDetail";
 import MenuLeft from "../../common/MenuLeft/MenuLeft";
 import Sticky from "../../common/Sticky/Sticky";
@@ -34,6 +35,7 @@ interface IStateSessionDeleteMultiple {
         dirty: boolean;
         empty: boolean;
         savingData: boolean;
+        searching: boolean;
     }
     modals: {
         cancelModal: boolean;
@@ -74,7 +76,8 @@ class SessionDeleteMultiple extends React.Component<IPropsSessionDeleteMultiple,
             status: {
                 dirty: false,
                 empty: false,
-                savingData: false
+                savingData: false,
+                searching: false
             }
         };
         this.mentorId = this.props.match.params.id;
@@ -147,8 +150,9 @@ class SessionDeleteMultiple extends React.Component<IPropsSessionDeleteMultiple,
                                 skills: this.state.listSkills,
                                 types: this.state.listTypes
                             }}
+                            disabled={this.state.status.searching}
                             empty={this.state.status.empty}
-                            noResults={this.state.status.dirty && this.state.sessions.length === 0}
+                            noResults={(this.state.status.dirty && this.state.sessions.length === 0)}
                             currentSession={this.state.currentSession} />
                             <FormSection
                                 style={{marginTop: 80}}
@@ -162,6 +166,7 @@ class SessionDeleteMultiple extends React.Component<IPropsSessionDeleteMultiple,
                                         items={this.state.sessions}
                                         onSelectItem={this._updateSelection}
                                         onSelectAll={this._selectAll}
+                                        loading={this.state.status.searching}
                                         selection={this.state.selection}/>
                                     <SmallText1 style={{padding: '12px 0 0 20px', display: 'block'}}>
                                         Solo se muestran las sesiones sin alumnos inscritos. Si deseas eliminar una sesión con alumnos, comunícate con <b>usoporteugo@lacafetalab.pe</b>
@@ -171,14 +176,15 @@ class SessionDeleteMultiple extends React.Component<IPropsSessionDeleteMultiple,
                             </FormSection>
 
                         <div className={'SessionDelete_error-box'}>
-                            <BoxMessage type={'error'} show={!this.state.sessions.length && this.state.status.dirty}>
+                            <BoxMessage type={'error'} show={!this.state.sessions.length && this.state.status.dirty && !this.state.status.searching}>
                                 {this.state.status.empty ?
                                     'No se encontraron sesiones en las fechas solicitadas' : 'No se encontraron sesiones con estas características' }
                             </BoxMessage>
+                            {this.state.status.searching && !this.state.sessions.length && <Loader height={80} top={0} />}
                         </div>
                         <ConfirmButtons
                             styles={{justifyContent: 'flex-end'}}
-                            disabled={this._isSelectionValid() || this.state.status.savingData}
+                            disabled={this._isSelectionValid() || this.state.status.savingData || this.state.status.searching}
                             loading={this.state.status.savingData}
                             cancelText={'Cancelar'} confirmText={'Eliminar'}
                             onCancel={this._handlerModal("cancelModal", true)}
@@ -233,15 +239,24 @@ class SessionDeleteMultiple extends React.Component<IPropsSessionDeleteMultiple,
         }
         const fields = this.formSessionDeleteBean.onChangeDatesFields;
         const newSession = this.formSessionDeleteBean.getSelectedSession();
+
+        const statusSearching = {...this.state.status};
+        statusSearching.searching = true;
         this.setState(
-            {currentSession: newSession, ...fields, selection: this.selectedCheckboxes}, () => {
+            {currentSession: newSession, ...fields, selection: this.selectedCheckboxes, status: statusSearching}, () => {
             const params = `mentor=${this.mentorId}&${this.formSessionDeleteBean.getParams}`;
             this.sessionService.searchSessions(params).then((sessions: ISessionsToDelete[]) => {
                 this.formSessionDeleteBean.setSessions(sessions);
-                const newStateStatus = {...this.state.status};
-                newStateStatus.dirty = true;
-                newStateStatus.empty = sessions.length === 0;
-                this.setState({sessions: this.formSessionDeleteBean.sessions, status: newStateStatus})
+                const statusFinishingSearch = {...this.state.status};
+                statusFinishingSearch.dirty = true;
+                statusFinishingSearch.empty = sessions.length === 0;
+                statusFinishingSearch.searching = false;
+                this.setState({sessions: this.formSessionDeleteBean.sessions, status: statusFinishingSearch})
+            }, () => {
+                const statusFinishingSearch = {...this.state.status};
+                statusFinishingSearch.dirty = true;
+                statusFinishingSearch.searching = false;
+                this.setState({sessions: this.formSessionDeleteBean.sessions, status: statusFinishingSearch})
             });
         });
     }
