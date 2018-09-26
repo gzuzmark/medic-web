@@ -104,6 +104,7 @@ class ScheduleSessionForm extends React.Component<IPropsScheduleSessionForm, {}>
                                                         onRemoveWorkshop={this.props.onRemoveWorkshop}
                                                         onAddWorkshop={this.props.onAddWorkshop}
                                                         id={index}
+                                                        total={session.sessions.length}
                                                         uniqueKey={item.key ? item.key : index.toString()}
                                                         key={`FormSection-${item.key}`}/>
                                                 )

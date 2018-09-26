@@ -5,7 +5,6 @@ import { Text } from '../../../../../../common/ConsoleText';
 import {IListItem} from "../../../../../../common/FilterList/FilterList";
 import Icon from "../../../../../../common/Icon/Icon";
 import TimePicker from "../../../../../../common/TimePicker/TimePicker";
-import Utilities from "../../../../../../common/Utilities";
 import InputDatePicker from "../../../../../Reports/components/InputDatePicker/InputDatePicker";
 import FormColumn from "../../../FormRow/components/FormColumn/FormColumn";
 import FormRow from "../../../FormRow/FormRow";
@@ -13,6 +12,7 @@ import './TimeRangePicker.scss';
 
 interface IPropsTimeRangePicker {
     id: number;
+    total: number;
     onChange: (id: number, from: Date | null, to: Date | null, key: string) => void;
     onRemoveWorkshop: (id: number) => void;
     onAddWorkshop: (from: Date | null, to: Date | null) => void;
@@ -56,6 +56,10 @@ class TimeRangePicker extends React.Component<IPropsTimeRangePicker, {}> {
 
     public render() {
         let counter = 0;
+        const initDateName = this.state.selectedFromDate ?
+            moment(this.state.selectedFromDate).format('hh:mm a') : '';
+        const endDateName = this.state.selectedToDate ?
+            moment(this.state.selectedToDate).format('hh:mm a') : '';
         return (
             <div className={'TimeRangePicker'} style={{marginTop: 30}}>
                 <FormRow columns={[
@@ -70,8 +74,8 @@ class TimeRangePicker extends React.Component<IPropsTimeRangePicker, {}> {
                         <Text className='FormSession-label'>
                             <Icon name={'clock'}/> Inicia</Text>
                         <TimePicker
-                            defaultText={"11:00"}
-                            name={this.getHour(this.state.selectedFromDate)}
+                            defaultText={"11:00 am"}
+                            name={initDateName}
                             onChange={this.onSelectFromDate}
                             from={this.state.fromDates.initDate.toDate()}
                             to={this.state.fromDates.endDate.toDate()}/>
@@ -80,23 +84,25 @@ class TimeRangePicker extends React.Component<IPropsTimeRangePicker, {}> {
                         <Text className='FormSession-label'>
                             <Icon name={'clock'}/> Termina</Text>
                         <TimePicker
-                            defaultText={"12:00"}
-                            name={this.getHour(this.state.selectedToDate)}
+                            defaultText={"12:00 pm"}
+                            name={endDateName}
                             onChange={this.onSelectToDate}
                             from={this.state.toDates.initDate.toDate()}
                             to={this.state.toDates.endDate.toDate()}/>
                     </FormColumn>,
                     <FormColumn key={`TimeRangePicker_${++counter}`} width={3}>
                         <div className='TimeRangePicker_options'>
+                            {this.props.id !== 4 &&
                             <div className='TimeRangePicker_option TimeRangePicker_option--add' onClick={this.onAdd}>
                                 <Icon name='add'
                                       style={{fill: this.actionColor, borderRadius: '50%', border: `1px solid ${this.actionColor}`}}/>
                                 <Text color='actionColor' className='TimeRangePicker_option-text'>Agregar horario</Text>
-                            </div>
+                            </div>}
+                            {this.props.total > 1 &&
                             <div className='TimeRangePicker_option TimeRangePicker_option--delete' onClick={this.onRemove}>
                                 <Icon name='trash' style={{fill: this.actionColor}} />
                                 <Text color='actionColor' className='TimeRangePicker_option-text'>Eliminar</Text>
-                            </div>
+                            </div>}
                         </div>
                     </FormColumn>,
                 ]} />
@@ -110,14 +116,6 @@ class TimeRangePicker extends React.Component<IPropsTimeRangePicker, {}> {
 
     private onAdd() {
         this.props.onAddWorkshop(null, null);
-    }
-
-    private getHour(date: Date | null): string {
-        let text = '';
-        if (!!date) {
-            text = Utilities.getDateFormattedToHour(date);
-        }
-        return text;
     }
 
     private updateWorkshops() {
@@ -175,7 +173,7 @@ class TimeRangePicker extends React.Component<IPropsTimeRangePicker, {}> {
             initDate = moment();
             initMinutes = this.formatTime(limitDate);
         } else {
-            initDate.set('hours', 0);
+            initDate.set('hours', 8);
         }
         initDate.set('minutes', initMinutes).set('seconds', 0);
         endDate.set('hours', 23).set('minutes', endMinutes).set('seconds', 0);

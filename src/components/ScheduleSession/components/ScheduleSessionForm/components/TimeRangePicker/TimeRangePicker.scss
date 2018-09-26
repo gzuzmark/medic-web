@@ -1,16 +1,4 @@
 .TimeRangePicker {
-  &:first-child:nth-last-child(1) {
-    .TimeRangePicker_option--delete {
-      display: none;
-    }
-  }
-  /* two items */
-  &:first-child:nth-last-child(5),
-  &:first-child:nth-last-child(5) ~ .TimeRangePicker {
-    .TimeRangePicker_option--add {
-      display: none;
-    }
-  }
   &:last-child {
     .TimeRangePicker_option--add {
       display: flex;
@@ -28,6 +16,16 @@
     padding: 0 8px;
     &--delete {
       display: flex;
+    }
+    &:hover {
+      span {
+        color: #773ad1!important;
+      }
+      .icon {
+        fill: #773ad1!important;
+        border-color: #773ad1!important;
+      }
+
     }
   }
   &_option-text {
