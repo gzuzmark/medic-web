@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { Text } from '../ConsoleText';
+import Loader from "../Loader/Loader";
 import './ConsoleTable.scss';
 
 
@@ -12,12 +13,20 @@ export interface IRowConsoleTable {
 interface IPropsConsoleTable {
     style?: React.CSSProperties;
     items: any[];
+    loading?: boolean;
     row: IRowConsoleTable[];
 }
 
+const loaderStyles: React.CSSProperties = {
+    left: '50%',
+    position: 'absolute',
+    top: 0,
+    transform: 'translateX(-50%)'
+};
+
 const ConsoleTable: React.StatelessComponent<IPropsConsoleTable> = (props) => {
     return (
-        <div className="ConsoleTable" style={{...props.style}}>
+        <div className={`ConsoleTable ${!!props.loading ? 'ConsoleTable--loading' : ''}`} style={{...props.style}}>
             <div className="ConsoleTable-header">
                 <div className="ConsoleTable-row">
                     {props.row.map((header, i) =>
@@ -38,6 +47,7 @@ const ConsoleTable: React.StatelessComponent<IPropsConsoleTable> = (props) => {
                     </div>
                 )}
             </div>
+            {props.loading && <Loader top={10} height={80} style={loaderStyles}/>}
         </div>
     );
 };
