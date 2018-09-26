@@ -1,0 +1,13 @@
+.ConfirmButtons {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 85px;
+  margin-bottom: 20px;
+  &-button {
+    display: inline-block;
+    width: 256px;
+    &:first-child {
+      margin-right: 40px;
+    }
+  }
+}

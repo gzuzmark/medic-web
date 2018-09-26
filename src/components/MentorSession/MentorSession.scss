@@ -2,7 +2,12 @@
   align-items: center;
   display: flex;
   justify-content: space-between;
-  &-button {
+  &_options {
+    display: flex;
+    justify-content: space-between;
+    width: 350px;
+  }
+  &_button {
     height: 30px;
     width: 170px;
   }

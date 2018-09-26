@@ -4,14 +4,14 @@ import {default as FilterList, IListItem} from "../FilterList/FilterList";
 
 interface IPropTimePicker {
     defaultText: string;
-    from?: moment.Moment;
+    from: Date;
     name: string;
     onChange: (item: IListItem) => void;
     step?: number;
-    to?: moment.Moment;
+    to: Date;
 }
 
-const listTimes = (from = moment(), to = moment(), step = 15): IListItem[] => {
+const listTimes = (from: Date, to: Date, step = 15): IListItem[] => {
     const times = [] as IListItem[];
     let startTime = moment(from);
     const finishTime = moment(to);
@@ -20,7 +20,7 @@ const listTimes = (from = moment(), to = moment(), step = 15): IListItem[] => {
     while (startTime <= finishTime) {
         times.push({
             id: startTime.toISOString(),
-            name: startTime.format('HH:mm')
+            name: startTime.format('hh:mm a')
         });
         startTime = startTime.add(step, 'minutes');
     }
@@ -33,15 +33,12 @@ const TimePicker: React.StatelessComponent<IPropTimePicker> = (props) => {
             onChange={props.onChange}
             list={listTimes(props.from, props.to, props.step)}
             defaultText={props.defaultText}
-            enableClearSearch={false}
             name={props.name} />
     );
 };
 
 TimePicker.defaultProps = {
-    from: moment(),
     step: 15,
-    to: moment()
 };
 
 

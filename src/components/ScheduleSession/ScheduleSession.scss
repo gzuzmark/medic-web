@@ -29,8 +29,13 @@
     }
   }
   &-label {
+    color: #383435;
     margin-bottom: 4px;
     padding-left: 10px;
+    .icon {
+      height: 12px;
+      width: 12px;
+    }
   }
   &-input--range {
     height: 29px;

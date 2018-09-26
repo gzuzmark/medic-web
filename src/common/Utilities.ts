@@ -31,11 +31,19 @@ const getDateFormatted = (date: Date) => {
         month = '0' + mm;
     }
     return day + '-' + month + '-' + year;
-}
+};
+
+const getValue = (value?: string, backup?: string): string  => {
+    if (!value && backup) {
+        value = backup;
+    }
+    return value ? value : '';
+};
 
 const Utilities = {
     donwloadLink,
-    getDateFormatted
+    getDateFormatted,
+    getValue
 };
 
 export default Utilities;

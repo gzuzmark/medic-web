@@ -4,6 +4,8 @@ import { Text } from '../ConsoleText';
 import SelectList from "../SelectList/SelectList";
 import './FilterList.scss';
 
+export const FILTER_LIST_ALL = 'all';
+
 export interface IListItem {
     id: string;
     name: string;
@@ -15,10 +17,11 @@ interface IPropsFilterList {
     onChange: (item: IListItem) => void;
     list: IListItem[];
     defaultText: string;
-    enableClearSearch: boolean;
     name: string;
     style?: React.CSSProperties;
     removeFilters?: boolean;
+    error?: boolean;
+    disabled?: boolean;
 }
 
 interface IStateFilterList {
@@ -47,22 +50,23 @@ class FilterList extends React.Component <IPropsFilterList, IStateFilterList> {
     }
 
     public render() {
-        const disabledClass = this.props.list.length === 0 ? 'FilterList-field--disabled' : '';
+        const name = this.props.name === 'all' ? '' : this.props.name;
+        const disabledClass = this.props.list.length === 0 || this.props.disabled ? 'FilterList-field--disabled' : '';
         const activeClass = this.state.showFilters ? 'FilterList-field--active' : '';
-        const color = this.props.name !== '' ? 'textNormal' : 'textNormalSoft';
-        const notEmptyClass = this.props.name === '' ? '' : 'FilterList-field--not-empty';
+        const color = name !== '' ? 'textNormal' : 'textNormalSoft';
+        const notEmptyClass = name === '' ? '' : 'FilterList-field--not-empty';
         const extraPropsSelectList: any = {};
         if (!!this.props.removeFilters) {
             extraPropsSelectList.removeFilters = this.removeFilters;
         }
         return (
-            <div className="FilterList" style={{...this.props.style}}>
+            <div className={`FilterList ${this.props.error ? 'FilterList--error' : ''}`} style={{...this.props.style}}>
                 <Text color={color}
                       className={`FilterList-field ${activeClass} ${notEmptyClass} ${disabledClass}`}
                       onClick={this.toggleBox}  >
-                    {this.props.name === '' ? this.props.defaultText : this.props.name}
+                    {name === '' ? this.props.defaultText : name}
                 </Text>
-                {this.state.showFilters &&
+                {this.state.showFilters && !this.props.disabled &&
                     <SelectList
                         list={this.props.list}
                         onChange={this.filter}
@@ -94,7 +98,7 @@ class FilterList extends React.Component <IPropsFilterList, IStateFilterList> {
     };
 
     private removeFilters() {
-        this.filter({id: 'all', name: ''});
+        this.filter({id: FILTER_LIST_ALL, name: FILTER_LIST_ALL});
     };
 }
 

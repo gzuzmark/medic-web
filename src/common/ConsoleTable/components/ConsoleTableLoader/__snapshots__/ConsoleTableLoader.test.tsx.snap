@@ -1,0 +1,158 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ConsoleTableLoader Test render: render ConsoleTableLoader 1`] = `
+ShallowWrapper {
+  "length": 1,
+  Symbol(enzyme.__root__): [Circular],
+  Symbol(enzyme.__unrendered__): <ConsoleTableLoader
+    center={false}
+    loading={true}
+  >
+    Caja de Mensajes
+  </ConsoleTableLoader>,
+  Symbol(enzyme.__renderer__): Object {
+    "batchedUpdates": [Function],
+    "getNode": [Function],
+    "render": [Function],
+    "simulateEvent": [Function],
+    "unmount": [Function],
+  },
+  Symbol(enzyme.__node__): Object {
+    "instance": null,
+    "key": undefined,
+    "nodeType": "host",
+    "props": Object {
+      "children": Array [
+        <Loader
+          height={100}
+          style={
+            Object {
+              "top": -37,
+            }
+          }
+          top={50}
+        />,
+        <styled.span
+          style={
+            Object {
+              "fontWeight": "bold",
+              "marginLeft": 30,
+            }
+          }
+        >
+          Caja de Mensajes
+        </styled.span>,
+      ],
+      "className": "ConsoleTableLoader false",
+      "style": Object {},
+    },
+    "ref": null,
+    "rendered": Array [
+      Object {
+        "instance": null,
+        "key": undefined,
+        "nodeType": "function",
+        "props": Object {
+          "height": 100,
+          "style": Object {
+            "top": -37,
+          },
+          "top": 50,
+        },
+        "ref": null,
+        "rendered": null,
+        "type": [Function],
+      },
+      Object {
+        "instance": null,
+        "key": undefined,
+        "nodeType": "class",
+        "props": Object {
+          "children": "Caja de Mensajes",
+          "style": Object {
+            "fontWeight": "bold",
+            "marginLeft": 30,
+          },
+        },
+        "ref": null,
+        "rendered": "Caja de Mensajes",
+        "type": [Function],
+      },
+    ],
+    "type": "div",
+  },
+  Symbol(enzyme.__nodes__): Array [
+    Object {
+      "instance": null,
+      "key": undefined,
+      "nodeType": "host",
+      "props": Object {
+        "children": Array [
+          <Loader
+            height={100}
+            style={
+              Object {
+                "top": -37,
+              }
+            }
+            top={50}
+          />,
+          <styled.span
+            style={
+              Object {
+                "fontWeight": "bold",
+                "marginLeft": 30,
+              }
+            }
+          >
+            Caja de Mensajes
+          </styled.span>,
+        ],
+        "className": "ConsoleTableLoader false",
+        "style": Object {},
+      },
+      "ref": null,
+      "rendered": Array [
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "function",
+          "props": Object {
+            "height": 100,
+            "style": Object {
+              "top": -37,
+            },
+            "top": 50,
+          },
+          "ref": null,
+          "rendered": null,
+          "type": [Function],
+        },
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "class",
+          "props": Object {
+            "children": "Caja de Mensajes",
+            "style": Object {
+              "fontWeight": "bold",
+              "marginLeft": 30,
+            },
+          },
+          "ref": null,
+          "rendered": "Caja de Mensajes",
+          "type": [Function],
+        },
+      ],
+      "type": "div",
+    },
+  ],
+  Symbol(enzyme.__options__): Object {
+    "adapter": ReactSixteenAdapter {
+      "options": Object {
+        "enableComponentDidUpdateOnSetState": true,
+      },
+    },
+  },
+}
+`;

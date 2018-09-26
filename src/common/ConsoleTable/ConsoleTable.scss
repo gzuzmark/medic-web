@@ -1,0 +1,60 @@
+.ConsoleTable {
+  border-radius: 10px;
+  max-height: 250px;
+  max-width: 1280px;
+  overflow: scroll;
+  position: relative;
+  &--loading {
+    overflow: hidden;
+    &:before {
+      background: rgba(255, 255, 255, 0.8);
+      content: '';
+      height: 100%;
+      position: absolute;
+      width: 100%;
+    }
+  }
+  &-header, &-body {
+    display: inline-table;
+    padding-left: 22px;
+    padding-right: 22px;
+  }
+  &-header {
+    background: #6f839e;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+  }
+  &-body {
+    background: #f5f7fa;
+  }
+  &-row {
+    align-items: center;
+    display: flex;
+    height: 48px;
+    &--line {
+      border-bottom: 1px solid #d8d8d8;
+    }
+  }
+  &-text {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    &:first-letter {
+      text-transform: uppercase;
+    }
+  }
+  &-column {
+
+    &:first-child {
+      padding-left: 5px;
+    }
+    &:first-child {
+      padding-right: 5px;
+    }
+    &:not(:last-child) {
+      margin-right: 22px;
+    }
+  }
+
+}

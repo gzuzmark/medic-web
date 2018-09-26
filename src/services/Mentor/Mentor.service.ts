@@ -37,6 +37,23 @@ class MentorService extends BaseRequest {
         });
     }
 
+    public bulkWorkshop(idMentor: string, sessions: any): Promise<any[]> {
+        return new Promise((resolve, reject) => {
+            this.instance.post(`ugo-admin/mentors/${idMentor}/sessions/workshops`, sessions)
+                .then((response: any) => {
+                    if (response.status === 200 && response.data) {
+                        resolve(response.data.items);
+                    } else {
+                        reject(null);
+                    }
+                })
+                .catch((error: any) => {
+                    this.validSession();
+                    reject(error);
+                });
+        });
+    }
+
     public bulk(idMentor: string, sessions: any): Promise<any[]> {
         return new Promise((resolve, reject) => {
             this.instance.post(`ugo-admin/mentors/${idMentor}/sessions/bulk`, sessions)

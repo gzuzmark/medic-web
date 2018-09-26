@@ -3,6 +3,11 @@
 
 .FilterList {
   @extend %formInput;
+  &--error {
+    .FilterList-field {
+      @extend %formInput_input--error;
+    }
+  }
   &-field {
     @extend %formInput_input;
     &--not-empty,
@@ -14,7 +19,7 @@
     }
     &--disabled {
       &:after {
-        border: solid $grey-light;
+        border: solid #D4DCE0;
         border-width: 0 2px 2px 0;
       }
     }

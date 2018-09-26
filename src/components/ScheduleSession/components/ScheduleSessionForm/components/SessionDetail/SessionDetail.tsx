@@ -83,7 +83,19 @@ class SessionDetail extends React.Component <IPropsSessionDetail, IStateSessionD
         });
         this.setState({listSession});
     }
-
+    public reset() {
+        this.setState({
+            listSession: [],
+            maxStudents: 1,
+            mentor: undefined,
+            rooms: [],
+            selectedRoom: '',
+            selectedSite: '',
+            sites: []
+        }, () => {
+            this.componentDidMount();
+        });
+    }
     public render() {
         return (
             <ScheduleSessionContext.Consumer>
@@ -100,8 +112,7 @@ class SessionDetail extends React.Component <IPropsSessionDetail, IStateSessionD
                                             onChange={this._onChangeSkill}
                                             name={session.skillName}
                                             list={this.props.skills}
-                                            defaultText='Química, Física, etc'
-                                            enableClearSearch={false}/>
+                                            defaultText='Ingresa un curso'/>
                                     </FormColumn>,
                                     <FormColumn key={`SessionDetailRow${++counter}`} width={2}>
                                         <Text className='FormSession-label'>Modalidad</Text>
@@ -109,8 +120,7 @@ class SessionDetail extends React.Component <IPropsSessionDetail, IStateSessionD
                                             onChange={this._onChangeType}
                                             name={session.typeName(this.state.listSession)}
                                             list={this.state.listSession.filter((item) => !item.name.startsWith('Taller'))}
-                                            defaultText='Presencial, Virtual, etc'
-                                            enableClearSearch={false}/>
+                                            defaultText='Presencial, Virtual, etc'/>
                                     </FormColumn>,
                                 ]} style={{marginBottom: 70}}/>
 
@@ -122,8 +132,7 @@ class SessionDetail extends React.Component <IPropsSessionDetail, IStateSessionD
                                             onChange={this._onChangeSite}
                                             name={this.state.selectedSite}
                                             list={this.state.sites}
-                                            defaultText='Torre Arequipa, Torre B, etc.'
-                                            enableClearSearch={false}/>
+                                            defaultText='Torre Arequipa, Torre B, etc.'/>
                                     </FormColumn>,
                                     <FormColumn key={`SessionDetailRow${++counter}`} width={2}>
                                         <FormRow key={5} columns={[
@@ -133,8 +142,7 @@ class SessionDetail extends React.Component <IPropsSessionDetail, IStateSessionD
                                                     onChange={this._onChangeRoom}
                                                     name={this.state.selectedRoom}
                                                     list={this.state.rooms}
-                                                    defaultText='A1002'
-                                                    enableClearSearch={false}/>
+                                                    defaultText='A1002'/>
                                             </FormColumn>,
                                             <FormColumn key={`SessionDetailRow${++counter}`} width={2} style={{flexBasis: 90}}>
                                                 <Text>Capacidad</Text>

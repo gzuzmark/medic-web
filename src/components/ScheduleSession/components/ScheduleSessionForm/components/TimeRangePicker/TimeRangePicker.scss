@@ -1,0 +1,34 @@
+.TimeRangePicker {
+  &:last-child {
+    .TimeRangePicker_option--add {
+      display: flex;
+    }
+  }
+  &_options {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 28px;
+  }
+  &_option {
+    align-items: center;
+    cursor: pointer;
+    display: none;
+    padding: 0 8px;
+    &--delete {
+      display: flex;
+    }
+    &:hover {
+      span {
+        color: #773ad1!important;
+      }
+      .icon {
+        fill: #773ad1!important;
+        border-color: #773ad1!important;
+      }
+
+    }
+  }
+  &_option-text {
+    margin-left: 9px;
+  }
+}

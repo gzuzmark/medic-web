@@ -46,7 +46,7 @@ build_stage_prod:
 test_stage:
   stage: test
   script:
-    - yarn test
+    - yarn test:coverage
   dependencies:
     - install_stage
   only:
