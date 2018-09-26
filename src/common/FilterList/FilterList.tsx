@@ -50,10 +50,11 @@ class FilterList extends React.Component <IPropsFilterList, IStateFilterList> {
     }
 
     public render() {
+        const name = this.props.name === 'all' ? '' : this.props.name;
         const disabledClass = this.props.list.length === 0 || this.props.disabled ? 'FilterList-field--disabled' : '';
         const activeClass = this.state.showFilters ? 'FilterList-field--active' : '';
-        const color = this.props.name !== '' ? 'textNormal' : 'textNormalSoft';
-        const notEmptyClass = this.props.name === '' ? '' : 'FilterList-field--not-empty';
+        const color = name !== '' ? 'textNormal' : 'textNormalSoft';
+        const notEmptyClass = name === '' ? '' : 'FilterList-field--not-empty';
         const extraPropsSelectList: any = {};
         if (!!this.props.removeFilters) {
             extraPropsSelectList.removeFilters = this.removeFilters;
@@ -63,7 +64,7 @@ class FilterList extends React.Component <IPropsFilterList, IStateFilterList> {
                 <Text color={color}
                       className={`FilterList-field ${activeClass} ${notEmptyClass} ${disabledClass}`}
                       onClick={this.toggleBox}  >
-                    {this.props.name === '' ? this.props.defaultText : this.props.name}
+                    {name === '' ? this.props.defaultText : name}
                 </Text>
                 {this.state.showFilters && !this.props.disabled &&
                     <SelectList

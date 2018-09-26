@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { Text } from '../ConsoleText';
-import Loader from "../Loader/Loader";
+import { Text3 } from '../ConsoleText';
+import ConsoleTableLoader from "./components/ConsoleTableLoader/ConsoleTableLoader";
 import './ConsoleTable.scss';
 
 
@@ -17,37 +17,34 @@ interface IPropsConsoleTable {
     row: IRowConsoleTable[];
 }
 
-const loaderStyles: React.CSSProperties = {
-    left: '50%',
-    position: 'absolute',
-    top: 0,
-    transform: 'translateX(-50%)'
-};
 
 const ConsoleTable: React.StatelessComponent<IPropsConsoleTable> = (props) => {
     return (
-        <div className={`ConsoleTable ${!!props.loading ? 'ConsoleTable--loading' : ''}`} style={{...props.style}}>
-            <div className="ConsoleTable-header">
-                <div className="ConsoleTable-row">
-                    {props.row.map((header, i) =>
-                        <div key={`ConsoleTable-header_${i}`} className="ConsoleTable-column" style={{minWidth: header.width, maxWidth: header.width}}>
-                            <Text color="textLight" style={{lineHeight: '14px'}}>{header.name}</Text>
+        <div style={{position: 'relative'}}>
+            <div className={`ConsoleTable ${!!props.loading ? 'ConsoleTable--loading' : ''}`} style={{...props.style}}>
+                <div className="ConsoleTable-header">
+                    <div className="ConsoleTable-row">
+                        {props.row.map((header, i) =>
+                            <div key={`ConsoleTable-header_${i}`} className="ConsoleTable-column" style={{minWidth: header.width, maxWidth: header.width}}>
+                                <Text3 color="textLight" style={{lineHeight: '14px'}}>{header.name}</Text3>
+                            </div>
+                        )}
+                    </div>
+                </div>
+                <div className="ConsoleTable-body">
+                    {props.items.map((item, index) =>
+                        <div key={`ConsoleTable-body_${index}`} className="ConsoleTable-row ConsoleTable-row--line">
+                            {props.row.map((header, i) =>
+                                <div key={`ConsoleTable-body_${i}`} className="ConsoleTable-column" style={{minWidth: header.width, maxWidth: header.width}}>
+                                    <Text3 className="ConsoleTable-text">{header.value(item)}</Text3>
+                                </div>
+                            )}
                         </div>
                     )}
                 </div>
             </div>
-            <div className="ConsoleTable-body">
-                {props.items.map((item, index) =>
-                    <div key={`ConsoleTable-body_${index}`} className="ConsoleTable-row ConsoleTable-row--line">
-                        {props.row.map((header, i) =>
-                            <div key={`ConsoleTable-body_${i}`} className="ConsoleTable-column" style={{minWidth: header.width, maxWidth: header.width}}>
-                                <Text className="ConsoleTable-text">{header.value(item)}</Text>
-                            </div>
-                        )}
-                    </div>
-                )}
-            </div>
-            {props.loading && <Loader top={10} height={80} style={loaderStyles}/>}
+            {!!props.loading  &&
+            <ConsoleTableLoader loading={true} center={true} style={{top: 0}}>{props.children}</ConsoleTableLoader>}
         </div>
     );
 };

@@ -6,6 +6,7 @@ import ConsoleTable, {IRowConsoleTable} from "../../../../common/ConsoleTable/Co
 interface IPropsReportTable {
     items: any[];
     type: ReportType;
+    loading: boolean;
 }
 
 const tableBase = [{
@@ -84,7 +85,9 @@ const ReportTable: React.StatelessComponent<IPropsReportTable> = (props) => {
     let table = props.type === REPORT_SESSIONS ? tableBase : tableStudents;
     table = props.type === REPORT_SESSIONS ? table.concat(tableRating) : table.concat(tableRatingComment);
     return (
-        <ConsoleTable items={props.items} row={table}/>
+        <ConsoleTable items={props.items} row={table} loading={props.loading} >
+            {props.children}
+        </ConsoleTable>
     );
 };
 
