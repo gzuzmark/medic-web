@@ -47,7 +47,7 @@ const SessionDeleteTable: React.StatelessComponent<IPropsSessionDeleteTable> = (
     },{
         name: 'Sesión',
         value: (row: ISessionsToDelete) => row.skillName,
-        width: 161.3
+        width: 218.3
     },{
         name: 'Modalidad',
         value: (row: ISessionsToDelete) => row.type,

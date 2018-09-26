@@ -20,7 +20,7 @@ const listTimes = (from: Date, to: Date, step = 15): IListItem[] => {
     while (startTime <= finishTime) {
         times.push({
             id: startTime.toISOString(),
-            name: startTime.format('HH:mm')
+            name: startTime.format('hh:mm a')
         });
         startTime = startTime.add(step, 'minutes');
     }
