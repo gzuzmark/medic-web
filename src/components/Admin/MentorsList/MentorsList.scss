@@ -1,0 +1,62 @@
+@import "../../../assets/styles/01-settings/settings";
+
+.ListMentors {
+  padding: 0 70px;
+  &-header, &-row {
+    display: flex;
+    flex-direction: row;
+  }
+  &-header {
+    align-items: center;
+    margin-top: 10px;
+  }
+  &-row {
+    align-items: center;
+    &--center {
+      display: flex;
+      justify-content: center;
+      padding: 60px 0;
+    }
+    &--border {
+      border-bottom: 1px solid #c1c1c1;
+    }
+  }
+  &-column {
+    &--mentor {
+      min-height: 70px;
+    }
+    &:nth-child(1) {
+      width: 50%;
+    }
+    &:nth-child(2) {
+      width: 20%;
+    }
+    &:nth-child(3),
+    &:nth-child(4) {
+      text-align: center;
+      width: 15%;
+    }
+  }
+  &-line {
+    background: $grey-light;
+    border: 0;
+    box-shadow: 0 1px 6px 0 darken($grey-light, 10%);
+    height: 1px;
+    margin: 2px 0;
+  }
+  &-separator {
+    align-items: center;
+    border-right: 1px solid rgb(193, 193, 193);
+    display: flex;
+    height: 45px;
+    padding-top: 2px;
+  }
+  &-bigtext {
+    font-size: 24px;
+    line-height: 48px;
+  }
+}
+
+.u-ListMentors-padding {
+  padding: 0 70px;
+}

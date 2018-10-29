@@ -1,0 +1,47 @@
+@import "../../../../../../../../../assets/styles/01-settings/settings";
+
+.InputRadio {
+  cursor: pointer;
+  display: flex;
+  font-size: 22px;
+  margin-bottom: 12px;
+  padding-left: 25px;
+  position: relative;
+  &--input {
+    cursor: pointer;
+    opacity: 0;
+    position: absolute;
+    &:checked {
+      &~ .InputRadio--radio {
+        background-color: white;
+        &:after {
+          background: $primary-color;
+        }
+      }
+    }
+  }
+  &--radio {
+    background-color: white;
+    border: 1px solid $primary-color;
+    border-radius: 50%;
+    height: 16px;
+    left: 0;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 16px;
+    &:after {
+      background: white;
+      border-radius: 50%;
+      content: "";
+      height: 10px;
+      left: 50%;
+      position: absolute;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      transition: background ease-in 0.2s;
+      width: 10px;
+    }
+  }
+  user-select: none;
+}

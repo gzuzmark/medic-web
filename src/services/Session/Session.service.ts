@@ -1,4 +1,4 @@
-import {ISessionsToDelete} from "../../domain/FormSessionDeleteBean";
+import {ISessionsToDelete} from "../../domain/FormSession/FormSessionDeleteBean";
 import { IReportForSession } from "../../interfaces/Reports.interface";
 import BaseRequest from '../BaseRequest';
 
