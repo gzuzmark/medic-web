@@ -34,6 +34,7 @@ export const initRouter = () => {
                 <Route exact={true} path="/admin/mentores/:id/sesiones/:session/eliminar" component={SessionDeleteSingle} />
                 <Route exact={true} path="/admin/mentores/:id/sesiones/eliminar" component={SessionDeleteMultiple} />
                 <Route exact={true} path="/mentor" component={MentorHome} />
+                <Route exact={true} path="/mentor/:id" component={MentorHome} />
             </div>
         </Router>,
         document.getElementById('root') as HTMLElement

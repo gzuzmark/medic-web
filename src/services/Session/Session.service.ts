@@ -77,10 +77,16 @@ class SessionService extends BaseRequest {
     }
 
     // Mentor Service
-    public listMentorSessions(from: string, to: string): Promise<ISessionMentor[]> {
-        const instance = this.getCustomInstance(
-            "/La6HK7/RI/6vveP0q3AptWgl5i/5SRvd+SwRJYAdy5olRqmmnPe8A==",
-            "https://ugo-utp-dev.appspot.com/_ah/api/");
+    public listMentorSessions(from: string, to: string, id: string = ''): Promise<ISessionMentor[]> {
+        let instance: any;
+        if (id === '') {
+            instance = this.getCustomInstance(
+                "/La6HK7/RI/6vveP0q3AptWgl5i/5SRvd+SwRJYAdy5olRqmmnPe8A==",
+                "https://ugo-utp-dev.appspot.com/_ah/api/");
+        } else {
+            instance = this.getCustomInstance(id,
+                "https://ugo-utp-qa.appspot.com/_ah/api/");
+        }
         return new Promise((resolve, reject) => {
             instance.get(`ugo-mentor/me/sessions?from=${from}&to=${to}`)
                 .then((response: any) => {

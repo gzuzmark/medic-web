@@ -8,7 +8,7 @@ import {IMatchParam} from "../../../interfaces/MatchParam.interface";
 import SessionService from "../../../services/Session/Session.service";
 import DayHandlerBar from "./components/DayHandlerBar/DayHandlerBar";
 import SessionsMentorDetail from "./components/SessionsMentorDetail/SessionsMentorDetail";
-
+import './MentorHome.scss';
 
 export interface IRangeDay {
     status: string;
@@ -32,6 +32,7 @@ class MentorHome extends React.Component<IPropsMentorHome, IStateMentorHome> {
     public state: IStateMentorHome;
     private sessionCollector: SessionCollector<SessionMentorBean>;
     private sessionService = new SessionService();
+    private mentorId: string;
     constructor(props: any) {
         super(props);
         this.state = {
@@ -42,7 +43,7 @@ class MentorHome extends React.Component<IPropsMentorHome, IStateMentorHome> {
             selectedDate: (new Date()).toISOString(),
             weekDate: this.getSunday(new Date()).toISOString()
         };
-        // this.mentorId = this.props.match.params.id;
+        this.mentorId = this.props.match.params.id;
         this.loadSessions = this.loadSessions.bind(this);
         this.updateDate = this.updateDate.bind(this);
     }
@@ -57,8 +58,8 @@ class MentorHome extends React.Component<IPropsMentorHome, IStateMentorHome> {
 
     public render() {
         return <Layout>
-            <div className="u-LayoutMentorMargin">
-                <div>
+            <div className="MentorHome u-LayoutMentorMargin">
+                <div className={"MentorHome_title"}>
                     <Icon name={"calendar"}/>
                     <Title2>Tus sesiones</Title2>
                 </div>
@@ -93,7 +94,7 @@ class MentorHome extends React.Component<IPropsMentorHome, IStateMentorHome> {
         this.setState({
             loading: true
         }, () => {
-            this.sessionService.listMentorSessions(from.toISOString(), to.toISOString())
+            this.sessionService.listMentorSessions(from.toISOString(), to.toISOString(), this.mentorId)
                 .then((sessions: ISessionMentor[]) => {
                     const mentorSessions = sessions.map((item) => new SessionMentorBean(item));
                     this.sessionCollector = new SessionCollector<SessionMentorBean>(mentorSessions, date);
