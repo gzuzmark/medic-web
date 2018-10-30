@@ -57,7 +57,7 @@ class MentorHome extends React.Component<IPropsMentorHome, IStateMentorHome> {
     }
 
     public render() {
-        return <Layout>
+        return <Layout title={"Tutores"}>
             <div className="MentorHome u-LayoutMentorMargin">
                 <div className={"MentorHome_title"}>
                     <Icon name={"calendar"}/>

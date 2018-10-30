@@ -2,7 +2,7 @@ import { ISessionBase, SessionBean } from "./SessionBean";
 
 export interface ISessionAvailability {
     limit: number;
-    counter: number;
+    count: number;
 }
 
 export interface ISessionMentor extends ISessionBase {
@@ -20,14 +20,22 @@ export class SessionMentorBean extends SessionBean {
     }
 
     public getAvailability(): string {
-        let text = '';
+        let text = 'alumno inscrito';
+        let count = 0;
+        let limit = 0;
         if (this.session.availability) {
-            text = `${this.session.availability.counter} de ${this.session.availability.limit}`;
+            count = this.session.availability.count;
+            limit = this.session.availability.limit;
         }
 
         if (this.session.location && this.session.location.location && this.session.availability) {
-            text = `${this.session.availability.counter} de ${this.session.location.location.maxStudents}`
+            count = this.session.availability.count;
+            limit = this.session.location.location.maxStudents;
         }
-        return text;
+
+        if (limit > 1) {
+            text = 'alumnos inscritos'
+        }
+        return `${count} de ${limit} ${text}`;
     }
 }
