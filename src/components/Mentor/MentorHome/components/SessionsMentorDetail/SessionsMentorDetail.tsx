@@ -36,7 +36,7 @@ class SessionsMentorDetail extends React.Component<IPropsSessionsMentorDetail, {
                 <div className={"SessionsMentorDetail_title"}>
                     <Title2>Sesiones de {day}{this.props.sessions.description.topText} {this.props.sessions.description.mainText} {this.props.sessions.description.bottomText}</Title2>
                 </div>
-                <div className={"SessionsMentorDetail_session-container"}>
+                {!!this.props.sessions.pending_sessions.length && <div className={"SessionsMentorDetail_session-container"}>
                     <div className={"SessionsMentorDetail_session-title"}>
                         <Text1>Sessiones Activas</Text1>
                     </div>
@@ -45,8 +45,8 @@ class SessionsMentorDetail extends React.Component<IPropsSessionsMentorDetail, {
                             return <CardSession item={item} key={"CardSession_" + item.session.id}/>
                         })}
                     </div>
-                </div>
-                <div className={"SessionsMentorDetail_session-container"}>
+                </div>}
+                {!!this.props.sessions.resolve_sessions.length && <div className={"SessionsMentorDetail_session-container"}>
                     <div  className={"SessionsMentorDetail_session-title"}>
                         <Text1>Sessiones Terminadas</Text1>
                     </div>
@@ -55,7 +55,7 @@ class SessionsMentorDetail extends React.Component<IPropsSessionsMentorDetail, {
                             return <CardSession item={item} key={"CardSession_" + item.session.id}/>
                         })}
                     </div>
-                </div>
+                </div>}
             </div>
         ) : <div><Title2>Vacío</Title2></div>;
     }

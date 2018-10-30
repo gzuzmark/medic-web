@@ -1,12 +1,19 @@
 .MentorHome {
   margin-top: 100px;
   &_title {
-    display: inline-block;
+    align-items: center;
+    display: flex;
+    justify-content: center;
     margin-bottom: 40px;
     text-align: center;
     width: 100%;
     svg, h2 {
       display: inline-block;
+    }
+    svg {
+      height: 24px;
+      margin-right: 8px;
+      width: 24px;
     }
   }
 }

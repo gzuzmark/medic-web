@@ -50,9 +50,6 @@ export class SessionCollector<T extends SessionBean> {
             const date = new Date(item.session.from);
             const collector = this.sessionCollector[date.getDay()];
             collector.status = "default" ;
-            if (this.firstEnableDate === "") {
-                this.firstEnableDate = date.toString();
-            }
             if (item.session.isActive) {
                 collector.pending_sessions.push(item);
             } else {
@@ -64,6 +61,9 @@ export class SessionCollector<T extends SessionBean> {
     private buildStructure() {
         const date = new Date(this.selectedDate);
         for (let index = 0; index < 7; index++) {
+            if (index === 1) {
+                this.firstEnableDate = date.toString();
+            }
             const month = this.monthFormatter.format(date);
             this.sessionCollector[index] = {
                 date: date.toISOString(),

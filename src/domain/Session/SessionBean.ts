@@ -1,3 +1,5 @@
+import {AbstractDateParser} from "../DateManager/AbstractDateParser";
+
 export interface ISessionItemBase {
     id: string;
     name: string;
@@ -34,20 +36,20 @@ export class SessionBean {
         this.session = session;
     }
 
-    public getTime(): string {
-        return `${this.session.from} - ${this.session.to}`;
+    public getTime(dateFormatter: AbstractDateParser): string {
+        return `${dateFormatter.parseDateToString(this.session.from, "h:mm a")} - ${dateFormatter.parseDateToString(this.session.to, "h:mm a")}`;
     }
 
-    /*
-
-    Abtract Class
-    --------------
-
-    public numero_zapatos(){
-        let n=this.get_num_piernas();
+    public getStatus() {
+        let text = 'pending';
+        const from = new Date(this.session.from);
+        const to = new Date(this.session.to);
+        const now = new Date();
+        if (now.getTime() <= to.getTime() && now.getTime() >= from.getTime()) {
+            text = 'active';
+        } else if (!this.session.isActive) {
+            text = 'resolve';
+        }
+        return text;
     }
-
-    public abstract get_num_piernas(): number;
-
-    */
 }

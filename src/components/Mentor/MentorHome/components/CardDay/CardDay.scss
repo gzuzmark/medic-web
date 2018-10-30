@@ -7,6 +7,9 @@
   height: 120px;
   justify-content: center;
   width: 120px;
+  &:nth-child(2) {
+    order: 1;
+  }
   &--disabled {
     background: white;
     border: #d4dce0 1px solid;

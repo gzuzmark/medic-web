@@ -48,7 +48,7 @@ class DayHandlerBar extends React.Component<IPropsDayHandlerBar, {}> {
                     <Icon name="navigation-arrow" />
                 </button>
                 {this.props.rangeDays.map((day: IRangeDay, index) => {
-                    const click = this.triggerClick(day.date, day.status);
+                    const click = this.triggerClick(day.date);
                     let status = day.status;
                     if (this.selectedDate.format("YYYY-MM-DD") === moment(day.date).format("YYYY-MM-DD")) {
                         status = 'active';
@@ -69,11 +69,9 @@ class DayHandlerBar extends React.Component<IPropsDayHandlerBar, {}> {
         )
     }
 
-    private triggerClick(day: string, status: string) {
+    private triggerClick(day: string) {
         return () => {
-            if (status !== 'disabled') {
-                this.props.onChangeDate(day);
-            }
+            this.props.onChangeDate(day);
         }
     }
 
