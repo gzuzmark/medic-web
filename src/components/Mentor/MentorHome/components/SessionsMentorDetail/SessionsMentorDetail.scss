@@ -1,0 +1,21 @@
+.SessionsMentorDetail {
+  background: #f9fbff;
+  padding: 40px 60px;
+  width: 100%;
+  &_title {
+    h2 {
+      color: #81a8d2!important;
+    }
+  }
+  &_session-container {
+    margin-top: 50px;
+  }
+  &_session-title {
+    border-bottom: 1px solid #d4dce0;
+    width: 100%;
+  }
+  &_sessions {
+    display: flex;
+    flex-direction: column;
+  }
+}

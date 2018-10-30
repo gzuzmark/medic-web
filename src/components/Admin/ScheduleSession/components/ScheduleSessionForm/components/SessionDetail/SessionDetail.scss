@@ -1,0 +1,35 @@
+@import "../../../../../../../assets/styles/01-settings/settings";
+
+.react-numeric-input {
+  b {
+    background: $primary-color!important;
+    box-shadow: none!important;
+    cursor: pointer!important;
+    transition: background ease-in-out 0.5s;
+    &:hover {
+      background: darken($primary-color, 10%)!important;
+    }
+    i {
+      border: solid white!important;
+      border-width: 0 2px 2px 0!important;
+      display: inline-block!important;
+      padding: 3px!important;
+    }
+    &:nth-child(3) {
+      bottom: 1px!important;
+      i {
+        border-color: transparent white white!important;
+        margin: -0.75ex 0px 0px -0.50ex!important;
+        transform: rotate(45deg);
+      }
+    }
+    &:nth-child(2) {
+      top: 1px!important;
+      i {
+        border-color: transparent white white!important;
+        margin: -0.25ex 0px 0px -0.50ex!important;
+        transform: rotate(-135deg);
+      }
+    }
+  }
+}

@@ -1,8 +1,8 @@
 import * as React from 'react';
 import logo_header from '../../assets/images/logo_header.png';
-import { Text } from '../../common/ConsoleText';
 import UserRepository from '../../repository/UserRepository';
 import Avatar from '../Avatar/Avatar';
+import { Text } from '../ConsoleText';
 import Sticky from '../Sticky/Sticky';
 import MenuTop from "./components/MenuTop/MenuTop";
 import './Footer.scss';
@@ -10,7 +10,7 @@ import './Header.scss';
 import './Layout.scss';
 
 interface IPropsLayout {
-    menu: JSX.Element;
+    menu?: JSX.Element;
 }
 
 class Layout extends React.Component<IPropsLayout, {}> {
@@ -41,7 +41,7 @@ class Layout extends React.Component<IPropsLayout, {}> {
                         </div>
                     </div>
                 </Sticky>
-                {this.props.menu}
+                {!!this.props.menu && this.props.menu}
                 <div className="Layout">
                     <div>{this.props.children}</div>
                 </div>
