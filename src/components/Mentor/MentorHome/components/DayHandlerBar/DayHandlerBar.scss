@@ -10,6 +10,7 @@
     cursor: pointer;
     position: absolute;
     top: 50%;
+    transition: all 0.15s ease-in;
     .icon {
       height: 31px;
       width: 31px;
@@ -18,10 +19,22 @@
     &--right {
       right: -50px;
       transform: rotate(180deg) translateY(50%);
+      &:hover {
+        right: -55px;
+      }
+      &:active {
+        right: -52px;
+      }
     }
     &--left {
       left: -50px;
       transform: translateY(-50%);
+      &:hover {
+        left: -55px;
+      }
+      &:active {
+        left: -52px;
+      }
     }
   }
 }

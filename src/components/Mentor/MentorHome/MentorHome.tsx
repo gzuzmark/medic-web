@@ -23,7 +23,8 @@ interface IStateMentorHome {
     counter: number;
     currentSessions: ISessionCollector<SessionMentorBean> | null;
     rangeDays: IRangeDay[],
-    selectedDate: Date;
+    selectedDate: string;
+    weekDate: string;
     loading: boolean;
 }
 
@@ -33,13 +34,13 @@ class MentorHome extends React.Component<IPropsMentorHome, IStateMentorHome> {
     private sessionService = new SessionService();
     constructor(props: any) {
         super(props);
-        const date = new Date();
         this.state = {
             counter: 0,
             currentSessions: null,
             loading: true,
             rangeDays: [],
-            selectedDate: date
+            selectedDate: (new Date()).toISOString(),
+            weekDate: this.getSunday(new Date()).toISOString()
         };
         // this.mentorId = this.props.match.params.id;
         this.loadSessions = this.loadSessions.bind(this);
@@ -64,13 +65,14 @@ class MentorHome extends React.Component<IPropsMentorHome, IStateMentorHome> {
                 <DayHandlerBar
                     onChangeDate={this.updateDate}
                     onChangeWeek={this.loadSessions}
-                    selectedDate={this.state.selectedDate.toISOString()}
+                    selectedDate={this.state.selectedDate}
+                    weekDate={this.state.weekDate}
                     rangeDays={this.state.rangeDays}
                     counter={this.state.counter}
                     loading={this.state.loading} />
                 <SessionsMentorDetail
                     sessions={this.state.currentSessions}
-                    selectedDate={this.state.selectedDate.toISOString()}/>
+                    selectedDate={this.state.selectedDate}/>
             </div>
         </Layout>
     }
@@ -79,7 +81,7 @@ class MentorHome extends React.Component<IPropsMentorHome, IStateMentorHome> {
         const date = new Date(selectedDate);
         this.setState({
             currentSessions: this.sessionCollector.getSessionsFrom(date.getDay()),
-            selectedDate: date
+            selectedDate
         })
     }
 
@@ -94,13 +96,15 @@ class MentorHome extends React.Component<IPropsMentorHome, IStateMentorHome> {
             this.sessionService.listMentorSessions(from.toISOString(), to.toISOString())
                 .then((sessions: ISessionMentor[]) => {
                     const mentorSessions = sessions.map((item) => new SessionMentorBean(item));
-                    this.sessionCollector = new SessionCollector<SessionMentorBean>(mentorSessions, from.toISOString());
+                    this.sessionCollector = new SessionCollector<SessionMentorBean>(mentorSessions, date);
+                    const selectedDate = new Date(this.sessionCollector.firstEnableDate);
                     this.setState({
                         counter: currentCounter + counter,
-                        currentSessions: this.sessionCollector.getSessionsFrom(0),
+                        currentSessions: this.sessionCollector.getSessionsFrom(selectedDate.getDay()),
                         loading: false,
                         rangeDays: this.sessionCollector.getRangeDays(),
-                        selectedDate: new Date(this.sessionCollector.selectedDate)
+                        selectedDate: selectedDate.toISOString(),
+                        weekDate: this.sessionCollector.selectedDate
                     })
                 }, () => {
                     // handle error
