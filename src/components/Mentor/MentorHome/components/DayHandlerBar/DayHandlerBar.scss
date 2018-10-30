@@ -1,0 +1,27 @@
+.DayHandlerBar {
+  display: flex;
+  justify-content: space-between;
+  min-width: 100%;
+  min-height: 88px;
+  position: relative;
+  &_button {
+    background: transparent;
+    border: 0;
+    cursor: pointer;
+    position: absolute;
+    top: 50%;
+    .icon {
+      height: 31px;
+      width: 31px;
+      fill: #561cac;
+    }
+    &--right {
+      right: -50px;
+      transform: rotate(180deg) translateY(50%);
+    }
+    &--left {
+      left: -50px;
+      transform: translateY(-50%);
+    }
+  }
+}

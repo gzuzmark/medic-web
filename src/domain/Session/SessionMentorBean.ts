@@ -18,4 +18,16 @@ export class SessionMentorBean extends SessionBean {
         super(session);
         this.session = session;
     }
+
+    public getAvailability(): string {
+        let text = '';
+        if (this.session.availability) {
+            text = `${this.session.availability.counter} de ${this.session.availability.limit}`;
+        }
+
+        if (this.session.location && this.session.location.location && this.session.availability) {
+            text = `${this.session.availability.counter} de ${this.session.location.location.maxStudents}`
+        }
+        return text;
+    }
 }

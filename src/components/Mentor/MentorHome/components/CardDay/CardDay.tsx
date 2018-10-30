@@ -1,18 +1,18 @@
 import * as React from 'react';
 import { Text1, Text2, Title1 } from '../../../../../common/ConsoleText';
 import {IBoxDayDescription} from "../../../../../domain/Session/SessionCollector";
-import './DayBox.scss';
+import './CardDay.scss';
 
-interface IPropsDayBox {
+interface IPropsCardDay {
     status: string;
     description: IBoxDayDescription;
     click(): void;
 }
 
 
-const DayBox: React.StatelessComponent<IPropsDayBox> = (props) => {
+const CardDay: React.StatelessComponent<IPropsCardDay> = (props) => {
     return (
-        <div className={`DayBox DayBox--${props.status}`} onClick={props.click}>
+        <div className={`CardDay CardDay--${props.status}`} onClick={props.click}>
             <Text1>{props.description.topText}</Text1>
             <Title1>{props.description.mainText}</Title1>
             <Text2>{props.description.bottomText}</Text2>
@@ -20,6 +20,6 @@ const DayBox: React.StatelessComponent<IPropsDayBox> = (props) => {
     );
 };
 
-export default DayBox;
+export default CardDay;
 
 

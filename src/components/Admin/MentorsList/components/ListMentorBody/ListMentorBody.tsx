@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { Link } from "react-router-dom";
-import add from '../../../../assets/images/add.png';
-import calendar from '../../../../assets/images/calendar.png';
+import add from '../../../../../assets/images/add.png';
+import calendar from '../../../../../assets/images/calendar.png';
 import { BoldText } from '../../../../../common/ConsoleText';
-import { getTime } from "../../../../../common/ConsoleUtils";
+import { getTime } from '../../../../../common/ConsoleUtils';
 import { IMentor } from '../../../../../interfaces/Mentor.interface';
 import MentorItem from '../MentorItem/MentorItem';
 

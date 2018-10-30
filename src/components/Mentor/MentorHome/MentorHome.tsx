@@ -3,37 +3,43 @@ import { Title2 } from '../../../common/ConsoleText';
 import Icon from "../../../common/Icon/Icon";
 import Layout from "../../../common/Layout/Layout";
 import {IBoxDayDescription, ISessionCollector, SessionCollector} from "../../../domain/Session/SessionCollector";
-import {SessionMentorBean} from "../../../domain/Session/SessionMentorBean";
+import {ISessionMentor, SessionMentorBean} from "../../../domain/Session/SessionMentorBean";
 import {IMatchParam} from "../../../interfaces/MatchParam.interface";
+import SessionService from "../../../services/Session/Session.service";
 import DayHandlerBar from "./components/DayHandlerBar/DayHandlerBar";
+import SessionsMentorDetail from "./components/SessionsMentorDetail/SessionsMentorDetail";
 
 
 export interface IRangeDay {
     status: string;
     description: IBoxDayDescription;
+    date: string;
 }
 interface IPropsMentorHome {
     match: IMatchParam;
 }
 
 interface IStateMentorHome {
+    counter: number;
     currentSessions: ISessionCollector<SessionMentorBean> | null;
     rangeDays: IRangeDay[],
-    selectedDay: number;
+    selectedDate: Date;
     loading: boolean;
 }
 
 class MentorHome extends React.Component<IPropsMentorHome, IStateMentorHome> {
     public state: IStateMentorHome;
     private sessionCollector: SessionCollector<SessionMentorBean>;
+    private sessionService = new SessionService();
     constructor(props: any) {
         super(props);
         const date = new Date();
         this.state = {
+            counter: 0,
             currentSessions: null,
             loading: true,
             rangeDays: [],
-            selectedDay: date.getDay()
+            selectedDate: date
         };
         // this.mentorId = this.props.match.params.id;
         this.loadSessions = this.loadSessions.bind(this);
@@ -41,48 +47,75 @@ class MentorHome extends React.Component<IPropsMentorHome, IStateMentorHome> {
     }
 
     public componentDidMount() {
-        const from = new Date();
-        this.loadSessions(from);
+        const date = this.getSunday(new Date());
+        date.setSeconds(0);
+        date.setMinutes(0);
+        date.setHours(0);
+        this.loadSessions(date.toISOString(), 0);
     }
 
     public render() {
-        /*<ScheduleMentorDetail
-            sessions={this.state.currentSessions}
-            currentDate={this.state.selectedDay}/>*/
         return <Layout>
-            <div>
+            <div className="u-LayoutMentorMargin">
                 <div>
                     <Icon name={"calendar"}/>
                     <Title2>Tus sesiones</Title2>
                 </div>
+                <DayHandlerBar
+                    onChangeDate={this.updateDate}
+                    onChangeWeek={this.loadSessions}
+                    selectedDate={this.state.selectedDate.toISOString()}
+                    rangeDays={this.state.rangeDays}
+                    counter={this.state.counter}
+                    loading={this.state.loading} />
+                <SessionsMentorDetail
+                    sessions={this.state.currentSessions}
+                    selectedDate={this.state.selectedDate.toISOString()}/>
             </div>
-            <DayHandlerBar
-                onChangeDate={this.updateDate}
-                onChangeWeek={this.loadSessions}
-                selectedDate={this.state.selectedDay.toString()}
-                rangeDays={this.state.rangeDays}
-                loading={this.state.loading}/>
         </Layout>
     }
 
-    private updateDate(selectedDay: number) {
+    private updateDate(selectedDate: string) {
+        const date = new Date(selectedDate);
         this.setState({
-            currentSessions: this.sessionCollector.getSessionsFrom(selectedDay),
-            selectedDay
+            currentSessions: this.sessionCollector.getSessionsFrom(date.getDay()),
+            selectedDate: date
         })
     }
 
-    private loadSessions(from: Date) {
+    private loadSessions(date: string, counter: number) {
+        const from = new Date(date);
+        const to = new Date(date);
+        const currentCounter = this.state.counter;
+        to.setDate(to.getDate() + 7);
         this.setState({
             loading: true
         }, () => {
-            // then consume service
-            this.setState({
-                currentSessions: this.sessionCollector.getSessionsFrom(0),
-                loading: false,
-                rangeDays: this.sessionCollector.getRangeDays()
-            })
+            this.sessionService.listMentorSessions(from.toISOString(), to.toISOString())
+                .then((sessions: ISessionMentor[]) => {
+                    const mentorSessions = sessions.map((item) => new SessionMentorBean(item));
+                    this.sessionCollector = new SessionCollector<SessionMentorBean>(mentorSessions, from.toISOString());
+                    this.setState({
+                        counter: currentCounter + counter,
+                        currentSessions: this.sessionCollector.getSessionsFrom(0),
+                        loading: false,
+                        rangeDays: this.sessionCollector.getRangeDays(),
+                        selectedDate: new Date(this.sessionCollector.selectedDate)
+                    })
+                }, () => {
+                    // handle error
+                    this.setState({
+                        loading: false
+                    })
+                })
         });
+    }
+
+    private getSunday(date: Date) {
+        const d = new Date(date);
+        const day = d.getDay();
+        const diff = d.getDate() - day;
+        return new Date(d.setDate(diff));
     }
 }
 

@@ -1,0 +1,38 @@
+.CardDay {
+  align-items: center;
+  border: #d4dce0 1px solid;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  height: 120px;
+  justify-content: center;
+  width: 120px;
+  &--disabled {
+    background: white;
+    border: #d4dce0 1px solid;
+    span, h1 {
+      color: #d4dce0!important;
+    }
+  }
+  &--active {
+    background: #f9fbff;
+    border: #81a8d2 1px solid;
+    span, h1 {
+      color: #4a4a4a!important;
+    }
+  }
+  &:hover {
+    background: white;
+    border: #561cac 1px solid;
+    span, h1 {
+      color: #4a4a4a!important;
+    }
+  }
+  &:focus {
+    background: #f9fbff;
+    border: #561cac 1px solid;
+    span, h1 {
+      color: #4a4a4a!important;
+    }
+  }
+}

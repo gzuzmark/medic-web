@@ -2,14 +2,16 @@ import * as moment from 'moment';
 import * as React from 'react';
 import Icon from "../../../../../common/Icon/Icon";
 import {IRangeDay} from "../../MentorHome";
-import DayBox from "../DayBox/DayBox";
+import CardDay from "../CardDay/CardDay";
+import './DayHandlerBar.scss';
 
 interface IPropsDayHandlerBar {
     loading: boolean;
     selectedDate: string;
     rangeDays: IRangeDay[];
-    onChangeWeek(from: Date): void;
-    onChangeDate(selectedDay: number): void;
+    counter: number;
+    onChangeWeek(from: string, counter: number): void;
+    onChangeDate(selectedDate: string): void;
 }
 
 
@@ -25,40 +27,59 @@ class DayHandlerBar extends React.Component<IPropsDayHandlerBar, {}> {
     }
 
     public render() {
+        let buttonPrevOpts = {};
+        let buttonNextOpts = {};
+        if (this.props.counter >= 1) {
+            buttonNextOpts = {
+                disable: "true"
+            }
+        } else if (this.props.counter <= -1) {
+            buttonPrevOpts = {
+                disable: "true"
+            }
+        }
         return(
-            <React.Fragment>
-                <div>
-                    <button onClick={this.beforeWeek}><Icon name="navigation-arrow"/></button>
-                    {this.props.rangeDays.map((day: IRangeDay, index) => {
-                        const click = this.triggerClick(index);
-                        return (
-                            <DayBox
-                                status={day.status}
-                                description={day.description}
-                                click={click}
-                                key={"DayHandlerBar_" + index} />
-                        )
-                    })}
-                    <button onClick={this.nextWeek}><Icon name="navigation-arrow"/></button>
-                </div>
-            </React.Fragment>
+            <div className="DayHandlerBar">
+                <button className="DayHandlerBar_button DayHandlerBar_button--left"
+                        onClick={this.beforeWeek} {...buttonPrevOpts}>
+                    <Icon name="navigation-arrow" />
+                </button>
+                {this.props.rangeDays.map((day: IRangeDay, index) => {
+                    const click = this.triggerClick(day.date);
+                    return (
+                        <CardDay
+                            status={day.status}
+                            description={day.description}
+                            click={click}
+                            key={"DayHandlerBar_" + index} />
+                    )
+                })}
+                <button className="DayHandlerBar_button DayHandlerBar_button--right"
+                        onClick={this.nextWeek} {...buttonNextOpts}>
+                    <Icon name="navigation-arrow"/>
+                </button>
+            </div>
         )
     }
 
-    private triggerClick(day: number) {
+    private triggerClick(day: string) {
         return () => {
             this.props.onChangeDate(day);
         }
     }
 
     private beforeWeek() {
-        const from = this.currentDate.subtract(1, 'weeks').toDate();
-        this.props.onChangeWeek(from)
+        if (this.props.counter > -1) {
+            const from = this.currentDate.subtract(1, 'weeks').toDate();
+            this.props.onChangeWeek(from.toString(), -1)
+        }
     }
 
     private nextWeek() {
-        const to = this.currentDate.add(1, 'weeks').toDate();
-        this.props.onChangeWeek(to)
+        if (this.props.counter < 1) {
+            const to = this.currentDate.add(1, 'weeks').toDate();
+            this.props.onChangeWeek(to.toString(), 1)
+        }
     }
 }
 

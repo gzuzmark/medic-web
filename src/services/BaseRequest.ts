@@ -19,6 +19,13 @@ class BaseRequest {
         this.onResponseError();
     }
 
+    public getCustomInstance(token: string, url: string) {
+        return Axios.create({
+            baseURL: url,
+            headers: {...headersRequest, 'Authorization': 'Bearer ' + token},
+        });
+    }
+
     public refreshToken() {
 
         return new Promise((resolve, reject) => {

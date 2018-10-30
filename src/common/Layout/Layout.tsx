@@ -1,8 +1,8 @@
 import * as React from 'react';
 import logo_header from '../../assets/images/logo_header.png';
-import { Text } from '../ConsoleText';
 import UserRepository from '../../repository/UserRepository';
 import Avatar from '../Avatar/Avatar';
+import { Text } from '../ConsoleText';
 import Sticky from '../Sticky/Sticky';
 import MenuTop from "./components/MenuTop/MenuTop";
 import './Footer.scss';

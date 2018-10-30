@@ -9,8 +9,9 @@ export interface IBoxDayDescription {
 export interface ISessionCollector<T> {
     description: IBoxDayDescription;
     status: string;
+    date: string;
     pending_sessions: T[];
-    next_sessions: T[];
+    resolve_sessions: T[];
 }
 
 export class SessionCollector<T extends SessionBean> {
@@ -23,6 +24,7 @@ export class SessionCollector<T extends SessionBean> {
         // new this.createSession(sessions);
         this.sessions = sessions;
         this.selectedDate = selectedDate;
+        this.sessionCollector = [];
         this.buildStructure();
         this.filterSessions(this.sessions);
     }
@@ -34,6 +36,7 @@ export class SessionCollector<T extends SessionBean> {
     public getRangeDays() {
         return this.sessionCollector.map((item: ISessionCollector<T>) => {
             return {
+                date: item.date,
                 description: item.description,
                 status: item.status
             }
@@ -48,7 +51,7 @@ export class SessionCollector<T extends SessionBean> {
             if (item.session.isActive) {
                 collector.pending_sessions.push(item);
             } else {
-                collector.next_sessions.push(item);
+                collector.resolve_sessions.push(item);
             }
         })
     }
@@ -56,19 +59,19 @@ export class SessionCollector<T extends SessionBean> {
     private buildStructure() {
         const date = new Date(this.selectedDate);
         for (let index = 0; index < 7; index++) {
-            date.setDate(date.getDate() + index);
             const month = this.monthFormatter.format(new Date(this.selectedDate));
-            this.sessionCollector[index] = {
-                description: {
-                    bottomText: month[0].toUpperCase() + month.slice(1),
-                    mainText: date.getDate().toString(),
-                    topText: this.getStringDay(index)
-
-                },
-                next_sessions: [] as T[],
-                pending_sessions: [] as T[],
-                status: "disabled"
-            };
+                this.sessionCollector[index] = {
+                    date: date.toString(),
+                    description: {
+                        bottomText: month[0].toUpperCase() + month.slice(1),
+                        mainText: date.getDate().toString(),
+                        topText: this.getStringDay(index)
+                    },
+                    pending_sessions: [] as T[],
+                    resolve_sessions: [] as T[],
+                    status: "disabled"
+                };
+            date.setDate(date.getDate() + 1);
         }
     }
 

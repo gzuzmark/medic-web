@@ -5,14 +5,14 @@ import { BrowserRouter as Router, Route } from 'react-router-dom';
 import './assets/fonts/fonts.scss';
 import './assets/styles/styles.scss';
 import HOCLayout from "./common/Layout/HOCLayout";
-import Login from './components/Login/Login';
-import Logout from './components/Logout/Logout';
 import MentorSession from './components/Admin/MentorSession/MentorSession';
 import MentorsList from './components/Admin/MentorsList/MentorsList';
 import Reports from "./components/Admin/Reports/Reports";
 import AddScheduleSession from "./components/Admin/ScheduleSession/ScheduleSession";
 import SessionDeleteMultiple from "./components/Admin/SessionDelete/SessionDeleteMultiple";
 import SessionDeleteSingle from "./components/Admin/SessionDelete/SessionDeleteSingle";
+import Login from './components/Login/Login';
+import Logout from './components/Logout/Logout';
 import MentorHome from "./components/Mentor/MentorHome/MentorHome";
 
 const PageReports = (props: any) => {
@@ -33,8 +33,7 @@ export const initRouter = () => {
                 <Route exact={true} path="/admin/mentores/:id/sesiones/agendar" component={AddScheduleSession} />
                 <Route exact={true} path="/admin/mentores/:id/sesiones/:session/eliminar" component={SessionDeleteSingle} />
                 <Route exact={true} path="/admin/mentores/:id/sesiones/eliminar" component={SessionDeleteMultiple} />
-
-                <Route exact={true} path="/mentor/" component={MentorHome} />
+                <Route exact={true} path="/mentor" component={MentorHome} />
             </div>
         </Router>,
         document.getElementById('root') as HTMLElement

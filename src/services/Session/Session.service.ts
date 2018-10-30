@@ -1,5 +1,6 @@
-import {ISessionsToDelete} from "../../domain/FormSession/FormSessionDeleteBean";
-import { IReportForSession } from "../../interfaces/Reports.interface";
+import {ISessionsToDelete} from '../../domain/FormSession/FormSessionDeleteBean';
+import {ISessionMentor} from '../../domain/Session/SessionMentorBean';
+import { IReportForSession } from '../../interfaces/Reports.interface';
 import BaseRequest from '../BaseRequest';
 
 class SessionService extends BaseRequest {
@@ -62,7 +63,7 @@ class SessionService extends BaseRequest {
                     items: ids
                 }
             }).then((response: any) => {
-                if (response.status === 200 && response.data && response.data) {
+                if (response.status === 200 && response.data) {
                     resolve(response.data);
                 } else {
                     reject(null);
@@ -72,6 +73,27 @@ class SessionService extends BaseRequest {
                 this.validSession();
                 reject(error);
             });
+        });
+    }
+
+    // Mentor Service
+    public listMentorSessions(from: string, to: string): Promise<ISessionMentor[]> {
+        const instance = this.getCustomInstance(
+            "/La6HK7/RI/6vveP0q3AptWgl5i/5SRvd+SwRJYAdy5olRqmmnPe8A==",
+            "https://ugo-utp-dev.appspot.com/_ah/api/");
+        return new Promise((resolve, reject) => {
+            instance.get(`ugo-mentor/me/sessions?from=${from}&to=${to}`)
+                .then((response: any) => {
+                    if (response.status === 200 && response.data) {
+                        resolve(response.data.items);
+                    } else {
+                        reject(null);
+                    }
+                })
+                .catch((error: any) => {
+                    this.validSession();
+                    reject(error);
+                });
         });
     }
 }
