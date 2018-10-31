@@ -63,6 +63,11 @@
     justify-content: center;
     padding-left: 20px;
     width: 200px;
+    &-main {
+      span {
+        color: #4a4a4a!important;
+      }
+    }
   }
   &_body {
     border-bottom-right-radius: 5px;
@@ -74,6 +79,11 @@
     padding: 0 20px;
     &-bottom {
       margin-top: 8px;
+    }
+    &-main {
+      span {
+        color: #4a4a4a!important;
+      }
     }
     &-flag {
       span {
