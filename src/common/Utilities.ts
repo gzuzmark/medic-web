@@ -40,10 +40,27 @@ const getValue = (value?: string, backup?: string): string  => {
     return value ? value : '';
 };
 
+const getDocumentHeight = (): number => {
+    const body = document.body;
+    const html = document.documentElement;
+    return Math.max(
+        body.scrollHeight,
+        body.offsetHeight,
+        html.clientHeight,
+        html.scrollHeight,
+        html.offsetHeight);
+};
+
+const scrollToTop = () => {
+    window.scrollTo(0, 0);
+};
+
 const Utilities = {
     donwloadLink,
     getDateFormatted,
-    getValue
+    getDocumentHeight,
+    getValue,
+    scrollToTop
 };
 
 export default Utilities;

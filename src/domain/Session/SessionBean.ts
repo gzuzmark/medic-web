@@ -17,6 +17,7 @@ export interface ISessionLocation {
         maxStudents: number,
         location: string
     }
+    sessionUrl?: string;
 }
 
 
@@ -28,6 +29,9 @@ export interface ISessionBase {
     skill?: ISessionItemBase;
     isActive?: boolean;
 }
+export const SESSION_VIRTUAL = "VIRTUAL";
+export const SESSION_UNDEFINED = "UNDEFINED";
+export const SESSION_PHYSICAL = "PHYSICAL";
 
 export class SessionBean {
     public session: ISessionBase;
@@ -38,6 +42,17 @@ export class SessionBean {
 
     public getTime(dateFormatter: AbstractDateParser): string {
         return `${dateFormatter.parseDateToString(this.session.from, "h:mm a")} - ${dateFormatter.parseDateToString(this.session.to, "h:mm a")}`;
+    }
+
+    public getLocation(): string {
+        let location = '';
+        if (this.session.location && this.session.location.type === SESSION_VIRTUAL) {
+            location = this.session.location.sessionUrl ? this.session.location.sessionUrl : '';
+        } else if (this.session.location) {
+            location = this.session.location.location ? this.session.location.location.location : '';
+        }
+
+        return location;
     }
 
     public getStatus() {

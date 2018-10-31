@@ -2,6 +2,8 @@ import * as React from 'react';
 import { Title2 } from '../../../common/ConsoleText';
 import Icon from "../../../common/Icon/Icon";
 import Layout from "../../../common/Layout/Layout";
+import Loader from "../../../common/Loader/Loader";
+import Utilities from "../../../common/Utilities";
 import {IBoxDayDescription, ISessionCollector, SessionCollector} from "../../../domain/Session/SessionCollector";
 import {ISessionMentor, SessionMentorBean} from "../../../domain/Session/SessionMentorBean";
 import {IMatchParam} from "../../../interfaces/MatchParam.interface";
@@ -26,6 +28,7 @@ interface IStateMentorHome {
     selectedDate: string;
     weekDate: string;
     loading: boolean;
+    scrollTop: boolean;
 }
 
 class MentorHome extends React.Component<IPropsMentorHome, IStateMentorHome> {
@@ -40,6 +43,7 @@ class MentorHome extends React.Component<IPropsMentorHome, IStateMentorHome> {
             currentSessions: null,
             loading: true,
             rangeDays: [],
+            scrollTop: false,
             selectedDate: (new Date()).toISOString(),
             weekDate: this.getSunday(new Date()).toISOString()
         };
@@ -71,9 +75,12 @@ class MentorHome extends React.Component<IPropsMentorHome, IStateMentorHome> {
                     rangeDays={this.state.rangeDays}
                     counter={this.state.counter}
                     loading={this.state.loading} />
+                {!this.state.loading ?
                 <SessionsMentorDetail
                     sessions={this.state.currentSessions}
-                    selectedDate={this.state.selectedDate}/>
+                    selectedDate={this.state.selectedDate}
+                    scrollTop={this.state.scrollTop}/> :
+                <Loader top={10} height={50}/>}
             </div>
         </Layout>
     }
@@ -96,16 +103,23 @@ class MentorHome extends React.Component<IPropsMentorHome, IStateMentorHome> {
         }, () => {
             this.sessionService.listMentorSessions(from.toISOString(), to.toISOString(), this.mentorId)
                 .then((sessions: ISessionMentor[]) => {
+                    const newCounter = currentCounter + counter;
                     const mentorSessions = sessions.map((item) => new SessionMentorBean(item));
                     this.sessionCollector = new SessionCollector<SessionMentorBean>(mentorSessions, date);
-                    const selectedDate = new Date(this.sessionCollector.firstEnableDate);
+                    const selectedDate = this.sessionCollector.getFirstDate(newCounter === 0);
                     this.setState({
-                        counter: currentCounter + counter,
+                        counter: newCounter,
                         currentSessions: this.sessionCollector.getSessionsFrom(selectedDate.getDay()),
                         loading: false,
                         rangeDays: this.sessionCollector.getRangeDays(),
                         selectedDate: selectedDate.toISOString(),
                         weekDate: this.sessionCollector.selectedDate
+                    }, () => {
+                        const extraSpace = 300;
+                        const show = window.innerHeight + extraSpace < Utilities.getDocumentHeight();
+                        this.setState({
+                            scrollTop: show
+                        })
                     })
                 }, () => {
                     // handle error

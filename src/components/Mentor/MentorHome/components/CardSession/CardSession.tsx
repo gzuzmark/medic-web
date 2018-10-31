@@ -16,7 +16,7 @@ const CardSession: React.StatelessComponent<IPropsCardSession> = (props) => {
         <div className={`CardSession CardSession--${props.item.getStatus()}`}>
             <div className={"CardSession_aside"}>
                 <div className={"CardSession_icon"}>
-                    <Icon name={"calendar"}/>
+                    <Icon name={"calendar-check"}/>
                 </div>
                 <div className={"CardSession_aside-description"}>
                     <SmallText1>{props.item.session.location && props.item.session.location.typeLabel}</SmallText1>
@@ -36,7 +36,7 @@ const CardSession: React.StatelessComponent<IPropsCardSession> = (props) => {
                     <TextBold3>{props.item.getAvailability()}</TextBold3>
                 </div>
                 <div className={"CardSession_body-bottom"}>
-                    <Text3>{props.item.session.location && props.item.session.location.location && props.item.session.location.location.location}</Text3>
+                    <Text3>{props.item.getLocation()}</Text3>
                 </div>
             </div>
         </div>
