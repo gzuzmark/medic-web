@@ -28,11 +28,6 @@ export class SessionMentorBean extends SessionBean {
             limit = this.session.availability.limit;
         }
 
-        if (this.session.location && this.session.location.location && this.session.availability) {
-            count = this.session.availability.count;
-            limit = this.session.location.location.maxStudents;
-        }
-
         if (limit > 1) {
             text = 'alumnos inscritos'
         }

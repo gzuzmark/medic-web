@@ -38,7 +38,8 @@ class SessionsMentorDetail extends React.Component<IPropsSessionsMentorDetail, {
         return this.props.sessions && !isEmpty ? (
             <div className={"SessionsMentorDetail"}>
                 <div className={"SessionsMentorDetail_title"}>
-                    <Title2>Sesiones de {day}{this.props.sessions.description.topText} {this.props.sessions.description.mainText} {this.props.sessions.description.bottomText}</Title2>
+                    <Title2>
+                        Sesiones de {day}{this.props.sessions.description.topText.toLowerCase()} {this.props.sessions.description.mainText} {this.props.sessions.description.bottomText.toLowerCase()}</Title2>
                 </div>
                 {!!this.props.sessions.pending_sessions.length && <div className={"SessionsMentorDetail_session-container"}>
                     <Accordion title={
