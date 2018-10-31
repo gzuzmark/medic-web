@@ -4,6 +4,7 @@ import UserRepository from '../../repository/UserRepository';
 import Avatar from '../Avatar/Avatar';
 import { Text } from '../ConsoleText';
 import Sticky from '../Sticky/Sticky';
+import Utilities from "../Utilities";
 import MenuTop from "./components/MenuTop/MenuTop";
 import './Footer.scss';
 import './Header.scss';
@@ -24,7 +25,7 @@ class Layout extends React.Component<IPropsLayout, {}> {
     }
 
     public componentDidMount() {
-        window.scrollTo(0, 0);
+        Utilities.scrollToTop();
     }
 
     public render() {

@@ -10,7 +10,9 @@
     height: 160px;
     .CardSession {
       &_aside {
+        align-items: center;
         background: #fff;
+        padding: 0;
         span {
           color: #81a8d2!important;
         }
@@ -40,6 +42,9 @@
       &_icon {
         display: none;
       }
+      &_aside {
+        background: #f9fbff;
+      }
       &_body {
         &-flag {
           display: none;
@@ -48,24 +53,25 @@
     }
   }
   &_aside {
-    align-items: center;
+    align-items: flex-start;
     background: #eef2f6;
+    border-bottom-left-radius: 5px;
     border-right: 1px solid #ccd6dc;
+    border-top-left-radius: 5px;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    width: 190px;
-    border-top-left-radius: 5px;
-    border-bottom-left-radius: 5px;
+    padding-left: 20px;
+    width: 200px;
   }
   &_body {
+    border-bottom-right-radius: 5px;
+    border-top-right-radius: 5px;
     display: flex;
     flex-direction: column;
     flex-grow: 1;
     justify-content: center;
     padding: 0 20px;
-    border-top-right-radius: 5px;
-    border-bottom-right-radius: 5px;
     &-bottom {
       margin-top: 8px;
     }

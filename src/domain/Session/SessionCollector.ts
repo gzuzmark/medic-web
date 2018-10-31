@@ -45,6 +45,12 @@ export class SessionCollector<T extends SessionBean> {
         })
     }
 
+    public getFirstDate(currentWeek: boolean) {
+        return currentWeek ?
+            new Date() :
+            new Date(this.firstEnableDate);
+    }
+
     private filterSessions(sessions: T[]) {
         sessions.forEach((item: T) => {
             const date = new Date(item.session.from);

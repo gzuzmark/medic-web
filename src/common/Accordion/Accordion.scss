@@ -1,0 +1,27 @@
+.Accordion {
+  &_title {
+    cursor: pointer;
+    position: relative;
+    .icon {
+      position: absolute;
+      right: 0;
+      top: 6px;
+      transform: rotate(-90deg);
+      transition: transform 0.2s ease-in;
+      fill: #561cac;
+    }
+    &--close {
+      .icon {
+        transform: rotate(90deg);
+      }
+    }
+  }
+  &_body {
+    display: block;
+    height: 100%;
+    overflow: hidden;
+    &--close {
+      display: none;
+    }
+  }
+}

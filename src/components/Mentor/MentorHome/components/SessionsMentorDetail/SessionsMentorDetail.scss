@@ -2,6 +2,33 @@
   background: #f9fbff;
   padding: 40px 60px;
   width: 100%;
+  &_empty-state {
+    opacity: 0.5;
+    width: 100%;
+  }
+  &_scroll-top {
+    align-items: center;
+    background: transparent;
+    border: 0;
+    cursor: pointer;
+    display: flex;
+    margin: 24px auto;
+    &:hover {
+      .icon {
+        transform: rotate(90deg) translate(-5px, 4px);
+      }
+    }
+    .icon {
+      height: 20px;
+      transform: rotate(90deg) translate(-2px, 4px);
+      transition: transform 0.2s ease-in;
+      width: 20px;
+      fill: #561cac;
+    }
+    span {
+      color: #561cac!important;
+    }
+  }
   &_title {
     h2 {
       color: #81a8d2!important;
