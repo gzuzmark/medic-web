@@ -20,19 +20,27 @@ export class SessionCollector<T extends SessionBean> {
     public monthFormatter = new Intl.DateTimeFormat("es", { month: "long" });
     public selectedDate: string;
     public firstEnableDate: string;
-    constructor(sessions: T[], selectedDate: string) {
+    public initDay: number;
+    private daysInWeek = 7;
+    constructor(sessions: T[], selectedDate: string, initDay: number) {
         // , private createSession: { new(...args : any[]): T; }
         // new this.createSession(sessions);
         this.sessions = sessions;
         this.selectedDate = selectedDate;
         this.sessionCollector = [];
         this.firstEnableDate = "";
+        this.initDay = initDay;
         this.buildStructure();
         this.filterSessions(this.sessions);
+        this.orderSessions();
     }
 
     public getSessionsFrom(day: number) {
-        return this.sessionCollector[day];
+        let selectedDay = day - this.initDay;
+        // tslint:disable:no-console
+        console.log(selectedDay)
+        selectedDay = selectedDay < 0 ? 6 : selectedDay;
+        return this.sessionCollector[selectedDay];
     }
 
     public getRangeDays() {
@@ -51,27 +59,38 @@ export class SessionCollector<T extends SessionBean> {
             new Date(this.firstEnableDate);
     }
 
+    private orderSessions() {
+        this.sessionCollector.sort((itemA, itemB) => {
+            const dateA = new Date(itemA.date);
+            const dateB = new Date(itemB.date);
+            return dateA.getTime() - dateB.getTime();
+        })
+    }
+
     private filterSessions(sessions: T[]) {
         sessions.forEach((item: T) => {
             const date = new Date(item.session.from);
             const collector = this.sessionCollector[date.getDay()];
-            collector.status = "default" ;
-            if (item.session.isActive) {
-                collector.pending_sessions.push(item);
-            } else {
-                collector.resolve_sessions.push(item);
+            if (collector) {
+                if (item.session.isActive) {
+                    collector.pending_sessions.push(item);
+                } else {
+                    collector.resolve_sessions.push(item);
+                }
             }
         });
     }
 
     private buildStructure() {
         const date = new Date(this.selectedDate);
-        for (let index = 0; index < 7; index++) {
+        for (let index = this.initDay; index < this.initDay + this.daysInWeek; index++) {
             if (index === 1) {
                 this.firstEnableDate = date.toString();
             }
+
             const month = this.monthFormatter.format(date);
-            this.sessionCollector[index] = {
+            const day = index === 7 ? 0 : index;
+            this.sessionCollector[day] = {
                 date: date.toISOString(),
                 description: {
                     bottomText: month[0].toUpperCase() + month.slice(1),
@@ -80,7 +99,7 @@ export class SessionCollector<T extends SessionBean> {
                 },
                 pending_sessions: [] as T[],
                 resolve_sessions: [] as T[],
-                status: "disabled"
+                status: "default"
             };
             date.setDate(date.getDate() + 1);
         }
@@ -88,7 +107,7 @@ export class SessionCollector<T extends SessionBean> {
 
     private getStringDay(index: number): string {
         let day = '';
-        switch (index) {
+        switch (index % this.daysInWeek) {
             case 0:
                 day = 'Domingo';
                 break;

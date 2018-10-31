@@ -41,16 +41,20 @@ class DayHandlerBar extends React.Component<IPropsDayHandlerBar, {}> {
         }
         this.selectedDate = moment(this.props.selectedDate);
         this.weekDate = moment(this.props.weekDate);
+        const leftButton = this.props.counter === -1 || this.props.loading ? 'DayHandlerBar_button--disabled' : '';
+        const rightButton =  this.props.counter === 1 || this.props.loading? 'DayHandlerBar_button--disabled' : '';
         return(
             <div className="DayHandlerBar">
-                <button className="DayHandlerBar_button DayHandlerBar_button--left"
+                <button className={`DayHandlerBar_button DayHandlerBar_button--left ${leftButton}`}
                         onClick={this.beforeWeek} {...buttonPrevOpts}>
                     <Icon name="navigation-arrow" />
                 </button>
                 {this.props.rangeDays.map((day: IRangeDay, index) => {
                     const click = this.triggerClick(day.date);
                     let status = day.status;
-                    if (this.selectedDate.format("YYYY-MM-DD") === moment(day.date).format("YYYY-MM-DD")) {
+                    if (this.props.loading) {
+                        status = 'disabled'
+                    } else if (this.selectedDate.format("YYYY-MM-DD") === moment(day.date).format("YYYY-MM-DD")) {
                         status = 'active';
                     }
                     return (
@@ -61,7 +65,7 @@ class DayHandlerBar extends React.Component<IPropsDayHandlerBar, {}> {
                             key={"DayHandlerBar_" + index} />
                     )
                 })}
-                <button className="DayHandlerBar_button DayHandlerBar_button--right"
+                <button className={`DayHandlerBar_button DayHandlerBar_button--right ${rightButton}`}
                         onClick={this.nextWeek} {...buttonNextOpts}>
                     <Icon name="navigation-arrow"/>
                 </button>
@@ -76,14 +80,14 @@ class DayHandlerBar extends React.Component<IPropsDayHandlerBar, {}> {
     }
 
     private beforeWeek() {
-        if (this.props.counter > -1) {
+        if (this.props.counter > -1 && !this.props.loading) {
             const from = this.weekDate.subtract(1, 'weeks').toDate();
             this.props.onChangeWeek(from.toISOString(), -1)
         }
     }
 
     private nextWeek() {
-        if (this.props.counter < 1) {
+        if (this.props.counter < 1 && !this.props.loading) {
             const to = this.weekDate.add(1, 'weeks').toDate();
             this.props.onChangeWeek(to.toISOString(), 1)
         }
