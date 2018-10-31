@@ -44,9 +44,13 @@ export class SessionBean {
         return `${dateFormatter.parseDateToString(this.session.from, "h:mm a")} - ${dateFormatter.parseDateToString(this.session.to, "h:mm a")}`;
     }
 
+    public isVirtual(): boolean {
+        return !!this.session.location && this.session.location.type === SESSION_VIRTUAL;
+    }
+
     public getLocation(): string {
         let location = '';
-        if (this.session.location && this.session.location.type === SESSION_VIRTUAL) {
+        if (!!this.session.location && this.isVirtual()) {
             location = this.session.location.sessionUrl ? this.session.location.sessionUrl : '';
         } else if (this.session.location) {
             location = this.session.location.location ? this.session.location.location.location : '';

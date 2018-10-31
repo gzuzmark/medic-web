@@ -19,6 +19,14 @@ export class SessionMentorBean extends SessionBean {
         this.session = session;
     }
 
+    public getTotalStudents(): number {
+        let total = 0;
+        if (this.session.availability) {
+            total = this.session.availability.count;
+        }
+        return total;
+    }
+
     public getAvailability(): string {
         let text = 'alumno inscrito';
         let count = 0;
