@@ -36,8 +36,22 @@ const CardSession: React.StatelessComponent<IPropsCardSession> = (props) => {
                     <TextBold3>{props.item.getAvailability()}</TextBold3>
                 </div>
                 <div className={"CardSession_body-bottom"}>
-                    <Text3>{props.item.getLocation()}</Text3>
+                    {props.item.isVirtual() ?
+                        <a href={props.item.getLocation()} target="_blank">
+                            <Text3>{props.item.getLocation()}</Text3>
+                        </a>:
+                        <Text3>{props.item.getLocation()}</Text3>
+                    }
                 </div>
+            </div>
+            <div className={"CardSession_options"}>
+                {
+                    props.item.getTotalStudents() > 0 &&
+                    <button className={"CardSession_options-button"}>
+                        <Icon name={"users"}/>
+                        <TextBold3>Ver alumnos</TextBold3>
+                    </button>
+                }
             </div>
         </div>
     );
