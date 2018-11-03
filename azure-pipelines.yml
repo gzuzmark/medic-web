@@ -18,7 +18,7 @@ steps:
   displayName: 'Install Yarn and dependencies'
 
 - script: |
-    yarn build
+    REACT_ENV=$REACT_ENV yarn build
   displayName: 'Build'
 
 - task: CopyFiles@2
