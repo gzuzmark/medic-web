@@ -18,8 +18,7 @@ steps:
   displayName: 'Install Yarn and dependencies'
 
 - script: |
-    export REACT_ENV
-    REACT_ENV $REACT_ENV yarn build
+    yarn build
   displayName: 'Build'
 
 - task: CopyFiles@2
