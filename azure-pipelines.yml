@@ -14,24 +14,24 @@ steps:
 
 - script: |
     npm install -g yarn
-    yarn install
+    REACT_ENV $REACT_ENV yarn install
   displayName: 'Install Yarn and dependencies'
 
 - script: |
-    yarn build
+    REACT_ENV $REACT_ENV yarn build
   displayName: 'Build'
 
-- task: ArchiveFiles@2
-  displayName: "Archive files"
+- task: CopyFiles@2
+  displayName: 'Copy Files to: $(build.artifactstagingdirectory)'
   inputs:
-    rootFolderOrFile: "$(System.DefaultWorkingDirectory)"
-    includeRootFolder: false
-    archiveFile: "$(System.DefaultWorkingDirectory)/$(Build.BuildId).zip"
+    SourceFolder: '$(System.DefaultWorkingDirectory)'
+    Contents: |
+      **/**
+      !**/node_modules/**
+      
+    TargetFolder: '$(build.artifactstagingdirectory)'
+
 - task: PublishBuildArtifacts@1
   inputs:
-    PathtoPublish: '$(System.DefaultWorkingDirectory)'
+    PathtoPublish: '$(build.artifactstagingdirectory)'
     name: 'drop'
-
-
-
-
