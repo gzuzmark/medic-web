@@ -14,10 +14,11 @@ steps:
 
 - script: |
     npm install -g yarn
-    REACT_ENV $REACT_ENV yarn install
+    yarn install
   displayName: 'Install Yarn and dependencies'
 
 - script: |
+    export REACT_ENV
     REACT_ENV $REACT_ENV yarn build
   displayName: 'Build'
 
