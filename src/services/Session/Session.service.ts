@@ -82,13 +82,13 @@ class SessionService extends BaseRequest {
         if (id === '') {
             instance = this.getCustomInstance(
                 "/La6HK7/RI/6vveP0q3AptWgl5i/5SRvd+SwRJYAdy5olRqmmnPe8A==",
-                "https://ugo-utp-dev.appspot.com/_ah/api/");
+                "https://ugo-utp-dev.appspot.com/_ah/api/ugo/mentors-api/");
         } else {
             instance = this.getCustomInstance(id,
-                "https://ugo-utp-qa.appspot.com/_ah/api/");
+                "https://ugo-utp-qa.appspot.com/_ah/api/ugo/mentors-api/");
         }
         return new Promise((resolve, reject) => {
-            instance.get(`ugo-mentor/me/sessions?from=${from}&to=${to}`)
+            instance.get(`me/sessions/all?from=${from}&to=${to}`)
                 .then((response: any) => {
                     if (response.status === 200 && response.data) {
                         resolve(response.data.items);

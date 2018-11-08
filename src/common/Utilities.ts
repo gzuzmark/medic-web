@@ -55,7 +55,27 @@ const scrollToTop = () => {
     window.scrollTo(0, 0);
 };
 
+const doClone = (source: any): any => {
+    if (Object.prototype.toString.call(source) === '[object Array]') {
+        const clone = [];
+        for (let i=0; i<source.length; i++) {
+            clone[i] = doClone(source[i]);
+        }
+        return clone;
+    } else if (typeof(source) === "object") {
+        const clone = {};
+        for (const prop in source) {
+            if (source.hasOwnProperty(prop)) {
+                clone[prop] = doClone(source[prop]);
+            }
+        }
+        return clone;
+    } else {
+        return source;
+    }
+};
 const Utilities = {
+    doClone,
     donwloadLink,
     getDateFormatted,
     getDocumentHeight,

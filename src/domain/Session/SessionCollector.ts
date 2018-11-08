@@ -72,6 +72,7 @@ export class SessionCollector<T extends SessionBean> {
             const date = new Date(item.session.from);
             const collector = this.sessionCollector[date.getDay()];
             if (collector) {
+                collector.status = 'default';
                 if (item.session.isActive) {
                     collector.pending_sessions.push(item);
                 } else {
@@ -99,7 +100,7 @@ export class SessionCollector<T extends SessionBean> {
                 },
                 pending_sessions: [] as T[],
                 resolve_sessions: [] as T[],
-                status: "default"
+                status: "disabled"
             };
             date.setDate(date.getDate() + 1);
         }

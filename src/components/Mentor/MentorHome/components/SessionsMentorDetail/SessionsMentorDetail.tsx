@@ -1,4 +1,5 @@
 import * as React from 'react';
+import emptyState from '../../../../../assets/images/empty-state.png';
 import Accordion from "../../../../../common/Accordion/Accordion";
 import { Text1, TextBold3, Title2 } from "../../../../../common/ConsoleText"
 import Icon from "../../../../../common/Icon/Icon";
@@ -9,7 +10,7 @@ import CardSession from "../CardSession/CardSession";
 import './SessionsMentorDetail.scss';
 
 interface IPropsSessionsMentorDetail {
-    sessions:  ISessionCollector<SessionMentorBean> | null;
+    sessions:  ISessionCollector<SessionMentorBean>;
     selectedDate: string;
     scrollTop: boolean;
 }
@@ -77,10 +78,13 @@ class SessionsMentorDetail extends React.Component<IPropsSessionsMentorDetail, {
         ) : (
             <div className={"SessionsMentorDetail"}>
                 <div className={"SessionsMentorDetail_title"}>
-                    <Title2>No tienes sesiones este día</Title2>
+                    <Title2>
+                        Sesiones de {day}{this.props.sessions.description.topText.toLowerCase()} {this.props.sessions.description.mainText} {this.props.sessions.description.bottomText.toLowerCase()}</Title2>
+
                     <img
                         className={"SessionsMentorDetail_empty-state"}
-                        src={"https://storage.googleapis.com/ugo-utp.appspot.com/ugo-estudiantes-web/resources/empty-state.png"}/>
+                        src={emptyState}/>
+                    <Text1>No tienes sesiones para este día</Text1>
                 </div>
             </div>
         );

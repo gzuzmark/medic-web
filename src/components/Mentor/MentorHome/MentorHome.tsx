@@ -77,7 +77,7 @@ class MentorHome extends React.Component<IPropsMentorHome, IStateMentorHome> {
                     rangeDays={this.state.rangeDays}
                     counter={this.state.counter}
                     loading={this.state.loading} />
-                {!this.state.loading ?
+                {!this.state.loading && this.state.currentSessions?
                 <SessionsMentorDetail
                     sessions={this.state.currentSessions}
                     selectedDate={this.state.selectedDate}
@@ -110,14 +110,20 @@ class MentorHome extends React.Component<IPropsMentorHome, IStateMentorHome> {
                     const newCounter = currentCounter + counter;
                     const mentorSessions = sessions.map((item) => new SessionMentorBean(item));
                     this.sessionCollector = new SessionCollector<SessionMentorBean>(mentorSessions, date, 1);
-                    const selectedDate = this.sessionCollector.getFirstDate(newCounter === 0);
+                    let newState = {};
+                    if (!this.state.currentSessions) {
+                        const selectedDate = this.sessionCollector.getFirstDate(newCounter === 0);
+                        newState = {
+                            currentSessions: this.sessionCollector.getSessionsFrom(selectedDate.getDay()),
+                            selectedDate: selectedDate.toISOString()
+                        }
+                    }
                     this.setState({
                         counter: newCounter,
-                        currentSessions: this.sessionCollector.getSessionsFrom(selectedDate.getDay()),
                         loading: false,
                         rangeDays: this.sessionCollector.getRangeDays(),
-                        selectedDate: selectedDate.toISOString(),
-                        weekDate: this.sessionCollector.selectedDate
+                        weekDate: this.sessionCollector.selectedDate,
+                        ...newState
                     }, () => {
                         this.updateScrollTop();
                     })

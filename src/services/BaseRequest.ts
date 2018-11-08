@@ -22,7 +22,7 @@ class BaseRequest {
     public getCustomInstance(token: string, url: string) {
         return Axios.create({
             baseURL: url,
-            headers: {...headersRequest, 'Authorization': 'Bearer ' + token},
+            headers: {...headersRequest, 'Authorization': 'Bearer ' + token, 'installedVersion': '1.0.0', 'platformName': 'web'},
         });
     }
 

@@ -1,4 +1,4 @@
-import { ISessionBase, SessionBean } from "./SessionBean";
+import {ISessionBase, SESSION_STATUS, SessionBean} from "./SessionBean";
 
 export interface ISessionAvailability {
     limit: number;
@@ -17,6 +17,14 @@ export class SessionMentorBean extends SessionBean {
     constructor(session: ISessionMentor) {
         super(session);
         this.session = session;
+    }
+
+    get isDisabled(): boolean {
+        return (
+            this.session.status !== SESSION_STATUS.RATED &&
+            this.session.status !== SESSION_STATUS.SCHEDULED &&
+            this.session.status !== SESSION_STATUS.ATTENDED
+        )
     }
 
     public getTotalStudents(): number {
