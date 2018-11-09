@@ -11,9 +11,23 @@ export class StudentChecklistCollector {
     }
 
     public filterStudents(filter: string): StudentChecklistBean[] {
+        filter = filter.toLowerCase();
         return this.sessions.filter((item: StudentChecklistBean) => {
-            return item.student.user.name.includes(filter) || item.student.user.code.includes(filter);
+            const name = item.student.user.name.toLowerCase();
+            const code = item.student.user.code.toLowerCase();
+            return name.includes(filter) || code.includes(filter) || !filter;
         })
+    }
+
+    public getStudent(code: string): StudentChecklistBean | null {
+        let student = null;
+        const candidate = this.sessions.filter((item: StudentChecklistBean) => {
+            return item.student.user.code === code;
+        });
+        if (candidate.length > 0) {
+            student = candidate[0];
+        }
+        return student;
     }
 
     public addStudent(student: StudentChecklistBean) {

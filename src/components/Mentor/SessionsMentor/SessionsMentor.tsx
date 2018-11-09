@@ -14,7 +14,7 @@ import StudentService from "../../../services/Student/Student.service";
 import {ISessionFullCard} from "./components/SessionFullCard/SessionFullCard";
 import SessionFullCard from "./components/SessionFullCard/SessionFullCard";
 import { default as SimpleFullCard, ISimpleFullCard} from "./components/SimpleFullCard/SimpleFullCard";
-import StudentChecklistBoard from "./components/StudentChecklistBoard/StudentChecklistBoard";
+import StudentChecklistBoard, {ACTION} from "./components/StudentChecklistBoard/StudentChecklistBoard";
 import {IStudentChecklistCard} from "./components/StudentFullCard/StudentFullCard";
 import './SessionsMentor.scss';
 
@@ -26,6 +26,7 @@ interface IStateSessionsMentor {
     fullCardSession: ISessionFullCard;
     fullCardSimple: ISimpleFullCard;
     loading: boolean;
+    searchValue: string;
     studentList: IStudentChecklistCard[];
 }
 
@@ -50,10 +51,13 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
                 title: ''
             },
             loading: true,
+            searchValue: '',
             studentList: []
         };
         this.mentorId = this.props.match.params.id;
         this.sessionId = this.props.match.params.session;
+        this.onSearch = this.onSearch.bind(this);
+        this.searchStudent = this.searchStudent.bind(this);
     }
 
     public componentDidMount() {
@@ -66,10 +70,11 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
             ]).then((values: any[]) => {
                 this.sessionMentor = new SessionMentorBean(values[0]);
                 this.studentChecklistCollector = new StudentChecklistCollector(values[1]);
+                const sessions = this.studentChecklistCollector.sessions;
                 const newState = {
                     fullCardSession: this.getFullCardSession(),
                     fullCardSimple: this.getFullCardSimple(),
-                    studentList: this.getStudentList()
+                    studentList: this.getStudentList(sessions)
                 };
                 this.setState({
                     loading: false,
@@ -96,12 +101,49 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
                     <React.Fragment>
                         <SessionFullCard session={this.state.fullCardSession}/>
                         <SimpleFullCard card={this.state.fullCardSimple}>
-                            <StudentChecklistBoard students={this.state.studentList}/>
+                            <StudentChecklistBoard
+                                students={this.state.studentList}
+                                onSearch={this.onSearch}
+                                searchValue={this.state.searchValue}
+                                />
                         </SimpleFullCard>
                     </React.Fragment>
                 }
             </div>
         </Layout>
+    }
+
+    private searchStudent(action: string) {
+        // tslint:disable:no-console
+        console.log(this.state.searchValue, action);
+        if (action === ACTION.SEARCH) {
+            const sessions  = this.studentChecklistCollector.filterStudents(this.state.searchValue);
+            this.setState({
+                studentList: this.getStudentList(sessions)
+            })
+        } else if (action === ACTION.ADD ) {
+            // validar que no esté vacío
+            // if (!!searchValue)
+            // validar si código existe en estudiantes actuales
+            // const student = this.studentChecklistCollector.getStudent(searchValue);
+            // if (student)
+            //   mostrar modal con alumno
+            // else
+            //   mostrar loading state
+            //   buscar alumno
+            //   exito: ocultar loading state
+            //   exito: mostrar modal con datos de estudiante
+            //   error: ocultar loading state
+            //   error: mostrar error en caja de texto
+        }
+    }
+
+    private onSearch(searchValue: string, action: string) {
+        this.setState({
+            searchValue
+        }, () => {
+            this.searchStudent(action);
+        });
     }
 
     private getFullCardSession(): ISessionFullCard {
@@ -120,8 +162,8 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
         };
     }
 
-    private getStudentList(): IStudentChecklistCard[] {
-        return this.studentChecklistCollector.sessions.map((item: StudentChecklistBean) => {
+    private getStudentList(sessions: StudentChecklistBean[]): IStudentChecklistCard[] {
+        return sessions.map((item: StudentChecklistBean) => {
             return {
                 checked: item.isChecked,
                 code: item.student.user.code,
