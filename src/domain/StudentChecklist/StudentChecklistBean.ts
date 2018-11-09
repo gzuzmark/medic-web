@@ -5,6 +5,7 @@ export interface IStudentChecklist {
     student: IUserStudent;
     id: string;
     status: string;
+    booked?: boolean;
 }
 
 export class StudentChecklistBean {
@@ -13,6 +14,7 @@ export class StudentChecklistBean {
     public user: UserStudentBean;
     public new: boolean;
     public checked: boolean;
+    public booked: boolean;
 
     constructor(studentChecklist: IStudentChecklist) {
         this.user = new UserStudentBean(studentChecklist.student);
@@ -20,6 +22,7 @@ export class StudentChecklistBean {
         this.status = studentChecklist.status;
         this.new = false;
         this.checked = this.isAttended;
+        this.booked = !!studentChecklist.booked;
     }
 
     get student(): UserStudentBean {
@@ -36,6 +39,10 @@ export class StudentChecklistBean {
 
     get isChecked(): boolean {
         return this.isAttended && this.checked;
+    }
+
+    get isBooked(): boolean {
+        return this.booked;
     }
 
     public setAsNewStudent() {

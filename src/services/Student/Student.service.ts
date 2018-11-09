@@ -1,3 +1,4 @@
+import {SESSION_PHYSICAL} from "../../domain/Session/SessionBean";
 import { IStudentChecklist } from "../../domain/StudentChecklist/StudentChecklistBean";
 import {IReportForStudent} from "../../interfaces/Reports.interface";
 import BaseRequest from '../BaseRequest';
@@ -54,6 +55,61 @@ class StudentService extends BaseRequest {
                 .then((response: any) => {
                     if (response.status === 200 && response.data) {
                         resolve(response.data.items);
+                    } else {
+                        reject(null);
+                    }
+                })
+                .catch((error: any) => {
+                    this.validSession();
+                    reject(error);
+                });
+        });
+    }
+
+    public searchStudentFromSession(session:string, codeStudent: string, id: string): Promise<IStudentChecklist>  {
+        let instance: any;
+        if (id === '') {
+            instance = this.getCustomInstance(
+                "/La6HK7/RI/6vveP0q3AptWgl5i/5SRvd+SwRJYAdy5olRqmmnPe8A==",
+                "https://ugo-utp-dev.appspot.com/_ah/api/ugo/mentors-api/");
+        } else {
+            instance = this.getCustomInstance(id,
+                "https://ugo-utp-qa.appspot.com/_ah/api/ugo/mentors-api/");
+        }
+        return new Promise((resolve, reject) => {
+            instance.get(`sessions/${session}/students/search?code=${codeStudent}`)
+                .then((response: any) => {
+                    if (response.status === 200 && response.data) {
+                        resolve(response.data);
+                    } else {
+                        reject(null);
+                    }
+                })
+                .catch((error: any) => {
+                    this.validSession();
+                    reject(error);
+                });
+        });
+    }
+
+    public addStudentToSession(session:string, student: string, id: string): Promise<{id: string}>  {
+        let instance: any;
+        if (id === '') {
+            instance = this.getCustomInstance(
+                "/La6HK7/RI/6vveP0q3AptWgl5i/5SRvd+SwRJYAdy5olRqmmnPe8A==",
+                "https://ugo-utp-dev.appspot.com/_ah/api/ugo/mentors-api/");
+        } else {
+            instance = this.getCustomInstance(id,
+                "https://ugo-utp-qa.appspot.com/_ah/api/ugo/mentors-api/");
+        }
+        return new Promise((resolve, reject) => {
+            instance.post(`sessions/${session}/students/${student}/reservation`, {
+                syncCalendar : true,
+                type : SESSION_PHYSICAL
+            })
+                .then((response: any) => {
+                    if (response.status === 200 && response.data) {
+                        resolve(response.data);
                     } else {
                         reject(null);
                     }

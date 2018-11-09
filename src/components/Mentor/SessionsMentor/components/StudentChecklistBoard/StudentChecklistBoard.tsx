@@ -27,15 +27,23 @@ export const ACTION = {
     SEARCH: 'search'
 };
 
-const onClick = (click: fnSearch, action: string) => {
+const onClick = (search: fnSearch, action: string) => {
     return () => {
-        click('', action);
+        search('', action);
     }
 };
 
-const onChange = (change: fnSearch, action: string) => {
+const onChange = (search: fnSearch, action: string) => {
     return (event: any) => {
-        change(event.target.value, action);
+        search(event.target.value, action);
+    }
+};
+
+const onSubmit = (search: fnSearch, action: string) => {
+    return (event: any) => {
+        if (event.key === 'Enter') {
+            search(event.target.value, action);
+        }
     }
 };
 
@@ -44,6 +52,8 @@ const StudentChecklistBoard: React.StatelessComponent<IPropsStudentChecklistBoar
     const onClickAdd = onClick(props.onSearch, ACTION.ADD);
     const onChangeSearch = onChange(props.onSearch, ACTION.SEARCH);
     const onChangeAdd = onChange(props.onSearch, '');
+    const onSubmitAdd = onSubmit(props.onSearch, ACTION.ADD);
+    let counter = 0;
     return (
         <div className={`StudentChecklistBoard`}>
             <div className={"StudentChecklistBoard_inputs-container"}>
@@ -56,13 +66,20 @@ const StudentChecklistBoard: React.StatelessComponent<IPropsStudentChecklistBoar
                        name={"txtAddStudent"}
                        onClick={onClickAdd}
                        onChange={onChangeAdd}
+                       onKeyPress={onSubmitAdd}
                        value={props.searchValue}/>
             </div>
+            <div className={"StudentChecklistBoard_students-container"}>
             {props.students.map((student: IStudentChecklistCard, index: number) => {
+                let order = 0;
+                if (student.new) {
+                    order = ++counter;
+                }
                 return (
-                    <StudentFullCard student={student} key={`${index}`}/>
+                    <StudentFullCard student={student} key={`${index}`} styles={{'order': -1 * order}}/>
                 )
             })}
+            </div>
         </div>
     );
 };

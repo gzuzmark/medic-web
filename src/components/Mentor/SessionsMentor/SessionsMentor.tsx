@@ -4,9 +4,9 @@ import Icon from "../../../common/Icon/Icon";
 import Layout from "../../../common/Layout/Layout";
 import Loader from "../../../common/Loader/Loader";
 import {MomentDateParser} from "../../../domain/DateManager/MomentDateParser";
-import {SESSION_LIFE} from "../../../domain/Session/SessionBean";
+import {SESSION_LIFE, SESSION_STATUS} from "../../../domain/Session/SessionBean";
 import {SessionMentorBean} from "../../../domain/Session/SessionMentorBean";
-import {StudentChecklistBean} from "../../../domain/StudentChecklist/StudentChecklistBean";
+import {IStudentChecklist, StudentChecklistBean} from "../../../domain/StudentChecklist/StudentChecklistBean";
 import {StudentChecklistCollector} from "../../../domain/StudentChecklist/StudentChecklistCollector";
 import {IMatchParam} from "../../../interfaces/MatchParam.interface";
 import SessionService from "../../../services/Session/Session.service";
@@ -58,6 +58,7 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
         this.sessionId = this.props.match.params.session;
         this.onSearch = this.onSearch.bind(this);
         this.searchStudent = this.searchStudent.bind(this);
+        this.addStudent = this.addStudent.bind(this);
     }
 
     public componentDidMount() {
@@ -114,28 +115,53 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
     }
 
     private searchStudent(action: string) {
-        // tslint:disable:no-console
-        console.log(this.state.searchValue, action);
         if (action === ACTION.SEARCH) {
             const sessions  = this.studentChecklistCollector.filterStudents(this.state.searchValue);
             this.setState({
                 studentList: this.getStudentList(sessions)
             })
         } else if (action === ACTION.ADD ) {
-            // validar que no esté vacío
-            // if (!!searchValue)
-            // validar si código existe en estudiantes actuales
-            // const student = this.studentChecklistCollector.getStudent(searchValue);
-            // if (student)
-            //   mostrar modal con alumno
-            // else
-            //   mostrar loading state
-            //   buscar alumno
-            //   exito: ocultar loading state
-            //   exito: mostrar modal con datos de estudiante
-            //   error: ocultar loading state
-            //   error: mostrar error en caja de texto
+            if (!!this.state.searchValue) {
+                const studentCode = this.state.searchValue;
+                const student = this.studentChecklistCollector.getStudent(studentCode);
+                if (!student) {
+                    // mostrar loading state
+                    this.studentsService.searchStudentFromSession(this.sessionId, studentCode, this.mentorId)
+                        .then((response: IStudentChecklist) => {
+                            // exito: ocultar loading state
+                            // exito: mostrar modal con datos de estudiante
+                            // tmp: agregar estudiante
+                            this.addStudent(response);
+                        })
+                        .catch(() => {
+                            // error: ocultar loading state
+                            // error: mostrar error en caja de texto
+                        })
+                } else {
+                    // tslint:disable:no-console
+                    console.log('ya existe alumno');
+                    // mostrar modal con alumno
+                }
+            }
         }
+    }
+
+    private addStudent(student: IStudentChecklist) {
+        const idStudent = student.student.id ? student.student.id : '';
+        this.studentsService.addStudentToSession(this.sessionId, idStudent, this.mentorId)
+            .then((response: {id: string}) => {
+                student.id = response.id;
+                student.status = SESSION_STATUS.SCHEDULED;
+                const newStudent = new StudentChecklistBean(student);
+                this.studentChecklistCollector.addStudent(newStudent);
+                const sessions = this.studentChecklistCollector.sessions;
+                this.setState({
+                    studentList: this.getStudentList(sessions)
+                })
+            })
+            .catch(() => {
+                // error: mostrar modal con super error.!
+            })
     }
 
     private onSearch(searchValue: string, action: string) {

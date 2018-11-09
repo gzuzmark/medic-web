@@ -6,6 +6,9 @@
   justify-content: flex-start;
   padding: 0 28px;
   transition: background 0.3s ease-in;
+  &--new {
+    order: -1;
+  }
   &:hover {
     background: #eef2f6;
   }

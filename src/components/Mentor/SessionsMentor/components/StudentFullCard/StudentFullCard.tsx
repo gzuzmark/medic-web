@@ -13,11 +13,12 @@ export interface IStudentChecklistCard {
 
 interface IPropsStudentFullCard {
     student: IStudentChecklistCard;
+    styles: React.CSSProperties;
 }
 
 const StudentFullCard: React.StatelessComponent<IPropsStudentFullCard> = (props) => {
     return (
-        <div className={`StudentFullCard`}>
+        <div className={`StudentFullCard ${props.student.new ? 'StudentFullCard--new': ''}`} style={{...props.styles}}>
             <div className={"StudentFullCard_left"}>
                 <div className={"StudentFullCard_image-container"}>
                     <img src={props.student.photo} title={"Estudiante"} className={"StudentFullCard_image"} />
