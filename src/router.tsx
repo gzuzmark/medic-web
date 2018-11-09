@@ -14,6 +14,7 @@ import SessionDeleteSingle from "./components/Admin/SessionDelete/SessionDeleteS
 import Login from './components/Login/Login';
 import Logout from './components/Logout/Logout';
 import MentorHome from "./components/Mentor/MentorHome/MentorHome";
+import SessionsMentor from "./components/Mentor/SessionsMentor/SessionsMentor";
 
 const PageReports = (props: any) => {
     const LayoutReports = HOCLayout(Reports);
@@ -35,6 +36,8 @@ export const initRouter = () => {
                 <Route exact={true} path="/admin/mentores/:id/sesiones/eliminar" component={SessionDeleteMultiple} />
                 <Route exact={true} path="/mentor" component={MentorHome} />
                 <Route exact={true} path="/mentor/:id" component={MentorHome} />
+                <Route exact={true} path="/mentor/sesion/:session/" component={SessionsMentor} />
+                <Route exact={true} path="/mentor/sesion/:session/:id/" component={SessionsMentor} />
             </div>
         </Router>,
         document.getElementById('root') as HTMLElement

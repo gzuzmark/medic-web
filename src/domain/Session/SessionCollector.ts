@@ -37,8 +37,6 @@ export class SessionCollector<T extends SessionBean> {
 
     public getSessionsFrom(day: number) {
         let selectedDay = day - this.initDay;
-        // tslint:disable:no-console
-        console.log(selectedDay)
         selectedDay = selectedDay < 0 ? 6 : selectedDay;
         return this.sessionCollector[selectedDay];
     }

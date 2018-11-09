@@ -1,29 +1,24 @@
-import {StudentChecklist} from "./StudentChecklist";
+import {IStudentChecklist, StudentChecklistBean} from "./StudentChecklistBean";
 
 export class StudentChecklistCollector {
-    public sessions: StudentChecklist[];
+    public sessions: StudentChecklistBean[];
 
-    constructor(sessions: StudentChecklist[]) {
-        this.sessions = sessions;
+    constructor(sessions: IStudentChecklist[]) {
+
+        this.sessions = sessions.map((item: IStudentChecklist) => {
+            return new StudentChecklistBean(item);
+        });
     }
 
-    public filterStudents(filter: string): StudentChecklist[] {
-        return this.sessions.filter((item: StudentChecklist) => {
+    public filterStudents(filter: string): StudentChecklistBean[] {
+        return this.sessions.filter((item: StudentChecklistBean) => {
             return item.student.user.name.includes(filter) || item.student.user.code.includes(filter);
         })
     }
 
-    public addStudent(student: StudentChecklist) {
+    public addStudent(student: StudentChecklistBean) {
         student.setAsNewStudent();
         this.sessions.push(student);
-    }
-
-    public toState() {
-        return this.sessions.map((item: StudentChecklist) => {
-            return {
-                new: item.new
-            }
-        });
     }
 
 }
