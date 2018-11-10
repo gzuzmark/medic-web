@@ -28,6 +28,9 @@ const MentorModalBase: React.StatelessComponent<IPropsMentorModalBase> = (props)
             styles={{
                 modal: {
                     borderRadius: 5,
+                    display: "flex",
+                    flexDirection: "column",
+                    flexWrap: "nowrap",
                     minHeight: 400,
                     padding: 0,
                     width: 600,

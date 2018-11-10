@@ -17,7 +17,7 @@ import SessionFullCard from "./components/SessionFullCard/SessionFullCard";
 import { default as SimpleFullCard, ISimpleFullCard} from "./components/SimpleFullCard/SimpleFullCard";
 import StudentChecklistBoard, {ACTION} from "./components/StudentChecklistBoard/StudentChecklistBoard";
 import {IStudentChecklistCard} from "./components/StudentFullCard/StudentFullCard";
-import StudentModalCard from "./components/StudentModalCard/StudentModalCard";
+import StudentModalCard, {IStudentModal} from "./components/StudentModalCard/StudentModalCard";
 import './SessionsMentor.scss';
 
 interface IPropsSessionsMentor {
@@ -29,10 +29,11 @@ interface IStateSessionsMentor {
     fullCardSimple: ISimpleFullCard;
     loading: boolean;
     searchValue: string;
-    showModal: boolean;
+    modal: IStudentModal;
     studentList: IStudentChecklistCard[];
-    studentSelected: IStudentChecklist | null;
 }
+
+const MESSAGE_ADD_STUDENT = "¿Estás seguro que deseas agregar a este alumno?";
 
 class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSessionsMentor> {
     private sessionId: string;
@@ -55,10 +56,12 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
                 title: ''
             },
             loading: true,
+            modal: {
+                message: '',
+                show: false
+            },
             searchValue: '',
-            showModal: false,
             studentList: [],
-            studentSelected: null
         };
         this.mentorId = this.props.match.params.id;
         this.sessionId = this.props.match.params.session;
@@ -99,10 +102,10 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
 
     public render() {
         return <Layout title={"Tutores"}>
-            <MentorModalBase show={this.state.showModal && !!this.state.studentSelected} onCloseModal={this.clodeModal}>
-                {!!this.state.studentSelected ?
+            <MentorModalBase show={this.state.modal.show && !!this.state.modal.user} onCloseModal={this.clodeModal}>
+                {!!this.state.modal.user ?
                     <StudentModalCard
-                        user={this.state.studentSelected}
+                        options={this.state.modal}
                         confirm={this.addStudent}/> : null}
             </MentorModalBase>
             <div className="SessionsMentor u-LayoutMentorMargin">
@@ -130,7 +133,10 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
 
     private clodeModal() {
         this.setState({
-            showModal: false
+            modal: {
+                message: '',
+                show: false
+            }
         })
     }
 
@@ -151,8 +157,11 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
                             // exito: ocultar loading state
                             // exito: mostrar modal con datos de estudiante
                             this.setState({
-                                showModal: true,
-                                studentSelected: response
+                                modal: {
+                                    message: MESSAGE_ADD_STUDENT,
+                                    show: true,
+                                    user: response
+                                }
                             });
                         })
                         .catch(() => {
@@ -178,7 +187,10 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
                 this.studentChecklistCollector.addStudent(newStudent);
                 const sessions = this.studentChecklistCollector.sessions;
                 this.setState({
-                    showModal: false,
+                    modal: {
+                        message: '',
+                        show: false
+                    },
                     studentList: this.getStudentList(sessions)
                 })
             })

@@ -1,4 +1,7 @@
 .MentorModalBase {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
   padding: 20px 32px;
   &_close {
     background: transparent;

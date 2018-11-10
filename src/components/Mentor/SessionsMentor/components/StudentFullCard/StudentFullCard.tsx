@@ -20,7 +20,7 @@ const StudentFullCard: React.StatelessComponent<IPropsStudentFullCard> = (props)
     return (
         <div className={`StudentFullCard ${props.student.new ? 'StudentFullCard--new': ''}`} style={{...props.styles}}>
             <div className={"StudentFullCard_left"}>
-                <div className={"StudentFullCard_image-container"}>
+                <div className={"StudentFullCard_image-container u-ImageContainer"}>
                     <img src={props.student.photo} title={"Estudiante"} className={"StudentFullCard_image"} />
                 </div>
             </div>
