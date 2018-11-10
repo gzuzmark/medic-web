@@ -1,4 +1,5 @@
 import * as React from 'react';
+import MentorModalBase from "../../../common/ConsoleModal/MentorModalBase";
 import { Title2 } from '../../../common/ConsoleText';
 import Icon from "../../../common/Icon/Icon";
 import Layout from "../../../common/Layout/Layout";
@@ -16,6 +17,7 @@ import SessionFullCard from "./components/SessionFullCard/SessionFullCard";
 import { default as SimpleFullCard, ISimpleFullCard} from "./components/SimpleFullCard/SimpleFullCard";
 import StudentChecklistBoard, {ACTION} from "./components/StudentChecklistBoard/StudentChecklistBoard";
 import {IStudentChecklistCard} from "./components/StudentFullCard/StudentFullCard";
+import StudentModalCard from "./components/StudentModalCard/StudentModalCard";
 import './SessionsMentor.scss';
 
 interface IPropsSessionsMentor {
@@ -27,7 +29,9 @@ interface IStateSessionsMentor {
     fullCardSimple: ISimpleFullCard;
     loading: boolean;
     searchValue: string;
+    showModal: boolean;
     studentList: IStudentChecklistCard[];
+    studentSelected: IStudentChecklist | null;
 }
 
 class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSessionsMentor> {
@@ -52,12 +56,16 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
             },
             loading: true,
             searchValue: '',
-            studentList: []
+            showModal: false,
+            studentList: [],
+            studentSelected: null
         };
         this.mentorId = this.props.match.params.id;
         this.sessionId = this.props.match.params.session;
         this.onSearch = this.onSearch.bind(this);
         this.searchStudent = this.searchStudent.bind(this);
+        this.addStudent = this.addStudent.bind(this);
+        this.clodeModal = this.clodeModal.bind(this);
         this.addStudent = this.addStudent.bind(this);
     }
 
@@ -91,6 +99,12 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
 
     public render() {
         return <Layout title={"Tutores"}>
+            <MentorModalBase show={this.state.showModal && !!this.state.studentSelected} onCloseModal={this.clodeModal}>
+                {!!this.state.studentSelected ?
+                    <StudentModalCard
+                        user={this.state.studentSelected}
+                        confirm={this.addStudent}/> : null}
+            </MentorModalBase>
             <div className="SessionsMentor u-LayoutMentorMargin">
                 <div className={"StudentChecklistBoard"}>
                     <Icon name={"calendar"}/>
@@ -114,6 +128,12 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
         </Layout>
     }
 
+    private clodeModal() {
+        this.setState({
+            showModal: false
+        })
+    }
+
     private searchStudent(action: string) {
         if (action === ACTION.SEARCH) {
             const sessions  = this.studentChecklistCollector.filterStudents(this.state.searchValue);
@@ -130,8 +150,10 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
                         .then((response: IStudentChecklist) => {
                             // exito: ocultar loading state
                             // exito: mostrar modal con datos de estudiante
-                            // tmp: agregar estudiante
-                            this.addStudent(response);
+                            this.setState({
+                                showModal: true,
+                                studentSelected: response
+                            });
                         })
                         .catch(() => {
                             // error: ocultar loading state
@@ -156,6 +178,7 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
                 this.studentChecklistCollector.addStudent(newStudent);
                 const sessions = this.studentChecklistCollector.sessions;
                 this.setState({
+                    showModal: false,
                     studentList: this.getStudentList(sessions)
                 })
             })

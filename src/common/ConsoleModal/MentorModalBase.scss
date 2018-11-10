@@ -1,0 +1,17 @@
+.MentorModalBase {
+  padding: 20px 32px;
+  &_close {
+    background: transparent;
+    border: 0;
+    cursor: pointer;
+    display: block;
+    height: 24px;
+    margin: 8px 4px 0 auto;
+    width: 24px;
+    .icon {
+      height: 24px;
+      width: 24px;
+      fill: #561cac!important;
+    }
+  }
+}

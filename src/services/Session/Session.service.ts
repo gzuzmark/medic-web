@@ -114,7 +114,7 @@ class SessionService extends BaseRequest {
                 "https://ugo-utp-qa.appspot.com/_ah/api/ugo/mentors-api/");
         }
         return new Promise((resolve, reject) => {
-            instance.get(`sessions/${session}`)
+            instance.get(`me/sessions/${session}`)
                 .then((response: any) => {
                     if (response.status === 200 && response.data) {
                         resolve(response.data);
