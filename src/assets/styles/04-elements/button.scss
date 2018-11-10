@@ -20,6 +20,8 @@
   }
   &[loading],
   &[data-loading] {
+    text-indent: -9999px;
+    white-space: nowrap;
     &:before {
       display: block;
       filter: progid:DXImageTransform.Microsoft.Alpha(enabled=false);

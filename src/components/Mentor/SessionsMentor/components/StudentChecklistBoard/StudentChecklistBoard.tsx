@@ -1,10 +1,12 @@
 import * as React from 'react';
+import EmptyCard from "../EmptyCard/EmptyCard";
 import StudentFullCard, {IStudentChecklistCard} from "../StudentFullCard/StudentFullCard";
 import './StudentChecklistBoard.scss';
 
 type fnSearch = (value: string, action: string) => void;
 
 interface IPropsStudentChecklistBoard {
+    isEmpty: boolean;
     onSearch: fnSearch;
     searchValue: string;
     students: IStudentChecklistCard[];
@@ -54,8 +56,24 @@ const StudentChecklistBoard: React.StatelessComponent<IPropsStudentChecklistBoar
     const onChangeAdd = onChange(props.onSearch, '');
     const onSubmitAdd = onSubmit(props.onSearch, ACTION.ADD);
     let counter = 0;
+    let students = <EmptyCard />;
+    if (!props.isEmpty) {
+        students = (
+            <React.Fragment>
+                {props.students.map((student: IStudentChecklistCard, index: number) => {
+                    let order = 0;
+                    if (student.new) {
+                        order = ++counter;
+                    }
+                    return (
+                        <StudentFullCard student={student} key={`${index}`} styles={{'order': -1 * order}}/>
+                    )
+                })}
+            </React.Fragment>
+        )
+    }
     return (
-        <div className={`StudentChecklistBoard`}>
+        <div className={`StudentChecklistBoard ${props.students.length > 0 ? 'StudentChecklistBoard--border' : ''}`}>
             <div className={"StudentChecklistBoard_inputs-container"}>
                 <input type={"text"}
                        name={"txtSearchStudent"}
@@ -70,15 +88,7 @@ const StudentChecklistBoard: React.StatelessComponent<IPropsStudentChecklistBoar
                        value={props.searchValue}/>
             </div>
             <div className={"StudentChecklistBoard_students-container"}>
-            {props.students.map((student: IStudentChecklistCard, index: number) => {
-                let order = 0;
-                if (student.new) {
-                    order = ++counter;
-                }
-                return (
-                    <StudentFullCard student={student} key={`${index}`} styles={{'order': -1 * order}}/>
-                )
-            })}
+                {students}
             </div>
         </div>
     );

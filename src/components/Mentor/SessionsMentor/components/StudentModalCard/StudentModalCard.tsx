@@ -7,7 +7,8 @@ import './StudentModalCard.scss';
 export interface IStudentModal {
     message: string;
     show: boolean;
-    user?: IStudentChecklist
+    user?: IStudentChecklist;
+    loading: boolean;
 }
 
 interface IPropsStudentModalCard {
@@ -24,6 +25,13 @@ const StudentModalCard: React.StatelessComponent<IPropsStudentModalCard> = (prop
         }
     };
 
+    let propsButton = {};
+    if (props.options.loading) {
+        propsButton = {
+            disabled: "true",
+            loading: "true"
+        }
+    }
     return !!props.options.user && (
         <div className={`StudentModalCard`}>
             <div className={"StudentModalCard_header"}>
@@ -52,7 +60,10 @@ const StudentModalCard: React.StatelessComponent<IPropsStudentModalCard> = (prop
                 </div>
             </div>
             <div className={"StudentModalCard_footer"}>
-                <button onClick={onClick} className="StudentModalCard_button u-Button">Aceptar</button>
+                <button onClick={onClick}
+                        className="StudentModalCard_button u-Button"
+                        {...propsButton}
+                >Aceptar</button>
             </div>
         </div>
     ) || null;

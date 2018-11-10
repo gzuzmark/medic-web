@@ -1,5 +1,7 @@
 .StudentChecklistBoard {
-  border-bottom: 1px solid #eef2f6;
+  &--border {
+    border-bottom: 1px solid #eef2f6;
+  }
   &_students-container {
     display: flex;
     flex-direction: column;

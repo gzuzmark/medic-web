@@ -27,6 +27,7 @@ interface IPropsSessionsMentor {
 interface IStateSessionsMentor {
     fullCardSession: ISessionFullCard;
     fullCardSimple: ISimpleFullCard;
+    isEmpty: boolean;
     loading: boolean;
     searchValue: string;
     modal: IStudentModal;
@@ -55,8 +56,10 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
                 subtitle: '',
                 title: ''
             },
+            isEmpty: false,
             loading: true,
             modal: {
+                loading: false,
                 message: '',
                 show: false
             },
@@ -86,6 +89,7 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
                 const newState = {
                     fullCardSession: this.getFullCardSession(),
                     fullCardSimple: this.getFullCardSimple(),
+                    isEmpty: sessions.length === 0,
                     studentList: this.getStudentList(sessions)
                 };
                 this.setState({
@@ -113,9 +117,9 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
                     <Icon name={"calendar"}/>
                     <Title2>Tus sesiones</Title2>
                 </div>
-                {
-                    this.state.loading ?
-                    <Loader top={10} height={50}/> :
+                {this.state.loading && !this.state.isEmpty &&
+                    <Loader top={10} height={50}/>}
+                {!this.state.loading &&
                     <React.Fragment>
                         <SessionFullCard session={this.state.fullCardSession}/>
                         <SimpleFullCard card={this.state.fullCardSimple}>
@@ -123,21 +127,24 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
                                 students={this.state.studentList}
                                 onSearch={this.onSearch}
                                 searchValue={this.state.searchValue}
-                                />
+                                isEmpty={this.state.isEmpty}
+                            />
                         </SimpleFullCard>
-                    </React.Fragment>
-                }
+                    </React.Fragment>}
             </div>
         </Layout>
     }
 
     private clodeModal() {
-        this.setState({
-            modal: {
-                message: '',
-                show: false
-            }
-        })
+        if (!this.state.modal.loading) {
+            this.setState({
+                modal: {
+                    loading: false,
+                    message: '',
+                    show: false
+                }
+            })
+        }
     }
 
     private searchStudent(action: string) {
@@ -158,6 +165,7 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
                             // exito: mostrar modal con datos de estudiante
                             this.setState({
                                 modal: {
+                                    loading: false,
                                     message: MESSAGE_ADD_STUDENT,
                                     show: true,
                                     user: response
@@ -179,6 +187,8 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
 
     private addStudent(student: IStudentChecklist) {
         const idStudent = student.student.id ? student.student.id : '';
+        const modal = {...this.state.modal, loading: true};
+        this.setState({ modal });
         this.studentsService.addStudentToSession(this.sessionId, idStudent, this.mentorId)
             .then((response: {id: string}) => {
                 student.id = response.id;
@@ -187,7 +197,9 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
                 this.studentChecklistCollector.addStudent(newStudent);
                 const sessions = this.studentChecklistCollector.sessions;
                 this.setState({
+                    isEmpty: sessions.length === 0,
                     modal: {
+                        loading: false,
                         message: '',
                         show: false
                     },
