@@ -1,4 +1,5 @@
 import * as React from 'react';
+import MentorInput from "../../../../../common/MentorInput/MentorInput";
 import EmptyCard from "../EmptyCard/EmptyCard";
 import StudentFullCard, {IStudentChecklistCard} from "../StudentFullCard/StudentFullCard";
 import './StudentChecklistBoard.scss';
@@ -6,6 +7,7 @@ import './StudentChecklistBoard.scss';
 type fnSearch = (value: string, action: string) => void;
 
 interface IPropsStudentChecklistBoard {
+    addEnabled: boolean;
     isEmpty: boolean;
     onSearch: fnSearch;
     searchValue: string;
@@ -30,7 +32,7 @@ export const ACTION = {
 };
 
 const onClick = (search: fnSearch, action: string) => {
-    return () => {
+    return (event: any) => {
         search('', action);
     }
 };
@@ -56,7 +58,7 @@ const StudentChecklistBoard: React.StatelessComponent<IPropsStudentChecklistBoar
     const onChangeAdd = onChange(props.onSearch, '');
     const onSubmitAdd = onSubmit(props.onSearch, ACTION.ADD);
     let counter = 0;
-    let students = <EmptyCard />;
+    let students = <EmptyCard addEnabled={props.addEnabled} />;
     if (!props.isEmpty) {
         students = (
             <React.Fragment>
@@ -72,20 +74,43 @@ const StudentChecklistBoard: React.StatelessComponent<IPropsStudentChecklistBoar
             </React.Fragment>
         )
     }
+    const inputSearch = {
+        autoFocus: true,
+        name: "txtSearchStudent",
+        onChange: onChangeSearch,
+        onClick: onClickSearch,
+        value: props.searchValue
+    };
+    const addSearch = {
+        autoFocus: false,
+        name: "txtAddStudent",
+        onChange: onChangeAdd,
+        onClick: onClickAdd,
+        onKeyPress: onSubmitAdd,
+        placeholder: "Ingresa el código del alumno",
+        value: props.searchValue
+    };
     return (
         <div className={`StudentChecklistBoard ${props.students.length > 0 ? 'StudentChecklistBoard--border' : ''}`}>
             <div className={"StudentChecklistBoard_inputs-container"}>
-                <input type={"text"}
-                       name={"txtSearchStudent"}
-                       onClick={onClickSearch}
-                       onChange={onChangeSearch}
-                       value={props.searchValue} />
-                <input type={"text"}
-                       name={"txtAddStudent"}
-                       onClick={onClickAdd}
-                       onChange={onChangeAdd}
-                       onKeyPress={onSubmitAdd}
-                       value={props.searchValue}/>
+                <MentorInput
+                    active={true}
+                    icon={"search"}
+                    input={inputSearch}
+                    style={{flexBasis: '48%', justifyContent: 'flex-start'}}
+                    animation={{
+                        enable: true,
+                        text: "Buscar alumno"
+                    }}/>
+                <MentorInput
+                    active={false}
+                    icon={"add-circle"}
+                    input={addSearch}
+                    style={{flexBasis: '48%', justifyContent: 'flex-end'}}
+                    animation={{
+                        enable: true,
+                        text: "Agregar alumnos"
+                    }}/>
             </div>
             <div className={"StudentChecklistBoard_students-container"}>
                 {students}

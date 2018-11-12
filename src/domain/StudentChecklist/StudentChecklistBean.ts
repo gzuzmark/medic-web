@@ -15,14 +15,19 @@ export class StudentChecklistBean {
     public new: boolean;
     public checked: boolean;
     public booked: boolean;
-
+    public item: IStudentChecklist;
     constructor(studentChecklist: IStudentChecklist) {
-        this.user = new UserStudentBean(studentChecklist.student);
-        this.id = studentChecklist.id;
-        this.status = studentChecklist.status;
+        this.item = studentChecklist;
+        this.user = new UserStudentBean(this.item.student);
+        this.id = this.item.id;
+        this.status = this.item.status;
         this.new = false;
         this.checked = this.isAttended;
-        this.booked = !!studentChecklist.booked;
+        this.booked = !!this.item.booked;
+    }
+
+    get getContract(): IStudentChecklist {
+        return this.item;
     }
 
     get student(): UserStudentBean {

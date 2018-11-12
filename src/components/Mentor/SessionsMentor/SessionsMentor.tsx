@@ -25,6 +25,7 @@ interface IPropsSessionsMentor {
 }
 
 interface IStateSessionsMentor {
+    addEnabled: boolean;
     fullCardSession: ISessionFullCard;
     fullCardSimple: ISimpleFullCard;
     isEmpty: boolean;
@@ -35,6 +36,7 @@ interface IStateSessionsMentor {
 }
 
 const MESSAGE_ADD_STUDENT = "¿Estás seguro que deseas agregar a este alumno?";
+const MESSAGE_REPEAT_STUDENT = "Este alumno ya se encuenrta inscrito en la sesión";
 
 class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSessionsMentor> {
     private sessionId: string;
@@ -47,6 +49,7 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
     constructor(props: any) {
         super(props);
         this.state = {
+            addEnabled: false,
             fullCardSession: {
                 title: '',
                 type: ''
@@ -58,11 +61,7 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
             },
             isEmpty: false,
             loading: true,
-            modal: {
-                loading: false,
-                message: '',
-                show: false
-            },
+            modal: this.cleanModal(),
             searchValue: '',
             studentList: [],
         };
@@ -86,7 +85,12 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
                 this.sessionMentor = new SessionMentorBean(values[0]);
                 this.studentChecklistCollector = new StudentChecklistCollector(values[1]);
                 const sessions = this.studentChecklistCollector.sessions;
+                let addEnabled = false;
+                if (this.sessionMentor.session.location) {
+                    addEnabled = this.sessionMentor.session.location.type === 'PHYSICAL';
+                }
                 const newState = {
+                    addEnabled,
                     fullCardSession: this.getFullCardSession(),
                     fullCardSimple: this.getFullCardSimple(),
                     isEmpty: sessions.length === 0,
@@ -124,6 +128,7 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
                         <SessionFullCard session={this.state.fullCardSession}/>
                         <SimpleFullCard card={this.state.fullCardSimple}>
                             <StudentChecklistBoard
+                                addEnabled={this.state.addEnabled}
                                 students={this.state.studentList}
                                 onSearch={this.onSearch}
                                 searchValue={this.state.searchValue}
@@ -177,38 +182,48 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
                             // error: mostrar error en caja de texto
                         })
                 } else {
-                    // tslint:disable:no-console
-                    console.log('ya existe alumno');
-                    // mostrar modal con alumno
+                    this.setState({
+                        modal: {
+                            loading: false,
+                            message: MESSAGE_REPEAT_STUDENT,
+                            show: true,
+                            user: student.getContract
+                        }
+                    });
                 }
             }
         }
     }
 
-    private addStudent(student: IStudentChecklist) {
-        const idStudent = student.student.id ? student.student.id : '';
-        const modal = {...this.state.modal, loading: true};
-        this.setState({ modal });
-        this.studentsService.addStudentToSession(this.sessionId, idStudent, this.mentorId)
-            .then((response: {id: string}) => {
-                student.id = response.id;
-                student.status = SESSION_STATUS.SCHEDULED;
-                const newStudent = new StudentChecklistBean(student);
-                this.studentChecklistCollector.addStudent(newStudent);
-                const sessions = this.studentChecklistCollector.sessions;
-                this.setState({
-                    isEmpty: sessions.length === 0,
-                    modal: {
-                        loading: false,
-                        message: '',
-                        show: false
-                    },
-                    studentList: this.getStudentList(sessions)
+    private addStudent(user: IStudentChecklist) {
+        const student = this.studentChecklistCollector.getStudent(user.student.code);
+        if (!student) {
+            const idStudent = user.student.id ? user.student.id : '';
+            const modal = {...this.state.modal, loading: true};
+            this.setState({ modal });
+            this.studentsService.addStudentToSession(this.sessionId, idStudent, this.mentorId)
+                .then((response: {id: string}) => {
+                    user.id = response.id;
+                    user.status = SESSION_STATUS.SCHEDULED;
+                    const newStudent = new StudentChecklistBean(user);
+                    this.studentChecklistCollector.addStudent(newStudent);
+                    const sessions = this.studentChecklistCollector.sessions;
+                    this.setState({
+                        isEmpty: sessions.length === 0,
+                        modal: this.cleanModal(),
+                        studentList: this.getStudentList(sessions)
+                    })
                 })
+                .catch(() => {
+                    this.setState({
+                        modal: this.cleanModal()
+                    })
+                })
+        } else {
+            this.setState({
+                modal:this.cleanModal()
             })
-            .catch(() => {
-                // error: mostrar modal con super error.!
-            })
+        }
     }
 
     private onSearch(searchValue: string, action: string) {
@@ -247,6 +262,14 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
             }
 
         });
+    }
+
+    private cleanModal() {
+        return {
+            loading: false,
+            message: '',
+            show: false
+        }
     }
 }
 
