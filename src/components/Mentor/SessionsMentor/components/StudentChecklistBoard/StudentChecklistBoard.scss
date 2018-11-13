@@ -1,0 +1,14 @@
+.StudentChecklistBoard {
+  &--border {
+    border-bottom: 1px solid #eef2f6;
+  }
+  &_students-container {
+    display: flex;
+    flex-direction: column;
+  }
+  &_inputs-container {
+    display: flex;
+    justify-content: space-between;
+    padding-bottom: 40px;
+  }
+}

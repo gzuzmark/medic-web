@@ -41,11 +41,25 @@ export const SESSION_VIRTUAL = "VIRTUAL";
 export const SESSION_UNDEFINED = "UNDEFINED";
 export const SESSION_PHYSICAL = "PHYSICAL";
 
+export const SESSION_LIFE = {
+    ACTIVE: 'active',
+    PENDING: 'pending',
+    RESOLVE: 'resolve'
+}
+
 export class SessionBean {
     public session: ISessionBase;
 
     constructor(session: ISessionBase) {
         this.session = session;
+    }
+
+    get skillName() {
+        let name = '';
+        if (this.session.skill) {
+            name = this.session.skill.name;
+        }
+        return name;
     }
 
     public getTime(dateFormatter: AbstractDateParser): string {
@@ -54,6 +68,10 @@ export class SessionBean {
 
     public isVirtual(): boolean {
         return !!this.session.location && this.session.location.type === SESSION_VIRTUAL;
+    }
+
+    public isPhysical(): boolean {
+        return !!this.session.location && this.session.location.type === SESSION_PHYSICAL;
     }
 
     public getLocation(): string {
@@ -67,15 +85,27 @@ export class SessionBean {
         return location;
     }
 
+    public getSessionType() {
+        let type = '';
+        if (this.isVirtual()) {
+            type = 'virtual';
+        } else if (this.isPhysical()) {
+            type = 'presencial';
+        } else {
+            type = 'indefinido'
+        }
+        return `Sesión ${type}`;
+    }
+
     public getStatus() {
-        let text = 'pending';
+        let text = SESSION_LIFE.PENDING;
         const from = new Date(this.session.from);
         const to = new Date(this.session.to);
         const now = new Date();
         if (now.getTime() <= to.getTime() && now.getTime() >= from.getTime()) {
-            text = 'active';
+            text = SESSION_LIFE.ACTIVE;
         } else if (!this.session.isActive) {
-            text = 'resolve';
+            text = SESSION_LIFE.RESOLVE;
         }
         return text;
     }

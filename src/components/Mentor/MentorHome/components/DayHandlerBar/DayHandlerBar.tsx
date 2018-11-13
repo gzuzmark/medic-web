@@ -1,6 +1,7 @@
 import * as moment from 'moment';
 import * as React from 'react';
 import Icon from "../../../../../common/Icon/Icon";
+import {MomentDateParser} from "../../../../../domain/DateManager/MomentDateParser";
 import {IRangeDay} from "../../MentorHome";
 import CardDay from "../CardDay/CardDay";
 import './DayHandlerBar.scss';
@@ -17,14 +18,14 @@ interface IPropsDayHandlerBar {
 
 
 class DayHandlerBar extends React.Component<IPropsDayHandlerBar, {}> {
-    private selectedDate: moment.Moment;
     private weekDate: moment.Moment;
-
+    private mdp: MomentDateParser;
     constructor(props: any) {
         super(props);
         this.beforeWeek = this.beforeWeek.bind(this);
         this.nextWeek = this.nextWeek.bind(this);
         this.triggerClick = this.triggerClick.bind(this);
+        this.mdp = new MomentDateParser();
     }
 
     public render() {
@@ -39,7 +40,6 @@ class DayHandlerBar extends React.Component<IPropsDayHandlerBar, {}> {
                 disable: "true"
             }
         }
-        this.selectedDate = moment(this.props.selectedDate);
         this.weekDate = moment(this.props.weekDate);
         const leftButton = this.props.counter === -1 || this.props.loading ? 'DayHandlerBar_button--disabled' : '';
         const rightButton =  this.props.counter === 1 || this.props.loading? 'DayHandlerBar_button--disabled' : '';
@@ -54,7 +54,7 @@ class DayHandlerBar extends React.Component<IPropsDayHandlerBar, {}> {
                     let status = day.status;
                     if (this.props.loading) {
                         status = 'disabled'
-                    } else if (this.selectedDate.format("YYYY-MM-DD") === moment(day.date).format("YYYY-MM-DD")) {
+                    } else if (this.mdp.isSameDate(this.props.selectedDate, day.date)) {
                         status = 'active';
                     }
                     return (

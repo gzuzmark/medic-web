@@ -1,0 +1,21 @@
+.SimpleFullCard {
+  border: solid 1px #ccd6dc;
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  &_header {
+    align-items: center;
+    border-bottom: solid 1px #ccd6dc;
+    display: flex;
+    flex-direction: column;
+    height: 160px;
+    justify-content: center;
+  }
+  &_body {
+    display: block;
+    margin: 0 auto;
+    min-height: 335px;
+    padding: 40px 0;
+    width: 800px;
+  }
+}

@@ -1,0 +1,67 @@
+.MentorInput {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  height: 40px;
+  padding: 0 16px;
+  position: relative;
+  border-radius: 4px;
+  span {
+    padding-left: 4px;
+  }
+  &--inactive {
+    cursor: pointer;
+  }
+  &--default {
+    border: solid 1px #ccd6dc;
+    .icon {
+      fill: #ccd6dc;
+    }
+    span {
+      display: none;
+    }
+    .MentorInput {
+      &_input {
+        display: block;
+      }
+    }
+  }
+  &--focus {
+    border: solid 1px #4a4a4a;
+    span {
+      display: none;
+    }
+    .MentorInput {
+       &_input {
+         display: block;
+       }
+    }
+  }
+  &--error {
+    border: solid 1px #ff8389;
+    .icon {
+      fill: #ff8389;
+    }
+    span {
+      display: none;
+    }
+    .MentorInput {
+      &_input {
+        display: block;
+      }
+    }
+  }
+  .icon {
+    fill: #561cac;
+    height: 30px!important;
+    width: 30px!important;
+  }
+  span {
+    color: #561cac!important;
+  }
+  &_input {
+    border: 0;
+    flex-grow: 1;
+    display: none;
+  }
+}

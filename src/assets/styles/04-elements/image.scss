@@ -1,0 +1,18 @@
+.u-ImageContainer {
+  background: white;
+  border: 1px solid #d8d8d8;
+  border-radius: 50%;
+  height: 56px;
+  margin: 0;
+  overflow: hidden;
+  position: relative;
+  width: 56px;
+  img {
+    background: #d8d8d8;
+    left: 50%;
+    max-width: 100%;
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }
+}

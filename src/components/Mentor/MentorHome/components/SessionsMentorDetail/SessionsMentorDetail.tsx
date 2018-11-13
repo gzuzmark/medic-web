@@ -50,7 +50,8 @@ class SessionsMentorDetail extends React.Component<IPropsSessionsMentorDetail, {
                     } body={
                         <div className={"SessionsMentorDetail_sessions"}>
                         {this.props.sessions.pending_sessions.map((item: SessionMentorBean) => {
-                            return <CardSession item={item} key={"CardSession_" + item.session.id}/>
+                            const click = this.toSessionDetail(item);
+                            return <CardSession item={item} key={"CardSession_" + item.session.id} click={click}/>
                         })}
                         </div>
                     }/>
@@ -63,7 +64,8 @@ class SessionsMentorDetail extends React.Component<IPropsSessionsMentorDetail, {
                     } body={
                         <div className={"SessionsMentorDetail_sessions"}>
                             {this.props.sessions.resolve_sessions.map((item: SessionMentorBean) => {
-                                return <CardSession item={item} key={"CardSession_" + item.session.id}/>
+                                const click = this.toSessionDetail(item);
+                                return <CardSession item={item} key={"CardSession_" + item.session.id} click={click}/>
                             })}
                         </div>
                     }/>
@@ -88,6 +90,12 @@ class SessionsMentorDetail extends React.Component<IPropsSessionsMentorDetail, {
                 </div>
             </div>
         );
+    }
+
+    private toSessionDetail(item: SessionMentorBean) {
+        return () => {
+            window.location.assign(`/mentor/sesion/${item.session.id}`);
+        }
     }
 
 }

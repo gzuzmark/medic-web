@@ -1,0 +1,32 @@
+.EmptyCard {
+  margin-bottom: 40px;
+  margin-top: 10px;
+  &--inline {
+    align-items: center;
+    display: flex;
+    justify-content: flex-start;
+    margin-top: 30px;
+  }
+  &_item {
+    text-align: center;
+    .icon-add-circle {
+      height: 156px;
+      width: 156px;
+      fill: #CCD6DD;
+    }
+    .icon-users {
+      height: 82px;
+      width: 82px;
+      fill: #CCD6DD;
+    }
+    h2 {
+      color: #CCD6DD;
+      margin: 10px auto 0 auto;
+      width: 65%;
+    }
+    h5 {
+      color: #CCD6DD;
+      width: 240px;
+    }
+  }
+}

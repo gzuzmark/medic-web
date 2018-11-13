@@ -2,11 +2,13 @@ import * as React from 'react';
 import { SmallText1, Text1, Text2, Text3, TextBold1, TextBold3 } from '../../../../../common/ConsoleText';
 import Icon from "../../../../../common/Icon/Icon";
 import {MomentDateParser} from "../../../../../domain/DateManager/MomentDateParser";
+import {SESSION_LIFE} from "../../../../../domain/Session/SessionBean";
 import {SessionMentorBean} from "../../../../../domain/Session/SessionMentorBean";
 import './CardSession.scss';
 
 interface IPropsCardSession {
     item: SessionMentorBean;
+    click: () => void;
 }
 
 
@@ -46,10 +48,24 @@ const CardSession: React.StatelessComponent<IPropsCardSession> = (props) => {
             </div>
             <div className={"CardSession_options"}>
                 {
-                    props.item.getTotalStudents() > 0 &&
-                    <button className={"CardSession_options-button"}>
+                    props.item.getStatus() === SESSION_LIFE.PENDING &&
+                    <button className={"CardSession_options-button"} onClick={props.click}>
                         <Icon name={"users"}/>
                         <TextBold3>Ver alumnos</TextBold3>
+                    </button>
+                }
+                {
+                    props.item.getStatus() === SESSION_LIFE.ACTIVE &&
+                    <button className={"CardSession_options-button"} onClick={props.click}>
+                        <Icon name={"paper-pencil"}/>
+                        <TextBold3>Tomar asistencia</TextBold3>
+                    </button>
+                }
+                {
+                    props.item.getStatus() === SESSION_LIFE.RESOLVE &&
+                    <button className={"CardSession_options-button"} onClick={props.click}>
+                        <Icon name={"paper-pencil"}/>
+                        <TextBold3>Editar pinche asistencia</TextBold3>
                     </button>
                 }
             </div>

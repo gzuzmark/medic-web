@@ -102,6 +102,32 @@ class SessionService extends BaseRequest {
                 });
         });
     }
+
+    public getSessionMentor(session: string, id: string = ''): Promise<ISessionMentor> {
+        let instance: any;
+        if (id === '') {
+            instance = this.getCustomInstance(
+                "/La6HK7/RI/6vveP0q3AptWgl5i/5SRvd+SwRJYAdy5olRqmmnPe8A==",
+                "https://ugo-utp-dev.appspot.com/_ah/api/ugo/mentors-api/");
+        } else {
+            instance = this.getCustomInstance(id,
+                "https://ugo-utp-qa.appspot.com/_ah/api/ugo/mentors-api/");
+        }
+        return new Promise((resolve, reject) => {
+            instance.get(`me/sessions/${session}`)
+                .then((response: any) => {
+                    if (response.status === 200 && response.data) {
+                        resolve(response.data);
+                    } else {
+                        reject(null);
+                    }
+                })
+                .catch((error: any) => {
+                    this.validSession();
+                    reject(error);
+                });
+        });
+    }
 }
 
 export default SessionService;

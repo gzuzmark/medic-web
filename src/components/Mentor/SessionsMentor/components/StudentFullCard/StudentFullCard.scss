@@ -1,0 +1,19 @@
+.StudentFullCard {
+  align-items: center;
+  border-top: 1px solid #eef2f6;
+  display: flex;
+  height: 72px;
+  justify-content: flex-start;
+  padding: 0 28px;
+  transition: background 0.3s ease-in;
+  &--new {
+    background: #eef2f6;
+    order: -1;
+  }
+  &_right {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-left: 16px;
+  }
+}
