@@ -79,9 +79,9 @@ class SessionService extends BaseRequest {
     // Mentor Service
     public listMentorSessions(from: string, to: string, id: string = ''): Promise<ISessionMentor[]> {
         let instance: any;
-        if (id === '') {
+        if (!id) {
             instance = this.getCustomInstance(
-                "/La6HK7/RI/6vveP0q3AptWgl5i/5SRvd+SwRJYAdy5olRqmmnPe8A==",
+                "K42cWStRagrHBjnWRBAKZ/PO58bxICfBOomyTn4yJnyeAhq4+YWtJg==",
                 "https://ugo-utp-dev.appspot.com/_ah/api/ugo/mentors-api/");
         } else {
             instance = this.getCustomInstance(id,
@@ -105,9 +105,9 @@ class SessionService extends BaseRequest {
 
     public getSessionMentor(session: string, id: string = ''): Promise<ISessionMentor> {
         let instance: any;
-        if (id === '') {
+        if (!id) {
             instance = this.getCustomInstance(
-                "/La6HK7/RI/6vveP0q3AptWgl5i/5SRvd+SwRJYAdy5olRqmmnPe8A==",
+                "K42cWStRagrHBjnWRBAKZ/PO58bxICfBOomyTn4yJnyeAhq4+YWtJg==",
                 "https://ugo-utp-dev.appspot.com/_ah/api/ugo/mentors-api/");
         } else {
             instance = this.getCustomInstance(id,
@@ -115,6 +115,60 @@ class SessionService extends BaseRequest {
         }
         return new Promise((resolve, reject) => {
             instance.get(`me/sessions/${session}`)
+                .then((response: any) => {
+                    if (response.status === 200 && response.data) {
+                        resolve(response.data);
+                    } else {
+                        reject(null);
+                    }
+                })
+                .catch((error: any) => {
+                    this.validSession();
+                    reject(error);
+                });
+        });
+    }
+
+    public markAsAttended(session: string, ids: string[], noStudentsResponse: boolean, id: string = '') {
+        let instance: any;
+        if (!id) {
+            instance = this.getCustomInstance(
+                "K42cWStRagrHBjnWRBAKZ/PO58bxICfBOomyTn4yJnyeAhq4+YWtJg==",
+                "https://ugo-utp-dev.appspot.com/_ah/api/ugo/mentors-api/");
+        } else {
+            instance = this.getCustomInstance(id,
+                "https://ugo-utp-qa.appspot.com/_ah/api/ugo/mentors-api/");
+        }
+        return new Promise((resolve, reject) => {
+            instance.post(`sessions/${session}/students`, {
+                items: ids
+            })
+                .then((response: any) => {
+                    if (response.status === 200 && response.data) {
+                        resolve(response.data);
+                    } else {
+                        reject(null);
+                    }
+                })
+                .catch((error: any) => {
+                    this.validSession();
+                    reject(error);
+                });
+        });
+    }
+
+    public markAsNoAttended(session: string, id: string = '') {
+        let instance: any;
+        if (!id) {
+            instance = this.getCustomInstance(
+                "K42cWStRagrHBjnWRBAKZ/PO58bxICfBOomyTn4yJnyeAhq4+YWtJg==",
+                "https://ugo-utp-dev.appspot.com/_ah/api/ugo/mentors-api/");
+        } else {
+            instance = this.getCustomInstance(id,
+                "https://ugo-utp-qa.appspot.com/_ah/api/ugo/mentors-api/");
+        }
+        return new Promise((resolve, reject) => {
+            instance.post(`sessions/${session}/noattended`)
                 .then((response: any) => {
                     if (response.status === 200 && response.data) {
                         resolve(response.data);

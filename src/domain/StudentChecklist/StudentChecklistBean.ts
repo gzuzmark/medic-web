@@ -1,4 +1,3 @@
-import {SESSION_STATUS} from "../Session/SessionBean";
 import {IUserStudent, UserStudentBean} from "../Student/UserStudentBean";
 
 export interface IStudentChecklist {
@@ -7,6 +6,13 @@ export interface IStudentChecklist {
     status: string;
     booked?: boolean;
 }
+
+export const STUDENT_STATUS = {
+    ATTENDED: 'ATTENDED',
+    NO_ATTENDED: 'NO_ATTENDED',
+    RATED: 'RATED',
+    SCHEDULED: 'SCHEDULED',
+};
 
 export class StudentChecklistBean {
     public id: string;
@@ -35,11 +41,11 @@ export class StudentChecklistBean {
     }
 
     get isAttended(): boolean {
-        return this.status === SESSION_STATUS.ATTENDED || this.status === SESSION_STATUS.RATED;
+        return this.status === STUDENT_STATUS.ATTENDED || this.status === STUDENT_STATUS.RATED;
     }
 
     get isDisabled(): boolean {
-        return this.isAttended ||  this.status === SESSION_STATUS.NO_ATTENDED;
+        return this.isAttended ||  this.status === STUDENT_STATUS.NO_ATTENDED;
     }
 
     get isChecked(): boolean {
@@ -52,6 +58,10 @@ export class StudentChecklistBean {
 
     public setAsNewStudent() {
         this.new = true;
+    }
+
+    public setAsAttended() {
+        this.status = STUDENT_STATUS.ATTENDED;
     }
 
     public updateChecked() {

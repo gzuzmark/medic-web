@@ -30,6 +30,17 @@ export class StudentChecklistCollector {
         return student;
     }
 
+    public getStudentById(id: string): StudentChecklistBean | null {
+        let student = null;
+        const candidate = this.sessions.filter((item: StudentChecklistBean) => {
+            return item.student.user.id === id;
+        });
+        if (candidate.length > 0) {
+            student = candidate[0];
+        }
+        return student;
+    }
+
     public addStudent(student: StudentChecklistBean) {
         student.setAsNewStudent();
         this.sessions.push(student);

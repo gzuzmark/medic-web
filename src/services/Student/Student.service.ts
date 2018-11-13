@@ -42,9 +42,9 @@ class StudentService extends BaseRequest {
     // Mentor Service
     public studentsFromSession(session:string, id: string): Promise<IStudentChecklist>  {
         let instance: any;
-        if (id === '') {
+        if (!id) {
             instance = this.getCustomInstance(
-                "/La6HK7/RI/6vveP0q3AptWgl5i/5SRvd+SwRJYAdy5olRqmmnPe8A==",
+                "K42cWStRagrHBjnWRBAKZ/PO58bxICfBOomyTn4yJnyeAhq4+YWtJg==",
                 "https://ugo-utp-dev.appspot.com/_ah/api/ugo/mentors-api/");
         } else {
             instance = this.getCustomInstance(id,
@@ -68,9 +68,9 @@ class StudentService extends BaseRequest {
 
     public searchStudentFromSession(session:string, codeStudent: string, id: string): Promise<IStudentChecklist>  {
         let instance: any;
-        if (id === '') {
+        if (!id) {
             instance = this.getCustomInstance(
-                "/La6HK7/RI/6vveP0q3AptWgl5i/5SRvd+SwRJYAdy5olRqmmnPe8A==",
+                "K42cWStRagrHBjnWRBAKZ/PO58bxICfBOomyTn4yJnyeAhq4+YWtJg==",
                 "https://ugo-utp-dev.appspot.com/_ah/api/ugo/mentors-api/");
         } else {
             instance = this.getCustomInstance(id,
@@ -94,9 +94,9 @@ class StudentService extends BaseRequest {
 
     public addStudentToSession(session:string, student: string, id: string): Promise<{id: string}>  {
         let instance: any;
-        if (id === '') {
+        if (!id) {
             instance = this.getCustomInstance(
-                "/La6HK7/RI/6vveP0q3AptWgl5i/5SRvd+SwRJYAdy5olRqmmnPe8A==",
+                "K42cWStRagrHBjnWRBAKZ/PO58bxICfBOomyTn4yJnyeAhq4+YWtJg==",
                 "https://ugo-utp-dev.appspot.com/_ah/api/ugo/mentors-api/");
         } else {
             instance = this.getCustomInstance(id,
