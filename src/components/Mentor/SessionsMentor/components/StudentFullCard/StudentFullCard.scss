@@ -7,10 +7,8 @@
   padding: 0 28px;
   transition: background 0.3s ease-in;
   &--new {
-    order: -1;
-  }
-  &:hover {
     background: #eef2f6;
+    order: -1;
   }
   &_right {
     display: flex;

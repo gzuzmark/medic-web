@@ -36,7 +36,7 @@ interface IStateSessionsMentor {
 }
 
 const MESSAGE_ADD_STUDENT = "¿Estás seguro que deseas agregar a este alumno?";
-const MESSAGE_REPEAT_STUDENT = "Este alumno ya se encuenrta inscrito en la sesión";
+const MESSAGE_REPEAT_STUDENT = "Este alumno ya se encuentra inscrito en la sesión";
 
 class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSessionsMentor> {
     private sessionId: string;
