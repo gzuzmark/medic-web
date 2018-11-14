@@ -5,9 +5,13 @@ import Icon from "../../../common/Icon/Icon";
 import Layout from "../../../common/Layout/Layout";
 import Loader from "../../../common/Loader/Loader";
 import {MomentDateParser} from "../../../domain/DateManager/MomentDateParser";
-import {SESSION_LIFE, SESSION_STATUS} from "../../../domain/Session/SessionBean";
+import {SESSION_LIFE} from "../../../domain/Session/SessionBean";
 import {SessionMentorBean} from "../../../domain/Session/SessionMentorBean";
-import {IStudentChecklist, StudentChecklistBean} from "../../../domain/StudentChecklist/StudentChecklistBean";
+import {
+    IStudentChecklist,
+    STUDENT_STATUS,
+    StudentChecklistBean
+} from "../../../domain/StudentChecklist/StudentChecklistBean";
 import {StudentChecklistCollector} from "../../../domain/StudentChecklist/StudentChecklistCollector";
 import {IMatchParam} from "../../../interfaces/MatchParam.interface";
 import SessionService from "../../../services/Session/Session.service";
@@ -15,7 +19,10 @@ import StudentService from "../../../services/Student/Student.service";
 import {ISessionFullCard} from "./components/SessionFullCard/SessionFullCard";
 import SessionFullCard from "./components/SessionFullCard/SessionFullCard";
 import { default as SimpleFullCard, ISimpleFullCard} from "./components/SimpleFullCard/SimpleFullCard";
-import StudentChecklistBoard, {ACTION} from "./components/StudentChecklistBoard/StudentChecklistBoard";
+import StudentChecklistBoard, {
+    ACTION,
+    IStudentChecklistBoard
+} from "./components/StudentChecklistBoard/StudentChecklistBoard";
 import {IStudentChecklistCard} from "./components/StudentFullCard/StudentFullCard";
 import StudentModalCard, {IStudentModal} from "./components/StudentModalCard/StudentModalCard";
 import './SessionsMentor.scss';
@@ -25,16 +32,13 @@ interface IPropsSessionsMentor {
 }
 
 interface IStateSessionsMentor {
-    addEnabled: boolean;
+    board: IStudentChecklistBoard;
     fullCardSession: ISessionFullCard;
     fullCardSimple: ISimpleFullCard;
     isEmpty: boolean;
     loading: boolean;
     searchValue: string;
     modal: IStudentModal;
-    studentList: IStudentChecklistCard[];
-    noAttendedButton: boolean;
-    attendedButton: boolean;
 }
 
 const MESSAGE_ADD_STUDENT = "¿Estás seguro que deseas agregar a este alumno?";
@@ -51,8 +55,12 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
     constructor(props: any) {
         super(props);
         this.state = {
-            addEnabled: false,
-            attendedButton: true,
+            board: {
+                addEnabled: false,
+                attendedButton: true,
+                noAttendedButton: true,
+                studentList: []
+            },
             fullCardSession: {
                 title: '',
                 type: ''
@@ -65,9 +73,7 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
             isEmpty: false,
             loading: true,
             modal: this.cleanModal(),
-            noAttendedButton: true,
             searchValue: '',
-            studentList: [],
         };
         this.mentorId = this.props.match.params.id;
         this.sessionId = this.props.match.params.session || '';
@@ -90,18 +96,11 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
                 this.sessionMentor = new SessionMentorBean(values[0]);
                 this.studentChecklistCollector = new StudentChecklistCollector(values[1]);
                 const sessions = this.studentChecklistCollector.sessions;
-                let addEnabled = false;
-                if (this.sessionMentor.session.location) {
-                    addEnabled = this.sessionMentor.session.location.type === 'PHYSICAL';
-                }
                 const newState = {
-                    addEnabled,
-                    attendedButton: this.studentChecklistCollector.isAllStudentsAttended || this.sessionMentor.isNoAttended,
+                    board: this.getBoard(sessions),
                     fullCardSession: this.getFullCardSession(),
                     fullCardSimple: this.getFullCardSimple(),
                     isEmpty: sessions.length === 0,
-                    noAttendedButton: this.studentChecklistCollector.atLeastOneAttended || this.sessionMentor.isNoAttended,
-                    studentList: this.getStudentList(sessions)
                 };
                 this.setState({
                     loading: false,
@@ -135,10 +134,7 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
                         <SessionFullCard session={this.state.fullCardSession}/>
                         <SimpleFullCard card={this.state.fullCardSimple}>
                             <StudentChecklistBoard
-                                attendedButton={this.state.attendedButton}
-                                noAttendedButton={this.state.noAttendedButton}
-                                addEnabled={this.state.addEnabled}
-                                students={this.state.studentList}
+                                board={this.state.board}
                                 onSearch={this.onSearch}
                                 requestSave={this.requestSave}
                                 requestNoAttended={this.requestNoAttended}
@@ -178,11 +174,8 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
                     filteredIds.forEach((id: string) => {
                         this.studentChecklistCollector.markAsAttendedTo(id);
                         this.sessionMentor.setAsAttended();
-                        const sessions = this.studentChecklistCollector.sessions;
                         this.setState({
-                            attendedButton: this.studentChecklistCollector.isAllStudentsAttended || this.sessionMentor.isNoAttended,
-                            noAttendedButton: this.studentChecklistCollector.atLeastOneAttended || this.sessionMentor.isNoAttended,
-                            studentList: this.getStudentList(sessions)
+                            board: this.getBoard()
                         })
                     })
                 })
@@ -198,9 +191,7 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
         this.sessionMentor.setAsNoAttended();
         this.sessionService.markAsNoAttended(this.sessionId, this.mentorId).then(() => {
             this.setState({
-                attendedButton: this.studentChecklistCollector.isAllStudentsAttended || this.sessionMentor.isNoAttended,
-                noAttendedButton: this.studentChecklistCollector.atLeastOneAttended || this.sessionMentor.isDisableNoAttended,
-                studentList: this.getStudentList(this.studentChecklistCollector.sessions)
+                board: this.getBoard()
             })
         });
     }
@@ -209,7 +200,7 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
         if (action === ACTION.SEARCH) {
             const sessions  = this.studentChecklistCollector.filterStudents(this.state.searchValue);
             this.setState({
-                studentList: this.getStudentList(sessions)
+                board: this.getBoard(sessions)
             })
         } else if (action === ACTION.ADD ) {
             if (!!this.state.searchValue) {
@@ -257,16 +248,16 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
             this.studentsService.addStudentToSession(this.sessionId, idStudent, this.mentorId)
                 .then((response: {id: string}) => {
                     user.id = response.id;
-                    user.status = SESSION_STATUS.SCHEDULED;
+                    user.status = STUDENT_STATUS.SCHEDULED;
                     const newStudent = new StudentChecklistBean(user);
                     this.studentChecklistCollector.addStudent(newStudent);
                     const sessions = this.studentChecklistCollector.sessions;
                     this.sessionMentor.incrementStudent();
                     this.setState({
+                        board: this.getBoard(sessions),
                         fullCardSimple: this.getFullCardSimple(),
                         isEmpty: sessions.length === 0,
-                        modal: this.cleanModal(),
-                        studentList: this.getStudentList(sessions)
+                        modal: this.cleanModal()
                     })
                 })
                 .catch(() => {
@@ -295,6 +286,18 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
             title: `${this.sessionMentor.getSessionType()} - ${schedule}`,
             type: this.sessionMentor.getStatus() === SESSION_LIFE.ACTIVE ? 'En curso' : 'No en curso'
         };
+    }
+
+    private getBoard(sessions?: StudentChecklistBean[]): IStudentChecklistBoard {
+        if (!sessions) {
+            sessions = this.studentChecklistCollector.sessions;
+        }
+        return {
+            addEnabled: this.sessionMentor.isPhysical(),
+            attendedButton: this.studentChecklistCollector.isAllStudentsAttended || this.sessionMentor.isNoAttended,
+            noAttendedButton:this.studentChecklistCollector.atLeastOneAttended || this.sessionMentor.isNoAttended,
+            studentList: this.getStudentList(sessions)
+        }
     }
 
     private getFullCardSimple(): ISimpleFullCard {
