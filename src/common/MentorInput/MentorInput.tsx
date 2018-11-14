@@ -69,8 +69,6 @@ class MentorInput extends React.Component<IPropsMentorInput, IStateMentorInput> 
             const status = this.state.focus ? 'focus' : 'default';
             inputClass = `MentorInput--${status}`
         }
-        // tslint:disable:no-console
-        console.log("me renderizo")
         return (
             <div
                 className={`MentorInput ${inputClass}`}

@@ -26,7 +26,7 @@ export class StudentChecklistBean {
         this.item = studentChecklist;
         this.user = new UserStudentBean(this.item.student);
         this.id = this.item.id;
-        this.status = this.item.status;
+        this.status = this.item.status || STUDENT_STATUS.SCHEDULED;
         this.new = false;
         this.checked = this.isAttended;
         this.booked = !!this.item.booked;
