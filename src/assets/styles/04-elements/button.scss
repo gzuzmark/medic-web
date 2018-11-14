@@ -16,7 +16,8 @@
   transition: background ease-in-out 0.5s;
   width: 280px;
   &[disabled] {
-    background: rgb(193, 193, 193)!important;
+    color: white;
+    background: #e6eaf2!important;
   }
   &[loading],
   &[data-loading] {
@@ -53,6 +54,11 @@
     color: $primary-color;
     &:hover {
       background: rgb(255, 255, 255);
+    }
+    &[disabled] {
+      color: #adb7c4;
+      border: 1px solid #adb7c4;
+      background: rgb(255, 255, 255)!important;
     }
   }
 }

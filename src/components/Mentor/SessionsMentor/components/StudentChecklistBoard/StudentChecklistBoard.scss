@@ -1,4 +1,15 @@
 .StudentChecklistBoard {
+  &_buttons {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 40px;
+  }
+  &_button {
+    width: 176px;
+    &--no-attended {
+      margin-right: 15px;
+    }
+  }
   &--border {
     border-bottom: 1px solid #eef2f6;
   }

@@ -6,14 +6,18 @@ import './StudentChecklistBoard.scss';
 
 type fnSearch = (value: string, action: string) => void;
 
-interface IPropsStudentChecklistBoard {
+export interface IStudentChecklistBoard {
     addEnabled: boolean;
     attendedButton: boolean;
-    isEmpty: boolean;
     noAttendedButton: boolean;
+    studentList: IStudentChecklistCard[];
+}
+
+interface IPropsStudentChecklistBoard {
+    board: IStudentChecklistBoard;
+    isEmpty: boolean;
     onSearch: fnSearch;
     searchValue: string;
-    students: IStudentChecklistCard[];
     requestSave() :void;
     requestNoAttended() :void;
 }
@@ -73,15 +77,15 @@ class StudentChecklistBoard extends  React.Component<IPropsStudentChecklistBoard
     public render() {
         const addSearch = this.getInputAdd();
         const inputSearch = this.getInputSearch();
-        let students = <EmptyCard addEnabled={this.props.addEnabled} />;
+        let students = <EmptyCard addEnabled={this.props.board.addEnabled} />;
         let propsNoAttendedButton = {};
         let propsAttendedButton = {};
-        if (this.props.noAttendedButton) {
+        if (this.props.board.noAttendedButton) {
             propsNoAttendedButton = {
                 disabled: "true"
             };
         }
-        if (this.props.attendedButton) {
+        if (this.props.board.attendedButton) {
             propsAttendedButton = {
                 disabled: "true"
             };
@@ -89,7 +93,8 @@ class StudentChecklistBoard extends  React.Component<IPropsStudentChecklistBoard
         if (!this.props.isEmpty) {
             students = (
                 <React.Fragment>
-                    {this.props.students.map((student: IStudentChecklistCard, index: number) => {
+                    <div className={`StudentChecklistBoard_students ${this.props.board.studentList.length > 0 ? 'StudentChecklistBoard--border' : ''} `}>
+                    {this.props.board.studentList.map((student: IStudentChecklistCard, index: number) => {
                         let order = 0;
                         if (student.new) {
                             order = ++this.counter;
@@ -98,13 +103,22 @@ class StudentChecklistBoard extends  React.Component<IPropsStudentChecklistBoard
                             <StudentFullCard student={student} key={`${index}`} styles={{'order': -1 * order}}/>
                         )
                     })}
-                    <button {...propsNoAttendedButton} onClick={this.props.requestNoAttended}>Nadie se presentó</button>
-                    <button {...propsAttendedButton} onClick={this.props.requestSave}>Guardar</button>
+                    </div>
+                    <div className={'StudentChecklistBoard_buttons'}>
+                        <button
+                            className={'u-Button u-Button--white StudentChecklistBoard_button StudentChecklistBoard_button--no-attended'}
+                            {...propsNoAttendedButton}
+                            onClick={this.props.requestNoAttended}>Nadie se presentó</button>
+                        <button
+                            {...propsAttendedButton}
+                            className={'u-Button StudentChecklistBoard_button'}
+                            onClick={this.props.requestSave}>Guardar</button>
+                    </div>
                 </React.Fragment>
             )
         }
         return (
-            <div className={`StudentChecklistBoard ${this.props.students.length > 0 ? 'StudentChecklistBoard--border' : ''}`}>
+            <div className={`StudentChecklistBoard`}>
                 <div className={"StudentChecklistBoard_inputs-container"}>
                     <MentorInput
                         active={true}
