@@ -158,7 +158,7 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
         const checkboxes: NodeListOf<HTMLInputElement> = document.querySelectorAll(".StudentFullCard_checkbox input[type=checkbox]:checked");
         const ids = Array.from(checkboxes).map(input => input.value);
         const filteredIds = ids.filter((id: string) => {
-            return !this.studentChecklistCollector.getStudentById(id);
+            return !!this.studentChecklistCollector.getStudentById(id);
         });
         if (filteredIds.length > 0) {
             this.sessionService.markAsAttended(this.sessionId, filteredIds, true, this.mentorId)
@@ -166,14 +166,11 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
                     // mostrar modal exito
                     // actualizar estado de estudiantes
                     filteredIds.forEach((id: string) => {
-                        const student = this.studentChecklistCollector.getStudentById(id);
-                        if (student) {
-                            student.setAsAttended();
-                            const sessions = this.studentChecklistCollector.sessions;
-                            this.setState({
-                                studentList: this.getStudentList(sessions)
-                            })
-                        }
+                        this.studentChecklistCollector.markAsAttendedTo(id);
+                        const sessions = this.studentChecklistCollector.sessions;
+                        this.setState({
+                            studentList: this.getStudentList(sessions)
+                        })
                     })
                 })
                 .catch(() => {
