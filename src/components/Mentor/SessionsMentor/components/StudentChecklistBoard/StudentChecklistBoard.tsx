@@ -8,11 +8,14 @@ type fnSearch = (value: string, action: string) => void;
 
 interface IPropsStudentChecklistBoard {
     addEnabled: boolean;
+    attendedButton: boolean;
     isEmpty: boolean;
+    noAttendedButton: boolean;
     onSearch: fnSearch;
     searchValue: string;
     students: IStudentChecklistCard[];
     requestSave() :void;
+    requestNoAttended() :void;
 }
 
 export interface IStateInput {
@@ -71,6 +74,18 @@ class StudentChecklistBoard extends  React.Component<IPropsStudentChecklistBoard
         const addSearch = this.getInputAdd();
         const inputSearch = this.getInputSearch();
         let students = <EmptyCard addEnabled={this.props.addEnabled} />;
+        let propsNoAttendedButton = {};
+        let propsAttendedButton = {};
+        if (this.props.noAttendedButton) {
+            propsNoAttendedButton = {
+                disabled: "true"
+            };
+        }
+        if (this.props.attendedButton) {
+            propsAttendedButton = {
+                disabled: "true"
+            };
+        }
         if (!this.props.isEmpty) {
             students = (
                 <React.Fragment>
@@ -83,8 +98,8 @@ class StudentChecklistBoard extends  React.Component<IPropsStudentChecklistBoard
                             <StudentFullCard student={student} key={`${index}`} styles={{'order': -1 * order}}/>
                         )
                     })}
-                    <button>Nadie se presentó</button>
-                    <button onClick={this.props.requestSave}>Guardar</button>
+                    <button {...propsNoAttendedButton} onClick={this.props.requestNoAttended}>Nadie se presentó</button>
+                    <button {...propsAttendedButton} onClick={this.props.requestSave}>Guardar</button>
                 </React.Fragment>
             )
         }

@@ -33,6 +33,8 @@ interface IStateSessionsMentor {
     searchValue: string;
     modal: IStudentModal;
     studentList: IStudentChecklistCard[];
+    noAttendedButton: boolean;
+    attendedButton: boolean;
 }
 
 const MESSAGE_ADD_STUDENT = "¿Estás seguro que deseas agregar a este alumno?";
@@ -50,6 +52,7 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
         super(props);
         this.state = {
             addEnabled: false,
+            attendedButton: true,
             fullCardSession: {
                 title: '',
                 type: ''
@@ -62,6 +65,7 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
             isEmpty: false,
             loading: true,
             modal: this.cleanModal(),
+            noAttendedButton: true,
             searchValue: '',
             studentList: [],
         };
@@ -72,6 +76,7 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
         this.addStudent = this.addStudent.bind(this);
         this.clodeModal = this.clodeModal.bind(this);
         this.requestSave = this.requestSave.bind(this);
+        this.requestNoAttended = this.requestNoAttended.bind(this);
     }
 
     public componentDidMount() {
@@ -91,9 +96,11 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
                 }
                 const newState = {
                     addEnabled,
+                    attendedButton: this.studentChecklistCollector.isAllStudentsAttended || this.sessionMentor.isNoAttended,
                     fullCardSession: this.getFullCardSession(),
                     fullCardSimple: this.getFullCardSimple(),
                     isEmpty: sessions.length === 0,
+                    noAttendedButton: this.studentChecklistCollector.atLeastOneAttended || this.sessionMentor.isNoAttended,
                     studentList: this.getStudentList(sessions)
                 };
                 this.setState({
@@ -128,10 +135,13 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
                         <SessionFullCard session={this.state.fullCardSession}/>
                         <SimpleFullCard card={this.state.fullCardSimple}>
                             <StudentChecklistBoard
+                                attendedButton={this.state.attendedButton}
+                                noAttendedButton={this.state.noAttendedButton}
                                 addEnabled={this.state.addEnabled}
                                 students={this.state.studentList}
                                 onSearch={this.onSearch}
                                 requestSave={this.requestSave}
+                                requestNoAttended={this.requestNoAttended}
                                 searchValue={this.state.searchValue}
                                 isEmpty={this.state.isEmpty}
                             />
@@ -167,8 +177,11 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
                     // actualizar estado de estudiantes
                     filteredIds.forEach((id: string) => {
                         this.studentChecklistCollector.markAsAttendedTo(id);
+                        this.sessionMentor.setAsAttended();
                         const sessions = this.studentChecklistCollector.sessions;
                         this.setState({
+                            attendedButton: this.studentChecklistCollector.isAllStudentsAttended || this.sessionMentor.isNoAttended,
+                            noAttendedButton: this.studentChecklistCollector.atLeastOneAttended || this.sessionMentor.isNoAttended,
                             studentList: this.getStudentList(sessions)
                         })
                     })
@@ -179,6 +192,17 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
         } else {
             // mostrar modal exito
         }
+    }
+
+    private requestNoAttended() {
+        this.sessionMentor.setAsNoAttended();
+        this.sessionService.markAsNoAttended(this.sessionId, this.mentorId).then(() => {
+            this.setState({
+                attendedButton: this.studentChecklistCollector.isAllStudentsAttended || this.sessionMentor.isNoAttended,
+                noAttendedButton: this.studentChecklistCollector.atLeastOneAttended || this.sessionMentor.isDisableNoAttended,
+                studentList: this.getStudentList(this.studentChecklistCollector.sessions)
+            })
+        });
     }
 
     private searchStudent(action: string) {

@@ -1,4 +1,4 @@
-import {IStudentChecklist, StudentChecklistBean} from "./StudentChecklistBean";
+import {IStudentChecklist, STUDENT_STATUS, StudentChecklistBean} from "./StudentChecklistBean";
 
 export class StudentChecklistCollector {
     public sessions: StudentChecklistBean[];
@@ -39,6 +39,20 @@ export class StudentChecklistCollector {
             student = candidate[0];
         }
         return student;
+    }
+
+    get atLeastOneAttended() {
+        const candidate = this.sessions.filter((item: StudentChecklistBean) => {
+            return item.status === STUDENT_STATUS.ATTENDED || item.status === STUDENT_STATUS.RATED;
+        });
+        return candidate.length > 0
+    }
+
+    get isAllStudentsAttended() {
+        const candidate = this.sessions.filter((item: StudentChecklistBean) => {
+            return item.status === STUDENT_STATUS.ATTENDED || item.status === STUDENT_STATUS.RATED;
+        });
+        return candidate.length === this.sessions.length;
     }
 
     public markAsAttendedTo(id: string) {
