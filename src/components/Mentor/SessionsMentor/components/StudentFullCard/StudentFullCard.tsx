@@ -9,6 +9,7 @@ export interface IStudentChecklistCard {
     name: string;
     new: boolean;
     photo: string;
+    disabled: boolean;
 }
 
 interface IPropsStudentFullCard {
@@ -17,6 +18,12 @@ interface IPropsStudentFullCard {
 }
 
 const StudentFullCard: React.StatelessComponent<IPropsStudentFullCard> = (props) => {
+    let propsInput = {};
+    if (props.student.disabled) {
+        propsInput = {
+            disabled: 'true'
+        }
+    }
     return (
         <div className={`StudentFullCard ${props.student.new ? 'StudentFullCard--new': ''}`} style={{...props.styles}}>
             <div className={"StudentFullCard_left"}>
@@ -27,6 +34,9 @@ const StudentFullCard: React.StatelessComponent<IPropsStudentFullCard> = (props)
             <div className={"StudentFullCard_right"}>
                 <Text2>{props.student.name}</Text2>
                 <Text3>{props.student.code}</Text3>
+            </div>
+            <div className={"StudentFullCard_checkbox"}>
+                <input type={"checkbox"} value={props.student.id} defaultChecked={props.student.checked} {...propsInput}/>
             </div>
         </div>
     );

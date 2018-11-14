@@ -2,6 +2,7 @@ import {AbstractDateParser} from "../DateManager/AbstractDateParser";
 
 export const SESSION_STATUS = {
     ATTENDED: 'ATTENDED',
+    AVAILABLE: 'AVAILABLE',
     EXPIRED: 'CADUCED',
     NO_ATTENDED: 'NO_ATTENDED',
     RATED: 'RATED',

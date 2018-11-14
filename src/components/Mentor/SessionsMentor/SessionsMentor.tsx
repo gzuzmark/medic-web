@@ -66,12 +66,12 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
             studentList: [],
         };
         this.mentorId = this.props.match.params.id;
-        this.sessionId = this.props.match.params.session;
+        this.sessionId = this.props.match.params.session || '';
         this.onSearch = this.onSearch.bind(this);
         this.searchStudent = this.searchStudent.bind(this);
         this.addStudent = this.addStudent.bind(this);
         this.clodeModal = this.clodeModal.bind(this);
-        this.addStudent = this.addStudent.bind(this);
+        this.requestSave = this.requestSave.bind(this);
     }
 
     public componentDidMount() {
@@ -131,6 +131,7 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
                                 addEnabled={this.state.addEnabled}
                                 students={this.state.studentList}
                                 onSearch={this.onSearch}
+                                requestSave={this.requestSave}
                                 searchValue={this.state.searchValue}
                                 isEmpty={this.state.isEmpty}
                             />
@@ -149,6 +150,37 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
                     show: false
                 }
             })
+        }
+    }
+
+    private requestSave() {
+        // mostrar modal confirmar
+        const checkboxes: NodeListOf<HTMLInputElement> = document.querySelectorAll(".StudentFullCard_checkbox input[type=checkbox]:checked");
+        const ids = Array.from(checkboxes).map(input => input.value);
+        const filteredIds = ids.filter((id: string) => {
+            return !this.studentChecklistCollector.getStudentById(id);
+        });
+        if (filteredIds.length > 0) {
+            this.sessionService.markAsAttended(this.sessionId, filteredIds, true, this.mentorId)
+                .then(() => {
+                    // mostrar modal exito
+                    // actualizar estado de estudiantes
+                    filteredIds.forEach((id: string) => {
+                        const student = this.studentChecklistCollector.getStudentById(id);
+                        if (student) {
+                            student.setAsAttended();
+                            const sessions = this.studentChecklistCollector.sessions;
+                            this.setState({
+                                studentList: this.getStudentList(sessions)
+                            })
+                        }
+                    })
+                })
+                .catch(() => {
+                    // mostrar modal error
+                })
+        } else {
+            // mostrar modal exito
         }
     }
 
@@ -208,7 +240,9 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
                     const newStudent = new StudentChecklistBean(user);
                     this.studentChecklistCollector.addStudent(newStudent);
                     const sessions = this.studentChecklistCollector.sessions;
+                    this.sessionMentor.incrementStudent();
                     this.setState({
+                        fullCardSimple: this.getFullCardSimple(),
                         isEmpty: sessions.length === 0,
                         modal: this.cleanModal(),
                         studentList: this.getStudentList(sessions)
@@ -255,6 +289,7 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
             return {
                 checked: item.isChecked,
                 code: item.student.user.code,
+                disabled: item.isDisabled || this.sessionMentor.isDisabled,
                 id: item.id,
                 name: item.student.user.name,
                 new: item.new,

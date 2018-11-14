@@ -12,6 +12,7 @@ interface IPropsStudentChecklistBoard {
     onSearch: fnSearch;
     searchValue: string;
     students: IStudentChecklistCard[];
+    requestSave() :void;
 }
 
 export interface IStateInput {
@@ -82,6 +83,8 @@ class StudentChecklistBoard extends  React.Component<IPropsStudentChecklistBoard
                             <StudentFullCard student={student} key={`${index}`} styles={{'order': -1 * order}}/>
                         )
                     })}
+                    <button>Nadie se presentó</button>
+                    <button onClick={this.props.requestSave}>Guardar</button>
                 </React.Fragment>
             )
         }
@@ -119,8 +122,6 @@ class StudentChecklistBoard extends  React.Component<IPropsStudentChecklistBoard
         newState[key] = focus;
         const searchAnimation = newState.addFocus || newState.searchFocus;
         newState.searchAnimation = searchAnimation;
-        // tslint:disable:no-console
-        console.log({...newState});
         this.setState({...newState});
     }
 
