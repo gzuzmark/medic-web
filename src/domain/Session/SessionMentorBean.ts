@@ -58,10 +58,17 @@ export class SessionMentorBean extends SessionBean {
         }
     }
 
+    public setAsScheduled() {
+        if (this.session.status === SESSION_STATUS.AVAILABLE) {
+            this.session.status = SESSION_STATUS.SCHEDULED
+        }
+    }
+
     public incrementStudent() {
         if (this.session.availability) {
             ++this.session.availability.count;
         }
+        this.setAsScheduled();
     }
 
     public getTotalStudents(): number {
