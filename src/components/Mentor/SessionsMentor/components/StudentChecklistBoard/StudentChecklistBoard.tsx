@@ -165,7 +165,7 @@ class StudentChecklistBoard extends  React.Component<IPropsStudentChecklistBoard
         const onClickSearch = onClick(this.activeInput, ACTION.SEARCH);
         const onChangeSearch = onChange(this.props.onSearch, ACTION.SEARCH);
         return {
-            autoFocus: true,
+            autoFocus: false,
             name: "txtSearchStudent",
             onChange: onChangeSearch,
             onClick: onClickSearch,
