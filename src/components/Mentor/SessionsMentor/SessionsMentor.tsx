@@ -335,7 +335,7 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
         const schedule = this.sessionMentor.getTime(new MomentDateParser());
         return {
             title: `${this.sessionMentor.getSessionType()} - ${schedule}`,
-            type: this.sessionMentor.getStatus() === SESSION_LIFE.ACTIVE ? 'En curso' : 'No en curso'
+            type: this.sessionMentor.getStatus() === SESSION_LIFE.ACTIVE ? 'En curso' : 'Activa'
         };
     }
 

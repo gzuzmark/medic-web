@@ -52,6 +52,16 @@
     display: flex;
     justify-content: flex-end;
   }
+  &--disabled {
+    &.MentorInput {
+      .icon {
+        fill: #CCD6DD;
+      }
+      span {
+        color: #CCD6DD!important;
+      }
+    }
+  }
   .icon {
     height: 30px!important;
     width: 30px!important;

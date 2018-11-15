@@ -39,7 +39,7 @@ const CardSession: React.StatelessComponent<IPropsCardSession> = (props) => {
                 </div>
                 <div className={"CardSession_body-bottom"}>
                     {props.item.isVirtual() ?
-                        <a href={props.item.getLocation()} target="_blank">
+                        <a className={"CardSession_link"} href={props.item.getLocation()} target="_blank">
                             <Text3>{props.item.getLocation()}</Text3>
                         </a>:
                         <Text3>{props.item.getLocation()}</Text3>
