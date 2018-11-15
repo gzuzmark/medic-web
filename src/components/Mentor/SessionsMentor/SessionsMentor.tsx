@@ -1,7 +1,6 @@
 import * as React from 'react';
 import MentorModalBase from "../../../common/ConsoleModal/MentorModalBase";
-import { Title2 } from '../../../common/ConsoleText';
-import Icon from "../../../common/Icon/Icon";
+import { Text3 } from '../../../common/ConsoleText';
 import Layout from "../../../common/Layout/Layout";
 import Loader from "../../../common/Loader/Loader";
 import {MomentDateParser} from "../../../domain/DateManager/MomentDateParser";
@@ -139,10 +138,12 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
                         confirm={this.onConfirmCheck}/> : null}
             </MentorModalBase>
             <div className="SessionsMentor u-LayoutMentorMargin">
-                <div className={"StudentChecklistBoard"}>
-                    <Icon name={"calendar"}/>
-                    <Title2>Tus sesiones</Title2>
-                </div>
+                {this.sessionMentor &&
+                <div className={"SessionsMentor_navigation"}>
+                    <Text3>Tus sesiones >&nbsp;</Text3>
+                    <Text3>{(this.sessionMentor? '': '')} {this.sessionMentor.getDate(new MomentDateParser())} >&nbsp;</Text3>
+                    <Text3>Sesión en curso</Text3>
+                </div>}
                 {this.state.loading && !this.state.isEmpty &&
                     <Loader top={10} height={50}/>}
                 {!this.state.loading &&
