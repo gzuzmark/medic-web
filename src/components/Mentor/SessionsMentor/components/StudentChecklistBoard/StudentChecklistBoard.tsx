@@ -132,6 +132,7 @@ class StudentChecklistBoard extends  React.Component<IPropsStudentChecklistBoard
                         }}/>
                     <MentorInput
                         active={!this.state.activeSearch}
+                        enable={this.props.board.addEnabled}
                         icon={"add-circle"}
                         input={addSearch}
                         style={{flexBasis: '48%', justifyContent: 'flex-end'}}

@@ -4,6 +4,13 @@
   display: flex;
   margin-bottom: 16px;
   position: relative;
+  &_link {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 500px;
+  }
   &:first-child {
     margin-top: 24px;
   }

@@ -6,7 +6,7 @@ import './MentorInput.scss';
 interface IPropsMentorInput {
     active?: boolean; // active or deactive animation
     icon?: string;
-    enable?: string; // disable or enable input
+    enable?: boolean; // disable or enable input
     forceFocus?: boolean;
     style?: React.CSSProperties;
     animation?: {
@@ -59,9 +59,11 @@ class MentorInput extends React.Component<IPropsMentorInput, IStateMentorInput> 
     public render() {
         let inputClass = 'MentorInput--inactive';
         const noAnimation = this.props.animation && this.props.animation.enable === false || this.props.active;
-        if (this.props.active || noAnimation) {
+        if (this.props.enable && (this.props.active || noAnimation)) {
             const status = this.state.focus ? 'focus' : 'default';
             inputClass = `MentorInput--${status}`
+        } else if (!this.props.enable) {
+            inputClass = `${inputClass} MentorInput--disabled`;
         }
         return (
             <div
@@ -85,7 +87,7 @@ class MentorInput extends React.Component<IPropsMentorInput, IStateMentorInput> 
     }
 
     private onClick() {
-        if (this.props.input.onClick) {
+        if (this.props.input.onClick && this.props.enable) {
             this.props.input.onClick('');
             setTimeout(() => {
                 if (this.input.current) {
