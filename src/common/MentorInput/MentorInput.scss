@@ -1,67 +1,65 @@
 .MentorInput {
-  align-items: center;
-  display: flex;
-  flex-direction: row;
-  height: 40px;
-  padding: 0 16px;
-  position: relative;
-  border-radius: 4px;
-  span {
-    padding-left: 4px;
-  }
-  &--inactive {
-    cursor: pointer;
+  &_input {
+    border: 0;
+    border-radius: 4px;
+    display: none;
+    height: 40px;
+    left: 0;
+    padding: 0 46px 0 16px;
+    position: absolute;
+    top: 0;
+    width: 100%;
   }
   &--default {
-    border: solid 1px #ccd6dc;
-    .icon {
-      fill: #ccd6dc;
-    }
-    span {
-      display: none;
-    }
-    .MentorInput {
-      &_input {
-        display: block;
+    .MentorInput_input {
+      border: solid 1px #ccd6dc;
+      &:focus {
+        border: solid 1px #4a4a4a;
       }
     }
-  }
-  &--focus {
-    border: solid 1px #4a4a4a;
-    span {
-      display: none;
-    }
-    .MentorInput {
-       &_input {
-         display: block;
-       }
-    }
+    .icon {
+      fill: #ccd6dc;
+     }
   }
   &--error {
-    border: solid 1px #ff8389;
+    .MentorInput_input {
+      border: solid 1px #ff8389;
+      &:focus {
+        border: solid 1px #ff8389;
+      }
+    }
     .icon {
       fill: #ff8389;
     }
+  }
+  &--default, &--error {
+    position: relative;
+    .MentorInput_input {
+      display: block;
+    }
+    .icon {
+      position: absolute;
+      right: 10px;
+      top: 5px;
+    }
     span {
       display: none;
     }
-    .MentorInput {
-      &_input {
-        display: block;
-      }
-    }
+  }
+  &--inactive {
+    align-items: center;
+    cursor: pointer;
+    display: flex;
+    justify-content: flex-end;
   }
   .icon {
-    fill: #561cac;
     height: 30px!important;
     width: 30px!important;
+    fill: #561cac;
   }
   span {
     color: #561cac!important;
+    padding-left: 4px;
   }
-  &_input {
-    border: 0;
-    flex-grow: 1;
-    display: none;
-  }
+
 }

@@ -27,7 +27,6 @@ interface IPropsMentorInput {
 }
 
 interface IStateMentorInput {
-    active: boolean;
     focus: boolean;
 }
 
@@ -45,15 +44,10 @@ class MentorInput extends React.Component<IPropsMentorInput, IStateMentorInput> 
     constructor(props: IPropsMentorInput) {
         super(props);
         this.state = {
-            active: !!this.props.active,
             focus: false
         };
         this.input = React.createRef();
-        this.onFocus = this.onFocus.bind(this);
-        this.onBlur = this.onBlur.bind(this);
-        this.doBlur = this.doBlur.bind(this);
-        this.doFocus = this.doFocus.bind(this);
-        this.onClickElement = this.onClickElement.bind(this);
+        this.onClick = this.onClick.bind(this);
     }
 
     public componentDidMount() {
@@ -64,16 +58,16 @@ class MentorInput extends React.Component<IPropsMentorInput, IStateMentorInput> 
 
     public render() {
         let inputClass = 'MentorInput--inactive';
-        const noAnimation = this.props.animation && this.props.animation.enable === false || this.state.active;
-        if (this.state.active || noAnimation) {
+        const noAnimation = this.props.animation && this.props.animation.enable === false || this.props.active;
+        if (this.props.active || noAnimation) {
             const status = this.state.focus ? 'focus' : 'default';
             inputClass = `MentorInput--${status}`
         }
         return (
             <div
                 className={`MentorInput ${inputClass}`}
-                onClick={this.onClickElement}
-                style={{...this.props.style}}>
+                style={{...this.props.style}}
+                onClick={this.onClick}>
                 <input
                     ref={this.input}
                     className={`MentorInput_input`}
@@ -82,8 +76,6 @@ class MentorInput extends React.Component<IPropsMentorInput, IStateMentorInput> 
                     onChange={this.props.input.onChange}
                     onKeyPress={this.props.input.onKeyPress}
                     autoFocus={this.props.input.autoFocus}
-                    onFocus={this.onFocus}
-                    onBlur={this.onBlur}
                     value={this.props.input.value}
                     placeholder={this.props.input.placeholder}/>
                     {!!this.props.icon && <Icon name={this.props.icon}/>}
@@ -92,75 +84,15 @@ class MentorInput extends React.Component<IPropsMentorInput, IStateMentorInput> 
         );
     }
 
-    private onClickElement() {
-        if (this.input.current) {
-            this.input.current.focus();
-        }
-        if (!this.state.focus) {
-            if (this.props.input && this.props.input.onClick) {
-                this.props.input.onClick("");
-            }
-            if (this.props.animation && this.props.animation.enable) {
-                this.setState({
-                    active: true,
-                }, () => {
-                    this.doFocus();
-                })
-            } else {
-                this.doFocus();
-            }
-        }
-    }
-
-    private onFocus() {
-        clearTimeout(this.timer);
-        if (!this.state.focus) {
-            this.setState({
-                focus: true,
-            });
-        }
-    }
-
-    private onBlur() {
-        if (this.props.animation && this.props.animation.enable) {
-            this.setState({
-                active: false
-            }, () => {
-                this.doBlur();
-            })
-        } else {
-            this.doBlur();
-        }
-    }
-
-    private doFocus() {
-        this.setState({
-            focus: true,
-        }, () => {
+    private onClick() {
+        if (this.props.input.onClick) {
+            this.props.input.onClick('');
             setTimeout(() => {
                 if (this.input.current) {
                     this.input.current.focus();
                 }
-                if (this.props.input && this.props.input.onFocus) {
-                    this.props.input.onFocus("");
-                }
-            }, 0)
-        });
-    }
-
-    private doBlur() {
-        clearTimeout(this.timer);
-        this.timer = setTimeout(() => {
-            if (this.state.focus) {
-                this.setState({
-                    focus: false,
-                }, () => {
-                    if (this.props.input && this.props.input.onBlur) {
-                        this.props.input.onBlur("");
-                    }
-                });
-            }
-        }, 0)
+            }, 100);
+        }
     }
 }
 

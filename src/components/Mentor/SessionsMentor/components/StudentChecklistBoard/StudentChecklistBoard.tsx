@@ -31,7 +31,7 @@ export interface IStateInput {
 
 export interface IStatesStudentChecklistBoard {
     addFocus: boolean;
-    searchAnimation: boolean;
+    activeSearch: boolean;
     searchFocus: boolean;
 }
 
@@ -40,9 +40,9 @@ export const ACTION = {
     SEARCH: 'search'
 };
 
-const onClick = (search: fnSearch, action: string) => {
+const onClick = (search: (key: string) => void, action: string) => {
     return (event: any) => {
-        search('', action);
+        search(action);
     }
 };
 
@@ -67,9 +67,10 @@ class StudentChecklistBoard extends  React.Component<IPropsStudentChecklistBoard
         super(props);
         this.getInputAdd = this.getInputAdd.bind(this);
         this.getInputSearch = this.getInputSearch.bind(this);
+        this.activeInput = this.activeInput.bind(this);
         this.state = {
+            activeSearch: true,
             addFocus: false,
-            searchAnimation: true,
             searchFocus: true
         }
     }
@@ -121,16 +122,16 @@ class StudentChecklistBoard extends  React.Component<IPropsStudentChecklistBoard
             <div className={`StudentChecklistBoard`}>
                 <div className={"StudentChecklistBoard_inputs-container"}>
                     <MentorInput
-                        active={true}
+                        active={this.state.activeSearch}
                         icon={"search"}
                         input={inputSearch}
                         style={{flexBasis: '48%', justifyContent: 'flex-start'}}
                         animation={{
-                            enable: this.state.searchAnimation,
+                            enable: true,
                             text: "Buscar alumno"
                         }}/>
                     <MentorInput
-                        active={false}
+                        active={!this.state.activeSearch}
                         icon={"add-circle"}
                         input={addSearch}
                         style={{flexBasis: '48%', justifyContent: 'flex-end'}}
@@ -146,51 +147,41 @@ class StudentChecklistBoard extends  React.Component<IPropsStudentChecklistBoard
         )
     }
 
-    private updateFocus(key: string, focus: boolean) {
-        const newState = {...this.state};
-        newState[key] = focus;
-        const searchAnimation = newState.addFocus || newState.searchFocus;
-        newState.searchAnimation = searchAnimation;
-        this.setState({...newState});
+    private activeInput(key: string) {
+        if (key === ACTION.SEARCH && !this.state.activeSearch) {
+            this.props.onSearch('', '');
+            this.setState({
+                activeSearch: true
+            })
+        } else if (key === ACTION.ADD && this.state.activeSearch) {
+            this.props.onSearch('', '');
+            this.setState({
+                activeSearch: false
+            })
+        }
     }
 
     private getInputSearch() {
-        const onClickSearch = onClick(this.props.onSearch, ACTION.SEARCH);
+        const onClickSearch = onClick(this.activeInput, ACTION.SEARCH);
         const onChangeSearch = onChange(this.props.onSearch, ACTION.SEARCH);
-        const onBlurSearch = (event: any) => {
-            this.updateFocus("searchFocus", false);
-        };
-        const onFocusSearch = (event: any) => {
-            this.updateFocus("searchFocus", true);
-        };
         return {
             autoFocus: true,
             name: "txtSearchStudent",
-            onBlur: onBlurSearch,
             onChange: onChangeSearch,
             onClick: onClickSearch,
-            onFocus: onFocusSearch,
             value: this.props.searchValue
         };
     }
 
     private getInputAdd() {
-        const onClickAdd = onClick(this.props.onSearch, ACTION.ADD);
+        const onClickAdd = onClick(this.activeInput, ACTION.ADD);
         const onChangeAdd = onChange(this.props.onSearch, '');
         const onSubmitAdd = onSubmit(this.props.onSearch, ACTION.ADD);
-        const onBlurAdd = () => {
-            this.updateFocus("addFocus", false);
-        };
-        const onFocusAdd = () => {
-            this.updateFocus("addFocus", true);
-        };
         return {
             autoFocus: false,
             name: "txtAddStudent",
-            onBlur: onBlurAdd,
             onChange: onChangeAdd,
             onClick: onClickAdd,
-            onFocus: onFocusAdd,
             onKeyPress: onSubmitAdd,
             placeholder: "Ingresa el código del alumno",
             value: this.props.searchValue
