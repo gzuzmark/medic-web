@@ -57,7 +57,7 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
     private studentsService = new StudentService();
     private sessionMentor: SessionMentorBean;
     private studentChecklistCollector: StudentChecklistCollector;
-
+    private mdp = new MomentDateParser();
     constructor(props: any) {
         super(props);
         this.state = {
@@ -141,8 +141,8 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
                 {this.sessionMentor &&
                 <div className={"SessionsMentor_navigation"}>
                     <Text3>Tus sesiones >&nbsp;</Text3>
-                    <Text3>{(this.sessionMentor? '': '')} {this.sessionMentor.getDate(new MomentDateParser())} >&nbsp;</Text3>
-                    <Text3>Sesión en curso</Text3>
+                    <Text3>{this.mdp.isDateToday(this.sessionMentor.session.from)? 'Hoy ': ''}{this.sessionMentor.getDate(this.mdp)} >&nbsp;</Text3>
+                    <Text3>{this.sessionMentor.session.isActive ? 'Sesión Activa' : 'Sesión en curso'}</Text3>
                 </div>}
                 {this.state.loading && !this.state.isEmpty &&
                     <Loader top={10} height={50}/>}
