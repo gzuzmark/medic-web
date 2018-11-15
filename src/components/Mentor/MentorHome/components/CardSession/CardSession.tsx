@@ -65,7 +65,7 @@ const CardSession: React.StatelessComponent<IPropsCardSession> = (props) => {
                     props.item.getStatus() === SESSION_LIFE.RESOLVE &&
                     <button className={"CardSession_options-button"} onClick={props.click}>
                         <Icon name={"paper-pencil"}/>
-                        <TextBold3>Editar pinche asistencia</TextBold3>
+                        <TextBold3>Editar asistencia</TextBold3>
                     </button>
                 }
             </div>
