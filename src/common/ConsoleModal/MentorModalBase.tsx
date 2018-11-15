@@ -31,7 +31,7 @@ const MentorModalBase: React.StatelessComponent<IPropsMentorModalBase> = (props)
                     display: "flex",
                     flexDirection: "column",
                     flexWrap: "nowrap",
-                    minHeight: 400,
+                    minHeight: 330,
                     padding: 0,
                     width: 600,
                     ...props.styles

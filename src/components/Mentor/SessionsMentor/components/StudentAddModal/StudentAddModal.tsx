@@ -1,13 +1,12 @@
 import * as React from 'react';
 import { Text2, Text3, TextBold1 } from '../../../../../common/ConsoleText';
 import {IStudentChecklist} from "../../../../../domain/StudentChecklist/StudentChecklistBean";
-import './StudentModalCard.scss';
+import './StudentAddModal.scss';
 
 
 export interface IStudentModal {
     message: string;
-    show: boolean;
-    user?: IStudentChecklist;
+    user?: IStudentChecklist | null;
     loading: boolean;
 }
 
@@ -17,7 +16,7 @@ interface IPropsStudentModalCard {
 }
 
 
-const StudentModalCard: React.StatelessComponent<IPropsStudentModalCard> = (props) => {
+const StudentAddModal: React.StatelessComponent<IPropsStudentModalCard> = (props) => {
 
     const onClick = () => {
         if (props.options.user) {
@@ -69,4 +68,4 @@ const StudentModalCard: React.StatelessComponent<IPropsStudentModalCard> = (prop
     ) || null;
 };
 
-export default StudentModalCard;
+export default StudentAddModal;

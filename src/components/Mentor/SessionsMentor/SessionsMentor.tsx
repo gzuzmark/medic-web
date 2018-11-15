@@ -19,12 +19,17 @@ import StudentService from "../../../services/Student/Student.service";
 import {ISessionFullCard} from "./components/SessionFullCard/SessionFullCard";
 import SessionFullCard from "./components/SessionFullCard/SessionFullCard";
 import { default as SimpleFullCard, ISimpleFullCard} from "./components/SimpleFullCard/SimpleFullCard";
+import StudentAddModal, {IStudentModal} from "./components/StudentAddModal/StudentAddModal";
 import StudentChecklistBoard, {
-    ACTION,
-    IStudentChecklistBoard
+ACTION,
+IStudentChecklistBoard
 } from "./components/StudentChecklistBoard/StudentChecklistBoard";
+import {
+    default as StudentCheckModal,
+    IStudentCheckModal,
+    StudentCheckModalScreens
+} from "./components/StudentCheckModal/StudentCheckModal";
 import {IStudentChecklistCard} from "./components/StudentFullCard/StudentFullCard";
-import StudentModalCard, {IStudentModal} from "./components/StudentModalCard/StudentModalCard";
 import './SessionsMentor.scss';
 
 interface IPropsSessionsMentor {
@@ -38,7 +43,9 @@ interface IStateSessionsMentor {
     isEmpty: boolean;
     loading: boolean;
     searchValue: string;
-    modal: IStudentModal;
+    modal: boolean;
+    modalAdd: IStudentModal;
+    modalCheck: IStudentCheckModal;
 }
 
 const MESSAGE_ADD_STUDENT = "¿Estás seguro que deseas agregar a este alumno?";
@@ -72,7 +79,9 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
             },
             isEmpty: false,
             loading: true,
-            modal: this.cleanModal(),
+            modal: false,
+            modalAdd: this.cleanAddModal(),
+            modalCheck: this.cleanCheckModal(''),
             searchValue: '',
         };
         this.mentorId = this.props.match.params.id;
@@ -80,9 +89,12 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
         this.onSearch = this.onSearch.bind(this);
         this.searchStudent = this.searchStudent.bind(this);
         this.addStudent = this.addStudent.bind(this);
-        this.clodeModal = this.clodeModal.bind(this);
-        this.requestSave = this.requestSave.bind(this);
+        this.closeModal = this.closeModal.bind(this);
+        this.requesAttended = this.requesAttended.bind(this);
         this.requestNoAttended = this.requestNoAttended.bind(this);
+        this.onConfirmCheck = this.onConfirmCheck.bind(this);
+        this.showModalNoAttended = this.showModalNoAttended.bind(this);
+        this.showModalAttended = this.showModalAttended.bind(this);
     }
 
     public componentDidMount() {
@@ -116,11 +128,15 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
 
     public render() {
         return <Layout title={"Tutores"}>
-            <MentorModalBase show={this.state.modal.show && !!this.state.modal.user} onCloseModal={this.clodeModal}>
-                {!!this.state.modal.user ?
-                    <StudentModalCard
-                        options={this.state.modal}
+            <MentorModalBase show={this.state.modal} onCloseModal={this.closeModal}>
+                {!!this.state.modalAdd.user?
+                    <StudentAddModal
+                        options={this.state.modalAdd}
                         confirm={this.addStudent}/> : null}
+                {!!this.state.modalCheck.screen ?
+                    <StudentCheckModal
+                        options={this.state.modalCheck}
+                        confirm={this.onConfirmCheck}/> : null}
             </MentorModalBase>
             <div className="SessionsMentor u-LayoutMentorMargin">
                 <div className={"StudentChecklistBoard"}>
@@ -136,8 +152,8 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
                             <StudentChecklistBoard
                                 board={this.state.board}
                                 onSearch={this.onSearch}
-                                requestSave={this.requestSave}
-                                requestNoAttended={this.requestNoAttended}
+                                requesAttended={this.showModalAttended}
+                                requestNoAttended={this.showModalNoAttended}
                                 searchValue={this.state.searchValue}
                                 isEmpty={this.state.isEmpty}
                             />
@@ -147,52 +163,91 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
         </Layout>
     }
 
-    private clodeModal() {
-        if (!this.state.modal.loading) {
+    private closeModal(force?: boolean) {
+        if ((!this.state.modalAdd.loading && !this.state.modalCheck.loading) || !!force) {
             this.setState({
-                modal: {
-                    loading: false,
-                    message: '',
-                    show: false
-                }
+                modal: false,
+                modalAdd: this.cleanAddModal(),
+                modalCheck: this.cleanCheckModal('')
             })
         }
     }
 
-    private requestSave() {
-        // mostrar modal confirmar
+    private showModalAttended() {
+        this.setState({
+            modal: true,
+            modalAdd: this.cleanAddModal(),
+            modalCheck: this.cleanCheckModal(StudentCheckModalScreens.ATTENDED)
+        })
+    }
+
+    private showModalNoAttended() {
+        this.setState({
+            modal: true,
+            modalAdd: this.cleanAddModal(),
+            modalCheck: this.cleanCheckModal(StudentCheckModalScreens.NO_ATTENDED)
+        })
+    }
+
+
+    private onConfirmCheck(screen: string) {
+        if (screen === StudentCheckModalScreens.ATTENDED) {
+            this.requesAttended()
+        } else if (screen === StudentCheckModalScreens.NO_ATTENDED) {
+            this.requestNoAttended()
+        }
+    }
+
+    private requesAttended() {
         const checkboxes: NodeListOf<HTMLInputElement> = document.querySelectorAll(".StudentFullCard_checkbox input[type=checkbox]:checked");
         const ids = Array.from(checkboxes).map(input => input.value);
         const filteredIds = ids.filter((id: string) => {
             return !!this.studentChecklistCollector.getStudentById(id);
         });
         if (filteredIds.length > 0) {
-            this.sessionService.markAsAttended(this.sessionId, filteredIds, true, this.mentorId)
-                .then(() => {
-                    // mostrar modal exito
-                    // actualizar estado de estudiantes
-                    filteredIds.forEach((id: string) => {
-                        this.studentChecklistCollector.markAsAttendedTo(id);
-                        this.sessionMentor.setAsAttended();
-                        this.setState({
-                            board: this.getBoard()
+            const loadingOptions = {...this.state.modalCheck, loading: true};
+            this.setState({
+                modalCheck: loadingOptions
+            }, () => {
+                this.sessionService.markAsAttended(this.sessionId, filteredIds, true, this.mentorId)
+                    .then(() => {
+                        // mostrar modal exito
+                        // actualizar estado de estudiantes
+                        filteredIds.forEach((id: string) => {
+                            this.studentChecklistCollector.markAsAttendedTo(id);
+                            this.sessionMentor.setAsAttended();
+                            const options = {loading: false, screen: StudentCheckModalScreens.SUCCESS};
+                            this.setState({
+                                board: this.getBoard(),
+                                modalCheck: options
+                            })
                         })
                     })
-                })
-                .catch(() => {
-                    // mostrar modal error
-                })
+                    .catch(() => {
+                        // mostrar modal error
+                    })
+            })
         } else {
             // mostrar modal exito
         }
     }
 
     private requestNoAttended() {
-        this.sessionMentor.setAsNoAttended();
-        this.sessionService.markAsNoAttended(this.sessionId, this.mentorId).then(() => {
-            this.setState({
-                board: this.getBoard()
+        const loadingOptions = {...this.state.modalCheck, loading: true};
+        this.setState({
+            modalCheck: loadingOptions
+        }, () => {
+            this.sessionService.markAsNoAttended(this.sessionId, this.mentorId).then(() => {
+                this.sessionMentor.setAsNoAttended();
+                const options = {loading: false, screen: StudentCheckModalScreens.SUCCESS};
+                this.setState({
+                    board: this.getBoard(),
+                    modalCheck: options
+                })
             })
+            .catch(() => {
+                // mostrar modal error
+            });
         });
     }
 
@@ -207,16 +262,15 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
                 const studentCode = this.state.searchValue;
                 const student = this.studentChecklistCollector.getStudent(studentCode);
                 if (!student) {
-                    // mostrar loading state
                     this.studentsService.searchStudentFromSession(this.sessionId, studentCode, this.mentorId)
                         .then((response: IStudentChecklist) => {
                             // exito: ocultar loading state
                             // exito: mostrar modal con datos de estudiante
                             this.setState({
-                                modal: {
+                                modal: true,
+                                modalAdd: {
                                     loading: false,
                                     message: MESSAGE_ADD_STUDENT,
-                                    show: true,
                                     user: response
                                 }
                             });
@@ -227,10 +281,10 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
                         })
                 } else {
                     this.setState({
-                        modal: {
+                        modal: true,
+                        modalAdd: {
                             loading: false,
                             message: MESSAGE_REPEAT_STUDENT,
-                            show: true,
                             user: student.getContract
                         }
                     });
@@ -243,8 +297,8 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
         const student = this.studentChecklistCollector.getStudent(user.student.code);
         if (!student) {
             const idStudent = user.student.id ? user.student.id : '';
-            const modal = {...this.state.modal, loading: true};
-            this.setState({ modal });
+            const modalAdd = {...this.state.modalAdd, loading: true};
+            this.setState({ modalAdd });
             this.studentsService.addStudentToSession(this.sessionId, idStudent, this.mentorId)
                 .then((response: {id: string}) => {
                     user.id = response.id;
@@ -256,19 +310,16 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
                     this.setState({
                         board: this.getBoard(sessions),
                         fullCardSimple: this.getFullCardSimple(),
-                        isEmpty: sessions.length === 0,
-                        modal: this.cleanModal()
+                        isEmpty: sessions.length === 0
+                    }, () => {
+                        this.closeModal(true);
                     })
                 })
                 .catch(() => {
-                    this.setState({
-                        modal: this.cleanModal()
-                    })
+                    this.closeModal(true);
                 })
         } else {
-            this.setState({
-                modal:this.cleanModal()
-            })
+            this.closeModal(true);
         }
     }
 
@@ -323,11 +374,19 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
         });
     }
 
-    private cleanModal() {
+    private cleanAddModal() {
         return {
             loading: false,
             message: '',
-            show: false
+            show: false,
+            user: null
+        }
+    }
+
+    private cleanCheckModal(screen: string) {
+        return {
+            loading: false,
+            screen
         }
     }
 }
