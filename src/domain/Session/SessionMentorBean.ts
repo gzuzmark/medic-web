@@ -21,10 +21,10 @@ export class SessionMentorBean extends SessionBean {
     }
 
     get isDisabled(): boolean {
-        return (
-            this.session.status !== SESSION_STATUS.RATED &&
-            this.session.status !== SESSION_STATUS.SCHEDULED &&
-            this.session.status !== SESSION_STATUS.ATTENDED
+        return !(
+            this.session.status === SESSION_STATUS.RATED ||
+            this.session.status === SESSION_STATUS.SCHEDULED ||
+            this.session.status === SESSION_STATUS.ATTENDED
         )
     }
 
@@ -33,12 +33,19 @@ export class SessionMentorBean extends SessionBean {
     }
 
     get isDisableNoAttended() {
-        const current = new Date()
+        const current = new Date();
         const to = new Date(this.session.to);
 
         const enableNoAttended = minuteTime * 15;
         const isEnableNoAttended = to.getTime() - current.getTime() <= enableNoAttended;
-        return this.isNoAttended && isEnableNoAttended
+        return this.isNoAttended || !isEnableNoAttended
+    }
+
+    get isDisableAttended() {
+        const current = new Date();
+        const to = new Date(this.session.from);
+        const isEnableNoAttended = to.getTime() - current.getTime() <= 0;
+        return this.isNoAttended || !isEnableNoAttended
     }
 
     public setAsNoAttended() {
@@ -55,7 +62,6 @@ export class SessionMentorBean extends SessionBean {
         if (this.session.availability) {
             ++this.session.availability.count;
         }
-        this.setAsAttended();
     }
 
     public getTotalStudents(): number {
