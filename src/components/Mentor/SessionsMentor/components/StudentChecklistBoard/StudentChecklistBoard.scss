@@ -17,6 +17,10 @@
     display: flex;
     flex-direction: column;
   }
+  &_students {
+    display: flex;
+    flex-direction: column;
+  }
   &_inputs-container {
     display: flex;
     justify-content: space-between;

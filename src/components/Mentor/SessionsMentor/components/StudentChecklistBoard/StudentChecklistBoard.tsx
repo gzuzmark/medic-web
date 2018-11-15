@@ -18,7 +18,7 @@ interface IPropsStudentChecklistBoard {
     isEmpty: boolean;
     onSearch: fnSearch;
     searchValue: string;
-    requestSave() :void;
+    requesAttended() :void;
     requestNoAttended() :void;
 }
 
@@ -112,7 +112,7 @@ class StudentChecklistBoard extends  React.Component<IPropsStudentChecklistBoard
                         <button
                             {...propsAttendedButton}
                             className={'u-Button StudentChecklistBoard_button'}
-                            onClick={this.props.requestSave}>Guardar</button>
+                            onClick={this.props.requesAttended}>Guardar</button>
                     </div>
                 </React.Fragment>
             )
