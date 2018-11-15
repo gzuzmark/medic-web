@@ -50,7 +50,7 @@ export class StudentChecklistCollector {
 
     get isAllStudentsAttended() {
         const candidate = this.sessions.filter((item: StudentChecklistBean) => {
-            return item.status === STUDENT_STATUS.ATTENDED || item.status === STUDENT_STATUS.RATED;
+            return item.status === STUDENT_STATUS.ATTENDED || item.status === STUDENT_STATUS.RATED || item.status === STUDENT_STATUS.NO_ATTENDED;
         });
         return candidate.length === this.sessions.length;
     }

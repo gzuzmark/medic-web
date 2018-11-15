@@ -67,6 +67,10 @@ export class SessionBean {
         return `${dateFormatter.parseDateToString(this.session.from, "h:mm a")} - ${dateFormatter.parseDateToString(this.session.to, "h:mm a")}`;
     }
 
+    public getDate(dateFormatter: AbstractDateParser): string {
+        return `${dateFormatter.parseDateToString(this.session.from, "DD [de] MMMM")}`;
+    }
+
     public isVirtual(): boolean {
         return !!this.session.location && this.session.location.type === SESSION_VIRTUAL;
     }
