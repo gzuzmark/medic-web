@@ -36,7 +36,16 @@ const StudentFullCard: React.StatelessComponent<IPropsStudentFullCard> = (props)
                 <Text3>{props.student.code}</Text3>
             </div>
             <div className={"StudentFullCard_checkbox"}>
-                <input type={"checkbox"} value={props.student.id} defaultChecked={props.student.checked} {...propsInput}/>
+                <input
+                    className={"StudentFullCard_input"}
+                    type={"checkbox"}
+                    value={props.student.id}
+                    id={`StudentFullCard${props.student.id}`}
+                    defaultChecked={props.student.checked}
+                    {...propsInput}/>
+                <label
+                    className="StudentFullCard_label"
+                    htmlFor={`StudentFullCard${props.student.id}`}>&nbsp;</label>
             </div>
         </div>
     );

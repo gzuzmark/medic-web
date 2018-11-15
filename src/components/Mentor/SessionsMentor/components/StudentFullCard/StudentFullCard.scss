@@ -19,4 +19,57 @@
   &_checkbox {
     margin: 0 0 0 auto;
   }
+  &_label {
+    background: white;
+    border: solid 1px #ccd6dc;
+    border-radius: 2px;
+    cursor: pointer;
+    display: block;
+    height: 30px;
+    position: relative;
+    width: 30px;
+    &:before,
+    &:after {
+      border: 1px solid white;
+      border-radius: 4px;
+      content: '';
+      display: none;
+      position: absolute;
+    }
+    &:before {
+      left: 5px;
+      top: 18px;
+      -webkit-transform: rotate(45deg);
+      width: 7px;
+    }
+    &:after {
+      height: 15px;
+      left: 17px;
+      top: 8px;
+      -webkit-transform: rotate(45deg);
+    }
+  }
+  &_input {
+    cursor: pointer;
+    opacity: 0;
+    position: absolute;
+    &:checked + .StudentFullCard_label {
+      &:before,
+      &:after {
+        border: 1px solid #4a4a4a;
+        display: block;
+      }
+    }
+    &:disabled:not(:checked) + .StudentFullCard_label {
+      background: rgb(212, 220, 224);
+      border: 0;
+    }
+    &:disabled:checked + .StudentFullCard_label {
+      background: white;
+      &:before,
+      &:after {
+        border: 1px solid #ccd6dc;
+      }
+    }
+  }
 }

@@ -310,7 +310,8 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
                     this.setState({
                         board: this.getBoard(sessions),
                         fullCardSimple: this.getFullCardSimple(),
-                        isEmpty: sessions.length === 0
+                        isEmpty: sessions.length === 0,
+                        searchValue: ''
                     }, () => {
                         this.closeModal(true);
                     })
