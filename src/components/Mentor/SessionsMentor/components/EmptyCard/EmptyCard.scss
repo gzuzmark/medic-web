@@ -8,25 +8,16 @@
     margin-top: 30px;
   }
   &_item {
-    text-align: center;
-    .icon-add-circle {
-      height: 156px;
-      width: 156px;
-      fill: #CCD6DD;
-    }
-    .icon-users {
+    text-align: left;
+    .icon {
       height: 82px;
       width: 82px;
       fill: #CCD6DD;
     }
-    h2 {
-      color: #CCD6DD;
-      margin: 10px auto 0 auto;
-      width: 65%;
-    }
     h5 {
-      color: #CCD6DD;
-      width: 240px;
+      color: #CCD6DD!important;
+      width: 340px;
+      line-height: 1.33!important;
     }
   }
 }

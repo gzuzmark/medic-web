@@ -142,7 +142,7 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
                 <div className={"SessionsMentor_navigation"}>
                     <Text3>Tus sesiones >&nbsp;</Text3>
                     <Text3>{this.mdp.isDateToday(this.sessionMentor.session.from)? 'Hoy ': ''}{this.sessionMentor.getDate(this.mdp)} >&nbsp;</Text3>
-                    <Text3>{this.sessionMentor.session.isActive ? 'Sesión Activa' : 'Sesión en curso'}</Text3>
+                    <Text3>{`Sesión ${this.state.fullCardSession.type.toLowerCase()}`}</Text3>
                 </div>}
                 {this.state.loading && !this.state.isEmpty &&
                     <Loader top={10} height={50}/>}
