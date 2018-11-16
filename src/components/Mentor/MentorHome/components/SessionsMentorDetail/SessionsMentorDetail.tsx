@@ -16,7 +16,7 @@ interface IPropsSessionsMentorDetail {
 }
 
 
-class SessionsMentorDetail extends React.Component<IPropsSessionsMentorDetail, {}> {
+class  SessionsMentorDetail extends React.Component<IPropsSessionsMentorDetail, {}> {
     private selectedDate: Date;
 
     constructor(props: any) {
@@ -51,7 +51,7 @@ class SessionsMentorDetail extends React.Component<IPropsSessionsMentorDetail, {
                         <div className={"SessionsMentorDetail_sessions"}>
                         {this.props.sessions.pending_sessions.map((item: SessionMentorBean) => {
                             const click = this.toSessionDetail(item);
-                            return <CardSession item={item} key={"CardSession_" + item.session.id} click={click}/>
+                            return <CardSession item={item} key={"CardSession_" + item.session.id} link={click}/>
                         })}
                         </div>
                     }/>
@@ -65,7 +65,7 @@ class SessionsMentorDetail extends React.Component<IPropsSessionsMentorDetail, {
                         <div className={"SessionsMentorDetail_sessions"}>
                             {this.props.sessions.resolve_sessions.map((item: SessionMentorBean) => {
                                 const click = this.toSessionDetail(item);
-                                return <CardSession item={item} key={"CardSession_" + item.session.id} click={click}/>
+                                return <CardSession item={item} key={"CardSession_" + item.session.id} link={click}/>
                             })}
                         </div>
                     }/>
@@ -93,9 +93,7 @@ class SessionsMentorDetail extends React.Component<IPropsSessionsMentorDetail, {
     }
 
     private toSessionDetail(item: SessionMentorBean) {
-        return () => {
-            window.location.assign(`/mentor/sesion/${item.session.id}`);
-        }
+        return `/mentor/sesion/${item.session.id}`;
     }
 
 }
