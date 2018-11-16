@@ -65,6 +65,7 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
                 addEnabled: false,
                 attendedButton: true,
                 noAttendedButton: true,
+                noResultsAdd: false,
                 studentList: []
             },
             fullCardSession: {
@@ -224,7 +225,7 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
                             })
                         })
                     })
-                    .catch(() => {
+                    .catch((error) => {
                         // mostrar modal error
                     })
             })
@@ -265,8 +266,6 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
                 if (!student) {
                     this.studentsService.searchStudentFromSession(this.sessionId, studentCode, this.mentorId)
                         .then((response: IStudentChecklist) => {
-                            // exito: ocultar loading state
-                            // exito: mostrar modal con datos de estudiante
                             this.setState({
                                 modal: true,
                                 modalAdd: {
@@ -276,9 +275,13 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
                                 }
                             });
                         })
-                        .catch(() => {
-                            // error: ocultar loading state
-                            // error: mostrar error en caja de texto
+                        .catch((error) => {
+                            if (error.response.status === 400) {
+                                const newStateBoard = {...this.state.board, noResultsAdd: true};
+                                this.setState({
+                                    board: newStateBoard
+                                })
+                            }
                         })
                 } else {
                     this.setState({
@@ -326,7 +329,15 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
     }
 
     private onSearch(searchValue: string, action: string) {
+        const newStateBoard = {...this.state.board};
+        if (this.state.board.noResultsAdd) {
+            newStateBoard.noResultsAdd = false;
+            this.setState({
+                board: newStateBoard
+            })
+        }
         this.setState({
+            board: newStateBoard,
             searchValue
         }, () => {
             this.searchStudent(action);
@@ -349,6 +360,7 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
             addEnabled: this.sessionMentor.isPhysical(),
             attendedButton: this.studentChecklistCollector.isAllStudentsAttended || this.sessionMentor.isDisableAttended,
             noAttendedButton:this.studentChecklistCollector.atLeastOneAttended || this.sessionMentor.isDisableNoAttended,
+            noResultsAdd: false,
             studentList: this.getStudentList(sessions)
         }
     }
