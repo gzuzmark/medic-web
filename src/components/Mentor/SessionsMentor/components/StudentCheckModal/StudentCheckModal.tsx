@@ -36,8 +36,8 @@ const getScreenData = (screen: string): IStudentCheckModalScreen => {
     let button = '';
     if (screen === StudentCheckModalScreens.ATTENDED) {
         image = <img src={attened} />;
-        title = '¿Estás seguro que deseas guardar la lista de asistencia? ';
-        description = 'Si seleccionas aceptar, luego no podrás modificar la personas marcadas. ';
+        title = '¿Estás seguro que deseas guardar la lista de asistencia?';
+        description = 'Si seleccionas aceptar, luego no podrás modificar la(s) persona(s) marcada(s).';
         button = ' Aceptar';
     } else if (screen === StudentCheckModalScreens.NO_ATTENDED) {
         image = <img src={noAttened} />;
