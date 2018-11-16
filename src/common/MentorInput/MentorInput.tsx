@@ -59,6 +59,7 @@ class MentorInput extends React.Component<IPropsMentorInput, IStateMentorInput> 
 
     public render() {
         let inputClass = 'MentorInput--inactive';
+        let icon = this.props.icon;
         const noAnimation = this.props.animation && this.props.animation.enable === false || this.props.active;
         if (this.props.enable && (this.props.active || noAnimation)) {
             const status = this.state.focus ? 'focus' : 'default';
@@ -68,6 +69,10 @@ class MentorInput extends React.Component<IPropsMentorInput, IStateMentorInput> 
             }
         } else if (!this.props.enable) {
             inputClass = `${inputClass} MentorInput--disabled`;
+        }
+
+        if (!!this.props.error) {
+            icon = 'close-circle'
         }
         return (
             <div
@@ -84,7 +89,7 @@ class MentorInput extends React.Component<IPropsMentorInput, IStateMentorInput> 
                     autoFocus={this.props.input.autoFocus}
                     value={this.props.input.value}
                     placeholder={this.props.input.placeholder}/>
-                    {!!this.props.icon && <Icon name={this.props.icon}/>}
+                    {!!icon && <Icon name={icon}/>}
                     {!!this.props.animation && <Text3>{this.props.animation.text}</Text3>}
                     {!!this.props.error &&
                     <div className={'MentorInput_message'}><SmallText1>{this.props.error}</SmallText1></div>}

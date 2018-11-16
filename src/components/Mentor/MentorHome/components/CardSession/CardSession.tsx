@@ -8,7 +8,7 @@ import './CardSession.scss';
 
 interface IPropsCardSession {
     item: SessionMentorBean;
-    click: () => void;
+    link: string;
 }
 
 
@@ -51,24 +51,24 @@ const CardSession: React.StatelessComponent<IPropsCardSession> = (props) => {
             <div className={"CardSession_options"}>
                 {
                     props.item.getStatus() === SESSION_LIFE.PENDING &&
-                    <button className={"CardSession_options-button"} onClick={props.click}>
+                    <a href={props.link} className={"CardSession_options-button"}>
                         <Icon name={"users"}/>
                         <TextBold3>Ver alumnos</TextBold3>
-                    </button>
+                    </a>
                 }
                 {
                     props.item.getStatus() === SESSION_LIFE.ACTIVE &&
-                    <button className={"CardSession_options-button"} onClick={props.click}>
+                    <a href={props.link} className={"CardSession_options-button"}>
                         <Icon name={"paper-pencil"}/>
                         <TextBold3>Tomar asistencia</TextBold3>
-                    </button>
+                    </a>
                 }
                 {
                     props.item.getStatus() === SESSION_LIFE.RESOLVE &&
-                    <button className={"CardSession_options-button"} onClick={props.click}>
+                    <a href={props.link} className={"CardSession_options-button"}>
                         <Icon name={"paper-pencil"}/>
                         <TextBold3>Editar asistencia</TextBold3>
-                    </button>
+                    </a>
                 }
             </div>
         </div>

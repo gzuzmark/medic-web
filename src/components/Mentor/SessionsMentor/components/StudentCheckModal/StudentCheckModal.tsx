@@ -45,7 +45,7 @@ const getScreenData = (screen: string): IStudentCheckModalScreen => {
         description = 'Al parecer los alumnos no se presentaron, por favor presiona aceptar para cerrar la lista.';
         button = ' Aceptar';
     } else if (screen === StudentCheckModalScreens.SUCCESS) {
-        image = <Icon name={'add-circle'}/>;
+        image = <Icon name={'check-circle'}/>;
         title = '¡Listo!';
         description = 'Asistencia guardada';
     }
