@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Text3 } from '../../common/ConsoleText';
+import { SmallText1, Text3 } from '../../common/ConsoleText';
 import Icon from "../Icon/Icon";
 import './MentorInput.scss';
 
@@ -7,6 +7,7 @@ interface IPropsMentorInput {
     active?: boolean; // active or deactive animation
     icon?: string;
     enable?: boolean; // disable or enable input
+    error?: string;
     forceFocus?: boolean;
     style?: React.CSSProperties;
     animation?: {
@@ -61,7 +62,10 @@ class MentorInput extends React.Component<IPropsMentorInput, IStateMentorInput> 
         const noAnimation = this.props.animation && this.props.animation.enable === false || this.props.active;
         if (this.props.enable && (this.props.active || noAnimation)) {
             const status = this.state.focus ? 'focus' : 'default';
-            inputClass = `MentorInput--${status}`
+            inputClass = `MentorInput--${status}`;
+            if (!!this.props.error) {
+                inputClass = `${inputClass} MentorInput--error`;
+            }
         } else if (!this.props.enable) {
             inputClass = `${inputClass} MentorInput--disabled`;
         }
@@ -82,6 +86,8 @@ class MentorInput extends React.Component<IPropsMentorInput, IStateMentorInput> 
                     placeholder={this.props.input.placeholder}/>
                     {!!this.props.icon && <Icon name={this.props.icon}/>}
                     {!!this.props.animation && <Text3>{this.props.animation.text}</Text3>}
+                    {!!this.props.error &&
+                    <div className={'MentorInput_message'}><SmallText1>{this.props.error}</SmallText1></div>}
             </div>
         );
     }

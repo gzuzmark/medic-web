@@ -10,6 +10,7 @@ export interface IStudentChecklistBoard {
     addEnabled: boolean;
     attendedButton: boolean;
     noAttendedButton: boolean;
+    noResultsAdd: boolean;
     studentList: IStudentChecklistCard[];
 }
 
@@ -118,11 +119,22 @@ class StudentChecklistBoard extends  React.Component<IPropsStudentChecklistBoard
                 </React.Fragment>
             )
         }
+
+        const searchError = this.props.board.studentList.length === 0 &&
+                            this.state.activeSearch &&
+                            this.props.searchValue !== '' ?
+                            'No se encontró ningún alumno con ese código' : '';
+        const addError = !this.state.activeSearch &&
+                         this.props.searchValue !== '' &&
+                         this.props.board.noResultsAdd ?
+                         'No se ha encontrado a ningún alumno con ese código':'';
+
         return (
             <div className={`StudentChecklistBoard`}>
                 <div className={"StudentChecklistBoard_inputs-container"}>
                     <MentorInput
                         active={this.state.activeSearch}
+                        error={searchError}
                         icon={"search"}
                         input={inputSearch}
                         style={{minWidth: `${this.state.activeSearch?'498px': '0px'}`, justifyContent: 'flex-start'}}
@@ -133,6 +145,7 @@ class StudentChecklistBoard extends  React.Component<IPropsStudentChecklistBoard
                     <MentorInput
                         active={!this.state.activeSearch}
                         enable={this.props.board.addEnabled}
+                        error={addError}
                         icon={"add-circle"}
                         input={addSearch}
                         style={{minWidth: `${!this.state.activeSearch?'498px': '0px'}`, justifyContent: 'flex-end'}}

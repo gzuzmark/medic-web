@@ -11,6 +11,9 @@
     top: 0;
     width: 100%;
   }
+  &_message {
+    display: none;
+  }
   &--default {
     .MentorInput_input {
       border: solid 1px #ccd6dc;
@@ -20,17 +23,30 @@
     }
     .icon {
       fill: #ccd6dc;
-     }
+    }
   }
   &--error {
-    .MentorInput_input {
-      border: solid 1px #ff8389;
-      &:focus {
-        border: solid 1px #ff8389;
-      }
-    }
     .icon {
-      fill: #ff8389;
+      fill: #ff8389!important;
+    }
+    .MentorInput {
+      &_message {
+        bottom: -16px;
+        display: block;
+        height: 14px;
+        position: absolute;
+        width: 100%;
+        span {
+          display: block;
+          color: #ff8389!important;
+        }
+      }
+      &_input {
+        border: solid 1px #ff8389;
+        &:focus {
+          border: solid 1px #ff8389;
+        }
+      }
     }
   }
   &--default, &--error {
