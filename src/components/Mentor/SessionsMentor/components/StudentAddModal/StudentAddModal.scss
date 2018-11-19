@@ -3,10 +3,6 @@
   flex-direction: column;
   flex-grow: 1;
   justify-content: space-around;
-  min-height: 350px;
-  &_header {
-    width: 100%;
-  }
   &_pri-art {
     display: block;
     height: 82px!important;
@@ -38,7 +34,6 @@
   }
   &_message {
     display: block;
-    margin-bottom: 20px;
     text-align: center;
     width: 100%;
     span {

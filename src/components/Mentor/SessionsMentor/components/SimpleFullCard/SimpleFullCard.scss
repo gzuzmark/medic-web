@@ -16,7 +16,9 @@
     span:nth-child(2) {
       color: #4a4a4a!important;
     }
-    span:nth-child(3) {
+  }
+  &_description {
+    span {
       color: #696d6e!important;
     }
   }

@@ -8,6 +8,7 @@
   transition: background 0.3s ease-in;
   &--new {
     background: #eef2f6;
+    animation: toWhite 5s forwards;
     order: -1;
   }
   &_right {
@@ -72,4 +73,8 @@
       }
     }
   }
+}
+
+@keyframes toWhite {
+  to {background-color: white;}
 }

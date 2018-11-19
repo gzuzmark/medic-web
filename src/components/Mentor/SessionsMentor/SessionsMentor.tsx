@@ -74,6 +74,7 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
             },
             fullCardSimple: {
                 description: '',
+                isLink: false,
                 subtitle: '',
                 title: ''
             },
@@ -128,7 +129,10 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
 
     public render() {
         return <Layout title={"Tutores"}>
-            <MentorModalBase show={this.state.modal} onCloseModal={this.closeModal}>
+            <MentorModalBase
+                show={this.state.modal}
+                onCloseModal={this.closeModal}
+                hideClose={this.state.modalCheck.screen === StudentCheckModalScreens.SUCCESS}>
                 {!!this.state.modalAdd.user?
                     <StudentAddModal
                         options={this.state.modalAdd}
@@ -218,11 +222,7 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
                         filteredIds.forEach((id: string) => {
                             this.studentChecklistCollector.markAsAttendedTo(id);
                             this.sessionMentor.setAsAttended();
-                            const options = {loading: false, screen: StudentCheckModalScreens.SUCCESS};
-                            this.setState({
-                                board: this.getBoard(),
-                                modalCheck: options
-                            })
+                            this.showSuccessModal();
                         })
                     })
                     .catch((error) => {
@@ -241,16 +241,24 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
         }, () => {
             this.sessionService.markAsNoAttended(this.sessionId, this.mentorId).then(() => {
                 this.sessionMentor.setAsNoAttended();
-                const options = {loading: false, screen: StudentCheckModalScreens.SUCCESS};
-                this.setState({
-                    board: this.getBoard(),
-                    modalCheck: options
-                })
+                this.showSuccessModal();
             })
             .catch(() => {
                 // mostrar modal error
             });
         });
+    }
+
+    private showSuccessModal() {
+        const options = {loading: false, screen: StudentCheckModalScreens.SUCCESS};
+        this.setState({
+            board: this.getBoard(),
+            modalCheck: options
+        }, () => {
+            setTimeout(() => {
+                this.closeModal(true);
+            }, 1300)
+        })
     }
 
     private searchStudent(action: string) {
@@ -368,6 +376,7 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
     private getFullCardSimple(): ISimpleFullCard {
         return {
             description: this.sessionMentor.getLocation(),
+            isLink: this.sessionMentor.isVirtual(),
             subtitle: this.sessionMentor.getAvailability(),
             title: this.sessionMentor.skillName,
         };

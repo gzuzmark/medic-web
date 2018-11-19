@@ -6,6 +6,7 @@ import './MentorModalBase.scss';
 
 interface IPropsMentorModalBase {
     show: boolean;
+    hideClose?: boolean;
     styles?: React.CSSProperties;
     onCloseModal?(): void;
 }
@@ -31,7 +32,7 @@ const MentorModalBase: React.StatelessComponent<IPropsMentorModalBase> = (props)
                     display: "flex",
                     flexDirection: "column",
                     flexWrap: "nowrap",
-                    minHeight: 330,
+                    minHeight: 300,
                     padding: 0,
                     width: 600,
                     ...props.styles
@@ -39,7 +40,7 @@ const MentorModalBase: React.StatelessComponent<IPropsMentorModalBase> = (props)
             }}>
             <div className="MentorModalBase">
             {
-                !!props.onCloseModal &&
+                !!props.onCloseModal && !props.hideClose &&
                 <button className="MentorModalBase_close" onClick={props.onCloseModal}>
                     <Icon name="close"/>
                 </button>
