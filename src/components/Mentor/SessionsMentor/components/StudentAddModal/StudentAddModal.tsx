@@ -33,29 +33,22 @@ const StudentAddModal: React.StatelessComponent<IPropsStudentModalCard> = (props
     }
     return !!props.options.user && (
         <div className={`StudentModalCard`}>
-            <div className={"StudentModalCard_header"}>
-                <div className={"StudentModalCard_pri-art u-ImageContainer"}>
-                    <img src={props.options.user.student.photo}
-                         title={"Estudiante"}
-                         className={"StudentModalCard_image"} />
-                </div>
-            </div>
             <div className={"StudentModalCard_body"}>
                 <div className={"StudentModalCard_message"}>
                     <TextBold1>{props.options.message}</TextBold1>
                 </div>
-                <div className={"StudentModalCard_custom-width"}>
-                    <div className={"StudentModalCard_body-left"}>
-                        <div className={"StudentModalCard_image-container u-ImageContainer"}>
-                            <img src={props.options.user.student.photo}
-                                 title={"Estudiante"}
-                                 className={"StudentModalCard_image"} />
-                        </div>
+            </div>
+            <div className={"StudentModalCard_custom-width"}>
+                <div className={"StudentModalCard_body-left"}>
+                    <div className={"StudentModalCard_image-container u-ImageContainer"}>
+                        <img src={props.options.user.student.photo}
+                             title={"Estudiante"}
+                             className={"StudentModalCard_image"} />
                     </div>
-                    <div className={"StudentModalCard_body-right"}>
-                        <Text2>{props.options.user.student.name}</Text2>
-                        <Text3>{props.options.user.student.code}</Text3>
-                    </div>
+                </div>
+                <div className={"StudentModalCard_body-right"}>
+                    <Text2>{props.options.user.student.name}</Text2>
+                    <Text3>{props.options.user.student.code}</Text3>
                 </div>
             </div>
             <div className={"StudentModalCard_footer"}>
