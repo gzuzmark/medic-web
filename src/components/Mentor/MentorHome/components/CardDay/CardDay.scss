@@ -4,13 +4,13 @@
   border-radius: 5px;
   display: flex;
   flex-direction: column;
-  height: 120px;
+  height: 126px;
   justify-content: center;
-  width: 120px;
+  width: 126px;
   &--disabled {
     background: white;
     border: #d4dce0 1px solid;
-    span, h1 {
+    span, h3, h4 {
       color: #d4dce0!important;
     }
   }
@@ -21,24 +21,15 @@
     background: #f9fbff;
     border: #81a8d2 2px solid;
     cursor: pointer;
-    span, h1 {
-      color: #4a4a4a!important;
-    }
   }
   &:hover:not(.CardDay--disabled) {
     background: white;
     border: #561cac 2px solid;
     box-shadow: 4px 4px 16px -2px rgba(74, 74, 74, 0.32);
-    span, h1 {
-      color: #4a4a4a!important;
-    }
   }
   &:active:not(.CardDay--disabled) {
     background: #f9fbff;
     border: #561cac 2px solid;
     box-shadow: 0 0 0 0;
-    span, h1 {
-      color: #4a4a4a!important;
-    }
   }
 }
