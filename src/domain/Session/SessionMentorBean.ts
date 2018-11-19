@@ -59,7 +59,7 @@ export class SessionMentorBean extends SessionBean {
     }
 
     public setAsScheduled() {
-        if (this.session.status === SESSION_STATUS.AVAILABLE) {
+        if (this.session.status === SESSION_STATUS.AVAILABLE || this.session.status === SESSION_STATUS.CADUCED) {
             this.session.status = SESSION_STATUS.SCHEDULED
         }
     }
