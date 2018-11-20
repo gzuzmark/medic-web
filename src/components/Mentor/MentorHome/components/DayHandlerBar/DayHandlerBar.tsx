@@ -5,6 +5,7 @@ import {MomentDateParser} from "../../../../../domain/DateManager/MomentDatePars
 import {IRangeDay} from "../../MentorHome";
 import CardDay from "../CardDay/CardDay";
 import './DayHandlerBar.scss';
+import {STATUS_DAY_SESSIONS} from "../../../../../domain/Session/SessionCollector";
 
 interface IPropsDayHandlerBar {
     loading: boolean;
@@ -53,9 +54,9 @@ class DayHandlerBar extends React.Component<IPropsDayHandlerBar, {}> {
                     const click = this.triggerClick(day.date);
                     let status = day.status;
                     if (this.props.loading) {
-                        status = 'disabled'
+                        status = STATUS_DAY_SESSIONS.DISABLED
                     } else if (this.mdp.isSameDate(this.props.selectedDate, day.date)) {
-                        status = 'active';
+                        status = STATUS_DAY_SESSIONS.ACTIVE;
                     }
                     return (
                         <CardDay

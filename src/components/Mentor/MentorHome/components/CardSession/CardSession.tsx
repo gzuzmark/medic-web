@@ -6,7 +6,7 @@ import {SESSION_LIFE} from "../../../../../domain/Session/SessionBean";
 import {SessionMentorBean} from "../../../../../domain/Session/SessionMentorBean";
 import './CardSession.scss';
 
-interface IPropsCardSession {
+export interface IPropsCardSession {
     item: SessionMentorBean;
     link: string;
 }
