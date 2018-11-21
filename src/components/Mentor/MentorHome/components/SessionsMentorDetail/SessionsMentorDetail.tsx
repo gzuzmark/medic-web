@@ -10,11 +10,14 @@ import CardSession from "../CardSession/CardSession";
 import './SessionsMentorDetail.scss';
 
 interface IPropsSessionsMentorDetail {
-    sessions:  ISessionCollector<SessionMentorBean>;
     selectedDate: string;
-    scrollTop: boolean;
+    sessionDetail: ISessionMentorDetail
 }
 
+export interface ISessionMentorDetail {
+    sessions:  ISessionCollector<SessionMentorBean> | null;
+    scrollTop: boolean;
+}
 
 class  SessionsMentorDetail extends React.Component<IPropsSessionsMentorDetail, {}> {
     private selectedDate: Date;
@@ -33,44 +36,48 @@ class  SessionsMentorDetail extends React.Component<IPropsSessionsMentorDetail, 
             day = 'mañana, ';
         }
         const isEmpty =
-            this.props.sessions &&
-            this.props.sessions.resolve_sessions.length === 0 &&
-            this.props.sessions.pending_sessions.length === 0;
-        return this.props.sessions && !isEmpty ? (
+            this.props.sessionDetail.sessions &&
+            this.props.sessionDetail.sessions.resolve_sessions.length === 0 &&
+            this.props.sessionDetail.sessions.pending_sessions.length === 0;
+        const sections = this.props.sessionDetail.sessions ?
+            this.props.sessionDetail.sessions.description :
+            {topText: '', mainText: '', bottomText: ''};
+        const title = `${sections.topText.toLowerCase()} ${sections.mainText} ${sections.bottomText.toLowerCase()}`;
+        return this.props.sessionDetail.sessions && !isEmpty ? (
             <div className={"SessionsMentorDetail"}>
                 <div className={"SessionsMentorDetail_title"}>
                     <Title2>
-                        Sesiones de {day}{this.props.sessions.description.topText.toLowerCase()} {this.props.sessions.description.mainText} {this.props.sessions.description.bottomText.toLowerCase()}</Title2>
+                        Sesiones de {day}{title}</Title2>
                 </div>
-                {!!this.props.sessions.pending_sessions.length && <div className={"SessionsMentorDetail_session-container"}>
+                {!!this.props.sessionDetail.sessions.pending_sessions.length && <div className={"SessionsMentorDetail_session-container"}>
                     <Accordion title={
                         <div className={"SessionsMentorDetail_session-title"}>
                             <Text1>Sesiones Activas</Text1>
                         </div>
                     } body={
                         <div className={"SessionsMentorDetail_sessions"}>
-                        {this.props.sessions.pending_sessions.map((item: SessionMentorBean) => {
+                        {this.props.sessionDetail.sessions.pending_sessions.map((item: SessionMentorBean) => {
                             const click = this.toSessionDetail(item);
                             return <CardSession item={item} key={"CardSession_" + item.session.id} link={click}/>
                         })}
                         </div>
                     }/>
                 </div>}
-                {!!this.props.sessions.resolve_sessions.length && <div className={"SessionsMentorDetail_session-container"}>
+                {!!this.props.sessionDetail.sessions.resolve_sessions.length && <div className={"SessionsMentorDetail_session-container"}>
                     <Accordion title={
                         <div  className={"SessionsMentorDetail_session-title"}>
                             <Text1>Sesiones Terminadas</Text1>
                         </div>
                     } body={
                         <div className={"SessionsMentorDetail_sessions"}>
-                            {this.props.sessions.resolve_sessions.map((item: SessionMentorBean) => {
+                            {this.props.sessionDetail.sessions.resolve_sessions.map((item: SessionMentorBean) => {
                                 const click = this.toSessionDetail(item);
                                 return <CardSession item={item} key={"CardSession_" + item.session.id} link={click}/>
                             })}
                         </div>
                     }/>
                 </div>}
-                {this.props.scrollTop && <div>
+                {this.props.sessionDetail.scrollTop && <div>
                     <button className={"SessionsMentorDetail_scroll-top"} onClick={Utilities.scrollToTop}>
                         <Icon name="navigation-arrow" />
                         <TextBold3>Subir</TextBold3>
@@ -81,8 +88,7 @@ class  SessionsMentorDetail extends React.Component<IPropsSessionsMentorDetail, 
             <div className={"SessionsMentorDetail"}>
                 <div className={"SessionsMentorDetail_title"}>
                     <Title2>
-                        Sesiones de {day}{this.props.sessions.description.topText.toLowerCase()} {this.props.sessions.description.mainText} {this.props.sessions.description.bottomText.toLowerCase()}</Title2>
-
+                        Sesiones de {day}{title}</Title2>
                     <img
                         className={"SessionsMentorDetail_empty-state"}
                         src={emptyState}/>

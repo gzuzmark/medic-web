@@ -14,6 +14,12 @@ export interface ISessionCollector<T> {
     resolve_sessions: T[];
 }
 
+export const STATUS_DAY_SESSIONS = {
+    ACTIVE:'active',
+    DEFAULT: 'default',
+    DISABLED: 'disabled'
+}
+
 export class SessionCollector<T extends SessionBean> {
     public sessions: T[];
     public sessionCollector: Array<ISessionCollector<T>>;
@@ -51,12 +57,6 @@ export class SessionCollector<T extends SessionBean> {
         })
     }
 
-    public getFirstDate(currentWeek: boolean) {
-        return currentWeek ?
-            new Date() :
-            new Date(this.firstEnableDate);
-    }
-
     private orderSessions() {
         this.sessionCollector.sort((itemA, itemB) => {
             const dateA = new Date(itemA.date);
@@ -70,7 +70,7 @@ export class SessionCollector<T extends SessionBean> {
             const date = new Date(item.session.from);
             const collector = this.sessionCollector[date.getDay()];
             if (collector) {
-                collector.status = 'default';
+                collector.status = STATUS_DAY_SESSIONS.DEFAULT;
                 if (item.session.isActive) {
                     collector.pending_sessions.push(item);
                 } else {
@@ -98,7 +98,7 @@ export class SessionCollector<T extends SessionBean> {
                 },
                 pending_sessions: [] as T[],
                 resolve_sessions: [] as T[],
-                status: "disabled"
+                status: STATUS_DAY_SESSIONS.DISABLED
             };
             date.setDate(date.getDate() + 1);
         }

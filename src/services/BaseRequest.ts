@@ -19,11 +19,19 @@ class BaseRequest {
         this.onResponseError();
     }
 
-    public getCustomInstance(token: string, url: string) {
-        return Axios.create({
+    public getCustomInstance(token: string, url: string, cancel?: any) {
+        const params: {baseURL: string, headers: object, cancelToken?: any} = {
             baseURL: url,
             headers: {...headersRequest, 'Authorization': 'Bearer ' + token, 'installedVersion': '1.0.0', 'platformName': 'web', 'resolution': 'hdpi'},
-        });
+        };
+        if (!!cancel) {
+            params.cancelToken = cancel.token;
+        }
+        return Axios.create(params);
+    }
+
+    public generateCancelToken() {
+        return Axios.CancelToken.source();
     }
 
     public refreshToken() {
