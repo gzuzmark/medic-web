@@ -7,13 +7,15 @@ import './CardDay.scss';
 export interface IPropsCardDay {
     status: string;
     description: IBoxDayDescription;
+    today: boolean;
     click(): void;
 }
 
 
 const CardDay: React.StatelessComponent<IPropsCardDay> = (props) => {
+    const classToday = props.today ? 'CardDay--today' : '';
     return (
-        <div className={`CardDay CardDay--${props.status}`} onClick={props.click}>
+        <div className={`CardDay CardDay--${props.status} ${classToday}`} onClick={props.click}>
             {props.status === STATUS_DAY_SESSIONS.ACTIVE ?
                 <React.Fragment>
                     <Heading3>{props.description.topText}</Heading3>

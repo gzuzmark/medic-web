@@ -57,12 +57,6 @@ export class SessionCollector<T extends SessionBean> {
         })
     }
 
-    public getFirstDate(currentWeek: boolean) {
-        return currentWeek ?
-            new Date() :
-            new Date(this.firstEnableDate);
-    }
-
     private orderSessions() {
         this.sessionCollector.sort((itemA, itemB) => {
             const dateA = new Date(itemA.date);

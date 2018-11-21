@@ -25,7 +25,8 @@ describe('CardDay Test',() => {
                 mainText: '25',
                 topText: 'Lunes'
             },
-            status: STATUS_DAY_SESSIONS.DEFAULT
+            status: STATUS_DAY_SESSIONS.DEFAULT,
+            today: false
         };
         mountedCardDay = undefined;
     });

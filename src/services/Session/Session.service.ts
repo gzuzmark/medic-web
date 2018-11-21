@@ -4,6 +4,7 @@ import { IReportForSession } from '../../interfaces/Reports.interface';
 import BaseRequest from '../BaseRequest';
 
 class SessionService extends BaseRequest {
+    private listMentorSessionsCancelToken: any = null;
 
     public listReport(params: string): Promise<IReportForSession> {
         return new Promise((resolve, reject) => {
@@ -78,14 +79,20 @@ class SessionService extends BaseRequest {
 
     // Mentor Service
     public listMentorSessions(from: string, to: string, id: string = ''): Promise<ISessionMentor[]> {
+        if (!!this.listMentorSessionsCancelToken) {
+            this.listMentorSessionsCancelToken.cancel();
+        }
+        this.listMentorSessionsCancelToken = this.generateCancelToken();
         let instance: any;
         if (!id) {
             instance = this.getCustomInstance(
                 "K42cWStRagrHBjnWRBAKZ/PO58bxICfBOomyTn4yJnyeAhq4+YWtJg==",
-                "https://ugo-utp-dev.appspot.com/_ah/api/ugo/mentors-api/");
+                "https://ugo-utp-dev.appspot.com/_ah/api/ugo/mentors-api/",
+                this.listMentorSessionsCancelToken);
         } else {
             instance = this.getCustomInstance(id,
-                "https://ugo-utp-qa.appspot.com/_ah/api/ugo/mentors-api/");
+                "https://ugo-utp-qa.appspot.com/_ah/api/ugo/mentors-api/",
+                this.listMentorSessionsCancelToken);
         }
         return new Promise((resolve, reject) => {
             instance.get(`me/sessions/all?from=${from}&to=${to}`)
@@ -97,7 +104,6 @@ class SessionService extends BaseRequest {
                     }
                 })
                 .catch((error: any) => {
-                    this.validSession();
                     reject(error);
                 });
         });

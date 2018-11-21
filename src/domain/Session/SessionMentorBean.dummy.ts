@@ -20,4 +20,3 @@ export const sessionMentorDummy: ISessionMentor = {
     status: "AVAILABLE",
     to: "2018-10-26T10:12:27.000-05:00"
 };
-

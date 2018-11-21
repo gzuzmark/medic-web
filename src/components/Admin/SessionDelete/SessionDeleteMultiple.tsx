@@ -210,8 +210,10 @@ class SessionDeleteMultiple extends React.Component<IPropsSessionDeleteMultiple,
 
     private _updateSelectedSession(selectedSession: ISessionItem) {
         this.selectedCheckboxes = [];
-        const currentSession = this.formSessionDeleteBean.getSelectedSession();
-        this.formSessionDeleteBean.setSelectedSession({...currentSession, ...selectedSession});
+        if (this.formSessionDeleteBean) {
+            const currentSession = this.formSessionDeleteBean.getSelectedSession();
+            this.formSessionDeleteBean.setSelectedSession({...currentSession, ...selectedSession});
+        }
     }
 
     private _onFilter(selectedSession: ISessionItem, key: string) {
@@ -237,6 +239,9 @@ class SessionDeleteMultiple extends React.Component<IPropsSessionDeleteMultiple,
     }
 
     private _onSearch(selectedSession?: ISessionItem) {
+        if (!this.formSessionDeleteBean) {
+            return
+        }
         if (selectedSession) {
             this._updateSelectedSession(selectedSession);
         }
