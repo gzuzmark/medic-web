@@ -4,6 +4,7 @@ import Icon from "../../../common/Icon/Icon";
 import Layout from "../../../common/Layout/Layout";
 import Loader from "../../../common/Loader/Loader";
 import Utilities from "../../../common/Utilities";
+import {MomentDateParser} from "../../../domain/DateManager/MomentDateParser";
 import {ListenerFirebase} from "../../../domain/Listener/ListenerFirebase";
 import {IBoxDayDescription, SessionCollector} from "../../../domain/Session/SessionCollector";
 import {ISessionMentor, SessionMentorBean} from "../../../domain/Session/SessionMentorBean";
@@ -38,6 +39,7 @@ class MentorHome extends React.Component<IPropsMentorHome, IStateMentorHome> {
     private mentorToken: string;
     private mentorId: string;
     private listenerFirebase: ListenerFirebase;
+    private mdp: MomentDateParser;
     constructor(props: any) {
         super(props);
         this.state = {
@@ -58,6 +60,7 @@ class MentorHome extends React.Component<IPropsMentorHome, IStateMentorHome> {
         this.updateSessionDetail = this.updateSessionDetail.bind(this);
         this.updateDaysBar = this.updateDaysBar.bind(this);
         this.tmpFirstLoad = this.tmpFirstLoad.bind(this);
+        this.mdp = new MomentDateParser();
     }
 
     public componentDidMount() {
@@ -161,6 +164,7 @@ class MentorHome extends React.Component<IPropsMentorHome, IStateMentorHome> {
                 let newState = {};
                 const mentorSessions = sessions.map((item) => new SessionMentorBean(item));
                 const sessionCollector = new SessionCollector<SessionMentorBean>(mentorSessions, from.toISOString(), 1);
+                const isSameWeek = this.mdp.isSameWeek(from.toISOString(), this.sessionCollector.selectedDate);
                 if (!this.state.sessionDetail.sessions || !!forceRefresh) {
                     const selectedDate = new Date(this.state.selectedDate);
                     newState = {
@@ -168,7 +172,7 @@ class MentorHome extends React.Component<IPropsMentorHome, IStateMentorHome> {
                         sessionDetail: this.updateSessionDetail(selectedDate, sessionCollector)
                     }
                 }
-                if (!forceRefresh) {
+                if (isSameWeek || !forceRefresh) {
                     this.sessionCollector = sessionCollector;
                     this.setState({
                         daysBar: this.updateDaysBar(counter),
