@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { ButtonNormal } from '../../../../common/Buttons/Buttons';
+import ConsoleInputRadio from "../../../../common/ConsoleInputRadio/ConsoleInputRadio";
 import MentorInput from "../../../../common/MentorInput/MentorInput";
 import InputError from "../InputError/InputError";
 import './LoginForm.scss';
@@ -43,7 +44,11 @@ class LoginForm extends React.Component<IPropsForm, {}> {
                 <InputError
                     error={this.props.errors.username || this.props.errors.password}
                     touched={this.props.touched.username || this.props.touched.password}/>
-                <ButtonNormal text={"Ingresar"} attrs={{...this.props.buttonAttr, style: {marginTop: 20}}}/>
+                <div className="LoginForm_rol">
+                    <ConsoleInputRadio title='Mentor' name='rol' checked={true} value={'mentor'} onChange={this.props.handleChange}/>
+                    <ConsoleInputRadio title='Administrador' name='rol' checked={true} value={'administrador'} onChange={this.props.handleChange}/>
+                </div>
+                <ButtonNormal text={"Ingresar"} attrs={{...this.props.buttonAttr, style: {marginTop: 20, marginBottom: 10}}}/>
             </form>
         );
     }

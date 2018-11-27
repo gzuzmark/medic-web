@@ -24,14 +24,14 @@ class LoginPresentation extends React.Component<{}, {}> {
                 <div className="Login_section Login_section--form">
                     <div className="Login_form">
                         <Display2 weight={LIGHT_TEXT} color={'font_medium'}>¡Bienvenido!</Display2>
-                        <Subhead1 weight={LIGHT_TEXT} color={'font_medium'}>
+                        <Subhead1 weight={LIGHT_TEXT} color={'font_medium'} style={{margin: '7px 0 auto 0'}}>
                             Ingresa tu correo y contraseña de UTP
                         </Subhead1>
                         {this.props.children}
                         <div className="Login_footer">
-                            <div><Icon name={'locker'}/></div>
+                            <div style={{marginRight: 5}}><Icon name={'locker'}/></div>
                             <div>
-                                <Small2>¿Olvidaste tu contraseña?&nbsp;</Small2>
+                                <Small2>¿Olvidaste tu contraseña? </Small2>
                                 <Small2 weight={LIGHT_TEXT}>Para recuperarla escríbenos a ugoadministrador@ugo.com.pe</Small2>
                             </div>
                         </div>

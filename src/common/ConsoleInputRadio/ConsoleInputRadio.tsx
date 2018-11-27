@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Text } from '../ConsoleText';
+import {Body1, LIGHT_TEXT} from '../MentorText';
 import './ConsoleInputRadio.scss';
 
 interface IPropsConsoleInputRadio {
@@ -12,7 +12,7 @@ interface IPropsConsoleInputRadio {
 const ConsoleInputRadio: React.StatelessComponent<IPropsConsoleInputRadio> = (props) => {
     return (
         <label className="ConsoleInputRadio">
-            <Text style={{fontSize: 16}}>{props.title}</Text>
+            <Body1 weight={LIGHT_TEXT} style={{marginLeft: 5, display: 'block'}}>{props.title}</Body1>
             <input className="ConsoleInputRadio--input"
                    type="radio"
                    name={props.name}

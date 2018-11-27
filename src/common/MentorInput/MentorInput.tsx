@@ -16,7 +16,6 @@ interface IPropsMentorInput {
         enable?: boolean;
         text?: string;
     };
-    onClick?: (event: any) => void;
     attrs?: any;
 }
 
@@ -68,8 +67,11 @@ class MentorInput extends React.Component<IPropsMentorInput, IStateMentorInput> 
             icon = 'close'
         }
         return (
-            <div style={{...this.props.styleContainer}}>
-                {!!this.props.label && <label><Small1>{this.props.label}</Small1></label>}
+            <div style={{...this.props.styleContainer}} onClick={this.onClick}>
+                {!!this.props.label &&
+                <label>
+                    <Small1 style={{marginBottom: 3, display: 'block'}}>{this.props.label}</Small1>
+                </label>}
                 <div
                     className={`MentorInput ${inputClass}`}
                     style={{...this.props.style}}>

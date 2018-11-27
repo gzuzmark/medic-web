@@ -25,13 +25,13 @@ export interface IButtonSizes {
 
 const sizes: IButtonSizes = {
     large: {
-        height: '32px',
+        height: '48px',
     },
     medium: {
         height: '40px',
     },
     small: {
-        height: '48px',
+        height: '32px',
     }
 };
 
@@ -121,7 +121,7 @@ const ButtonNormal = styled(Button)`
   border-radius: 3px;
   cursor: pointer;
   display: flex;
-  height: ${getHeight};
+  min-height: ${getHeight};
   justify-content: center;
   padding: 0 16px;
   transition-property: background, border, color;
@@ -188,7 +188,7 @@ const ButtonLink = styled(Link)`
   border: 0;
   cursor: pointer;
   display: flex;
-  height: ${getHeight};
+  min-height: ${getHeight};
   justify-content: center;
   padding: 0 16px;
   text-decoration: none;
