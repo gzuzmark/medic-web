@@ -10,6 +10,7 @@ interface IPropsMentorInput {
     error?: string;
     forceFocus?: boolean;
     style?: React.CSSProperties;
+    styleContainer?: React.CSSProperties;
     label?: string;
     animation?: {
         enable?: boolean;
@@ -67,7 +68,7 @@ class MentorInput extends React.Component<IPropsMentorInput, IStateMentorInput> 
             icon = 'close'
         }
         return (
-            <div>
+            <div style={{...this.props.styleContainer}}>
                 {!!this.props.label && <label><Small1>{this.props.label}</Small1></label>}
                 <div
                     className={`MentorInput ${inputClass}`}

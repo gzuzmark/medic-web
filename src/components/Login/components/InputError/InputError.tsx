@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { Small2 } from '../../../../common/MentorText';
+import './InputError.scss';
 
 interface IPropsForm {
     error: string;

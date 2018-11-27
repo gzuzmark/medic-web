@@ -16,6 +16,8 @@
 .LoginForm {
   display: flex;
   flex-direction: column;
+  width: 320px;
+  
   &-input {
     border: 1px solid rgb(193, 193, 193);
     border-radius: 5px;
@@ -45,10 +47,10 @@
     }
   }
   &-button {
-    width: 328px;
-    margin-top: 20px;
-    height: 56px;
     font-size: 18px;
+    height: 56px;
+    margin-top: 20px;
+    width: 328px;
   }
 }
 

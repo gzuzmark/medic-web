@@ -30,7 +30,8 @@ class LoginForm extends React.Component<IPropsForm, {}> {
                         onChange: this.props.handleChange,
                         placeholder: "Ingresa tu usuario"}}
                     error={(this.props.touched.username && !!this.props.errors.username) ? ' ' : '' }
-                    label={"USUARIO"}/>
+                    label={"USUARIO"}
+                    styleContainer={{marginBottom: 27}}/>
                 <MentorInput
                     attrs={{
                         name: "password",
@@ -39,11 +40,10 @@ class LoginForm extends React.Component<IPropsForm, {}> {
                         placeholder: "Ingresa tu contraseña"}}
                     error={(this.props.touched.password && !!this.props.errors.password) ? ' ' : ''}
                     label={"CONTRASEÑA"}/>
-                {(!!this.props.errors.username || !!this.props.errors.password) &&
-                    <InputError
-                        error={this.props.errors.username || this.props.errors.password}
-                        touched={this.props.touched.username || this.props.touched.password}/>}
-                <ButtonNormal text={"Ingresar"} attrs={{...this.props.buttonAttr}}/>
+                <InputError
+                    error={this.props.errors.username || this.props.errors.password}
+                    touched={this.props.touched.username || this.props.touched.password}/>
+                <ButtonNormal text={"Ingresar"} attrs={{...this.props.buttonAttr, style: {marginTop: 20}}}/>
             </form>
         );
     }
