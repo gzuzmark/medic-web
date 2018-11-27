@@ -1,7 +1,7 @@
 import * as React from 'react';
+import { ButtonNormal } from '../../../../common/Buttons/Buttons';
 import InputError from "../InputError/InputError";
 import './LoginForm.scss';
-
 
 interface IPropsForm {
     handleSubmit: any;
@@ -46,6 +46,7 @@ class LoginForm extends React.Component<IPropsForm, {}> {
                         type="submit"
                         {...this.props.buttonAttr}>
                     {!this.props.buttonAttr.disabled ? 'Ingresar': ''}</button>
+                <ButtonNormal text={"Ingresar"}/>
             </form>
         );
     }
