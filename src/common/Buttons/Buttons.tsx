@@ -124,7 +124,9 @@ const ButtonNormal = styled(Button)`
   height: ${getHeight};
   justify-content: center;
   padding: 0 16px;
-  transition: all ease-in-out 0.3s;
+  transition-property: background, border, color;
+  transition-timing-function: ease-in-out;
+  transition-duration: 0.3s;
   ${Body1} {
     color: ${(props: IButtonProps) => buttonTheme.colorDefault(props, INVERSE_COLORS)};
   }
@@ -190,7 +192,9 @@ const ButtonLink = styled(Link)`
   justify-content: center;
   padding: 0 16px;
   text-decoration: none;
-  transition: all ease-in-out 0.3s;
+  transition-property: background, border, color;
+  transition-timing-function: ease-in-out;
+  transition-duration: 0.3s;
   ${Body1} {
     color: ${(props: IButtonProps) => buttonTheme.colorDefault(props, !INVERSE_COLORS)};
   }

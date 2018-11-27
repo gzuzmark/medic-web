@@ -1,15 +1,28 @@
+@mixin placeholder($placeholder_color) {
+  &::-webkit-input-placeholder {color: $placeholder_color;transition: color 0.2s ease-in;}
+  &:-moz-placeholder           {color: $placeholder_color;transition: color 0.2s ease-in;}
+  &::-moz-placeholder          {color: $placeholder_color;transition: color 0.2s ease-in;}
+  &:-ms-input-placeholder      {color: $placeholder_color;transition: color 0.2s ease-in;}
+}
+
 .MentorInput {
   height: 40px;
   &_input {
     border: 0;
     border-radius: 4px;
     display: none;
+    font-weight: 300;
     height: 40px;
     left: 0;
     padding: 0 46px 0 16px;
     position: absolute;
     top: 0;
+    transition: border 0.2s ease-in;
     width: 100%;
+    @include placeholder ($placeholder_color: #748e98);
+    &:focus {
+      @include placeholder ($placeholder_color: #4a4a4a);
+    }
   }
   &_message {
     display: none;
@@ -18,6 +31,7 @@
     .MentorInput_input {
       border: solid 1px #ccd6dc;
       &:focus {
+        @include placeholder ($placeholder_color: #4a4a4a);
         border: solid 1px #4a4a4a;
       }
     }
@@ -37,8 +51,8 @@
         position: absolute;
         width: 100%;
         span {
-          display: block;
           color: #ff8389!important;
+          display: block;
         }
       }
       &_input {
@@ -57,7 +71,7 @@
     .icon {
       position: absolute;
       right: 10px;
-      top: 5px;
+      top: 8px;
     }
     span {
       display: none;
@@ -80,8 +94,8 @@
     }
   }
   .icon {
-    height: 30px!important;
-    width: 30px!important;
+    height: 24px!important;
+    width: 24px!important;
     fill: #561cac;
   }
   span {

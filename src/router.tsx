@@ -3,6 +3,7 @@ import 'react-dates/initialize';
 import * as ReactDOM from 'react-dom';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import './assets/fonts/fonts.scss';
+import './assets/fonts/fontsMentor.scss';
 import './assets/styles/styles.scss';
 import HOCLayout from "./common/Layout/HOCLayout";
 import MentorSession from './components/Admin/MentorSession/MentorSession';
