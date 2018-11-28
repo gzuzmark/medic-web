@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Body1, Small1 } from '../../common/MentorText';
+import {Body1, LIGHT_TEXT, Small1} from '../../common/MentorText';
 import Icon from "../Icon/Icon";
 import './MentorInput.scss';
 
@@ -83,7 +83,7 @@ class MentorInput extends React.Component<IPropsMentorInput, IStateMentorInput> 
                         {!!icon && <Icon name={icon}/>}
                         {!!this.props.animation && <Body1>{this.props.animation.text}</Body1>}
                         {!!this.props.error &&
-                        <div className={'MentorInput_message'}><Small1>{this.props.error}</Small1></div>}
+                        <div className={'MentorInput_message'}><Small1 weight={LIGHT_TEXT}>{this.props.error}</Small1></div>}
                 </div>
             </div>
         );

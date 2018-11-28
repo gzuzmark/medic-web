@@ -85,7 +85,7 @@ class Login extends React.Component <{}, IStateLoginForm> {
             })
             .catch((error) => {
                 const {code, appCode} = error.response.data;
-                if (code === 400) {
+                if (code === 400 && !!appCode) {
                     const message = ErrorsMessage[appCode.toString()];
                     if (!!message) {
                         if (appCode === 40005) {
@@ -108,7 +108,7 @@ class Login extends React.Component <{}, IStateLoginForm> {
         this._errorLogin(
             actions.setSubmitting,
             actions.setFieldError,
-            '¡Ups! No sabemos que sucedió, intente de nuevo');
+            ErrorsMessage["40005"]);
     }
 
     private cleanError() {
@@ -117,6 +117,8 @@ class Login extends React.Component <{}, IStateLoginForm> {
 
     private _errorLogin(setSubmitting: typeSetSubmitting, setFieldError: typeSetFieldError, message: string) {
         this.setState({buttonAttr: {}});
+        setFieldError('username', message);
+        setFieldError('password', message);
         setSubmitting(false);
     }
 
