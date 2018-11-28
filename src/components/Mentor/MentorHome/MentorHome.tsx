@@ -9,7 +9,7 @@ import {ListenerFirebase} from "../../../domain/Listener/ListenerFirebase";
 import {IBoxDayDescription, SessionCollector} from "../../../domain/Session/SessionCollector";
 import {ISessionMentor, SessionMentorBean} from "../../../domain/Session/SessionMentorBean";
 import {IMatchParam} from "../../../interfaces/MatchParam.interface";
-import MentorService from "../../../services/Mentor/Mentor.service";
+import UserRepository from "../../../repository/UserRepository";
 import SessionService from "../../../services/Session/Session.service";
 import DayHandlerBar, {IDayHandlerBar} from "./components/DayHandlerBar/DayHandlerBar";
 import SessionsMentorDetail, {ISessionMentorDetail} from "./components/SessionsMentorDetail/SessionsMentorDetail";
@@ -64,14 +64,8 @@ class MentorHome extends React.Component<IPropsMentorHome, IStateMentorHome> {
     }
 
     public componentDidMount() {
-        const mentorService = new MentorService();
-        if (!!this.mentorToken) {
-            mentorService.getMentor(this.mentorToken).then((mentor: any) => {
-                this.mentorId = mentor.id;
-                this.tmpFirstLoad();
-            })
-        } else {
-            this.mentorId = '85b8abba-6f18-4ab1-aaca-2e9749534232';
+        if (UserRepository.getToken() && UserRepository.getUser()) {
+            this.mentorId = UserRepository.getUser().id;
             this.tmpFirstLoad();
         }
     }
@@ -148,6 +142,15 @@ class MentorHome extends React.Component<IPropsMentorHome, IStateMentorHome> {
             loading: true
         }, () => {
             this.loadSessions(from, to, currentCounter);
+            setTimeout(() => {
+                this.loadSessions(from, to, currentCounter);
+            }, 500)
+            setTimeout(() => {
+                this.loadSessions(from, to, currentCounter);
+            }, 1000)
+            setTimeout(() => {
+                this.loadSessions(from, to, currentCounter);
+            }, 1200)
         });
     }
 

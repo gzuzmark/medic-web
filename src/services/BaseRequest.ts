@@ -22,10 +22,10 @@ class BaseRequest {
         this.onResponseError();
     }
 
-    public getCustomInstance(token: string, url: string, cancel?: any) {
+    public getCustomInstance(cancel?: any) {
         const params: {baseURL: string, headers: object, cancelToken?: any} = {
-            baseURL: url,
-            headers: {...headersRequest, 'Authorization': 'Bearer ' + token},
+            baseURL: this.baseUrl,
+            headers: {...headersRequest, 'Authorization': 'Bearer ' + UserRepository.getToken()},
         };
         if (!!cancel) {
             params.cancelToken = cancel.token;
@@ -38,9 +38,7 @@ class BaseRequest {
     }
 
     public refreshToken() {
-
         return new Promise((resolve, reject) => {
-
             Axios.post('/ugo-admin/refreshToken', {},
                 {
                     baseURL: this.baseUrl,

@@ -40,18 +40,9 @@ class StudentService extends BaseRequest {
     }
 
     // Mentor Service
-    public studentsFromSession(session:string, id: string): Promise<IStudentChecklist>  {
-        let instance: any;
-        if (!id) {
-            instance = this.getCustomInstance(
-                "K42cWStRagrHBjnWRBAKZ/PO58bxICfBOomyTn4yJnyeAhq4+YWtJg==",
-                "https://ugo-utp-dev.appspot.com/_ah/api/ugo/mentors-api/");
-        } else {
-            instance = this.getCustomInstance(id,
-                "https://ugo-utp-qa.appspot.com/_ah/api/ugo/mentors-api/");
-        }
+    public studentsFromSession(session:string): Promise<IStudentChecklist>  {
         return new Promise((resolve, reject) => {
-            instance.get(`sessions/${session}/students`)
+            this.instance.get(`ugo/mentors-api/sessions/${session}/students`)
                 .then((response: any) => {
                     if (response.status === 200 && response.data) {
                         resolve(response.data.items);
@@ -66,18 +57,9 @@ class StudentService extends BaseRequest {
         });
     }
 
-    public searchStudentFromSession(session:string, codeStudent: string, id: string): Promise<IStudentChecklist>  {
-        let instance: any;
-        if (!id) {
-            instance = this.getCustomInstance(
-                "K42cWStRagrHBjnWRBAKZ/PO58bxICfBOomyTn4yJnyeAhq4+YWtJg==",
-                "https://ugo-utp-dev.appspot.com/_ah/api/ugo/mentors-api/");
-        } else {
-            instance = this.getCustomInstance(id,
-                "https://ugo-utp-qa.appspot.com/_ah/api/ugo/mentors-api/");
-        }
+    public searchStudentFromSession(session:string, codeStudent: string): Promise<IStudentChecklist>  {
         return new Promise((resolve, reject) => {
-            instance.get(`sessions/${session}/students/search?code=${codeStudent}`)
+            this.instance.get(`ugo/mentors-api/sessions/${session}/students/search?code=${codeStudent}`)
                 .then((response: any) => {
                     if (response.status === 200 && response.data) {
                         resolve(response.data);
@@ -93,17 +75,8 @@ class StudentService extends BaseRequest {
     }
 
     public addStudentToSession(session:string, student: string, id: string): Promise<{id: string}>  {
-        let instance: any;
-        if (!id) {
-            instance = this.getCustomInstance(
-                "K42cWStRagrHBjnWRBAKZ/PO58bxICfBOomyTn4yJnyeAhq4+YWtJg==",
-                "https://ugo-utp-dev.appspot.com/_ah/api/ugo/mentors-api/");
-        } else {
-            instance = this.getCustomInstance(id,
-                "https://ugo-utp-qa.appspot.com/_ah/api/ugo/mentors-api/");
-        }
         return new Promise((resolve, reject) => {
-            instance.post(`sessions/${session}/students/${student}/reservation`, {
+            this.instance.post(`ugo/mentors-api/sessions/${session}/students/${student}/reservation`, {
                 syncCalendar : true,
                 type : SESSION_PHYSICAL
             })

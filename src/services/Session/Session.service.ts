@@ -83,19 +83,9 @@ class SessionService extends BaseRequest {
             this.listMentorSessionsCancelToken.cancel();
         }
         this.listMentorSessionsCancelToken = this.generateCancelToken();
-        let instance: any;
-        if (!id) {
-            instance = this.getCustomInstance(
-                "K42cWStRagrHBjnWRBAKZ/PO58bxICfBOomyTn4yJnyeAhq4+YWtJg==",
-                "https://ugo-utp-dev.appspot.com/_ah/api/ugo/mentors-api/",
-                this.listMentorSessionsCancelToken);
-        } else {
-            instance = this.getCustomInstance(id,
-                "https://ugo-utp-qa.appspot.com/_ah/api/ugo/mentors-api/",
-                this.listMentorSessionsCancelToken);
-        }
+        const instance = this.getCustomInstance(this.listMentorSessionsCancelToken);
         return new Promise((resolve, reject) => {
-            instance.get(`me/sessions/all?from=${from}&to=${to}`)
+            instance.get(`ugo/mentors-api/me/sessions/all?from=${from}&to=${to}`)
                 .then((response: any) => {
                     if (response.status === 200 && response.data) {
                         resolve(response.data.items);
@@ -109,18 +99,9 @@ class SessionService extends BaseRequest {
         });
     }
 
-    public getSessionMentor(session: string, id: string = ''): Promise<ISessionMentor> {
-        let instance: any;
-        if (!id) {
-            instance = this.getCustomInstance(
-                "K42cWStRagrHBjnWRBAKZ/PO58bxICfBOomyTn4yJnyeAhq4+YWtJg==",
-                "https://ugo-utp-dev.appspot.com/_ah/api/ugo/mentors-api/");
-        } else {
-            instance = this.getCustomInstance(id,
-                "https://ugo-utp-qa.appspot.com/_ah/api/ugo/mentors-api/");
-        }
+    public getSessionMentor(session: string): Promise<ISessionMentor> {
         return new Promise((resolve, reject) => {
-            instance.get(`me/sessions/${session}`)
+            this.instance.get(`ugo/mentors-api/me/sessions/${session}`)
                 .then((response: any) => {
                     if (response.status === 200 && response.data) {
                         resolve(response.data);
@@ -135,18 +116,9 @@ class SessionService extends BaseRequest {
         });
     }
 
-    public markAsAttended(session: string, ids: string[], noStudentsResponse: boolean, id: string = '') {
-        let instance: any;
-        if (!id) {
-            instance = this.getCustomInstance(
-                "K42cWStRagrHBjnWRBAKZ/PO58bxICfBOomyTn4yJnyeAhq4+YWtJg==",
-                "https://ugo-utp-dev.appspot.com/_ah/api/ugo/mentors-api/");
-        } else {
-            instance = this.getCustomInstance(id,
-                "https://ugo-utp-qa.appspot.com/_ah/api/ugo/mentors-api/");
-        }
+    public markAsAttended(session: string, ids: string[]) {
         return new Promise((resolve, reject) => {
-            instance.post(`sessions/${session}/students`, {
+            this.instance.post(`ugo/mentors-api/sessions/${session}/students`, {
                 items: ids
             })
                 .then((response: any) => {
@@ -163,18 +135,9 @@ class SessionService extends BaseRequest {
         });
     }
 
-    public markAsNoAttended(session: string, id: string = '') {
-        let instance: any;
-        if (!id) {
-            instance = this.getCustomInstance(
-                "K42cWStRagrHBjnWRBAKZ/PO58bxICfBOomyTn4yJnyeAhq4+YWtJg==",
-                "https://ugo-utp-dev.appspot.com/_ah/api/ugo/mentors-api/");
-        } else {
-            instance = this.getCustomInstance(id,
-                "https://ugo-utp-qa.appspot.com/_ah/api/ugo/mentors-api/");
-        }
+    public markAsNoAttended(session: string) {
         return new Promise((resolve, reject) => {
-            instance.post(`sessions/${session}/noattended`)
+            this.instance.post(`ugo/mentors-api/sessions/${session}/noattended`)
                 .then((response: any) => {
                     if (response.status === 200 && response.data) {
                         resolve(response.data);
