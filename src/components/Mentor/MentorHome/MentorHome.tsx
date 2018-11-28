@@ -142,15 +142,6 @@ class MentorHome extends React.Component<IPropsMentorHome, IStateMentorHome> {
             loading: true
         }, () => {
             this.loadSessions(from, to, currentCounter);
-            setTimeout(() => {
-                this.loadSessions(from, to, currentCounter);
-            }, 500)
-            setTimeout(() => {
-                this.loadSessions(from, to, currentCounter);
-            }, 1000)
-            setTimeout(() => {
-                this.loadSessions(from, to, currentCounter);
-            }, 1200)
         });
     }
 

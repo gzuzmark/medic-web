@@ -94,6 +94,7 @@ class SessionService extends BaseRequest {
                     }
                 })
                 .catch((error: any) => {
+                    this.validSession();
                     reject(error);
                 });
         });

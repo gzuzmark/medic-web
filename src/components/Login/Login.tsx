@@ -54,7 +54,6 @@ class Login extends React.Component <{}, IStateLoginForm> {
                     initialValues={{ username: '', password: '' }}
                     validationSchema={schema}
                     validateOnBlur={false}
-                    validateOnChange={false}
                     onSubmit={this._onSubmit}
                     render={this._renderForm}
                 />
@@ -119,7 +118,6 @@ class Login extends React.Component <{}, IStateLoginForm> {
     private _errorLogin(setSubmitting: typeSetSubmitting, setFieldError: typeSetFieldError, message: string) {
         this.setState({buttonAttr: {}});
         setSubmitting(false);
-        setFieldError('password', message);
     }
 
     private _renderForm (props: any) {

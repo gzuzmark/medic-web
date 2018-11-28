@@ -24,8 +24,8 @@ class LoginPresentation extends React.Component<{}, {}> {
                 <div className="Login_section Login_section--form">
                     <div className="Login_form">
                         <Display2 weight={LIGHT_TEXT} color={'font_medium'}>¡Bienvenido!</Display2>
-                        <Subhead1 weight={LIGHT_TEXT} color={'font_medium'} style={{margin: '7px 0 auto 0'}}>
-                            Ingresa tu correo y contraseña de UTP
+                        <Subhead1 weight={LIGHT_TEXT} style={{margin: '7px 0 auto 0'}}>
+                            Ingresa tu correo y contraseña
                         </Subhead1>
                         {this.props.children}
                         <div className="Login_footer">
