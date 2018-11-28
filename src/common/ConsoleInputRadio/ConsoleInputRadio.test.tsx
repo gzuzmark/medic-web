@@ -17,11 +17,13 @@ describe('ConsoleInputRadio Test',() => {
 
     beforeEach(() => {
         props = {
-            checked: false,
-            name: 'demo',
-            onChange: () => void(0),
-            title: 'Demo',
-            value: "value",
+            attrs: {
+                checked: false,
+                name: 'demo',
+                onChange: () => void(0),
+                value: "value"
+            },
+            title: 'Demo'
         };
         mountedConsoleInputRadio = undefined;
     });

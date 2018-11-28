@@ -1,14 +1,16 @@
 import { Formik } from 'formik';
 import * as React from 'react';
+import ErrorsMessage from "../../common/ErrorsMessage";
 import { IUserInput } from '../../interfaces/User.interface';
 import UserRepository from "../../repository/UserRepository";
 import AuthService from '../../services/Auth/Auth.service';
 import { schema } from './components/LoginForm.validation';
-import LoginForm from './components/LoginForm/LoginForm';
+import LoginForm, {ROL_ADMIN} from './components/LoginForm/LoginForm';
 import LoginPresentation from './components/LoginPresentation/LoginPresentation';
 
 interface IStateLoginForm {
     buttonAttr: any;
+    error: string;
     isLogin: boolean;
 }
 
@@ -22,10 +24,13 @@ class Login extends React.Component <{}, IStateLoginForm> {
         super(props);
         this._renderForm = this._renderForm.bind(this);
         this._onSubmit = this._onSubmit.bind(this);
+        this.cleanError = this.cleanError.bind(this);
+        this.showDefaultError = this.showDefaultError.bind(this);
         this._errorLogin = this._errorLogin.bind(this);
         this.userService = new AuthService();
         this.state = {
             buttonAttr: {},
+            error: '',
             isLogin: false
         };
     }
@@ -48,6 +53,8 @@ class Login extends React.Component <{}, IStateLoginForm> {
                 <Formik
                     initialValues={{ username: '', password: '' }}
                     validationSchema={schema}
+                    validateOnBlur={false}
+                    validateOnChange={false}
                     onSubmit={this._onSubmit}
                     render={this._renderForm}
                 />
@@ -59,34 +66,54 @@ class Login extends React.Component <{}, IStateLoginForm> {
         if (!!this.state.buttonAttr && !!this.state.buttonAttr.loading) {
             return
         }
-        this.setState({buttonAttr: {loading: "true"}});
-        this.userService.login(values)
+        this.setState({buttonAttr: {loading: "true"}, error: ''});
+        const checkbox: HTMLInputElement = document.querySelector(".LoginForm_rol input[type=radio]:checked") as HTMLInputElement;
+        const redirection = checkbox.value === ROL_ADMIN ? '/admin' : '/mentor';
+        this.userService.login(values, checkbox.value )
             .then((response) => {
                 if (response) {
                     this.userService.setTokenHeader();
-                    this.userService.loadUser().then(() => {
+                    this.userService.loadUser(checkbox.value).then(() => {
                         if (response) {
-                            window.location.assign('/admin');
+                            window.location.assign(redirection);
                         } else {
-                            this._errorLogin(
-                                actions.setSubmitting,
-                                actions.setFieldError,
-                                'Usuario no activado');
+                            this.showDefaultError(actions);
                         }
                     });
                 } else {
-                    this._errorLogin(
-                        actions.setSubmitting,
-                        actions.setFieldError,
-                        'Correo y/o contraseña incorrectos.');
+                    this.showDefaultError(actions);
                 }
             })
-            .catch(() => {
-                this._errorLogin(
-                    actions.setSubmitting,
-                    actions.setFieldError,
-                    'Correo y/o contraseña incorrectos.');
+            .catch((error) => {
+                const {code, appCode} = error.response.data;
+                if (code === 400) {
+                    const message = ErrorsMessage[appCode.toString()];
+                    if (!!message) {
+                        if (appCode === 40005) {
+                            this.setState({ buttonAttr: {} });
+                            actions.setFieldError('username', message);
+                            actions.setFieldError('password', message);
+                        } else {
+                            this.setState({error: message, buttonAttr: {}});
+                        }
+                    } else {
+                        this.showDefaultError(actions);
+                    }
+                } else {
+                    this.showDefaultError(actions);
+                }
             });
+    }
+
+    private showDefaultError(actions: any) {
+        this._errorLogin(
+            actions.setSubmitting,
+            actions.setFieldError,
+            '¡Ups! No sabemos que sucedió, intente de nuevo');
+    }
+
+    private cleanError() {
+        this.setState({error: ''});
     }
 
     private _errorLogin(setSubmitting: typeSetSubmitting, setFieldError: typeSetFieldError, message: string) {
@@ -96,7 +123,10 @@ class Login extends React.Component <{}, IStateLoginForm> {
     }
 
     private _renderForm (props: any) {
-        return <LoginForm {...props} buttonAttr={this.state.buttonAttr}/>;
+        return <LoginForm {...props}
+                          buttonAttr={this.state.buttonAttr}
+                          generalError={this.state.error}
+                          cleanError={this.cleanError}  />;
     }
 }
 

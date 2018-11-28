@@ -4,10 +4,7 @@ import './ConsoleInputRadio.scss';
 
 interface IPropsConsoleInputRadio {
     title: string;
-    name: string;
-    checked: boolean;
-    value: string;
-    onChange: (event?: any) => void
+    attrs: any;
 }
 const ConsoleInputRadio: React.StatelessComponent<IPropsConsoleInputRadio> = (props) => {
     return (
@@ -15,10 +12,7 @@ const ConsoleInputRadio: React.StatelessComponent<IPropsConsoleInputRadio> = (pr
             <Body1 weight={LIGHT_TEXT} style={{marginLeft: 5, display: 'block'}}>{props.title}</Body1>
             <input className="ConsoleInputRadio--input"
                    type="radio"
-                   name={props.name}
-                   value={props.value}
-                   checked={props.checked}
-                   onChange={props.onChange}/>
+                   {...props.attrs}/>
             <span className="ConsoleInputRadio--radio">&nbsp;</span>
         </label>
     );

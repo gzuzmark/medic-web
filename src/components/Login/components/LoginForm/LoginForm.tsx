@@ -13,8 +13,12 @@ interface IPropsForm {
     errors: any;
     touched: any;
     buttonAttr: any;
+    generalError: string;
+    cleanError: any;
 }
 
+export const ROL_MENTOR = 'mentor';
+export const ROL_ADMIN = 'administrador';
 
 class LoginForm extends React.Component<IPropsForm, {}> {
     constructor(props: IPropsForm) {
@@ -29,6 +33,7 @@ class LoginForm extends React.Component<IPropsForm, {}> {
                         name: "username",
                         onBlur: this.props.handleBlur,
                         onChange: this.props.handleChange,
+                        onInput: this.props.cleanError,
                         placeholder: "Ingresa tu usuario"}}
                     error={(this.props.touched.username && !!this.props.errors.username) ? ' ' : '' }
                     label={"USUARIO"}
@@ -38,17 +43,19 @@ class LoginForm extends React.Component<IPropsForm, {}> {
                         name: "password",
                         onBlur: this.props.handleBlur,
                         onChange: this.props.handleChange,
-                        placeholder: "Ingresa tu contraseña"}}
+                        onInput: this.props.cleanError,
+                        placeholder: "Ingresa tu contraseña",
+                        type: 'password'}}
                     error={(this.props.touched.password && !!this.props.errors.password) ? ' ' : ''}
                     label={"CONTRASEÑA"}/>
                 <InputError
-                    error={this.props.errors.username || this.props.errors.password}
-                    touched={this.props.touched.username || this.props.touched.password}/>
+                    error={this.props.errors.username || this.props.errors.password || this.props.generalError}
+                    touched={this.props.touched.username || this.props.touched.password || !!this.props.generalError}/>
                 <div className="LoginForm_rol">
-                    <ConsoleInputRadio title='Mentor' name='rol' checked={true} value={'mentor'} onChange={this.props.handleChange}/>
-                    <ConsoleInputRadio title='Administrador' name='rol' checked={true} value={'administrador'} onChange={this.props.handleChange}/>
+                    <ConsoleInputRadio title='Mentor' attrs={{name:'rol', value: ROL_MENTOR, defaultChecked: true}}/>
+                    <ConsoleInputRadio title='Administrador' attrs={{name:'rol', value: ROL_ADMIN}}/>
                 </div>
-                <ButtonNormal text={"Ingresar"} attrs={{...this.props.buttonAttr, style: {marginTop: 20, marginBottom: 10}}}/>
+                <ButtonNormal text={"Ingresar"} attrs={{...this.props.buttonAttr, style: {marginTop: 20, marginBottom: 16}}}/>
             </form>
         );
     }

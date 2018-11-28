@@ -2,7 +2,10 @@ import Axios from 'axios';
 import UserRepository from "../repository/UserRepository";
 
 export const headersRequest = {
-    'Content-Type': 'application/json'
+    'Content-Type': 'application/json',
+    'installedVersion': '1.0.0',
+    'platformName': 'web',
+    'resolution': 'hdpi'
 };
 
 class BaseRequest {
@@ -22,7 +25,7 @@ class BaseRequest {
     public getCustomInstance(token: string, url: string, cancel?: any) {
         const params: {baseURL: string, headers: object, cancelToken?: any} = {
             baseURL: url,
-            headers: {...headersRequest, 'Authorization': 'Bearer ' + token, 'installedVersion': '1.0.0', 'platformName': 'web', 'resolution': 'hdpi'},
+            headers: {...headersRequest, 'Authorization': 'Bearer ' + token},
         };
         if (!!cancel) {
             params.cancelToken = cancel.token;
