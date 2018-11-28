@@ -34,8 +34,8 @@ class LoginForm extends React.Component<IPropsForm, {}> {
                         onBlur: this.props.handleBlur,
                         onChange: this.props.handleChange,
                         onInput: this.props.cleanError,
-                        placeholder: "Ingresa tu usuario"}}
-                    error={(this.props.touched.username && !!this.props.errors.username) ? ' ' : '' }
+                        placeholder: "Ingresa tu correo"}}
+                    error={(!!this.props.touched.username && !!this.props.errors.username) ? ' ' : '' }
                     label={"USUARIO"}
                     styleContainer={{marginBottom: 27}}/>
                 <MentorInput
@@ -46,11 +46,11 @@ class LoginForm extends React.Component<IPropsForm, {}> {
                         onInput: this.props.cleanError,
                         placeholder: "Ingresa tu contraseña",
                         type: 'password'}}
-                    error={(this.props.touched.password && !!this.props.errors.password) ? ' ' : ''}
+                    error={(!!this.props.touched.password && !!this.props.errors.password) ? ' ' : ''}
                     label={"CONTRASEÑA"}/>
                 <InputError
                     error={this.props.errors.username || this.props.errors.password || this.props.generalError}
-                    touched={this.props.touched.username || this.props.touched.password || !!this.props.generalError}/>
+                    touched={(!!this.props.touched.username && !!this.props.touched.password) || !!this.props.generalError}/>
                 <div className="LoginForm_rol">
                     <ConsoleInputRadio title='Mentor' attrs={{name:'rol', value: ROL_MENTOR, defaultChecked: true}}/>
                     <ConsoleInputRadio title='Administrador' attrs={{name:'rol', value: ROL_ADMIN}}/>

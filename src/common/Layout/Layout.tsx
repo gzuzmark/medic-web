@@ -1,8 +1,10 @@
 import * as React from 'react';
 import logo_header from '../../assets/images/logo_header.png';
+import {ROL_ADMIN} from "../../components/Login/components/LoginForm/LoginForm";
 import UserRepository from '../../repository/UserRepository';
 import Avatar from '../Avatar/Avatar';
 import { Text } from '../ConsoleText';
+import {LIGHT_TEXT, Subhead1} from '../MentorText';
 import Sticky from '../Sticky/Sticky';
 import Utilities from "../Utilities";
 import MenuTop from "./components/MenuTop/MenuTop";
@@ -33,12 +35,17 @@ class Layout extends React.Component<IPropsLayout, {}> {
             <React.Fragment>
                 <Sticky height={80} top={80} style={{'zIndex': 6}}>
                     <div className="Header">
-                        <div className="Header-wrapper u-LayoutMargin">
-                            <div className="Header-section">
-                                <Text className="Header-text"><img src={logo_header} height='18'/></Text>
+                        <div className="Header_wrapper u-LayoutMargin">
+                            <div className="Header_section">
+                                <div className="Header_container-image">
+                                    <img className="Header_image" src={logo_header} height='18'/>
+                                </div>
+                                <Subhead1 color="font_light" weight={LIGHT_TEXT} style={{padding: '0 14px'}}>
+                                    {UserRepository.getUser().rol === ROL_ADMIN ? 'Administrador' : 'Tutores'}
+                                </Subhead1>
                             </div>
-                            <div className="Header-section">
-                                <Text className="Header-text">Hola, {UserRepository.getUser().name}</Text>
+                            <div className="Header_section">
+                                <Subhead1 color="font_light" weight={LIGHT_TEXT} style={{padding: '0 10px'}}>Hola, {UserRepository.getUser().name}</Subhead1>
                                 <Avatar size={32} source={UserRepository.getUser().photo}/>
                                 <MenuTop />
                             </div>
