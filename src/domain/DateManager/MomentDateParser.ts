@@ -18,4 +18,15 @@ export class MomentDateParser extends AbstractDateParser {
         const t = moment(date2);
         return d.format("YYYY-MM-DD") === t.format("YYYY-MM-DD");
     }
+
+    public isSameWeek(firstDay: string, secondDay: string): boolean {
+        const firstMoment = moment(firstDay);
+        const secondMoment = moment(secondDay);
+
+        const startOfWeek = (date: moment.Moment, offset: number) => {
+            return date.add( date.weekday() * -1 + (date.weekday() >= 7 + offset ? 7 + offset : offset), "days");
+        };
+        return startOfWeek(firstMoment, -6).isSame(startOfWeek(secondMoment, -6), "day");
+
+    }
 }

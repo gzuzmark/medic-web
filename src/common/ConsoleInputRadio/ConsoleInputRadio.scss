@@ -15,21 +15,21 @@
       &~ .ConsoleInputRadio--radio {
         background-color: white;
         &:after {
-          background: $primary-color;
+          background: #4a4a4a;
         }
       }
     }
   }
   &--radio {
     background-color: white;
-    border: 1px solid $primary-color;
+    border: 1px solid #ccd6dc;
     border-radius: 50%;
-    height: 16px;
+    height: 22px;
     left: 0;
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    width: 16px;
+    width: 22px;
     &:after {
       background: white;
       border-radius: 50%;

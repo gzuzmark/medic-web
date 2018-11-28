@@ -30,16 +30,20 @@ class RepeatSessionInput extends React.Component <IPropsRepeatSessionInput, ISta
             <React.Fragment>
                 <ConsoleInputRadio
                     title={'No se repite'}
-                    name={'repeat'}
-                    value={'false'}
-                    checked={!this.props.repeatSession}
-                    onChange={this._onRepeatChange}/>
+                    attrs={{
+                        checked: !this.props.repeatSession,
+                        name: 'repeat',
+                        onChange: this._onRepeatChange,
+                        value: 'false'
+                    }}/>
                 <ConsoleInputRadio
                     title={'Repetir semanalmente'}
-                    name={'repeat'}
-                    value={'true'}
-                    checked={this.props.repeatSession}
-                    onChange={this._onRepeatChange}/>
+                    attrs={{
+                        checked: this.props.repeatSession,
+                        name: 'repeat',
+                        onChange: this._onRepeatChange,
+                        value: 'true'
+                    }}/>
             </React.Fragment>
         );
     }

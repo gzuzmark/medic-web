@@ -136,7 +136,7 @@ class StudentChecklistBoard extends  React.Component<IPropsStudentChecklistBoard
                         active={this.state.activeSearch}
                         error={searchError}
                         icon={"search"}
-                        input={inputSearch}
+                        attrs={inputSearch}
                         style={{minWidth: `${this.state.activeSearch?'498px': '0px'}`, justifyContent: 'flex-start'}}
                         animation={{
                             enable: true,
@@ -147,7 +147,7 @@ class StudentChecklistBoard extends  React.Component<IPropsStudentChecklistBoard
                         enable={this.props.board.addEnabled}
                         error={addError}
                         icon={"add-circle"}
-                        input={addSearch}
+                        attrs={addSearch}
                         style={{minWidth: `${!this.state.activeSearch?'498px': '0px'}`, justifyContent: 'flex-end'}}
                         animation={{
                             enable: true,

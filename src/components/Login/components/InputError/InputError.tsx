@@ -1,7 +1,6 @@
 import * as React from 'react';
-import { Text } from '../../../../common/ConsoleText';
+import { Small2 } from '../../../../common/MentorText';
 import './InputError.scss';
-
 
 interface IPropsForm {
     error: string;
@@ -18,7 +17,7 @@ class InputError extends React.Component<IPropsForm, {}> {
         return (
             <div className="InputError">
                 {!!this.props.error && this.props.touched &&
-                <Text className="InputError-text">{this.props.error}</Text>}
+                <Small2 color={'font_error'}>{this.props.error}</Small2>}
             </div>
         );
     }

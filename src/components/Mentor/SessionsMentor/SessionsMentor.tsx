@@ -85,7 +85,6 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
             modalCheck: this.cleanCheckModal(''),
             searchValue: '',
         };
-        this.mentorId = this.props.match.params.id;
         this.sessionId = this.props.match.params.session || '';
         this.onSearch = this.onSearch.bind(this);
         this.searchStudent = this.searchStudent.bind(this);
@@ -103,8 +102,8 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
             loading: true
         }, () => {
             Promise.all([
-                this.sessionService.getSessionMentor(this.sessionId, this.mentorId),
-                this.studentsService.studentsFromSession(this.sessionId, this.mentorId)
+                this.sessionService.getSessionMentor(this.sessionId),
+                this.studentsService.studentsFromSession(this.sessionId)
             ]).then((values: any[]) => {
                 this.sessionMentor = new SessionMentorBean(values[0]);
                 this.studentChecklistCollector = new StudentChecklistCollector(values[1]);
@@ -215,10 +214,8 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
             this.setState({
                 modalCheck: loadingOptions
             }, () => {
-                this.sessionService.markAsAttended(this.sessionId, filteredIds, true, this.mentorId)
+                this.sessionService.markAsAttended(this.sessionId, filteredIds)
                     .then(() => {
-                        // mostrar modal exito
-                        // actualizar estado de estudiantes
                         filteredIds.forEach((id: string) => {
                             this.studentChecklistCollector.markAsAttendedTo(id);
                             this.sessionMentor.setAsAttended();
@@ -239,7 +236,7 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
         this.setState({
             modalCheck: loadingOptions
         }, () => {
-            this.sessionService.markAsNoAttended(this.sessionId, this.mentorId).then(() => {
+            this.sessionService.markAsNoAttended(this.sessionId).then(() => {
                 this.sessionMentor.setAsNoAttended();
                 this.showSuccessModal();
             })
@@ -272,7 +269,7 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
                 const studentCode = this.state.searchValue;
                 const student = this.studentChecklistCollector.getStudent(studentCode);
                 if (!student) {
-                    this.studentsService.searchStudentFromSession(this.sessionId, studentCode, this.mentorId)
+                    this.studentsService.searchStudentFromSession(this.sessionId, studentCode)
                         .then((response: IStudentChecklist) => {
                             this.setState({
                                 modal: true,

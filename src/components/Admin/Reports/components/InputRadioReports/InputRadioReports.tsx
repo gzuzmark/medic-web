@@ -23,10 +23,12 @@ const InputRadioReports: React.StatelessComponent<IPropsInputRadioReports> = (pr
                 <FormColumn key={`InputRadioReports_${index}`}  width={props.inputs.length}>
                     <ConsoleInputRadio
                         title={element.title}
-                        name={props.name}
-                        value={element.value}
-                        checked={props.type === element.value}
-                        onChange={onChange}/>
+                    attrs={{
+                        checked:props.type === element.value,
+                        name:props.name,
+                        onChange,
+                        value:element.value
+                    }}/>
                 </FormColumn>
             )
         })}/>

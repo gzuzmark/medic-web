@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { SmallText1, Text3 } from '../../common/ConsoleText';
+import { Body1, Small1 } from '../../common/MentorText';
 import Icon from "../Icon/Icon";
 import './MentorInput.scss';
 
@@ -10,21 +10,13 @@ interface IPropsMentorInput {
     error?: string;
     forceFocus?: boolean;
     style?: React.CSSProperties;
+    styleContainer?: React.CSSProperties;
+    label?: string;
     animation?: {
         enable?: boolean;
         text?: string;
     };
-    input: {
-        autoFocus: boolean;
-        onBlur?: (event: any) => void;
-        onChange?: (event: any) => void;
-        onClick?: (event: any) => void;
-        onFocus?: (event: any) => void;
-        name: string;
-        value: string;
-        placeholder?: string;
-        onKeyPress?: (event: any) => void;
-    }
+    attrs?: any;
 }
 
 interface IStateMentorInput {
@@ -72,34 +64,34 @@ class MentorInput extends React.Component<IPropsMentorInput, IStateMentorInput> 
         }
 
         if (!!this.props.error) {
-            icon = 'close-circle'
+            icon = 'close'
         }
         return (
-            <div
-                className={`MentorInput ${inputClass}`}
-                style={{...this.props.style}}
-                onClick={this.onClick}>
-                <input
-                    ref={this.input}
-                    className={`MentorInput_input`}
-                    type={"text"}
-                    name={this.props.input.name}
-                    onChange={this.props.input.onChange}
-                    onKeyPress={this.props.input.onKeyPress}
-                    autoFocus={this.props.input.autoFocus}
-                    value={this.props.input.value}
-                    placeholder={this.props.input.placeholder}/>
-                    {!!icon && <Icon name={icon}/>}
-                    {!!this.props.animation && <Text3>{this.props.animation.text}</Text3>}
-                    {!!this.props.error &&
-                    <div className={'MentorInput_message'}><SmallText1>{this.props.error}</SmallText1></div>}
+            <div style={{...this.props.styleContainer}} onClick={this.onClick}>
+                {!!this.props.label &&
+                <label>
+                    <Small1 style={{marginBottom: 3, display: 'block'}}>{this.props.label}</Small1>
+                </label>}
+                <div
+                    className={`MentorInput ${inputClass}`}
+                    style={{...this.props.style}}>
+                    <input
+                        ref={this.input}
+                        className={`MentorInput_input`}
+                        type={"text"}
+                        {...this.props.attrs}/>
+                        {!!icon && <Icon name={icon}/>}
+                        {!!this.props.animation && <Body1>{this.props.animation.text}</Body1>}
+                        {!!this.props.error &&
+                        <div className={'MentorInput_message'}><Small1>{this.props.error}</Small1></div>}
+                </div>
             </div>
         );
     }
 
     private onClick() {
-        if (this.props.input.onClick && this.props.enable) {
-            this.props.input.onClick('');
+        if (!!this.props.attrs && !!this.props.attrs.onClick && this.props.enable) {
+            this.props.attrs.onClick('');
             setTimeout(() => {
                 if (this.input.current) {
                     this.input.current.focus();

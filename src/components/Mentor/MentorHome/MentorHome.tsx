@@ -4,11 +4,12 @@ import Icon from "../../../common/Icon/Icon";
 import Layout from "../../../common/Layout/Layout";
 import Loader from "../../../common/Loader/Loader";
 import Utilities from "../../../common/Utilities";
+import {MomentDateParser} from "../../../domain/DateManager/MomentDateParser";
 import {ListenerFirebase} from "../../../domain/Listener/ListenerFirebase";
 import {IBoxDayDescription, SessionCollector} from "../../../domain/Session/SessionCollector";
 import {ISessionMentor, SessionMentorBean} from "../../../domain/Session/SessionMentorBean";
 import {IMatchParam} from "../../../interfaces/MatchParam.interface";
-import MentorService from "../../../services/Mentor/Mentor.service";
+import UserRepository from "../../../repository/UserRepository";
 import SessionService from "../../../services/Session/Session.service";
 import DayHandlerBar, {IDayHandlerBar} from "./components/DayHandlerBar/DayHandlerBar";
 import SessionsMentorDetail, {ISessionMentorDetail} from "./components/SessionsMentorDetail/SessionsMentorDetail";
@@ -38,6 +39,7 @@ class MentorHome extends React.Component<IPropsMentorHome, IStateMentorHome> {
     private mentorToken: string;
     private mentorId: string;
     private listenerFirebase: ListenerFirebase;
+    private mdp: MomentDateParser;
     constructor(props: any) {
         super(props);
         this.state = {
@@ -58,17 +60,12 @@ class MentorHome extends React.Component<IPropsMentorHome, IStateMentorHome> {
         this.updateSessionDetail = this.updateSessionDetail.bind(this);
         this.updateDaysBar = this.updateDaysBar.bind(this);
         this.tmpFirstLoad = this.tmpFirstLoad.bind(this);
+        this.mdp = new MomentDateParser();
     }
 
     public componentDidMount() {
-        const mentorService = new MentorService();
-        if (!!this.mentorToken) {
-            mentorService.getMentor(this.mentorToken).then((mentor: any) => {
-                this.mentorId = mentor.id;
-                this.tmpFirstLoad();
-            })
-        } else {
-            this.mentorId = '85b8abba-6f18-4ab1-aaca-2e9749534232';
+        if (UserRepository.getToken() && UserRepository.getUser()) {
+            this.mentorId = UserRepository.getUser().id;
             this.tmpFirstLoad();
         }
     }
@@ -145,6 +142,15 @@ class MentorHome extends React.Component<IPropsMentorHome, IStateMentorHome> {
             loading: true
         }, () => {
             this.loadSessions(from, to, currentCounter);
+            setTimeout(() => {
+                this.loadSessions(from, to, currentCounter);
+            }, 500)
+            setTimeout(() => {
+                this.loadSessions(from, to, currentCounter);
+            }, 1000)
+            setTimeout(() => {
+                this.loadSessions(from, to, currentCounter);
+            }, 1200)
         });
     }
 
@@ -161,6 +167,7 @@ class MentorHome extends React.Component<IPropsMentorHome, IStateMentorHome> {
                 let newState = {};
                 const mentorSessions = sessions.map((item) => new SessionMentorBean(item));
                 const sessionCollector = new SessionCollector<SessionMentorBean>(mentorSessions, from.toISOString(), 1);
+                const isSameWeek = this.mdp.isSameWeek(from.toISOString(), this.sessionCollector.selectedDate);
                 if (!this.state.sessionDetail.sessions || !!forceRefresh) {
                     const selectedDate = new Date(this.state.selectedDate);
                     newState = {
@@ -168,7 +175,7 @@ class MentorHome extends React.Component<IPropsMentorHome, IStateMentorHome> {
                         sessionDetail: this.updateSessionDetail(selectedDate, sessionCollector)
                     }
                 }
-                if (!forceRefresh) {
+                if (isSameWeek || !forceRefresh) {
                     this.sessionCollector = sessionCollector;
                     this.setState({
                         daysBar: this.updateDaysBar(counter),
