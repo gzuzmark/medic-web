@@ -65,7 +65,7 @@ class MentorHome extends React.Component<IPropsMentorHome, IStateMentorHome> {
 
     public componentDidMount() {
         if (UserRepository.getToken() && UserRepository.getUser()) {
-            this.mentorId = UserRepository.getUser().id;
+            this.mentorId = UserRepository.getUser().rolId;
             this.tmpFirstLoad();
         }
     }
