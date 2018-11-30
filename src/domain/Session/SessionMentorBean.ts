@@ -35,7 +35,6 @@ export class SessionMentorBean extends SessionBean {
     get isDisableNoAttended() {
         const current = new Date();
         const to = new Date(this.session.to);
-
         const enableNoAttended = minuteTime * 15;
         const isEnableNoAttended = to.getTime() - current.getTime() <= enableNoAttended;
         return this.isNoAttended || !isEnableNoAttended
