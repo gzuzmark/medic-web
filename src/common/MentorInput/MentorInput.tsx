@@ -41,6 +41,7 @@ class MentorInput extends React.Component<IPropsMentorInput, IStateMentorInput> 
         };
         this.input = React.createRef();
         this.onClick = this.onClick.bind(this);
+        this.onClickIcon = this.onClickIcon.bind(this);
     }
 
     public componentDidMount() {
@@ -80,13 +81,21 @@ class MentorInput extends React.Component<IPropsMentorInput, IStateMentorInput> 
                         className={`MentorInput_input`}
                         type={"text"}
                         {...this.props.attrs}/>
-                        {!!icon && <Icon name={icon}/>}
+                        {!!icon && <Icon name={icon} click={this.onClickIcon}/>}
                         {!!this.props.animation && <Body1>{this.props.animation.text}</Body1>}
                         {!!this.props.error &&
                         <div className={'MentorInput_message'}><Small1 weight={LIGHT_TEXT}>{this.props.error}</Small1></div>}
                 </div>
             </div>
         );
+    }
+
+    private onClickIcon() {
+        const event = new Event('input', { bubbles: true });
+        if(!!this.input && !!this.input.current && !!this.props.error) {
+            this.input.current.value = '';
+            this.input.current.dispatchEvent(event);
+        }
     }
 
     private onClick() {

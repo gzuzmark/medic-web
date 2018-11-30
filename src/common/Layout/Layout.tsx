@@ -41,7 +41,7 @@ class Layout extends React.Component<IPropsLayout, {}> {
                                     <img className="Header_image" src={logo_header} height='18'/>
                                 </div>
                                 <Subhead1 color="font_light" weight={LIGHT_TEXT} style={{padding: '0 14px'}}>
-                                    {UserRepository.getUser().rol === ROL_ADMIN ? 'Administrador' : 'Tutores'}
+                                    {UserRepository.getUser().rol === ROL_ADMIN ? 'Administrador' : 'Mentores'}
                                 </Subhead1>
                             </div>
                             <div className="Header_section">
