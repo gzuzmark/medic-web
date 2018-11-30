@@ -104,7 +104,7 @@ class MentorHome extends React.Component<IPropsMentorHome, IStateMentorHome> {
                     selectedDate={this.state.selectedDate}
                     loading={this.state.loading}
                     daysBar={this.state.daysBar} />
-                {!this.state.loading && this.state.sessionDetail.sessions?
+                {this.state.sessionDetail.sessions?
                 <SessionsMentorDetail
                     sessionDetail={this.state.sessionDetail}
                     selectedDate={this.state.selectedDate}/> :
