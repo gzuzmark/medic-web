@@ -68,7 +68,7 @@ export class SessionBean {
     }
 
     public getDate(dateFormatter: AbstractDateParser): string {
-        return `${dateFormatter.parseDateToString(this.session.from, "DD [de] MMMM")}`;
+        return `${dateFormatter.parseDateToString(this.session.from, "dddd DD [de] MMMM")}`;
     }
 
     public isVirtual(): boolean {

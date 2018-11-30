@@ -1,4 +1,5 @@
 import * as React from 'react';
+import {Link} from "react-router-dom";
 import MentorModalBase from "../../../common/ConsoleModal/MentorModalBase";
 import { Text3 } from '../../../common/ConsoleText';
 import Layout from "../../../common/Layout/Layout";
@@ -144,7 +145,7 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
             <div className="SessionsMentor u-LayoutMentorMargin">
                 {this.sessionMentor &&
                 <div className={"SessionsMentor_navigation"}>
-                    <Text3>Tus sesiones >&nbsp;</Text3>
+                    <Link to={'/mentor'}><Text3>Tus sesiones >&nbsp;</Text3></Link>
                     <Text3>{this.mdp.isDateToday(this.sessionMentor.session.from)? 'Hoy ': ''}{this.sessionMentor.getDate(this.mdp)} >&nbsp;</Text3>
                     <Text3>{`Sesión ${this.state.fullCardSession.type.toLowerCase()}`}</Text3>
                 </div>}
