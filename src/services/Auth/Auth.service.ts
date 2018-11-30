@@ -37,6 +37,7 @@ class AuthService extends BaseRequest {
                 .then((response: any) => {
                     if (response.status === 200 && response.data) {
                         response.data.user.rol = rol;
+                        response.data.user.rolId = response.data.id;
                         UserRepository.setUser(response.data.user);
                         resolve(true);
                     } else {
