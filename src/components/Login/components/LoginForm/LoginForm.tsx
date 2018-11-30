@@ -46,11 +46,14 @@ class LoginForm extends React.Component<IPropsForm, {}> {
                         onInput: this.props.cleanError,
                         placeholder: "Ingresa tu contraseña",
                         type: 'password'}}
+                    error={(!!this.props.touched.password && !!this.props.errors.password) ? ' ' : '' }
+                    label={"CONTRASEÑA"}/>
+                <InputError
                     error={(
                         (!!this.props.touched.password && !!this.props.errors.password) ||
                         (!!this.props.touched.username && !!this.props.errors.username)) ?
                         (this.props.errors.username || this.props.errors.password) : ''}
-                    label={"CONTRASEÑA"}/>
+                    touched={!!this.props.touched.password || !!this.props.touched.username}/>
                 <div className="LoginForm_rol">
                     <ConsoleInputRadio title='Mentor' attrs={{name:'rol', value: ROL_MENTOR, defaultChecked: true}}/>
                     <ConsoleInputRadio title='Administrador' attrs={{name:'rol', value: ROL_ADMIN}}/>
