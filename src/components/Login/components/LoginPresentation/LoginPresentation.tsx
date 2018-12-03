@@ -1,26 +1,44 @@
 import * as React from 'react';
+import styled from "styled-components";
 import logo from '../../../../assets/images/logo.png';
-import { Heading1, Heading2, Heading3 } from '../../../../common/ConsoleText';
+import Icon from "../../../../common/Icon/Icon";
+import colors from "../../../../common/MentorColor";
+import {Display2, LIGHT_TEXT, Small2, Subhead1} from '../../../../common/MentorText';
 import './LoginPresentation.scss';
+
+const Background = (props: any) =>
+    <div className={`Login_section Login_section--background ${props.className}`}>
+        &nbsp;
+    </div>;
+
+const SectionRight = styled(Background)`
+  background: ${colors.BACKGROUND_COLORS.background_purple}  
+`;
 
 class LoginPresentation extends React.Component<{}, {}> {
 
     public render() {
         return (
             <div className="Login">
-                <div className="Login-section Login-section--background">
-                    <img className="Login-image" src={logo} />
-                    <Heading3 color="textLight">Administrador</Heading3>
-                </div>
-                <div className="Login-section Login-section--form">
-                    <div className="Login-form">
-                        <Heading1 className="Login-title">Bienvenido</Heading1>
-                        <Heading2 className="Login-subtitle">Por favor, ingresa tu correo y contraseña de UTP.</Heading2>
+                <SectionRight />
+                <div className="Login_section Login_section--form">
+                    <div className="Login_form">
+                        <Display2 weight={LIGHT_TEXT} color={'font_medium'}>¡Bienvenido!</Display2>
+                        <Subhead1 weight={LIGHT_TEXT} style={{margin: '7px 0 auto 0'}}>
+                            Ingresa tu correo y contraseña
+                        </Subhead1>
                         {this.props.children}
-                        <Heading3 className="Login-information">
-                            ¿Olvidaste tu contraseña? Para recuperarla escríbenos a ugoadministrador@ugo.com.pe
-                        </Heading3>
+                        <div className="Login_footer">
+                            <div style={{marginRight: 5}}><Icon name={'locker'}/></div>
+                            <div>
+                                <Small2>¿Olvidaste tu contraseña? </Small2>
+                                <Small2 weight={LIGHT_TEXT}>Para recuperarla escríbenos a soporteugo@lacafetalab.pe</Small2>
+                            </div>
+                        </div>
                     </div>
+                </div>
+                <div className="Login_section Login_section--image-container">
+                    <img className="Login_image" src={logo} />
                 </div>
             </div>
         );

@@ -1,0 +1,49 @@
+.StudentModalCard {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  justify-content: space-around;
+  &_pri-art {
+    display: block;
+    height: 82px!important;
+    margin: 0 auto;
+    width: 82px!important;
+  }
+  &_body {
+    display: flex;
+    flex-direction: column;
+    &-right {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      span {
+        color: #bebfc0!important;
+      }
+    }
+  }
+  &_image-container {
+    border: solid 2px #9e61f9!important;
+    height: 48px!important;
+    margin-right: 12px;
+    width: 48px!important;
+  }
+  &_custom-width {
+    display: flex;
+    float: left;
+    margin: 0 auto;
+  }
+  &_message {
+    display: block;
+    text-align: center;
+    width: 100%;
+    span {
+      color: rgb(74, 74, 74)!important;
+    }
+  }
+  &_footer{
+    margin-top: 10px;
+  }
+  &_button {
+    margin: 0 auto;
+  }
+}

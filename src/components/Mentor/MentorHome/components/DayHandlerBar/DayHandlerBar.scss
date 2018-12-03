@@ -1,0 +1,47 @@
+.DayHandlerBar {
+  display: flex;
+  justify-content: space-between;
+  min-width: 100%;
+  min-height: 88px;
+  position: relative;
+  margin-bottom: 55px;
+  &_button {
+    background: transparent;
+    border: 0;
+    cursor: pointer;
+    position: absolute;
+    top: 50%;
+    transition: all 0.15s ease-in;
+    .icon {
+      height: 31px;
+      width: 31px;
+      fill: #561cac;
+    }
+    &--disabled {
+      transform: rotate(180deg);
+      .icon {
+        fill: #d4dce0;
+      }
+    }
+    &--right {
+      right: -50px;
+      transform: rotate(180deg) translateY(50%);
+      &:hover:not([class*='disabled']) {
+        right: -55px;
+      }
+      &:active:not([class*='disabled']) {
+        right: -52px;
+      }
+    }
+    &--left {
+      left: -50px;
+      transform: translateY(-50%);
+      &:hover:not([class*='disabled']) {
+        left: -55px;
+      }
+      &:active:not([class*='disabled']) {
+        left: -52px;
+      }
+    }
+  }
+}

@@ -40,10 +40,69 @@ const getValue = (value?: string, backup?: string): string  => {
     return value ? value : '';
 };
 
+const getDocumentHeight = (): number => {
+    const body = document.body;
+    const html = document.documentElement;
+    return Math.max(
+        body.scrollHeight,
+        body.offsetHeight,
+        html.clientHeight,
+        html.scrollHeight,
+        html.offsetHeight);
+};
+
+const scrollToTop = () => {
+    window.scrollTo(0, 0);
+};
+
+const doClone = (source: any): any => {
+    if (Object.prototype.toString.call(source) === '[object Array]') {
+        const clone = [];
+        for (let i=0; i<source.length; i++) {
+            clone[i] = doClone(source[i]);
+        }
+        return clone;
+    } else if (typeof(source) === "object") {
+        const clone = {};
+        for (const prop in source) {
+            if (source.hasOwnProperty(prop)) {
+                clone[prop] = doClone(source[prop]);
+            }
+        }
+        return clone;
+    } else {
+        return source;
+    }
+};
+
+const getMonday = (date?: Date) => {
+    let d = Utilities.todayDate();
+    if (!!date) {
+        d = new Date(date);
+    }
+    const day = d.getDay();
+    const diff = d.getDate()  - day + (day === 0 ? - 6 : 1);
+    return new Date(d.setDate(diff));
+};
+
+const todayDate = () => {
+    const date = new Date();
+    date.setSeconds(0);
+    date.setMinutes(0);
+    date.setHours(0);
+    date.setMilliseconds(0);
+    return date;
+}
+
 const Utilities = {
+    doClone,
     donwloadLink,
     getDateFormatted,
-    getValue
+    getDocumentHeight,
+    getMonday,
+    getValue,
+    scrollToTop,
+    todayDate
 };
 
 export default Utilities;

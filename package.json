@@ -81,6 +81,7 @@
     "chai": "4.1.2",
     "enzyme": "3.3.0",
     "enzyme-adapter-react-16": "1.1.1",
+    "firebase": "^5.5.8",
     "jest-junit": "^5.1.0",
     "jest-localstorage-mock": "2.2.0",
     "moxios": "0.4.0",
@@ -100,7 +101,10 @@
       "<rootDir>/src/**/__tests__/**/*.(j|t)s?(x)",
       "<rootDir>/src/**/?(*.)(spec|test).(j|t)s?(x)"
     ],
-    "reporters": [ "default", "jest-junit" ],
+    "reporters": [
+      "default",
+      "jest-junit"
+    ],
     "coverageReporters": [
       "text",
       "html"

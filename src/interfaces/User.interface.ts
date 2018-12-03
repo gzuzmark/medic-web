@@ -15,4 +15,6 @@ export interface IUser extends IBaseUser{
     id: string;
     status: string;
     timeZone: string;
+    rol: string;
+    rolId: string;
 }

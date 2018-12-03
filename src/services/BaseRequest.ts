@@ -2,7 +2,10 @@ import Axios from 'axios';
 import UserRepository from "../repository/UserRepository";
 
 export const headersRequest = {
-    'Content-Type': 'application/json'
+    'Content-Type': 'application/json',
+    'installedVersion': '1.0.0',
+    'platformName': 'web',
+    'resolution': 'hdpi'
 };
 
 class BaseRequest {
@@ -19,10 +22,23 @@ class BaseRequest {
         this.onResponseError();
     }
 
+    public getCustomInstance(cancel?: any) {
+        const params: {baseURL: string, headers: object, cancelToken?: any} = {
+            baseURL: this.baseUrl,
+            headers: {...headersRequest, 'Authorization': 'Bearer ' + UserRepository.getToken()},
+        };
+        if (!!cancel) {
+            params.cancelToken = cancel.token;
+        }
+        return Axios.create(params);
+    }
+
+    public generateCancelToken() {
+        return Axios.CancelToken.source();
+    }
+
     public refreshToken() {
-
         return new Promise((resolve, reject) => {
-
             Axios.post('/ugo-admin/refreshToken', {},
                 {
                     baseURL: this.baseUrl,

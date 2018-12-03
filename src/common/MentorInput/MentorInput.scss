@@ -1,0 +1,106 @@
+@mixin placeholder($placeholder_color) {
+  &::-webkit-input-placeholder {color: $placeholder_color;transition: color 0.2s ease-in;}
+  &:-moz-placeholder           {color: $placeholder_color;transition: color 0.2s ease-in;}
+  &::-moz-placeholder          {color: $placeholder_color;transition: color 0.2s ease-in;}
+  &:-ms-input-placeholder      {color: $placeholder_color;transition: color 0.2s ease-in;}
+}
+
+.MentorInput {
+  height: 40px;
+  &_input {
+    border: 0;
+    border-radius: 4px;
+    display: none;
+    font-weight: 300;
+    height: 40px;
+    left: 0;
+    padding: 0 46px 0 16px;
+    position: absolute;
+    top: 0;
+    transition: border 0.2s ease-in;
+    width: 100%;
+    @include placeholder ($placeholder_color: #748e98);
+    &:focus {
+      @include placeholder ($placeholder_color: #4a4a4a);
+    }
+  }
+  &_message {
+    display: none;
+  }
+  &--default {
+    .MentorInput_input {
+      border: solid 1px #ccd6dc;
+      &:focus {
+        @include placeholder ($placeholder_color: #4a4a4a);
+        border: solid 1px #4a4a4a;
+      }
+    }
+    .icon {
+      fill: #ccd6dc;
+    }
+  }
+  &--error {
+    .icon {
+      fill: #ff8389!important;
+    }
+    .MentorInput {
+      &_message {
+        bottom: -16px;
+        display: block;
+        height: 14px;
+        position: absolute;
+        width: 100%;
+        span {
+          color: #ff8389!important;
+          display: block;
+        }
+      }
+      &_input {
+        border: solid 1px #ff8389;
+        &:focus {
+          border: solid 1px #ff8389;
+        }
+      }
+    }
+  }
+  &--default, &--error {
+    position: relative;
+    .MentorInput_input {
+      display: block;
+    }
+    .icon {
+      position: absolute;
+      right: 10px;
+      top: 8px;
+    }
+    span {
+      display: none;
+    }
+  }
+  &--inactive {
+    align-items: center;
+    cursor: pointer;
+    display: flex;
+    justify-content: flex-end;
+  }
+  &--disabled {
+    &.MentorInput {
+      .icon {
+        fill: #CCD6DD;
+      }
+      span {
+        color: #CCD6DD!important;
+      }
+    }
+  }
+  .icon {
+    height: 24px!important;
+    width: 24px!important;
+    fill: #561cac;
+  }
+  span {
+    color: #561cac!important;
+    padding-left: 4px;
+  }
+
+}

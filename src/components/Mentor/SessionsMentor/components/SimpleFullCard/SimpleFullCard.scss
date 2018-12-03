@@ -1,0 +1,32 @@
+.SimpleFullCard {
+  border: solid 1px #ccd6dc;
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  &_header {
+    align-items: center;
+    border-bottom: solid 1px #ccd6dc;
+    display: flex;
+    flex-direction: column;
+    height: 160px;
+    justify-content: center;
+    h2 {
+      color: #4a4a4a!important;
+    }
+    span:nth-child(2) {
+      color: #4a4a4a!important;
+    }
+  }
+  &_description {
+    span {
+      color: #696d6e!important;
+    }
+  }
+  &_body {
+    display: block;
+    margin: 0 auto;
+    min-height: 335px;
+    padding: 40px 0;
+    width: 800px;
+  }
+}

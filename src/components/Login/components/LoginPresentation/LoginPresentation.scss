@@ -5,40 +5,39 @@
   flex-direction: row;
   height: 100vh;
   justify-content: space-between;
-  &-section {
+  &_section {
     align-items: center;
     display: flex;
     justify-content: center;
     &--background {
-      background: $primary-color;
       flex-direction: column;
-      width: 33%;
+      width: 40%;
     }
     &--form {
       margin-bottom: auto;
+      margin-right: auto;
       margin-top: auto;
-      width: 67%;
+      padding-left: 140px;
+    }
+    &--image-container {
+      position: relative;
     }
   }
-  &-image {
-    width: 20%;
+  &_footer {
+    align-items: center;
+    display: flex;
   }
-  &-form {
-    margin-right: 20%;
-    width: 390px;
+  &_image {
+    bottom: 100px;
+    position: absolute;
+    right: 100px;
+    width: 110px;
   }
-  &-title {
-    height: 48px;
-    margin-bottom: 13px;
-  }
-  &-subtitle {
-    height: 24px;
-    margin-bottom: 50px;
-  }
-  &-information {
-    background: url('../../../../assets/images/password.png') no-repeat scroll 0 5px/12px;
-    height: 54px;
-    margin-top: 20px;
-    padding-left: 30px;
+  &_form {
+    display: flex;
+    flex-direction: column;
+    height: 490px;
+    justify-content: space-between;
+    width: 320px;
   }
 }

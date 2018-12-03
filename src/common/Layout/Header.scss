@@ -5,25 +5,30 @@
   top: 0;
   width: 100%;
   z-index: 999;
-  &-space {
+  &_space {
     display: block;
     height: 80px;
     width: 100%;
   }
-  &-wrapper {
+  &_wrapper {
     align-items: center;
     display: flex;
     height: 80px;
     justify-content: space-between;
   }
-  &-section {
+  &_section {
     align-items: center;
     display: flex;
     justify-content: flex-end;
   }
-  &-text {
-    color: white!important;
-    font-size: 16px!important;;
-    padding: 0 14px;
+  &_container-image {
+    display: block;
+    height: 18px;
+    overflow: hidden;
+    position: relative;
+    width: 54px;
+  }
+  &_image {
+    position: absolute;
   }
 }
