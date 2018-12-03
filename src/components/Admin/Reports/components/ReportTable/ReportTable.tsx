@@ -85,7 +85,7 @@ const ReportTable: React.StatelessComponent<IPropsReportTable> = (props) => {
     let table = props.type === REPORT_SESSIONS ? tableBase : tableStudents;
     table = props.type === REPORT_SESSIONS ? table.concat(tableRating) : table.concat(tableRatingComment);
     return (
-        <ConsoleTable items={props.items} row={table} loading={props.loading} >
+        <ConsoleTable items={props.items} row={table} loading={props.loading} style={{position: 'initial'}} >
             {props.children}
         </ConsoleTable>
     );

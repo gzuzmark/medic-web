@@ -128,6 +128,8 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
     }
 
     public render() {
+        const navBarText = this.sessionMentor ?
+            `${this.mdp.isDateToday(this.sessionMentor.session.from)? 'hoy ': ''} ${this.sessionMentor.getDate(this.mdp)}` : '';
         return <Layout title={"Tutores"}>
             <MentorModalBase
                 show={this.state.modal}
@@ -146,7 +148,8 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
                 {this.sessionMentor &&
                 <div className={"SessionsMentor_navigation"}>
                     <Link to={'/mentor'}><Text3>Tus sesiones >&nbsp;</Text3></Link>
-                    <Text3>{this.mdp.isDateToday(this.sessionMentor.session.from)? 'Hoy ': ''}{this.sessionMentor.getDate(this.mdp)} >&nbsp;</Text3>
+                    <Text3>
+                        {navBarText.charAt(1).toUpperCase()}{navBarText.slice(2)} >&nbsp;</Text3>
                     <Text3>{`Sesión ${this.state.fullCardSession.type.toLowerCase()}`}</Text3>
                 </div>}
                 {this.state.loading && !this.state.isEmpty &&
