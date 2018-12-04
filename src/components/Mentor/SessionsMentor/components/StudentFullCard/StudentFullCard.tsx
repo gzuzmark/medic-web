@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { Text2, Text3 } from '../../../../../common/ConsoleText';
+import Utilities from "../../../../../common/Utilities";
 import './StudentFullCard.scss';
 
 export interface IStudentChecklistCard {
@@ -28,7 +29,10 @@ const StudentFullCard: React.StatelessComponent<IPropsStudentFullCard> = (props)
         <div className={`StudentFullCard ${props.student.new ? 'StudentFullCard--new': ''}`} style={{...props.styles}}>
             <div className={"StudentFullCard_left"}>
                 <div className={"StudentFullCard_image-container u-ImageContainer"}>
-                    <img src={props.student.photo} title={"Estudiante"} className={"StudentFullCard_image"} />
+                    <img src={props.student.photo}
+                         title={"Estudiante"}
+                         className={"StudentFullCard_image"}
+                         onError={Utilities.onErrorStudentImage}/>
                 </div>
             </div>
             <div className={"StudentFullCard_right"}>
