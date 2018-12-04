@@ -92,7 +92,12 @@ const todayDate = () => {
     date.setHours(0);
     date.setMilliseconds(0);
     return date;
-}
+};
+
+const onErrorStudentImage = (e: any) => {
+    e.target.onerror = null;
+    e.target.src="https://storage.googleapis.com/ugo-utp.appspot.com/mentors/default.png"
+};
 
 const Utilities = {
     doClone,
@@ -101,6 +106,7 @@ const Utilities = {
     getDocumentHeight,
     getMonday,
     getValue,
+    onErrorStudentImage,
     scrollToTop,
     todayDate
 };

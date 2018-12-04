@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { Text2, Text3, TextBold1 } from '../../../../../common/ConsoleText';
+import Utilities from "../../../../../common/Utilities";
 import {IStudentChecklist} from "../../../../../domain/StudentChecklist/StudentChecklistBean";
 import './StudentAddModal.scss';
 
@@ -43,7 +44,8 @@ const StudentAddModal: React.StatelessComponent<IPropsStudentModalCard> = (props
                     <div className={"StudentModalCard_image-container u-ImageContainer"}>
                         <img src={props.options.user.student.photo}
                              title={"Estudiante"}
-                             className={"StudentModalCard_image"} />
+                             className={"StudentModalCard_image"}
+                             onError={Utilities.onErrorStudentImage} />
                     </div>
                 </div>
                 <div className={"StudentModalCard_body-right"}>
