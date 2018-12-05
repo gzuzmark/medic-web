@@ -1,7 +1,6 @@
 import * as React from 'react';
 import logo_header from '../../assets/images/logo_header.png';
-import {ROL_ADMIN} from "../../components/Login/components/LoginForm/LoginForm";
-import UserRepository from '../../repository/UserRepository';
+import UserRepository, {ROL_ADMIN} from '../../repository/UserRepository';
 import Avatar from '../Avatar/Avatar';
 import { Text } from '../ConsoleText';
 import {LIGHT_TEXT, Subhead1} from '../MentorText';

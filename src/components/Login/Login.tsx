@@ -2,10 +2,10 @@ import { Formik } from 'formik';
 import * as React from 'react';
 import ErrorsMessage from "../../common/ErrorsMessage";
 import { IUserInput } from '../../interfaces/User.interface';
-import UserRepository from "../../repository/UserRepository";
+import UserRepository, {ROL_ADMIN} from "../../repository/UserRepository";
 import AuthService from '../../services/Auth/Auth.service';
 import { schema } from './components/LoginForm.validation';
-import LoginForm, {ROL_ADMIN} from './components/LoginForm/LoginForm';
+import LoginForm from './components/LoginForm/LoginForm';
 import LoginPresentation from './components/LoginPresentation/LoginPresentation';
 
 interface IStateLoginForm {
@@ -38,7 +38,11 @@ class Login extends React.Component <{}, IStateLoginForm> {
     public componentDidMount() {
         if (UserRepository.getToken() && UserRepository.getUser()) {
             this.setState({isLogin: true});
-            window.location.assign('/admin');
+            if (UserRepository.getUser().rol === ROL_ADMIN) {
+                window.location.assign('/admin');
+            } else {
+                window.location.assign('/mentor');
+            }
         } else {
             this.setState({isLogin: false});
             UserRepository.setUser('');
