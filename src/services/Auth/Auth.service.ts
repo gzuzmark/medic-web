@@ -1,7 +1,6 @@
 import Axios from 'axios';
-import {ROL_ADMIN} from "../../components/Login/components/LoginForm/LoginForm";
 import { IUserInput } from '../../interfaces/User.interface';
-import UserRepository from '../../repository/UserRepository';
+import UserRepository, {ROL_ADMIN} from '../../repository/UserRepository';
 import { headersRequest } from '../BaseRequest';
 import BaseRequest from "../BaseRequest";
 

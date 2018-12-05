@@ -63,6 +63,19 @@ export class SessionBean {
         return name;
     }
 
+    get isCurrentAccordingTime() {
+        const from = new Date(this.session.from);
+        const to = new Date(this.session.to);
+        const now = new Date();
+        return now.getTime() <= to.getTime() && now.getTime() >= from.getTime()
+    }
+
+    get isActiveAccordingTime() {
+        const to = new Date(this.session.to);
+        const now = new Date();
+        return to.getTime() > now.getTime()
+    }
+
     public getTime(dateFormatter: AbstractDateParser): string {
         return `${dateFormatter.parseDateToString(this.session.from, "h:mm a")} - ${dateFormatter.parseDateToString(this.session.to, "h:mm a")}`;
     }
@@ -104,10 +117,7 @@ export class SessionBean {
 
     public getStatus() {
         let text = SESSION_LIFE.PENDING;
-        const from = new Date(this.session.from);
-        const to = new Date(this.session.to);
-        const now = new Date();
-        if (now.getTime() <= to.getTime() && now.getTime() >= from.getTime()) {
+        if (this.isCurrentAccordingTime) {
             text = SESSION_LIFE.ACTIVE;
         } else if (!this.session.isActive) {
             text = SESSION_LIFE.RESOLVE;

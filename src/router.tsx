@@ -1,7 +1,7 @@
 import * as React from 'react';
 import 'react-dates/initialize';
 import * as ReactDOM from 'react-dom';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import {BrowserRouter as Router, Route} from 'react-router-dom';
 import './assets/fonts/fonts.scss';
 import './assets/fonts/fontsMentor.scss';
 import './assets/styles/styles.scss';
@@ -16,6 +16,23 @@ import Login from './components/Login/Login';
 import Logout from './components/Logout/Logout';
 import MentorHome from "./components/Mentor/MentorHome/MentorHome";
 import SessionsMentor from "./components/Mentor/SessionsMentor/SessionsMentor";
+import UserRepository, {ROL_ADMIN, ROL_MENTOR} from "./repository/UserRepository";
+
+const GuardComponent = <P extends object>(Component: React.ComponentType, rol: string) => {
+    const user = UserRepository.getUser();
+    return (props: any) => {
+        const hasPermission = !!user &&
+            user.rol === rol &&
+            !!UserRepository.getToken();
+        if (hasPermission) {
+            return <Component {...props} />
+        } else {
+            window.location.assign('/');
+        }
+        return null;
+    }
+};
+
 
 const PageReports = (props: any) => {
     const LayoutReports = HOCLayout(Reports);
@@ -26,19 +43,17 @@ export const initRouter = () => {
     ReactDOM.render(
         <Router>
             <div>
-                <Route exact={true} path="/logout" component={Logout} />
                 <Route exact={true} path="/" component={Login} />
-                <Route exact={true} path="/admin" component={MentorsList} />
-                <Route exact={true} path="/admin/mentores" component={MentorsList} />
-                <Route exact={true} path="/admin/reportes" render={PageReports}/>
-                <Route exact={true} path="/admin/mentores/:id/sesiones" component={MentorSession}  />
-                <Route exact={true} path="/admin/mentores/:id/sesiones/agendar" component={AddScheduleSession} />
-                <Route exact={true} path="/admin/mentores/:id/sesiones/:session/eliminar" component={SessionDeleteSingle} />
-                <Route exact={true} path="/admin/mentores/:id/sesiones/eliminar" component={SessionDeleteMultiple} />
-                <Route exact={true} path="/mentor" component={MentorHome} />
-                <Route exact={true} path="/mentor/:id" component={MentorHome} />
-                <Route exact={true} path="/mentor/sesion/:session/" component={SessionsMentor} />
-                <Route exact={true} path="/mentor/sesion/:session/:id/" component={SessionsMentor} />
+                <Route exact={true} path="/logout" component={Logout} />
+                <Route exact={true} path="/admin" render={GuardComponent(MentorsList, ROL_ADMIN)} />
+                <Route exact={true} path="/admin/mentores" render={GuardComponent(MentorsList, ROL_ADMIN)} />
+                <Route exact={true} path="/admin/reportes" render={GuardComponent(PageReports, ROL_ADMIN)}/>
+                <Route exact={true} path="/admin/mentores/:id/sesiones" render={GuardComponent(MentorSession, ROL_ADMIN)} />
+                <Route exact={true} path="/admin/mentores/:id/sesiones/agendar" render={GuardComponent(AddScheduleSession, ROL_ADMIN)} />
+                <Route exact={true} path="/admin/mentores/:id/sesiones/:session/eliminar" render={GuardComponent(SessionDeleteSingle, ROL_ADMIN)} />
+                <Route exact={true} path="/admin/mentores/:id/sesiones/eliminar" render={GuardComponent(SessionDeleteMultiple, ROL_ADMIN)} />
+                <Route exact={true} path="/mentor" render={GuardComponent(MentorHome, ROL_MENTOR)} />
+                <Route exact={true} path="/mentor/sesion/:session/" render={GuardComponent(SessionsMentor, ROL_MENTOR)} />
             </div>
         </Router>,
         document.getElementById('root') as HTMLElement

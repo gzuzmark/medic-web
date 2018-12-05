@@ -3,6 +3,8 @@ import emptyState from '../../../../../assets/images/empty-state.png';
 import Accordion from "../../../../../common/Accordion/Accordion";
 import { Text1, TextBold3, Title2 } from "../../../../../common/ConsoleText"
 import Icon from "../../../../../common/Icon/Icon";
+import {FONTS} from "../../../../../common/MentorColor";
+import { Headline1 } from "../../../../../common/MentorText"
 import Utilities from "../../../../../common/Utilities";
 import {ISessionCollector} from "../../../../../domain/Session/SessionCollector";
 import {SessionMentorBean} from "../../../../../domain/Session/SessionMentorBean";
@@ -46,8 +48,8 @@ class  SessionsMentorDetail extends React.Component<IPropsSessionsMentorDetail, 
         return this.props.sessionDetail.sessions && !isEmpty ? (
             <div className={"SessionsMentorDetail"}>
                 <div className={"SessionsMentorDetail_title"}>
-                    <Title2>
-                        Sesiones de {day}{title}</Title2>
+                    <Headline1 color={FONTS.highlight}>
+                        Sesiones de {day}{title}</Headline1>
                 </div>
                 {!!this.props.sessionDetail.sessions.pending_sessions.length && <div className={"SessionsMentorDetail_session-container"}>
                     <Accordion title={

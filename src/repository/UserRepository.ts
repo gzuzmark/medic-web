@@ -4,6 +4,9 @@ const keyToken = 'TOKEN_AUTH';
 const keyRefreshToken = 'REFRESH_TOKEN_AUTH';
 const keyUser = 'USER_INF';
 
+export const ROL_MENTOR = 'mentor';
+export const ROL_ADMIN = 'administrador';
+
 export const UserRepository = {
     setToken: (value: any) => {
         localStorage.setItem(keyToken, value);

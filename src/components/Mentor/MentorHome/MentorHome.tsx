@@ -1,8 +1,8 @@
 import * as React from 'react';
-import { Title2 } from '../../../common/ConsoleText';
 import Icon from "../../../common/Icon/Icon";
 import Layout from "../../../common/Layout/Layout";
 import Loader from "../../../common/Loader/Loader";
+import { Headline1 } from '../../../common/MentorText';
 import Utilities from "../../../common/Utilities";
 import {MomentDateParser} from "../../../domain/DateManager/MomentDateParser";
 import {ListenerFirebase} from "../../../domain/Listener/ListenerFirebase";
@@ -40,7 +40,8 @@ class MentorHome extends React.Component<IPropsMentorHome, IStateMentorHome> {
     private mentorId: string;
     private listenerFirebase: ListenerFirebase;
     private mdp: MomentDateParser;
-    constructor(props: any) {
+    private interval: any = 0;
+    constructor(props: IPropsMentorHome) {
         super(props);
         this.state = {
             daysBar: this.updateDaysBar(0),
@@ -96,7 +97,7 @@ class MentorHome extends React.Component<IPropsMentorHome, IStateMentorHome> {
             <div className="MentorHome u-LayoutMentorMargin">
                 <div className={"MentorHome_title"}>
                     <Icon name={"calendar"}/>
-                    <Title2>Tus sesiones</Title2>
+                    <Headline1>Tus sesiones</Headline1>
                 </div>
                 <DayHandlerBar
                     onChangeDate={this.updateDate}
@@ -104,10 +105,10 @@ class MentorHome extends React.Component<IPropsMentorHome, IStateMentorHome> {
                     selectedDate={this.state.selectedDate}
                     loading={this.state.loading}
                     daysBar={this.state.daysBar} />
-                {this.state.sessionDetail.sessions?
+                {this.state.sessionDetail.sessions ?
                 <SessionsMentorDetail
                     sessionDetail={this.state.sessionDetail}
-                    selectedDate={this.state.selectedDate}/> :
+                    selectedDate={this.state.selectedDate} /> :
                 <Loader top={10} height={50}/>}
             </div>
         </Layout>
@@ -209,12 +210,20 @@ class MentorHome extends React.Component<IPropsMentorHome, IStateMentorHome> {
     }
 
     private updateSessionDetail(date: Date, sessionCollector?: SessionCollector<SessionMentorBean>) {
-        if (!sessionCollector) {
-            sessionCollector = this.sessionCollector;
-        }
+        const collector = sessionCollector || this.sessionCollector;
+        clearInterval(this.interval);
+        this.interval = setInterval(() => {
+            collector.updateCollector();
+            this.setState({
+                sessionDetail: {
+                    ...this.state.sessionDetail,
+                    sessions: collector.getSessionsFrom(date.getDay())
+                }
+            });
+        }, 1100);
         return {
             ...this.state.sessionDetail,
-            sessions: sessionCollector.getSessionsFrom(date.getDay())
+            sessions: collector.getSessionsFrom(date.getDay())
         }
     }
 }
