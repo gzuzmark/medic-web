@@ -36,6 +36,10 @@ export class SessionCollector<T extends SessionBean> {
         this.sessionCollector = [];
         this.firstEnableDate = "";
         this.initDay = initDay;
+        this.updateCollector();
+    }
+
+    public updateCollector() {
         this.buildStructure();
         this.filterSessions(this.sessions);
         this.orderSessions();
@@ -71,7 +75,7 @@ export class SessionCollector<T extends SessionBean> {
             const collector = this.sessionCollector[date.getDay()];
             if (collector) {
                 collector.status = STATUS_DAY_SESSIONS.DEFAULT;
-                if (item.session.isActive) {
+                if (item.isActiveAccordingTime) {
                     collector.pending_sessions.push(item);
                 } else {
                     collector.resolve_sessions.push(item);
