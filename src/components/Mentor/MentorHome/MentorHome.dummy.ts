@@ -13,7 +13,7 @@ const data = {
             "id": "c5f0daac-6729-43a1-a077-1ea4dbd0540d",
             "isActive": false,
             "isEnabledForAttendance": true,
-            "location": {
+            "room": {
                 "type": "VIRTUAL",
                 "typeLabel": "Virtual"
             },
@@ -34,14 +34,15 @@ const data = {
             "id": "cea48549-d61b-44e0-865e-3c34e7c00a16",
             "isActive": true,
             "isEnabledForAttendance": false,
-            "location": {
-                "location": {
+            "room": {
+                "room": {
                     "address": "Av. Oriental 585",
                     "id": "2",
-                    "location": "Av. Oriental 585, Torres Tecnológicas, Piso 4, Aula 405",
                     "maxStudents": 30,
                     "room": "Piso 4, Aula 405",
+                    "roomString": "Av. Oriental 585, Torres Tecnológicas, Piso 4, Aula 405",
                     "site": "Torres Tecnológicas",
+                    "siteId": "1",
                     "status": "PUBLISHED"
                 },
                 "type": "PHYSICAL",

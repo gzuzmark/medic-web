@@ -78,7 +78,7 @@ class SessionService extends BaseRequest {
     }
 
     // Mentor Service
-    public listMentorSessions(from: string, to: string, id: string = ''): Promise<ISessionMentor[]> {
+    public listMentorSessions(from: string, to: string): Promise<ISessionMentor[]> {
         if (!!this.listMentorSessionsCancelToken) {
             this.listMentorSessionsCancelToken.cancel();
         }

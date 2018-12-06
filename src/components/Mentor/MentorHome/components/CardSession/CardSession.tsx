@@ -21,7 +21,7 @@ const CardSession: React.StatelessComponent<IPropsCardSession> = (props) => {
                     <Icon name={"calendar-check"}/>
                 </div>
                 <div className={"CardSession_aside-description"}>
-                    <SmallText1>{props.item.session.location && props.item.session.location.typeLabel}</SmallText1>
+                    <SmallText1>{props.item.session.room && props.item.session.room.typeLabel}</SmallText1>
                 </div>
                 <div className={"CardSession_aside-main"}>
                     <TextBold1>{props.item.getTime(new MomentDateParser())}</TextBold1>

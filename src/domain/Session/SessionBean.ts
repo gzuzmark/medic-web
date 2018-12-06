@@ -17,14 +17,15 @@ export interface ISessionItemBase {
 export interface ISessionLocation {
     typeLabel: string;
     type: string;
-    location?: {
+    room?: {
         id: string,
         site: string,
-        room: string,
+        siteId: string,
+        roomString: string,
         address: string,
         status: string,
         maxStudents: number,
-        location: string
+        room: string
     }
     sessionUrl?: string;
 }
@@ -34,7 +35,7 @@ export interface ISessionBase {
     id?: string;
     from: string;
     to: string;
-    location?: ISessionLocation;
+    room?: ISessionLocation;
     skill?: ISessionItemBase;
     isActive?: boolean;
 }
@@ -85,19 +86,19 @@ export class SessionBean {
     }
 
     public isVirtual(): boolean {
-        return !!this.session.location && this.session.location.type === SESSION_VIRTUAL;
+        return !!this.session.room && this.session.room.type === SESSION_VIRTUAL;
     }
 
     public isPhysical(): boolean {
-        return !!this.session.location && this.session.location.type === SESSION_PHYSICAL;
+        return !!this.session.room && this.session.room.type === SESSION_PHYSICAL;
     }
 
     public getLocation(): string {
         let location = '';
-        if (!!this.session.location && this.isVirtual()) {
-            location = this.session.location.sessionUrl ? this.session.location.sessionUrl : '';
-        } else if (this.session.location) {
-            location = this.session.location.location ? this.session.location.location.location : '';
+        if (!!this.session.room && this.isVirtual()) {
+            location = this.session.room.sessionUrl ? this.session.room.sessionUrl : '';
+        } else if (this.session.room) {
+            location = this.session.room.room ? this.session.room.room.roomString : '';
         }
 
         return location;
