@@ -8,7 +8,7 @@ export interface IFactorySession {
     to: string;
     type: string;
     credits: number;
-    location: string;
+    room: string;
     maxStudents: number;
     mentorId: string;
     sessions: ISessionSchedule[];
@@ -31,9 +31,9 @@ export class SessionBean {
                 from: s.from,
                 interestAreaId: s.interestAreaId,
                 interestAreaName: s.interestAreaName || '',
-                location: s.location,
                 maxStudents: s.maxStudents,
                 mentorId: s.mentorId,
+                room: s.room,
                 sessions: Array.from(s.sessions),
                 skillId: s.skillId,
                 skillName: s.skillName || '',
@@ -49,9 +49,9 @@ export class SessionBean {
                 from: (new Date()).toISOString(),
                 interestAreaId: '',
                 interestAreaName: '',
-                location: '',
                 maxStudents: 1,
                 mentorId: '',
+                room: '',
                 sessions: [{from: '', to: '', key: Date.now().toString() + 0}],
                 skillId: '',
                 skillName: '',
@@ -115,7 +115,7 @@ export class SessionBean {
     public isSessionValid() {
         return new Date(this.factorySession.from) <= new Date(this.factorySession.to) &&
                this.factorySession.type !== '' &&
-               (this.factorySession.location !== '' || this.factorySession.type === SESSION_VIRTUAL) &&
+               (this.factorySession.room !== '' || this.factorySession.type === SESSION_VIRTUAL) &&
                this.factorySession.maxStudents > 0 &&
                this.factorySession.interestAreaId !== '' &&
                this.factorySession.mentorId !== '' &&
@@ -129,7 +129,7 @@ export class SessionBean {
         });
         return this.factorySession.from <= this.factorySession.to &&
             this.factorySession.type !== '' &&
-            (this.factorySession.location !== '' || this.factorySession.type === SESSION_VIRTUAL) &&
+            (this.factorySession.room !== '' || this.factorySession.type === SESSION_VIRTUAL) &&
             this.factorySession.maxStudents > 0 &&
             this.factorySession.mentorId !== '' &&
             this.factorySession.interestAreaId !== '' &&
@@ -143,7 +143,7 @@ export class SessionBean {
     }
 
     public setLocation(id: string) {
-        this.factorySession.location = id;
+        this.factorySession.room = id;
     }
 
     public setSessionType(id: string) {

@@ -3,7 +3,7 @@ export interface IEvent {
     id: string;
     start: Date;
     title: string;
-    location: string;
+    room: string;
     site: string;
     type: string;
 }

@@ -38,7 +38,7 @@ const ConfirmModal: React.StatelessComponent<IPropsConfirmModal> = (props) => {
                                 <div key={`ModalTable-${index}`}>
                                     <div>{props.session.factorySession.skillName}</div>
                                     <div>Tutoria</div>
-                                    <div>{props.session.factorySession.location}</div>
+                                    <div>{props.session.factorySession.room}</div>
                                     <div>{props.session.factorySession.maxStudents}</div>
                                     <div>{item.weekDay}</div>
                                     <div>{item.from} - {item.to}</div>
