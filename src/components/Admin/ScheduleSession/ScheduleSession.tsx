@@ -230,27 +230,23 @@ class ScheduleSession extends React.Component<IPropsScheduleSession, IStateSched
         const session = this.factory;
         switch (type) {
             case SESSION_SELECTED:
-                session.factorySession.interestAreaId = item.id;
-                session.factorySession.interestAreaName = item.name;
-                session.factorySession.mentorId = this.mentorId;
+                session.setSessionSelected(item.id, item.name, this.mentorId);
                 this.loadLocations(item.id);
                 break;
             case SESSION_SKILL:
-                session.factorySession.skillName = item.name;
-                session.factorySession.skillId = item.id;
+                session.setSkill(item.id, item.name);
                 break;
             case SESSION_TYPE:
-                session.factorySession.type = item.id;
-                session.factorySession.location = '';
+                session.setSessionType(item.id);
                 break;
             case SESSION_SITE:
-                session.factorySession.location = '';
+                session.setLocation('');
                 break;
             case SESSION_ROOM:
-                session.factorySession.location = item.id;
+                session.setLocation(item.id);
                 break;
             case SESSION_MAX_STUDENTS:
-                session.factorySession.maxStudents = Number(item.name);
+                session.setMaxStudents(item.name);
                 break;
         }
         this.setState({session: session.getFormSession}, () => {

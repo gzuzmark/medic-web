@@ -138,6 +138,30 @@ export class SessionBean {
 
     }
 
+    public setMaxStudents(max: string) {
+        this.factorySession.maxStudents = Number(max);
+    }
+
+    public setLocation(id: string) {
+        this.factorySession.location = id;
+    }
+
+    public setSessionType(id: string) {
+        this.factorySession.type = id;
+        this.setLocation('');
+    }
+
+    public setSkill(id: string, name: string) {
+        this.factorySession.skillId = id;
+        this.factorySession.skillName = name;
+    }
+
+    public setSessionSelected(id: string, name: string, mentorId: string) {
+        this.factorySession.interestAreaId = id;
+        this.factorySession.interestAreaName = name;
+        this.factorySession.mentorId = mentorId;
+    }
+
     private getTime(initialDay: Date, utcTime: string) {
         const time = utcTime.split(':');
         const hour = Number(time[0]);
