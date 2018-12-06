@@ -21,12 +21,12 @@ const ModalSessionHandler: React.StatelessComponent<IPropsModalSessionHandler> =
             <div className={"ModalSessionHandler"}>
                 <ConsoleTable items={[SessionBean]} row={[{
                     name: 'Día',
-                    value: (row: SessionBean) => moment(row.from).format('ddd DD/MM/Y'),
+                    value: (row: SessionBean) => moment(row.factorySession.from).format('ddd DD/MM/Y'),
                     width: 124.5
                 },{
                     name: 'Hora',
                     value: (row: SessionBean) => {
-                        return moment(row.from).format('hh:mm a') + ' - ' + moment(row.to).format('hh:mm a')
+                        return moment(row.factorySession.from).format('hh:mm a') + ' - ' + moment(row.factorySession.to).format('hh:mm a')
                     },
                     width: 88.7
                 },{
