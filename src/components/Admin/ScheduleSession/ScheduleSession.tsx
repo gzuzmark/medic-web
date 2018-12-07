@@ -1,6 +1,6 @@
 import * as moment from "moment";
 import * as React from 'react';
-import {SessionBean} from '../../../beans/Session.bean';
+import {IFactorySession, SessionBean} from '../../../beans/Session.bean';
 import Layout from '../../../common/Layout/Layout';
 import MentorDetail from '../../../common/MentorDetail/MentorDetail';
 import MenuLeft from "../../../common/MenuLeft/MenuLeft";
@@ -29,7 +29,7 @@ interface IStateScheduleSession {
     locations: any;
     mentor?: IMentor;
     savingData: boolean;
-    session: SessionBean;
+    session: IFactorySession;
     showModal: boolean;
 
 }
@@ -39,7 +39,7 @@ class ScheduleSession extends React.Component<IPropsScheduleSession, IStateSched
     private mentorId: string;
     private mentorService: MentorService = new MentorService();
     private locationsService = new LocationService();
-
+    private factory = new SessionBean();
     constructor(props: IPropsScheduleSession) {
         super(props);
         this.state = {
@@ -48,7 +48,7 @@ class ScheduleSession extends React.Component<IPropsScheduleSession, IStateSched
             locations: {},
             mentor: undefined,
             savingData: false,
-            session: new SessionBean(),
+            session: this.factory.getFormSession,
             showModal: false
         };
         this.mentorId = this.props.match.params.id;
@@ -65,9 +65,8 @@ class ScheduleSession extends React.Component<IPropsScheduleSession, IStateSched
     }
 
     public componentDidMount() {
-        const session = {...this.state.session};
-        session.mentorId = this.mentorId;
-        this.setState({session: new SessionBean(session)}, () => {
+        this.factory.getFormSession.mentorId = this.mentorId;
+        this.setState({session: this.factory.getFormSession}, () => {
             this._getMentor();
         });
     }
@@ -85,7 +84,7 @@ class ScheduleSession extends React.Component<IPropsScheduleSession, IStateSched
 
     public render() {
         return (
-            <ScheduleSessionContext.Provider value={{session: this.state.session, listSession: this.state.listSession}} >
+            <ScheduleSessionContext.Provider value={{session: this.factory, listSession: this.state.listSession}} >
                 <Layout menu={this.renderMenu()}>
                     <Sticky height={0} top={80} style={{zIndex: -1}}>
                         <MentorDetail mentor={this.state.mentor}/>
@@ -96,15 +95,17 @@ class ScheduleSession extends React.Component<IPropsScheduleSession, IStateSched
                                 locations={this.state.locations}
                                 savingData={this.state.savingData}
                                 loading={this.state.loading}
-                                onClickSaveBulk={this._onConfirm}
-                                onChangeDuration={this._onChangeDuration}
                                 mentor={this.state.mentor}
-                                onChangeSessionDetail={this._onChangeSessionDetail}
-                                onChangeWeekendPicker={this._onChangeWeekendPicker}
-                                onChangeWorkshop={this._onChangeWorkshop}
-                                onRemoveWorkshop={this._onRemoveWorkshop}
-                                onAddWorkshop={this._onAddWorkshop}
-                                onCancel={this._return}
+                                callbacks={{
+                                    onAddWorkshop: this._onAddWorkshop,
+                                    onCancel: this._return,
+                                    onChangeDuration: this._onChangeDuration,
+                                    onChangeSessionDetail: this._onChangeSessionDetail,
+                                    onChangeWeekendPicker: this._onChangeWeekendPicker,
+                                    onChangeWorkshop: this._onChangeWorkshop,
+                                    onClickSaveBulk: this._onConfirm,
+                                    onRemoveWorkshop: this._onRemoveWorkshop
+                                }}
                             />
                         </div>
                     </div>
@@ -123,12 +124,16 @@ class ScheduleSession extends React.Component<IPropsScheduleSession, IStateSched
 
     private _onConfirm() {
         this.setState({savingData: true});
-        const session : any= new SessionBean(this.state.session);
-        session.from.setHours(0,0,0, 0);
-        session.to.setDate(session.to.getDate() + 1);
-        session.to.setHours(0,0,0,0);
+        const session : any= new SessionBean(this.factory.getFormSession);
+        const dateFrom = new Date(session.factorySession.from);
+        const dateTo = new Date(session.factorySession.to);
+        dateFrom.setHours(0,0,0, 0);
+        dateTo.setDate(dateTo.getDate() + 1);
+        dateTo.setHours(0,0,0,0);
+        session.factorySession.from = dateFrom.toISOString();
+        session.factorySession.to = dateTo.toISOString();
         if (session.isWorkshop) {
-            this.mentorService.bulkWorkshop(this.mentorId, session).then((items: any[]) => {
+            this.mentorService.bulkWorkshop(this.mentorId, session.factorySession).then((items: any[]) => {
                 if (items.length > 0 ) {
                     window.location.assign('/admin');
                 } else {
@@ -140,9 +145,7 @@ class ScheduleSession extends React.Component<IPropsScheduleSession, IStateSched
                 this.setState({savingData: false});
             });
         } else {
-            session.from = session.from.toISOString();
-            session.to = session.to.toISOString()
-            this.mentorService.bulk(this.mentorId, session).then((items: any[]) => {
+            this.mentorService.bulk(this.mentorId, session.factorySession).then((items: any[]) => {
                 if (items.length > 0 ) {
                     window.location.assign('/admin');
                 } else {
@@ -161,47 +164,45 @@ class ScheduleSession extends React.Component<IPropsScheduleSession, IStateSched
     }
 
     private _onChangeDuration(startDate: moment.Moment, endDate: moment.Moment, action: string) {
-        const session = {...this.state.session};
         const currentTime = moment();
         switch (action) {
             case '_onStartDateChange':
                 startDate = startDate > currentTime ? startDate : currentTime;
-                endDate = startDate > moment(this.state.session.to) ? startDate : endDate;
+                endDate = startDate > moment(this.factory.factorySession.to) ? startDate : endDate;
                 break;
             case '_onPickerRangeChange':
                 startDate = startDate < currentTime ? currentTime : startDate;
                 break;
         }
-        session.from = startDate.toDate();
-        session.to = endDate.toDate();
-        this.setState({session: new SessionBean(session)});
+        this.factory.factorySession.from = startDate.toISOString();
+        this.factory.factorySession.to = endDate.toISOString();
+        this.setState({session: this.factory.getFormSession});
     }
 
     private _onChangeWorkshop(id: number, from: Date | null, to: Date | null, key: string) {
-        const session = new SessionBean(this.state.session);
-        session.sessions[id] = {
+        const session = this.factory;
+        session.factorySession.sessions[id] = {
             from: from ? from.toISOString() : '',
             key,
             to: to ?  to.toISOString() : ''
         };
-        this.setState({session, listSession: {id}});
+        this.setState({session: this.factory.getFormSession, listSession: {id}});
     }
 
     private _onAddWorkshop(from: Date | null, to: Date | null) {
-        const session = new SessionBean(this.state.session);
-        const uniqueKey = Date.now().toString() + session.sessions.length;
-        session.sessions.push({
+        const session = this.factory;
+        const uniqueKey = Date.now().toString() + session.factorySession.sessions.length;
+        session.factorySession.sessions.push({
             from: from ? from.toISOString() : '',
             key: uniqueKey,
             to: to ?  to.toISOString() : ''
         });
-        this.setState({session});
+        this.setState({session: this.factory.getFormSession});
     }
 
     private _onRemoveWorkshop(id: number) {
-        const session = new SessionBean(this.state.session);
-        session.sessions.splice(id, 1);
-        this.setState({session});
+        this.factory.factorySession.sessions.splice(id, 1);
+        this.setState({session: this.factory.getFormSession});
     }
 
     private _onChangeWeekendPicker(sessionSchedule: ISessionSchedule) {
@@ -213,8 +214,7 @@ class ScheduleSession extends React.Component<IPropsScheduleSession, IStateSched
         } else {
             listSession[value] = sessionSchedule;
         }
-        const session = new SessionBean(this.state.session);
-        session.updateUTCSessions(Object.keys(listSession).map((schedule: string) => {
+        this.factory.updateUTCSessions(Object.keys(listSession).map((schedule: string) => {
             const splitted = schedule.split('@');
             return {
                 from: splitted[0],
@@ -222,39 +222,34 @@ class ScheduleSession extends React.Component<IPropsScheduleSession, IStateSched
                 weekDay: Number(splitted[2]),
             }
         }));
-        this.setState({listSession, session});
+        this.setState({listSession, session: this.factory.getFormSession});
 
     }
 
     private _onChangeSessionDetail(type: string, item:any) {
-        let session = {...this.state.session};
+        const session = this.factory;
         switch (type) {
             case SESSION_SELECTED:
-                session = new SessionBean();
-                session.interestAreaId = item.id;
-                session.interestAreaName = item.name;
-                session.mentorId = this.mentorId;
+                session.setSessionSelected(item.id, item.name, this.mentorId);
                 this.loadLocations(item.id);
                 break;
             case SESSION_SKILL:
-                session.skillName = item.name;
-                session.skillId = item.id;
+                session.setSkill(item.id, item.name);
                 break;
             case SESSION_TYPE:
-                session.type = item.id;
-                session.location = '';
+                session.setSessionType(item.id);
                 break;
             case SESSION_SITE:
-                session.location = '';
+                session.setLocation('');
                 break;
             case SESSION_ROOM:
-                session.location = item.id;
+                session.setLocation(item.id);
                 break;
             case SESSION_MAX_STUDENTS:
-                session.maxStudents = Number(item.name);
+                session.setMaxStudents(item.name);
                 break;
         }
-        this.setState({session: new SessionBean(session)}, () => {
+        this.setState({session: session.getFormSession}, () => {
             if (SESSION_SELECTED === type) {
                 this.loadLocations(item.id);
             }
@@ -267,11 +262,11 @@ class ScheduleSession extends React.Component<IPropsScheduleSession, IStateSched
             const listAreas = mentor.interestAreas ? mentor.interestAreas : [];
             const area = listAreas.length > 0 ? listAreas[0] : {};
             if (area.id !== '') {
-                const session = {...this.state.session};
-                session.interestAreaId = area.id;
-                session.interestAreaName = area.name;
-                session.mentorId = this.mentorId;
-                this.setState({session: new SessionBean(session)}, () => {
+                const session = this.factory;
+                session.factorySession.interestAreaId = area.id;
+                session.factorySession.interestAreaName = area.name;
+                session.factorySession.mentorId = this.mentorId;
+                this.setState({session: this.factory.getFormSession}, () => {
                     this.loadLocations(area.id);
                 });
             }

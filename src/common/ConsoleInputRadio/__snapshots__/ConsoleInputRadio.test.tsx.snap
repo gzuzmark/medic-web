@@ -5,11 +5,15 @@ ShallowWrapper {
   "length": 1,
   Symbol(enzyme.__root__): [Circular],
   Symbol(enzyme.__unrendered__): <ConsoleInputRadio
-    checked={false}
-    name="demo"
-    onChange={[Function]}
+    attrs={
+      Object {
+        "checked": false,
+        "name": "demo",
+        "onChange": [Function],
+        "value": "value",
+      }
+    }
     title="Demo"
-    value="value"
   />,
   Symbol(enzyme.__renderer__): Object {
     "batchedUpdates": [Function],
@@ -27,9 +31,11 @@ ShallowWrapper {
         <styled.span
           style={
             Object {
-              "fontSize": 16,
+              "display": "block",
+              "marginLeft": 5,
             }
           }
+          weight="300"
         >
           Demo
         </styled.span>,
@@ -58,8 +64,10 @@ ShallowWrapper {
         "props": Object {
           "children": "Demo",
           "style": Object {
-            "fontSize": 16,
+            "display": "block",
+            "marginLeft": 5,
           },
+          "weight": "300",
         },
         "ref": null,
         "rendered": "Demo",
@@ -106,9 +114,11 @@ ShallowWrapper {
           <styled.span
             style={
               Object {
-                "fontSize": 16,
+                "display": "block",
+                "marginLeft": 5,
               }
             }
+            weight="300"
           >
             Demo
           </styled.span>,
@@ -137,8 +147,10 @@ ShallowWrapper {
           "props": Object {
             "children": "Demo",
             "style": Object {
-              "fontSize": 16,
+              "display": "block",
+              "marginLeft": 5,
             },
+            "weight": "300",
           },
           "ref": null,
           "rendered": "Demo",

@@ -57,5 +57,5 @@ export interface IMentorSession {
     maxStudents: number;
     locationId: string;
     site: string;
-    location: string;
+    room: string;
 }

@@ -110,7 +110,7 @@ class SessionDetail extends React.Component <IPropsSessionDetail, IStateSessionD
                                         <Text className='FormSession-label'>Sesión</Text>
                                         <FilterList
                                             onChange={this._onChangeSkill}
-                                            name={session.skillName}
+                                            name={session.factorySession.skillName}
                                             list={this.props.skills}
                                             defaultText='Ingresa un curso'/>
                                     </FormColumn>,
@@ -124,7 +124,7 @@ class SessionDetail extends React.Component <IPropsSessionDetail, IStateSessionD
                                     </FormColumn>,
                                 ]} style={{marginBottom: 70}}/>
 
-                               
+
                                 <FormRow columns={[
                                     <FormColumn key={`SessionDetailRow${++counter}`} width={2}>
                                         <Text className='FormSession-label'>Sede</Text>
@@ -132,8 +132,19 @@ class SessionDetail extends React.Component <IPropsSessionDetail, IStateSessionD
                                             onChange={this._onChangeSite}
                                             name={this.state.selectedSite}
                                             list={this.state.sites}
-                                            defaultText='Torre Arequipa, Torre B, etc.'/>
+                                            defaultText='Oeste, Sur, etc'/>
                                     </FormColumn>,
+                                    <FormColumn key={`SessionDetailRow${++counter}`} width={2}>
+                                        <Text className='FormSession-label'>Dirección</Text>
+                                        <FilterList
+                                            onChange={this._onChangeSite}
+                                            name={this.state.selectedSite}
+                                            list={this.state.sites}
+                                            defaultText='Pacífico, Avenida Arequipa #660'/>
+                                    </FormColumn>,
+                                ]} style={{marginBottom: 70}}/>
+
+                                <FormRow columns={[
                                     <FormColumn key={`SessionDetailRow${++counter}`} width={2}>
                                         <FormRow key={5} columns={[
                                             <FormColumn key={`SessionDetailRow${++counter}`}  width={2}>
@@ -150,7 +161,7 @@ class SessionDetail extends React.Component <IPropsSessionDetail, IStateSessionD
                                                     className="FormSession-input--range"
                                                     min={1}
                                                     max={this.state.maxStudents}
-                                                    value={session.maxStudents}
+                                                    value={session.factorySession.maxStudents}
                                                     onChange={this._onChangeMaxStudents}/>
                                             </FormColumn>,
                                         ]}/>

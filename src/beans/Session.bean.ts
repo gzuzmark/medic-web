@@ -1,56 +1,74 @@
 import {lpad} from '../common/ConsoleUtils';
 import { IListItem } from '../common/FilterList/FilterList';
-import {ISession, ISessionSchedule} from '../interfaces/Session.interface';
+import {ISessionSchedule} from '../interfaces/Session.interface';
 import {SESSION_VIRTUAL} from "../repository/SessionTypeConstants";
 
-export class SessionBean implements ISession {
-    public from = new Date();
-    public to = new Date();
-    public type = '';
-    public credits = 0;
-    public location = '';
-    public maxStudents: number;
-    public mentorId = '';
-    public sessions = [] as ISessionSchedule[];
-    public skillId = '';
-    public interestAreaId = '';
-    public skillName = '';
-    public interestAreaName = '';
+export interface IFactorySession {
+    from: string;
+    to: string;
+    type: string;
+    credits: number;
+    room: string;
+    maxStudents: number;
+    mentorId: string;
+    sessions: ISessionSchedule[];
+    skillId: string;
+    interestAreaId: string;
+    skillName: string;
+    interestAreaName: string;
+    typeKey?: string;
+}
 
-    constructor(session?: ISession) {
+
+export class SessionBean {
+    public factorySession: IFactorySession;
+
+    constructor(session?: IFactorySession) {
         if (session) {
             const s = {...session};
-            this.from = new Date(s.from);
-            this.to = new Date(s.to);
-            this.type = s.type;
-            this.credits = s.credits;
-            this.location = s.location;
-            this.maxStudents = s.maxStudents;
-            this.mentorId = s.mentorId;
-            this.sessions = Array.from(s.sessions);
-            this.skillId = s.skillId;
-            this.interestAreaId = s.interestAreaId;
-            this.skillName = s.skillName || '';
-            this.interestAreaName = s.interestAreaName || '';
+            this.factorySession = {
+                credits: s.credits,
+                from: s.from,
+                interestAreaId: s.interestAreaId,
+                interestAreaName: s.interestAreaName || '',
+                maxStudents: s.maxStudents,
+                mentorId: s.mentorId,
+                room: s.room,
+                sessions: Array.from(s.sessions),
+                skillId: s.skillId,
+                skillName: s.skillName || '',
+                to: s.to,
+                type: s.type,
+            }
         } else {
             const date = new Date();
             const endOfWeek = 6 - date.getDay() + 1;
             date.setDate(date.getDate() + endOfWeek);
-            this.from = new Date();
-            this.to = date;
-            this.sessions = [{from: '', to: '', key: Date.now().toString() + 0}];
-            this.maxStudents = 1;
+            this.factorySession = {
+                credits: 0,
+                from: (new Date()).toISOString(),
+                interestAreaId: '',
+                interestAreaName: '',
+                maxStudents: 1,
+                mentorId: '',
+                room: '',
+                sessions: [{from: '', to: '', key: Date.now().toString() + 0}],
+                skillId: '',
+                skillName: '',
+                to: date.toISOString(),
+                type: ''
+            }
         }
     }
 
     public typeName(listType: IListItem[]): string {
-        const type = listType.find(item => item.id === this.type);
+        const type = listType.find(item => item.id === this.factorySession.type);
         return type ? type.name : '';
     }
 
     get listSessions(): ISessionSchedule[] {
-        const list = this.sessions.map((item) => {
-            const initialDay = new Date(this.from);
+        const list = this.factorySession.sessions.map((item) => {
+            const initialDay = new Date(this.factorySession.from);
             const from = this.getTime(initialDay, item.from);
             const to = this.getTime(initialDay, item.to);
             let weekDay = -9999;
@@ -68,12 +86,16 @@ export class SessionBean implements ISession {
     }
 
     get isWorkshop(): boolean{
-        return this.interestAreaName.indexOf('aller') !== -1;
+        return this.factorySession.interestAreaName.indexOf('aller') !== -1;
+    }
+
+    get getFormSession(): IFactorySession {
+        return {...this.factorySession};
     }
 
     public updateUTCSessions(values: ISessionSchedule[]): ISessionSchedule[] {
-        this.sessions = values.map((item: ISessionSchedule):ISessionSchedule => {
-            const initialDay = new Date(this.from);
+        this.factorySession.sessions = values.map((item: ISessionSchedule):ISessionSchedule => {
+            const initialDay = new Date(this.factorySession.from);
             const from = this.getUTCTime(initialDay, item.from);
             const to = this.getUTCTime(initialDay, item.to);
             let weekDay = -9999;
@@ -87,33 +109,57 @@ export class SessionBean implements ISession {
                 weekDay,
             }
         });
-        return this.sessions;
+        return this.factorySession.sessions;
     }
 
     public isSessionValid() {
-        return this.from <= this.to &&
-               this.type !== '' &&
-               (this.location !== '' || this.type === SESSION_VIRTUAL) &&
-               this.maxStudents > 0 &&
-               this.interestAreaId !== '' &&
-               this.mentorId !== '' &&
-               this.sessions.length > 0 &&
-               this.skillId !== '';
+        return new Date(this.factorySession.from) <= new Date(this.factorySession.to) &&
+               this.factorySession.type !== '' &&
+               (this.factorySession.room !== '' || this.factorySession.type === SESSION_VIRTUAL) &&
+               this.factorySession.maxStudents > 0 &&
+               this.factorySession.interestAreaId !== '' &&
+               this.factorySession.mentorId !== '' &&
+               this.factorySession.sessions.length > 0 &&
+               this.factorySession.skillId !== '';
     }
 
     public isWorkShopValid() {
-        const sessionsInvalid = this.sessions.filter((item: ISessionSchedule) => {
+        const sessionsInvalid = this.factorySession.sessions.filter((item: ISessionSchedule) => {
             return item.to === '' || item.from === '';
         });
-        return this.from <= this.to &&
-            this.type !== '' &&
-            (this.location !== '' || this.type === SESSION_VIRTUAL) &&
-            this.maxStudents > 0 &&
-            this.mentorId !== '' &&
-            this.interestAreaId !== '' &&
+        return this.factorySession.from <= this.factorySession.to &&
+            this.factorySession.type !== '' &&
+            (this.factorySession.room !== '' || this.factorySession.type === SESSION_VIRTUAL) &&
+            this.factorySession.maxStudents > 0 &&
+            this.factorySession.mentorId !== '' &&
+            this.factorySession.interestAreaId !== '' &&
             sessionsInvalid.length === 0 &&
-            this.skillId !== '';
+            this.factorySession.skillId !== '';
 
+    }
+
+    public setMaxStudents(max: string) {
+        this.factorySession.maxStudents = Number(max);
+    }
+
+    public setLocation(id: string) {
+        this.factorySession.room = id;
+    }
+
+    public setSessionType(id: string) {
+        this.factorySession.type = id;
+        this.setLocation('');
+    }
+
+    public setSkill(id: string, name: string) {
+        this.factorySession.skillId = id;
+        this.factorySession.skillName = name;
+    }
+
+    public setSessionSelected(id: string, name: string, mentorId: string) {
+        this.factorySession.interestAreaId = id;
+        this.factorySession.interestAreaName = name;
+        this.factorySession.mentorId = mentorId;
     }
 
     private getTime(initialDay: Date, utcTime: string) {
