@@ -9,7 +9,7 @@ export const sessionMentorDummy: ISessionMentor = {
     id: "c5f0daac-6729-43a1-a077-1ea4dbd0540d",
     isActive: false,
     isEnabledForAttendance: true,
-    room: {
+    location: {
         type: "VIRTUAL",
         typeLabel: "Virtual"
     },

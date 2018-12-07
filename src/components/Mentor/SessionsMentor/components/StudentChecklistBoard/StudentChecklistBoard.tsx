@@ -61,6 +61,12 @@ const onSubmit = (search: fnSearch, action: string) => {
     }
 };
 
+const onClickIcon = (search: fnSearch, action: string) => {
+    return (value: string) => {
+        search(value, action);
+    }
+};
+
 class StudentChecklistBoard extends  React.Component<IPropsStudentChecklistBoard, IStatesStudentChecklistBoard> {
     public state: IStatesStudentChecklistBoard;
     private counter = 0;
@@ -191,11 +197,13 @@ class StudentChecklistBoard extends  React.Component<IPropsStudentChecklistBoard
         const onClickAdd = onClick(this.activeInput, ACTION.ADD);
         const onChangeAdd = onChange(this.props.onSearch, '');
         const onSubmitAdd = onSubmit(this.props.onSearch, ACTION.ADD);
+        const onClickAddIcon = onClickIcon(this.props.onSearch, ACTION.ADD);
         return {
             autoFocus: false,
             name: "txtAddStudent",
             onChange: onChangeAdd,
             onClick: onClickAdd,
+            onClickIcon: onClickAddIcon,
             onKeyPress: onSubmitAdd,
             placeholder: "Ingresa el código del alumno",
             value: this.props.searchValue

@@ -91,10 +91,14 @@ class MentorInput extends React.Component<IPropsMentorInput, IStateMentorInput> 
     }
 
     private onClickIcon() {
-        const event = new Event('input', { bubbles: true });
-        if(!!this.input && !!this.input.current && !!this.props.error) {
-            this.input.current.value = '';
-            this.input.current.dispatchEvent(event);
+        if (!!this.input && !!this.input.current) {
+            const event = new Event('input', { bubbles: true });
+            if(!!this.props.error) {
+                this.input.current.value = '';
+                this.input.current.dispatchEvent(event);
+            } else if(this.props.attrs && this.props.attrs.onClickIcon) {
+                this.props.attrs.onClickIcon(this.input.current.value);
+            }
         }
     }
 
