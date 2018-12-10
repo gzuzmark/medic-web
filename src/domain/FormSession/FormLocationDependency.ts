@@ -1,4 +1,5 @@
 import {IListItem} from "../../common/FilterList/FilterList";
+import {SESSION_PHYSICAL, SESSION_VIRTUAL} from "../../repository/SessionTypeConstants";
 
 export interface IRoomTree {
     id?: string;
@@ -19,6 +20,7 @@ export interface ILocationTree {
 export class FormLocationDependency {
     public locationVirtual: ILocationTree[];
     public locationPhysical: ILocationTree[];
+    public type: string;
 
     public setLocationVirtual(tree: ILocationTree[]) {
         this.locationVirtual = tree;
@@ -26,6 +28,16 @@ export class FormLocationDependency {
 
     public setLocationPhysical(tree: ILocationTree[]) {
         this.locationPhysical = tree;
+    }
+
+    public getLocations(): IListItem[] {
+        let list = [] as IListItem[];
+        if (this.type === SESSION_VIRTUAL) {
+            list =  this.getVirtualLocations();
+        } else if (this.type === SESSION_PHYSICAL) {
+            list =  this.getPhysicalLocations();
+        }
+        return list;
     }
 
     public getVirtualLocations(): IListItem[] {
@@ -46,13 +58,13 @@ export class FormLocationDependency {
     }
 
     public getPhysicalBlocks(site: string) : IListItem[] {
-        return this.getSelectedSite(site).blocks.map((tree: IBlockTree) => {
+        return this.getSelectedSite(site) ? this.getSelectedSite(site).blocks.map((tree: IBlockTree) => {
             const block = tree.block || '';
             return {
                 id: block,
                 name: block
             }
-        })
+        }) : [];
     }
 
     public getPhysicalRooms(site: string, block: string) : IListItem[] {

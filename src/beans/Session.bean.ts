@@ -21,6 +21,8 @@ export interface IFactorySession {
 
 export class SessionBean {
     public factorySession: IFactorySession;
+    public selectedSite = '';
+    public selectedBlock = '';
 
     constructor(session?: IFactorySession) {
         if (session) {
@@ -92,6 +94,25 @@ export class SessionBean {
         return {...this.factorySession};
     }
 
+    get getSelectedSite() {
+        return this.selectedSite;
+    }
+
+    get getSelectedBlock() {
+        return this.selectedBlock;
+    }
+
+    public setSelectedSite(site: string) {
+        this.selectedBlock = '';
+        this.setLocation('');
+        this.selectedSite = site;
+    }
+
+    public setSelectedBlock(block: string) {
+        this.setLocation('');
+        this.selectedBlock = block;
+    }
+
     public updateUTCSessions(values: ISessionSchedule[]): ISessionSchedule[] {
         this.factorySession.sessions = values.map((item: ISessionSchedule):ISessionSchedule => {
             const initialDay = new Date(this.factorySession.from);
@@ -147,6 +168,8 @@ export class SessionBean {
 
     public setSessionType(id: string) {
         this.factorySession.type = id;
+        this.selectedSite = '';
+        this.selectedBlock = '';
         this.setLocation('');
     }
 
@@ -159,6 +182,10 @@ export class SessionBean {
         this.factorySession.interestAreaId = id;
         this.factorySession.interestAreaName = name;
         this.factorySession.mentorId = mentorId;
+        this.factorySession.type = '';
+        this.selectedSite = '';
+        this.selectedBlock = '';
+        this.setLocation('');
     }
 
     private getTime(initialDay: Date, utcTime: string) {
