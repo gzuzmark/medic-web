@@ -19,7 +19,6 @@ export interface IFactorySession {
     typeKey?: string;
 }
 
-
 export class SessionBean {
     public factorySession: IFactorySession;
 
