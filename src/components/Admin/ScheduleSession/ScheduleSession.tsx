@@ -233,8 +233,6 @@ class ScheduleSession extends React.Component<IPropsScheduleSession, IStateSched
 
     private _onChangeSessionDetail(type: string, item:any) {
         const session = this.factory;
-        // tslint:disable:no-console
-        console.log(type, item);
         switch (type) {
             case SESSION_SELECTED:
                 session.setSessionSelected(item.id, item.name, this.mentorId);
@@ -245,14 +243,25 @@ class ScheduleSession extends React.Component<IPropsScheduleSession, IStateSched
                 break;
             case SESSION_TYPE:
                 session.setSessionType(item.id);
+                if (session.isVirtual) {
+                    session.setMaxStudents(this.locations.getVirtualMaxStudents().toString());
+                } else {
+                    session.setMaxStudents('1');
+                }
                 break;
             case SESSION_SITE:
                 session.setSelectedSite(item.id);
                 session.setLocation('');
+                if (!session.isVirtual) {
+                    session.setMaxStudents('1');
+                }
                 break;
             case SESSION_BLOCK:
                 session.setSelectedBlock(item.id);
                 session.setLocation('');
+                if (!session.isVirtual) {
+                    session.setMaxStudents('1');
+                }
                 break;
             case SESSION_ROOM:
                 session.setLocation(item.id);

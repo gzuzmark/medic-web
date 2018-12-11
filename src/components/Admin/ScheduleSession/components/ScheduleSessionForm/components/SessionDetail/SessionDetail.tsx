@@ -41,6 +41,7 @@ interface IStateSessionDetail {
 
 class SessionDetail extends React.Component <IPropsSessionDetail, IStateSessionDetail> {
     public state: IStateSessionDetail;
+    public timer: any = 0;
     constructor(props: IPropsSessionDetail) {
         super(props);
         this.state = {
@@ -57,7 +58,6 @@ class SessionDetail extends React.Component <IPropsSessionDetail, IStateSessionD
         this._updateSites = this._updateSites.bind(this);
         this._updateBlocks = this._updateBlocks.bind(this);
         this._updateMaxStudents = this._updateMaxStudents.bind(this);
-        this._onInputMaxStudents = this._onInputMaxStudents.bind(this);
         this.getCurrentRoomName = this.getCurrentRoomName.bind(this);
     }
 
@@ -98,6 +98,7 @@ class SessionDetail extends React.Component <IPropsSessionDetail, IStateSessionD
                         const onChangeBlock = this._updateRooms(locations, session);
                         const onChangeRoom = this._updateMaxStudents(locations, session);
                         const roomName = this.getCurrentRoomName(session);
+                        const onChangeMax = this._onChangeMaxStudents(session);
                         this._autoSelect(locations, session);
                         let counter = 0;
                         return (
@@ -159,7 +160,7 @@ class SessionDetail extends React.Component <IPropsSessionDetail, IStateSessionD
                                                     min={1}
                                                     max={this.state.maxStudents}
                                                     value={session.factorySession.maxStudents}
-                                                    onChange={this._onChangeMaxStudents}/>
+                                                    onChange={onChangeMax}/>
                                             </FormColumn>,
                                         ]}/>
                                     </FormColumn>
@@ -202,8 +203,6 @@ class SessionDetail extends React.Component <IPropsSessionDetail, IStateSessionD
                 const max = locations.getVirtualMaxStudents();
                 session.setMaxStudents(max.toString());
             }
-            // tslint:disable:no-console
-            console.log(sites, item);
             this.setState({sites, blocks: [], rooms: []});
             this.props.onChange(SESSION_TYPE, item);
         }
@@ -237,46 +236,39 @@ class SessionDetail extends React.Component <IPropsSessionDetail, IStateSessionD
                 if (!!room) {
                     max = isSessionUndefined ? locations.getVirtualMaxStudents() : room.maxStudents;
                     session.setMaxStudents(max.toString());
+                    this.setState({maxStudents: max});
                     this.props.onChange(SESSION_ROOM, item);
                 }
             }
         }
     }
 
-
     private _onChangeSkill(item: IListItem) {
         this.props.onChange(SESSION_SKILL, item);
     }
 
+    private _onChangeMaxStudents(session: SessionBean) {
+        return (numberValue: number) => {
+            clearTimeout(this.timer)
+            this.timer = setTimeout(() => {
+                const max = this.state.maxStudents;
+                if (numberValue) {
+                    const value = numberValue;
+                    let finalValue = value.toString();
+                    if (value > max) {
+                        finalValue = finalValue.toString().substr(1);
+                    }
 
-    private _onInputMaxStudents(event: any) {
-        this._onChangeMaxStudents(event.target.value)
-    }
+                    if (Number(finalValue) === 0 || Number(finalValue) > max) {
+                        finalValue = max.toString();
+                    }
+                    this.props.onChange(SESSION_MAX_STUDENTS, {id: finalValue, name: finalValue});
+                } else {
+                    this.props.onChange(SESSION_MAX_STUDENTS, {id: '1', name: '1'});
+                }
 
-    private _onChangeMaxStudents(numberValue: number) {
-        let max = '';
-        let stringValue = numberValue ? numberValue.toString() : '';
-        const lengthValue = stringValue.length;
-        if (this.state.maxStudents < 10) {
-            stringValue = lengthValue > 1 ? stringValue[0] : stringValue;
-            max = stringValue;
-        } else {
-            stringValue = lengthValue > 2 ? stringValue[0] + stringValue[1] : stringValue;
-            max = stringValue;
+            }, 1000);
         }
-        if (numberValue && !isNaN(numberValue)) {
-            max = '1';
-            if(parseInt(stringValue, 10) > 0 && parseInt(stringValue, 10) <= this.state.maxStudents) {
-                max = parseInt(stringValue, 10).toString();
-            } else if (parseInt(stringValue, 10) > this.state.maxStudents) {
-                max = this.state.maxStudents.toString();
-            }
-        }
-
-        if (max === '') {
-            max = '1'
-        }
-        this.props.onChange(SESSION_MAX_STUDENTS, {id: max.toString(), name: max.toString()});
     }
 }
 

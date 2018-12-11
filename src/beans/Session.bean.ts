@@ -158,6 +158,10 @@ export class SessionBean {
 
     }
 
+    get isVirtual(): boolean {
+        return this.factorySession.type === SESSION_VIRTUAL;
+    }
+
     public setMaxStudents(max: string) {
         this.factorySession.maxStudents = Number(max);
     }
