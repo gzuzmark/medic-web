@@ -1,14 +1,16 @@
 import * as React from 'react';
 import * as NumericInput from 'react-numeric-input';
+import {SessionBean} from "../../../../../../../beans/Session.bean";
 import { Text } from '../../../../../../../common/ConsoleText';
 import FilterList, {IListItem} from '../../../../../../../common/FilterList/FilterList';
-import {ILocationPhysical, ILocationPhysicalRoom} from '../../../../../../../interfaces/Location.interface';
+import {FormLocationDependency} from "../../../../../../../domain/FormSession/FormLocationDependency";
 import {IMentorDescription, ISessionTypes, ISkill} from '../../../../../../../interfaces/Mentor.interface';
 import {
     SESSION_PHYSICAL,
     SESSION_UNDEFINED, SESSION_VIRTUAL
 } from '../../../../../../../repository/SessionTypeConstants';
 import {
+    SESSION_BLOCK,
     SESSION_MAX_STUDENTS, SESSION_ROOM, SESSION_SITE, SESSION_SKILL,
     SESSION_TYPE
 } from '../../../../ScheduleSession.constants';
@@ -17,57 +19,46 @@ import FormColumn from '../../../FormRow/components/FormColumn/FormColumn';
 import FormRow from '../../../FormRow/FormRow';
 import './SessionDetail.scss';
 
+
 interface IPropsSessionDetail {
     skills: ISkill[];
     sessionTypes: ISessionTypes[];
-    locations: any;
     onChange: (field: string, item: IListItem) => void;
 }
 
-interface IRooms extends IListItem {
-    maxStudents: number;
-}
 interface IListSessionTypes extends IListItem {
     type: string;
-}
-
-interface ISites extends IListItem {
-    rooms: any[];
 }
 
 interface IStateSessionDetail {
     listSession: any[];
     maxStudents: number;
     mentor?: IMentorDescription;
-    rooms: IRooms[];
-    selectedRoom: string;
-    selectedSite: string;
-    sites: ISites[];
+    rooms: IListItem[];
+    sites: IListItem[];
+    blocks: IListItem[];
 }
 
 class SessionDetail extends React.Component <IPropsSessionDetail, IStateSessionDetail> {
     public state: IStateSessionDetail;
+    public timer: any = 0;
     constructor(props: IPropsSessionDetail) {
         super(props);
         this.state = {
+            blocks: [],
             listSession: [],
             maxStudents: 1,
             mentor: undefined,
             rooms: [],
-            selectedRoom: '',
-            selectedSite: '',
             sites: []
         };
         this._onChangeSkill = this._onChangeSkill.bind(this);
-        this._onChangeType = this._onChangeType.bind(this);
-        this._onChangeSite = this._onChangeSite.bind(this);
-        this._onChangeRoom = this._onChangeRoom.bind(this);
         this._onChangeMaxStudents = this._onChangeMaxStudents.bind(this);
-        this._updateMaxStudent = this._updateMaxStudent.bind(this);
-        this.getMaxStudentsVirtual = this.getMaxStudentsVirtual.bind(this);
         this._updateRooms = this._updateRooms.bind(this);
         this._updateSites = this._updateSites.bind(this);
-        this._onInputMaxStudents = this._onInputMaxStudents.bind(this);
+        this._updateBlocks = this._updateBlocks.bind(this);
+        this._updateMaxStudents = this._updateMaxStudents.bind(this);
+        this.getCurrentRoomName = this.getCurrentRoomName.bind(this);
     }
 
     public componentDidMount() {
@@ -85,12 +76,11 @@ class SessionDetail extends React.Component <IPropsSessionDetail, IStateSessionD
     }
     public reset() {
         this.setState({
+            blocks: [],
             listSession: [],
             maxStudents: 1,
             mentor: undefined,
             rooms: [],
-            selectedRoom: '',
-            selectedSite: '',
             sites: []
         }, () => {
             this.componentDidMount();
@@ -102,6 +92,14 @@ class SessionDetail extends React.Component <IPropsSessionDetail, IStateSessionD
                 {
                     (scheduleSessionContext: IScheduleContext) => {
                         const session = scheduleSessionContext.session;
+                        const locations = scheduleSessionContext.locations;
+                        const onChangeType = this._updateSites(locations, session);
+                        const onChangeSite = this._updateBlocks(locations);
+                        const onChangeBlock = this._updateRooms(locations, session);
+                        const onChangeRoom = this._updateMaxStudents(locations, session);
+                        const roomName = this.getCurrentRoomName(session);
+                        const onChangeMax = this._onChangeMaxStudents(session);
+                        this._autoSelect(locations, session);
                         let counter = 0;
                         return (
                             <div style={{width: '80%'}}>
@@ -117,7 +115,7 @@ class SessionDetail extends React.Component <IPropsSessionDetail, IStateSessionD
                                     <FormColumn key={`SessionDetailRow${++counter}`} width={2}>
                                         <Text className='FormSession-label'>Modalidad</Text>
                                         <FilterList
-                                            onChange={this._onChangeType}
+                                            onChange={onChangeType}
                                             name={session.typeName(this.state.listSession)}
                                             list={this.state.listSession.filter((item) => !item.name.startsWith('Taller'))}
                                             defaultText='Presencial, Virtual, etc'/>
@@ -129,17 +127,17 @@ class SessionDetail extends React.Component <IPropsSessionDetail, IStateSessionD
                                     <FormColumn key={`SessionDetailRow${++counter}`} width={2}>
                                         <Text className='FormSession-label'>Sede</Text>
                                         <FilterList
-                                            onChange={this._onChangeSite}
-                                            name={this.state.selectedSite}
+                                            onChange={onChangeSite}
+                                            name={session.getSelectedSite}
                                             list={this.state.sites}
                                             defaultText='Oeste, Sur, etc'/>
                                     </FormColumn>,
                                     <FormColumn key={`SessionDetailRow${++counter}`} width={2}>
                                         <Text className='FormSession-label'>Dirección</Text>
                                         <FilterList
-                                            onChange={this._onChangeSite}
-                                            name={this.state.selectedSite}
-                                            list={this.state.sites}
+                                            onChange={onChangeBlock}
+                                            name={session.getSelectedBlock}
+                                            list={this.state.blocks}
                                             defaultText='Pacífico, Avenida Arequipa #660'/>
                                     </FormColumn>,
                                 ]} style={{marginBottom: 70}}/>
@@ -150,8 +148,8 @@ class SessionDetail extends React.Component <IPropsSessionDetail, IStateSessionD
                                             <FormColumn key={`SessionDetailRow${++counter}`}  width={2}>
                                                 <Text className='FormSession-label'>Aula</Text>
                                                 <FilterList
-                                                    onChange={this._onChangeRoom}
-                                                    name={this.state.selectedRoom}
+                                                    onChange={onChangeRoom}
+                                                    name={roomName}
                                                     list={this.state.rooms}
                                                     defaultText='A1002'/>
                                             </FormColumn>,
@@ -162,7 +160,7 @@ class SessionDetail extends React.Component <IPropsSessionDetail, IStateSessionD
                                                     min={1}
                                                     max={this.state.maxStudents}
                                                     value={session.factorySession.maxStudents}
-                                                    onChange={this._onChangeMaxStudents}/>
+                                                    onChange={onChangeMax}/>
                                             </FormColumn>,
                                         ]}/>
                                     </FormColumn>
@@ -175,142 +173,102 @@ class SessionDetail extends React.Component <IPropsSessionDetail, IStateSessionD
         );
     }
 
-    private _updateSites(item: IListSessionTypes) {
-        let locations = [];
-        let sites: ISites[] = [];
-        let maxStudents = 1;
-        const isVirtual = item.type === SESSION_VIRTUAL;
-        if (isVirtual) {
-            sites.push({
-                id: 'videoconferencia',
-                name: 'Videoconferencia',
-                rooms: []
-            });
-        } else {
-            locations = this.props.locations[item.type];
-            sites = locations.map((location: ILocationPhysical, index: number) => {
-                return {
-                    id: `${item.id}_${index}`,
-                    name: location.site,
-                    rooms: location.rooms
-                }
-            });
-        }
-        let rooms = [] as IRooms[];
-
-        if (sites.length === 1) {
-            rooms = sites[0].rooms;
-            if (isVirtual) {
-                maxStudents = this.getMaxStudentsVirtual();
-            }
-            this.setState({sites, selectedRoom: '', maxStudents, rooms}, () => {
-                this._onChangeSite(sites[0]);
-                this._onChangeMaxStudents(maxStudents);
-            });
-        } else {
-            this.setState({sites, selectedSite: '', selectedRoom: '', maxStudents, rooms}, () => {
-                this.props.onChange(SESSION_ROOM, {id: '', name: ''});
-                this._onChangeMaxStudents(maxStudents);
-            });
+    private _autoSelect(locations: FormLocationDependency, session: SessionBean) {
+        if (!session.selectedSite && this.state.sites.length === 1) {
+            const site = this.state.sites[0];
+            session.selectedSite = site.id;
+            this._updateBlocks(locations)(site);
+        } else if (!session.selectedBlock && this.state.blocks.length === 1) {
+            const block = this.state.blocks[0];
+            session.selectedBlock = block.id;
+            this._updateRooms(locations, session)(block);
+        } else if (!session.factorySession.room && this.state.rooms.length === 1) {
+            const room = this.state.rooms[0];
+            this._updateMaxStudents(locations, session)(room);
         }
     }
 
-    private _updateRooms(item: IListItem) {
-        let rooms:IRooms[] = [];
-        let maxStudents = 1;
-        const isPhysical = item.id.search(SESSION_PHYSICAL) !== -1 || item.id.search(SESSION_UNDEFINED) !== -1;
-        if (isPhysical) {
-            const selectedSite = this.state.sites.filter((site: ISites) =>  site.name === item.name);
-            rooms = selectedSite[0].rooms.map((currentRooms: ILocationPhysicalRoom) => {
-                maxStudents = item.id.search(SESSION_UNDEFINED) !== -1 ?
-                    this.getMaxStudentsVirtual() : currentRooms.maxStudents;
-                return {
-                    id: currentRooms.id,
-                    maxStudents,
-                    name: currentRooms.room
-                }
-            });
-        } else {
-            maxStudents = this.getMaxStudentsVirtual();
-        }
-
-        if (rooms.length === 1) {
-            maxStudents = rooms[0].maxStudents;
-            this.setState({rooms, maxStudents}, () => {
-                this._onChangeRoom(rooms[0]);
-            });
-        } else {
-            if (isPhysical) {
-                this.setState({rooms, selectedRoom: '', maxStudents});
-                this.props.onChange(SESSION_ROOM, {id: '', name: ''});
-                this._onChangeMaxStudents(maxStudents)
-            }
-        }
-    }
-
-    private getMaxStudentsVirtual(): number {
-        return this.props.locations[SESSION_VIRTUAL] ? this.props.locations[SESSION_VIRTUAL][0].rooms[0].maxStudents : 1;
-    }
-
-    private _updateMaxStudent(item: IListItem) {
-        const selectedRoom = this.state.rooms.filter((room: IRooms) => room.id === item.id);
-        const maxStudents = selectedRoom[0].maxStudents;
-        this.setState({maxStudents}, () => {
-            this._onChangeMaxStudents(maxStudents);
+    private getCurrentRoomName(session: SessionBean) {
+        const room = this.state.rooms.filter((item: IListItem) => {
+            return item.id === session.factorySession.room
         });
+        return room.length ? room[0].name : '';
+    }
+
+    private _updateSites(locations: FormLocationDependency, session: SessionBean) {
+        return (item: IListSessionTypes) => {
+            locations.type = item.type;
+            const sites = locations.getLocations();
+            if (locations.type.search(SESSION_VIRTUAL) !== -1) {
+                const max = locations.getVirtualMaxStudents();
+                session.setMaxStudents(max.toString());
+            }
+            this.setState({sites, blocks: [], rooms: []});
+            this.props.onChange(SESSION_TYPE, item);
+        }
+    }
+
+    private _updateBlocks(locations: FormLocationDependency) {
+        return (item: IListItem) => {
+            const blocks = locations.getPhysicalBlocks(item.id);
+            this.setState({ blocks, rooms: [] });
+            this.props.onChange(SESSION_SITE, item);
+        }
+    }
+
+    private _updateRooms(locations: FormLocationDependency, session: SessionBean) {
+        return (item: IListItem) => {
+            const rooms = locations.getPhysicalRooms(session.getSelectedSite, item.id);
+            this.setState({ rooms });
+            this.props.onChange(SESSION_BLOCK, item);
+        }
+    }
+
+    private _updateMaxStudents(locations: FormLocationDependency, session: SessionBean) {
+        return (item: IListItem) => {
+            const isSessionPhysical = locations.type.search(SESSION_PHYSICAL) !== -1;
+            const isSessionUndefined = locations.type.search(SESSION_UNDEFINED) !== -1;
+            let max = 1;
+            if (isSessionPhysical || isSessionUndefined) {
+                const site = locations.getSelectedSite(session.getSelectedSite);
+                const rooms = locations.getSelectedBlock(site, session.getSelectedBlock);
+                const room = locations.getSelectedRoom(rooms, item.id);
+                if (!!room) {
+                    max = isSessionUndefined ? locations.getVirtualMaxStudents() : room.maxStudents;
+                    session.setMaxStudents(max.toString());
+                    this.setState({maxStudents: max});
+                    this.props.onChange(SESSION_ROOM, item);
+                }
+            }
+        }
     }
 
     private _onChangeSkill(item: IListItem) {
         this.props.onChange(SESSION_SKILL, item);
     }
 
-    private _onChangeType(item: IListSessionTypes) {
-        this._updateSites(item);
-        this.props.onChange(SESSION_TYPE, item);
-    }
+    private _onChangeMaxStudents(session: SessionBean) {
+        return (numberValue: number) => {
+            clearTimeout(this.timer)
+            this.timer = setTimeout(() => {
+                const max = this.state.maxStudents;
+                if (numberValue) {
+                    const value = numberValue;
+                    let finalValue = value.toString();
+                    if (value > max) {
+                        finalValue = finalValue.toString().substr(1);
+                    }
 
-    private _onChangeSite(item: IListItem) {
-        this.setState({selectedSite: item.name}, () => {
-            this._updateRooms(item);
-            this.props.onChange(SESSION_SITE, item);
-        });
-    }
+                    if (Number(finalValue) === 0 || Number(finalValue) > max) {
+                        finalValue = max.toString();
+                    }
+                    this.props.onChange(SESSION_MAX_STUDENTS, {id: finalValue, name: finalValue});
+                } else {
+                    this.props.onChange(SESSION_MAX_STUDENTS, {id: '1', name: '1'});
+                }
 
-    private _onChangeRoom(item: IListItem) {
-        this.setState({selectedRoom: item.name}, () => {
-            this._updateMaxStudent(item);
-            this.props.onChange(SESSION_ROOM, item);
-        });
-    }
-
-    private _onInputMaxStudents(event: any) {
-        this._onChangeMaxStudents(event.target.value)
-    }
-
-    private _onChangeMaxStudents(numberValue: number) {
-        let max = '';
-        let stringValue = numberValue ? numberValue.toString() : '';
-        const lengthValue = stringValue.length;
-        if (this.state.maxStudents < 10) {
-            stringValue = lengthValue > 1 ? stringValue[0] : stringValue;
-            max = stringValue;
-        } else {
-            stringValue = lengthValue > 2 ? stringValue[0] + stringValue[1] : stringValue;
-            max = stringValue;
+            }, 1000);
         }
-        if (numberValue && !isNaN(numberValue)) {
-            max = '1';
-            if(parseInt(stringValue, 10) > 0 && parseInt(stringValue, 10) <= this.state.maxStudents) {
-                max = parseInt(stringValue, 10).toString();
-            } else if (parseInt(stringValue, 10) > this.state.maxStudents) {
-                max = this.state.maxStudents.toString();
-            }
-        }
-
-        if (max === '') {
-            max = '1'
-        }
-        this.props.onChange(SESSION_MAX_STUDENTS, {id: max.toString(), name: max.toString()});
     }
 }
 

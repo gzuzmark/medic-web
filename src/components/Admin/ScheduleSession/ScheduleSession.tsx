@@ -5,16 +5,19 @@ import Layout from '../../../common/Layout/Layout';
 import MentorDetail from '../../../common/MentorDetail/MentorDetail';
 import MenuLeft from "../../../common/MenuLeft/MenuLeft";
 import Sticky from '../../../common/Sticky/Sticky';
+import {FormLocationDependency} from "../../../domain/FormSession/FormLocationDependency";
 import { IMatchParam } from '../../../interfaces/MatchParam.interface';
 import { IMentor } from '../../../interfaces/Mentor.interface';
 import { ISessionSchedule } from '../../../interfaces/Session.interface';
+import {SESSION_PHYSICAL, SESSION_VIRTUAL} from "../../../repository/SessionTypeConstants";
 import LocationService from "../../../services/Location/Location.service";
 import MentorService from '../../../services/Mentor/Mentor.service';
 import ScheduleSessionForm from "./components/ScheduleSessionForm/ScheduleSessionForm";
 import {
-SESSION_MAX_STUDENTS, SESSION_ROOM, SESSION_SELECTED,
-SESSION_SITE, SESSION_SKILL,
-SESSION_TYPE
+    SESSION_BLOCK,
+    SESSION_MAX_STUDENTS, SESSION_ROOM, SESSION_SELECTED,
+    SESSION_SITE, SESSION_SKILL,
+    SESSION_TYPE
 } from './ScheduleSession.constants';
 import ScheduleSessionContext from './ScheduleSession.context';
 import './ScheduleSession.scss';
@@ -40,6 +43,8 @@ class ScheduleSession extends React.Component<IPropsScheduleSession, IStateSched
     private mentorService: MentorService = new MentorService();
     private locationsService = new LocationService();
     private factory = new SessionBean();
+    private locations = new FormLocationDependency();
+
     constructor(props: IPropsScheduleSession) {
         super(props);
         this.state = {
@@ -84,7 +89,8 @@ class ScheduleSession extends React.Component<IPropsScheduleSession, IStateSched
 
     public render() {
         return (
-            <ScheduleSessionContext.Provider value={{session: this.factory, listSession: this.state.listSession}} >
+            <ScheduleSessionContext.Provider
+                value={{session: this.factory, listSession: this.state.listSession, locations: this.locations}} >
                 <Layout menu={this.renderMenu()}>
                     <Sticky height={0} top={80} style={{zIndex: -1}}>
                         <MentorDetail mentor={this.state.mentor}/>
@@ -92,7 +98,6 @@ class ScheduleSession extends React.Component<IPropsScheduleSession, IStateSched
                     <div className="u-LayoutMargin">
                         <div className="ScheduleSession">
                             <ScheduleSessionForm
-                                locations={this.state.locations}
                                 savingData={this.state.savingData}
                                 loading={this.state.loading}
                                 mentor={this.state.mentor}
@@ -238,9 +243,25 @@ class ScheduleSession extends React.Component<IPropsScheduleSession, IStateSched
                 break;
             case SESSION_TYPE:
                 session.setSessionType(item.id);
+                if (session.isVirtual) {
+                    session.setMaxStudents(this.locations.getVirtualMaxStudents().toString());
+                } else {
+                    session.setMaxStudents('1');
+                }
                 break;
             case SESSION_SITE:
+                session.setSelectedSite(item.id);
                 session.setLocation('');
+                if (!session.isVirtual) {
+                    session.setMaxStudents('1');
+                }
+                break;
+            case SESSION_BLOCK:
+                session.setSelectedBlock(item.id);
+                session.setLocation('');
+                if (!session.isVirtual) {
+                    session.setMaxStudents('1');
+                }
                 break;
             case SESSION_ROOM:
                 session.setLocation(item.id);
@@ -275,7 +296,9 @@ class ScheduleSession extends React.Component<IPropsScheduleSession, IStateSched
 
     private loadLocations(idArea: string) {
         this.locationsService.list(idArea).then((locations) => {
-            this.setState({locations, loading: false})
+            this.locations.setLocationPhysical(locations[SESSION_PHYSICAL]);
+            this.locations.setLocationVirtual(locations[SESSION_VIRTUAL]);
+            this.setState({loading: false})
         })
     }
 }

@@ -88,6 +88,10 @@ class Login extends React.Component <{}, IStateLoginForm> {
                 }
             })
             .catch((error) => {
+                if (!error.response) {
+                    this.showDefaultError(actions);
+                    return;
+                }
                 const {code, appCode} = error.response.data;
                 if (code === 400 && !!appCode) {
                     const message = ErrorsMessage[appCode.toString()];

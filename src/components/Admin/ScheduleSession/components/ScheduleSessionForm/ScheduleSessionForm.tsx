@@ -29,7 +29,6 @@ export interface IFormCallbacks {
 }
 
 interface IPropsScheduleSessionForm {
-    locations: any;
     mentor?: IMentor;
     savingData: boolean;
     loading: boolean;
@@ -92,7 +91,6 @@ class ScheduleSessionForm extends React.Component<IPropsScheduleSessionForm, {}>
                                     <SessionDetail
                                         ref={this.sessionDetailRef}
                                         skills={this.getSkills(session)}
-                                        locations={this.props.locations}
                                         sessionTypes={sessionTypes}
                                         onChange={this.props.callbacks.onChangeSessionDetail}/>
                                 </FormSection>
