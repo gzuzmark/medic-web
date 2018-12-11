@@ -147,17 +147,32 @@ const FormRemoveMultiple: React.StatelessComponent<IPropsFormRemoveMultiple> = (
                             removeFilters={true}
                             disabled={lists.locations.length <= 1  || props.disabled}
                             defaultText='Torre Arequipa, Torre B, etc.'/>
-                        <div className={'FormRemoveMultiple_extra-field'}>
-                            <Text3 style={{paddingLeft: 12, paddingBottom: 6}}>Aula</Text3>
-                            <FilterList
-                                onChange={updateFilter(props.onFilter, 'room')}
-                                error={!props.empty && props.noResults}
-                                name={currentSession.room && currentSession.room.name || ''}
-                                list={lists.rooms}
-                                removeFilters={true}
-                                disabled={lists.rooms.length <= 1  || props.disabled}
-                                defaultText='A1002'/>
-                        </div>
+                    </FormColumn>
+                ]}/>
+                <FormRow style={{marginTop: 90}} columns={[
+                    <FormColumn key={`FormRemoveMultiple_${++counter}`}  width={1}>
+                        <Text3 style={{paddingLeft: 12, paddingBottom: 6}}>Dirección</Text3>
+                        <FilterList
+                            onChange={updateFilter(props.onFilter, 'block')}
+                            error={!props.empty && props.noResults}
+                            name={currentSession.type && currentSession.type.name || ''}
+                            list={lists.types}
+                            disabled={lists.types.length <= 1 || props.disabled}
+                            removeFilters={true}
+                            defaultText='Pacífico, Avenida Arequipa #660'/>
+                    </FormColumn>
+                ]}/>
+                <FormRow style={{marginTop: 90}} columns={[
+                    <FormColumn key={`FormRemoveMultiple_${++counter}`}  width={3} style={{position: 'relative'}}>
+                        <Text3 style={{paddingLeft: 12, paddingBottom: 6}}>Aula</Text3>
+                        <FilterList
+                            onChange={updateFilter(props.onFilter, 'room')}
+                            error={!props.empty && props.noResults}
+                            name={currentSession.room && currentSession.room.name || ''}
+                            list={lists.rooms}
+                            removeFilters={true}
+                            disabled={lists.rooms.length <= 1 || props.disabled}
+                            defaultText='A1002'/>
                     </FormColumn>
                 ]}/>
             </FormSection>

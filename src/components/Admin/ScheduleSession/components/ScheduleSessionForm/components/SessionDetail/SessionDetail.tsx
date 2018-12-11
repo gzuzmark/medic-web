@@ -1,8 +1,8 @@
 import * as React from 'react';
 import * as NumericInput from 'react-numeric-input';
-import {SessionBean} from "../../../../../../../beans/Session.bean";
 import { Text } from '../../../../../../../common/ConsoleText';
 import FilterList, {IListItem} from '../../../../../../../common/FilterList/FilterList';
+import {FactorySessionBean} from "../../../../../../../domain/FactorySession/FactorySessionBean";
 import {FormLocationDependency} from "../../../../../../../domain/FormSession/FormLocationDependency";
 import {IMentorDescription, ISessionTypes, ISkill} from '../../../../../../../interfaces/Mentor.interface';
 import {
@@ -173,7 +173,7 @@ class SessionDetail extends React.Component <IPropsSessionDetail, IStateSessionD
         );
     }
 
-    private _autoSelect(locations: FormLocationDependency, session: SessionBean) {
+    private _autoSelect(locations: FormLocationDependency, session: FactorySessionBean) {
         if (!session.selectedSite && this.state.sites.length === 1) {
             const site = this.state.sites[0];
             session.selectedSite = site.id;
@@ -188,22 +188,23 @@ class SessionDetail extends React.Component <IPropsSessionDetail, IStateSessionD
         }
     }
 
-    private getCurrentRoomName(session: SessionBean) {
+    private getCurrentRoomName(session: FactorySessionBean) {
         const room = this.state.rooms.filter((item: IListItem) => {
             return item.id === session.factorySession.room
         });
         return room.length ? room[0].name : '';
     }
 
-    private _updateSites(locations: FormLocationDependency, session: SessionBean) {
+    private _updateSites(locations: FormLocationDependency, session: FactorySessionBean) {
         return (item: IListSessionTypes) => {
             locations.type = item.type;
             const sites = locations.getLocations();
+            let max = 1;
             if (locations.type.search(SESSION_VIRTUAL) !== -1) {
-                const max = locations.getVirtualMaxStudents();
+                max = locations.getVirtualMaxStudents();
                 session.setMaxStudents(max.toString());
             }
-            this.setState({sites, blocks: [], rooms: []});
+            this.setState({sites, blocks: [], rooms: [], maxStudents: max});
             this.props.onChange(SESSION_TYPE, item);
         }
     }
@@ -216,15 +217,15 @@ class SessionDetail extends React.Component <IPropsSessionDetail, IStateSessionD
         }
     }
 
-    private _updateRooms(locations: FormLocationDependency, session: SessionBean) {
+    private _updateRooms(locations: FormLocationDependency, session: FactorySessionBean) {
         return (item: IListItem) => {
             const rooms = locations.getPhysicalRooms(session.getSelectedSite, item.id);
-            this.setState({ rooms });
+            this.setState({ rooms});
             this.props.onChange(SESSION_BLOCK, item);
         }
     }
 
-    private _updateMaxStudents(locations: FormLocationDependency, session: SessionBean) {
+    private _updateMaxStudents(locations: FormLocationDependency, session: FactorySessionBean) {
         return (item: IListItem) => {
             const isSessionPhysical = locations.type.search(SESSION_PHYSICAL) !== -1;
             const isSessionUndefined = locations.type.search(SESSION_UNDEFINED) !== -1;
@@ -247,7 +248,7 @@ class SessionDetail extends React.Component <IPropsSessionDetail, IStateSessionD
         this.props.onChange(SESSION_SKILL, item);
     }
 
-    private _onChangeMaxStudents(session: SessionBean) {
+    private _onChangeMaxStudents(session: FactorySessionBean) {
         return (numberValue: number) => {
             clearTimeout(this.timer)
             this.timer = setTimeout(() => {
