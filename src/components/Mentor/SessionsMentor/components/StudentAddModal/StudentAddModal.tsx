@@ -11,13 +11,13 @@ export interface IStudentModal {
     loading: boolean;
 }
 
-interface IPropsStudentModalCard {
+export interface IPropsStudentAddModal {
     options: IStudentModal;
     confirm(user: IStudentChecklist): void;
 }
 
 
-const StudentAddModal: React.StatelessComponent<IPropsStudentModalCard> = (props) => {
+const StudentAddModal: React.StatelessComponent<IPropsStudentAddModal> = (props) => {
 
     const onClick = () => {
         if (props.options.user) {

@@ -1,7 +1,40 @@
-import {expect} from "chai";
+import { mount } from 'enzyme';
+import 'jest-localstorage-mock';
+import * as React from 'react';
+import EmptyCard, {IPropsEmptyCard} from './EmptyCard';
 
-describe('Demo Test',() => {
-    test('Demo validation', () => {
-        expect(true).to.be.equal(true);
+
+describe('EmptyCard Test',() => {
+    let props: IPropsEmptyCard;
+    let mountedEmptyCard: any;
+    const getComponent = () => {
+        if (!mountedEmptyCard) {
+            mountedEmptyCard = mount(
+                <EmptyCard {...props} />
+            );
+        }
+        return mountedEmptyCard;
+    };
+
+    beforeEach(() => {
+        props = {
+            addEnabled: true
+        };
+        mountedEmptyCard = undefined;
+    });
+
+    it("render: render EmptyCard enable tue", () => {
+        const component = getComponent();
+        expect(component.find('.EmptyCard_item--text').text())
+            .toEqual('No tienes alumnos inscritos. Puedes agregar alumnos a esta sesión.');
+    });
+
+    it("render: render EmptyCard enable false", () => {
+        props = {
+            addEnabled: false
+        };
+        const component = getComponent();
+        expect(component.find('.EmptyCard_item--text').text())
+            .toEqual('No tienes alumnos inscritos.');
     });
 });

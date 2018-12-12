@@ -144,26 +144,24 @@ class SessionDetail extends React.Component <IPropsSessionDetail, IStateSessionD
 
                                 <FormRow columns={[
                                     <FormColumn key={`SessionDetailRow${++counter}`} width={2}>
-                                        <FormRow key={5} columns={[
-                                            <FormColumn key={`SessionDetailRow${++counter}`}  width={2}>
-                                                <Text className='FormSession-label'>Aula</Text>
-                                                <FilterList
-                                                    onChange={onChangeRoom}
-                                                    name={roomName}
-                                                    list={this.state.rooms}
-                                                    defaultText='A1002'/>
-                                            </FormColumn>,
-                                            <FormColumn key={`SessionDetailRow${++counter}`} width={2} style={{flexBasis: 90}}>
-                                                <Text>Capacidad</Text>
-                                                <NumericInput
-                                                    className="FormSession-input--range"
-                                                    min={1}
-                                                    max={this.state.maxStudents}
-                                                    value={session.factorySession.maxStudents}
-                                                    onChange={onChangeMax}/>
-                                            </FormColumn>,
-                                        ]}/>
-                                    </FormColumn>
+                                        <Text className='FormSession-label'>Aula</Text>
+                                        <FilterList
+                                            onChange={onChangeRoom}
+                                            name={roomName}
+                                            list={this.state.rooms}
+                                            defaultText='A1002'/>
+                                    </FormColumn>,
+                                    <FormColumn key={`SessionDetailRow${++counter}`} width={2}>
+                                        <div style={{display: 'flex', flexDirection: 'column', width: 90}}>
+                                            <Text>Capacidad</Text>
+                                            <NumericInput
+                                                className="FormSession-input--range"
+                                                min={1}
+                                                max={this.state.maxStudents}
+                                                value={session.factorySession.maxStudents}
+                                                onChange={onChangeMax}/>
+                                        </div>
+                                    </FormColumn>,
                                 ]}/>
                             </div>
                         )

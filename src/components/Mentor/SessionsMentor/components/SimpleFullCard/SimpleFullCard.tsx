@@ -9,7 +9,7 @@ export interface ISimpleFullCard {
     isLink: boolean;
 }
 
-interface IPropsSimpleFullCard {
+export interface IPropsSimpleFullCard {
     card: ISimpleFullCard;
 }
 
