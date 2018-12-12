@@ -15,7 +15,7 @@ export interface IInterestAreaSite extends IBase{
 }
 
 export interface IInterestAreaBlock extends IBase {
-    block: string;
+    blockId: string;
 }
 
 export interface IInterestAreaService {

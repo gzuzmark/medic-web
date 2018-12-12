@@ -5,6 +5,7 @@ import StudentFullCard, {IStudentChecklistCard} from "../StudentFullCard/Student
 import './StudentChecklistBoard.scss';
 
 type fnSearch = (value: string, action: string) => void;
+type fnClear = (action: string) => void;
 
 export interface IStudentChecklistBoard {
     addEnabled: boolean;
@@ -41,9 +42,9 @@ export const ACTION = {
     SEARCH: 'search'
 };
 
-const onClick = (search: (key: string) => void, action: string) => {
+const onClick = (clear: fnClear, action: string) => {
     return (event: any) => {
-        search(action);
+        clear(action);
     }
 };
 
