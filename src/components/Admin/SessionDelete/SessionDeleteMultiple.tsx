@@ -233,12 +233,13 @@ class SessionDeleteMultiple extends React.Component<IPropsSessionDeleteMultiple,
             case 'location':
                 fields = this.formSessionDeleteBean.onChangeLocationFields;
                 break;
-            case 'blocks':
+            case 'block':
                 fields = this.formSessionDeleteBean.onChangeBlocksFields;
                 break;
             case 'type':
                 fields = this.formSessionDeleteBean.onChangeTypeFields;
         }
+
         const sessions = this.formSessionDeleteBean.listSessions;
         const newSession = this.formSessionDeleteBean.getSelectedSession();
         this.setState(

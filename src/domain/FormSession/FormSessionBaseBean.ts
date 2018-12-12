@@ -97,8 +97,6 @@ class FormSessionBaseBean {
 
     public buildBlocks(blocks: IInterestAreaSite[]) {
         const listBlocks = blocks.map((block: IInterestAreaSite): ISessionListForm => {
-            // tslint:disable:no-console
-            console.log(block);
             return {
                 id: Utilities.getValue(block.id, block.address),
                 name: block.address,
@@ -173,6 +171,16 @@ class FormSessionBaseBean {
         const list = this.listLocations;
         if (list.length === 1) {
             this.selectedSession.location = {
+                id: list[0].id,
+                name: list[0].name
+            };
+        }
+    }
+
+    public automaticSelectionBlock() {
+        const list = this.listBlocks;
+        if (list.length === 1) {
+            this.selectedSession.block = {
                 id: list[0].id,
                 name: list[0].name
             };

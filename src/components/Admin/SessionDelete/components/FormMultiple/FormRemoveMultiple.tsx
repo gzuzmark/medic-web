@@ -48,7 +48,6 @@ const isDayBlocked = (date: Date, force: boolean) => {
         date.setSeconds(0);
         day.hours(0).minutes(0).seconds(0);
         const initRange = force ? day <= moment(date) : day < moment(date);
-
         return initRange || moment(date).add(1, 'year') < day;
     }
 };
@@ -165,7 +164,7 @@ const FormRemoveMultiple: React.StatelessComponent<IPropsFormRemoveMultiple> = (
                     </FormColumn>
                 ]}/>
                 <FormRow style={{marginTop: 90}} columns={[
-                    <FormColumn key={`FormRemoveMultiple_${++counter}`}  width={3} style={{position: 'relative'}}>
+                    <FormColumn key={`FormRemoveMultiple_${++counter}`}  width={2} style={{position: 'relative'}}>
                         <Text3 style={{paddingLeft: 12, paddingBottom: 6}}>Aula</Text3>
                         <FilterList
                             onChange={updateFilter(props.onFilter, 'room')}
