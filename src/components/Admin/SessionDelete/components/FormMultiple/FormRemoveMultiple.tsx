@@ -12,6 +12,7 @@ import './FormRemoveMultiple.scss';
 interface ISessionLists {
     areas: ISessionListForm[];
     locations: ISessionListForm[];
+    blocks: ISessionListForm[];
     rooms: ISessionListForm[];
     skills: ISessionListForm[];
     types: ISessionListForm[];
@@ -63,6 +64,7 @@ const FormRemoveMultiple: React.StatelessComponent<IPropsFormRemoveMultiple> = (
     if (props.empty) {
         lists = {
             areas: [],
+            blocks: [],
             locations: [],
             rooms: [],
             skills: [],
@@ -155,9 +157,9 @@ const FormRemoveMultiple: React.StatelessComponent<IPropsFormRemoveMultiple> = (
                         <FilterList
                             onChange={updateFilter(props.onFilter, 'block')}
                             error={!props.empty && props.noResults}
-                            name={currentSession.type && currentSession.type.name || ''}
-                            list={lists.types}
-                            disabled={lists.types.length <= 1 || props.disabled}
+                            name={currentSession.block && currentSession.block.name || ''}
+                            list={lists.blocks}
+                            disabled={lists.blocks.length <= 1 || props.disabled}
                             removeFilters={true}
                             defaultText='Pacífico, Avenida Arequipa #660'/>
                     </FormColumn>

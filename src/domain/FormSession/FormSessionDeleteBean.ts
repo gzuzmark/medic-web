@@ -2,8 +2,8 @@ import {FILTER_LIST_ALL} from "../../common/FilterList/FilterList";
 import Utilities from "../../common/Utilities";
 import {SESSION_VIRTUAL} from "../../repository/SessionTypeConstants";
 import {
-    IInterestAreaDeleteService,
-    IInterestAreaSite
+    IInterestAreaBlock,
+    IInterestAreaDeleteService
 } from "../../services/InterestArea/InterestArea.service";
 import FormSessionBaseBean, {ISessionItem, ISessionListForm} from "./FormSessionBaseBean";
 
@@ -92,10 +92,13 @@ class FormSessionDeleteBean extends FormSessionBaseBean {
         this.selectedSession.room = undefined;
         this.selectedSession.skill = undefined;
         this.selectedSession.type = undefined;
+        this.selectedSession.block = undefined;
         this.automaticSelectionSkill();
         this.automaticSelectionLocation();
+        this.automaticSelectionBlock();
         this.automaticSelectionRooms();
         return {
+            listBlocks: this.listBlocks,
             listLocations: this.listLocations,
             listRooms: this.listRooms,
             listSkills: this.listSkills
@@ -110,6 +113,17 @@ class FormSessionDeleteBean extends FormSessionBaseBean {
     }
 
     get onChangeLocationFields() {
+        this.selectedSession.block = undefined;
+        this.selectedSession.room = undefined;
+        this.automaticSelectionBlock();
+        this.automaticSelectionRooms();
+        return {
+            listBlocks: this.listBlocks,
+            listRooms: this.listRooms
+        }
+    }
+
+    get onChangeBlocksFields() {
         this.selectedSession.room = undefined;
         this.automaticSelectionRooms();
         return {
@@ -119,8 +133,10 @@ class FormSessionDeleteBean extends FormSessionBaseBean {
 
     get onChangeTypeFields() {
         this.selectedSession.location = undefined;
+        this.selectedSession.block = undefined;
         this.selectedSession.room = undefined;
         this.automaticSelectionLocation();
+        this.automaticSelectionBlock();
         this.automaticSelectionRooms();
         return {
             listLocations: this.listLocations,
@@ -130,15 +146,18 @@ class FormSessionDeleteBean extends FormSessionBaseBean {
 
     get onChangeDatesFields() {
         this.selectedSession.area = undefined;
+        this.selectedSession.block = undefined;
         this.selectedSession.room = undefined;
         this.selectedSession.location = undefined;
         this.selectedSession.type = undefined;
         this.selectedSession.skill = undefined;
-        this.automaticSelectionArea()
+        this.automaticSelectionArea();
         this.automaticSelectionSkill();
         this.automaticSelectionLocation();
+        this.automaticSelectionBlock();
         this.automaticSelectionRooms();
         return {
+            listBlocks: this.listBlocks,
             listLocations: this.listLocations,
             listRooms: this.listRooms,
             listSkills: this.listSkills
@@ -177,6 +196,16 @@ class FormSessionDeleteBean extends FormSessionBaseBean {
         this.sessions = sessions;
     }
 
+    public automaticSelectionBlock() {
+        const list = this.listBlocks;
+        if (list.length === 1) {
+            this.selectedSession.block = {
+                id: list[0].id,
+                name: list[0].name
+            };
+        }
+    }
+
     public automaticSelectionRooms() {
         const list = this.listRooms;
         if (list.length === 1) {
@@ -191,12 +220,12 @@ class FormSessionDeleteBean extends FormSessionBaseBean {
         return (value && value !== FILTER_LIST_ALL) ? id === value : true
     }
 
-    private buildRooms(rooms: IInterestAreaSite[]) {
-        const listRooms = rooms.map((room: IInterestAreaSite): ISessionListForm => {
+    private buildRooms(rooms: IInterestAreaBlock[]) {
+        const listRooms = rooms.map((room: IInterestAreaBlock): ISessionListForm => {
             return {
                 id: Utilities.getValue(room.id),
                 name: room.name,
-                parent: [room.site]
+                parent: [room.block]
             }
         });
         return listRooms;

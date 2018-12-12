@@ -4,7 +4,7 @@ import {SESSION_PHYSICAL, SESSION_UNDEFINED, SESSION_VIRTUAL} from "../../reposi
 import {
     IBase,
     IInterestAreaParent,
-    IInterestAreaService
+    IInterestAreaService, IInterestAreaSite
 } from "../../services/InterestArea/InterestArea.service";
 import {ISessionItemBase} from "../Session/SessionBean";
 
@@ -21,6 +21,7 @@ export interface ISessionItem {
     from?: string;
     to?: string;
     room?: ISessionItemBase;
+    block?: ISessionItemBase;
 }
 
 class FormSessionBaseBean {
@@ -28,6 +29,7 @@ class FormSessionBaseBean {
     public skills: ISessionListForm[];
     public types: ISessionListForm[];
     public locations: ISessionListForm[];
+    public blocks: ISessionListForm[];
     public selectedSession: ISessionItem;
 
     constructor(item: IInterestAreaService) {
@@ -38,6 +40,8 @@ class FormSessionBaseBean {
         this.automaticSelectionSkill();
         this.types = this.buildTypes(item.types);
         this.locations = this.buildLocations(item.sites);
+        this.automaticSelectionLocation();
+        this.blocks = this.buildBlocks(item.blocks);
         this.automaticSelectionLocation();
     }
 
@@ -91,16 +95,37 @@ class FormSessionBaseBean {
         return listLocations;
     }
 
+    public buildBlocks(blocks: IInterestAreaSite[]) {
+        const listBlocks = blocks.map((block: IInterestAreaSite): ISessionListForm => {
+            // tslint:disable:no-console
+            console.log(block);
+            return {
+                id: Utilities.getValue(block.id, block.address),
+                name: block.address,
+                parent: block.siteId
+            }
+        });
+        return listBlocks;
+    }
+
     get listAreas() : ISessionListForm[] {
         return this.areas;
+    }
+
+    get listBlocks() : ISessionListForm[] {
+        return this.blocks.filter(
+            (item: ISessionListForm) => {
+                return this.selectedSession.location && item.parent && item.parent.indexOf(this.selectedSession.location.id) !== -1
+            }
+        )
     }
 
     get listSkills(): ISessionListForm[] {
         return this.skills.filter(
             (item: ISessionListForm) => {
                 return this.selectedSession.area && item.parent && item.parent.indexOf(this.selectedSession.area.id) !== -1
-            }
-        )}
+            })
+    }
 
     get listTypes(): ISessionListForm[] {
         return this.types;
