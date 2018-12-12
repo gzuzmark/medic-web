@@ -1,9 +1,9 @@
 import * as moment from 'moment';
 import * as React from 'react';
-import {SessionBean} from "../../../../../beans/Session.bean";
 import { HighlightText, Text } from '../../../../../common/ConsoleText';
 import {default as FilterList, IListItem} from '../../../../../common/FilterList/FilterList';
 import Loader from '../../../../../common/Loader/Loader';
+import {FactorySessionBean} from "../../../../../domain/FactorySession/FactorySessionBean";
 import {IArea, IMentor} from '../../../../../interfaces/Mentor.interface';
 import {ISessionSchedule} from '../../../../../interfaces/Session.interface';
 import FormSection from '../../components/FormSection/FormSection';
@@ -160,7 +160,7 @@ class ScheduleSessionForm extends React.Component<IPropsScheduleSessionForm, {}>
         this.props.callbacks.onChangeSessionDetail(SESSION_SELECTED, item)
     }
 
-    private getSkills(session: SessionBean) {
+    private getSkills(session: FactorySessionBean) {
         let items: any[] = [];
         if (this.props.mentor) {
             const currentArea = this.props.mentor.interestAreas.filter((area: IArea) => area.id === session.factorySession.interestAreaId)[0];

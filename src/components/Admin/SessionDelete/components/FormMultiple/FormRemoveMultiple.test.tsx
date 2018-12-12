@@ -21,6 +21,7 @@ describe('FormRemoveMultiple Test',() => {
             currentSession: {},
             lists: {
                 areas: [],
+                blocks:[],
                 locations: [],
                 rooms: [],
                 skills: [],

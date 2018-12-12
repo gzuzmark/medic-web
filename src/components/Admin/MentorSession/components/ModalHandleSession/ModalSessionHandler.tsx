@@ -1,10 +1,10 @@
 import * as moment from 'moment';
 import * as React from 'react';
-import {SessionBean} from "../../../../../beans/Session.bean";
 import ConsoleModalConfirm from "../../../../../common/ConsoleModal/ConsoleModalConfirm";
 import ConsoleTable from "../../../../../common/ConsoleTable/ConsoleTable";
 import { Text3 } from '../../../../../common/ConsoleText';
 import Icon from "../../../../../common/Icon/Icon";
+import {FactorySessionBean} from "../../../../../domain/FactorySession/FactorySessionBean";
 
 interface IPropsModalSessionHandler {
     title: string;
@@ -19,13 +19,13 @@ const ModalSessionHandler: React.StatelessComponent<IPropsModalSessionHandler> =
             title={props.title}
             onCloseModal={props._onCancel}>
             <div className={"ModalSessionHandler"}>
-                <ConsoleTable items={[SessionBean]} row={[{
+                <ConsoleTable items={[FactorySessionBean]} row={[{
                     name: 'Día',
-                    value: (row: SessionBean) => moment(row.factorySession.from).format('ddd DD/MM/Y'),
+                    value: (row: FactorySessionBean) => moment(row.factorySession.from).format('ddd DD/MM/Y'),
                     width: 124.5
                 },{
                     name: 'Hora',
-                    value: (row: SessionBean) => {
+                    value: (row: FactorySessionBean) => {
                         return moment(row.factorySession.from).format('hh:mm a') + ' - ' + moment(row.factorySession.to).format('hh:mm a')
                     },
                     width: 88.7

@@ -1,10 +1,10 @@
 import * as moment from "moment";
 import * as React from 'react';
-import {IFactorySession, SessionBean} from '../../../beans/Session.bean';
 import Layout from '../../../common/Layout/Layout';
 import MentorDetail from '../../../common/MentorDetail/MentorDetail';
 import MenuLeft from "../../../common/MenuLeft/MenuLeft";
 import Sticky from '../../../common/Sticky/Sticky';
+import {FactorySessionBean, IFactorySession} from '../../../domain/FactorySession/FactorySessionBean';
 import {FormLocationDependency} from "../../../domain/FormSession/FormLocationDependency";
 import { IMatchParam } from '../../../interfaces/MatchParam.interface';
 import { IMentor } from '../../../interfaces/Mentor.interface';
@@ -42,7 +42,7 @@ class ScheduleSession extends React.Component<IPropsScheduleSession, IStateSched
     private mentorId: string;
     private mentorService: MentorService = new MentorService();
     private locationsService = new LocationService();
-    private factory = new SessionBean();
+    private factory = new FactorySessionBean();
     private locations = new FormLocationDependency();
 
     constructor(props: IPropsScheduleSession) {
@@ -129,7 +129,7 @@ class ScheduleSession extends React.Component<IPropsScheduleSession, IStateSched
 
     private _onConfirm() {
         this.setState({savingData: true});
-        const session : any= new SessionBean(this.factory.getFormSession);
+        const session : any= new FactorySessionBean(this.factory.getFormSession);
         const dateFrom = new Date(session.factorySession.from);
         const dateTo = new Date(session.factorySession.to);
         dateFrom.setHours(0,0,0, 0);

@@ -1,7 +1,7 @@
-import {lpad} from '../common/ConsoleUtils';
-import { IListItem } from '../common/FilterList/FilterList';
-import {ISessionSchedule} from '../interfaces/Session.interface';
-import {SESSION_VIRTUAL} from "../repository/SessionTypeConstants";
+import {lpad} from '../../common/ConsoleUtils';
+import { IListItem } from '../../common/FilterList/FilterList';
+import {ISessionSchedule} from '../../interfaces/Session.interface';
+import {SESSION_VIRTUAL} from "../../repository/SessionTypeConstants";
 
 export interface IFactorySession {
     from: string;
@@ -19,7 +19,7 @@ export interface IFactorySession {
     typeKey?: string;
 }
 
-export class SessionBean {
+export class FactorySessionBean {
     public factorySession: IFactorySession;
     public selectedSite = '';
     public selectedBlock = '';

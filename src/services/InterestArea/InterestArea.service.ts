@@ -10,18 +10,24 @@ export interface IInterestAreaParent extends IBase{
 }
 
 export interface IInterestAreaSite extends IBase{
-    site: string;
+    siteId: string[];
+    address: string;
+}
+
+export interface IInterestAreaBlock extends IBase {
+    block: string;
 }
 
 export interface IInterestAreaService {
     areas: IBase[];
     skills: IInterestAreaParent[];
     sites: IInterestAreaParent[];
+    blocks: IInterestAreaSite[];
     types: IBase[];
 }
 
 export interface IInterestAreaDeleteService extends IInterestAreaService{
-    rooms: IInterestAreaSite[];
+    rooms: IInterestAreaBlock[];
 }
 
 class InterestAreaService extends BaseRequest {

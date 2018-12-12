@@ -7,9 +7,10 @@ interface IPropsFormColumn {
 }
 
 const FormColumn: React.StatelessComponent<IPropsFormColumn> = (props) => {
-    const width = Math.round(100 / props.width) - 3;
+    const margin = props.width === 1 ? 0 : 3;
+    const width = Math.round(100 / props.width) - margin;
     return (
-        <div className='FormColumn' style={{maxWidth: width + '%', ...props.style}}>
+        <div className='FormColumn' style={{flexBasis: width + '%', ...props.style, maxWidth: width + '%', ...props.style}}>
             {props.children}
         </div>
     );

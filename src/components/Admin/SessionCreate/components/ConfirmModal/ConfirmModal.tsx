@@ -1,11 +1,11 @@
 import * as React from 'react';
-import { SessionBean } from "../../../../../beans/Session.bean";
 import ConsoleModalConfirm from "../../../../../common/ConsoleModal/ConsoleModalConfirm";
+import { FactorySessionBean } from "../../../../../domain/FactorySession/FactorySessionBean";
 import { ISessionSchedule } from "../../../../../interfaces/Session.interface";
 import './ConfirmModal.scss';
 
 interface IPropsConfirmModal {
-    session: SessionBean;
+    session: FactorySessionBean;
     height: number;
     style?: React.CSSProperties;
     _onCancel(): void;

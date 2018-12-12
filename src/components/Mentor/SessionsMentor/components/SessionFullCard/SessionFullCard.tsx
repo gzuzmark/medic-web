@@ -8,7 +8,7 @@ export interface ISessionFullCard {
     type: string;
 }
 
-interface IPropsSessionFullCard {
+export interface IPropsSessionFullCard {
     session: ISessionFullCard;
 }
 
