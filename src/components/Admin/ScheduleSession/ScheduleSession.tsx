@@ -236,7 +236,6 @@ class ScheduleSession extends React.Component<IPropsScheduleSession, IStateSched
         switch (type) {
             case SESSION_SELECTED:
                 session.setSessionSelected(item.id, item.name, this.mentorId);
-                this.loadLocations(item.id);
                 break;
             case SESSION_SKILL:
                 session.setSkill(item.id, item.name);
@@ -295,10 +294,10 @@ class ScheduleSession extends React.Component<IPropsScheduleSession, IStateSched
     }
 
     private loadLocations(idArea: string) {
-        this.locationsService.list(idArea).then((locations) => {
+        this.locationsService.list(idArea, this.mentorId).then((locations) => {
             this.locations.setLocationPhysical(locations[SESSION_PHYSICAL]);
             this.locations.setLocationVirtual(locations[SESSION_VIRTUAL]);
-            this.setState({loading: false})
+            this.setState({loading: false});
         })
     }
 }
