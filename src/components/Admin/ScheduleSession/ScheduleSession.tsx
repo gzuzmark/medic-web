@@ -271,6 +271,7 @@ class ScheduleSession extends React.Component<IPropsScheduleSession, IStateSched
         }
         this.setState({session: session.getFormSession}, () => {
             if (SESSION_SELECTED === type) {
+                this.setState({loading: true});
                 this.loadLocations(item.id);
             }
         });

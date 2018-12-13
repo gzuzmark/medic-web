@@ -16,6 +16,7 @@ import ScheduleDuration from './components/ScheduleDuration/ScheduleDuration';
 import SessionDetail from './components/SessionDetail/SessionDetail';
 import TimeRangePicker from "./components/TimeRangePicker/TimeRangePicker";
 import WeekendPicker from './components/WeekendPicker/WeekendPicker';
+import './ScheduleSessionForm.scss'
 
 export interface IFormCallbacks {
     onChangeSessionDetail(type: string, item:IListItem): void;
@@ -67,10 +68,10 @@ class ScheduleSessionForm extends React.Component<IPropsScheduleSessionForm, {}>
                     const currentArea = this.props.mentor ? this.props.mentor.interestAreas.filter((area: IArea) => area.id === session.factorySession.interestAreaId)[0] : false;
                     const sessionTypes = currentArea ? currentArea.sessionTypes : [];
                     return (
-                        <React.Fragment>
+                        <div className={"ScheduleSessionForm"}>
                             {this.props.loading &&
-                            <Loader top={250} height={100}/>}
-                            {!this.props.loading &&
+                            <div className={"ScheduleSessionForm--loading"}><Loader top={310} height={100} style={{left: -80}}/></div>}
+                            {!!this.props.mentor &&
                             <React.Fragment>
                                 <HighlightText color="purpleDark" style={{marginBottom: 35}}>Ingresa los datos de la sesión que te gustaría crear</HighlightText>
                                 <FormSection>
@@ -145,7 +146,7 @@ class ScheduleSessionForm extends React.Component<IPropsScheduleSessionForm, {}>
                                 }
                             </React.Fragment>
                             }
-                        </React.Fragment>
+                        </div>
                     )
                 }
             }
@@ -164,7 +165,9 @@ class ScheduleSessionForm extends React.Component<IPropsScheduleSessionForm, {}>
         let items: any[] = [];
         if (this.props.mentor) {
             const currentArea = this.props.mentor.interestAreas.filter((area: IArea) => area.id === session.factorySession.interestAreaId)[0];
-            items = this.props.mentor.skills.filter((skill) => currentArea.skills.indexOf(skill.id) !== -1);
+            if (currentArea) {
+                items = this.props.mentor.skills.filter((skill) => currentArea.skills.indexOf(skill.id) !== -1);
+            }
         }
         return items;
     }
