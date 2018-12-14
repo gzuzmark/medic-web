@@ -65,14 +65,16 @@ class SessionDetail extends React.Component <IPropsSessionDetail, IStateSessionD
         if (this.props.skills.length === 1) {
             this._onChangeSkill(this.props.skills[0]);
         }
-        const listSession = this.props.sessionTypes.map((item) => {
-            return {
-                id: item.key,
-                name: item.name,
-                type: item.type
-            }
-        });
-        this.setState({listSession});
+        if (this.props.sessionTypes) {
+            const listSession = this.props.sessionTypes.map((item) => {
+                return {
+                    id: item.key,
+                    name: item.name,
+                    type: item.type
+                }
+            });
+            this.setState({listSession});
+        }
     }
     public reset() {
         this.setState({
