@@ -65,13 +65,13 @@ class ScheduleSessionForm extends React.Component<IPropsScheduleSessionForm, {}>
             {
                 (scheduleSessionContext: IScheduleContext) => {
                     const session = scheduleSessionContext.session;
-                    const currentArea = this.props.mentor ? this.props.mentor.interestAreas.filter((area: IArea) => area.id === session.factorySession.interestAreaId)[0] : false;
+                    const currentArea = this.props.mentor ? this.props.mentor.interestAreas.find((area: IArea) => area.id === session.factorySession.interestAreaId) : false;
                     const sessionTypes = currentArea ? currentArea.sessionTypes : [];
                     return (
                         <div className={"ScheduleSessionForm"}>
                             {this.props.loading &&
                             <div className={"ScheduleSessionForm--loading"}><Loader top={310} height={100} style={{left: -80}}/></div>}
-                            {!!this.props.mentor &&
+                            {!!this.props.mentor && currentArea &&
                             <React.Fragment>
                                 <HighlightText color="purpleDark" style={{marginBottom: 35}}>Ingresa los datos de la sesión que te gustaría crear</HighlightText>
                                 <FormSection>
