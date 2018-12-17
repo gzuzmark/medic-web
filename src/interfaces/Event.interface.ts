@@ -4,6 +4,6 @@ export interface IEvent {
     start: Date;
     title: string;
     location: string;
-    site: string;
+    block: string;
     type: string;
 }

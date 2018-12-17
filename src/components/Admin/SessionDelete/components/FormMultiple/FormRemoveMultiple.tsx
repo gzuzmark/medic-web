@@ -147,7 +147,7 @@ const FormRemoveMultiple: React.StatelessComponent<IPropsFormRemoveMultiple> = (
                             list={lists.locations}
                             removeFilters={true}
                             disabled={lists.locations.length <= 1  || props.disabled}
-                            defaultText='Torre Arequipa, Torre B, etc.'/>
+                            defaultText='Lima Centro, Lima Sur, etc'/>
                     </FormColumn>
                 ]}/>
                 <FormRow style={{marginTop: 90}} columns={[
