@@ -132,7 +132,7 @@ class SessionDetail extends React.Component <IPropsSessionDetail, IStateSessionD
                                             onChange={onChangeSite}
                                             name={session.getSelectedSite}
                                             list={this.state.sites}
-                                            defaultText='Oeste, Sur, etc'/>
+                                            defaultText='Lima Centro, Lima Sur, etc'/>
                                     </FormColumn>,
                                     <FormColumn key={`SessionDetailRow${++counter}`} width={2}>
                                         <Text className='FormSession-label'>Dirección</Text>
