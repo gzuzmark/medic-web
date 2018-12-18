@@ -44,6 +44,7 @@ interface IStateSessionDeleteMultiple {
     listAreas: IListItem[];
     listSkills: IListItem[];
     listRooms: IListItem[];
+    listBlocks: IListItem[];
     listLocations: IListItem[];
     listTypes: IListItem[];
     selection: string[];
@@ -62,6 +63,7 @@ class SessionDeleteMultiple extends React.Component<IPropsSessionDeleteMultiple,
         this.state = {
             currentSession: {},
             listAreas: [],
+            listBlocks: [],
             listLocations: [],
             listRooms: [],
             listSkills: [],
@@ -96,6 +98,7 @@ class SessionDeleteMultiple extends React.Component<IPropsSessionDeleteMultiple,
             this.setState({
                 currentSession: this.formSessionDeleteBean.selectedSession,
                 listAreas: this.formSessionDeleteBean.listAreas,
+                listBlocks: this.formSessionDeleteBean.listBlocks,
                 listLocations: this.formSessionDeleteBean.listLocations,
                 listRooms: this.formSessionDeleteBean.listRooms,
                 listSkills: this.formSessionDeleteBean.listSkills,
@@ -145,6 +148,7 @@ class SessionDeleteMultiple extends React.Component<IPropsSessionDeleteMultiple,
                             onSearch={this._onSearch} onFilter={this._onFilter}
                             lists={{
                                 areas: this.state.listAreas,
+                                blocks: this.state.listBlocks,
                                 locations: this.state.listLocations,
                                 rooms: this.state.listRooms,
                                 skills: this.state.listSkills,
@@ -229,9 +233,13 @@ class SessionDeleteMultiple extends React.Component<IPropsSessionDeleteMultiple,
             case 'location':
                 fields = this.formSessionDeleteBean.onChangeLocationFields;
                 break;
+            case 'block':
+                fields = this.formSessionDeleteBean.onChangeBlocksFields;
+                break;
             case 'type':
                 fields = this.formSessionDeleteBean.onChangeTypeFields;
         }
+
         const sessions = this.formSessionDeleteBean.listSessions;
         const newSession = this.formSessionDeleteBean.getSelectedSession();
         this.setState(

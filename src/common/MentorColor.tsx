@@ -17,9 +17,10 @@ const SECONDARY_COLORS = {
 };
 
 const MISC = {
+    blue: '#81a8d2',
     light_grey: '#adb7c4',
     lightest_grey: '#e6edf2',
-    red_soft: '#ff8389'
+    red_soft: '#ff8389',
 };
 
 const MISC_COLORS = {
@@ -31,6 +32,7 @@ const TEXT_COLORS = {
     font_dark: SECONDARY_COLORS.dark_gray,
     font_disabled: MISC.light_grey,
     font_error: MISC.red_soft,
+    font_highlight: MISC.blue,
     font_light: SECONDARY_COLORS.white,
     font_medium: SECONDARY_COLORS.medium_grey,
 };
@@ -58,6 +60,7 @@ interface IMentorColor {
     TEXT_COLORS: {
         font_dark: string;
         font_disabled: string;
+        font_highlight: string;
         font_error: string;
         font_light: string;
         font_medium: string;
@@ -74,6 +77,7 @@ export const FONTS = {
     dark: 'font_dark',
     disabled: 'font_disabled',
     error: 'font_error',
+    highlight: 'font_highlight',
     medium: 'font_medium'
 };
 

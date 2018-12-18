@@ -1,14 +1,13 @@
 import * as React from 'react';
-import { Title2 } from '../../../common/ConsoleText';
 import Icon from "../../../common/Icon/Icon";
 import Layout from "../../../common/Layout/Layout";
 import Loader from "../../../common/Loader/Loader";
+import { Headline1 } from '../../../common/MentorText';
 import Utilities from "../../../common/Utilities";
 import {MomentDateParser} from "../../../domain/DateManager/MomentDateParser";
 import {ListenerFirebase} from "../../../domain/Listener/ListenerFirebase";
 import {IBoxDayDescription, SessionCollector} from "../../../domain/Session/SessionCollector";
 import {ISessionMentor, SessionMentorBean} from "../../../domain/Session/SessionMentorBean";
-import {IMatchParam} from "../../../interfaces/MatchParam.interface";
 import UserRepository from "../../../repository/UserRepository";
 import SessionService from "../../../services/Session/Session.service";
 import DayHandlerBar, {IDayHandlerBar} from "./components/DayHandlerBar/DayHandlerBar";
@@ -20,9 +19,6 @@ export interface IRangeDay {
     description: IBoxDayDescription;
     date: string;
 }
-interface IPropsMentorHome {
-    match: IMatchParam;
-}
 
 interface IStateMentorHome {
     daysBar: IDayHandlerBar;
@@ -31,15 +27,15 @@ interface IStateMentorHome {
     sessionDetail: ISessionMentorDetail;
 }
 
-class MentorHome extends React.Component<IPropsMentorHome, IStateMentorHome> {
+class MentorHome extends React.Component<{}, IStateMentorHome> {
     public state: IStateMentorHome;
     private sessionCollector: SessionCollector<SessionMentorBean> =  new SessionCollector<SessionMentorBean>(
         [], Utilities.getMonday().toISOString(), 1);
     private sessionService = new SessionService();
-    private mentorToken: string;
     private mentorId: string;
     private listenerFirebase: ListenerFirebase;
     private mdp: MomentDateParser;
+    private interval: any = 0;
     constructor(props: any) {
         super(props);
         this.state = {
@@ -51,28 +47,27 @@ class MentorHome extends React.Component<IPropsMentorHome, IStateMentorHome> {
                 sessions: null,
             }
         };
-        this.mentorToken = this.props.match.params.id;
         this.getNewSessions = this.getNewSessions.bind(this);
         this.updateDate = this.updateDate.bind(this);
         this.loadSessions = this.loadSessions.bind(this);
         this.updateScrollTop = this.updateScrollTop.bind(this);
-        this.builRefURL = this.builRefURL.bind(this);
+        this.buildRefURL = this.buildRefURL.bind(this);
         this.updateSessionDetail = this.updateSessionDetail.bind(this);
         this.updateDaysBar = this.updateDaysBar.bind(this);
-        this.tmpFirstLoad = this.tmpFirstLoad.bind(this);
+        this.firstLoad = this.firstLoad.bind(this);
         this.mdp = new MomentDateParser();
     }
 
     public componentDidMount() {
         if (UserRepository.getToken() && UserRepository.getUser()) {
             this.mentorId = UserRepository.getUser().rolId;
-            this.tmpFirstLoad();
+            this.firstLoad();
         }
     }
 
-    public tmpFirstLoad() {
+    public firstLoad() {
         const date = Utilities.getMonday();
-        const ref = this.builRefURL(date);
+        const ref = this.buildRefURL(date);
         this.listenerFirebase = new ListenerFirebase(ref);
         this.listenerFirebase.setCallback(() => {
             const { from, to } = this.getRangeDates(date.toISOString());
@@ -96,7 +91,7 @@ class MentorHome extends React.Component<IPropsMentorHome, IStateMentorHome> {
             <div className="MentorHome u-LayoutMentorMargin">
                 <div className={"MentorHome_title"}>
                     <Icon name={"calendar"}/>
-                    <Title2>Tus sesiones</Title2>
+                    <Headline1>Tus sesiones</Headline1>
                 </div>
                 <DayHandlerBar
                     onChangeDate={this.updateDate}
@@ -104,16 +99,16 @@ class MentorHome extends React.Component<IPropsMentorHome, IStateMentorHome> {
                     selectedDate={this.state.selectedDate}
                     loading={this.state.loading}
                     daysBar={this.state.daysBar} />
-                {this.state.sessionDetail.sessions?
+                {this.state.sessionDetail.sessions ?
                 <SessionsMentorDetail
                     sessionDetail={this.state.sessionDetail}
-                    selectedDate={this.state.selectedDate}/> :
+                    selectedDate={this.state.selectedDate} /> :
                 <Loader top={10} height={50}/>}
             </div>
         </Layout>
     }
 
-    private builRefURL(date: Date): string {
+    private buildRefURL(date: Date): string {
         const listenerDate = date.toISOString().replace('.', '_');
         return `mentors/${this.mentorId}/sessions/week-changes/on-start/${listenerDate}`;
     }
@@ -125,7 +120,7 @@ class MentorHome extends React.Component<IPropsMentorHome, IStateMentorHome> {
             sessionDetail: this.updateSessionDetail(date)
         }, () => {
             const monday = Utilities.getMonday(date);
-            const ref = this.builRefURL(monday);
+            const ref = this.buildRefURL(monday);
             this.listenerFirebase.setCallback(() => {
                 const { from, to } = this.getRangeDates(monday.toISOString());
                 this.loadSessions(from, to, 0, true);
@@ -153,7 +148,7 @@ class MentorHome extends React.Component<IPropsMentorHome, IStateMentorHome> {
     }
 
     private loadSessions(from: Date, to: Date, counter: number, forceRefresh?: boolean) {
-        this.sessionService.listMentorSessions(from.toISOString(), to.toISOString(), this.mentorToken)
+        this.sessionService.listMentorSessions(from.toISOString(), to.toISOString())
             .then((sessions: ISessionMentor[]) => {
                 let newState = {};
                 const mentorSessions = sessions.map((item) => new SessionMentorBean(item));
@@ -209,12 +204,20 @@ class MentorHome extends React.Component<IPropsMentorHome, IStateMentorHome> {
     }
 
     private updateSessionDetail(date: Date, sessionCollector?: SessionCollector<SessionMentorBean>) {
-        if (!sessionCollector) {
-            sessionCollector = this.sessionCollector;
-        }
+        const collector = sessionCollector || this.sessionCollector;
+        clearInterval(this.interval);
+        this.interval = setInterval(() => {
+            collector.updateCollector();
+            this.setState({
+                sessionDetail: {
+                    ...this.state.sessionDetail,
+                    sessions: collector.getSessionsFrom(date.getDay())
+                }
+            });
+        }, 1100);
         return {
             ...this.state.sessionDetail,
-            sessions: sessionCollector.getSessionsFrom(date.getDay())
+            sessions: collector.getSessionsFrom(date.getDay())
         }
     }
 }

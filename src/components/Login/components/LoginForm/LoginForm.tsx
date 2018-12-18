@@ -2,6 +2,7 @@ import * as React from 'react';
 import { ButtonNormal } from '../../../../common/Buttons/Buttons';
 import ConsoleInputRadio from "../../../../common/ConsoleInputRadio/ConsoleInputRadio";
 import MentorInput from "../../../../common/MentorInput/MentorInput";
+import {ROL_ADMIN, ROL_MENTOR} from "../../../../repository/UserRepository";
 import InputError from "../InputError/InputError";
 import './LoginForm.scss';
 
@@ -16,9 +17,6 @@ interface IPropsForm {
     generalError: string;
     cleanError: any;
 }
-
-export const ROL_MENTOR = 'mentor';
-export const ROL_ADMIN = 'administrador';
 
 class LoginForm extends React.Component<IPropsForm, {}> {
     constructor(props: IPropsForm) {

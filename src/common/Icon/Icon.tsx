@@ -9,8 +9,14 @@ interface IPropsIcon {
 }
 
 const Icon: React.StatelessComponent<IPropsIcon> = (props) => {
+    let events = {};
+    if (!!props.click) {
+        events = {
+            onClick: props.click
+        }
+    }
     return (
-        <svg className={`icon icon-${props.name}`} style={{...props.style}} onClick={props.click}>
+        <svg className={`icon icon-${props.name}`} style={{...props.style}} {...events}>
             <use xlinkHref={`#icons_${props.name}`}/>
         </svg>
     );

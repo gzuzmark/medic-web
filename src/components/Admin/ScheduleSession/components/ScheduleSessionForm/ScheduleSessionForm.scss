@@ -1,0 +1,13 @@
+.ScheduleSessionForm {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  &--loading {
+    background: rgba(255, 255, 255, 0.6);
+    display: block;
+    height: 100%;
+    position: absolute;
+    width: 100%;
+    z-index: 1;
+  }
+}

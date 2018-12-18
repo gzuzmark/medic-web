@@ -1,11 +1,14 @@
 import * as React from 'react';
-import { SessionBean } from '../../../beans/Session.bean';
+import { FactorySessionBean } from '../../../domain/FactorySession/FactorySessionBean';
+import {FormLocationDependency} from "../../../domain/FormSession/FormLocationDependency";
 
-const session = new SessionBean();
+const session = new FactorySessionBean();
+const locations = new FormLocationDependency();
 const listSession: object = {};
-const ScheduleSessionContext = React.createContext({session, listSession});
+const ScheduleSessionContext = React.createContext({session, listSession, locations});
 export default ScheduleSessionContext;
 export interface IScheduleContext {
-    session: SessionBean,
+    session: FactorySessionBean,
     listSession: object
+    locations: FormLocationDependency;
 }

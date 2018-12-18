@@ -1,11 +1,11 @@
 import * as React from 'react';
-import { SessionBean } from "../../../../../beans/Session.bean";
 import ConsoleModalConfirm from "../../../../../common/ConsoleModal/ConsoleModalConfirm";
+import { FactorySessionBean } from "../../../../../domain/FactorySession/FactorySessionBean";
 import { ISessionSchedule } from "../../../../../interfaces/Session.interface";
 import './ConfirmModal.scss';
 
 interface IPropsConfirmModal {
-    session: SessionBean;
+    session: FactorySessionBean;
     height: number;
     style?: React.CSSProperties;
     _onCancel(): void;
@@ -36,10 +36,10 @@ const ConfirmModal: React.StatelessComponent<IPropsConfirmModal> = (props) => {
                         {props.session.listSessions.map((item: ISessionSchedule, index: number) => {
                             return (
                                 <div key={`ModalTable-${index}`}>
-                                    <div>{props.session.skillName}</div>
+                                    <div>{props.session.factorySession.skillName}</div>
                                     <div>Tutoria</div>
-                                    <div>{props.session.location}</div>
-                                    <div>{props.session.maxStudents}</div>
+                                    <div>{props.session.factorySession.room}</div>
+                                    <div>{props.session.factorySession.maxStudents}</div>
                                     <div>{item.weekDay}</div>
                                     <div>{item.from} - {item.to}</div>
                                 </div>

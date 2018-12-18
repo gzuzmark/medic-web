@@ -5,6 +5,7 @@ import StudentFullCard, {IStudentChecklistCard} from "../StudentFullCard/Student
 import './StudentChecklistBoard.scss';
 
 type fnSearch = (value: string, action: string) => void;
+type fnClear = (action: string) => void;
 
 export interface IStudentChecklistBoard {
     addEnabled: boolean;
@@ -41,9 +42,9 @@ export const ACTION = {
     SEARCH: 'search'
 };
 
-const onClick = (search: (key: string) => void, action: string) => {
+const onClick = (clear: fnClear, action: string) => {
     return (event: any) => {
-        search(action);
+        clear(action);
     }
 };
 
@@ -58,6 +59,12 @@ const onSubmit = (search: fnSearch, action: string) => {
         if (event.key === 'Enter') {
             search(event.target.value, action);
         }
+    }
+};
+
+const onClickIcon = (search: fnSearch, action: string) => {
+    return (value: string) => {
+        search(value, action);
     }
 };
 
@@ -79,46 +86,46 @@ class StudentChecklistBoard extends  React.Component<IPropsStudentChecklistBoard
     public render() {
         const addSearch = this.getInputAdd();
         const inputSearch = this.getInputSearch();
-        let students = <EmptyCard addEnabled={this.props.board.addEnabled} />;
         let propsNoAttendedButton = {};
         let propsAttendedButton = {};
-        if (this.props.board.noAttendedButton) {
+        if (this.props.board.noAttendedButton || this.props.isEmpty) {
             propsNoAttendedButton = {
                 disabled: "true"
             };
         }
-        if (this.props.board.attendedButton) {
+        if (this.props.board.attendedButton || this.props.isEmpty) {
             propsAttendedButton = {
                 disabled: "true"
             };
         }
-        if (!this.props.isEmpty) {
-            students = (
-                <React.Fragment>
+        const students = (
+            <React.Fragment>
+                {this.props.isEmpty ?
+                    <EmptyCard addEnabled={this.props.board.addEnabled} /> :
                     <div className={`StudentChecklistBoard_students ${this.props.board.studentList.length > 0 ? 'StudentChecklistBoard--border' : ''} `}>
-                    {this.props.board.studentList.map((student: IStudentChecklistCard, index: number) => {
-                        let order = 0;
-                        if (student.new) {
-                            order = ++this.counter;
-                        }
-                        return (
-                            <StudentFullCard student={student} key={`${index}`} styles={{'order': -1 * order}}/>
-                        )
-                    })}
+                        {this.props.board.studentList.map((student: IStudentChecklistCard, index: number) => {
+                            let order = 0;
+                            if (student.new) {
+                                order = ++this.counter;
+                            }
+                            return (
+                                <StudentFullCard student={student} key={`${index}`} styles={{'order': -1 * order}}/>
+                            )
+                        })}
                     </div>
-                    <div className={'StudentChecklistBoard_buttons'}>
-                        <button
-                            className={'u-Button u-Button--white StudentChecklistBoard_button StudentChecklistBoard_button--no-attended'}
-                            {...propsNoAttendedButton}
-                            onClick={this.props.requestNoAttended}>Nadie se presentó</button>
-                        <button
-                            {...propsAttendedButton}
-                            className={'u-Button StudentChecklistBoard_button'}
-                            onClick={this.props.requesAttended}>Guardar</button>
-                    </div>
-                </React.Fragment>
-            )
-        }
+                }
+                <div className={'StudentChecklistBoard_buttons'}>
+                    <button
+                        className={'u-Button u-Button--white StudentChecklistBoard_button StudentChecklistBoard_button--no-attended'}
+                        {...propsNoAttendedButton}
+                        onClick={this.props.requestNoAttended}>Nadie se presentó</button>
+                    <button
+                        {...propsAttendedButton}
+                        className={'u-Button StudentChecklistBoard_button'}
+                        onClick={this.props.requesAttended}>Guardar</button>
+                </div>
+            </React.Fragment>
+        )
 
         const searchError = this.props.board.studentList.length === 0 &&
                             this.state.activeSearch &&
@@ -191,11 +198,13 @@ class StudentChecklistBoard extends  React.Component<IPropsStudentChecklistBoard
         const onClickAdd = onClick(this.activeInput, ACTION.ADD);
         const onChangeAdd = onChange(this.props.onSearch, '');
         const onSubmitAdd = onSubmit(this.props.onSearch, ACTION.ADD);
+        const onClickAddIcon = onClickIcon(this.props.onSearch, ACTION.ADD);
         return {
             autoFocus: false,
             name: "txtAddStudent",
             onChange: onChangeAdd,
             onClick: onClickAdd,
+            onClickIcon: onClickAddIcon,
             onKeyPress: onSubmitAdd,
             placeholder: "Ingresa el código del alumno",
             value: this.props.searchValue

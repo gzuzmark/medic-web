@@ -52,7 +52,9 @@ const getDocumentHeight = (): number => {
 };
 
 const scrollToTop = () => {
-    window.scrollTo(0, 0);
+    if (!!window && !!window.scrollTo) {
+        window.scrollTo(0, 0);
+    }
 };
 
 const doClone = (source: any): any => {

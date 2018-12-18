@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { SessionBean } from '../../../../../../../beans/Session.bean';
 import { Text } from '../../../../../../../common/ConsoleText';
 import {getFullHour, getHour} from '../../../../../../../common/ConsoleUtils';
+import { FactorySessionBean } from '../../../../../../../domain/FactorySession/FactorySessionBean';
 import { IMentorDescription } from '../../../../../../../interfaces/Mentor.interface';
 import { ISessionSchedule } from '../../../../../../../interfaces/Session.interface';
 import ScheduleSessionContext, {IScheduleContext} from '../../../../ScheduleSession.context';
@@ -70,7 +70,7 @@ class WeekendPicker extends React.Component <IPropsWeekendPicker, IStateWeekendP
         );
     }
 
-    private _renderBody(session: SessionBean): JSX.Element[] {
+    private _renderBody(session: FactorySessionBean): JSX.Element[] {
         const firstSession = 540;
         const nextSession = 60;
         const lastSession = 1365;

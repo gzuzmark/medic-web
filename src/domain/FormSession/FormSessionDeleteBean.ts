@@ -2,8 +2,8 @@ import {FILTER_LIST_ALL} from "../../common/FilterList/FilterList";
 import Utilities from "../../common/Utilities";
 import {SESSION_VIRTUAL} from "../../repository/SessionTypeConstants";
 import {
-    IInterestAreaDeleteService,
-    IInterestAreaSite
+    IInterestAreaBlock,
+    IInterestAreaDeleteService
 } from "../../services/InterestArea/InterestArea.service";
 import FormSessionBaseBean, {ISessionItem, ISessionListForm} from "./FormSessionBaseBean";
 
@@ -20,6 +20,7 @@ export interface ISessionsToDelete {
     locationId: string;
     sede: string;
     room: string;
+    roomId: string;
     maxStudents: number;
     rating: number;
     status: string;
@@ -84,7 +85,7 @@ class FormSessionDeleteBean extends FormSessionBaseBean {
     get listRooms() {
         return this.rooms.filter(
             (item: ISessionListForm) =>
-                this.selectedSession.location && item.parent && item.parent.indexOf(this.selectedSession.location.id) !== -1 )
+                this.selectedSession.block && item.parent && item.parent.indexOf(this.selectedSession.block.id) !== -1 )
     }
 
     get onChangeAreaFields() {
@@ -92,10 +93,13 @@ class FormSessionDeleteBean extends FormSessionBaseBean {
         this.selectedSession.room = undefined;
         this.selectedSession.skill = undefined;
         this.selectedSession.type = undefined;
+        this.selectedSession.block = undefined;
         this.automaticSelectionSkill();
         this.automaticSelectionLocation();
+        this.automaticSelectionBlock();
         this.automaticSelectionRooms();
         return {
+            listBlocks: this.listBlocks,
             listLocations: this.listLocations,
             listRooms: this.listRooms,
             listSkills: this.listSkills
@@ -110,6 +114,17 @@ class FormSessionDeleteBean extends FormSessionBaseBean {
     }
 
     get onChangeLocationFields() {
+        this.selectedSession.block = undefined;
+        this.selectedSession.room = undefined;
+        this.automaticSelectionBlock();
+        this.automaticSelectionRooms();
+        return {
+            listBlocks: this.listBlocks,
+            listRooms: this.listRooms
+        }
+    }
+
+    get onChangeBlocksFields() {
         this.selectedSession.room = undefined;
         this.automaticSelectionRooms();
         return {
@@ -119,8 +134,10 @@ class FormSessionDeleteBean extends FormSessionBaseBean {
 
     get onChangeTypeFields() {
         this.selectedSession.location = undefined;
+        this.selectedSession.block = undefined;
         this.selectedSession.room = undefined;
         this.automaticSelectionLocation();
+        this.automaticSelectionBlock();
         this.automaticSelectionRooms();
         return {
             listLocations: this.listLocations,
@@ -130,15 +147,18 @@ class FormSessionDeleteBean extends FormSessionBaseBean {
 
     get onChangeDatesFields() {
         this.selectedSession.area = undefined;
+        this.selectedSession.block = undefined;
         this.selectedSession.room = undefined;
         this.selectedSession.location = undefined;
         this.selectedSession.type = undefined;
         this.selectedSession.skill = undefined;
-        this.automaticSelectionArea()
+        this.automaticSelectionArea();
         this.automaticSelectionSkill();
         this.automaticSelectionLocation();
+        this.automaticSelectionBlock();
         this.automaticSelectionRooms();
         return {
+            listBlocks: this.listBlocks,
             listLocations: this.listLocations,
             listRooms: this.listRooms,
             listSkills: this.listSkills
@@ -147,28 +167,28 @@ class FormSessionDeleteBean extends FormSessionBaseBean {
 
     get listSessions(): ISessionsToDelete[] {
         let list = [] as ISessionsToDelete[];
+
         if (this.sessions.length > 0) {
             list = this.sessions
                 .filter((session: ISessionsToDelete) => {
                     const value = this.selectedSession.area ? this.selectedSession.area.id : '';
-                    return this.isFilterActive(session.interestAreaId, value);
-                }).filter((session: ISessionsToDelete) => {
+                    return this.isFilterActive(session.interestAreaId, value)})
+                .filter((session: ISessionsToDelete) => {
                     const value = this.selectedSession.skill ? this.selectedSession.skill.id : '';
-                    return this.isFilterActive(session.skillId, value);
-                }).filter((session: ISessionsToDelete) => {
+                    return this.isFilterActive(session.skillId, value);})
+                .filter((session: ISessionsToDelete) => {
                     const value = this.selectedSession.type && this.selectedSession.type.id !== '' ?
                         this.selectedSession.type.name.toLowerCase()  : '';
-                    return this.isFilterActive(session.type.toLowerCase(), value );
-                }).filter((session: ISessionsToDelete) => {
+                    return this.isFilterActive(session.type.toLowerCase(), value )})
+                .filter((session: ISessionsToDelete) => {
                     let value = this.selectedSession.location ? this.selectedSession.location.name : '';
                     if (session.type.toLowerCase() === SESSION_VIRTUAL.toLowerCase()) {
                         value = '';
                     }
-                    return this.isFilterActive(session.sede, value);
-                }).filter((session: ISessionsToDelete) => {
+                    return this.isFilterActive(session.sede, value)})
+                .filter((session: ISessionsToDelete) => {
                     const value = this.selectedSession.room ? this.selectedSession.room.id : '';
-                    return this.isFilterActive(session.locationId, value)
-                })
+                    return this.isFilterActive(session.roomId, value)})
         }
         return list
     }
@@ -191,12 +211,12 @@ class FormSessionDeleteBean extends FormSessionBaseBean {
         return (value && value !== FILTER_LIST_ALL) ? id === value : true
     }
 
-    private buildRooms(rooms: IInterestAreaSite[]) {
-        const listRooms = rooms.map((room: IInterestAreaSite): ISessionListForm => {
+    private buildRooms(rooms: IInterestAreaBlock[]) {
+        const listRooms = rooms.map((room: IInterestAreaBlock): ISessionListForm => {
             return {
                 id: Utilities.getValue(room.id),
                 name: room.name,
-                parent: [room.site]
+                parent: [room.blockId]
             }
         });
         return listRooms;
