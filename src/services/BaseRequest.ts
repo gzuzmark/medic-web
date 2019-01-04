@@ -76,8 +76,8 @@ class BaseRequest {
         }
     }
 
-    private  onResponseError() {
-        this.instance.interceptors.response.use((response:any) => {
+    private async onResponseError() {
+        this.instance.interceptors.response.use(async (response:any) => {
             return response;
         }, async (error:any) => {
             const originalRequest = {...error.config};

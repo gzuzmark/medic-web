@@ -1,5 +1,6 @@
 import * as React from 'react';
 import {findDOMNode} from "react-dom";
+import UserRepository, {ROL_ADMIN} from "../../../../repository/UserRepository";
 import {IListItem} from "../../../FilterList/FilterList";
 import SelectList from "../../../SelectList/SelectList";
 import './MenuTop.scss';
@@ -8,7 +9,7 @@ interface IStateMenu {
     open: boolean;
 }
 
-const list: IListItem[] = [{
+const listAdmin: IListItem[] = [{
     extra: {
         url: '/admin/mentores'
     },
@@ -30,6 +31,16 @@ const styleSelectList: React.CSSProperties = {
     top: 0,
 };
 
+const menuList = UserRepository.getUser().rol === ROL_ADMIN ? listAdmin : [] as IListItem[];
+menuList.push({
+    extra: {
+        url: '/logout'
+    },
+    icon: 'off',
+    id: 'logout',
+    name: 'Salir'
+});
+
 class MenuTop extends React.Component <{}, IStateMenu> {
     public state : IStateMenu;
     constructor (props: any) {
@@ -38,7 +49,7 @@ class MenuTop extends React.Component <{}, IStateMenu> {
            open: false
        };
        this.toggleMenu = this.toggleMenu.bind(this);
-        this.handleClickOutside = this.handleClickOutside.bind(this);
+       this.handleClickOutside = this.handleClickOutside.bind(this);
     }
 
     public componentDidMount() {
@@ -52,7 +63,7 @@ class MenuTop extends React.Component <{}, IStateMenu> {
     public render() {
         const openClass = this.state.open ? 'MenuTop-nav--open' : '';
         return (
-            <div className="MenuTop">
+            !!menuList.length && <div className="MenuTop">
                 <div className={`MenuTop-nav ${openClass}`} onClick={this.toggleMenu}>
                     <span className="MenuTop-lines">&nbsp;</span>
                     <span className="MenuTop-lines">&nbsp;</span>
@@ -61,7 +72,7 @@ class MenuTop extends React.Component <{}, IStateMenu> {
                 </div>
                 { this.state.open &&
                 <div className="MenuTop-options">
-                    <SelectList list={list} onChange={this.redirect} style={styleSelectList}/>
+                    <SelectList list={menuList} onChange={this.redirect} style={styleSelectList}/>
                 </div>}
             </div>
         )

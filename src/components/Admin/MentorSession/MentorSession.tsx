@@ -199,11 +199,11 @@ class MentorSession extends React.Component<IPropsMentorSession, IStateMentorSes
                 this.setState({sessions, loading: false});
 
             } else {
-                this.setState({sessions: []});
+                this.setState({sessions: [], loading: false});
             }
         }).catch(() => {
-            this.setState({sessions: []});
-        })
+            this.setState({sessions: [], loading: false});
+        });
     }
 }
 
