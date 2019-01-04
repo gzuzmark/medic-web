@@ -42,6 +42,14 @@ class MenuTop extends React.Component <{}, IStateMenu> {
        this.toggleMenu = this.toggleMenu.bind(this);
        this.handleClickOutside = this.handleClickOutside.bind(this);
        this.list = UserRepository.getUser().rol === ROL_ADMIN ? listAdmin : [] as IListItem[];
+       this.list.push({
+           extra: {
+               url: '/logout'
+           },
+           icon: 'off',
+           id: 'logout',
+           name: 'Salir'
+       })
     }
 
     public componentDidMount() {
