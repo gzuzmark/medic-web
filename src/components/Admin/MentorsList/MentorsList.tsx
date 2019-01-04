@@ -98,6 +98,7 @@ class MentorsList extends React.Component <{}, IStateListMentor> {
     private _searchMentors(item: IListItem) {
         this.setState({loading: true, selectedFilter: item.name}, () => {
             this.mentorService.list(item.id).then((mentors: IMentor[]) => {
+                window.scrollTo(0, 0);
                 this.setState({
                     loading: false,
                     mentors,
