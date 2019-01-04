@@ -31,9 +31,18 @@ const styleSelectList: React.CSSProperties = {
     top: 0,
 };
 
+const menuList = UserRepository.getUser().rol === ROL_ADMIN ? listAdmin : [] as IListItem[];
+menuList.push({
+    extra: {
+        url: '/logout'
+    },
+    icon: 'off',
+    id: 'logout',
+    name: 'Salir'
+});
+
 class MenuTop extends React.Component <{}, IStateMenu> {
     public state : IStateMenu;
-    private list: IListItem[];
     constructor (props: any) {
        super(props);
        this.state = {
@@ -41,15 +50,6 @@ class MenuTop extends React.Component <{}, IStateMenu> {
        };
        this.toggleMenu = this.toggleMenu.bind(this);
        this.handleClickOutside = this.handleClickOutside.bind(this);
-       this.list = UserRepository.getUser().rol === ROL_ADMIN ? listAdmin : [] as IListItem[];
-       this.list.push({
-           extra: {
-               url: '/logout'
-           },
-           icon: 'off',
-           id: 'logout',
-           name: 'Salir'
-       })
     }
 
     public componentDidMount() {
@@ -63,7 +63,7 @@ class MenuTop extends React.Component <{}, IStateMenu> {
     public render() {
         const openClass = this.state.open ? 'MenuTop-nav--open' : '';
         return (
-            !!this.list.length && <div className="MenuTop">
+            !!menuList.length && <div className="MenuTop">
                 <div className={`MenuTop-nav ${openClass}`} onClick={this.toggleMenu}>
                     <span className="MenuTop-lines">&nbsp;</span>
                     <span className="MenuTop-lines">&nbsp;</span>
@@ -72,7 +72,7 @@ class MenuTop extends React.Component <{}, IStateMenu> {
                 </div>
                 { this.state.open &&
                 <div className="MenuTop-options">
-                    <SelectList list={this.list} onChange={this.redirect} style={styleSelectList}/>
+                    <SelectList list={menuList} onChange={this.redirect} style={styleSelectList}/>
                 </div>}
             </div>
         )
