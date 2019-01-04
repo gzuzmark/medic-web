@@ -13,6 +13,14 @@ interface IPropsSelectList {
     style?: React.CSSProperties;
 }
 
+const iconStyles: React.CSSProperties = {
+    height: 20,
+    marginLeft:12,
+    marginRight: 12,
+    paddingRight: 2,
+    width: 20
+};
+
 const SelectList: React.StatelessComponent<IPropsSelectList> = (props) => {
     return (
         <ul className="SelectList" style={{...props.style}}>
@@ -24,7 +32,7 @@ const SelectList: React.StatelessComponent<IPropsSelectList> = (props) => {
                     <li key={'select-list-' + index}
                         className="SelectList-item"
                         onClick={click}>
-                        {item.icon && <Icon name={item.icon} style={{paddingRight: 5}}/>}
+                        {item.icon && <Icon name={item.icon} style={iconStyles}/>}
                         <Text className="SelectList-item_text">{item.name}</Text>
                     </li>
                 );
