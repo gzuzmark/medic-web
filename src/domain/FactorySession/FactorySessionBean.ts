@@ -185,6 +185,8 @@ export class FactorySessionBean {
     public setSessionSelected(id: string, name: string, mentorId: string) {
         this.factorySession.interestAreaId = id;
         this.factorySession.interestAreaName = name;
+        this.factorySession.skillId = "";
+        this.factorySession.skillName = "";
         this.factorySession.mentorId = mentorId;
         this.factorySession.type = '';
         this.selectedSite = '';
