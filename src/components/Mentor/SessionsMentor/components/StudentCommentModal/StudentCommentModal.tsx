@@ -165,12 +165,6 @@ class StudentCommentModal extends  React.Component<IPropsStudentCommentModal, IS
                             <Small2 weight={LIGHT_TEXT}>{this.props.modal.comment}</Small2>
                         </div>
                     }
-                    {
-                        !isAddForm &&
-                        <div className="StudentModalCard_comment">
-                            <Small2 weight={LIGHT_TEXT}>{this.props.modal.comment}</Small2>
-                        </div>
-                    }
                 </div>
                 <div className={"StudentModalCard_footer"}>
 
@@ -180,7 +174,7 @@ class StudentCommentModal extends  React.Component<IPropsStudentCommentModal, IS
                                       attrs={{onClick: this.props.cancel}}
                                       type={THEME_SECONDARY} text="Cancelar"/>
                         <ButtonNormal className={"StudentModalCard_button"}
-                                      attrs={{...propsButton, onClick}} text="Aceptar"/>
+                                      attrs={{...propsButton, onClick}} text="Guardar"/>
                     </React.Fragment>) :
                     <ButtonNormal className={"StudentModalCard_button"}
                                   attrs={{onClick: this.props.cancel}}
