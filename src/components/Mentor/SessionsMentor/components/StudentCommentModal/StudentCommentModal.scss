@@ -1,0 +1,36 @@
+.StudentModalCard {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  justify-content: space-around;
+  margin: 0 auto;
+  width: 400px;
+  &_comment {
+    span {
+      display: -webkit-box;
+      max-height: 64px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: pre-wrap;
+      width: 400px;
+      /* autoprefixer: off */
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 4;
+      /* autoprefixer: on */
+    }
+  }
+  &_footer{
+    display: flex;
+    justify-content: space-around;
+    margin-top: 40px;
+  }
+  &_button {
+    min-height: 32px;
+    min-width: 112px;
+  }
+  &_tags {
+    list-style-type: none;
+    margin: 12px 0 32px 0;
+    padding: 0;
+  }
+}

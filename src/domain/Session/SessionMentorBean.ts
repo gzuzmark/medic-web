@@ -8,6 +8,7 @@ export interface ISessionAvailability {
 export interface ISessionMentor extends ISessionBase {
     availability?: ISessionAvailability;
     isEnabledForAttendance?: boolean;
+    isEnabledForComment?: boolean;
     status?: string;
 }
 export const minuteTime = 14000;

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import attened from '../../../../../assets/images/student_check_modal/attended.png';
 import noAttened from '../../../../../assets/images/student_check_modal/no_attended.png';
-import { Text3, TextBold1 } from '../../../../../common/ConsoleText';
+import ContentModal from "../../../../../common/ConsoleModal/ContentModal";
 import Icon from "../../../../../common/Icon/Icon";
 import './StudentCheckModal.scss';
 
@@ -58,51 +58,14 @@ const getScreenData = (screen: string): IStudentCheckModalScreen => {
 };
 
 const StudentCheckModal: React.StatelessComponent<IPropsStudentCheckModalCard> = (props) => {
-
-    const onClick = () => {
-        props.confirm(props.options.screen);
+    const confirm = () => {
+        props.confirm(props.options.screen)
     };
 
-    let propsButton = {};
-    if (props.options.loading) {
-        propsButton = {
-            disabled: "true",
-            loading: "true"
-        }
-    }
-    const screenData = getScreenData(props.options.screen);
-    return (
-        <div className={`StudentCheckModalCard`}>
-            <div className={"StudentCheckModalCard_header"}>
-                {screenData.image}
-            </div>
-            <div className={"StudentCheckModalCard_body"}>
-                <div className={"StudentCheckModalCard_custom-width"}>
-                    {
-                        !!screenData.title &&
-                        <div className={"StudentCheckModalCard_title"}>
-                            <TextBold1>{screenData.title}</TextBold1>
-                        </div>
-                    }
-                    {
-                        !!screenData.description &&
-                        <div className={"StudentCheckModalCard_description"}>
-                            <Text3>{screenData.description}</Text3>
-                        </div>
-                    }
-                </div>
-            </div>
-            {
-                !!screenData.button &&
-                <div className={"StudentCheckModalCard_footer"}>
-                    <button onClick={onClick}
-                            className="StudentCheckModalCard_button u-Button"
-                            {...propsButton}
-                    >{screenData.button}</button>
-                </div>
-            }
-        </div>
-    )
+    const generic = getScreenData(props.options.screen);
+    return props.options.screen === StudentCheckModalScreens.SUCCESS ?
+        <ContentModal.Success description="Asistencia guardada"/> :
+        <ContentModal.Generic generic={generic} loading={props.options.loading} confirm={confirm} />;
 };
 
 export default StudentCheckModal;

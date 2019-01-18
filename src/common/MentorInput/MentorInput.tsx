@@ -12,6 +12,7 @@ interface IPropsMentorInput {
     style?: React.CSSProperties;
     styleContainer?: React.CSSProperties;
     label?: string;
+    onClickIcon?: (value: string) => void,
     animation?: {
         enable?: boolean;
         text?: string;
@@ -96,8 +97,8 @@ class MentorInput extends React.Component<IPropsMentorInput, IStateMentorInput> 
             if(!!this.props.error) {
                 this.input.current.value = '';
                 this.input.current.dispatchEvent(event);
-            } else if(this.props.attrs && this.props.attrs.onClickIcon) {
-                this.props.attrs.onClickIcon(this.input.current.value);
+            } else if(this.props.onClickIcon) {
+                this.props.onClickIcon(this.input.current.value);
             }
         }
     }

@@ -1,7 +1,15 @@
 import * as React from 'react';
+import ContentModal from "../../../../../common/ConsoleModal/ContentModal";
+import MentorModalBase from "../../../../../common/ConsoleModal/MentorModalBase";
 import MentorInput from "../../../../../common/MentorInput/MentorInput";
+import {default as TagService, ITags} from "../../../../../services/Tag/Tag.service";
 import EmptyCard from "../EmptyCard/EmptyCard";
-import StudentFullCard, {IStudentChecklistCard} from "../StudentFullCard/StudentFullCard";
+import StudentCommentModal, {
+    ITagConfirm,
+    ITagModalStudentChecklistBoard
+} from "../StudentCommentModal/StudentCommentModal";
+import StudentCommentModalHeader from "../StudentCommentModal/StudentCommentModalHeader";
+import StudentFullCard, {IStudentChecklistCard, StudentFullCardHeader} from "../StudentFullCard/StudentFullCard";
 import './StudentChecklistBoard.scss';
 
 type fnSearch = (value: string, action: string) => void;
@@ -17,10 +25,13 @@ export interface IStudentChecklistBoard {
 
 interface IPropsStudentChecklistBoard {
     board: IStudentChecklistBoard;
+    tags: ITags[];
     isEmpty: boolean;
     onSearch: fnSearch;
     searchValue: string;
-    requesAttended() :void;
+    sessionId: string;
+    studentCommented(request: ITagConfirm): void;
+    requestAttended() :void;
     requestNoAttended() :void;
 }
 
@@ -31,10 +42,22 @@ export interface IStateInput {
     message: string;
 }
 
+interface ILoadingStudentChecklistBoard {
+    tag: boolean;
+}
+
+interface IModalStudentChecklistBoard {
+    tag: boolean;
+    success: boolean;
+}
+
 export interface IStatesStudentChecklistBoard {
     addFocus: boolean;
     activeSearch: boolean;
+    loading: ILoadingStudentChecklistBoard;
+    modal: IModalStudentChecklistBoard;
     searchFocus: boolean;
+    tagModal: ITagModalStudentChecklistBoard;
 }
 
 export const ACTION = {
@@ -71,15 +94,26 @@ const onClickIcon = (search: fnSearch, action: string) => {
 class StudentChecklistBoard extends  React.Component<IPropsStudentChecklistBoard, IStatesStudentChecklistBoard> {
     public state: IStatesStudentChecklistBoard;
     private counter = 0;
+    private tagService = new TagService();
     constructor(props: IPropsStudentChecklistBoard) {
         super(props);
         this.getInputAdd = this.getInputAdd.bind(this);
         this.getInputSearch = this.getInputSearch.bind(this);
         this.activeInput = this.activeInput.bind(this);
+        this.onSaveComment = this.onSaveComment.bind(this);
+        this.closeModal = this.closeModal.bind(this);
         this.state = {
             activeSearch: true,
             addFocus: false,
-            searchFocus: true
+            loading: {
+                tag: false
+            },
+            modal: {
+                success: false,
+                tag: false
+            },
+            searchFocus: true,
+            tagModal: {}
         }
     }
 
@@ -100,16 +134,36 @@ class StudentChecklistBoard extends  React.Component<IPropsStudentChecklistBoard
         }
         const students = (
             <React.Fragment>
+                {this.state.tagModal.student &&
+                <MentorModalBase
+                    show={this.state.modal.tag || this.state.modal.success}
+                    onCloseModal={this.closeModal}
+                    hideClose={this.state.modal.success}
+                    width={528}
+                    header={!this.state.modal.success ? <StudentCommentModalHeader student={this.state.tagModal.student}/> : null}>
+                    {this.state.modal.tag &&
+                        <StudentCommentModal
+                            message={this.state.tagModal.comment || ''}
+                            loading={this.state.loading.tag}
+                            modal={this.state.tagModal}
+                            confirm={this.onSaveComment}
+                            cancel={this.closeModal}/>}
+                    {this.state.modal.success &&
+                        <ContentModal.Success description={"Comentario Guardado"} />}
+                </MentorModalBase>}
                 {this.props.isEmpty ?
                     <EmptyCard addEnabled={this.props.board.addEnabled} /> :
                     <div className={`StudentChecklistBoard_students ${this.props.board.studentList.length > 0 ? 'StudentChecklistBoard--border' : ''} `}>
+                        <StudentFullCardHeader />
                         {this.props.board.studentList.map((student: IStudentChecklistCard, index: number) => {
-                            let order = 0;
-                            if (student.new) {
-                                order = ++this.counter;
-                            }
+                            const order = student.new ? ++this.counter : 0;
+                            const showTagModal = this.showTagModal(student);
                             return (
-                                <StudentFullCard student={student} key={`${index}`} styles={{'order': -1 * order}}/>
+                                <StudentFullCard
+                                    showTagModal={showTagModal}
+                                    student={student}
+                                    key={`${index}`}
+                                    styles={{'order': -1 * order}}/>
                             )
                         })}
                     </div>
@@ -122,7 +176,7 @@ class StudentChecklistBoard extends  React.Component<IPropsStudentChecklistBoard
                     <button
                         {...propsAttendedButton}
                         className={'u-Button StudentChecklistBoard_button'}
-                        onClick={this.props.requesAttended}>Guardar</button>
+                        onClick={this.props.requestAttended}>Guardar</button>
                 </div>
             </React.Fragment>
         )
@@ -135,7 +189,7 @@ class StudentChecklistBoard extends  React.Component<IPropsStudentChecklistBoard
                          this.props.searchValue !== '' &&
                          this.props.board.noResultsAdd ?
                          'No se ha encontrado a ningún alumno con ese código':'';
-
+        const { onClickAddIcon, ...addSearchAttr } = addSearch;
         return (
             <div className={`StudentChecklistBoard`}>
                 <div className={"StudentChecklistBoard_inputs-container"}>
@@ -154,7 +208,8 @@ class StudentChecklistBoard extends  React.Component<IPropsStudentChecklistBoard
                         enable={this.props.board.addEnabled}
                         error={addError}
                         icon={"add-circle"}
-                        attrs={addSearch}
+                        onClickIcon={onClickAddIcon}
+                        attrs={addSearchAttr}
                         style={{minWidth: `${!this.state.activeSearch?'498px': '0px'}`, justifyContent: 'flex-end'}}
                         animation={{
                             enable: true,
@@ -166,6 +221,55 @@ class StudentChecklistBoard extends  React.Component<IPropsStudentChecklistBoard
                 </div>
             </div>
         )
+    }
+
+    private onSaveComment(request: ITagConfirm) {
+        const loading = {...this.state.loading, tag: true};
+        this.setState({loading}, () => {
+            const {id, ...body} = request;
+            this.tagService.addComment(this.props.sessionId, id, body).then(() => {
+                this.setState({
+                    loading: {...this.state.loading, tag: false},
+                    modal: {...this.state.modal, tag: false, success: true}
+                }, () => {
+                    this.props.studentCommented(request);
+                    setTimeout(() => {
+                        this.setState({
+                            modal: {...this.state.modal, success: false}
+                        });
+                    }, 1500);
+                });
+            }).catch(() => {
+                this.setState({
+                    loading: {...this.state.loading, tag: false},
+                })
+            })
+
+        });
+    }
+
+    private showTagModal(student: IStudentChecklistCard) {
+        return () => {
+            if (this.state.loading.tag || this.state.modal.tag) {
+                return
+            }
+            const modal = {...this.state.modal};
+            const tagModal = {...this.state.tagModal};
+            tagModal.student = student;
+            modal.tag = true;
+            if (student.commented) {
+                tagModal.tags = student.tags.map((tag: string) => {
+                    return {id: '', name: tag}
+                });
+                tagModal.comment = student.mentorComment;
+                this.setState({tagModal, modal});
+
+            } else {
+                tagModal.tags = [...this.props.tags];
+                tagModal.comment = '';
+                this.setState({tagModal, modal});
+            }
+        }
     }
 
     private activeInput(key: string) {
@@ -194,6 +298,13 @@ class StudentChecklistBoard extends  React.Component<IPropsStudentChecklistBoard
         };
     }
 
+    private closeModal() {
+        if (!this.state.loading.tag) {
+            const modal = {tag: false, success: false};
+            this.setState({modal});
+        }
+    }
+
     private getInputAdd() {
         const onClickAdd = onClick(this.activeInput, ACTION.ADD);
         const onChangeAdd = onChange(this.props.onSearch, '');
@@ -204,7 +315,7 @@ class StudentChecklistBoard extends  React.Component<IPropsStudentChecklistBoard
             name: "txtAddStudent",
             onChange: onChangeAdd,
             onClick: onClickAdd,
-            onClickIcon: onClickAddIcon,
+            onClickAddIcon,
             onKeyPress: onSubmitAdd,
             placeholder: "Ingresa el código del alumno",
             value: this.props.searchValue

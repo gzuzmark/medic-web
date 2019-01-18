@@ -42,7 +42,7 @@ class StudentService extends BaseRequest {
     // Mentor Service
     public studentsFromSession(session:string): Promise<IStudentChecklist>  {
         return new Promise((resolve, reject) => {
-            this.instance.get(`ugo/mentors-api/sessions/${session}/students`)
+            this.instance.get(`ugo/mentors-api/sessions/${session}/students?tags=true`)
                 .then((response: any) => {
                     if (response.status === 200 && response.data) {
                         resolve(response.data.items);
