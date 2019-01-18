@@ -129,7 +129,7 @@ class StudentCommentModal extends  React.Component<IPropsStudentCommentModal, IS
         };
 
         let propsButton = {};
-        const haveIDTag = this.props.modal.tags && this.props.modal.tags.every(tag => !!tag.id);
+        const isAddForm = this.props.modal.tags && this.props.modal.tags.every(tag => !!tag.id);
         if (this.props.loading) {
             propsButton = {
                 disabled: "true",
@@ -144,7 +144,7 @@ class StudentCommentModal extends  React.Component<IPropsStudentCommentModal, IS
         return !!this.props.modal.student && (
             <div className={`StudentModalCard`}>
                 <div className={"StudentModalCard_body"}>
-                    <Body1>¿En qué podría mejorar el alumno?</Body1>
+                    <Body1>{isAddForm ? '¿En qué podría mejorar el alumno?' : 'En qué podría mejorar el alumno'}</Body1>
                     <ul className={"StudentModalCard_tags"}>
                         {this.props.modal.tags && this.props.modal.tags.map((tag: ITags, index: number) => {
                             return (
@@ -154,9 +154,19 @@ class StudentCommentModal extends  React.Component<IPropsStudentCommentModal, IS
                             )
                         })}
                     </ul>
-                    <Body1 style={{marginBottom: 10}}>Escribe un comentario</Body1>
-                    {haveIDTag ?
-                        <TextAreaComponent attrs={{placeholder: "Ingresa un comentario", ref: this.textarea}}/> :
+                    {
+                        isAddForm ?
+                        <Body1 style={{marginBottom: 10}}>Escribe un comentario</Body1>:
+                        <Body1 style={{marginBottom: 10}}>{!!this.props.modal.comment && 'Comentario'}</Body1>
+                    }
+                    {   isAddForm ?
+                        <TextAreaComponent attrs={{placeholder: "Ingresa un comentario", ref: this.textarea}}/>:
+                        <div className="StudentModalCard_comment">
+                            <Small2 weight={LIGHT_TEXT}>{this.props.modal.comment}</Small2>
+                        </div>
+                    }
+                    {
+                        !isAddForm &&
                         <div className="StudentModalCard_comment">
                             <Small2 weight={LIGHT_TEXT}>{this.props.modal.comment}</Small2>
                         </div>
@@ -164,7 +174,7 @@ class StudentCommentModal extends  React.Component<IPropsStudentCommentModal, IS
                 </div>
                 <div className={"StudentModalCard_footer"}>
 
-                    {haveIDTag ? (
+                    {isAddForm ? (
                     <React.Fragment>
                         <ButtonNormal className={"StudentModalCard_button"}
                                       attrs={{onClick: this.props.cancel}}
