@@ -6,6 +6,7 @@ interface IPropsIcon {
     name: string;
     style?: React.CSSProperties;
     click?: () => void;
+    attr?: any;
 }
 
 const Icon: React.StatelessComponent<IPropsIcon> = (props) => {
@@ -16,7 +17,7 @@ const Icon: React.StatelessComponent<IPropsIcon> = (props) => {
         }
     }
     return (
-        <svg className={`icon icon-${props.name}`} style={{...props.style}} {...events}>
+        <svg className={`icon icon-${props.name}`} style={{...props.style}} {...events} {...props.attr}>
             <use xlinkHref={`#icons_${props.name}`}/>
         </svg>
     );

@@ -1,4 +1,6 @@
 import * as React from 'react';
+
+import * as ReactTooltip from 'react-tooltip';
 import Icon from "../../../../../common/Icon/Icon";
 import colors, {FONTS} from "../../../../../common/MentorColor";
 import {Body1, LIGHT_TEXT, Small1, Subhead1} from '../../../../../common/MentorText';
@@ -34,8 +36,10 @@ const StudentFullCard: React.StatelessComponent<IPropsStudentFullCard> = (props)
         }
     }
     const iconId = props.student.commented ? 'eye' : 'pencil';
+    const iconTooltip = props.student.commented ? 'Ver observación' : 'Añadir observación';
     return (
         <div className={`StudentFullCard ${props.student.new ? 'StudentFullCard--new': ''}`} style={{...props.styles}}>
+            <ReactTooltip effect={"solid"} place={"left"}/>
             <div className={"StudentFullCard_left"}>
                 <div className={"StudentFullCard_image-container u-ImageContainer"}>
                     <img src={props.student.photo}
@@ -52,12 +56,15 @@ const StudentFullCard: React.StatelessComponent<IPropsStudentFullCard> = (props)
                             StudentFullCard_option-comment
                             ${props.student.isEnabledForComment && 'StudentFullCard_option-comment--active'}`}>
                 {props.student.isEnabledForComment ?
-                    <Icon name={iconId} click={props.showTagModal} style={{
-                        cursor: 'pointer',
-                        fill: colors.BACKGROUND_COLORS.background_purple,
-                        height: 24,
-                        width: 24
-                    }}/>:
+                    <Icon name={iconId}
+                          click={props.showTagModal}
+                          attr={{"data-tip": iconTooltip}}
+                          style={{
+                              cursor: 'pointer',
+                              fill: colors.BACKGROUND_COLORS.background_purple,
+                              height: 24,
+                              width: 24
+                            }}/>:
                     <Icon name={iconId} style={{
                         fill: colors.MISC_COLORS.background_grey_2,
                         height: 24,
