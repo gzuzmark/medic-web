@@ -19,6 +19,14 @@ export class StudentChecklistCollector {
         })
     }
 
+    public addStudentComment(id: string, tags: string[], mentorComment: string) {
+        this.sessions.forEach((item: StudentChecklistBean) => {
+            if (item.student.id === id) {
+                item.setAsCommented(tags, mentorComment);
+            }
+        });
+    }
+
     public getStudent(code: string): StudentChecklistBean | null {
         let student = null;
         const candidate = this.sessions.filter((item: StudentChecklistBean) => {

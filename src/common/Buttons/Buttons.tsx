@@ -57,8 +57,8 @@ const buildTheme = (inverse: boolean, color1: string, color2: string) => {
     };
 };
 
-const THEME_PRIMARY = 'primary';
-const THEME_SECONDARY = 'secondary';
+export const THEME_PRIMARY = 'primary';
+export const THEME_SECONDARY = 'secondary';
 const INVERSE_COLORS = true;
 
 const colorActive = (props: IButtonProps, inverse: boolean) => {
@@ -155,6 +155,7 @@ const ButtonNormal = styled(Button)`
   &[loading] {
     text-indent: -9999px;
     white-space: nowrap;
+    overflow: hidden;
     &:before {
       color: ${(props: IButtonProps) => props.type === THEME_SECONDARY ? 
         colors.BACKGROUND_COLORS.background_purple: colors.BACKGROUND_COLORS.background_white};
