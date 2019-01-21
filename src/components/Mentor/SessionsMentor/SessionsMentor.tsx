@@ -116,17 +116,18 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
                 this.sessionMentor = new SessionMentorBean(values[0]);
                 this.studentChecklistCollector = new StudentChecklistCollector(values[1]);
                 const sessions = this.studentChecklistCollector.sessions;
-                const newState = {
-                    board: this.getBoard(sessions),
-                    fullCardSession: this.getFullCardSession(),
-                    fullCardSimple: this.getFullCardSimple(),
-                    isEmpty: sessions.length === 0,
-                    tags: values[2]
-                };
-                this.setState({
-                    loading: false,
-                    ...newState
-                });
+                this.setState({tags: values[2]}, () => {
+                    const newState = {
+                        board: this.getBoard(sessions),
+                        fullCardSession: this.getFullCardSession(),
+                        fullCardSimple: this.getFullCardSimple(),
+                        isEmpty: sessions.length === 0
+                    };
+                    this.setState({
+                        loading: false,
+                        ...newState
+                    });
+                })
             }, () => {
                 this.setState({
                     loading: false
@@ -397,7 +398,7 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
     private getStudentList(sessions: StudentChecklistBean[]): IStudentChecklistCard[] {
         return sessions.map((checklist: StudentChecklistBean) => {
             const sessionIsEnabledForComment = !!this.sessionMentor.session.isEnabledForComment &&
-                this.state.tags.length > 0;
+                this.state.tags.length > 0 && !checklist.item.commented;
             const tags = checklist.item.tags || [];
             return {
                 checked: checklist.isChecked,
