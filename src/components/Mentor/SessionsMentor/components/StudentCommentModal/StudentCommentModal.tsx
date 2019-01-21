@@ -51,6 +51,7 @@ const LabelComponent = styled(Label)`
 
 const TextAreaComponent = styled(TextArea)`
    border: 1px solid ${colors.MISC_COLORS.background_grey_2};
+   border-radius: 4px;
    background: ${colors.MISC_COLORS.background_grey_1};
    color: ${colors.TEXT_COLORS.font_dark};
    font-family: ${defaultFont};
@@ -64,6 +65,7 @@ const TextAreaComponent = styled(TextArea)`
    width: 400px;    
    &:focus {
       background: ${colors.BACKGROUND_COLORS.background_white};
+      border: 1px solid ${colors.MISC_COLORS.dark};
    }
 `;
 
