@@ -1,7 +1,7 @@
 import {mount} from 'enzyme';
 import 'jest-localstorage-mock';
 import * as React from 'react';
-import StudentCommentModal, {IPropsStudentCommentModal, ITagConfirm, ItemTag} from './StudentCommentModal';
+import StudentCommentModal, {IPropsStudentCommentModal, ITagConfirm} from './StudentCommentModal';
 
 
 describe('StudentCommentModal Test',() => {
@@ -146,15 +146,6 @@ describe('StudentCommentModal Test',() => {
             .toEqual(3);
     });
 
-    it("event: button save is enable after trigger click on tag", () => {
-        const component = getComponent();
-        const event = {target: {name: "Volcano", value: "1"}};
-        component.find(".StudentModalCard_tags label").at(0).simulate('change', event);
-        component.update();
-        component.
-        expect(component.find(".StudentModalCard_footer button").at(1).prop('disabled'))
-            .not.toEqual("true");
-    });
 
     /*
     it("event: button save is enable after trigger click on tag", () => {
