@@ -396,20 +396,22 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
 
     private getStudentList(sessions: StudentChecklistBean[]): IStudentChecklistCard[] {
         return sessions.map((checklist: StudentChecklistBean) => {
-            const sessionIsEnabledForComment = !!this.sessionMentor.session.isEnabledForComment;
+            const sessionIsEnabledForComment = !!this.sessionMentor.session.isEnabledForComment &&
+                this.state.tags.length > 0;
+            const tags = checklist.item.tags || [];
             return {
                 checked: checklist.isChecked,
                 code: checklist.student.user.code,
                 commented: !!checklist.item.commented,
                 disabled: checklist.isDisabled || this.sessionMentor.isDisabled,
                 id: checklist.id,
-                isEnabledForComment: sessionIsEnabledForComment || !!checklist.item.commented,
+                isEnabledForComment: sessionIsEnabledForComment || (!!checklist.item.commented && tags.length > 0),
                 mentorComment: checklist.item.mentorComment || '',
                 name: checklist.student.user.name,
                 new: checklist.new,
                 photo: checklist.student.user.photo,
                 studentId: checklist.student.id,
-                tags: checklist.item.tags || []
+                tags
             }
 
         });

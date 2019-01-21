@@ -22,7 +22,6 @@ export interface ITagConfirm {
 }
 
 export interface IPropsStudentCommentModal {
-    message: string;
     loading: boolean;
     modal: ITagModalStudentChecklistBoard;
     confirm: (request: ITagConfirm) => void;
@@ -55,12 +54,12 @@ const TextAreaComponent = styled(TextArea)`
    background: ${colors.MISC_COLORS.background_grey_1};
    color: ${colors.TEXT_COLORS.font_dark};
    font-family: ${defaultFont};
-   font-size: 12px;
+   font-size: 14px;
    font-style: normal;
    font-weight: ${LIGHT_TEXT};
-   line-height: 16px;
+   line-height: 20px;
    height: 64px;
-   padding: 11px 16px;
+   padding: 11px 20px;
    resize: none;
    width: 400px;    
    &:focus {
@@ -88,7 +87,7 @@ const LiStyled = styled("li")`
 `;
 
 
-const ItemTag: React.StatelessComponent<{id: string, onClick: () => void }> = (props) => {
+export const ItemTag: React.StatelessComponent<{id: string, onClick: () => void }> = (props) => {
     return (
         <LiStyled>
             {!!props.id && <input type="checkbox" id={props.id} onChange={props.onClick} value={props.id}/>}
@@ -162,12 +161,11 @@ class StudentCommentModal extends  React.Component<IPropsStudentCommentModal, IS
                     {   isAddForm ?
                         <TextAreaComponent attrs={{placeholder: "Ingresa un comentario", ref: this.textarea}}/>:
                         <div className="StudentModalCard_comment">
-                            <Small2 weight={LIGHT_TEXT}>{this.props.modal.comment}</Small2>
+                            <Body1 weight={LIGHT_TEXT}>{this.props.modal.comment}</Body1>
                         </div>
                     }
                 </div>
                 <div className={"StudentModalCard_footer"}>
-
                     {isAddForm ? (
                     <React.Fragment>
                         <ButtonNormal className={"StudentModalCard_button"}
@@ -185,7 +183,7 @@ class StudentCommentModal extends  React.Component<IPropsStudentCommentModal, IS
         ) || null;
     }
 
-    private updateForm() {
+    public updateForm() {
         const checkbox: NodeListOf<HTMLInputElement> = this.getCheckedElements();
         this.setState({disableForm: checkbox.length === 0})
 

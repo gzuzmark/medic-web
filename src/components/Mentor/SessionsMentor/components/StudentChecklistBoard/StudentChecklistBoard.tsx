@@ -140,10 +140,9 @@ class StudentChecklistBoard extends  React.Component<IPropsStudentChecklistBoard
                     onCloseModal={this.closeModal}
                     hideClose={this.state.modal.success}
                     width={528}
-                    header={!this.state.modal.success ? <StudentCommentModalHeader student={this.state.tagModal.student}/> : null}>
+                    header={!this.state.modal.success ? <StudentCommentModalHeader modal={this.state.tagModal}/> : null}>
                     {this.state.modal.tag &&
                         <StudentCommentModal
-                            message={this.state.tagModal.comment || ''}
                             loading={this.state.loading.tag}
                             modal={this.state.tagModal}
                             confirm={this.onSaveComment}
@@ -263,7 +262,6 @@ class StudentChecklistBoard extends  React.Component<IPropsStudentChecklistBoard
                 });
                 tagModal.comment = student.mentorComment;
                 this.setState({tagModal, modal});
-
             } else {
                 tagModal.tags = [...this.props.tags];
                 tagModal.comment = '';
