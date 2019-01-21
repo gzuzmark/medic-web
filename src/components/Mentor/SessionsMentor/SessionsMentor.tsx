@@ -220,7 +220,7 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
     }
 
     private requestAttended() {
-        const checkboxes: NodeListOf<HTMLInputElement> = document.querySelectorAll(".StudentFullCard_checkbox input[type=checkbox]:checked");
+        const checkboxes: NodeListOf<HTMLInputElement> = document.querySelectorAll(".StudentFullCard_option--checkbox input[type=checkbox]:checked");
         const ids = Array.from(checkboxes).map(input => input.value);
         const filteredIds = ids.filter((id: string) => {
             return !!this.studentChecklistCollector.getStudentById(id);
