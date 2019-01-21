@@ -400,11 +400,6 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
             const sessionIsEnabledForComment = !!this.sessionMentor.session.isEnabledForComment &&
                 this.state.tags.length > 0 && !checklist.item.commented;
             const tags = checklist.item.tags || [];
-            // tslint:disable:no-console
-            console.log('state tags:', this.state.tags);
-            console.log('commented:', checklist.item.commented);
-            console.log('tags:', tags);
-            console.log(':::::::::::::::::');
             return {
                 checked: checklist.isChecked,
                 code: checklist.student.user.code,
