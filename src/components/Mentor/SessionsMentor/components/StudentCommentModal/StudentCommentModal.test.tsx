@@ -86,7 +86,7 @@ describe('StudentCommentModal Test',() => {
         const component = getComponent();
         const length = component.find(".StudentModalCard_body span").length;
         expect(component.find(".StudentModalCard_body span").at(length - 2).text())
-            .toEqual("")
+            .toEqual("Comentario")
     });
 
     it("render: one button as readOnly", () => {

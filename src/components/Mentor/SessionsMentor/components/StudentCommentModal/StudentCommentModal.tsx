@@ -123,7 +123,7 @@ class StudentCommentModal extends  React.Component<IPropsStudentCommentModal, IS
             if (this.props.modal.student) {
                 const checkboxes: NodeListOf<HTMLInputElement> = this.getCheckedElements();
                 const tags = Array.from(checkboxes).map(input => input.value);
-                const comment = this.textarea.current && this.textarea.current.value || '';
+                const comment = this.textarea.current && this.textarea.current.value.trim() || '';
                 const id = this.props.modal.student.studentId;
                 this.props.confirm({tags, comment, id});
             }
@@ -158,12 +158,12 @@ class StudentCommentModal extends  React.Component<IPropsStudentCommentModal, IS
                     {
                         isAddForm ?
                         <Body1 style={{marginBottom: 10}}>Escribe un comentario</Body1>:
-                        <Body1 style={{marginBottom: 10}}>{!!this.props.modal.comment && 'Comentario'}</Body1>
+                        <Body1 style={{marginBottom: 10}}>Comentario</Body1>
                     }
                     {   isAddForm ?
                         <TextAreaComponent attrs={{placeholder: "Ingresa un comentario", ref: this.textarea}}/>:
                         <div className="StudentModalCard_comment">
-                            <Body1 weight={LIGHT_TEXT}>{this.props.modal.comment}</Body1>
+                            <Body1 weight={LIGHT_TEXT}>{this.props.modal.comment || "No hay comentario"}</Body1>
                         </div>
                     }
                 </div>
