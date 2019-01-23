@@ -16,6 +16,7 @@ import {StudentChecklistCollector} from "../../../domain/StudentChecklist/Studen
 import {IMatchParam} from "../../../interfaces/MatchParam.interface";
 import SessionService from "../../../services/Session/Session.service";
 import StudentService from "../../../services/Student/Student.service";
+import TagService, {ITags} from "../../../services/Tag/Tag.service";
 import {ISessionFullCard} from "./components/SessionFullCard/SessionFullCard";
 import SessionFullCard from "./components/SessionFullCard/SessionFullCard";
 import { default as SimpleFullCard, ISimpleFullCard} from "./components/SimpleFullCard/SimpleFullCard";
@@ -29,6 +30,7 @@ import {
     IStudentCheckModal,
     StudentCheckModalScreens
 } from "./components/StudentCheckModal/StudentCheckModal";
+import {ITagConfirm} from "./components/StudentCommentModal/StudentCommentModal";
 import {IStudentChecklistCard} from "./components/StudentFullCard/StudentFullCard";
 import './SessionsMentor.scss';
 
@@ -46,6 +48,7 @@ interface IStateSessionsMentor {
     modal: boolean;
     modalAdd: IStudentModal;
     modalCheck: IStudentCheckModal;
+    tags: ITags[];
 }
 
 const MESSAGE_ADD_STUDENT = "¿Estás seguro que deseas agregar a este alumno?";
@@ -56,6 +59,7 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
     private mentorId: string;
     private sessionService = new SessionService();
     private studentsService = new StudentService();
+    private tagService = new TagService();
     private sessionMentor: SessionMentorBean;
     private studentChecklistCollector: StudentChecklistCollector;
     private mdp = new MomentDateParser();
@@ -85,17 +89,19 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
             modalAdd: this.cleanAddModal(),
             modalCheck: this.cleanCheckModal(''),
             searchValue: '',
+            tags: [],
         };
         this.sessionId = this.props.match.params.session || '';
         this.onSearch = this.onSearch.bind(this);
         this.searchStudent = this.searchStudent.bind(this);
         this.addStudent = this.addStudent.bind(this);
         this.closeModal = this.closeModal.bind(this);
-        this.requesAttended = this.requesAttended.bind(this);
+        this.requestAttended = this.requestAttended.bind(this);
         this.requestNoAttended = this.requestNoAttended.bind(this);
         this.onConfirmCheck = this.onConfirmCheck.bind(this);
         this.showModalNoAttended = this.showModalNoAttended.bind(this);
         this.showModalAttended = this.showModalAttended.bind(this);
+        this.studentCommented = this.studentCommented.bind(this);
     }
 
     public componentDidMount() {
@@ -104,21 +110,24 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
         }, () => {
             Promise.all([
                 this.sessionService.getSessionMentor(this.sessionId),
-                this.studentsService.studentsFromSession(this.sessionId)
+                this.studentsService.studentsFromSession(this.sessionId),
+                this.tagService.list(),
             ]).then((values: any[]) => {
                 this.sessionMentor = new SessionMentorBean(values[0]);
                 this.studentChecklistCollector = new StudentChecklistCollector(values[1]);
                 const sessions = this.studentChecklistCollector.sessions;
-                const newState = {
-                    board: this.getBoard(sessions),
-                    fullCardSession: this.getFullCardSession(),
-                    fullCardSimple: this.getFullCardSimple(),
-                    isEmpty: sessions.length === 0,
-                };
-                this.setState({
-                    loading: false,
-                    ...newState
-                });
+                this.setState({tags: values[2]}, () => {
+                    const newState = {
+                        board: this.getBoard(sessions),
+                        fullCardSession: this.getFullCardSession(),
+                        fullCardSimple: this.getFullCardSimple(),
+                        isEmpty: sessions.length === 0
+                    };
+                    this.setState({
+                        loading: false,
+                        ...newState
+                    });
+                })
             }, () => {
                 this.setState({
                     loading: false
@@ -161,10 +170,13 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
                             <StudentChecklistBoard
                                 board={this.state.board}
                                 onSearch={this.onSearch}
-                                requesAttended={this.showModalAttended}
+                                requestAttended={this.showModalAttended}
                                 requestNoAttended={this.showModalNoAttended}
                                 searchValue={this.state.searchValue}
                                 isEmpty={this.state.isEmpty}
+                                tags={this.state.tags}
+                                sessionId={this.sessionId}
+                                studentCommented={this.studentCommented}
                             />
                         </SimpleFullCard>
                     </React.Fragment>}
@@ -201,14 +213,14 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
 
     private onConfirmCheck(screen: string) {
         if (screen === StudentCheckModalScreens.ATTENDED) {
-            this.requesAttended()
+            this.requestAttended()
         } else if (screen === StudentCheckModalScreens.NO_ATTENDED) {
             this.requestNoAttended()
         }
     }
 
-    private requesAttended() {
-        const checkboxes: NodeListOf<HTMLInputElement> = document.querySelectorAll(".StudentFullCard_checkbox input[type=checkbox]:checked");
+    private requestAttended() {
+        const checkboxes: NodeListOf<HTMLInputElement> = document.querySelectorAll(".StudentFullCard_option--checkbox input[type=checkbox]:checked");
         const ids = Array.from(checkboxes).map(input => input.value);
         const filteredIds = ids.filter((id: string) => {
             return !!this.studentChecklistCollector.getStudentById(id);
@@ -384,15 +396,23 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
     }
 
     private getStudentList(sessions: StudentChecklistBean[]): IStudentChecklistCard[] {
-        return sessions.map((item: StudentChecklistBean) => {
+        return sessions.map((checklist: StudentChecklistBean) => {
+            const sessionIsEnabledForComment = !!this.sessionMentor.session.isEnabledForComment &&
+                this.state.tags.length > 0 && !checklist.item.commented;
+            const tags = checklist.item.tags || [];
             return {
-                checked: item.isChecked,
-                code: item.student.user.code,
-                disabled: item.isDisabled || this.sessionMentor.isDisabled,
-                id: item.id,
-                name: item.student.user.name,
-                new: item.new,
-                photo: item.student.user.photo
+                checked: checklist.isChecked,
+                code: checklist.student.user.code,
+                commented: !!checklist.item.commented,
+                disabled: checklist.isDisabled || this.sessionMentor.isDisabled,
+                id: checklist.id,
+                isEnabledForComment: sessionIsEnabledForComment || (!!checklist.item.commented && tags.length > 0),
+                mentorComment: checklist.item.mentorComment || '',
+                name: checklist.student.user.name,
+                new: checklist.new,
+                photo: checklist.student.user.photo,
+                studentId: checklist.student.id,
+                tags
             }
 
         });
@@ -412,6 +432,18 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
             loading: false,
             screen
         }
+    }
+
+    private studentCommented(commented: ITagConfirm, ) {
+        const {id, comment, tags} = commented;
+        const selectedTags = tags.map((tagId) => {
+            const selectedTag = this.state.tags.find((tag) => tag.id === tagId );
+            return selectedTag ? selectedTag.name : '';
+        });
+        this.studentChecklistCollector.addStudentComment(id, selectedTags, comment);
+        this.setState({
+            board: this.getBoard()
+        })
     }
 }
 

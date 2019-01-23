@@ -18,11 +18,9 @@ interface IPropsLayout {
 
 class Layout extends React.Component<IPropsLayout, {}> {
     private date: Date;
-    private title: string;
     constructor(props: IPropsLayout) {
         super(props);
         this.date = new Date();
-        this.title = this.props.title ? this.props.title : "Administrador";
     }
 
     public componentDidMount() {
@@ -58,7 +56,7 @@ class Layout extends React.Component<IPropsLayout, {}> {
                 <div className="Footer">
                     <div className="Footer-wrapper u-LayoutMargin">
                         <div className="Footer-section">
-                            <Text className="Footer-text">UGO {this.title} {this.date.getFullYear()}. Todos los derechos reservados</Text>
+                            <Text className="Footer-text">UGO {UserRepository.getUser().rol === ROL_ADMIN ? 'Administrador' : 'Mentores'} {this.date.getFullYear()}. Todos los derechos reservados</Text>
                         </div>
                         <div className="Footer-section">
                             <a className="Footer-link" href="mailto:ugoadministrador@ugo.com.pe"><Text className="Footer-text">ugoadministrador@ugo.com.pe</Text></a>

@@ -5,6 +5,9 @@ export interface IStudentChecklist {
     id: string;
     status: string;
     booked?: boolean;
+    commented?: boolean;
+    tags?: string[];
+    mentorComment?: string;
 }
 
 export const STUDENT_STATUS = {
@@ -30,6 +33,7 @@ export class StudentChecklistBean {
         this.new = false;
         this.checked = this.isAttended;
         this.booked = !!this.item.booked;
+        this.item.commented = !!this.item.commented;
     }
 
     get getContract(): IStudentChecklist {
@@ -62,6 +66,12 @@ export class StudentChecklistBean {
 
     public setAsAttended() {
         this.status = STUDENT_STATUS.ATTENDED;
+    }
+
+    public setAsCommented(tags: string[], mentorComment: string) {
+        this.item.commented = true;
+        this.item.tags = tags;
+        this.item.mentorComment = mentorComment;
     }
 
     public updateChecked() {

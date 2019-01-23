@@ -223,6 +223,13 @@
     "@types/history" "*"
     "@types/react" "*"
 
+"@types/react-tooltip@^3.9.0":
+  version "3.9.0"
+  resolved "https://registry.yarnpkg.com/@types/react-tooltip/-/react-tooltip-3.9.0.tgz#99246c208df53194db1fc96bb5345f0f66e63e52"
+  integrity sha512-jZSQovTbcskRIzHTCcGrnG633AaN6WfnMw6LlkmNO7JR3GlWHqzVI7/rI5t4pkyIaUQPGpwKN9A77pIRRe8MQw==
+  dependencies:
+    "@types/react" "*"
+
 "@types/react@*", "@types/react@16.4.0":
   version "16.4.0"
   resolved "https://registry.yarnpkg.com/@types/react/-/react-16.4.0.tgz#f7f639837bf1f8635f57616b12a1b0d193b6343a"
@@ -6843,6 +6850,14 @@ react-test-renderer@^16.0.0-0:
     object-assign "^4.1.1"
     prop-types "^15.6.0"
     react-is "^16.4.1"
+
+react-tooltip@^3.9.2:
+  version "3.9.2"
+  resolved "https://registry.yarnpkg.com/react-tooltip/-/react-tooltip-3.9.2.tgz#df74e6f5fd454bb15132d5d2d506895cf505cb5e"
+  integrity sha512-uoOXt/LVX9JhSYjAa3F2qSJuaTwod1fW2PWJGWGZ7Sfm6M8/JGWvGY1LsR51g8LYteVcSbDFuHfuB3rmNFACRw==
+  dependencies:
+    classnames "^2.2.5"
+    prop-types "^15.6.0"
 
 react-transition-group@^2.4.0:
   version "2.4.0"

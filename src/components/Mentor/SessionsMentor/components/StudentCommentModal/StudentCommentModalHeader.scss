@@ -1,28 +1,20 @@
-.StudentModalCard {
+.StudentCommentModalHeader {
   display: flex;
   flex-direction: column;
   flex-grow: 1;
   justify-content: space-around;
-  &_pri-art {
-    display: block;
-    height: 82px!important;
-    margin: 0 auto;
-    width: 82px!important;
-  }
-  &_body {
+  &_body-right {
     display: flex;
     flex-direction: column;
-    &-right {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      span {
-        color: #bebfc0!important;
-      }
-    }
+    justify-content: center;
+  }
+  &_title {
+    margin-bottom: 24px;
+    display: flex;
+    flex-direction: column;
   }
   &_image-container {
-    border: solid 2px #9e61f9!important;
+    border: solid 2px;
     height: 48px!important;
     margin-right: 12px;
     width: 48px!important;
@@ -30,7 +22,7 @@
   &_custom-width {
     display: flex;
     float: left;
-    margin: 40px auto 0 auto;
+    margin: 0 auto;
   }
   &_message {
     display: block;
@@ -39,11 +31,5 @@
     span {
       color: rgb(74, 74, 74)!important;
     }
-  }
-  &_footer{
-    margin-top: 10px;
-  }
-  &_button {
-    margin: 0 auto;
   }
 }
