@@ -85,13 +85,16 @@ class FormSessionBaseBean {
     }
 
     public buildLocations(locations: IInterestAreaParent[]): ISessionListForm[] {
-        const listLocations = locations.map((location: IInterestAreaParent): ISessionListForm => {
-            return {
-                id: Utilities.getValue(location.id, location.name),
-                name: location.name,
-                parent: location.interesAreasId
-            }
-        });
+        let listLocations = [] as ISessionListForm[];
+        if (locations) {
+            listLocations = locations.map((location: IInterestAreaParent): ISessionListForm => {
+                return {
+                    id: Utilities.getValue(location.id, location.name),
+                    name: location.name,
+                    parent: location.interesAreasId
+                }
+            });
+        }
         return listLocations;
     }
 

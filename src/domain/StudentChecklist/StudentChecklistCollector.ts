@@ -30,7 +30,7 @@ export class StudentChecklistCollector {
     public getStudent(code: string): StudentChecklistBean | null {
         let student = null;
         const candidate = this.sessions.filter((item: StudentChecklistBean) => {
-            return item.student.user.code === code;
+            return item.student.user.code.trim().toLowerCase() === code.trim().toLowerCase();
         });
         if (candidate.length > 0) {
             student = candidate[0];
