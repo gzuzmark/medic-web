@@ -98,14 +98,17 @@ class FormSessionBaseBean {
         return listLocations;
     }
 
-    public buildBlocks(blocks: IInterestAreaSite[]) {
-        const listBlocks = blocks.map((block: IInterestAreaSite): ISessionListForm => {
-            return {
-                id: Utilities.getValue(block.id, block.address),
-                name: block.address,
-                parent: block.siteId
-            }
-        });
+    public buildBlocks(blocks: IInterestAreaSite[]): ISessionListForm[] {
+        let listBlocks = [] as ISessionListForm[];
+        if (blocks) {
+            listBlocks = blocks.map((block: IInterestAreaSite): ISessionListForm => {
+                return {
+                    id: Utilities.getValue(block.id, block.address),
+                    name: block.address,
+                    parent: block.siteId
+                }
+            });
+        }
         return listBlocks;
     }
 
