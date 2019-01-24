@@ -85,24 +85,30 @@ class FormSessionBaseBean {
     }
 
     public buildLocations(locations: IInterestAreaParent[]): ISessionListForm[] {
-        const listLocations = locations.map((location: IInterestAreaParent): ISessionListForm => {
-            return {
-                id: Utilities.getValue(location.id, location.name),
-                name: location.name,
-                parent: location.interesAreasId
-            }
-        });
+        let listLocations = [] as ISessionListForm[];
+        if (locations) {
+            listLocations = locations.map((location: IInterestAreaParent): ISessionListForm => {
+                return {
+                    id: Utilities.getValue(location.id, location.name),
+                    name: location.name,
+                    parent: location.interesAreasId
+                }
+            });
+        }
         return listLocations;
     }
 
-    public buildBlocks(blocks: IInterestAreaSite[]) {
-        const listBlocks = blocks.map((block: IInterestAreaSite): ISessionListForm => {
-            return {
-                id: Utilities.getValue(block.id, block.address),
-                name: block.address,
-                parent: block.siteId
-            }
-        });
+    public buildBlocks(blocks: IInterestAreaSite[]): ISessionListForm[] {
+        let listBlocks = [] as ISessionListForm[];
+        if (blocks) {
+            listBlocks = blocks.map((block: IInterestAreaSite): ISessionListForm => {
+                return {
+                    id: Utilities.getValue(block.id, block.address),
+                    name: block.address,
+                    parent: block.siteId
+                }
+            });
+        }
         return listBlocks;
     }
 

@@ -212,13 +212,16 @@ class FormSessionDeleteBean extends FormSessionBaseBean {
     }
 
     private buildRooms(rooms: IInterestAreaBlock[]) {
-        const listRooms = rooms.map((room: IInterestAreaBlock): ISessionListForm => {
-            return {
-                id: Utilities.getValue(room.id),
-                name: room.name,
-                parent: [room.blockId]
-            }
-        });
+        let listRooms =  [] as ISessionListForm[];
+        if (rooms) {
+            listRooms = rooms.map((room: IInterestAreaBlock): ISessionListForm => {
+                return {
+                    id: Utilities.getValue(room.id),
+                    name: room.name,
+                    parent: [room.blockId]
+                }
+            });
+        }
         return listRooms;
     }
 
