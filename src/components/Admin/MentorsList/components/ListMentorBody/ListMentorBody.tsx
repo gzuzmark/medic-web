@@ -1,11 +1,28 @@
 import * as React from 'react';
 import { Link } from "react-router-dom";
-import add from '../../../../../assets/images/add.png';
-import calendar from '../../../../../assets/images/calendar.png';
-import { BoldText } from '../../../../../common/ConsoleText';
+import styled from "styled-components";
 import { getTime } from '../../../../../common/ConsoleUtils';
+import Icon from "../../../../../common/Icon/Icon";
+import colors, {FONTS} from "../../../../../common/MentorColor";
+import { Headline1 } from '../../../../../common/MentorText';
 import { IMentor } from '../../../../../interfaces/Mentor.interface';
 import MentorItem from '../MentorItem/MentorItem';
+
+
+const DivStyled = styled.div`
+  align-items: center;        
+  display: flex;
+  width: 100%;
+  svg {
+      fill: ${colors.BACKGROUND_COLORS.background_purple};
+      &:hover {
+        fill: ${colors.MISC_COLORS.light_purple};
+      }
+      &:focus {
+        fill: ${colors.MISC_COLORS.dark_purple};
+      }
+  }
+`;
 
 
 class ListMentorsBody extends React.Component <IMentor, {}> {
@@ -16,24 +33,24 @@ class ListMentorsBody extends React.Component <IMentor, {}> {
     public render() {
         const { sessions, skills, user, id} = this.props;
         return (
-            <React.Fragment>
+            <DivStyled>
                 <div className="ListMentors-column ListMentors-column--mentor">
                     <MentorItem skills={skills} image={user.photo} name={user.name} />
                 </div>
                 <div className="ListMentors-column ListMentors-separator">
-                    <BoldText className="ListMentors-bigtext">{getTime(sessions.totalMinutes)}</BoldText>
+                    <Headline1 color={FONTS.medium}>{getTime(sessions.totalMinutes)}</Headline1>
                 </div>
                 <div className="ListMentors-column">
                     <Link to={'/admin/mentores/' + id + '/sesiones'}>
-                        <img src={calendar} width="24" />
+                        <Icon name="calendar"/>
                     </Link>
                 </div>
                 <div className="ListMentors-column">
                     <Link to={'/admin/mentores/' + id + '/sesiones/agendar'}>
-                        <img src={add}  width="24" />
+                        <Icon name="add-circle"/>
                     </Link>
                 </div>
-            </React.Fragment>
+            </DivStyled>
         );
     }
 }

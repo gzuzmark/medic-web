@@ -1,6 +1,7 @@
 import * as React from 'react';
 import Avatar from '../../../../../common/Avatar/Avatar';
-import { Heading2, Text } from '../../../../../common/ConsoleText';
+import {FONTS} from "../../../../../common/MentorColor";
+import { Body1, Heading3 } from '../../../../../common/MentorText';
 import { ISkill } from '../../../../../interfaces/Mentor.interface';
 import './MentorItem.scss';
 
@@ -20,15 +21,16 @@ class MentorItem extends React.Component<IPropsMentorSession, {}> {
             <div className="MentorItem">
                 <Avatar size={48} source={this.props.image} style={{marginTop: 16}}/>
                 <div className='MentorItem-basicInformation'>
-                    <Heading2 className='MentorItem-text'>{this.props.name}</Heading2>
+                    <Heading3 style={{margin: '12px 0'}}  color={FONTS.medium}>{this.props.name}</Heading3>
                     <div className='MentorItem-tagWrapper'>
                         {this.props.skills && this.props.skills.map((item, index) => {
                            return (
-                               <Text key={'mentor-item-' + index}
-                                     className='MentorItem-tag'
-                                     style={{'background': item.color}}>
+                               <Body1 key={'mentor-item-' + index}
+                                      className='MentorItem-tag'
+                                      color={FONTS.medium}
+                                      style={{'background': item.color}}>
                                    {item.name}
-                               </Text>
+                               </Body1>
                            )
                         })}
                     </div>

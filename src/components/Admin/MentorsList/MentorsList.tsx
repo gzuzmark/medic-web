@@ -1,9 +1,11 @@
 import * as React from 'react';
-import { BoldText } from '../../../common/ConsoleText';
+import {ButtonNormal} from "../../../common/Buttons/Buttons";
 import FilterList, {IListItem} from '../../../common/FilterList/FilterList';
 import MenuAside from '../../../common/Layout/components/MenuAside/MenuAside';
 import Layout from '../../../common/Layout/Layout';
 import Loader from '../../../common/Loader/Loader';
+import {FONTS} from "../../../common/MentorColor";
+import { Headline1 } from '../../../common/MentorText';
 import Sticky from '../../../common/Sticky/Sticky';
 import { IMentor, ISkill } from '../../../interfaces/Mentor.interface';
 import MentorService from '../../../services/Mentor/Mentor.service';
@@ -46,14 +48,15 @@ class MentorsList extends React.Component <{}, IStateListMentor> {
         return (
             <Sticky height={194} top={80} style={{background: 'white'}}>
                 <MenuAside baseText={'Mentores'} url={'/admin/mentores'}/>
-                <div className='u-LayoutMargin u-ListMentors-padding'>
+                <div className='u-LayoutMargin u-ListMentors-padding ListMentors-sticky'>
                     <FilterList
                         onChange={this._searchMentors}
                         list={this.state.skills}
                         defaultText="Filtrar por curso"
                         name={this.state.selectedFilter}
-                        style={{width: 504, marginBottom: 30}}
+                        style={{width: 504}}
                         removeFilters={true}/>
+                    <ButtonNormal text={"Agregar mentor"}/>
                 </div>
                 <ListMentorsHeader header={[
                     'Nombre de mentor',
@@ -77,7 +80,7 @@ class MentorsList extends React.Component <{}, IStateListMentor> {
                         )}
                         {!this.state.loading && this.state.mentors.length === 0 && (
                             <div className="ListMentors-row ListMentors-row--center">
-                                <BoldText color="textNormalSoft" className="ListMentors-bigtext">No hay resultados</BoldText>
+                                <Headline1 color={FONTS.medium}>No hay resultados</Headline1>
                             </div>
                         )}
                         {!this.state.loading && this.state.mentors.map((item, index) => {

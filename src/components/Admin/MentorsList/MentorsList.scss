@@ -2,6 +2,12 @@
 
 .ListMentors {
   padding: 0 70px;
+  &-sticky {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 30px;
+  }
   &-header, &-row {
     display: flex;
     flex-direction: row;
