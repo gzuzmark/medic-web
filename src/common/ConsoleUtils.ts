@@ -22,3 +22,68 @@ export const getHour = (minutes: number) => { // 540 => 09:00
 export const backToPagePreviously = () => {
     window.history.back();
 };
+
+const months = [
+    {
+        label: "Enero",
+        value: "1"
+    },
+    {
+        label: "Febrero",
+        value: "2"
+    },
+    {
+        label: "Marzo",
+        value: "3"
+    },
+    {
+        label: "Abril",
+        value: "4"
+    },
+    {
+        label: "Mayo",
+        value: "5"
+    },
+    {
+        label: "Junio",
+        value: "6"
+    },
+    {
+        label: "Julio",
+        value: "7"
+    },
+    {
+        label: "Agosto",
+        value: "8"
+    },
+    {
+        label: "Setiembre",
+        value: "9"
+    },
+    {
+        label: "Octubre",
+        value: "10"
+    },
+    {
+        label: "Noviembre",
+        value: "11"
+    },
+    {
+        label: "Diciembre",
+        value: "12"
+    },
+];
+
+const years = (()=> {
+    const items = [];
+    for (let year = 1940; year <= (new Date().getFullYear()); year+=1) {
+        items.push({label: year.toString(), value: year.toString()});
+    }
+    return items.reverse();
+})();
+
+export const date = {
+    months,
+    years
+};
+

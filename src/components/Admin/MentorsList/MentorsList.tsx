@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {ButtonNormal} from "../../../common/Buttons/Buttons";
+import { ButtonNormal } from '../../../common/Buttons/Buttons';
 import FilterList, {IListItem} from '../../../common/FilterList/FilterList';
 import MenuAside from '../../../common/Layout/components/MenuAside/MenuAside';
 import Layout from '../../../common/Layout/Layout';
@@ -56,7 +56,8 @@ class MentorsList extends React.Component <{}, IStateListMentor> {
                         name={this.state.selectedFilter}
                         style={{width: 504}}
                         removeFilters={true}/>
-                    <ButtonNormal text={"Agregar mentor"}/>
+                    <ButtonNormal text={"Agregar mentor"}
+                                  attrs={{onClick: this.goToCreateMentors}}/>
                 </div>
                 <ListMentorsHeader header={[
                     'Nombre de mentor',
@@ -116,6 +117,10 @@ class MentorsList extends React.Component <{}, IStateListMentor> {
                 skills
             })
         });
+    }
+
+    private goToCreateMentors() {
+        window.location.assign('/admin/agregar-mentor');
     }
 }
 

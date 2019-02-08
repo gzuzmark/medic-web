@@ -21,7 +21,7 @@ ShallowWrapper {
     "key": undefined,
     "nodeType": "host",
     "props": Object {
-      "children": <ConsoleDatePicker
+      "children": <DatePickerBase
         configs={undefined}
         date={"2018-02-02T00:00:00.000Z"}
         focus={false}
@@ -56,7 +56,7 @@ ShallowWrapper {
       "key": undefined,
       "nodeType": "host",
       "props": Object {
-        "children": <ConsoleDatePicker
+        "children": <DatePickerBase
           configs={undefined}
           date={"2018-02-02T00:00:00.000Z"}
           focus={false}

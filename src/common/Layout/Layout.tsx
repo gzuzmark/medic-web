@@ -1,4 +1,5 @@
 import * as React from 'react';
+import {Link} from "react-router-dom";
 import logo_header from '../../assets/images/logo_header.png';
 import UserRepository, {ROL_ADMIN} from '../../repository/UserRepository';
 import Avatar from '../Avatar/Avatar';
@@ -34,12 +35,14 @@ class Layout extends React.Component<IPropsLayout, {}> {
                     <div className="Header">
                         <div className="Header_wrapper u-LayoutMargin">
                             <div className="Header_section">
-                                <div className="Header_container-image">
-                                    <img className="Header_image" src={logo_header} height='18'/>
-                                </div>
-                                <Subhead1 color="font_light" weight={LIGHT_TEXT} style={{padding: '0 14px'}}>
-                                    {UserRepository.getUser().rol === ROL_ADMIN ? 'Administrador' : 'Mentores'}
-                                </Subhead1>
+                                <Link to={'/'}>
+                                    <div className="Header_container-image">
+                                        <img className="Header_image" src={logo_header} height='18'/>
+                                    </div>
+                                    <Subhead1 color="font_light" weight={LIGHT_TEXT} style={{padding: '0 14px'}}>
+                                        {UserRepository.getUser().rol === ROL_ADMIN ? 'Administrador' : 'Mentores'}
+                                    </Subhead1>
+                                </Link>
                             </div>
                             <div className="Header_section">
                                 <Subhead1 color="font_light" weight={LIGHT_TEXT} style={{padding: '0 10px'}}>Hola, {UserRepository.getUser().name}</Subhead1>

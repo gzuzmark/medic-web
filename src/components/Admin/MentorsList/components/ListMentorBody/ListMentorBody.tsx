@@ -3,11 +3,11 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { getTime } from '../../../../../common/ConsoleUtils';
 import Icon from "../../../../../common/Icon/Icon";
-import colors, {FONTS} from "../../../../../common/MentorColor";
+import {FONTS} from "../../../../../common/MentorColor";
+import colors from "../../../../../common/MentorColor";
 import { Headline1 } from '../../../../../common/MentorText';
 import { IMentor } from '../../../../../interfaces/Mentor.interface';
 import MentorItem from '../MentorItem/MentorItem';
-
 
 const DivStyled = styled.div`
   align-items: center;        
@@ -23,7 +23,6 @@ const DivStyled = styled.div`
       }
   }
 `;
-
 
 class ListMentorsBody extends React.Component <IMentor, {}> {
     constructor(props: IMentor) {

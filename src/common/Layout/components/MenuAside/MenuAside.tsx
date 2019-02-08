@@ -36,7 +36,7 @@ class MenuAside extends React.Component<IPropsListMentors, {}> {
                                 {this.props.baseText}
                             </Link>
                         </HighlightTextHeading1>
-                        {this.props.textNavigation &&
+                        {!!this.props.textNavigation &&
                             <HighlightText className="Menu-item" color="textNormalSoft">{this.props.textNavigation}</HighlightText>}
                     </div>
                 </div>

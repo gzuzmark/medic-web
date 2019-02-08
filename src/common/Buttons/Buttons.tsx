@@ -157,8 +157,8 @@ const ButtonNormal = styled(Button)`
     white-space: nowrap;
     overflow: hidden;
     &:before {
-      color: ${(props: IButtonProps) => props.type === THEME_SECONDARY ? 
-        colors.BACKGROUND_COLORS.background_purple: colors.BACKGROUND_COLORS.background_white};
+      color: ${(props: IButtonProps) => props.type === THEME_SECONDARY ?
+    colors.BACKGROUND_COLORS.background_purple : colors.BACKGROUND_COLORS.background_white};
       display: block;
       filter: progid:DXImageTransform.Microsoft.Alpha(enabled=false);
       margin: 0 auto;

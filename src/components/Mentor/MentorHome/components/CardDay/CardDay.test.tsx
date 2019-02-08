@@ -31,11 +31,6 @@ describe('CardDay Test',() => {
         mountedCardDay = undefined;
     });
 
-    it("render: render CardDay no active", () => {
-        const component = getComponent();
-        expect(component).toMatchSnapshot();
-    });
-
     it("render: render CardDay STATUS ACTIVE", () => {
         props = {...props, status: STATUS_DAY_SESSIONS.ACTIVE };
         const component = getComponent();

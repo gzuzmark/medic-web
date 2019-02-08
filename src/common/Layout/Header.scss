@@ -20,6 +20,10 @@
     align-items: center;
     display: flex;
     justify-content: flex-end;
+    a {
+      display: flex;
+      align-items: center;
+    }
   }
   &_container-image {
     display: block;

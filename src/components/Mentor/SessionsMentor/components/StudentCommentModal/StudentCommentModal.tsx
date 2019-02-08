@@ -49,10 +49,10 @@ const LabelComponent = styled(Label)`
   }
 `;
 
-const TextAreaComponent = styled(TextArea)`
+export const TextAreaComponent = styled(TextArea)`
    border: 1px solid ${colors.MISC_COLORS.background_grey_2};
    border-radius: 4px;
-   background: ${colors.MISC_COLORS.background_grey_1};
+   background: transparent;
    color: ${colors.TEXT_COLORS.font_dark};
    font-family: ${defaultFont};
    font-size: 14px;

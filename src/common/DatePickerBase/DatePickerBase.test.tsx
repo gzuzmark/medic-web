@@ -2,19 +2,19 @@ import { shallow } from 'enzyme';
 import 'jest-localstorage-mock';
 import * as moment from "moment";
 import * as React from 'react';
-import ConsoleDatePicker from "./ConsoleDatePicker";
+import DatePickerBase from "./DatePickerBase";
 
 
-describe('ConsoleDatePicker Test',() => {
+describe('DatePickerBase Test',() => {
     let props: any;
-    let mountedConsoleDatePicker: any;
+    let mountedDatePickerBase: any;
     const consoleDatePicker = () => {
-        if (!mountedConsoleDatePicker) {
-            mountedConsoleDatePicker = shallow(
-                <ConsoleDatePicker {...props} />
+        if (!mountedDatePickerBase) {
+            mountedDatePickerBase = shallow(
+                <DatePickerBase {...props} />
             );
         }
-        return mountedConsoleDatePicker;
+        return mountedDatePickerBase;
     };
 
     beforeEach(() => {
@@ -26,12 +26,12 @@ describe('ConsoleDatePicker Test',() => {
             onDateChange: () => void(0),
             onDateFocusChange: () => void(0)
         };
-        mountedConsoleDatePicker = undefined;
+        mountedDatePickerBase = undefined;
     });
 
 
 
-    it("render: render ConsoleDatePicker", () => {
+    it("render: render DatePickerBase", () => {
         const component = consoleDatePicker();
         expect(component).toMatchSnapshot();
     });

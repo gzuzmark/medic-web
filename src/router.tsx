@@ -6,6 +6,7 @@ import './assets/fonts/fonts.scss';
 import './assets/fonts/fontsMentor.scss';
 import './assets/styles/styles.scss';
 import HOCLayout from "./common/Layout/HOCLayout";
+import MentorCreate from "./components/Admin/MentorCreate/MentorCreate";
 import MentorSession from './components/Admin/MentorSession/MentorSession';
 import MentorsList from './components/Admin/MentorsList/MentorsList';
 import Reports from "./components/Admin/Reports/Reports";
@@ -39,6 +40,15 @@ const PageReports = (props: any) => {
     return <LayoutReports baseText={'Reportes'} url={'/admin/reportes'} {...props} keyPage={'report'}/>;
 };
 
+const PageCreateMentor = (props: any) => {
+    const LayoutReports = HOCLayout(MentorCreate);
+    return <LayoutReports baseText={'Mentores'}
+                          url={'/admin/agregar-mentor'}
+                          {...props}
+                          keyPage={'book'}
+                          textNavigation={"Agregar mentor"}/>;
+};
+
 export const initRouter = () => {
     ReactDOM.render(
         <Router>
@@ -47,6 +57,7 @@ export const initRouter = () => {
                 <Route exact={true} path="/logout" component={Logout} />
                 <Route exact={true} path="/admin" render={GuardComponent(MentorsList, ROL_ADMIN)} />
                 <Route exact={true} path="/admin/mentores" render={GuardComponent(MentorsList, ROL_ADMIN)} />
+                <Route exact={true} path="/admin/agregar-mentor" render={GuardComponent(PageCreateMentor, ROL_ADMIN)} />
                 <Route exact={true} path="/admin/reportes" render={GuardComponent(PageReports, ROL_ADMIN)}/>
                 <Route exact={true} path="/admin/mentores/:id/sesiones" render={GuardComponent(MentorSession, ROL_ADMIN)} />
                 <Route exact={true} path="/admin/mentores/:id/sesiones/agendar" render={GuardComponent(AddScheduleSession, ROL_ADMIN)} />

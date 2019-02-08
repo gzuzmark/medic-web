@@ -6,19 +6,20 @@ interface IPropsHOCLayout {
     baseText: string;
     url: string;
     keyPage: string;
+    textNavigation?: string;
 }
-const renderMenu = (baseText: string, url: string, keyPage: string) => {
+const renderMenu = (...args: any[]) => {
     return (
-        <MenuAside baseText={baseText} url={url} icon={keyPage}/>
+        <MenuAside baseText={args[0]} url={args[1]} icon={args[2]} textNavigation={args[3]} />
     )
 };
 
 const HOCLayout = <P extends object>(Component: React.ComponentType<P>) =>
     class WithMenu extends React.Component<P & IPropsHOCLayout> {
         public render() {
-            const { baseText, url, keyPage, ...props } = this.props as IPropsHOCLayout;
+            const { baseText, url, keyPage, textNavigation, ...props } = this.props as IPropsHOCLayout;
             return (
-                <Layout menu={renderMenu(baseText, url, keyPage)}>
+                <Layout menu={renderMenu(baseText, url, keyPage, textNavigation)}>
                     <Component {...props} />
                 </Layout>
             );
