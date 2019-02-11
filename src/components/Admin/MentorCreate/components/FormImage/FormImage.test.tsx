@@ -1,7 +1,8 @@
 import { shallow } from 'enzyme';
 import 'jest-styled-components';
 import * as React from 'react';
-import FormImage, {ImageProfile} from "./FormImage";
+import ImageProfile from "../ImageProfile/ImageProfile";
+import FormImage from "./FormImage";
 
 describe('FormImage Test',() => {
     let props: any;

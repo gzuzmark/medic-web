@@ -4,7 +4,7 @@ import ConfirmButtons from "../../../common/ConfirmButtons/ConfirmButtons";
 import ModalCancel from "../../../common/ConsoleModal/ModalCancel/ModalCancel";
 import ConsoleTableLoader from "../../../common/ConsoleTable/components/ConsoleTableLoader/ConsoleTableLoader";
 import { SmallText1, Text2, Title3 } from '../../../common/ConsoleText';
-import {backToPagePreviously} from "../../../common/ConsoleUtils";
+import {backToPagePreviously} from "../../../common/DateUtilities";
 import {IListItem} from "../../../common/FilterList/FilterList";
 import Layout from "../../../common/Layout/Layout";
 import MentorDetail from "../../../common/MentorDetail/MentorDetail";

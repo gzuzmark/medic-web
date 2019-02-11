@@ -1,7 +1,7 @@
 import {ArrayHelpers, FieldArray} from "formik";
 import * as React from "react";
 import styled from "styled-components";
-import {date} from "../../../../../common/ConsoleUtils";
+import {date} from "../../../../../common/DateUtilities";
 import Icon from "../../../../../common/Icon/Icon";
 import MentorCheckbox from "../../../../../common/MentorCheckbox/MentorCheckbox";
 import colors from "../../../../../common/MentorColor";

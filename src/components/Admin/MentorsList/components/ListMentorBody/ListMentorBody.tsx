@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { getTime } from '../../../../../common/ConsoleUtils';
+import { getTime } from '../../../../../common/DateUtilities';
 import Icon from "../../../../../common/Icon/Icon";
 import {FONTS} from "../../../../../common/MentorColor";
 import colors from "../../../../../common/MentorColor";

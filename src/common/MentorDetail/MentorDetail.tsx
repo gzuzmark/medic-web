@@ -2,7 +2,7 @@ import * as React from 'react';
 import { IMentor } from '../../interfaces/Mentor.interface';
 import Avatar from '../Avatar/Avatar';
 import { Heading2, Text } from '../ConsoleText';
-import { getTime } from '../ConsoleUtils';
+import { getTime } from '../DateUtilities';
 import './MentorDetail.scss';
 
 

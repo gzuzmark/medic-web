@@ -7,12 +7,13 @@ import MentorModalBase from "../../../../../common/ConsoleModal/MentorModalBase"
 import Icon from "../../../../../common/Icon/Icon";
 import colors from "../../../../../common/MentorColor";
 import { Body1, Heading2 } from "../../../../../common/MentorText";
+import MentorCreateContext, {IMentorCreateContext} from "../../MentorCreate.context";
+import ImageProfile from '../ImageProfile/ImageProfile';
 import './FormImage.scss';
 import './ReactCrop.scss';
 
 interface IStateFormImage {
     crop: ReactCrop.Crop;
-    croppedImage: string;
     croppedTmp: string;
     loading: boolean;
     modal: boolean;
@@ -23,24 +24,10 @@ interface IPropsFormImage {
     id: string;
 }
 
-interface IPropsImageProfile {
-    filled: boolean;
-}
-
 const TextInput = styled(Body1)`
     color: ${colors.BACKGROUND_COLORS.background_purple};
 `;
 
-export const ImageProfile = styled.img`
-    border-radius: 50%;
-    border: ${(props: IPropsImageProfile) => {
-        let border = 'none';
-        if (props.filled) {
-            border = '2px solid ' + colors.BACKGROUND_COLORS.background_purple;
-        }
-        return border;
-    }}
-`;
 
 class FormImage extends React.Component <IPropsFormImage, IStateFormImage> {
     public state: IStateFormImage;
@@ -54,7 +41,6 @@ class FormImage extends React.Component <IPropsFormImage, IStateFormImage> {
                 x: 0,
                 y: 0
             },
-            croppedImage: '',
             croppedTmp: '',
             loading: false,
             modal: false,
@@ -64,13 +50,13 @@ class FormImage extends React.Component <IPropsFormImage, IStateFormImage> {
         this.onCropComplete = this.onCropComplete.bind(this);
         this.onImageLoaded = this.onImageLoaded.bind(this);
         this.onSelectFile = this.onSelectFile.bind(this);
-        this.updateImage = this.updateImage.bind(this);
+        this.uploadImage = this.uploadImage.bind(this);
         this.closeModal = this.closeModal.bind(this);
     }
 
     public render() {
         const CropDefault = (ReactCrop as any).default;
-        const image = !!this.state.croppedImage ? this.state.croppedImage : camera;
+        const defaultImage = camera;
 
         let propsButton = {};
         if (this.state.loading) {
@@ -80,48 +66,54 @@ class FormImage extends React.Component <IPropsFormImage, IStateFormImage> {
         }
 
         return (
-            <div className={"FormImage"}>
-                <MentorModalBase
-                    show={this.state.modal}
-                    onCloseModal={this.closeModal}>
-                    {this.state.src &&
-                        <div className={"FormImage_modal"}>
-                            <Heading2 style={{textAlign: 'center'}}>Subir la foto del mentor</Heading2>
-                            <div className={"FormImage_crop"}>
-                                <CropDefault src={this.state.src}
-                                      keepSelection={true}
-                                      crop={this.state.crop}
-                                      disabled={this.state.loading}
-                                      onChange={this.onCropChange}
-                                      onImageLoaded={this.onImageLoaded}
-                                      onComplete={this.onCropComplete}/>
-                            </div>
-                            <ButtonNormal text={"Aceptar"}
-                                          attrs={
-                                              {
-                                                  onClick: this.updateImage,
-                                                  style: {margin: '0 auto', width: "136px"},
-                                                  ...propsButton
-                                              }}/>
+            <MentorCreateContext.Consumer>
+                {(context: IMentorCreateContext) => {
+                    return (
+                        <div className={"FormImage"}>
+                            <MentorModalBase
+                                show={this.state.modal}
+                                onCloseModal={this.closeModal}>
+                                {this.state.src &&
+                                <div className={"FormImage_modal"}>
+                                    <Heading2 style={{textAlign: 'center'}}>Subir la foto del mentor</Heading2>
+                                    <div className={"FormImage_crop"}>
+                                        <CropDefault src={this.state.src}
+                                                     keepSelection={true}
+                                                     crop={this.state.crop}
+                                                     disabled={this.state.loading}
+                                                     onChange={this.onCropChange}
+                                                     onImageLoaded={this.onImageLoaded}
+                                                     onComplete={this.onCropComplete}/>
+                                    </div>
+                                    <ButtonNormal text={"Aceptar"}
+                                                  attrs={
+                                                      {
+                                                          onClick: this.uploadImage(context.setFieldValue),
+                                                          style: {margin: '0 auto', width: "136px"},
+                                                          ...propsButton
+                                                      }}/>
+                                </div>
+                                }
+                            </MentorModalBase>
+                            <label className={"FormImage_label"} htmlFor={this.props.id}>
+                                <ImageProfile src={context.values.picture || defaultImage} width={160} height={160} title="Camera" filled={!!context.values.picture}/>
+                                <div className={"FormImage_text"}>
+                                    <Icon name={"upload"} style={{
+                                        fill: colors.BACKGROUND_COLORS.background_purple,
+                                        marginRight: 4
+                                    }}/>
+                                    <TextInput>Subir foto del mentor</TextInput>
+                                </div>
+                            </label>
+                            <input type={"file"}
+                                   id={this.props.id}
+                                   accept="image/*"
+                                   className={"FormImage_file"}
+                                   onChange={this.onSelectFile} />
                         </div>
-                    }
-                </MentorModalBase>
-                <label className={"FormImage_label"} htmlFor={this.props.id}>
-                    <ImageProfile src={image} width={160} height={160} title="Camera" filled={!!this.state.croppedImage}/>
-                    <div className={"FormImage_text"}>
-                        <Icon name={"upload"} style={{
-                            fill: colors.BACKGROUND_COLORS.background_purple,
-                            marginRight: 4
-                        }}/>
-                        <TextInput>Subir foto del mentor</TextInput>
-                    </div>
-                </label>
-                <input type={"file"}
-                       id={this.props.id}
-                       accept="image/*"
-                       className={"FormImage_file"}
-                       onChange={this.onSelectFile} />
-            </div>
+                    )
+                }}
+            </MentorCreateContext.Consumer>
         )
     }
 
@@ -150,18 +142,20 @@ class FormImage extends React.Component <IPropsFormImage, IStateFormImage> {
         }
     }
 
-    private updateImage() {
-        const { croppedTmp, loading } = this.state;
-        if (!loading) {
-            this.setState({ loading: true }, () => {
-                setTimeout(() => {
-                    this.setState({
-                        croppedImage: croppedTmp,
-                        loading: false,
-                        modal: false
-                    })
-                }, 2000);
-            });
+    private uploadImage(setFieldValue: any) {
+        return () => {
+            const { croppedTmp, loading } = this.state;
+            if (!loading) {
+                this.setState({ loading: true }, () => {
+                    setTimeout(() => {
+                        setFieldValue("picture", croppedTmp);
+                        this.setState({
+                            loading: false,
+                            modal: false
+                        })
+                    }, 2000);
+                });
+            }
         }
     }
 

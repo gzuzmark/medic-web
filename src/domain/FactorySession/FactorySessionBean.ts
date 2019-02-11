@@ -1,4 +1,4 @@
-import {lpad} from '../../common/ConsoleUtils';
+import {lpad} from '../../common/DateUtilities';
 import { IListItem } from '../../common/FilterList/FilterList';
 import {ISessionSchedule} from '../../interfaces/Session.interface';
 import {SESSION_VIRTUAL} from "../../repository/SessionTypeConstants";

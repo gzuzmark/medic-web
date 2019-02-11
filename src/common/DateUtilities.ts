@@ -74,6 +74,9 @@ const months = [
     },
 ];
 
+const findMonthFromIndex = (index: string) => {
+    return months.find((v) => v.value === index);
+};
 const years = (()=> {
     const items = [];
     for (let year = 1940; year <= (new Date().getFullYear()); year+=1) {
@@ -83,6 +86,7 @@ const years = (()=> {
 })();
 
 export const date = {
+    findMonthFromIndex,
     months,
     years
 };
