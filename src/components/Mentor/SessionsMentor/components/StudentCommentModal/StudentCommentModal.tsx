@@ -133,12 +133,12 @@ class StudentCommentModal extends  React.Component<IPropsStudentCommentModal, IS
         const isAddForm = this.props.modal.tags && this.props.modal.tags.every(tag => !!tag.id);
         if (this.props.loading) {
             propsButton = {
-                disabled: "true",
-                loading: "true"
+                disabled: "",
+                loading: ""
             }
         } else if (this.state.disableForm) {
             propsButton = {
-                disabled: "true"
+                disabled: ""
             }
         }
 
@@ -161,7 +161,9 @@ class StudentCommentModal extends  React.Component<IPropsStudentCommentModal, IS
                         <Body1 style={{marginBottom: 10}}>Comentario</Body1>
                     }
                     {   isAddForm ?
-                        <TextAreaComponent attrs={{placeholder: "Ingresa un comentario", ref: this.textarea}}/>:
+                        <div style={{width: 400}}>
+                            <TextAreaComponent attrs={{placeholder: "Ingresa un comentario", ref: this.textarea}}/>
+                        </div>:
                         <div className="StudentModalCard_comment">
                             <Body1 weight={LIGHT_TEXT}>{this.props.modal.comment || "No hay comentario"}</Body1>
                         </div>

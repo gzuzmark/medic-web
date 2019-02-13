@@ -5,6 +5,7 @@ export interface IMentorCreateContext {
     errors: any;
     handleBlur: any;
     handleChange: any;
+    setFieldTouched: any;
     setFieldValue: any;
     touched: any;
     values: IMentorFormValidations;
@@ -14,6 +15,7 @@ const defaultValue: IMentorCreateContext = {
     errors: {},
     handleBlur: (event: any) => void(0),
     handleChange: (event: any) => void(0),
+    setFieldTouched: (field: string, isTouched?: boolean) => void(0),
     setFieldValue: (field: string, value: string) => void(0),
     touched: {},
     values: {} as IMentorFormValidations

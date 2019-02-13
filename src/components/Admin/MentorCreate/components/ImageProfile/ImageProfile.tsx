@@ -17,3 +17,14 @@ const ImageProfile = styled.img`
 `;
 
 export default ImageProfile;
+
+/*
+*
+
+
+    it("render: image should not have border", () => {
+        const component = getComponent();
+        expect(component.find('img')).toHaveStyleRule('border', 'none');
+    });
+
+* */

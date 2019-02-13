@@ -1,6 +1,7 @@
 import { mount } from 'enzyme';
 import 'jest-styled-components';
 import * as React from 'react';
+import {IMentorFormValidations} from "../../../../../domain/Mentor/MentorCreate";
 import FormManager, {FormManagerContainer} from "./FormManager";
 
 describe('FormManager Test',() => {
@@ -17,7 +18,15 @@ describe('FormManager Test',() => {
 
     beforeEach(() => {
         props = {
-            currentStep: 1
+            currentStep: 1,
+            formData: {
+                errors: {},
+                touched: {},
+                values:  {} as IMentorFormValidations
+            },
+            onBeforeStep: () => '',
+            onNextStep: () => '',
+            submitText: "continuar"
         };
         mountedComponent = undefined;
     });

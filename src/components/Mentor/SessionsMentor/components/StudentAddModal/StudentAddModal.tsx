@@ -28,8 +28,8 @@ const StudentAddModal: React.StatelessComponent<IPropsStudentAddModal> = (props)
     let propsButton = {};
     if (props.options.loading) {
         propsButton = {
-            disabled: "true",
-            loading: "true"
+            disabled: "",
+            loading: ""
         }
     }
     return !!props.options.user && (

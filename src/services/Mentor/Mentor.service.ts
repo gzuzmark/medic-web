@@ -1,7 +1,9 @@
+import {IMentorBean} from "../../domain/Mentor/MentorBean";
 import {IMentor, IMentorSession} from '../../interfaces/Mentor.interface';
 import BaseRequest from '../BaseRequest';
 
 class MentorService extends BaseRequest {
+    private verifyMenorCancelToken: any = null;
 
     public list(skillId?: string): Promise<IMentor[]> {
         return new Promise((resolve, reject) => {
@@ -80,6 +82,28 @@ class MentorService extends BaseRequest {
                         resolve(response.data.items);
                     } else {
                         reject(null);
+                    }
+                })
+                .catch((error: any) => {
+                    this.validSession();
+                    reject(error);
+                });
+        });
+    }
+
+    public verify(email: string): Promise<IMentorBean> {
+        if (!!this.verifyMenorCancelToken) {
+            this.verifyMenorCancelToken.cancel();
+        }
+        this.verifyMenorCancelToken = this.generateCancelToken();
+        const instance = this.getCustomInstance(this.verifyMenorCancelToken);
+        return new Promise<IMentorBean>((resolve, reject) => {
+            instance.get('ugo-admin/mentors/verify/' + email)
+                .then((response: any) => {
+                    if (response.status === 200 && response.data) {
+                        resolve(response.data);
+                    } else {
+                        reject(response);
                     }
                 })
                 .catch((error: any) => {

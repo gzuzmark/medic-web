@@ -20,7 +20,7 @@ interface IStateFormImage {
     src: string;
 }
 
-interface IPropsFormImage {
+export interface IPropsFormImage {
     id: string;
 }
 
@@ -147,13 +147,11 @@ class FormImage extends React.Component <IPropsFormImage, IStateFormImage> {
             const { croppedTmp, loading } = this.state;
             if (!loading) {
                 this.setState({ loading: true }, () => {
-                    setTimeout(() => {
-                        setFieldValue("picture", croppedTmp);
-                        this.setState({
-                            loading: false,
-                            modal: false
-                        })
-                    }, 2000);
+                    setFieldValue("picture", croppedTmp);
+                    this.setState({
+                        loading: false,
+                        modal: false
+                    })
                 });
             }
         }

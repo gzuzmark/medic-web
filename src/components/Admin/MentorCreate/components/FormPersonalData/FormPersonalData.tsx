@@ -20,6 +20,7 @@ class FormPersonalData extends React.Component <IPropsFormPersonalData, IStateFo
             submitText: "Continuar"
         };
         this.handlerDocumentType = this.handlerDocumentType.bind(this);
+        this.handlerLocation = this.handlerLocation.bind(this);
         this.handlerSkills = this.handlerSkills.bind(this);
     }
 
@@ -29,6 +30,12 @@ class FormPersonalData extends React.Component <IPropsFormPersonalData, IStateFo
             <MentorCreateContext.Consumer>
                 {(context: IMentorCreateContext) => {
                     const {errors, touched} = context;
+                    let documentAttr: object = {disabled: true};
+                    if (!!context.values.documentType.value) {
+                        documentAttr = {
+                            maxLength: context.values.documentType.value === 'DNI' ? 8 : 12
+                        }
+                    }
                     return (
                         <React.Fragment>
                             <FormRow style={{padding: '30px 0 40px 0', margin: 0}} columns={[
@@ -60,24 +67,33 @@ class FormPersonalData extends React.Component <IPropsFormPersonalData, IStateFo
                                     <MentorDropDown
                                         label={"TIPO DE DOCUMENTO"}
                                         name={"documentType"}
-                                        triggerChange={this.handlerDocumentType(context.setFieldValue)}
+                                        value={context.values.documentType.value}
+                                        triggerChange={this.handlerDocumentType(context)}
                                         placeholder="DNI, Carné de extranjería, etc."
                                         options={[
-                                            {value: "dni", label: "DNI"},
-                                            {value: "ext", label: "Carné de extranjería"}]} />
+                                            {value: "DNI", label: "DNI"},
+                                            {value: "CARNET_EXT", label: "Carné de extranjería"}]} />
                                 </FormColumn>,
                                 <FormColumn width={2} key={`FormColumn-PersonalData_${++counter}`}>
                                     <MentorInput
                                         label={"NUMERO DE DOCUMENTO"}
-                                        attrs={{placeholder: "Ingresa el número de docuemnto"}}/>
+                                        error={touched.document && errors.document}
+                                        attrs={{
+                                            name: "document",
+                                            onBlur: context.handleBlur,
+                                            onChange: context.handleChange,
+                                            placeholder: "Ingresa el número de docuemnto",
+                                            value: context.values.document,
+                                            ...documentAttr}}/>
                                 </FormColumn>
                             ]}/>
                             <FormRow style={{padding: '30px 0 40px 0', margin: 0}} columns={[
                                 <FormColumn width={2} key={`FormColumn-PersonalData_${++counter}`}>
                                     <MentorDropDown
                                         label={"SEDE"}
-                                        name={"place"}
-                                        triggerChange={this.handlerDocumentType(context.setFieldValue)}
+                                        name={"location"}
+                                        value={context.values.location.value}
+                                        triggerChange={this.handlerLocation(context)}
                                         placeholder="Empl.: Lima norte, Lima centro, etc."
                                         options={[
                                             {value: "dni", label: "Sede Central"},
@@ -89,11 +105,12 @@ class FormPersonalData extends React.Component <IPropsFormPersonalData, IStateFo
                                         name={"skills"}
                                         isMulti={true}
                                         isSearchable={true}
-                                        triggerChange={this.handlerSkills(context.setFieldValue)}
+                                        value={context.values.skills.map((v) => v.value)}
+                                        triggerChange={this.handlerSkills(context)}
                                         placeholder="Ejmpl.: Química general, matemáti..."
                                         options={[
-                                            {value: "quimica", label: "Quimica"},
                                             {value: "ingles", label: "Ingles"},
+                                            {value: "quimica", label: "Quimica"},
                                             {value: "P", label: "Programación"},
                                             {value: "qw", label: "Introducción a la Química General"},
                                             {value: "intra", label: "Introducción a la matemática para ingenieros"},
@@ -123,16 +140,26 @@ class FormPersonalData extends React.Component <IPropsFormPersonalData, IStateFo
         )
     }
 
-    private handlerDocumentType(setFieldValue: any) {
+    private handlerLocation(context: IMentorCreateContext) {
         return (name: string, option: IPropsMentorOptionsDropDown) => {
-            setFieldValue(name, option.value);
-            setFieldValue('document', '');
+            context.setFieldValue(name, option);
+            context.setFieldTouched(name);
         }
     }
 
-    private handlerSkills(setFieldValue: any) {
+    private handlerDocumentType(context: IMentorCreateContext) {
+        return (name: string, option: IPropsMentorOptionsDropDown) => {
+            context.setFieldValue(name, option);
+            context.setFieldTouched(name);
+            context.setFieldValue('document', '');
+            context.setFieldTouched('document', false);
+        }
+    }
+
+    private handlerSkills(context: IMentorCreateContext) {
         return (name: string, option: IPropsMentorOptionsDropDown[]) => {
-            setFieldValue(name, option);
+            context.setFieldValue(name, option);
+            context.setFieldTouched(name);
         }
     }
 }

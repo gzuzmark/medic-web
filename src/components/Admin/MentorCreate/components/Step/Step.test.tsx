@@ -75,6 +75,18 @@ describe('Step Test',() => {
         expect(stepCircleTextTree).toHaveStyleRule('color', colors.BACKGROUND_COLORS.background_purple);
     });
 
+
+    it("render: Show animation in the step", () => {
+        props = {...props, animation: true};
+        const component = getComponent();
+        const stepCircleTree = component.find(StepCircle);
+        const stepTextTree = component.find(StepText);
+        const stepCircleTextTree = component.find(StepCircleText);
+        expect(stepCircleTree).toHaveStyleRule('transition', "all 0.1s ease-in 0.3s");
+        expect(stepTextTree).toHaveStyleRule('transition', "all 0.1s ease-in 0.3s");
+        expect(stepCircleTextTree).toHaveStyleRule('transition', "all 0.1s ease-in 0.3s");
+    });
+
     it("events: Trigger click on selected step", () => {
         const click = jasmine.createSpy('click');
         props = {...props, click};

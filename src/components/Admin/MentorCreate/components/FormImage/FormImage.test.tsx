@@ -1,22 +1,42 @@
-import { shallow } from 'enzyme';
+// tslint:disable:no-string-literal
+import { mount } from 'enzyme';
 import 'jest-styled-components';
 import * as React from 'react';
-import ImageProfile from "../ImageProfile/ImageProfile";
-import FormImage from "./FormImage";
+import {IMentorCreateContext} from "../../MentorCreate.context";
+import { getDefaultValues } from "../../MentorCreate.mock";
+import {IPropsFormImage} from "./FormImage";
+
+jest.doMock('react-responsive-modal', () => {
+    return {
+        default: (props: any) => <div>props.children()</div>
+    }
+});
+
+const getContext = (context: IMentorCreateContext) => {
+    jest.doMock('../../MentorCreate.context', () => {
+        return {
+            default: {
+                Consumer: (props: any) => props.children(context)
+            }
+        }
+    });
+    return require('./FormImage').default;
+};
 
 describe('FormImage Test',() => {
-    let props: any;
+    let props: IPropsFormImage;
+    let ctxt: IMentorCreateContext;
     let mountedComponent: any;
     const src = 'image_content.jpeg';
     const file = new Blob([src], {type : 'image/jpeg'});
     const readAsDataURL = jest.fn();
     const addEventListener = jest.fn((_, evtHandler) => { evtHandler(); });
     const dummyFileReader = {addEventListener, readAsDataURL, result: src};
-    // tslint:disable:no-string-literal
     window["FileReader"] = jest.fn(() => dummyFileReader);
     const getComponent = () => {
         if (!mountedComponent) {
-            mountedComponent = shallow(
+            const FormImage = getContext(ctxt);
+            mountedComponent = mount(
                 <FormImage {...props} />
             );
         }
@@ -24,9 +44,11 @@ describe('FormImage Test',() => {
     };
 
     beforeEach(() => {
+        jest.resetModules();
         props = {
             id: "ImageLoader"
         };
+        ctxt = getDefaultValues();
         mountedComponent = undefined;
     });
 
@@ -35,18 +57,14 @@ describe('FormImage Test',() => {
         expect(component.find(".FormImage_modal").length).toEqual(0);
     });
 
-    it("render: image should not have border", () => {
-        const component = getComponent();
-        expect(component.find(ImageProfile)).toHaveStyleRule('border', 'none');
-    });
-
-    it("events: on change input file the modal is visible", () => {
+    // todo: manage modal render and then validate this test case
+    it.skip("events: on change input file the modal is visible render", () => {
         const component = getComponent();
         component.find('input').simulate('change', {target: {files: [file]}});
         expect(component.find(".FormImage_modal").length).toEqual(1);
     });
 
-    it("events: on change input file the modal is visible", () => {
+    it("events: on change input file the modal is visible state", () => {
         const component = getComponent();
         const instance = component.instance();
         component.find('input').simulate('change', {target: {files: [file]}});
@@ -57,7 +75,6 @@ describe('FormImage Test',() => {
                 x: 0,
                 y: 0,
             },
-            croppedImage: "",
             croppedTmp: "",
             loading: false,
             modal: true,
@@ -75,11 +92,19 @@ describe('FormImage Test',() => {
         expect(instance.setState).toHaveBeenCalledWith({crop})
     });
 
-    it("events: on updateImage", () => {
+    it("events: on uploadImage call setFieldValue", async () => {
+        const component = getComponent();
+        const setFieldValue = jasmine.createSpy('click');
+        const instance = component.instance();
+        await instance.uploadImage(setFieldValue)();
+        expect(setFieldValue).toHaveBeenCalled();
+    });
+
+    it("events: on uploadImage call setState", () => {
         const component = getComponent();
         const instance = component.instance();
         spyOn(instance, 'setState').and.callThrough();
-        instance.updateImage();
+        instance.uploadImage(() => "")();
         expect(instance.setState).toHaveBeenCalled();
     });
 

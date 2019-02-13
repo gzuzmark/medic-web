@@ -3,7 +3,8 @@ import styled from "styled-components";
 import colors from "../MentorColor";
 import {Body1, LIGHT_TEXT} from "../MentorText";
 
-interface IPropsMentorCheckbox {
+export interface IPropsMentorCheckbox {
+    attr?: object;
     disabled?: boolean;
     text: string;
 }
@@ -87,13 +88,14 @@ class MentorCheckbox extends React.Component<IPropsMentorCheckbox, {}> {
         let properties = {};
         if (!!this.props.disabled) {
             properties = {
-                disabled: "true"
+                disabled: ""
             };
         }
+        const attr = {...properties, ...this.props.attr};
         return (
             <CheckboxContainer disabled={!!this.props.disabled}>
                 <Body1 weight={LIGHT_TEXT}>{this.props.text}</Body1>
-                <input type="checkbox" {...properties}/>
+                <input type="checkbox" {...attr}/>
                 <CheckboxStyled disabled={!!this.props.disabled}/>
             </CheckboxContainer>
         );

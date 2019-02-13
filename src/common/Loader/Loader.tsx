@@ -1,7 +1,7 @@
 import * as React from 'react';
 import './Loader.scss';
 
-interface IPropsLoader {
+export interface IPropsLoader {
     className?: string;
     top?: number;
     height?: number;

@@ -1,6 +1,5 @@
 import { Formik } from 'formik';
 import * as React from "react";
-import {ButtonLink, ButtonNormal, THEME_SECONDARY} from "../../../common/Buttons/Buttons";
 import Utilities from "../../../common/Utilities";
 import MentorCreateData, {IMentorCreateData, IMentorFormValidations} from "../../../domain/Mentor/MentorCreate";
 import FormManager from "./components/FormManager/FormManager";
@@ -16,46 +15,25 @@ interface IStateMentorCreate {
     mentorData: IMentorFormValidations;
 }
 
+const emptyStep = {active: false, animation: true, complete: false};
+const defaultStep = {active: true, animation: false, complete: false};
+
 class MentorCreate extends React.Component <{}, IStateMentorCreate> {
     public state: IStateMentorCreate;
     public mentorCreateData: MentorCreateData;
-    public buttonsAttrs: any;
     constructor(props: any) {
         super(props);
         this.mentorCreateData = new MentorCreateData({} as IMentorCreateData);
         this.onSelectStep = this.onSelectStep.bind(this);
         this.onNextStep = this.onNextStep.bind(this);
         this.onBeforeStep = this.onBeforeStep.bind(this);
-        this.buttonsAttrs = {type: "button", style: {marginLeft: 24}};
         this.state = {
             mentorData: this.mentorCreateData.getMentorValues,
             stepActive: 1,
-            stepsBar: [
-                {
-                    active: true,
-                    animation: false,
-                    complete: false,
-                    title: "Correo",
-                },
-                {
-                    active: false,
-                    animation: true,
-                    complete: false,
-                    title: "Datos personales",
-                },
-                {
-                    active: false,
-                    animation: true,
-                    complete: false,
-                    title: "Perfil (opcional)",
-                },
-                {
-                    active: false,
-                    animation: true,
-                    complete: false,
-                    title: "Confirmación",
-                }
-            ],
+            stepsBar: [{...defaultStep, title: "Correo"},
+                {...emptyStep, title: "Datos personales"},
+                {...emptyStep, title: "Perfil (opcional)"},
+                {...emptyStep, title: "Confirmación"}],
             submitText: "Continuar"
         }
     }
@@ -69,19 +47,16 @@ class MentorCreate extends React.Component <{}, IStateMentorCreate> {
                         initialValues={this.mentorCreateData.getMentorValues}
                         validationSchema={mentorCreateSchema}
                         onSubmit={this.onSubmit}>
-                        {({ errors, touched, values, handleBlur, handleChange, handleSubmit, setFieldValue}) => {
+                        {({ errors, touched, values, handleBlur, handleChange, handleSubmit, setFieldValue, setFieldTouched}) => {
                             return (
                                 <MentorCreateContext.Provider
-                                    value={{errors, touched, values, handleBlur, handleChange, setFieldValue}}>
+                                    value={{errors, touched, values, handleBlur, handleChange, setFieldValue, setFieldTouched}}>
                                     <form onSubmit={handleSubmit}>
-                                        <FormManager currentStep={this.state.stepActive} >
-                                            <ButtonLink text={"Cancelar"} />
-                                            <ButtonNormal text={"Retroceder"}
-                                                          type={THEME_SECONDARY}
-                                                          attrs={{...this.buttonsAttrs, onClick: this.onBeforeStep}} />
-                                            <ButtonNormal text={this.state.submitText}
-                                                          attrs={{...this.buttonsAttrs, onClick: this.onNextStep}}/>
-                                        </FormManager>
+                                        <FormManager currentStep={this.state.stepActive}
+                                                     formData={{errors, touched, values}}
+                                                     onBeforeStep={this.onBeforeStep}
+                                                     onNextStep={this.onNextStep}
+                                                     submitText={this.state.submitText}/>
                                     </form>
                                 </MentorCreateContext.Provider>
                             )
@@ -158,7 +133,6 @@ class MentorCreate extends React.Component <{}, IStateMentorCreate> {
             return step;
         })
     }
-
 }
 
 export default MentorCreate;

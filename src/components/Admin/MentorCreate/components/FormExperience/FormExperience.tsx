@@ -13,13 +13,6 @@ import FormColumn from "../../../ScheduleSession/components/FormRow/components/F
 import FormRow from "../../../ScheduleSession/components/FormRow/FormRow";
 import MentorCreateContext, {IMentorCreateContext} from "../../MentorCreate.context";
 
-interface IStateFormExperience {
-    submitText: string;
-}
-
-interface IPropsFormExperience {
-    currentStep?: number;
-}
 
 export const SubTitle = styled(Subhead1)`
     text-align: center;
@@ -79,13 +72,9 @@ export const OptionsHandler = styled.div`
 `;
 
 
-class FormExperience extends React.Component <IPropsFormExperience, IStateFormExperience> {
-    public state: IStateFormExperience;
-    constructor(props: IPropsFormExperience) {
+class FormExperience extends React.Component <{}, {}> {
+    constructor(props: any) {
         super(props);
-        this.state = {
-            submitText: "Continuar"
-        };
         this.handlerDate = this.handlerDate.bind(this);
         this.renderExperience = this.renderExperience.bind(this);
     }
@@ -115,13 +104,13 @@ class FormExperience extends React.Component <IPropsFormExperience, IStateFormEx
         return (arrayHelpers: ArrayHelpers) => {
             const addNewExperience = () => {
                 arrayHelpers.push({
-                    company: "UTP",
+                    company: "",
                     currentJob: false,
-                    fromMonth: "1",
-                    fromYear: "2019",
-                    position: "Full Stack",
-                    toMonth: "2",
-                    toYear: "2019"
+                    fromMonth: "",
+                    fromYear: "",
+                    position: "",
+                    toMonth: "",
+                    toYear: ""
                 })
             };
             const removeExperience = (index: number) => {
@@ -131,7 +120,7 @@ class FormExperience extends React.Component <IPropsFormExperience, IStateFormEx
             };
             return experiences.map((value, index) => {
                 return (
-                    <ExperienceItem key={index}>
+                    <ExperienceItem key={index} className={'ExperienceItem'}>
                         <FormRow style={{padding: '30px 0 40px 0', margin: 0}} columns={[
                             <FormColumn width={2} key={`FormColumn-PersonalData_${++counter}`}>
                                 <MentorInput
@@ -163,8 +152,9 @@ class FormExperience extends React.Component <IPropsFormExperience, IStateFormEx
                                         <MentorDropDown
                                             label={"DESDE"}
                                             value={value.fromMonth}
+                                            error={(hasError(index, "toYear") || hasError(index, "fromYear")) && "  " }
                                             name={`experiences[${index}].fromMonth`}
-                                            triggerChange={this.handlerDate(ctxt.setFieldValue)}
+                                            triggerChange={this.handlerDate(ctxt)}
                                             placeholder="Mes"
                                             options={date.months} />
                                     </FormColumn>,
@@ -172,8 +162,9 @@ class FormExperience extends React.Component <IPropsFormExperience, IStateFormEx
                                         <MentorDropDown
                                             label={" "}
                                             value={value.fromYear}
+                                            error={(hasError(index, "toYear") || hasError(index, "fromYear")) && "  "}
                                             name={`experiences[${index}].fromYear`}
-                                            triggerChange={this.handlerDate(ctxt.setFieldValue)}
+                                            triggerChange={this.handlerDate(ctxt)}
                                             placeholder="Año"
                                             options={date.years} />
                                     </FormColumn>]}/>
@@ -184,8 +175,10 @@ class FormExperience extends React.Component <IPropsFormExperience, IStateFormEx
                                         <MentorDropDown
                                             label={"HASTA"}
                                             value={value.toMonth}
+                                            disabled={value.currentJob}
+                                            error={hasError(index, "toYear") && "  "}
                                             name={`experiences[${index}].toMonth`}
-                                            triggerChange={this.handlerDate(ctxt.setFieldValue)}
+                                            triggerChange={this.handlerDate(ctxt)}
                                             placeholder="Mes"
                                             options={date.months} />
                                     </FormColumn>,
@@ -193,12 +186,20 @@ class FormExperience extends React.Component <IPropsFormExperience, IStateFormEx
                                         <MentorDropDown
                                             label={" "}
                                             value={value.toYear}
+                                            disabled={value.currentJob}
+                                            error={hasError(index, "toYear") && "  "}
                                             name={`experiences[${index}].toYear`}
-                                            triggerChange={this.handlerDate(ctxt.setFieldValue)}
+                                            triggerChange={this.handlerDate(ctxt)}
                                             placeholder="Año"
                                             options={date.years} />
                                     </FormColumn>]}/>
-                                <MentorCheckbox text={"Actualmente trabaja aquí"}/>
+                                <MentorCheckbox
+                                    text={"Actualmente trabaja aquí"}
+                                    attr={{
+                                        name: `experiences[${index}].currentJob`,
+                                        onBlur: ctxt.handleBlur,
+                                        onChange: this.handlerCurrentJob(ctxt, index)
+                                    }}/>
                             </FormColumn>
                         ]}/>
                         <OptionsHandler>
@@ -223,12 +224,28 @@ class FormExperience extends React.Component <IPropsFormExperience, IStateFormEx
             return t && e;
         }
     }
-    private handlerDate(setFieldValue: any) {
+
+    private handlerCurrentJob(context: IMentorCreateContext, index: number) {
+        return (e: any) => {
+            context.setFieldTouched(`experiences[${index}].fromMonth`);
+            context.setFieldTouched(`experiences[${index}].fromYear`);
+            context.setFieldValue(`experiences[${index}].toMonth`, '');
+            context.setFieldValue(`experiences[${index}].toYear`, '');
+            context.handleChange(e);
+        }
+    }
+
+    private handlerDate(context: IMentorCreateContext) {
         return (name: string, selectedOption: IPropsMentorOptionsDropDown | IPropsMentorOptionsDropDown[]) => {
-            if (Array.isArray(selectedOption)) {
-                setFieldValue(name, selectedOption.map(v => v.value));
-            } else {
-                setFieldValue(name, selectedOption.value)
+            if (!Array.isArray(selectedOption)) {
+                context.setFieldValue(name, selectedOption.value);
+                context.setFieldTouched(name);
+                /*
+                if (name === "toYear") {
+                    context.setFieldTouched("fromMonth");
+                    context.setFieldTouched("toMonth");
+                }
+                */
             }
         };
     }

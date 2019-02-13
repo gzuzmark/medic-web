@@ -26,51 +26,51 @@ export const backToPagePreviously = () => {
 const months = [
     {
         label: "Enero",
-        value: "1"
+        value: "0"
     },
     {
         label: "Febrero",
-        value: "2"
+        value: "1"
     },
     {
         label: "Marzo",
-        value: "3"
+        value: "2"
     },
     {
         label: "Abril",
-        value: "4"
+        value: "3"
     },
     {
         label: "Mayo",
-        value: "5"
+        value: "4"
     },
     {
         label: "Junio",
-        value: "6"
+        value: "5"
     },
     {
         label: "Julio",
-        value: "7"
+        value: "6"
     },
     {
         label: "Agosto",
-        value: "8"
+        value: "7"
     },
     {
         label: "Setiembre",
-        value: "9"
+        value: "8"
     },
     {
         label: "Octubre",
-        value: "10"
+        value: "9"
     },
     {
         label: "Noviembre",
-        value: "11"
+        value: "10"
     },
     {
         label: "Diciembre",
-        value: "12"
+        value: "11"
     },
 ];
 

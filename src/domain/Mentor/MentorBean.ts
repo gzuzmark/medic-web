@@ -14,14 +14,14 @@ export interface IMentorExperience {
 
 export interface IMentorBean {
     email: string;
-    firstName?: string;
-    lastName?: string;
+    name?: string;
+    lastname?: string;
     documentType?: string;
     document?: string;
     numberContact?: string;
     location?: IItemBase;
     skills?: IItemBase[];
-    picture?: string;
+    photo?: string;
     description?: string;
     experiences?: IMentorExperience[];
     currentPosition?: string;
@@ -34,14 +34,14 @@ class MentorBean {
     constructor(mentor: IMentorBean) {
         this.mentor = mentor;
         this.mentor.email = mentor.email || '';
-        this.mentor.firstName = mentor.firstName || '';
-        this.mentor.lastName = mentor.lastName || '';
+        this.mentor.name = mentor.name || '';
+        this.mentor.lastname = mentor.lastname || '';
         this.mentor.documentType = mentor.documentType || '';
         this.mentor.document = mentor.document || '';
         this.mentor.numberContact = mentor.numberContact || '';
         this.mentor.location = mentor.location;
         this.mentor.skills = mentor.skills || [] as IItemBase[];
-        this.mentor.picture = mentor.picture || '';
+        this.mentor.photo = mentor.photo || '';
         this.mentor.description = mentor.description || '';
         this.mentor.experiences = mentor.experiences || [] as IMentorExperience[];
         this.mentor.currentPosition = mentor.currentPosition || '';

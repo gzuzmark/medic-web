@@ -23,7 +23,7 @@ export interface IMentorFormValidations {
     email: string;
     firstName: string;
     lastName: string;
-    documentType: string;
+    documentType: IFormItemBase;
     document: string;
     numberContact: string;
     location: IFormItemBase;
@@ -33,6 +33,7 @@ export interface IMentorFormValidations {
     experiences: IMentorFormExperience[];
     currentPosition: string;
     currentCompany: string;
+    validation: boolean;
 }
 
 class MentorCreateData extends MentorBean {
@@ -60,15 +61,16 @@ class MentorCreateData extends MentorBean {
             currentPosition: m.currentPosition || '',
             description: m.description || '',
             document: m.document || '',
-            documentType: m.documentType || '',
+            documentType: {} as IFormItemBase,
             email: m.email || '',
             experiences: [] as IMentorFormExperience[],
-            firstName: m.firstName || '',
-            lastName: m.lastName || '',
+            firstName: m.name || '',
+            lastName: m.lastname || '',
             location: {} as IFormItemBase,
             numberContact: m.numberContact || '',
-            picture: m.picture || '',
-            skills: [] as IFormItemBase[]
+            picture: m.photo || '',
+            skills: [] as IFormItemBase[],
+            validation: false
         };
         formValues.experiences = m.experiences.map((item: IMentorExperience) => {
             const {from, to} = item;
