@@ -52,6 +52,7 @@ class FormMail extends React.Component <{}, IStateFormMail> {
     private onChange(context: IMentorCreateContext) {
         return (e: any) => {
             clearTimeout(this.timer);
+            // todo: retirar setitimeout
             this.setState({loading: false});
             if (!context.errors.email && e.target.value.length > 3) {
                 this.setState({loading: true});
@@ -71,7 +72,7 @@ class FormMail extends React.Component <{}, IStateFormMail> {
                         context.setFieldTouched("picture");
                         this.setState({loading: false});
                     }).catch((error) => {
-                        if (error.response && error.response.data && error.response.data.code === 404) {
+                        if (error.response && error.response.data && error.response.data.code === 409) {
                             context.setFieldValue("validation", true);
                             context.setFieldTouched("validation");
                         } else {
@@ -79,7 +80,7 @@ class FormMail extends React.Component <{}, IStateFormMail> {
                         }
                         this.setState({loading: false});
                     });
-                }, 500);
+                }, 0);
             }
             context.handleChange(e);
         }

@@ -37,6 +37,7 @@ const LoaderInput = styled(Loader)`
     width: 48px;
 `;
 
+// todo: pasar a styled component
 class MentorInput extends React.Component<IPropsMentorInput, IStateMentorInput> {
     public static defaultProps = {
         active: true,
