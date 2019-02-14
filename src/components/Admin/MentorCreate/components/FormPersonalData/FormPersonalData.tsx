@@ -1,25 +1,17 @@
 import * as React from "react";
 import MentorDropDown, {IPropsMentorOptionsDropDown} from "../../../../../common/MentorDropDown/MentorDropDown";
 import MentorInput from "../../../../../common/MentorInput/MentorInput";
-import {emailStatus} from "../../../../../domain/Mentor/MentorCreate";
 import FormColumn from "../../../ScheduleSession/components/FormRow/components/FormColumn/FormColumn";
 import FormRow from "../../../ScheduleSession/components/FormRow/FormRow";
 import MentorCreateContext, {IMentorCreateContext} from "../../MentorCreate.context";
-
-interface IStateFormPersonalData {
-    submitText: string;
-}
+import {IFormManagerDisabledFields} from "../FormManager/FormManager";
 
 interface IPropsFormPersonalData {
-    currentStep?: number;
+    disableFields: IFormManagerDisabledFields;
 }
-class FormPersonalData extends React.Component <IPropsFormPersonalData, IStateFormPersonalData> {
-    public state: IStateFormPersonalData;
+class FormPersonalData extends React.Component <IPropsFormPersonalData, {}> {
     constructor(props: IPropsFormPersonalData) {
         super(props);
-        this.state = {
-            submitText: "Continuar"
-        };
         this.handlerDocumentType = this.handlerDocumentType.bind(this);
         this.handlerLocation = this.handlerLocation.bind(this);
         this.handlerSkills = this.handlerSkills.bind(this);
@@ -33,10 +25,10 @@ class FormPersonalData extends React.Component <IPropsFormPersonalData, IStateFo
             <MentorCreateContext.Consumer>
                 {(context: IMentorCreateContext) => {
                     const {errors, touched} = context;
-                    const documentAttrs = this.getDocumentAttr(context.values.validation, context.values.documentType.value);
-                    const firstNameAttrs = this.getAttrs(context.values.validation, context.values.firstName);
-                    const lastNameAttrs = this.getAttrs(context.values.validation, context.values.firstName);
-                    const documentTypeDisabled = context.values.validation === emailStatus.FULL_DATA;
+                    const documentAttrs = this.getDocumentAttr(this.props.disableFields.document, context.values.documentType.value);
+                    const firstNameAttrs = this.getAttrs(this.props.disableFields.firstName);
+                    const lastNameAttrs = this.getAttrs(this.props.disableFields.lastName);
+                    const documentTypeDisabled = this.props.disableFields.documentType;
                     return (
                         <React.Fragment>
                             <FormRow style={{padding: '30px 0 40px 0', margin: 0}} columns={[
@@ -144,22 +136,22 @@ class FormPersonalData extends React.Component <IPropsFormPersonalData, IStateFo
         )
     }
 
-    private getAttrs(status: string, value?: string) {
+    private getAttrs(disabled: boolean) {
         let attr: object = {};
-        if (status === emailStatus.FULL_DATA) {
+        if (disabled) {
             attr = {disabled: true};
         }
         return attr;
     }
 
-    private getDocumentAttr(status: string, documentType?: string) {
+    private getDocumentAttr(disabled: boolean, documentType?: string) {
         let attr: object = {disabled: true};
         if (!!documentType) {
             attr = {
                 maxLength: documentType === 'DNI' ? 8 : 12
             }
         }
-        if (status === emailStatus.FULL_DATA) {
+        if (disabled) {
             attr = {...attr, disabled: true};
         }
         return attr;

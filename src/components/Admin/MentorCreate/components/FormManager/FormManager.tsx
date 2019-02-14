@@ -22,6 +22,17 @@ interface IPropsFormManager {
     submitText: string;
 }
 
+export interface IFormManagerDisabledFields {
+    firstName: boolean;
+    lastName: boolean;
+    documentType: boolean;
+    document: boolean;
+}
+
+interface IStateFormManager {
+    disabledFields: IFormManagerDisabledFields;
+}
+
 export const FormManagerContainer = styled.div`
     margin: 100px auto 80px auto;
     width: 874px;
@@ -32,13 +43,23 @@ const FormPersonalDataTemplate = formTemplateHOC(FormPersonalData);
 const FormExperienceTemplate = formTemplateHOC(FormProfile, FormExperience);
 const FormReviewTemplate = formTemplateHOC(FormReview);
 
-class FormManager extends React.Component <IPropsFormManager, {}> {
+class FormManager extends React.Component <IPropsFormManager, IStateFormManager> {
+    public state: IStateFormManager;
     private buttonAttrBack: any;
     private buttonAttrContinue: any;
     constructor(props: IPropsFormManager) {
         super(props);
         this.buttonAttrBack = {type: "button", style: {marginLeft: 24}};
         this.buttonAttrContinue = {type: "button", style: {marginLeft: 24}};
+        this.updateDisabledFields = this.updateDisabledFields.bind(this);
+        this.state = {
+            disabledFields: {
+                document: false,
+                documentType: false,
+                firstName: false,
+                lastName: false,
+            }
+        }
     }
 
     public render() {
@@ -77,11 +98,13 @@ class FormManager extends React.Component <IPropsFormManager, {}> {
                 {1 === this.props.currentStep &&
                     <FormManagerContainer>
                         <FormMailTemplate
-                            title={"Para empezar, ingresa el correo del mentor"} />
+                            title={"Para empezar, ingresa el correo del mentor"}
+                            updateDisabledFields={this.updateDisabledFields}/>
                     </FormManagerContainer>}
                 {2 === this.props.currentStep &&
                     <FormManagerContainer>
                         <FormPersonalDataTemplate
+                            disableFields={this.state.disabledFields}
                             title={"Datos personales del mentor"}
                             subTitle={"Ingresa los datos del mentor que deseas agregar"} />
                     </FormManagerContainer>}
@@ -112,6 +135,10 @@ class FormManager extends React.Component <IPropsFormManager, {}> {
                 </FormManagerContainer>
             </React.Fragment>
         )
+    }
+
+    private updateDisabledFields(disableFields: IFormManagerDisabledFields) {
+        this.setState({ disabledFields: disableFields });
     }
 }
 

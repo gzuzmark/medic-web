@@ -41,7 +41,7 @@ export const emailStatus = {
     CLEAN: "",
     EMAIL_NOT_VALID: "Ingrese un correo válido",
     ERROR_PROCESS: "Tuvimos un problema al procesar su correo",
-    FULL_DATA: "Se obtuvieron datos del usuario",
+    FULL_DATA: "Se obtuvieron todos datos del usuario",
     NO_DATA: "No se obtuvieron datos del usuario"
 }
 

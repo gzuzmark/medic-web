@@ -4,22 +4,28 @@ import {IMentorBean} from "../../../../../domain/Mentor/MentorBean";
 import {emailStatus} from "../../../../../domain/Mentor/MentorCreate";
 import MentorService from "../../../../../services/Mentor/Mentor.service";
 import MentorCreateContext, {IMentorCreateContext} from "../../MentorCreate.context";
+import {IFormManagerDisabledFields} from "../FormManager/FormManager";
 
 interface IStateFormMail {
     loading: boolean;
 }
 
-class FormMail extends React.Component <{}, IStateFormMail> {
+interface IPropsFormMail {
+    updateDisabledFields: (fields: IFormManagerDisabledFields) => void;
+}
+
+class FormMail extends React.Component <IPropsFormMail, IStateFormMail> {
     public state: IStateFormMail;
     private mentorService: MentorService;
     private timer: any = 0;
-    constructor(props: any) {
+    constructor(props: IPropsFormMail) {
         super(props);
         this.onChange = this.onChange.bind(this);
         this.verifyMentor = this.verifyMentor.bind(this);
         this.getStatusEmail = this.getStatusEmail.bind(this);
         this.fillMentorData = this.fillMentorData.bind(this);
         this.updateStatusEmailValidation = this.updateStatusEmailValidation.bind(this);
+        this.cleanMentorData = this.cleanMentorData.bind(this);
         this.mentorService = new MentorService();
         this.state = {
             loading: false
@@ -74,6 +80,32 @@ class FormMail extends React.Component <{}, IStateFormMail> {
         context.setFieldTouched("firstName");
         context.setFieldValue("picture", value.photo);
         context.setFieldTouched("picture");
+        this.props.updateDisabledFields({
+            document: !!value && !!value.document && !!value.document.trim(),
+            documentType: !!value && !!value.documentType && !!value.documentType.trim(),
+            firstName: !!value && !!value.name && !!value.name.trim(),
+            lastName: !!value && !!value.lastname && !!value.lastname.trim()
+        })
+    }
+
+    private cleanMentorData(context: IMentorCreateContext) {
+        context.setFieldValue("validation", emailStatus.CLEAN);
+        context.setFieldValue("documentType", {value: ''});
+        context.setFieldTouched("documentType", false);
+        context.setFieldValue("document", '');
+        context.setFieldTouched("document", false);
+        context.setFieldValue("lastName", '');
+        context.setFieldTouched("lastName", false);
+        context.setFieldValue("firstName", '');
+        context.setFieldTouched("firstName", false);
+        context.setFieldValue("picture", '');
+        context.setFieldTouched("picture", false);
+        this.props.updateDisabledFields({
+            document: false,
+            documentType: false,
+            firstName: false,
+            lastName: false
+        })
     }
 
     private updateStatusEmailValidation(code: number, context: IMentorCreateContext) {
@@ -90,8 +122,8 @@ class FormMail extends React.Component <{}, IStateFormMail> {
 
     private verifyMentor(email: string, context: IMentorCreateContext) {
         this.mentorService.verify(email.trim()).then((mentor: IMentorBean) => {
-            this.fillMentorData(mentor, context);
             this.setState({loading: false});
+            this.fillMentorData(mentor, context);
         }).catch((error) => {
             if (error.response && error.response.data) {
                 this.setState({loading: false});
@@ -103,7 +135,7 @@ class FormMail extends React.Component <{}, IStateFormMail> {
     private onChange(context: IMentorCreateContext) {
         return (e: any) => {
             context.handleChange(e);
-            context.setFieldValue("validation", emailStatus.CLEAN);
+            this.cleanMentorData(context);
             this.setState({loading: false});
             clearTimeout(this.timer);
             if (e.target.value.includes("@")) {

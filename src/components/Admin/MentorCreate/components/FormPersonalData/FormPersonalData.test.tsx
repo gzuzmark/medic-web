@@ -32,7 +32,14 @@ describe('FormPersonalData Test',() => {
 
     beforeEach(() => {
         jest.resetModules();
-        props = {};
+        props = {
+            disableFields: {
+                document: false,
+                documentType: false,
+                firstName: false,
+                lastName: false
+            }
+        };
         ctxt = getDefaultValues();
         mountedComponent = undefined;
     });
