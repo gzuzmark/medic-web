@@ -33,7 +33,16 @@ export interface IMentorFormValidations {
     experiences: IMentorFormExperience[];
     currentPosition: string;
     currentCompany: string;
-    validation: boolean;
+    validation: string;
+}
+
+export const emailStatus = {
+    ALREADY_REGISTERED: "Este correo pertenece a un mentor ya creado",
+    CLEAN: "",
+    EMAIL_NOT_VALID: "Ingrese un correo válido",
+    ERROR_PROCESS: "Tuvimos un problema al procesar su correo",
+    FULL_DATA: "Se obtuvieron datos del usuario",
+    NO_DATA: "No se obtuvieron datos del usuario"
 }
 
 class MentorCreateData extends MentorBean {
@@ -70,7 +79,7 @@ class MentorCreateData extends MentorBean {
             numberContact: m.numberContact || '',
             picture: m.photo || '',
             skills: [] as IFormItemBase[],
-            validation: false
+            validation: ''
         };
         formValues.experiences = m.experiences.map((item: IMentorExperience) => {
             const {from, to} = item;

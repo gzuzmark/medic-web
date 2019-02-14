@@ -30,7 +30,9 @@ class BaseRequest {
         if (!!cancel) {
             params.cancelToken = cancel.token;
         }
-        return Axios.create(params);
+        const newInstance = Axios.create(params);
+        this.onResponseError(newInstance);
+        return newInstance;
     }
 
     public generateCancelToken() {
@@ -38,7 +40,7 @@ class BaseRequest {
     }
 
     public refreshToken() {
-        return new Promise((resolve, reject) => {
+        return new Promise<string>((resolve, reject) => {
             Axios.post('/ugo-admin/refreshToken', {},
                 {
                     baseURL: this.baseUrl,
@@ -48,7 +50,7 @@ class BaseRequest {
                     UserRepository.setRefreshToken(response.data.refreshToken);
                     UserRepository.setToken(response.data.token);
                     this.source.cancel('New token was given.');
-                    resolve();
+                    resolve(response.data.token);
                 }).catch((error)=> {
                     if (Axios.isCancel(error)) {
                         resolve();
@@ -62,10 +64,11 @@ class BaseRequest {
         });
     }
 
-    public setTokenHeader() {
-        this.instance = Axios.create({
+    public setTokenHeader(currentToken?: string) {
+        const token =  currentToken || UserRepository.getToken();
+        return Axios.create({
             baseURL: this.baseUrl,
-            headers: {...headersRequest, 'Authorization': 'Bearer ' + UserRepository.getToken()},
+            headers: {...headersRequest, 'Authorization': 'Bearer ' + token},
         });
     }
 
@@ -76,17 +79,17 @@ class BaseRequest {
         }
     }
 
-    private async onResponseError() {
-        this.instance.interceptors.response.use(async (response:any) => {
+    private onResponseError(currentInstance?: any) {
+        const instance = currentInstance || this.instance;
+        instance.interceptors.response.use(async (response:any) => {
             return response;
         }, async (error:any) => {
             const originalRequest = {...error.config};
             if (error.response && error.response.status === 401 && !originalRequest._retry) {
                 originalRequest._retry = true;
                 try {
-                    await this.refreshToken();
-                    this.setTokenHeader();
-                    return this.instance(originalRequest);
+                    const token = await this.refreshToken();
+                    return this.setTokenHeader(token)(originalRequest);
                 } catch (error) {
                     originalRequest._retry = false;
                 }

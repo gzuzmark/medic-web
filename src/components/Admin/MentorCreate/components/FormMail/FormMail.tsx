@@ -1,6 +1,7 @@
 import * as React from "react";
 import MentorInput from "../../../../../common/MentorInput/MentorInput";
 import {IMentorBean} from "../../../../../domain/Mentor/MentorBean";
+import {emailStatus} from "../../../../../domain/Mentor/MentorCreate";
 import MentorService from "../../../../../services/Mentor/Mentor.service";
 import MentorCreateContext, {IMentorCreateContext} from "../../MentorCreate.context";
 
@@ -15,6 +16,10 @@ class FormMail extends React.Component <{}, IStateFormMail> {
     constructor(props: any) {
         super(props);
         this.onChange = this.onChange.bind(this);
+        this.verifyMentor = this.verifyMentor.bind(this);
+        this.getStatusEmail = this.getStatusEmail.bind(this);
+        this.fillMentorData = this.fillMentorData.bind(this);
+        this.updateStatusEmailValidation = this.updateStatusEmailValidation.bind(this);
         this.mentorService = new MentorService();
         this.state = {
             loading: false
@@ -27,7 +32,9 @@ class FormMail extends React.Component <{}, IStateFormMail> {
                 {(context: IMentorCreateContext) => {
                     const {errors, touched, values} = context;
                     const errorEmail = touched.email && errors.email;
-                    const errorValidation = touched.validation && !values.validation && 'Hubo problemas al validar el correo' || '';
+                    const statusEmail = this.getStatusEmail(values.validation);
+                    const errorValidation =
+                        touched.validation && statusEmail;
                     return (
                         <React.Fragment>
                             <MentorInput
@@ -49,40 +56,65 @@ class FormMail extends React.Component <{}, IStateFormMail> {
         )
     }
 
+    private getStatusEmail(validation: string) {
+        const alreadyRegistered = validation === emailStatus.ALREADY_REGISTERED && emailStatus.ALREADY_REGISTERED;
+        const errorProcess = validation === emailStatus.ERROR_PROCESS && emailStatus.ERROR_PROCESS;
+        return alreadyRegistered || errorProcess || '';
+    }
+
+    private fillMentorData(value: IMentorBean, context: IMentorCreateContext) {
+        context.setFieldValue("validation", emailStatus.FULL_DATA);
+        context.setFieldValue("documentType", {value: value.documentType});
+        context.setFieldTouched("documentType");
+        context.setFieldValue("document", value.document);
+        context.setFieldTouched("document");
+        context.setFieldValue("lastName", value.lastname);
+        context.setFieldTouched("lastName");
+        context.setFieldValue("firstName", value.name);
+        context.setFieldTouched("firstName");
+        context.setFieldValue("picture", value.photo);
+        context.setFieldTouched("picture");
+    }
+
+    private updateStatusEmailValidation(code: number, context: IMentorCreateContext) {
+        if (code === 404) {
+            context.setFieldValue("validation", emailStatus.NO_DATA);
+        } else if (code === 409) {
+            context.setFieldValue("validation", emailStatus.ALREADY_REGISTERED);
+        } else if (code === 400) {
+            context.setFieldValue("validation", emailStatus.EMAIL_NOT_VALID);
+        } else if (code === 401) {
+            context.setFieldValue("validation", emailStatus.ERROR_PROCESS);
+        }
+    }
+
+    private verifyMentor(email: string, context: IMentorCreateContext) {
+        this.mentorService.verify(email.trim()).then((mentor: IMentorBean) => {
+            this.fillMentorData(mentor, context);
+            this.setState({loading: false});
+        }).catch((error) => {
+            if (error.response && error.response.data) {
+                this.setState({loading: false});
+                this.updateStatusEmailValidation(error.response.data.code, context);
+            }
+        });
+    }
+
     private onChange(context: IMentorCreateContext) {
         return (e: any) => {
-            clearTimeout(this.timer);
-            // todo: retirar setitimeout
-            this.setState({loading: false});
-            if (!context.errors.email && e.target.value.length > 3) {
-                this.setState({loading: true});
-                this.timer = setTimeout(() => {
-                    this.mentorService.verify(e.target.value.trim()).then((value: IMentorBean) => {
-                        context.setFieldValue("validation", true);
-                        context.setFieldTouched("validation");
-                        context.setFieldValue("documentType", {value: value.documentType});
-                        context.setFieldTouched("documentType");
-                        context.setFieldValue("document", value.document);
-                        context.setFieldTouched("document");
-                        context.setFieldValue("lastName", value.lastname);
-                        context.setFieldTouched("lastName");
-                        context.setFieldValue("firstName", value.name);
-                        context.setFieldTouched("firstName");
-                        context.setFieldValue("picture", value.photo);
-                        context.setFieldTouched("picture");
-                        this.setState({loading: false});
-                    }).catch((error) => {
-                        if (error.response && error.response.data && error.response.data.code === 409) {
-                            context.setFieldValue("validation", true);
-                            context.setFieldTouched("validation");
-                        } else {
-                            context.setFieldValue("validation", false);
-                        }
-                        this.setState({loading: false});
-                    });
-                }, 0);
-            }
             context.handleChange(e);
+            context.setFieldValue("validation", emailStatus.CLEAN);
+            this.setState({loading: false});
+            clearTimeout(this.timer);
+            if (e.target.value.includes("@")) {
+                context.setFieldTouched("email");
+                context.setFieldTouched("validation");
+                this.timer = setTimeout(() => {
+                    this.setState({loading: true}, () => {
+                        this.verifyMentor(e.target.value.trim(), context);
+                    });
+                }, 500);
+            }
         }
     }
 }

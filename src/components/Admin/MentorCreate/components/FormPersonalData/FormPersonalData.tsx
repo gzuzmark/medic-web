@@ -1,6 +1,7 @@
 import * as React from "react";
 import MentorDropDown, {IPropsMentorOptionsDropDown} from "../../../../../common/MentorDropDown/MentorDropDown";
 import MentorInput from "../../../../../common/MentorInput/MentorInput";
+import {emailStatus} from "../../../../../domain/Mentor/MentorCreate";
 import FormColumn from "../../../ScheduleSession/components/FormRow/components/FormColumn/FormColumn";
 import FormRow from "../../../ScheduleSession/components/FormRow/FormRow";
 import MentorCreateContext, {IMentorCreateContext} from "../../MentorCreate.context";
@@ -22,6 +23,8 @@ class FormPersonalData extends React.Component <IPropsFormPersonalData, IStateFo
         this.handlerDocumentType = this.handlerDocumentType.bind(this);
         this.handlerLocation = this.handlerLocation.bind(this);
         this.handlerSkills = this.handlerSkills.bind(this);
+        this.getAttrs = this.getAttrs.bind(this);
+        this.getDocumentAttr = this.getDocumentAttr.bind(this);
     }
 
     public render() {
@@ -30,12 +33,10 @@ class FormPersonalData extends React.Component <IPropsFormPersonalData, IStateFo
             <MentorCreateContext.Consumer>
                 {(context: IMentorCreateContext) => {
                     const {errors, touched} = context;
-                    let documentAttr: object = {disabled: true};
-                    if (!!context.values.documentType.value) {
-                        documentAttr = {
-                            maxLength: context.values.documentType.value === 'DNI' ? 8 : 12
-                        }
-                    }
+                    const documentAttrs = this.getDocumentAttr(context.values.validation, context.values.documentType.value);
+                    const firstNameAttrs = this.getAttrs(context.values.validation, context.values.firstName);
+                    const lastNameAttrs = this.getAttrs(context.values.validation, context.values.firstName);
+                    const documentTypeDisabled = context.values.validation === emailStatus.FULL_DATA;
                     return (
                         <React.Fragment>
                             <FormRow style={{padding: '30px 0 40px 0', margin: 0}} columns={[
@@ -48,7 +49,8 @@ class FormPersonalData extends React.Component <IPropsFormPersonalData, IStateFo
                                             onBlur: context.handleBlur,
                                             onChange: context.handleChange,
                                             placeholder: "Ingresa el nombre completo",
-                                            value: context.values.firstName}}/>
+                                            value: context.values.firstName,
+                                            ...firstNameAttrs}}/>
                                 </FormColumn>,
                                 <FormColumn width={2} key={`FormColumn-PersonalData_${++counter}`}>
                                     <MentorInput
@@ -59,7 +61,8 @@ class FormPersonalData extends React.Component <IPropsFormPersonalData, IStateFo
                                             onBlur: context.handleBlur,
                                             onChange: context.handleChange,
                                             placeholder: "Ingresa el apellido",
-                                            value: context.values.lastName}}/>
+                                            value: context.values.lastName,
+                                            ...lastNameAttrs}}/>
                                 </FormColumn>
                             ]}/>
                             <FormRow style={{padding: '30px 0 40px 0', margin: 0}} columns={[
@@ -67,6 +70,7 @@ class FormPersonalData extends React.Component <IPropsFormPersonalData, IStateFo
                                     <MentorDropDown
                                         label={"TIPO DE DOCUMENTO"}
                                         name={"documentType"}
+                                        disabled={documentTypeDisabled}
                                         value={context.values.documentType.value}
                                         triggerChange={this.handlerDocumentType(context)}
                                         placeholder="DNI, Carné de extranjería, etc."
@@ -84,7 +88,7 @@ class FormPersonalData extends React.Component <IPropsFormPersonalData, IStateFo
                                             onChange: context.handleChange,
                                             placeholder: "Ingresa el número de docuemnto",
                                             value: context.values.document,
-                                            ...documentAttr}}/>
+                                            ...documentAttrs}}/>
                                 </FormColumn>
                             ]}/>
                             <FormRow style={{padding: '30px 0 40px 0', margin: 0}} columns={[
@@ -140,6 +144,26 @@ class FormPersonalData extends React.Component <IPropsFormPersonalData, IStateFo
         )
     }
 
+    private getAttrs(status: string, value?: string) {
+        let attr: object = {};
+        if (status === emailStatus.FULL_DATA) {
+            attr = {disabled: true};
+        }
+        return attr;
+    }
+
+    private getDocumentAttr(status: string, documentType?: string) {
+        let attr: object = {disabled: true};
+        if (!!documentType) {
+            attr = {
+                maxLength: documentType === 'DNI' ? 8 : 12
+            }
+        }
+        if (status === emailStatus.FULL_DATA) {
+            attr = {...attr, disabled: true};
+        }
+        return attr;
+    }
     private handlerLocation(context: IMentorCreateContext) {
         return (name: string, option: IPropsMentorOptionsDropDown) => {
             context.setFieldValue(name, option);

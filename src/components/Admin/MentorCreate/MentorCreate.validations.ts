@@ -1,6 +1,7 @@
 import * as Yup from 'yup';
+import {emailStatus} from "../../../domain/Mentor/MentorCreate";
 export const errorRequired = 'Campo es requerido.';
-export const emailRequired = 'Campo no es un correo.';
+export const emailRequired = emailStatus.EMAIL_NOT_VALID;
 
 const getDate = (year: number, month: number) =>
     new Date(year, month);
@@ -36,9 +37,9 @@ const mentorCreateSchema = Yup.object().shape({
         }),
     documentType: Yup.object().required(errorRequired),
     email: Yup.string().required(errorRequired)
-        .test('emailValidation', 'Validación de correo electrónico', (email: string) => {
+        .test('emailValidation', emailRequired, (email: string) => {
             const re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-            return re.test(email);
+            return re.test(email.trim());
         }),
     experiences: Yup.array().min(1).max(3).of(
         Yup.object().shape({
@@ -88,7 +89,7 @@ const mentorCreateSchema = Yup.object().shape({
     numberContact: Yup.string(),
     picture: Yup.string().required(errorRequired),
     skills: Yup.array().min(0).of(Yup.string()),
-    validation: Yup.boolean().required(errorRequired)
+    validation: Yup.string().required(errorRequired)
 });
 
 export default mentorCreateSchema;

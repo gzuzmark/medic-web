@@ -72,7 +72,7 @@ class MentorInput extends React.Component<IPropsMentorInput, IStateMentorInput> 
         if (this.props.enable && (this.props.active || noAnimation)) {
             const status = this.state.focus ? 'focus' : 'default';
             inputClass = `MentorInput--${status}`;
-            if (!!this.props.error) {
+            if (!!this.props.error && !this.props.loading) {
                 inputClass = `${inputClass} MentorInput--error`;
             }
         } else if (!this.props.enable) {
@@ -96,8 +96,8 @@ class MentorInput extends React.Component<IPropsMentorInput, IStateMentorInput> 
                         className={`MentorInput_input`}
                         type={"text"}
                         {...this.props.attrs}/>
-                        {!!icon && !this.props.loading && <Icon name={icon} click={this.onClickIcon}/>}
                         {this.props.loading && <LoaderInput/>}
+                        {!!icon && !this.props.loading && <Icon name={icon} click={this.onClickIcon}/>}
                         {!!this.props.animation && <Body1>{this.props.animation.text}</Body1>}
                         {!!this.props.error &&
                         <div className={'MentorInput_message'}><Small1 weight={LIGHT_TEXT}>{this.props.error}</Small1></div>}

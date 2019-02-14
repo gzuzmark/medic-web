@@ -1,7 +1,7 @@
 import * as React from "react";
 import styled from "styled-components";
 import {ButtonLink, ButtonNormal, THEME_SECONDARY} from "../../../../../common/Buttons/Buttons";
-import {IMentorFormValidations} from "../../../../../domain/Mentor/MentorCreate";
+import {emailStatus, IMentorFormValidations} from "../../../../../domain/Mentor/MentorCreate";
 import FormExperience from "../FormExperience/FormExperience";
 import FormImage from "../FormImage/FormImage";
 import FormMail from "../FormMail/FormMail";
@@ -49,7 +49,12 @@ class FormManager extends React.Component <IPropsFormManager, {}> {
             buttonAttrBack = {...buttonAttrBack, disabled: ' '};
             if (!!errors.email || !touched.email) {
                 buttonAttrContinue = {...buttonAttrContinue, disabled: true};
-            } else if (!!errors.validation || !touched.validation || !values.validation) {
+            } else if (
+                !!errors.validation ||
+                !touched.validation ||
+                values.validation === emailStatus.ALREADY_REGISTERED ||
+                values.validation === emailStatus.ERROR_PROCESS ||
+                values.validation === emailStatus.CLEAN) {
                 buttonAttrContinue = {...buttonAttrContinue, disabled: true};
             }
         } else if (2 === this.props.currentStep) {
