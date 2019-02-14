@@ -1,3 +1,4 @@
+import {IPropsMentorOptionsDropDown} from "../../../common/MentorDropDown/MentorDropDown";
 import MentorCreateData, {
     IFormItemBase,
     IMentorCreateData
@@ -10,9 +11,12 @@ export const getDefaultValues = ():IMentorCreateContext => (
         errors: {},
         handleBlur: (event: any) => void(0),
         handleChange: (event: any) => void(0),
+        listSites: [] as IPropsMentorOptionsDropDown[],
+        listSkills: [] as IPropsMentorOptionsDropDown[],
         setFieldTouched: (field: string, isTouched?: boolean) => void(0),
         setFieldValue: (field: string, value: string) => void(0),
         touched: {},
+        updateListSkills: (siteId: string) => new Promise<any>((resolve) => resolve()),
         values: mentorCreateData.getMentorValues
     }
 );
@@ -22,9 +26,12 @@ export const getFullValues = ():IMentorCreateContext => (
         errors: {},
         handleBlur: (event: any) => void(0),
         handleChange: (event: any) => void(0),
+        listSites: [] as IPropsMentorOptionsDropDown[],
+        listSkills: [] as IPropsMentorOptionsDropDown[],
         setFieldTouched: (field: string, isTouched?: boolean) => void(0),
         setFieldValue: (field: string, value: string) => void(0),
         touched: {},
+        updateListSkills: (siteId: string) => new Promise<any>((resolve) => resolve()),
         values: {
             currentCompany: 'UTP',
             currentPosition: 'FrontEnd Developer',

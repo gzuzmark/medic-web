@@ -89,6 +89,7 @@ class BaseRequest {
                 originalRequest._retry = true;
                 try {
                     const token = await this.refreshToken();
+                    originalRequest.headers = {...originalRequest.headers, 'Authorization': `Bearer ${token}`};
                     return this.setTokenHeader(token)(originalRequest);
                 } catch (error) {
                     originalRequest._retry = false;

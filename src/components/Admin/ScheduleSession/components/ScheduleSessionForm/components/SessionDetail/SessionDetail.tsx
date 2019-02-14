@@ -4,7 +4,8 @@ import { Text } from '../../../../../../../common/ConsoleText';
 import FilterList, {IListItem} from '../../../../../../../common/FilterList/FilterList';
 import {FactorySessionBean} from "../../../../../../../domain/FactorySession/FactorySessionBean";
 import {FormLocationDependency} from "../../../../../../../domain/FormSession/FormLocationDependency";
-import {IMentorDescription, ISessionTypes, ISkill} from '../../../../../../../interfaces/Mentor.interface';
+import {ISkill} from "../../../../../../../domain/Skill/Skill";
+import {IMentorDescription, ISessionTypes} from '../../../../../../../interfaces/Mentor.interface';
 import {
     SESSION_PHYSICAL,
     SESSION_UNDEFINED, SESSION_VIRTUAL

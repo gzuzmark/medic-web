@@ -1,10 +1,5 @@
+import {ISkill} from "../domain/Skill/Skill";
 import {IBaseUser} from "./User.interface";
-
-export interface ISkill {
-    color: string;
-    id: string;
-    name: string;
-}
 
 export interface IArea {
     id: string;

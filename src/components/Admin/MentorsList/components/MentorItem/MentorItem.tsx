@@ -2,7 +2,7 @@ import * as React from 'react';
 import Avatar from '../../../../../common/Avatar/Avatar';
 import {FONTS} from "../../../../../common/MentorColor";
 import { Body1, Heading3 } from '../../../../../common/MentorText';
-import { ISkill } from '../../../../../interfaces/Mentor.interface';
+import {ISkill} from "../../../../../domain/Skill/Skill";
 import './MentorItem.scss';
 
 export interface IPropsMentorSession {

@@ -6,17 +6,26 @@ import FormRow from "../../../ScheduleSession/components/FormRow/FormRow";
 import MentorCreateContext, {IMentorCreateContext} from "../../MentorCreate.context";
 import {IFormManagerDisabledFields} from "../FormManager/FormManager";
 
+interface IStateFormPersonalData {
+    loading: boolean;
+}
+
 interface IPropsFormPersonalData {
     disableFields: IFormManagerDisabledFields;
 }
-class FormPersonalData extends React.Component <IPropsFormPersonalData, {}> {
+class FormPersonalData extends React.Component <IPropsFormPersonalData, IStateFormPersonalData> {
+    public state: IStateFormPersonalData;
     constructor(props: IPropsFormPersonalData) {
         super(props);
+        this.state = {
+            loading: false
+        }
         this.handlerDocumentType = this.handlerDocumentType.bind(this);
         this.handlerLocation = this.handlerLocation.bind(this);
         this.handlerSkills = this.handlerSkills.bind(this);
         this.getAttrs = this.getAttrs.bind(this);
         this.getDocumentAttr = this.getDocumentAttr.bind(this);
+        this.hasErrorSkills = this.hasErrorSkills.bind(this);
     }
 
     public render() {
@@ -29,6 +38,8 @@ class FormPersonalData extends React.Component <IPropsFormPersonalData, {}> {
                     const firstNameAttrs = this.getAttrs(this.props.disableFields.firstName);
                     const lastNameAttrs = this.getAttrs(this.props.disableFields.lastName);
                     const documentTypeDisabled = this.props.disableFields.documentType;
+                    const skills = context.values.skills.map((v) => v.value);
+                    const skillsError = this.hasErrorSkills(context);
                     return (
                         <React.Fragment>
                             <FormRow style={{padding: '30px 0 40px 0', margin: 0}} columns={[
@@ -91,29 +102,20 @@ class FormPersonalData extends React.Component <IPropsFormPersonalData, {}> {
                                         value={context.values.location.value}
                                         triggerChange={this.handlerLocation(context)}
                                         placeholder="Empl.: Lima norte, Lima centro, etc."
-                                        options={[
-                                            {value: "dni", label: "Sede Central"},
-                                            {value: "ext", label: "Sede LaCafetaLab"}]} />
+                                        options={context.listSites} />
                                 </FormColumn>,
                                 <FormColumn width={2} key={`FormColumn-PersonalData_${++counter}`}>
                                     <MentorDropDown
                                         label={"CURSOS"}
                                         name={"skills"}
                                         isMulti={true}
+                                        error={skillsError}
+                                        disabled={this.state.loading}
                                         isSearchable={true}
-                                        value={context.values.skills.map((v) => v.value)}
+                                        value={skills}
                                         triggerChange={this.handlerSkills(context)}
                                         placeholder="Ejmpl.: Química general, matemáti..."
-                                        options={[
-                                            {value: "ingles", label: "Ingles"},
-                                            {value: "quimica", label: "Quimica"},
-                                            {value: "P", label: "Programación"},
-                                            {value: "qw", label: "Introducción a la Química General"},
-                                            {value: "intra", label: "Introducción a la matemática para ingenieros"},
-                                            {value: "s", label: "Portugues"},
-                                            {value: "a", label: "Fisica"},
-                                            {value: "d", label: "Diseño"},
-                                            {value: "ext", label: "Mate"}]} />
+                                        options={context.listSkills} />
                                 </FormColumn>
                             ]}/>
                             <FormRow style={{padding: '30px 0 40px 0', margin: 0}} columns={[
@@ -156,11 +158,27 @@ class FormPersonalData extends React.Component <IPropsFormPersonalData, {}> {
         }
         return attr;
     }
+
     private handlerLocation(context: IMentorCreateContext) {
         return (name: string, option: IPropsMentorOptionsDropDown) => {
             context.setFieldValue(name, option);
             context.setFieldTouched(name);
+            context.setFieldValue('skills', []);
+            context.setFieldTouched('skills', false);
+            this.setState({loading: true});
+            context.updateListSkills(option.value).then(() => {
+                this.setState({loading: false});
+            });
         }
+    }
+
+    private hasErrorSkills(context: IMentorCreateContext) {
+        let message = '';
+        const hasError = !!context.values.location.value && !context.listSkills.length && !this.state.loading;
+        if (hasError) {
+            message = 'La sede seleccionada no contiene curso alguno'
+        }
+        return message
     }
 
     private handlerDocumentType(context: IMentorCreateContext) {
