@@ -1,4 +1,5 @@
 import * as React from "react";
+import colors from "../../../../../common/MentorColor";
 import MentorInput from "../../../../../common/MentorInput/MentorInput";
 import {IMentorBean} from "../../../../../domain/Mentor/MentorBean";
 import {emailStatus} from "../../../../../domain/Mentor/MentorCreate";
@@ -39,14 +40,16 @@ class FormMail extends React.Component <IPropsFormMail, IStateFormMail> {
                     const {errors, touched, values} = context;
                     const errorEmail = touched.email && errors.email;
                     const statusEmail = this.getStatusEmail(values.validation);
-                    const errorValidation =
-                        touched.validation && statusEmail;
+                    const errorValidation = touched.validation && statusEmail;
+                    const loadSuccess = touched.email && !this.state.loading && !errorEmail && !errorValidation;
                     return (
                         <React.Fragment>
                             <MentorInput
                                 label={"CORREO"}
                                 error={errorEmail || errorValidation}
                                 loading={this.state.loading}
+                                icon={loadSuccess ? 'check' : ''}
+                                iconStyles={{fill: colors.MISC_COLORS.green}}
                                 attrs={{
                                     name: "email",
                                     onBlur: context.handleBlur,
@@ -145,7 +148,7 @@ class FormMail extends React.Component <IPropsFormMail, IStateFormMail> {
                     this.setState({loading: true}, () => {
                         this.verifyMentor(e.target.value.trim(), context);
                     });
-                }, 500);
+                }, 250);
             }
         }
     }

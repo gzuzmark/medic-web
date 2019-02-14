@@ -36,6 +36,7 @@ const MISC_COLORS = {
     blue: MISC.blue,
     dark: SECONDARY_COLORS.dark_gray,
     dark_purple: SECONDARY_COLORS.indigo_dark_purple,
+    green: MISC.green,
     light_purple: SECONDARY_COLORS.indigo_light_purple
 };
 
@@ -77,6 +78,7 @@ interface IMentorColor {
         background_blue: string;
         background_grey_1: string;
         background_grey_2: string;
+        green: string;
     }
     TEXT_COLORS: {
         font_blue: string;
