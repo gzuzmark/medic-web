@@ -89,7 +89,7 @@ class FormPersonalData extends React.Component <IPropsFormPersonalData, IStateFo
                                             name: "document",
                                             onBlur: context.handleBlur,
                                             onChange: context.handleChange,
-                                            placeholder: "Ingresa el número de docuemnto",
+                                            placeholder: "Ingresa el número de documento",
                                             value: context.values.document,
                                             ...documentAttrs}}/>
                                 </FormColumn>
@@ -101,7 +101,7 @@ class FormPersonalData extends React.Component <IPropsFormPersonalData, IStateFo
                                         name={"location"}
                                         value={context.values.location.value}
                                         triggerChange={this.handlerLocation(context)}
-                                        placeholder="Empl.: Lima norte, Lima centro, etc."
+                                        placeholder="Ejmpl.: Lima norte, Lima centro, etc."
                                         options={context.listSites} />
                                 </FormColumn>,
                                 <FormColumn width={2} key={`FormColumn-PersonalData_${++counter}`}>

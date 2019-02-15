@@ -41,7 +41,7 @@ class FormMail extends React.Component <IPropsFormMail, IStateFormMail> {
                     const errorEmail = touched.email && errors.email;
                     const statusEmail = this.getStatusEmail(values.validation);
                     const errorValidation = touched.validation && statusEmail;
-                    const loadSuccess = touched.email && !this.state.loading && !errorEmail && !errorValidation;
+                    const loadSuccess = values.email && values.email.length > 0 && !this.state.loading && !errorEmail && !errorValidation;
                     return (
                         <React.Fragment>
                             <MentorInput
@@ -81,8 +81,6 @@ class FormMail extends React.Component <IPropsFormMail, IStateFormMail> {
         context.setFieldTouched("lastName");
         context.setFieldValue("firstName", value.name);
         context.setFieldTouched("firstName");
-        context.setFieldValue("picture", value.photo);
-        context.setFieldTouched("picture");
         this.props.updateDisabledFields({
             document: !!value && !!value.document && !!value.document.trim(),
             documentType: !!value && !!value.documentType && !!value.documentType.trim(),
@@ -101,8 +99,6 @@ class FormMail extends React.Component <IPropsFormMail, IStateFormMail> {
         context.setFieldTouched("lastName", false);
         context.setFieldValue("firstName", '');
         context.setFieldTouched("firstName", false);
-        context.setFieldValue("picture", '');
-        context.setFieldTouched("picture", false);
         this.props.updateDisabledFields({
             document: false,
             documentType: false,
