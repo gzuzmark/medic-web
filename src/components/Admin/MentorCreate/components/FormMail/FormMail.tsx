@@ -38,10 +38,10 @@ class FormMail extends React.Component <IPropsFormMail, IStateFormMail> {
             <MentorCreateContext.Consumer>
                 {(context: IMentorCreateContext) => {
                     const {errors, touched, values} = context;
-                    const errorEmail = touched.email && errors.email;
+                    const errorEmail = !!touched.email && errors.email;
                     const statusEmail = this.getStatusEmail(values.validation);
                     const errorValidation = touched.validation && statusEmail;
-                    const loadSuccess = values.email && values.email.length > 0 && !this.state.loading && !errorEmail && !errorValidation;
+                    const loadSuccess = !!touched.email && values.email && values.email.length > 0 && !this.state.loading && !errorEmail && !errorValidation;
                     return (
                         <React.Fragment>
                             <MentorInput
@@ -138,8 +138,8 @@ class FormMail extends React.Component <IPropsFormMail, IStateFormMail> {
             this.setState({loading: false});
             clearTimeout(this.timer);
             if (e.target.value.includes("@")) {
-                context.setFieldTouched("email");
                 context.setFieldTouched("validation");
+                context.setFieldTouched("email");
                 this.timer = setTimeout(() => {
                     this.setState({loading: true}, () => {
                         this.verifyMentor(e.target.value.trim(), context);

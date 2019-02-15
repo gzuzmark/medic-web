@@ -2,6 +2,7 @@ import * as React from "react";
 import styled from "styled-components";
 import {ButtonLink, ButtonNormal, THEME_SECONDARY} from "../../../../../common/Buttons/Buttons";
 import {emailStatus, IMentorFormValidations} from "../../../../../domain/Mentor/MentorCreate";
+import {limitDescription} from "../../MentorCreate.validations";
 import FormExperience from "../FormExperience/FormExperience";
 import FormImage from "../FormImage/FormImage";
 import FormMail from "../FormMail/FormMail";
@@ -92,6 +93,10 @@ class FormManager extends React.Component <IPropsFormManager, IStateFormManager>
             } else if (!!errors.skills || !touched.skills) {
                 buttonAttrContinue = {...buttonAttrContinue, disabled: true};
             }
+        } else if (3 === this.props.currentStep) {
+            if (values.description && values.description.length > limitDescription) {
+                buttonAttrContinue = {...buttonAttrContinue, disabled: true};
+            }
         }
         return (
             <React.Fragment>
@@ -112,7 +117,7 @@ class FormManager extends React.Component <IPropsFormManager, IStateFormManager>
                     <FormManagerContainer>
                         <FormExperienceTemplate
                             title={"Perfil del mentor"}
-                            name={"Mario Augusto Benedetti de las Casas Montalván"}
+                            name={`${values.firstName} ${values.lastName}`}
                             subTitle={"Esta información será visible en el perfil del mentor"} >
                             <FormImage id={"fileImageUploader"}/>
                         </FormExperienceTemplate>

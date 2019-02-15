@@ -6,6 +6,7 @@ import MentorTextArea from "../../../../../common/MentorTextArea/MentorTextArea"
 import FormColumn from "../../../ScheduleSession/components/FormRow/components/FormColumn/FormColumn";
 import FormRow from "../../../ScheduleSession/components/FormRow/FormRow";
 import MentorCreateContext, {IMentorCreateContext} from "../../MentorCreate.context";
+import {limitDescription} from "../../MentorCreate.validations";
 
 export const SubTitle = styled(Subhead1)`
     text-align: center;
@@ -27,9 +28,9 @@ class FormProfile extends React.Component <{}, {}> {
                             <FormRow style={{padding: '30px 0 40px 0', margin: 0}} columns={[
                                 <FormColumn width={1} key={`FormColumn-PersonalData_${++counter}`}>
                                     <MentorTextArea
-                                        limit={120}
+                                        limit={limitDescription}
                                         label={"Descripción del mentor"}
-                                        info={"Este mensaje debe ser corto, <br> inspirador y consizo."}
+                                        info={"Este mensaje debe ser corto, <br> inspirador y conciso."}
                                         attrs={{
                                             name: "description",
                                             onBlur: context.handleBlur,

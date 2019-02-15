@@ -1,7 +1,9 @@
 import * as Yup from 'yup';
 import {emailStatus} from "../../../domain/Mentor/MentorCreate";
 export const errorRequired = 'Campo es requerido.';
+export const phoneRequired = 'Campo no debe contener letras.';
 export const emailRequired = emailStatus.EMAIL_NOT_VALID;
+export const limitDescription = 120;
 
 const getDate = (year: number, month: number) =>
     new Date(year, month);
@@ -21,7 +23,7 @@ const isFirstDateGreater = (date1: Date | null, date2: Date | null) => {
 const mentorCreateSchema = Yup.object().shape({
     currentCompany: Yup.string(),
     currentPosition: Yup.string(),
-    description: Yup.string(),
+    description: Yup.string().max(limitDescription, `Campo tiene más de ${limitDescription}`),
     document: Yup.string().required(errorRequired)
         .test('documentTypeValidation', 'El campo no es válido', function (document: string) {
             const documentType = this.resolve(Yup.ref('documentType'));
@@ -38,8 +40,12 @@ const mentorCreateSchema = Yup.object().shape({
     documentType: Yup.object().required(errorRequired),
     email: Yup.string().required(errorRequired)
         .test('emailValidation', emailRequired, (email: string) => {
-            const re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-            return re.test(email.trim());
+            let isValid = false;
+            if (!!email) {
+                const re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+                isValid = re.test(email.trim());
+            }
+            return isValid
         }),
     experiences: Yup.array().min(1).max(3).of(
         Yup.object().shape({
@@ -86,7 +92,19 @@ const mentorCreateSchema = Yup.object().shape({
     firstName: Yup.string().required(errorRequired),
     lastName: Yup.string().required(errorRequired),
     location: Yup.string().required(errorRequired),
-    numberContact: Yup.string(),
+    numberContact: Yup.string()
+        .test('phoneValidation', phoneRequired, (phoneContact: string) => {
+            let isValid = false;
+            if (phoneContact) {
+                const phone = phoneContact
+                    .replace("-", '')
+                    .replace(")", '')
+                    .replace(" ", '')
+                    .replace("(", "");
+                isValid = !isNaN(parseInt(phone, 10));
+            }
+            return isValid;
+        }),
     picture: Yup.string().required(errorRequired),
     skills: Yup.array().min(0).of(Yup.string()),
     validation: Yup.string().required(errorRequired)
