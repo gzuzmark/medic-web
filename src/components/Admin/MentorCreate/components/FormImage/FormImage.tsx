@@ -3,10 +3,12 @@ import * as ReactCrop from 'react-image-crop';
 import styled from "styled-components";
 import camera from '../../../../../assets/images/camera.png';
 import {ButtonNormal} from "../../../../../common/Buttons/Buttons";
+import ContentModal, {IGenericContentModal} from "../../../../../common/ConsoleModal/ContentModal";
 import MentorModalBase from "../../../../../common/ConsoleModal/MentorModalBase";
 import Icon from "../../../../../common/Icon/Icon";
 import colors from "../../../../../common/MentorColor";
 import { Body1, Heading2 } from "../../../../../common/MentorText";
+import MentorService from "../../../../../services/Mentor/Mentor.service";
 import MentorCreateContext, {IMentorCreateContext} from "../../MentorCreate.context";
 import ImageProfile from '../ImageProfile/ImageProfile';
 import './FormImage.scss';
@@ -18,6 +20,7 @@ interface IStateFormImage {
     loading: boolean;
     modal: boolean;
     src: string;
+    selectedFile: any;
 }
 
 export interface IPropsFormImage {
@@ -32,8 +35,13 @@ const TextInput = styled(Body1)`
 class FormImage extends React.Component <IPropsFormImage, IStateFormImage> {
     public state: IStateFormImage;
     private imageRef: React.RefObject<HTMLImageElement>;
+    private mentorService: MentorService;
+    private errorImage: IGenericContentModal;
+    private labelImage: React.RefObject<HTMLLabelElement>;
     constructor(props: IPropsFormImage) {
         super(props);
+        this.mentorService = new MentorService();
+        this.labelImage = React.createRef();
         this.state = {
             crop: {
                 aspect: 16/16,
@@ -44,6 +52,7 @@ class FormImage extends React.Component <IPropsFormImage, IStateFormImage> {
             croppedTmp: '',
             loading: false,
             modal: false,
+            selectedFile: null,
             src: ""
         };
         this.onCropChange = this.onCropChange.bind(this);
@@ -52,6 +61,13 @@ class FormImage extends React.Component <IPropsFormImage, IStateFormImage> {
         this.onSelectFile = this.onSelectFile.bind(this);
         this.uploadImage = this.uploadImage.bind(this);
         this.closeModal = this.closeModal.bind(this);
+        this.newUploadImage = this.newUploadImage.bind(this);
+        this.errorImage = {
+            button: "Subir otra foto",
+            description: "La imagen es demasiado grande para el formato permitido",
+            image: <Icon name={'alert'} />,
+            title: "Subir foto del mentor"
+        }
     }
 
     public render() {
@@ -73,7 +89,7 @@ class FormImage extends React.Component <IPropsFormImage, IStateFormImage> {
                             <MentorModalBase
                                 show={this.state.modal}
                                 onCloseModal={this.closeModal}>
-                                {this.state.src &&
+                                {this.state.src ?
                                 <div className={"FormImage_modal"}>
                                     <Heading2 style={{textAlign: 'center'}}>Subir la foto del mentor</Heading2>
                                     <div className={"FormImage_crop"}>
@@ -85,18 +101,15 @@ class FormImage extends React.Component <IPropsFormImage, IStateFormImage> {
                                                      onImageLoaded={this.onImageLoaded}
                                                      onComplete={this.onCropComplete}/>
                                     </div>
-                                    <ButtonNormal text={"Aceptar"}
-                                                  attrs={
-                                                      {
-                                                          onClick: this.uploadImage(context.setFieldValue),
-                                                          style: {margin: '0 auto', width: "136px"},
-                                                          ...propsButton
-                                                      }}/>
-                                </div>
-                                }
+                                    <ButtonNormal text={"Aceptar"} attrs={{
+                                        onClick: this.uploadImage(context),
+                                        style: {margin: '0 auto', width: "136px"},
+                                        ...propsButton}}/>
+                                </div>:
+                                <ContentModal.Generic generic={this.errorImage} loading={false} confirm={this.newUploadImage} error={true} />}
                             </MentorModalBase>
-                            <label className={"FormImage_label"} htmlFor={this.props.id}>
-                                <ImageProfile src={context.values.picture || defaultImage} width={160} height={160} title="Camera" filled={!!context.values.picture}/>
+                            <label className={"FormImage_label"} htmlFor={this.props.id} ref={this.labelImage}>
+                                <ImageProfile src={context.selectedImage || defaultImage} width={160} height={160} title="Camera" filled={!!context.selectedImage}/>
                                 <div className={"FormImage_text"}>
                                     <Icon name={"upload"} style={{
                                         fill: colors.BACKGROUND_COLORS.background_purple,
@@ -105,11 +118,7 @@ class FormImage extends React.Component <IPropsFormImage, IStateFormImage> {
                                     <TextInput>Subir foto del mentor</TextInput>
                                 </div>
                             </label>
-                            <input type={"file"}
-                                   id={this.props.id}
-                                   accept="image/*"
-                                   className={"FormImage_file"}
-                                   onChange={this.onSelectFile} />
+                            <input type={"file"} id={this.props.id} accept="image/*" className={"FormImage_file"} onChange={this.onSelectFile} />
                         </div>
                     )
                 }}
@@ -131,26 +140,44 @@ class FormImage extends React.Component <IPropsFormImage, IStateFormImage> {
 
     private onSelectFile(event: any) {
         if (event.target.files && event.target.files.length > 0) {
-            const reader = new FileReader();
-            reader.addEventListener('load', () => {
-                this.setState({ src: reader.result }, () => {
-                    this.setState({ modal: true });
+            if (event.target.files[0].size < 500 * 1024) {
+                this.setState({selectedFile: event.target.files[0]});
+                const reader = new FileReader();
+                reader.addEventListener('load', () => {
+                    this.setState({ src: reader.result }, () => {
+                        this.setState({ modal: true });
+                    });
                 });
-            });
-            reader.readAsDataURL(event.target.files[0]);
-            event.target.value = null;
+                reader.readAsDataURL(event.target.files[0]);
+                event.target.value = null;
+            } else {
+                event.target.value = null;
+                this.setState({ src: '', modal: true });
+            }
         }
     }
 
-    private uploadImage(setFieldValue: any) {
+    private uploadImage(context: IMentorCreateContext) {
         return () => {
             const { croppedTmp, loading } = this.state;
             if (!loading) {
                 this.setState({ loading: true }, () => {
-                    setFieldValue("picture", croppedTmp);
-                    this.setState({
-                        loading: false,
-                        modal: false
+                    const bodyFormData = new FormData();
+                    bodyFormData.append('content-type', 'multipart/form-data');
+                    bodyFormData.append('file', this.state.selectedFile);
+                    this.mentorService.uploadPhoto(bodyFormData).then((response: any) => {
+                        // tslint:disable:no-console
+                        console.log(response)
+                        context.setFieldValue("picture", response.data);
+                        context.updateImage(croppedTmp);
+                        this.setState({
+                            loading: false,
+                            modal: false
+                        })
+                    }).catch(() => {
+                        this.setState({
+                            loading: false
+                        })
                     })
                 });
             }
@@ -161,6 +188,20 @@ class FormImage extends React.Component <IPropsFormImage, IStateFormImage> {
         if (!this.state.loading) {
             this.setState({ modal: false })
         }
+    }
+
+
+    private newUploadImage() {
+        this.setState({ modal: false }, () => {
+            const evt = new MouseEvent('click', {
+                bubbles: true,
+                cancelable: true,
+                view: window
+            });
+            if (this.labelImage.current) {
+                this.labelImage.current.dispatchEvent(evt)
+            }
+        })
     }
 
     private async makeClientCrop(crop: ReactCrop.Crop, pixelCrop: ReactCrop.PixelCrop) {

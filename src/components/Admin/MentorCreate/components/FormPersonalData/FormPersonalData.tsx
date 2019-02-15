@@ -83,7 +83,7 @@ class FormPersonalData extends React.Component <IPropsFormPersonalData, IStateFo
                                 </FormColumn>,
                                 <FormColumn width={2} key={`FormColumn-PersonalData_${++counter}`}>
                                     <MentorInput
-                                        label={"NUMERO DE DOCUMENTO"}
+                                        label={"NÚMERO DE DOCUMENTO"}
                                         error={touched.document && errors.document}
                                         attrs={{
                                             name: "document",
@@ -121,7 +121,7 @@ class FormPersonalData extends React.Component <IPropsFormPersonalData, IStateFo
                             <FormRow style={{padding: '30px 0 40px 0', margin: 0}} columns={[
                                 <FormColumn width={2} key={`FormColumn-PersonalData_${++counter}`}>
                                     <MentorInput
-                                        label={"NUMERO DE CONTACTO"}
+                                        label={"NÚMERO DE CONTACTO"}
                                         error={touched.numberContact && errors.numberContact}
                                         attrs={{
                                             name: "numberContact",

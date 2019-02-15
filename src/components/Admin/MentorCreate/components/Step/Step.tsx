@@ -60,7 +60,7 @@ export const StepText = styled(Body1)`
     bottom: -42px;
     color:  ${(props: IStepCircle) => {
         let color = colors.MISC_COLORS.background_grey_2;
-        if (props.complete && !props.active) {
+        if (props.complete || props.active) {
             color = colors.MISC_COLORS.background_blue;
         }
         return color;

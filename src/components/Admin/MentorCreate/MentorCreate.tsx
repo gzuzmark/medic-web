@@ -22,6 +22,7 @@ interface IStateMentorCreate {
     listSites: IPropsMentorOptionsDropDown[];
     listSkills: IPropsMentorOptionsDropDown[];
     loader: boolean;
+    selectedImage: string;
 }
 
 const emptyStep = {active: false, animation: true, complete: false};
@@ -39,6 +40,7 @@ class MentorCreate extends React.Component <{}, IStateMentorCreate> {
         this.onNextStep = this.onNextStep.bind(this);
         this.onBeforeStep = this.onBeforeStep.bind(this);
         this.updateListSkills = this.updateListSkills.bind(this);
+        this.updateImage = this.updateImage.bind(this);
         this.sitesService = new SitesService();
         this.skillService =  new SkillService();
         this.state = {
@@ -46,6 +48,7 @@ class MentorCreate extends React.Component <{}, IStateMentorCreate> {
             listSkills: [] as IPropsMentorOptionsDropDown[],
             loader: true,
             mentorData: this.mentorCreateData.getMentorValues,
+            selectedImage: "",
             stepActive: 1,
             stepsBar: [{...defaultStep, title: "Correo"},
                 {...emptyStep, title: "Datos personales"},
@@ -68,6 +71,7 @@ class MentorCreate extends React.Component <{}, IStateMentorCreate> {
     public render() {
         const listSites = this.state.listSites;
         const listSkills = this.state.listSkills;
+        const selectedImage = this.state.selectedImage;
         return (
             <div className="u-LayoutMargin">
                 <div className='MentorCreate'>
@@ -87,9 +91,11 @@ class MentorCreate extends React.Component <{}, IStateMentorCreate> {
                                             handleChange,
                                             listSites,
                                             listSkills,
+                                            selectedImage,
                                             setFieldTouched,
                                             setFieldValue,
                                             touched,
+                                            updateImage: this.updateImage,
                                             updateListSkills: this.updateListSkills,
                                             values
                                         }}>
@@ -189,6 +195,10 @@ class MentorCreate extends React.Component <{}, IStateMentorCreate> {
                 })
             })
         })
+    }
+
+    private updateImage(selectedImage: string) {
+        this.setState({selectedImage});
     }
 }
 

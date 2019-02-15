@@ -84,12 +84,13 @@ class BaseRequest {
         instance.interceptors.response.use(async (response:any) => {
             return response;
         }, async (error:any) => {
-            const originalRequest = error.response;
+            const originalRequest = {...error.response};
             if (originalRequest && originalRequest.status === 401 && !originalRequest._retry) {
                 originalRequest._retry = true;
                 try {
                     const token = await this.refreshToken();
                     originalRequest.config.headers = {...originalRequest.config.headers, 'Authorization': `Bearer ${token}`};
+                    instance.headers = {...instance.headers, 'Authorization': `Bearer ${token}`};
                     return instance(originalRequest.config);
                 } catch (error) {
                     originalRequest._retry = false;

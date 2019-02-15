@@ -65,11 +65,11 @@ class FormReview extends React.Component <IPropsFormReview, IStateFormReview> {
                                <Subhead1>Datos personales</Subhead1>
                            </Header>
                            <div style={{alignItems: 'center', display: 'flex'}}>
-                               <ImageProfile src={context.values.picture || errorCamera}
+                               <ImageProfile src={context.selectedImage || errorCamera}
                                              width={150}
                                              height={150}
                                              title={"Falta foto de perfil"}
-                                             filled={!!context.values.picture }/>
+                                             filled={!!context.selectedImage }/>
                                <BasicInformation>
                                    <Heading3 className={"FormReview_name"}>{context.values.firstName} {context.values.lastName}</Heading3>
                                    <div>

@@ -47,7 +47,7 @@ describe('Step Test',() => {
         const stepCircleTextTree = component.find(StepCircleText);
         expect(stepCircleTree).toHaveStyleRule('background', colors.BACKGROUND_COLORS.background_white);
         expect(stepCircleTree).toHaveStyleRule('border', `3px solid ${colors.BACKGROUND_COLORS.background_purple}`);
-        expect(stepTextTree).toHaveStyleRule('color', colors.MISC_COLORS.background_grey_2);
+        expect(stepTextTree).toHaveStyleRule('color', colors.MISC_COLORS.background_blue);
         expect(stepCircleTextTree).toHaveStyleRule('color', colors.BACKGROUND_COLORS.background_purple);
     });
 
@@ -71,7 +71,7 @@ describe('Step Test',() => {
         const stepCircleTextTree = component.find(StepCircleText);
         expect(stepCircleTree).toHaveStyleRule('background', colors.BACKGROUND_COLORS.background_white);
         expect(stepCircleTree).toHaveStyleRule('border', `3px solid ${colors.BACKGROUND_COLORS.background_purple}`);
-        expect(stepTextTree).toHaveStyleRule('color', colors.MISC_COLORS.background_grey_2);
+        expect(stepTextTree).toHaveStyleRule('color', colors.MISC_COLORS.background_blue);
         expect(stepCircleTextTree).toHaveStyleRule('color', colors.BACKGROUND_COLORS.background_purple);
     });
 
