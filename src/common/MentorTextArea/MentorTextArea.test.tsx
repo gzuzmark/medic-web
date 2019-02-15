@@ -3,7 +3,7 @@ import 'jest-styled-components';
 import * as React from 'react';
 import Icon from "../Icon/Icon";
 import colors from "../MentorColor";
-import {Body1, Small1} from "../MentorText";
+import {Body1} from "../MentorText";
 import MentorTextArea, {IPropsMentorTextArea, TextAreaComponent} from "./MentorTextArea";
 
 
@@ -29,7 +29,7 @@ describe('MentorTextArea Test',() => {
             label: "Campo TextArea"
         };
         const component = getComponent();
-        expect(component.find("label").find(Small1).children().text()).toEqual("Campo TextArea");
+        expect(component.find("label").find(Body1).children().text()).toEqual("Campo TextArea");
     });
 
     it("render: info should be 'This is an information'", () => {
