@@ -150,7 +150,7 @@ class FormExperience extends React.Component <{}, {}> {
                                 <FormRow style={{alignItems: 'flex-end'}} columns={[
                                     <FormColumn width={2} key={`FormColumn-PersonalData_${++counter}`}>
                                         <MentorDropDown
-                                            label={"DESDE"}
+                                            label={"FECHA DE INICIO"}
                                             value={value.fromMonth}
                                             error={(hasError(index, "toYear") || hasError(index, "fromYear")) && "  " }
                                             name={`experiences[${index}].fromMonth`}
@@ -173,7 +173,7 @@ class FormExperience extends React.Component <{}, {}> {
                                 <FormRow style={{alignItems: 'flex-end', marginBottom: 12}} columns={[
                                     <FormColumn width={2} key={`FormColumn-PersonalData_${++counter}`}>
                                         <MentorDropDown
-                                            label={"HASTA"}
+                                            label={"FECHA DE FIN"}
                                             value={value.toMonth}
                                             disabled={value.currentJob}
                                             error={hasError(index, "toYear") && "  "}

@@ -66,17 +66,19 @@ class FormReview extends React.Component <IPropsFormReview, IStateFormReview> {
                            </Header>
                            <div style={{alignItems: 'center', display: 'flex'}}>
                                <ImageProfile src={context.selectedImage || errorCamera}
-                                             width={150}
-                                             height={150}
-                                             title={"Falta foto de perfil"}
+                                             width={150} height={150}
+                                             title={!!context.selectedImage ? "Foto de perfil" : "Falta foto de perfil"}
                                              filled={!!context.selectedImage }/>
                                <BasicInformation>
                                    <Heading3 className={"FormReview_name"}>{context.values.firstName} {context.values.lastName}</Heading3>
                                    <div>
                                        <Subhead1>{context.values.currentPosition}</Subhead1>
                                        <Subhead1>{context.values.currentCompany}</Subhead1>
-                                       <Subhead1 color={FONTS.error}>Experiencia Laboral</Subhead1>
-                                       <Subhead1 color={FONTS.error}>(Pendiente)</Subhead1>
+                                       {(context.values.currentPosition.trim().length === 0 || context.values.currentCompany.trim().length === 0) &&
+                                        <React.Fragment>
+                                            <Subhead1 color={FONTS.error}>Experiencia Laboral</Subhead1>
+                                            <Subhead1 color={FONTS.error}>(Pendiente)</Subhead1>
+                                        </React.Fragment>}
                                    </div>
                                    <Body1 weight={LIGHT_TEXT}>{context.values.email}</Body1>
                                    <Body1 weight={LIGHT_TEXT}>{context.values.numberContact}</Body1>
@@ -85,25 +87,24 @@ class FormReview extends React.Component <IPropsFormReview, IStateFormReview> {
                            <Separator/>
                            <Header>
                                <Subhead1>Descripción</Subhead1>
-                               {!!context.errors.description && <Subhead1 color={FONTS.error}>(Pendiente)</Subhead1>}
+                               {context.values.description.trim().length === 0 &&
+                               <Subhead1 color={FONTS.error}>(Pendiente)</Subhead1>}
                            </Header>
+                           {context.values.description.trim().length > 0 &&
                            <div style={{background: colors.MISC_COLORS.background_grey_1, padding: "22px 16px"}}>
                                <Subhead1 weight={LIGHT_TEXT}>“{context.values.description}”</Subhead1>
-                           </div>
+                           </div>}
                            <Separator/>
                            <Header>
                                <Subhead1>Experiencia laboral</Subhead1>
                                {(!context.values.experiences.length || !!context.errors.experiences) && <Subhead1 color={FONTS.error}>(Pendiente)</Subhead1>}
                            </Header>
-                           {context.values.experiences.map((value, index) => {
-                               return (
-                                   <ExperienceItem key={`form_view_experiences_${index}`}>
-                                       <Subhead1>{value.position}</Subhead1>
-                                       <Body1 weight={LIGHT_TEXT}>{value.company}</Body1>
-                                       <Body1 weight={LIGHT_TEXT} color={FONTS.blue_grey}>{this.getDateExperience(value)}</Body1>
-                                   </ExperienceItem>
-                               )
-                           })}
+                           {context.values.experiences.map((value, index) => (
+                               <ExperienceItem key={`form_view_experiences_${index}`}>
+                                   <Subhead1>{value.position}</Subhead1>
+                                   <Body1 weight={LIGHT_TEXT}>{value.company}</Body1>
+                                   <Body1 weight={LIGHT_TEXT} color={FONTS.blue_grey}>{this.getDateExperience(value)}</Body1>
+                               </ExperienceItem>))}
                        </div>
                    )
                 }}

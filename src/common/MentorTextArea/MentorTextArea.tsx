@@ -3,7 +3,7 @@ import * as ReactTooltip from 'react-tooltip';
 import styled from "styled-components";
 import Icon from "../Icon/Icon";
 import colors, {FONTS} from "../MentorColor";
-import {Body1, defaultFont, LIGHT_TEXT, Small1} from "../MentorText";
+import {Body1, defaultFont, LIGHT_TEXT } from "../MentorText";
 
 export interface IPropsMentorTextArea {
     label?: string;
@@ -67,7 +67,7 @@ class MentorTextArea extends React.Component<IPropsMentorTextArea, {}> {
                 <div style={{display: "flex", justifyContent: "space-between"}}>
                     {!!this.props.label &&
                     <label>
-                        <Small1 style={{marginBottom: 3, display: 'block'}}>{this.props.label}</Small1>
+                        <Body1 style={{marginBottom: 3, display: 'block'}}>{this.props.label}</Body1>
                     </label>}
                     {!!this.props.info &&
                         <React.Fragment>

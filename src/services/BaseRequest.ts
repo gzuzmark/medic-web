@@ -85,15 +85,15 @@ class BaseRequest {
             return response;
         }, async (error:any) => {
             const originalRequest = {...error.response};
-            if (originalRequest && originalRequest.status === 401 && !originalRequest._retry) {
-                originalRequest._retry = true;
+            if (originalRequest && originalRequest.status === 401 && !error.config._retry) {
+                error.config._retry = true;
                 try {
                     const token = await this.refreshToken();
-                    originalRequest.config.headers = {...originalRequest.config.headers, 'Authorization': `Bearer ${token}`};
+                    error.config.headers = {...error.config.headers, 'Authorization': `Bearer ${token}`};
                     instance.headers = {...instance.headers, 'Authorization': `Bearer ${token}`};
-                    return instance(originalRequest.config);
+                    return instance(error.config);
                 } catch (error) {
-                    originalRequest._retry = false;
+                    error.config._retry = false;
                 }
             }
             return Promise.reject(error);

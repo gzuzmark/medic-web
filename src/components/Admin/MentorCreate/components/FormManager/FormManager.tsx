@@ -94,7 +94,35 @@ class FormManager extends React.Component <IPropsFormManager, IStateFormManager>
                 buttonAttrContinue = {...buttonAttrContinue, disabled: true};
             }
         } else if (3 === this.props.currentStep) {
+            const experienceHasError = values.experiences.map((experience, index) => {
+                let hasError = false;
+                const someFieldCompleted =
+                    (!experience.currentJob && experience.toYear && experience.toYear.length > 0) ||
+                    (!experience.currentJob && experience.toMonth && experience.toMonth.length > 0) ||
+                    (experience.fromMonth && experience.fromMonth.length > 0) ||
+                    (experience.fromYear && experience.fromYear.length > 0) ||
+                    (experience.company && experience.company.length > 0) ||
+                    (experience.position && experience.position.length > 0);
+                if (someFieldCompleted) {
+                    const allShouldBeFull =
+                        (experience.fromMonth && experience.fromMonth.length > 0) &&
+                        (experience.fromYear && experience.fromYear.length > 0) &&
+                        (!experience.currentJob && experience.toYear && experience.toYear.length > 0) &&
+                        (!experience.currentJob && experience.toMonth && experience.toMonth.length > 0) &&
+                        (experience.company && experience.company.length > 0) &&
+                        (experience.position && experience.position.length > 0);
+
+                    if (allShouldBeFull) {
+                        hasError = !!errors.experiences && !!errors.experiences[index];
+                    } else {
+                        hasError = true;
+                    }
+                }
+                return hasError;
+            });
             if (values.description && values.description.length > limitDescription) {
+                buttonAttrContinue = {...buttonAttrContinue, disabled: true};
+            } else if (experienceHasError.some(v => v)) {
                 buttonAttrContinue = {...buttonAttrContinue, disabled: true};
             }
         }
