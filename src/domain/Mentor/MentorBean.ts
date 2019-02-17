@@ -5,11 +5,10 @@ export interface IItemBase {
 }
 
 export interface IMentorExperience {
-    position?: string;
+    title?: string;
     company?: string;
     from?: string;
     to?: string;
-    currentJob?: boolean;
 }
 
 export interface IMentorBean {
@@ -19,13 +18,16 @@ export interface IMentorBean {
     documentType?: string;
     document?: string;
     numberContact?: string;
-    location?: IItemBase;
-    skills?: IItemBase[];
+    location?: string;
+    skills?: string[];
     photo?: string;
     description?: string;
     experiences?: IMentorExperience[];
-    currentPosition?: string;
-    currentCompany?: string;
+    title?: string;
+    company?: string;
+    timeZone?: string;
+    utp?: boolean;
+    shortDescription?: string;
 
 }
 
@@ -39,13 +41,16 @@ class MentorBean {
         this.mentor.documentType = mentor.documentType || '';
         this.mentor.document = mentor.document || '';
         this.mentor.numberContact = mentor.numberContact || '';
-        this.mentor.location = mentor.location;
-        this.mentor.skills = mentor.skills || [] as IItemBase[];
+        this.mentor.location = mentor.location || '';
+        this.mentor.skills = mentor.skills || [] as string[];
         this.mentor.photo = mentor.photo || '';
         this.mentor.description = mentor.description || '';
         this.mentor.experiences = mentor.experiences || [] as IMentorExperience[];
-        this.mentor.currentPosition = mentor.currentPosition || '';
-        this.mentor.currentCompany = mentor.currentCompany || '';
+        this.mentor.company = mentor.company || '';
+        this.mentor.title = mentor.title || '';
+        this.mentor.timeZone = mentor.timeZone || 'America/Lima';
+        this.mentor.utp = !!mentor.utp;
+        this.mentor.shortDescription = mentor.shortDescription || '';
     }
 
 

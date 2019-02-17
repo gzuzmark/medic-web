@@ -1,7 +1,7 @@
 import * as Yup from 'yup';
 import {emailStatus} from "../../../domain/Mentor/MentorCreate";
 export const errorRequired = 'Campo es requerido.';
-export const phoneRequired = 'Campo no debe contener letras.';
+export const phoneRequired = 'Número de contacto incorrecto.';
 export const emailRequired = emailStatus.EMAIL_NOT_VALID;
 export const limitDescription = 120;
 
@@ -49,10 +49,10 @@ const mentorCreateSchema = Yup.object().shape({
         }),
     experiences: Yup.array().min(1).max(3).of(
         Yup.object().shape({
-            company: Yup.string().required(errorRequired),
+            company: Yup.string(),
             currentJob: Yup.boolean(),
-            fromMonth: Yup.string().required(errorRequired),
-            fromYear: Yup.string().required(errorRequired)
+            fromMonth: Yup.string(),
+            fromYear: Yup.string()
                 .test('currentDateValidationFrom', 'Fecha "Desde" fuera de rango',  function (fromYear: string) {
                     let isValid = true;
                     const fromMonth = this.resolve(Yup.ref('fromMonth'));
@@ -61,7 +61,7 @@ const mentorCreateSchema = Yup.object().shape({
                     isValid = isFirstDateGreater(current, from);
                     return isValid;
                 }),
-            position: Yup.string().required(errorRequired),
+            position: Yup.string(),
             toMonth: Yup.string(),
             toYear: Yup.string()
                 .test('currentDateValidationTo', 'Fecha "Hasta" fuera de rango',  function (toYear: string) {
@@ -95,13 +95,15 @@ const mentorCreateSchema = Yup.object().shape({
     numberContact: Yup.string()
         .test('phoneValidation', phoneRequired, (phoneContact: string) => {
             let isValid = false;
-            if (phoneContact) {
+            if (!!phoneContact && phoneContact.length >= 6) {
                 const phone = phoneContact
                     .replace("-", '')
                     .replace(")", '')
-                    .replace(" ", '')
-                    .replace("(", "");
-                isValid = !isNaN(parseInt(phone, 10));
+                    .replace("(", '')
+                    .split(' ').join('');
+                isValid = !isNaN(Number(phone)) || phone.length >= 6;
+            } else {
+                isValid = !!phoneContact && (phoneContact.length >= 6 || phoneContact.length === 0);
             }
             return isValid;
         }),

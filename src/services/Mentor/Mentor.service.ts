@@ -130,6 +130,22 @@ class MentorService extends BaseRequest {
         });
     }
 
+    public save(mentor: IMentorBean) {
+        return new Promise((resolve, reject) => {
+            this.instance.post('ugo-admin/mentors-full', mentor)
+                .then((response: any) => {
+                    if (response.status === 200 && response.data) {
+                        resolve(response.data);
+                    } else {
+                        reject(null);
+                    }
+                })
+                .catch((error: any) => {
+                    this.validSession();
+                    reject(error);
+                });
+        });
+    }
 
 }
 

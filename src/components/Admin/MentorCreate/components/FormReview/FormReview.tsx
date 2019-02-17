@@ -92,7 +92,7 @@ class FormReview extends React.Component <IPropsFormReview, IStateFormReview> {
                            </Header>
                            {context.values.description.trim().length > 0 &&
                            <div style={{background: colors.MISC_COLORS.background_grey_1, padding: "22px 16px"}}>
-                               <Subhead1 weight={LIGHT_TEXT}>“{context.values.description}”</Subhead1>
+                               <Subhead1 weight={LIGHT_TEXT} style={{overflowWrap: 'break-word'}}>“{context.values.description}”</Subhead1>
                            </div>}
                            <Separator/>
                            <Header>

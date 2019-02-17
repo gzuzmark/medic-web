@@ -1,11 +1,15 @@
 import { Formik } from 'formik';
 import * as React from "react";
+import ContentModal, {IGenericContentModal} from "../../../common/ConsoleModal/ContentModal";
+import MentorModalBase from "../../../common/ConsoleModal/MentorModalBase";
+import Icon from "../../../common/Icon/Icon";
 import Loader from "../../../common/Loader/Loader";
 import {IPropsMentorOptionsDropDown} from "../../../common/MentorDropDown/MentorDropDown";
 import Utilities from "../../../common/Utilities";
 import MentorCreateData, {IMentorCreateData, IMentorFormValidations} from "../../../domain/Mentor/MentorCreate";
 import {ISites} from "../../../domain/Sites/Sites";
 import {ISkill} from "../../../domain/Skill/Skill";
+import MentorService from "../../../services/Mentor/Mentor.service";
 import SitesService from "../../../services/Sites/Sites.service";
 import SkillService from "../../../services/Skill/Skill.service";
 import FormManager from "./components/FormManager/FormManager";
@@ -22,6 +26,8 @@ interface IStateMentorCreate {
     listSites: IPropsMentorOptionsDropDown[];
     listSkills: IPropsMentorOptionsDropDown[];
     loader: boolean;
+    modal: boolean;
+    saving: boolean;
     selectedImage: string;
 }
 
@@ -33,6 +39,8 @@ class MentorCreate extends React.Component <{}, IStateMentorCreate> {
     public mentorCreateData: MentorCreateData;
     private sitesService: SitesService;
     private skillService: SkillService;
+    private mentorService: MentorService;
+    private successContent: IGenericContentModal;
     constructor(props: any) {
         super(props);
         this.mentorCreateData = new MentorCreateData({} as IMentorCreateData);
@@ -41,13 +49,17 @@ class MentorCreate extends React.Component <{}, IStateMentorCreate> {
         this.onBeforeStep = this.onBeforeStep.bind(this);
         this.updateListSkills = this.updateListSkills.bind(this);
         this.updateImage = this.updateImage.bind(this);
+        this.onSubmit = this.onSubmit.bind(this);
         this.sitesService = new SitesService();
         this.skillService =  new SkillService();
+        this.mentorService =  new MentorService();
         this.state = {
             listSites: [] as IPropsMentorOptionsDropDown[],
             listSkills: [] as IPropsMentorOptionsDropDown[],
             loader: true,
             mentorData: this.mentorCreateData.getMentorValues,
+            modal: false,
+            saving: false,
             selectedImage: "",
             stepActive: 1,
             stepsBar: [{...defaultStep, title: "Correo"},
@@ -55,6 +67,12 @@ class MentorCreate extends React.Component <{}, IStateMentorCreate> {
                 {...emptyStep, title: "Perfil (opcional)"},
                 {...emptyStep, title: "Confirmación"}],
             submitText: "Continuar"
+        };
+        this.successContent = {
+            button: "Agregar a otro mentor",
+            description: "Se le enviará un correo con los datos que ingresaste.",
+            image: <Icon name={'add-contact'} />,
+            title: "¡Listo! Mentor Agregado"
         }
     }
 
@@ -74,6 +92,11 @@ class MentorCreate extends React.Component <{}, IStateMentorCreate> {
         const selectedImage = this.state.selectedImage;
         return (
             <div className="u-LayoutMargin">
+                <MentorModalBase
+                    show={this.state.modal}
+                    onCloseModal={this.returnToHome}>
+                        <ContentModal.Generic generic={this.successContent} loading={false} confirm={this.saveNextMentor} />
+                </MentorModalBase>
                 <div className='MentorCreate'>
                     <StepsBar steps={this.state.stepsBar} click={this.onSelectStep}/>
                     {this.state.loader ?
@@ -104,6 +127,7 @@ class MentorCreate extends React.Component <{}, IStateMentorCreate> {
                                                          formData={{errors, touched, values}}
                                                          onBeforeStep={this.onBeforeStep}
                                                          onNextStep={this.onNextStep}
+                                                         onHandleSubmit={this.onSubmit}
                                                          submitText={this.state.submitText}/>
                                         </form>
                                     </MentorCreateContext.Provider>
@@ -118,7 +142,14 @@ class MentorCreate extends React.Component <{}, IStateMentorCreate> {
 
     private onSubmit(values: IMentorFormValidations) {
         // tslint:disable:no-console
-        console.log(values);
+        this.mentorCreateData.prepareData(values);
+        console.log(this.mentorCreateData.mentor);
+        this.setState({saving: true});
+        this.mentorService.save(this.mentorCreateData.mentor).then(() => {
+            this.setState({saving: false, modal: true});
+        }).catch(() => {
+            this.setState({saving: false, modal: true});
+        })
     }
 
     private onSelectStep(step: IStepsBar, counter: number) {
@@ -199,6 +230,14 @@ class MentorCreate extends React.Component <{}, IStateMentorCreate> {
 
     private updateImage(selectedImage: string) {
         this.setState({selectedImage});
+    }
+
+    private saveNextMentor() {
+        window.location.reload(true);
+    }
+
+    private returnToHome() {
+        window.location.assign('/');
     }
 }
 

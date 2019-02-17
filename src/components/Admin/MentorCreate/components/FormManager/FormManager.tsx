@@ -1,6 +1,9 @@
 import * as React from "react";
 import styled from "styled-components";
 import {ButtonLink, ButtonNormal, THEME_SECONDARY} from "../../../../../common/Buttons/Buttons";
+import ContentModal, {IGenericContentModal} from "../../../../../common/ConsoleModal/ContentModal";
+import MentorModalBase from "../../../../../common/ConsoleModal/MentorModalBase";
+import Icon from "../../../../../common/Icon/Icon";
 import {emailStatus, IMentorFormValidations} from "../../../../../domain/Mentor/MentorCreate";
 import {limitDescription} from "../../MentorCreate.validations";
 import FormExperience from "../FormExperience/FormExperience";
@@ -21,6 +24,7 @@ interface IPropsFormManager {
     onBeforeStep: () => void;
     onNextStep: () => void;
     submitText: string;
+    onHandleSubmit: (e: any) => void;
 }
 
 export interface IFormManagerDisabledFields {
@@ -32,6 +36,7 @@ export interface IFormManagerDisabledFields {
 
 interface IStateFormManager {
     disabledFields: IFormManagerDisabledFields;
+    modal: boolean;
 }
 
 export const FormManagerContainer = styled.div`
@@ -48,18 +53,28 @@ class FormManager extends React.Component <IPropsFormManager, IStateFormManager>
     public state: IStateFormManager;
     private buttonAttrBack: any;
     private buttonAttrContinue: any;
+    private warningContent: IGenericContentModal;
     constructor(props: IPropsFormManager) {
         super(props);
         this.buttonAttrBack = {type: "button", style: {marginLeft: 24}};
         this.buttonAttrContinue = {type: "button", style: {marginLeft: 24}};
         this.updateDisabledFields = this.updateDisabledFields.bind(this);
+        this.closeModal = this.closeModal.bind(this);
+        this.openModal = this.openModal.bind(this);
         this.state = {
             disabledFields: {
                 document: false,
                 documentType: false,
                 firstName: false,
                 lastName: false,
-            }
+            },
+            modal: false
+        };
+        this.warningContent = {
+            button: "Aceptar",
+            description: "Si cancela todo se puede descontrolarsh",
+            image: <Icon name={'alert'} />,
+            title: "¿Seguro que deseas cancelar?"
         }
     }
 
@@ -107,8 +122,8 @@ class FormManager extends React.Component <IPropsFormManager, IStateFormManager>
                     const allShouldBeFull =
                         (experience.fromMonth && experience.fromMonth.length > 0) &&
                         (experience.fromYear && experience.fromYear.length > 0) &&
-                        (!experience.currentJob && experience.toYear && experience.toYear.length > 0) &&
-                        (!experience.currentJob && experience.toMonth && experience.toMonth.length > 0) &&
+                        (!!experience.currentJob || (!experience.currentJob && experience.toYear && experience.toYear.length > 0)) &&
+                        (!!experience.currentJob ||(!experience.currentJob && experience.toMonth && experience.toMonth.length > 0)) &&
                         (experience.company && experience.company.length > 0) &&
                         (experience.position && experience.position.length > 0);
 
@@ -125,9 +140,16 @@ class FormManager extends React.Component <IPropsFormManager, IStateFormManager>
             } else if (experienceHasError.some(v => v)) {
                 buttonAttrContinue = {...buttonAttrContinue, disabled: true};
             }
+        } else if (4 === this.props.currentStep) {
+            buttonAttrContinue = {...buttonAttrContinue, onClick: this.onSubmit(values)};
         }
         return (
             <React.Fragment>
+                <MentorModalBase
+                    show={this.state.modal}
+                    onCloseModal={this.closeModal}>
+                    <ContentModal.Generic generic={this.warningContent} loading={false} confirm={this.redirect} />
+                </MentorModalBase>
                 {1 === this.props.currentStep &&
                     <FormManagerContainer>
                         <FormMailTemplate
@@ -159,12 +181,12 @@ class FormManager extends React.Component <IPropsFormManager, IStateFormManager>
                     </FormManagerContainer>}
                 <FormManagerContainer
                     style={{display: 'flex', justifyContent: 'flex-end', margin: ' 0 auto'}}>
-                    <ButtonLink text={"Cancelar"} />
+                    <ButtonLink text={"Cancelar"} attrs={{onClick: this.openModal}} />
                     <ButtonNormal text={"Retroceder"}
                                   type={THEME_SECONDARY}
-                                  attrs={{...buttonAttrBack, onClick: this.props.onBeforeStep}} />
+                                  attrs={{onClick: this.props.onBeforeStep, ...buttonAttrBack}} />
                     <ButtonNormal text={this.props.submitText}
-                                  attrs={{...buttonAttrContinue, onClick: this.props.onNextStep}}/>
+                                  attrs={{onClick: this.props.onNextStep, ...buttonAttrContinue}}/>
                 </FormManagerContainer>
             </React.Fragment>
         )
@@ -172,6 +194,24 @@ class FormManager extends React.Component <IPropsFormManager, IStateFormManager>
 
     private updateDisabledFields(disableFields: IFormManagerDisabledFields) {
         this.setState({ disabledFields: disableFields });
+    }
+
+    private closeModal() {
+        this.setState({modal: false})
+    }
+
+    private onSubmit(values: IMentorFormValidations) {
+        return () => {
+            this.props.onHandleSubmit(values);
+        }
+    }
+
+    private openModal() {
+        this.setState({modal: true})
+    }
+
+    private redirect() {
+        window.location.assign('/');
     }
 }
 
