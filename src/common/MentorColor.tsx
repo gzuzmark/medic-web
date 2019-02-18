@@ -53,6 +53,7 @@ const TEXT_COLORS = {
 };
 
 const BACKGROUND_COLORS = {
+    background_blue: MISC.light_grey_6,
     background_disabled: MISC.light_grey_2,
     background_disabled_button: MISC.light_grey_1,
     background_purple: PRIMARY_COLORS.indigo_purple,
@@ -67,6 +68,7 @@ interface IMentorColor {
         background_disabled: string;
         background_disabled_button: string;
         background_purple: string;
+        background_blue: string;
         background_red: string;
         background_white: string;
     },

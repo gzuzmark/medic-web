@@ -17,6 +17,7 @@ describe('StudentAddModal Test',() => {
             code: "1021805",
             email: "carlos@lacafetalab.pe",
             id: "hasfdqhj2geiu21y",
+            lastname: "Huamani",
             name: "Carlos",
             photo: "https://www.imagenes.com/s3/aquivaunaimagenkawai.jpg"
         }
@@ -54,13 +55,14 @@ describe('StudentAddModal Test',() => {
     it("render: render StudentAddModal has the correct name", () => {
         const component = getComponent();
         const name = props.options.user && props.options.user.student.name || '';
-        expect(component.find('.StudentModalCard_body-right').find(Text2).text()).toEqual(name);
+        const lastname = props.options.user && props.options.user.student.lastname || '';
+        expect(component.find('.StudentModalCard_body-right').find(Text2).text()).toEqual(`${name} ${lastname}`);
     });
 
     it("render: render StudentAddModal has the correct code", () => {
         const component = getComponent();
-        const name = props.options.user && props.options.user.student.code || '';
-        expect(component.find('.StudentModalCard_body-right').find(Text3).text()).toEqual(name);
+        const code = props.options.user && props.options.user.student.code || '';
+        expect(component.find('.StudentModalCard_body-right').find(Text3).text()).toEqual(code);
     });
 
     it("render: render StudentAddModal has the correct button text", () => {
