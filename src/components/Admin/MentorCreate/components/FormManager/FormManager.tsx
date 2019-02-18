@@ -82,7 +82,7 @@ class FormManager extends React.Component <IPropsFormManager, IStateFormManager>
         };
         this.warningContent = {
             button: "Aceptar",
-            description: "Si cancela todo se puede descontrolarsh",
+            description: "Si cancelas, perderás todos los datos ingresados",
             image: <Icon name={'alert'} />,
             title: "¿Seguro que deseas cancelar?"
         }
