@@ -72,8 +72,8 @@ class FormReview extends React.Component <IPropsFormReview, IStateFormReview> {
                                <BasicInformation>
                                    <Heading3 className={"FormReview_name"}>{context.values.firstName} {context.values.lastName}</Heading3>
                                    <div>
-                                       <Subhead1>{context.values.currentPosition}</Subhead1>
-                                       <Subhead1>{context.values.currentCompany}</Subhead1>
+                                       <Subhead1 color={FONTS.medium}>{context.values.currentPosition}</Subhead1>
+                                       <Subhead1 color={FONTS.medium}>{context.values.currentCompany}</Subhead1>
                                        {(context.values.currentPosition.trim().length === 0 || context.values.currentCompany.trim().length === 0) &&
                                         <React.Fragment>
                                             <Subhead1 color={FONTS.error}>Experiencia Laboral</Subhead1>
