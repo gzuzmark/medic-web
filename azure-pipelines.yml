@@ -17,8 +17,8 @@ steps:
     yarn install
   displayName: 'Install Yarn and dependencies'
 
-- bash: yarn test  --coverage
-  displayName: Unit test
+# - bash: yarn test  --coverage
+#   displayName: Unit test
 
 - script: |
     REACT_ENV=stage yarn build
