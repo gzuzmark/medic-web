@@ -17,21 +17,39 @@ steps:
     yarn install
   displayName: 'Install Yarn and dependencies'
 
+- bash: yarn test  --coverage
+  displayName: Unit test
+
 - script: |
-    REACT_ENV=$REACT_ENV yarn build
-  displayName: 'Build'
+    REACT_ENV=stage yarn build
+  displayName: 'Building QA'
 
 - task: CopyFiles@2
-  displayName: 'Copy Files to: $(build.artifactstagingdirectory)'
+  displayName: 'Copy Files to: $(build.artifactstagingdirectory)/qa'
   inputs:
     SourceFolder: '$(System.DefaultWorkingDirectory)'
     Contents: |
       **/**
       !**/node_modules/**
       
-    TargetFolder: '$(build.artifactstagingdirectory)'
+    TargetFolder: '$(build.artifactstagingdirectory)/qa'
+
+- script: |
+    REACT_ENV=production yarn build
+  displayName: 'Building Prod'
+
+- task: CopyFiles@2
+  displayName: 'Copy Files to: $(build.artifactstagingdirectory)/prod'
+  inputs:
+    SourceFolder: '$(System.DefaultWorkingDirectory)'
+    Contents: |
+      **/**
+      !**/node_modules/**
+      
+    TargetFolder: '$(build.artifactstagingdirectory)/prod'
 
 - task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact: ugo_admin'
   inputs:
     PathtoPublish: '$(build.artifactstagingdirectory)'
-    name: 'drop'
+    name: 'ugo_admin'
