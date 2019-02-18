@@ -32,18 +32,18 @@ class ListMentorsBody extends React.Component <IMentor, {}> {
         const { sessions, skills, user, id} = this.props;
         return (
             <DivStyled>
-                <div className="ListMentors-column ListMentors-column--mentor">
+                <div className="ListMentors_column ListMentors_column--mentor">
                     <MentorItem skills={skills} image={user.photo} name={user.name} />
                 </div>
-                <div className="ListMentors-column ListMentors-separator">
+                <div className="ListMentors_column ListMentors_separator">
                     <Heading2 weight={LIGHT_TEXT}>{getTime(sessions.totalMinutes)}</Heading2>
                 </div>
-                <div className="ListMentors-column">
+                <div className="ListMentors_column">
                     <Link to={'/admin/mentores/' + id + '/sesiones'}>
                         <Icon name="calendar"/>
                     </Link>
                 </div>
-                <div className="ListMentors-column">
+                <div className="ListMentors_column">
                     <Link to={'/admin/mentores/' + id + '/sesiones/agendar'}>
                         <Icon name="add-circle"/>
                     </Link>

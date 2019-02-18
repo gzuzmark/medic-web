@@ -8,7 +8,7 @@ export interface IMentorExperience {
     title?: string;
     company?: string;
     from?: string;
-    to?: string;
+    to?: string | null;
 }
 
 export interface IMentorBean {
@@ -17,9 +17,9 @@ export interface IMentorBean {
     lastname?: string;
     documentType?: string;
     document?: string;
-    numberContact?: string;
-    location?: string;
-    skills?: string[];
+    contactNumber?: string;
+    sitesId?: number[];
+    skillsId?: string[];
     photo?: string;
     description?: string;
     experiences?: IMentorExperience[];
@@ -40,9 +40,9 @@ class MentorBean {
         this.mentor.lastname = mentor.lastname || '';
         this.mentor.documentType = mentor.documentType || '';
         this.mentor.document = mentor.document || '';
-        this.mentor.numberContact = mentor.numberContact || '';
-        this.mentor.location = mentor.location || '';
-        this.mentor.skills = mentor.skills || [] as string[];
+        this.mentor.contactNumber = mentor.contactNumber || '';
+        this.mentor.sitesId = mentor.sitesId || [] as number[];
+        this.mentor.skillsId = mentor.skillsId || [] as string[];
         this.mentor.photo = mentor.photo || '';
         this.mentor.description = mentor.description || '';
         this.mentor.experiences = mentor.experiences || [] as IMentorExperience[];

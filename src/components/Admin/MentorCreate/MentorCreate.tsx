@@ -9,6 +9,7 @@ import Utilities from "../../../common/Utilities";
 import MentorCreateData, {IMentorCreateData, IMentorFormValidations} from "../../../domain/Mentor/MentorCreate";
 import {ISites} from "../../../domain/Sites/Sites";
 import {ISkill} from "../../../domain/Skill/Skill";
+import MentorRepository from "../../../repository/MentorsRepository";
 import MentorService from "../../../services/Mentor/Mentor.service";
 import SitesService from "../../../services/Sites/Sites.service";
 import SkillService from "../../../services/Skill/Skill.service";
@@ -144,8 +145,9 @@ class MentorCreate extends React.Component <{}, IStateMentorCreate> {
     private onSubmit(values: IMentorFormValidations) {
         this.mentorCreateData.prepareData(values);
         this.setState({saving: true});
-        this.mentorService.save(this.mentorCreateData.mentor).then(() => {
+        this.mentorService.save(this.mentorCreateData.mentor).then((response: any) => {
             this.setState({saving: false, modal: true});
+            MentorRepository.addedMentorsInsert(response.id);
         }).catch(() => {
             this.setState({saving: false});
         })

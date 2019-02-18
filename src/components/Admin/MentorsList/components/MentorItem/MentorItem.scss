@@ -1,17 +1,18 @@
 .MentorItem {
   display: flex;
   flex-direction: row;
-  &-basicInformation {
+  &_basicInformation {
     margin-left: 25px;
   }
-  &-tagWrapper {
+  &_tagWrapper {
     margin-bottom: 8px;
     margin-top: -7px;
   }
-  &-tag {
+  &_tag {
+    border-radius: 3px;
     display: inline-block;
     margin-right: 10px;
     margin-top: 7px;
-    padding: 0 8px;
+    padding: 2px 8px;
   }
 }

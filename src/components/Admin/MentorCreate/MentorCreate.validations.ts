@@ -21,6 +21,23 @@ const isFirstDateGreater = (date1: Date | null, date2: Date | null) => {
 };
 
 const mentorCreateSchema = Yup.object().shape({
+    contactNumber: Yup.string()
+        .test('phoneValidation', phoneRequired, (phoneContact: string) => {
+            let isValid = true;
+            if (!!phoneContact && phoneContact.length >= 6) {
+                const phone = phoneContact
+                    .replace("-", '')
+                    .replace(")", '')
+                    .replace("(", '')
+                    .split(' ').join('');
+                isValid = !isNaN(Number(phone)) && phone.length >= 6;
+            } else {
+                if (phoneContact && phoneContact.length > 0) {
+                    isValid = phoneContact.length >= 6 || phoneContact.length === 0;
+                }
+            }
+            return isValid;
+        }),
     currentCompany: Yup.string(),
     currentPosition: Yup.string(),
     description: Yup.string().max(limitDescription, `Campo tiene más de ${limitDescription}`),
@@ -92,23 +109,6 @@ const mentorCreateSchema = Yup.object().shape({
     firstName: Yup.string().required(errorRequired),
     lastName: Yup.string().required(errorRequired),
     location: Yup.string().required(errorRequired),
-    numberContact: Yup.string()
-        .test('phoneValidation', phoneRequired, (phoneContact: string) => {
-            let isValid = true;
-            if (!!phoneContact && phoneContact.length >= 6) {
-                const phone = phoneContact
-                    .replace("-", '')
-                    .replace(")", '')
-                    .replace("(", '')
-                    .split(' ').join('');
-                isValid = !isNaN(Number(phone)) && phone.length >= 6;
-            } else {
-                if (phoneContact && phoneContact.length > 0) {
-                    isValid = phoneContact.length >= 6 || phoneContact.length === 0;
-                }
-            }
-            return isValid;
-        }),
     picture: Yup.string().required(errorRequired),
     skills: Yup.array().min(0).of(Yup.string()),
     status: Yup.string().required(errorRequired),

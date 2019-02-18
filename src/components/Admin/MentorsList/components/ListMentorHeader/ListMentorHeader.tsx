@@ -15,17 +15,17 @@ class ListMentorsHeader extends React.Component <IPropsListMentorsHeader, {}> {
         return (
           <React.Fragment>
               <div className="ListMentors">
-                  <div className="ListMentors-header u-LayoutMargin u-ListMentors-padding">
+                  <div className="ListMentors_header u-LayoutMargin u-ListMentors_padding">
                       {this.props.header.map((item, index) => {
                           return (
-                              <div className="ListMentors-column" key={'header-' + index}>
+                              <div className="ListMentors_column" key={'header-' + index}>
                                   <Small1 color={FONTS.blue_grey}>{item}</Small1>
                               </div>
                           )
                       })}
                   </div>
               </div>
-              <hr className='ListMentors-line' />
+              <hr className='ListMentors_line' />
           </React.Fragment>
         );
     }
