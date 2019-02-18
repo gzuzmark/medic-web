@@ -3,9 +3,8 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { getTime } from '../../../../../common/DateUtilities';
 import Icon from "../../../../../common/Icon/Icon";
-import {FONTS} from "../../../../../common/MentorColor";
 import colors from "../../../../../common/MentorColor";
-import { Headline1 } from '../../../../../common/MentorText';
+import {Heading2, LIGHT_TEXT} from '../../../../../common/MentorText';
 import { IMentor } from '../../../../../interfaces/Mentor.interface';
 import MentorItem from '../MentorItem/MentorItem';
 
@@ -37,7 +36,7 @@ class ListMentorsBody extends React.Component <IMentor, {}> {
                     <MentorItem skills={skills} image={user.photo} name={user.name} />
                 </div>
                 <div className="ListMentors-column ListMentors-separator">
-                    <Headline1 color={FONTS.medium}>{getTime(sessions.totalMinutes)}</Headline1>
+                    <Heading2 weight={LIGHT_TEXT}>{getTime(sessions.totalMinutes)}</Heading2>
                 </div>
                 <div className="ListMentors-column">
                     <Link to={'/admin/mentores/' + id + '/sesiones'}>

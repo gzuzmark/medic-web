@@ -16,6 +16,7 @@ import {formTemplateHOC} from "./FormTemplateHOC";
 
 interface IPropsFormManager {
     currentStep: number;
+    saving?: boolean;
     formData: {
         errors: any;
         touched: any;
@@ -53,11 +54,13 @@ class FormManager extends React.Component <IPropsFormManager, IStateFormManager>
     public state: IStateFormManager;
     private buttonAttrBack: any;
     private buttonAttrContinue: any;
+    private buttonAttrCancel: any;
     private warningContent: IGenericContentModal;
     constructor(props: IPropsFormManager) {
         super(props);
-        this.buttonAttrBack = {type: "button", style: {marginLeft: 24}};
-        this.buttonAttrContinue = {type: "button", style: {marginLeft: 24}};
+        this.buttonAttrBack = {type: "button", style: {marginLeft: 24, width: 136}};
+        this.buttonAttrContinue = {type: "button", style: {marginLeft: 24, width: 136}};
+        this.buttonAttrCancel = {};
         this.updateDisabledFields = this.updateDisabledFields.bind(this);
         this.closeModal = this.closeModal.bind(this);
         this.openModal = this.openModal.bind(this);
@@ -79,9 +82,15 @@ class FormManager extends React.Component <IPropsFormManager, IStateFormManager>
     }
 
     public render() {
+        let buttonAttrCancel = {...this.buttonAttrCancel};
         let buttonAttrBack = {...this.buttonAttrBack};
         let buttonAttrContinue = {...this.buttonAttrContinue};
         const {errors, touched, values} = this.props.formData;
+        if (!!this.props.saving) {
+            buttonAttrCancel = {...buttonAttrCancel, disabled: ' '};
+            buttonAttrBack = {...buttonAttrBack, disabled: ' '};
+            buttonAttrContinue = {...buttonAttrContinue, loading: 'true'};
+        }
         if (1 === this.props.currentStep) {
             buttonAttrBack = {...buttonAttrBack, disabled: ' '};
             if (!!errors.email || !touched.email) {
@@ -181,7 +190,8 @@ class FormManager extends React.Component <IPropsFormManager, IStateFormManager>
                     </FormManagerContainer>}
                 <FormManagerContainer
                     style={{display: 'flex', justifyContent: 'flex-end', margin: ' 0 auto'}}>
-                    <ButtonLink text={"Cancelar"} attrs={{onClick: this.openModal}} />
+                    <ButtonLink text={"Cancelar"}
+                                attrs={{onClick: this.openModal, ...buttonAttrCancel}} />
                     <ButtonNormal text={"Retroceder"}
                                   type={THEME_SECONDARY}
                                   attrs={{onClick: this.props.onBeforeStep, ...buttonAttrBack}} />
@@ -207,7 +217,9 @@ class FormManager extends React.Component <IPropsFormManager, IStateFormManager>
     }
 
     private openModal() {
-        this.setState({modal: true})
+        if (!this.props.saving) {
+            this.setState({modal: true})
+        }
     }
 
     private redirect() {

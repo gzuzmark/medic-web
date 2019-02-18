@@ -128,6 +128,7 @@ class MentorCreate extends React.Component <{}, IStateMentorCreate> {
                                                          onBeforeStep={this.onBeforeStep}
                                                          onNextStep={this.onNextStep}
                                                          onHandleSubmit={this.onSubmit}
+                                                         saving={this.state.saving}
                                                          submitText={this.state.submitText}/>
                                         </form>
                                     </MentorCreateContext.Provider>
@@ -141,20 +142,21 @@ class MentorCreate extends React.Component <{}, IStateMentorCreate> {
     }
 
     private onSubmit(values: IMentorFormValidations) {
-        // tslint:disable:no-console
         this.mentorCreateData.prepareData(values);
-        console.log(this.mentorCreateData.mentor);
         this.setState({saving: true});
         this.mentorService.save(this.mentorCreateData.mentor).then(() => {
             this.setState({saving: false, modal: true});
         }).catch(() => {
-            this.setState({saving: false, modal: true});
+            this.setState({saving: false});
         })
     }
 
     private onSelectStep(step: IStepsBar, counter: number) {
+        if (this.state.stepActive <= counter || this.state.saving) {
+            return
+        }
         const completedSteps = this.state.stepsBar.filter((s) => s.complete);
-        if (!step.active && (step.complete || counter === completedSteps.length + 1 )) {
+        if (!step.active && (step.complete || counter === completedSteps.length + 1 ) ) {
             let stepsBar = this.removeAnimations(counter);
             stepsBar = this.getActiveStepsBar(counter);
             this.setState({stepActive: counter, stepsBar}, () => {

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {FONTS} from "../../../../../common/MentorColor";
-import { Body1 } from '../../../../../common/MentorText';
+import { Small1 } from '../../../../../common/MentorText';
 
 interface IPropsListMentorsHeader {
     header: string[];
@@ -19,7 +19,7 @@ class ListMentorsHeader extends React.Component <IPropsListMentorsHeader, {}> {
                       {this.props.header.map((item, index) => {
                           return (
                               <div className="ListMentors-column" key={'header-' + index}>
-                                  <Body1 color={FONTS.medium}>{item}</Body1>
+                                  <Small1 color={FONTS.blue_grey}>{item}</Small1>
                               </div>
                           )
                       })}

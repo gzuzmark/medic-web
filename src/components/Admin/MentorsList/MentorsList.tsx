@@ -61,10 +61,10 @@ class MentorsList extends React.Component <{}, IStateListMentor> {
                                   attrs={{onClick: this.goToCreateMentors}}/>
                 </div>
                 <ListMentorsHeader header={[
-                    'Nombre de mentor',
-                    'Horas semanales',
-                    'Ver sesiones',
-                    'Crear sesiones',
+                    'NOMBRE DE MENTOR',
+                    'HORAS SEMANALES',
+                    'VER SESIONES',
+                    'CEAR SESIONES',
                 ]}/>
             </Sticky>
         )
