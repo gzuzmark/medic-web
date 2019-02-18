@@ -43,7 +43,7 @@ const PageReports = (props: any) => {
 const PageCreateMentor = (props: any) => {
     const LayoutReports = HOCLayout(MentorCreate);
     return <LayoutReports baseText={'Mentores'}
-                          url={'/admin/agregar-mentor'}
+                          url={'/admin'}
                           {...props}
                           keyPage={'book'}
                           textNavigation={"Agregar mentor"}/>;
