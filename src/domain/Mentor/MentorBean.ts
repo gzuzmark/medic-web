@@ -22,7 +22,7 @@ export interface IMentorBean {
     skillsId?: string[];
     photo?: string;
     description?: string;
-    experiences?: IMentorExperience[];
+    experience?: IMentorExperience[];
     title?: string;
     company?: string;
     timeZone?: string;
@@ -45,7 +45,7 @@ class MentorBean {
         this.mentor.skillsId = mentor.skillsId || [] as string[];
         this.mentor.photo = mentor.photo || '';
         this.mentor.description = mentor.description || '';
-        this.mentor.experiences = mentor.experiences || [] as IMentorExperience[];
+        this.mentor.experience = mentor.experience || [] as IMentorExperience[];
         this.mentor.company = mentor.company || '';
         this.mentor.title = mentor.title || '';
         this.mentor.timeZone = mentor.timeZone || 'America/Lima';

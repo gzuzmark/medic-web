@@ -51,7 +51,7 @@ class MentorCreateData extends MentorBean {
     constructor(mentor: IMentorCreateData) {
         super(mentor);
         this.exist = mentor.exist;
-        this.mentor.experiences = [
+        this.mentor.experience = [
             {
                 company: "",
                 from: "",
@@ -63,7 +63,7 @@ class MentorCreateData extends MentorBean {
 
     get getMentorValues(): IMentorFormValidations {
         const m = {...this.mentor};
-        m.experiences = m.experiences || [] as IMentorExperience[];
+        m.experience = m.experience || [] as IMentorExperience[];
         const formValues = {
             contactNumber: m.contactNumber || '',
             currentCompany: m.company || '',
@@ -81,7 +81,7 @@ class MentorCreateData extends MentorBean {
             status: '',
             utp: !!m.utp
         };
-        formValues.experiences = m.experiences.map((item: IMentorExperience) => {
+        formValues.experiences = m.experience.map((item: IMentorExperience) => {
             const {from, to} = item;
             const fromDate = !!from ? new Date(from) : '';
             const toDate = !!to ? new Date(to) : '';
@@ -115,7 +115,7 @@ class MentorCreateData extends MentorBean {
             const required = !!v.fromMonth && !!v.fromYear && !!v.company && !!v.position;
             return required && (!!v.currentJob || (!!v.toMonth && !!v.toYear))
         });
-        this.mentor.experiences = experiences.map((v) => {
+        this.mentor.experience = experiences.map((v) => {
             const from = new Date(Number(v.fromYear), Number(v.fromMonth));
             let to = new Date();
             if (!v.currentJob) {
