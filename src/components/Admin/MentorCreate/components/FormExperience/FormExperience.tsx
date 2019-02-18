@@ -119,6 +119,7 @@ class FormExperience extends React.Component <{}, {}> {
                 }
             };
             return experiences.map((value, index) => {
+                const currentJobAttr = !!ctxt.values.experiences[index].currentJob ? {checked: true} : {}
                 return (
                     <ExperienceItem key={index} className={'ExperienceItem'}>
                         <FormRow style={{padding: '30px 0 40px 0', margin: 0}} columns={[
@@ -198,7 +199,8 @@ class FormExperience extends React.Component <{}, {}> {
                                     attr={{
                                         name: `experiences[${index}].currentJob`,
                                         onBlur: ctxt.handleBlur,
-                                        onChange: this.handlerCurrentJob(ctxt, index)
+                                        onChange: this.handlerCurrentJob(ctxt, index),
+                                        ...currentJobAttr
                                     }}/>
                             </FormColumn>
                         ]}/>

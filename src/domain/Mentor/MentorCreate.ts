@@ -33,7 +33,8 @@ export interface IMentorFormValidations {
     experiences: IMentorFormExperience[];
     currentPosition: string;
     currentCompany: string;
-    validation: string;
+    status: string;
+    utp: boolean;
 }
 
 export const emailStatus = {
@@ -58,7 +59,6 @@ class MentorCreateData extends MentorBean {
                 to: "",
             }
         ]
-
     }
 
     get getMentorValues(): IMentorFormValidations {
@@ -78,7 +78,8 @@ class MentorCreateData extends MentorBean {
             numberContact: m.numberContact || '',
             picture: m.photo || '',
             skills: [] as IFormItemBase[],
-            validation: ''
+            status: '',
+            utp: !!m.utp
         };
         formValues.experiences = m.experiences.map((item: IMentorExperience) => {
             const {from, to} = item;
@@ -109,7 +110,7 @@ class MentorCreateData extends MentorBean {
         this.mentor.shortDescription = values.description;
         this.mentor.company = values.currentCompany;
         this.mentor.title = values.currentPosition;
-        this.mentor.utp = values.validation === emailStatus.FULL_DATA;
+        this.mentor.utp = values.utp;
         const experiences =values.experiences.filter((v) => {
             const required = !!v.fromMonth && !!v.fromYear && !!v.company && !!v.position;
             return required && (!!v.currentJob || (!!v.toMonth && !!v.toYear))

@@ -4,7 +4,7 @@ import {ButtonLink, ButtonNormal, THEME_SECONDARY} from "../../../../../common/B
 import ContentModal, {IGenericContentModal} from "../../../../../common/ConsoleModal/ContentModal";
 import MentorModalBase from "../../../../../common/ConsoleModal/MentorModalBase";
 import Icon from "../../../../../common/Icon/Icon";
-import {emailStatus, IMentorFormValidations} from "../../../../../domain/Mentor/MentorCreate";
+import {emailStatus, IMentorFormExperience, IMentorFormValidations} from "../../../../../domain/Mentor/MentorCreate";
 import {limitDescription} from "../../MentorCreate.validations";
 import FormExperience from "../FormExperience/FormExperience";
 import FormImage from "../FormImage/FormImage";
@@ -40,6 +40,11 @@ interface IStateFormManager {
     modal: boolean;
 }
 
+const filter = {
+    EVERY: 'every',
+    SOME: 'some'
+}
+
 export const FormManagerContainer = styled.div`
     margin: 100px auto 80px auto;
     width: 874px;
@@ -62,7 +67,9 @@ class FormManager extends React.Component <IPropsFormManager, IStateFormManager>
         this.buttonAttrContinue = {type: "button", style: {marginLeft: 24, width: 136}};
         this.buttonAttrCancel = {};
         this.updateDisabledFields = this.updateDisabledFields.bind(this);
+        this.getExperiencesWithError = this.getExperiencesWithError.bind(this);
         this.closeModal = this.closeModal.bind(this);
+        this.emailIsNotAllowed = this.emailIsNotAllowed.bind(this);
         this.openModal = this.openModal.bind(this);
         this.state = {
             disabledFields: {
@@ -92,15 +99,10 @@ class FormManager extends React.Component <IPropsFormManager, IStateFormManager>
             buttonAttrContinue = {...buttonAttrContinue, loading: 'true'};
         }
         if (1 === this.props.currentStep) {
-            buttonAttrBack = {...buttonAttrBack, disabled: ' '};
+            buttonAttrBack = {...buttonAttrBack, disabled: true};
             if (!!errors.email || !touched.email) {
                 buttonAttrContinue = {...buttonAttrContinue, disabled: true};
-            } else if (
-                !!errors.validation ||
-                !touched.validation ||
-                values.validation === emailStatus.ALREADY_REGISTERED ||
-                values.validation === emailStatus.ERROR_PROCESS ||
-                values.validation === emailStatus.CLEAN) {
+            } else if (this.emailIsNotAllowed(values.status, errors, touched)) {
                 buttonAttrContinue = {...buttonAttrContinue, disabled: true};
             }
         } else if (2 === this.props.currentStep) {
@@ -118,35 +120,12 @@ class FormManager extends React.Component <IPropsFormManager, IStateFormManager>
                 buttonAttrContinue = {...buttonAttrContinue, disabled: true};
             }
         } else if (3 === this.props.currentStep) {
-            const experienceHasError = values.experiences.map((experience, index) => {
-                let hasError = false;
-                const someFieldCompleted =
-                    (!experience.currentJob && experience.toYear && experience.toYear.length > 0) ||
-                    (!experience.currentJob && experience.toMonth && experience.toMonth.length > 0) ||
-                    (experience.fromMonth && experience.fromMonth.length > 0) ||
-                    (experience.fromYear && experience.fromYear.length > 0) ||
-                    (experience.company && experience.company.length > 0) ||
-                    (experience.position && experience.position.length > 0);
-                if (someFieldCompleted) {
-                    const allShouldBeFull =
-                        (experience.fromMonth && experience.fromMonth.length > 0) &&
-                        (experience.fromYear && experience.fromYear.length > 0) &&
-                        (!!experience.currentJob || (!experience.currentJob && experience.toYear && experience.toYear.length > 0)) &&
-                        (!!experience.currentJob ||(!experience.currentJob && experience.toMonth && experience.toMonth.length > 0)) &&
-                        (experience.company && experience.company.length > 0) &&
-                        (experience.position && experience.position.length > 0);
-
-                    if (allShouldBeFull) {
-                        hasError = !!errors.experiences && !!errors.experiences[index];
-                    } else {
-                        hasError = true;
-                    }
-                }
-                return hasError;
-            });
+            const experiencesStatus = this.getExperiencesWithError(values.experiences, errors);
             if (values.description && values.description.length > limitDescription) {
                 buttonAttrContinue = {...buttonAttrContinue, disabled: true};
-            } else if (experienceHasError.some(v => v)) {
+            } else if (experiencesStatus.some(error => !!error)) {
+                buttonAttrContinue = {...buttonAttrContinue, disabled: true};
+            }else if (experiencesStatus.length < values.experiences.length && values.experiences.length > 1 ) {
                 buttonAttrContinue = {...buttonAttrContinue, disabled: true};
             }
         } else if (4 === this.props.currentStep) {
@@ -185,7 +164,7 @@ class FormManager extends React.Component <IPropsFormManager, IStateFormManager>
                     <FormManagerContainer>
                         <FormReviewTemplate
                             title={"Estás agregando al mentor"}
-                            name={"Mario Augusto Benedetti de las Casas Montalván"}
+                            name={`${values.firstName} ${values.lastName}`}
                             subTitle={"Revisa la información que agregaste del mentor"} />
                     </FormManagerContainer>}
                 <FormManagerContainer
@@ -224,6 +203,47 @@ class FormManager extends React.Component <IPropsFormManager, IStateFormManager>
 
     private redirect() {
         window.location.assign('/');
+    }
+
+    private emailIsNotAllowed(status: string, errors: any, touched: any) {
+        return (!!errors.status ||
+            !touched.status ||
+            status === emailStatus.ALREADY_REGISTERED ||
+            status === emailStatus.ERROR_PROCESS ||
+            status === emailStatus.CLEAN)
+    }
+
+    private getExperiencesWithError(experiences: IMentorFormExperience[], errors: any) {
+        const experiencesCompleted = experiences.filter((experience, index) => {
+            return (!experience.currentJob && experience.toYear && experience.toYear.length > 0) ||
+                (!experience.currentJob && experience.toMonth && experience.toMonth.length > 0) ||
+                (!!experience.currentJob) ||
+                this.isValidFields(experience, ["fromMonth", "fromYear", "company", "position"], filter.SOME);
+        });
+        const experiencesStatus = experiencesCompleted.map((experience, index) => {
+            let hasError = false;
+            const allShouldBeFull =
+                (!!experience.currentJob || (!experience.currentJob && experience.toYear && experience.toYear.length > 0)) &&
+                (!!experience.currentJob ||(!experience.currentJob && experience.toMonth && experience.toMonth.length > 0)) &&
+                this.isValidFields(experience, ["fromMonth", "fromYear", "company", "position"], filter.EVERY);
+            hasError = !allShouldBeFull || (!!errors.experiences && !!errors.experiences[index])
+            return hasError;
+        });
+        return experiencesStatus
+    }
+
+    private isValidFields(experience: IMentorFormExperience, keys: string[], mode: string) {
+        let status = false;
+        if (mode === filter.SOME) {
+            status = keys.some((key: string) => {
+                return !!experience[key] && experience[key].trim().length > 0;
+            })
+        } else if (mode === filter.EVERY) {
+            status = keys.every((key: string) => {
+                return !!experience[key] && experience[key].trim().length > 0;
+            })
+        }
+        return status
     }
 }
 

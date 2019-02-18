@@ -100,6 +100,7 @@ class FormReview extends React.Component <IPropsFormReview, IStateFormReview> {
                                {(!context.values.experiences.length || !!context.errors.experiences) && <Subhead1 color={FONTS.error}>(Pendiente)</Subhead1>}
                            </Header>
                            {context.values.experiences.map((value, index) => (
+                               value.position && value.company && !!this.getDateExperience(value) &&
                                <ExperienceItem key={`form_view_experiences_${index}`}>
                                    <Subhead1>{value.position}</Subhead1>
                                    <Body1 weight={LIGHT_TEXT}>{value.company}</Body1>
@@ -117,10 +118,14 @@ class FormReview extends React.Component <IPropsFormReview, IStateFormReview> {
         const toMonth = value.toMonth || "";
         const from = `${this.getMonth(fromMonth)} ${value.fromYear}`;
         let to = "Hasta la actualidad";
+        let experienceDate = "";
         if (!value.currentJob) {
             to = `${this.getMonth(toMonth)} ${value.toYear}`;
         }
-        return `${from} - ${to}`;
+        if (!!from && !!to) {
+            experienceDate = `${from} - ${to}`;
+        }
+        return experienceDate;
     }
 
     private getMonth(indexMonth: string) {

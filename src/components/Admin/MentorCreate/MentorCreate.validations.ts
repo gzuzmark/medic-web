@@ -101,7 +101,7 @@ const mentorCreateSchema = Yup.object().shape({
                     .replace(")", '')
                     .replace("(", '')
                     .split(' ').join('');
-                isValid = !isNaN(Number(phone)) || phone.length >= 6;
+                isValid = !isNaN(Number(phone)) && phone.length >= 6;
             } else {
                 isValid = !!phoneContact && (phoneContact.length >= 6 || phoneContact.length === 0);
             }
@@ -109,7 +109,8 @@ const mentorCreateSchema = Yup.object().shape({
         }),
     picture: Yup.string().required(errorRequired),
     skills: Yup.array().min(0).of(Yup.string()),
-    validation: Yup.string().required(errorRequired)
+    status: Yup.string().required(errorRequired),
+    utp: Yup.boolean()
 });
 
 export default mentorCreateSchema;

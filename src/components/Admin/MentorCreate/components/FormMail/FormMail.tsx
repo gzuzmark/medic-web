@@ -39,8 +39,8 @@ class FormMail extends React.Component <IPropsFormMail, IStateFormMail> {
                 {(context: IMentorCreateContext) => {
                     const {errors, touched, values} = context;
                     const errorEmail = !!touched.email && errors.email;
-                    const statusEmail = this.getStatusEmail(values.validation);
-                    const errorValidation = touched.validation && statusEmail;
+                    const statusEmail = this.getStatusEmail(values.status);
+                    const errorValidation = touched.status && statusEmail;
                     const loadSuccess = !!touched.email && values.email && values.email.length > 0 && !this.state.loading && !errorEmail && !errorValidation;
                     return (
                         <React.Fragment>
@@ -65,16 +65,18 @@ class FormMail extends React.Component <IPropsFormMail, IStateFormMail> {
         )
     }
 
-    private getStatusEmail(validation: string) {
-        const alreadyRegistered = validation === emailStatus.ALREADY_REGISTERED && emailStatus.ALREADY_REGISTERED;
-        const errorProcess = validation === emailStatus.ERROR_PROCESS && emailStatus.ERROR_PROCESS;
+    private getStatusEmail(status: string) {
+        const alreadyRegistered = status === emailStatus.ALREADY_REGISTERED && emailStatus.ALREADY_REGISTERED;
+        const errorProcess = status === emailStatus.ERROR_PROCESS && emailStatus.ERROR_PROCESS;
         return alreadyRegistered || errorProcess || '';
     }
 
     private fillMentorData(value: IMentorBean, context: IMentorCreateContext) {
-        context.setFieldValue("validation", emailStatus.FULL_DATA);
+        context.setFieldValue("status", emailStatus.FULL_DATA);
         context.setFieldValue("documentType", {value: value.documentType});
         context.setFieldTouched("documentType");
+        context.setFieldValue("utp", value.utp);
+        context.setFieldTouched("utp");
         context.setFieldValue("document", value.document);
         context.setFieldTouched("document");
         context.setFieldValue("lastName", value.lastname);
@@ -90,9 +92,11 @@ class FormMail extends React.Component <IPropsFormMail, IStateFormMail> {
     }
 
     private cleanMentorData(context: IMentorCreateContext) {
-        context.setFieldValue("validation", emailStatus.CLEAN);
+        context.setFieldValue("status", emailStatus.CLEAN);
         context.setFieldValue("documentType", {value: ''});
         context.setFieldTouched("documentType", false);
+        context.setFieldValue("utp", false);
+        context.setFieldTouched("utp", false);
         context.setFieldValue("document", '');
         context.setFieldTouched("document", false);
         context.setFieldValue("lastName", '');
@@ -109,13 +113,13 @@ class FormMail extends React.Component <IPropsFormMail, IStateFormMail> {
 
     private updateStatusEmailValidation(code: number, context: IMentorCreateContext) {
         if (code === 404) {
-            context.setFieldValue("validation", emailStatus.NO_DATA);
+            context.setFieldValue("status", emailStatus.NO_DATA);
         } else if (code === 409) {
-            context.setFieldValue("validation", emailStatus.ALREADY_REGISTERED);
+            context.setFieldValue("status", emailStatus.ALREADY_REGISTERED);
         } else if (code === 400) {
-            context.setFieldValue("validation", emailStatus.EMAIL_NOT_VALID);
+            context.setFieldValue("status", emailStatus.EMAIL_NOT_VALID);
         } else if (code === 401) {
-            context.setFieldValue("validation", emailStatus.ERROR_PROCESS);
+            context.setFieldValue("status", emailStatus.ERROR_PROCESS);
         }
     }
 
@@ -138,7 +142,7 @@ class FormMail extends React.Component <IPropsFormMail, IStateFormMail> {
             this.setState({loading: false});
             clearTimeout(this.timer);
             if (e.target.value.includes("@")) {
-                context.setFieldTouched("validation");
+                context.setFieldTouched("status");
                 context.setFieldTouched("email");
                 this.timer = setTimeout(() => {
                     this.setState({loading: true}, () => {
