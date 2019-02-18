@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Avatar from '../../../../../common/Avatar/Avatar';
-import {FONTS} from "../../../../../common/MentorColor";
+import {default as colors, FONTS} from "../../../../../common/MentorColor";
 import {Body1, LIGHT_TEXT, Subhead1} from '../../../../../common/MentorText';
 import {ISkill} from "../../../../../domain/Skill/Skill";
 import './MentorItem.scss';
@@ -20,15 +20,15 @@ class MentorItem extends React.Component<IPropsMentorSession, {}> {
         return (
             <div className="MentorItem">
                 <Avatar size={48} source={this.props.image} style={{marginTop: 16}}/>
-                <div className='MentorItem-basicInformation'>
-                    <Subhead1 style={{margin: '12px 0'}}  color={FONTS.medium}>{this.props.name}</Subhead1>
-                    <div className='MentorItem-tagWrapper'>
+                <div className='MentorItem_basicInformation'>
+                    <Subhead1 style={{margin: '12px 0 7px 0'}}  color={FONTS.medium}>{this.props.name}</Subhead1>
+                    <div className='MentorItem_tagWrapper'>
                         {this.props.skills && this.props.skills.map((item, index) => {
                            return (
                                <Body1 key={'mentor-item-' + index}
-                                      className='MentorItem-tag'
+                                      className='MentorItem_tag'
                                       weight={LIGHT_TEXT}
-                                      style={{'background': item.color}}>
+                                      style={{'background': colors.BACKGROUND_COLORS.background_disabled}}>
                                    {item.name}
                                </Body1>
                            )

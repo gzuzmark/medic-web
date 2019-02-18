@@ -81,7 +81,7 @@ class FormReview extends React.Component <IPropsFormReview, IStateFormReview> {
                                         </React.Fragment>}
                                    </div>
                                    <Body1 weight={LIGHT_TEXT}>{context.values.email}</Body1>
-                                   <Body1 weight={LIGHT_TEXT}>{context.values.numberContact}</Body1>
+                                   <Body1 weight={LIGHT_TEXT}>{context.values.contactNumber}</Body1>
                                </BasicInformation>
                            </div>
                            <Separator/>

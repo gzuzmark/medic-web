@@ -1,6 +1,7 @@
 import * as React from "react";
 import MentorDropDown, {IPropsMentorOptionsDropDown} from "../../../../../common/MentorDropDown/MentorDropDown";
 import MentorInput from "../../../../../common/MentorInput/MentorInput";
+import {documentTypeList} from "../../../../../repository/DocumentsIdentification";
 import FormColumn from "../../../ScheduleSession/components/FormRow/components/FormColumn/FormColumn";
 import FormRow from "../../../ScheduleSession/components/FormRow/FormRow";
 import MentorCreateContext, {IMentorCreateContext} from "../../MentorCreate.context";
@@ -77,9 +78,7 @@ class FormPersonalData extends React.Component <IPropsFormPersonalData, IStateFo
                                         value={context.values.documentType.value}
                                         triggerChange={this.handlerDocumentType(context)}
                                         placeholder="DNI, Carné de extranjería, etc."
-                                        options={[
-                                            {value: "DNI", label: "DNI"},
-                                            {value: "CARNET_EXT", label: "Carné de extranjería"}]} />
+                                        options={documentTypeList} />
                                 </FormColumn>,
                                 <FormColumn width={2} key={`FormColumn-PersonalData_${++counter}`}>
                                     <MentorInput
@@ -122,13 +121,13 @@ class FormPersonalData extends React.Component <IPropsFormPersonalData, IStateFo
                                 <FormColumn width={2} key={`FormColumn-PersonalData_${++counter}`}>
                                     <MentorInput
                                         label={"NÚMERO DE CONTACTO"}
-                                        error={touched.numberContact && errors.numberContact}
+                                        error={touched.contactNumber && errors.contactNumber}
                                         attrs={{
-                                            name: "numberContact",
+                                            name: "contactNumber",
                                             onBlur: context.handleBlur,
                                             onChange: context.handleChange,
                                             placeholder: "(51-1) 9878 678 677",
-                                            value: context.values.numberContact}}/>
+                                            value: context.values.contactNumber}}/>
                                 </FormColumn>
                             ]}/>
                         </React.Fragment>

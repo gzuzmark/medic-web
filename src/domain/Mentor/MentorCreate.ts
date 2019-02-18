@@ -25,7 +25,7 @@ export interface IMentorFormValidations {
     lastName: string;
     documentType: IFormItemBase;
     document: string;
-    numberContact: string;
+    contactNumber: string;
     location: IFormItemBase;
     skills: IFormItemBase[];
     picture: string;
@@ -51,7 +51,7 @@ class MentorCreateData extends MentorBean {
     constructor(mentor: IMentorCreateData) {
         super(mentor);
         this.exist = mentor.exist;
-        this.mentor.experiences = [
+        this.mentor.experience = [
             {
                 company: "",
                 from: "",
@@ -63,8 +63,9 @@ class MentorCreateData extends MentorBean {
 
     get getMentorValues(): IMentorFormValidations {
         const m = {...this.mentor};
-        m.experiences = m.experiences || [] as IMentorExperience[];
+        m.experience = m.experience || [] as IMentorExperience[];
         const formValues = {
+            contactNumber: m.contactNumber || '',
             currentCompany: m.company || '',
             currentPosition: m.title || '',
             description: m.description || '',
@@ -75,13 +76,12 @@ class MentorCreateData extends MentorBean {
             firstName: m.name || '',
             lastName: m.lastname || '',
             location: {} as IFormItemBase,
-            numberContact: m.numberContact || '',
             picture: m.photo || '',
             skills: [] as IFormItemBase[],
             status: '',
             utp: !!m.utp
         };
-        formValues.experiences = m.experiences.map((item: IMentorExperience) => {
+        formValues.experiences = m.experience.map((item: IMentorExperience) => {
             const {from, to} = item;
             const fromDate = !!from ? new Date(from) : '';
             const toDate = !!to ? new Date(to) : '';
@@ -103,9 +103,9 @@ class MentorCreateData extends MentorBean {
         this.mentor.lastname = values.lastName;
         this.mentor.document= values.document;
         this.mentor.documentType = values.documentType.value;
-        this.mentor.skills = values.skills.map((v) => v.value);
-        this.mentor.location = values.location.value;
-        this.mentor.numberContact = values.numberContact;
+        this.mentor.skillsId = values.skills.map((v) => v.value);
+        this.mentor.sitesId = [Number(values.location.value)];
+        this.mentor.contactNumber = values.contactNumber;
         this.mentor.description = values.description;
         this.mentor.shortDescription = values.description;
         this.mentor.company = values.currentCompany;
@@ -115,17 +115,17 @@ class MentorCreateData extends MentorBean {
             const required = !!v.fromMonth && !!v.fromYear && !!v.company && !!v.position;
             return required && (!!v.currentJob || (!!v.toMonth && !!v.toYear))
         });
-        this.mentor.experiences = experiences.map((v) => {
+        this.mentor.experience = experiences.map((v) => {
             const from = new Date(Number(v.fromYear), Number(v.fromMonth));
             let to = new Date();
-            if (v.currentJob) {
+            if (!v.currentJob) {
                 to = new Date(Number(v.toYear), Number(v.toMonth));
             }
             return {
                 company: v.company,
                 from: from.toISOString(),
                 title: v.position,
-                to: v.currentJob ? '' : to.toISOString(),
+                to: v.currentJob ? null : to.toISOString(),
             }
         });
     }

@@ -37,6 +37,7 @@ export const getFullValues = ():IMentorCreateContext => (
         updateImage: (image: string) => void(0),
         updateListSkills: (siteId: string) => new Promise<any>((resolve) => resolve()),
         values: {
+            contactNumber: '955941942',
             currentCompany: 'UTP',
             currentPosition: 'FrontEnd Developer',
             description: 'Esta es una descripcion',
@@ -64,7 +65,6 @@ export const getFullValues = ():IMentorCreateContext => (
             firstName: 'Carlos',
             lastName: 'Huamani',
             location: {} as IFormItemBase,
-            numberContact: '955941942',
             picture: '',
             skills: [] as IFormItemBase[],
             status: '',

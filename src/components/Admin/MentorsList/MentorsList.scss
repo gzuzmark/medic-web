@@ -2,21 +2,25 @@
 
 .ListMentors {
   padding: 0 70px;
-  &-sticky {
+  &_body {
+    display: flex;
+    flex-direction: column;
+  }
+  &_sticky {
     align-items: center;
     display: flex;
     justify-content: space-between;
     margin-bottom: 30px;
   }
-  &-header, &-row {
+  &_header, &_row {
     display: flex;
     flex-direction: row;
   }
-  &-header {
+  &_header {
     align-items: center;
     margin-top: 10px;
   }
-  &-row {
+  &_row {
     align-items: center;
     &--center {
       display: flex;
@@ -27,7 +31,7 @@
       border-bottom: 1px solid #c1c1c1;
     }
   }
-  &-column {
+  &_column {
     &--mentor {
       min-height: 70px;
     }
@@ -43,26 +47,26 @@
       width: 15%;
     }
   }
-  &-line {
+  &_line {
     background: $grey-light;
     border: 0;
     box-shadow: 0 1px 6px 0 darken($grey-light, 10%);
     height: 1px;
     margin: 2px 0;
   }
-  &-separator {
+  &_separator {
     align-items: center;
     border-right: 1px solid rgb(193, 193, 193);
     display: flex;
     height: 45px;
     padding-top: 2px;
   }
-  &-bigtext {
+  &_bigtext {
     font-size: 24px;
     line-height: 48px;
   }
 }
 
-.u-ListMentors-padding {
+.u-ListMentors_padding {
   padding: 0 70px;
 }
