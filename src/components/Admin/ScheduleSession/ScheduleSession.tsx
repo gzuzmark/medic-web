@@ -6,8 +6,8 @@ import MenuLeft from "../../../common/MenuLeft/MenuLeft";
 import Sticky from '../../../common/Sticky/Sticky';
 import {FactorySessionBean, IFactorySession} from '../../../domain/FactorySession/FactorySessionBean';
 import {FormLocationDependency} from "../../../domain/FormSession/FormLocationDependency";
+import {IMentorBase} from "../../../domain/Mentor/MentorBase";
 import { IMatchParam } from '../../../interfaces/MatchParam.interface';
-import { IMentor } from '../../../interfaces/Mentor.interface';
 import { ISessionSchedule } from '../../../interfaces/Session.interface';
 import {SESSION_PHYSICAL, SESSION_VIRTUAL} from "../../../repository/SessionTypeConstants";
 import LocationService from "../../../services/Location/Location.service";
@@ -30,7 +30,7 @@ interface IStateScheduleSession {
     listSession: object;
     loading: boolean;
     locations: any;
-    mentor?: IMentor;
+    mentor?: IMentorBase;
     savingData: boolean;
     session: IFactorySession;
     showModal: boolean;

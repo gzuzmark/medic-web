@@ -9,9 +9,10 @@ import MenuAside from '../../../common/Layout/components/MenuAside/MenuAside';
 import Layout from '../../../common/Layout/Layout';
 import Loader from '../../../common/Loader/Loader';
 import Sticky from '../../../common/Sticky/Sticky';
+import {IMentorBase} from "../../../domain/Mentor/MentorBase";
 import { IEvent } from '../../../interfaces/Event.interface';
 import { IMatchParam } from '../../../interfaces/MatchParam.interface';
-import { IMentor, IMentorSession } from '../../../interfaces/Mentor.interface';
+import { IMentorSession } from '../../../interfaces/Mentor.interface';
 import {
     SESSION_PHYSICAL,
     SESSION_TYPES_TUTORIES,
@@ -37,7 +38,7 @@ interface IStateMentorSession {
     loading: boolean;
     sessions: IEvent[];
     selectedEvent?: IEvent;
-    mentor?: IMentor;
+    mentor?: IMentorBase;
 }
 
 interface IPropsMentorSession {
@@ -175,7 +176,7 @@ class MentorSession extends React.Component<IPropsMentorSession, IStateMentorSes
     }
 
     private _getSessions(month: number) {
-        this.mentorService.mentor(this.idMentor).then((mentor: IMentor) => {
+        this.mentorService.mentor(this.idMentor).then((mentor: IMentorBase) => {
             this.setState({mentor});
         });
         this.mentorService.sessions(month, this.idMentor).then((mentorSessions: IMentorSession[]) => {

@@ -1,3 +1,4 @@
+import {IBaseUser} from "../User/AbstractUser";
 
 export interface IItemBase {
     id: string;
@@ -11,18 +12,14 @@ export interface IMentorExperience {
     to?: string | null;
 }
 
-export interface IMentorBean {
-    email: string;
-    name?: string;
-    lastname?: string;
+export interface IMentorBaseForm  extends IBaseUser {
     documentType?: string;
     document?: string;
     contactNumber?: string;
     sitesId?: number[];
     skillsId?: string[];
-    photo?: string;
     description?: string;
-    experience?: IMentorExperience[];
+    experiences?: IMentorExperience[];
     title?: string;
     company?: string;
     timeZone?: string;
@@ -31,9 +28,9 @@ export interface IMentorBean {
 
 }
 
-class MentorBean {
-    public mentor: IMentorBean;
-    constructor(mentor: IMentorBean) {
+class MentorBaseForm {
+    public mentor: IMentorBaseForm;
+    constructor(mentor: IMentorBaseForm) {
         this.mentor = mentor;
         this.mentor.email = mentor.email || '';
         this.mentor.name = mentor.name || '';
@@ -45,7 +42,7 @@ class MentorBean {
         this.mentor.skillsId = mentor.skillsId || [] as string[];
         this.mentor.photo = mentor.photo || '';
         this.mentor.description = mentor.description || '';
-        this.mentor.experience = mentor.experience || [] as IMentorExperience[];
+        this.mentor.experiences = mentor.experiences || [] as IMentorExperience[];
         this.mentor.company = mentor.company || '';
         this.mentor.title = mentor.title || '';
         this.mentor.timeZone = mentor.timeZone || 'America/Lima';
@@ -56,4 +53,4 @@ class MentorBean {
 
 }
 
-export default MentorBean;
+export default MentorBaseForm;

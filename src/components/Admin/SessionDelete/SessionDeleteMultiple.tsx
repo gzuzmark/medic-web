@@ -12,8 +12,8 @@ import MenuLeft from "../../../common/MenuLeft/MenuLeft";
 import Sticky from "../../../common/Sticky/Sticky";
 import {ISessionItem} from "../../../domain/FormSession/FormSessionBaseBean";
 import FormSessionDeleteBean, {ISessionsToDelete} from "../../../domain/FormSession/FormSessionDeleteBean";
+import {IMentorBase} from "../../../domain/Mentor/MentorBase";
 import {IMatchParam} from "../../../interfaces/MatchParam.interface";
-import {IMentor} from "../../../interfaces/Mentor.interface";
 import InterestAreaService from "../../../services/InterestArea/InterestArea.service";
 import MentorService from '../../../services/Mentor/Mentor.service';
 import SessionService from "../../../services/Session/Session.service";
@@ -28,7 +28,7 @@ interface IPropsSessionDeleteMultiple {
 }
 
 interface IStateSessionDeleteMultiple {
-    mentor?: IMentor;
+    mentor?: IMentorBase;
     sessions: ISessionsToDelete[];
     currentSession: ISessionItem;
     status: {

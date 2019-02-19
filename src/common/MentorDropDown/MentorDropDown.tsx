@@ -21,6 +21,7 @@ export interface IPropsMentorDropDown {
     value?: string | string[];
     name: string;
     isMulti?: boolean;
+    style?: React.CSSProperties;
     triggerChange(name: string, option: IPropsMentorOptionsDropDown | IPropsMentorOptionsDropDown[]):void;
 }
 
@@ -73,7 +74,7 @@ class MentorDropDown extends React.Component<IPropsMentorDropDown, {}> {
             return isSelected;
         });
         return (
-            <CustomDropdown>
+            <CustomDropdown style={{...this.props.style}}>
                 {!!this.props.label &&
                 <label>
                     <Small1 style={{marginBottom: 3, display: 'block'}}>{this.props.label}</Small1>

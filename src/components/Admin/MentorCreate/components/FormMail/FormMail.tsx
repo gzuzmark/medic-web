@@ -1,7 +1,7 @@
 import * as React from "react";
 import colors from "../../../../../common/MentorColor";
 import MentorInput from "../../../../../common/MentorInput/MentorInput";
-import {IMentorBean} from "../../../../../domain/Mentor/MentorBean";
+import {IMentorBaseForm} from "../../../../../domain/Mentor/MentorBaseForm";
 import {emailStatus} from "../../../../../domain/Mentor/MentorCreate";
 import MentorService from "../../../../../services/Mentor/Mentor.service";
 import MentorCreateContext, {IMentorCreateContext} from "../../MentorCreate.context";
@@ -71,7 +71,7 @@ class FormMail extends React.Component <IPropsFormMail, IStateFormMail> {
         return alreadyRegistered || errorProcess || '';
     }
 
-    private fillMentorData(value: IMentorBean, context: IMentorCreateContext) {
+    private fillMentorData(value: IMentorBaseForm, context: IMentorCreateContext) {
         context.setFieldValue("status", emailStatus.FULL_DATA);
         context.setFieldValue("documentType", {value: value.documentType});
         context.setFieldTouched("documentType");
@@ -124,7 +124,7 @@ class FormMail extends React.Component <IPropsFormMail, IStateFormMail> {
     }
 
     private verifyMentor(email: string, context: IMentorCreateContext) {
-        this.mentorService.verify(email.trim()).then((mentor: IMentorBean) => {
+        this.mentorService.verify(email.trim()).then((mentor: IMentorBaseForm) => {
             this.setState({loading: false});
             this.fillMentorData(mentor, context);
         }).catch((error) => {

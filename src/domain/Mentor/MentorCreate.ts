@@ -1,6 +1,6 @@
-import MentorBean, {IMentorBean, IMentorExperience} from "./MentorBean";
+import MentorBaseForm, {IMentorBaseForm, IMentorExperience} from "./MentorBaseForm";
 
-export interface IMentorCreateData extends IMentorBean {
+export interface IMentorCreateData extends IMentorBaseForm {
     exist: boolean;
 }
 
@@ -44,14 +44,14 @@ export const emailStatus = {
     ERROR_PROCESS: "Tuvimos un problema al procesar su correo",
     FULL_DATA: "Se obtuvieron todos datos del usuario",
     NO_DATA: "No se obtuvieron datos del usuario"
-}
+};
 
-class MentorCreateData extends MentorBean {
+class MentorCreateData extends MentorBaseForm {
     public exist = false;
     constructor(mentor: IMentorCreateData) {
         super(mentor);
         this.exist = mentor.exist;
-        this.mentor.experience = [
+        this.mentor.experiences = [
             {
                 company: "",
                 from: "",
@@ -63,7 +63,7 @@ class MentorCreateData extends MentorBean {
 
     get getMentorValues(): IMentorFormValidations {
         const m = {...this.mentor};
-        m.experience = m.experience || [] as IMentorExperience[];
+        m.experiences = m.experiences || [] as IMentorExperience[];
         const formValues = {
             contactNumber: m.contactNumber || '',
             currentCompany: m.company || '',
@@ -81,7 +81,7 @@ class MentorCreateData extends MentorBean {
             status: '',
             utp: !!m.utp
         };
-        formValues.experiences = m.experience.map((item: IMentorExperience) => {
+        formValues.experiences = m.experiences.map((item: IMentorExperience) => {
             const {from, to} = item;
             const fromDate = !!from ? new Date(from) : '';
             const toDate = !!to ? new Date(to) : '';
@@ -98,24 +98,24 @@ class MentorCreateData extends MentorBean {
     }
 
     public prepareData(values: IMentorFormValidations) {
-        this.mentor.email = values.email;
-        this.mentor.name = values.firstName;
-        this.mentor.lastname = values.lastName;
-        this.mentor.document= values.document;
+        this.mentor.email = values.email.trim();
+        this.mentor.name = values.firstName.trim();
+        this.mentor.lastname = values.lastName.trim();
+        this.mentor.document= values.document.trim();
         this.mentor.documentType = values.documentType.value;
         this.mentor.skillsId = values.skills.map((v) => v.value);
         this.mentor.sitesId = [Number(values.location.value)];
-        this.mentor.contactNumber = values.contactNumber;
-        this.mentor.description = values.description;
-        this.mentor.shortDescription = values.description;
-        this.mentor.company = values.currentCompany;
-        this.mentor.title = values.currentPosition;
+        this.mentor.contactNumber = values.contactNumber.trim();
+        this.mentor.description = values.description.trim();
+        this.mentor.shortDescription = values.description.trim();
+        this.mentor.company = values.currentCompany.trim();
+        this.mentor.title = values.currentPosition.trim();
         this.mentor.utp = values.utp;
         const experiences =values.experiences.filter((v) => {
             const required = !!v.fromMonth && !!v.fromYear && !!v.company && !!v.position;
             return required && (!!v.currentJob || (!!v.toMonth && !!v.toYear))
         });
-        this.mentor.experience = experiences.map((v) => {
+        this.mentor.experiences = experiences.map((v) => {
             const from = new Date(Number(v.fromYear), Number(v.fromMonth));
             let to = new Date();
             if (!v.currentJob) {
