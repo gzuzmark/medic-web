@@ -52,4 +52,4 @@ steps:
   displayName: 'Publish Artifact: ugo_admin'
   inputs:
     PathtoPublish: '$(build.artifactstagingdirectory)'
-    name: 'ugo_admin'
+    ArtifactName: 'ugo_admin'
