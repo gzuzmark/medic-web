@@ -5,7 +5,7 @@ import 'react-dates/initialize';
 import { BaseConfigCalendar } from "../Calendar.const";
 
 
-interface IPropsConsoleDatePicker {
+interface IPropsDatePickerBase {
     id: string;
     date: moment.Moment;
     focus: boolean;
@@ -14,7 +14,7 @@ interface IPropsConsoleDatePicker {
     configs?: object;
 }
 const baseConfigCalendar = BaseConfigCalendar;
-const ConsoleDatePicker: React.StatelessComponent<IPropsConsoleDatePicker> = (props) => {
+const DatePickerBase: React.StatelessComponent<IPropsDatePickerBase> = (props) => {
     return (
         <SingleDatePicker
             date={props.date} // momentPropTypes.momentObj or null
@@ -30,4 +30,4 @@ const ConsoleDatePicker: React.StatelessComponent<IPropsConsoleDatePicker> = (pr
     );
 };
 
-export default ConsoleDatePicker;
+export default DatePickerBase;

@@ -2,6 +2,7 @@ import { mount } from 'enzyme';
 import 'jest-localstorage-mock';
 import * as React from 'react';
 import Icon from "../../common/Icon/Icon";
+import {ButtonNormal} from "../Buttons/Buttons";
 import ContentModal, {IGenericContentModal, IPropsGenericContentModal} from './ContentModal';
 
 
@@ -63,7 +64,7 @@ describe('ContentModal Test',() => {
 
     it("render: render ContentModal correct button", () => {
         const component = getComponent();
-        expect(component.find('.GenericContentModal_button').text())
+        expect(component.find(ButtonNormal).children().text())
             .toEqual(`${generic.button}`);
     });
 
@@ -83,7 +84,7 @@ describe('ContentModal Test',() => {
 
     it("event: call confirm on click", () => {
         const component = getComponent();
-        component.find(".GenericContentModal_button").simulate('click');
+        component.find(ButtonNormal).simulate('click');
         expect(click).toHaveBeenCalled();
     });
 });

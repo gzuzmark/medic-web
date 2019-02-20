@@ -84,7 +84,7 @@ export const Heading3 = styled.h3`
   font-size: 18px;
   font-style: normal;
   font-weight: ${(props: IMentorTextProps) => props.weight && LIGHT_TEXT || DEFAULT_WEIGHT};
-  line-height: 24px;
+  line-height: 28px;
 `;
 
 export const Subhead1 = styled.h4`

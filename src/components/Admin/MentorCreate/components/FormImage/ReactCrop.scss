@@ -1,0 +1,185 @@
+// SASS variables for normal drag handle and bar size.
+// Override in your scss file by setting these variables FIRST, then including this file.
+$drag-handle-width: 9px !default;
+$drag-handle-height: 9px !default;
+$drag-bar-size: 6px !default;
+
+$mobile-media-query: "(max-width: 768px), (pointer: coarse)" !default;
+
+// Mobile handle/bar sizes.  Override as above.
+$drag-handle-mobile-width: $drag-handle-width + 8 !default;
+$drag-handle-mobile-height: $drag-handle-height + 8 !default;
+$drag-bar-mobile-size: $drag-bar-size + 8 !default;
+
+// Handle color/border.
+$drag-handle-background-colour: rgba(0,0,0,0.2) !default;
+$drag-handle-border: 1px solid rgba(255,255,255,0.7) !default;
+
+.ReactCrop {
+  position: relative;
+  display: inline-block;
+  cursor: crosshair;
+  overflow: hidden;
+  max-width: 100%;
+  background-color: #000;
+
+  &:focus {
+    outline: none;
+  }
+
+  &--disabled,
+  &--locked {
+    cursor: inherit;
+  }
+
+  &__image {
+    display: block;
+    max-width: 100%;
+    max-height: 400px;
+  }
+
+  &--crop-invisible &__image {
+    opacity: 0.5;
+  }
+
+  &__crop-selection {
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform: translate3d(0,0,0);
+    box-sizing: border-box;
+    cursor: move;
+    box-shadow: 0 0 0 9999em rgba(42, 50, 71, 0.7);
+    border-radius: 50%;
+    .ReactCrop--disabled & {
+      cursor: inherit;
+    }
+
+    border: 1px solid;
+    border-image-slice: 1;
+    border-image-repeat: repeat;
+  }
+
+  &__drag-handle {
+    position: absolute;
+    width: $drag-handle-width;
+    height: $drag-handle-height;
+    background-color: $drag-handle-background-colour;
+    border: $drag-handle-border;
+    box-sizing: border-box;
+
+    // This stops the borders disappearing when keyboard
+    // nudging.
+    outline: 1px solid transparent;
+  }
+
+  .ord-nw {
+    top: 0;
+    left: 0;
+    margin-top: -(ceil($drag-handle-height / 2));
+    margin-left: -(ceil($drag-handle-width / 2));
+    cursor: nw-resize;
+  }
+  .ord-n {
+    top: 0;
+    left: 50%;
+    margin-top: -(ceil($drag-handle-height / 2));
+    margin-left: -(ceil($drag-handle-width / 2));
+    cursor: n-resize;
+  }
+  .ord-ne {
+    top: 0;
+    right: 0;
+    margin-top: -(ceil($drag-handle-height / 2));
+    margin-right: -(ceil($drag-handle-width / 2));
+    cursor: ne-resize;
+  }
+  .ord-e {
+    top: 50%;
+    right: 0;
+    margin-top: -(ceil($drag-handle-height / 2));
+    margin-right: -(ceil($drag-handle-width / 2));
+    cursor: e-resize;
+  }
+  .ord-se {
+    bottom: 0;
+    right: 0;
+    margin-bottom: -(ceil($drag-handle-height / 2));
+    margin-right: -(ceil($drag-handle-width / 2));
+    cursor: se-resize;
+  }
+  .ord-s {
+    bottom: 0;
+    left: 50%;
+    margin-bottom: -(ceil($drag-handle-height / 2));
+    margin-left: -(ceil($drag-handle-width / 2));
+    cursor: s-resize;
+  }
+  .ord-sw {
+    bottom: 0;
+    left: 0;
+    margin-bottom: -(ceil($drag-handle-height / 2));
+    margin-left: -(ceil($drag-handle-width / 2));
+    cursor: sw-resize;
+  }
+  .ord-w {
+    top: 50%;
+    left: 0;
+    margin-top: -(ceil($drag-handle-height / 2));
+    margin-left: -(ceil($drag-handle-width / 2));
+    cursor: w-resize;
+  }
+
+  // Use the same specificity as the ords above but just
+  // come after.
+  &__disabled &__drag-handle {
+    cursor: inherit;
+  }
+
+  &__drag-bar {
+    position: absolute;
+
+    &.ord-n {
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: $drag-bar-size;
+      margin-top: -($drag-bar-size / 2);
+    }
+    &.ord-e {
+      right: 0;
+      top: 0;
+      width: $drag-bar-size;
+      height: 100%;
+      margin-right: -($drag-bar-size / 2);
+    }
+    &.ord-s {
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: $drag-bar-size;
+      margin-bottom: -($drag-bar-size / 2);
+    }
+    &.ord-w {
+      top: 0;
+      left: 0;
+      width: $drag-bar-size;
+      height: 100%;
+      margin-left: -($drag-bar-size / 2);
+    }
+  }
+
+  &--new-crop &__drag-bar,
+  &--new-crop &__drag-handle,
+  &--fixed-aspect &__drag-bar {
+    display: none;
+  }
+
+  &--fixed-aspect &__drag-handle.ord-n,
+  &--fixed-aspect &__drag-handle.ord-e,
+  &--fixed-aspect &__drag-handle.ord-s,
+  &--fixed-aspect &__drag-handle.ord-w {
+    display: none;
+  }
+
+}

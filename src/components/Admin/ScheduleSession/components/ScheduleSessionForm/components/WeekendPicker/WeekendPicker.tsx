@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Text } from '../../../../../../../common/ConsoleText';
-import {getFullHour, getHour} from '../../../../../../../common/ConsoleUtils';
+import {getFullHour, getHour} from '../../../../../../../common/DateUtilities';
 import { FactorySessionBean } from '../../../../../../../domain/FactorySession/FactorySessionBean';
 import { IMentorDescription } from '../../../../../../../interfaces/Mentor.interface';
 import { ISessionSchedule } from '../../../../../../../interfaces/Session.interface';

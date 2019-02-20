@@ -1,0 +1,31 @@
+.FormImage {
+  display: flex;
+  justify-content: center;
+  padding: 55px 0 20px 0;
+  position: relative;
+  &_label {
+    cursor: pointer;
+  }
+  &_text {
+    align-items: center;
+    display: flex;
+    margin-top: 8px;
+  }
+  &_file {
+    height: 0.1px;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    width: 0.1px;
+    z-index: -1;
+  }
+  &_crop {
+    background: rgba(42, 50, 71, 0.7);
+    margin: 22px 0;
+    padding: 0;
+    text-align: center;
+  }
+  &_modal {
+
+  }
+}

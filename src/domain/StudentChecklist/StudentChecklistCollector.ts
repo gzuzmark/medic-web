@@ -13,7 +13,7 @@ export class StudentChecklistCollector {
     public filterStudents(filter: string): StudentChecklistBean[] {
         filter = filter.toLowerCase();
         return this.sessions.filter((item: StudentChecklistBean) => {
-            const name = item.student.user.name.toLowerCase();
+            const name = `${item.student.user.name} ${item.student.user.lastname}`.toLowerCase();
             const code = item.student.user.code.toLowerCase();
             return name.includes(filter) || code.includes(filter) || !filter;
         })

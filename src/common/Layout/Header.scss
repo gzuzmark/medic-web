@@ -1,5 +1,4 @@
 .Header {
-  background: linear-gradient(to left, rgb(61, 39, 141), rgb(86, 24, 163));
   height: 80px;
   position: fixed;
   top: 0;
@@ -20,6 +19,10 @@
     align-items: center;
     display: flex;
     justify-content: flex-end;
+    a {
+      display: flex;
+      align-items: center;
+    }
   }
   &_container-image {
     display: block;

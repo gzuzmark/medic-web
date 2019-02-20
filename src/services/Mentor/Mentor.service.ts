@@ -1,11 +1,14 @@
-import {IMentor, IMentorSession} from '../../interfaces/Mentor.interface';
+import {IMentorBase} from "../../domain/Mentor/MentorBase";
+import {IMentorBaseForm} from "../../domain/Mentor/MentorBaseForm";
+import {IMentorSession} from '../../interfaces/Mentor.interface';
 import BaseRequest from '../BaseRequest';
 
 class MentorService extends BaseRequest {
+    private verifyMenorCancelToken: any = null;
 
-    public list(skillId?: string): Promise<IMentor[]> {
+    public list(skillId?: string): Promise<IMentorBase[]> {
         return new Promise((resolve, reject) => {
-            this.instance.get('ugo-admin/mentors?status=PUBLISHED&skill=' + skillId)
+            this.instance.get('ugo-admin/mentors?skill=' + skillId)
                 .then((response: any) => {
                     if (response.status === 200 && response.data) {
                         resolve(response.data.items);
@@ -20,7 +23,7 @@ class MentorService extends BaseRequest {
         });
     }
 
-    public mentor(idMentor: string): Promise<IMentor> {
+    public mentor(idMentor: string): Promise<IMentorBase> {
         return new Promise((resolve, reject) => {
             this.instance.get('ugo-admin/mentors/' + idMentor)
                 .then((response: any) => {
@@ -88,6 +91,63 @@ class MentorService extends BaseRequest {
                 });
         });
     }
+
+    public verify(email: string): Promise<IMentorBaseForm> {
+        if (!!this.verifyMenorCancelToken) {
+            this.verifyMenorCancelToken.cancel();
+        }
+        this.verifyMenorCancelToken = this.generateCancelToken();
+        const instance = this.getCustomInstance(this.verifyMenorCancelToken);
+        return new Promise<IMentorBaseForm>((resolve, reject) => {
+            instance.get('ugo-admin/mentors/verify/' + email.trim())
+                .then((response: any) => {
+                    if (response.status === 200 && response.data) {
+                        resolve(response.data);
+                    } else {
+                        reject(response);
+                    }
+                })
+                .catch((error: any) => {
+                    this.validSession();
+                    reject(error);
+                });
+        });
+    }
+
+    public uploadPhoto(formData: FormData): Promise<IMentorSession[]> {
+        return new Promise((resolve, reject) => {
+            this.instance.post('ugo-admin/mentors/photo', formData)
+                .then((response: any) => {
+                    if (response.status === 200 && response.data) {
+                        resolve(response.data);
+                    } else {
+                        reject(null);
+                    }
+                })
+                .catch((error: any) => {
+                    this.validSession();
+                    reject(error);
+                });
+        });
+    }
+
+    public save(mentor: IMentorBaseForm) {
+        return new Promise((resolve, reject) => {
+            this.instance.post('ugo-admin/mentors-full', mentor)
+                .then((response: any) => {
+                    if (response.status === 200 && response.data) {
+                        resolve(response.data);
+                    } else {
+                        reject(null);
+                    }
+                })
+                .catch((error: any) => {
+                    this.validSession();
+                    reject(error);
+                });
+        });
+    }
+
 }
 
 export default MentorService;

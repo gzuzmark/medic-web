@@ -15,7 +15,7 @@
   padding: 0;
   text-decoration: none;
   transition: background ease-in-out 0.5s;
-  width: 280px;
+  min-width: 130px;
   &[disabled] {
     color: white;
     background: #e6eaf2!important;

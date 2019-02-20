@@ -1,13 +1,18 @@
 import * as React from 'react';
+import {CSSProperties} from "react";
+import styled from "styled-components";
 import {Body1, LIGHT_TEXT, Small1} from '../../common/MentorText';
 import Icon from "../Icon/Icon";
+import Loader from "../Loader/Loader";
 import './MentorInput.scss';
 
 interface IPropsMentorInput {
     active?: boolean; // active or deactive animation
     icon?: string;
+    iconStyles?: CSSProperties;
     enable?: boolean; // disable or enable input
     error?: string;
+    loading?: boolean;
     forceFocus?: boolean;
     style?: React.CSSProperties;
     styleContainer?: React.CSSProperties;
@@ -24,6 +29,17 @@ interface IStateMentorInput {
     focus: boolean;
 }
 
+const LoaderInput = styled(Loader)`
+    display: inline-block;
+    height: 30px;
+    position: absolute;
+    right: 0;
+    top: 0;
+    transform: scale(0.46);
+    width: 48px;
+`;
+
+// todo: pasar a styled component
 class MentorInput extends React.Component<IPropsMentorInput, IStateMentorInput> {
     public static defaultProps = {
         active: true,
@@ -58,7 +74,7 @@ class MentorInput extends React.Component<IPropsMentorInput, IStateMentorInput> 
         if (this.props.enable && (this.props.active || noAnimation)) {
             const status = this.state.focus ? 'focus' : 'default';
             inputClass = `MentorInput--${status}`;
-            if (!!this.props.error) {
+            if (!!this.props.error && !this.props.loading) {
                 inputClass = `${inputClass} MentorInput--error`;
             }
         } else if (!this.props.enable) {
@@ -82,7 +98,8 @@ class MentorInput extends React.Component<IPropsMentorInput, IStateMentorInput> 
                         className={`MentorInput_input`}
                         type={"text"}
                         {...this.props.attrs}/>
-                        {!!icon && <Icon name={icon} click={this.onClickIcon}/>}
+                        {this.props.loading && <LoaderInput/>}
+                        {!!icon && !this.props.loading && <Icon name={icon} style={{...this.props.iconStyles}} click={this.onClickIcon}/>}
                         {!!this.props.animation && <Body1>{this.props.animation.text}</Body1>}
                         {!!this.props.error &&
                         <div className={'MentorInput_message'}><Small1 weight={LIGHT_TEXT}>{this.props.error}</Small1></div>}

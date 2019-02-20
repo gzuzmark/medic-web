@@ -18,11 +18,14 @@ const SECONDARY_COLORS = {
 
 const MISC = {
     blue: '#81a8d2',
-    blue_grey: "#f9fbff",
+    blue_grey: "#748e98",
+    green: '#82d2ad',
     light_grey_1: '#adb7c4',
     light_grey_2: '#e6edf2',
     light_grey_3: '#eef2f6',
     light_grey_4: '#ccd6dc',
+    light_grey_5: '#f3f4f6',
+    light_grey_6: '#f9fbff',
     red_soft: '#ff8389'
 };
 
@@ -33,11 +36,13 @@ const MISC_COLORS = {
     blue: MISC.blue,
     dark: SECONDARY_COLORS.dark_gray,
     dark_purple: SECONDARY_COLORS.indigo_dark_purple,
+    green: MISC.green,
     light_purple: SECONDARY_COLORS.indigo_light_purple
 };
 
 const TEXT_COLORS = {
     font_blue: MISC.blue,
+    font_blue_grey: MISC.blue_grey,
     font_dark: SECONDARY_COLORS.dark_gray,
     font_disabled: MISC.light_grey_1,
     font_error: MISC.red_soft,
@@ -48,7 +53,9 @@ const TEXT_COLORS = {
 };
 
 const BACKGROUND_COLORS = {
+    background_blue: MISC.light_grey_6,
     background_disabled: MISC.light_grey_2,
+    background_disabled_button: MISC.light_grey_1,
     background_purple: PRIMARY_COLORS.indigo_purple,
     background_red: PRIMARY_COLORS.red,
     background_white: SECONDARY_COLORS.white,
@@ -59,7 +66,9 @@ const BACKGROUND_COLORS = {
 interface IMentorColor {
     BACKGROUND_COLORS: {
         background_disabled: string;
+        background_disabled_button: string;
         background_purple: string;
+        background_blue: string;
         background_red: string;
         background_white: string;
     },
@@ -71,9 +80,11 @@ interface IMentorColor {
         background_blue: string;
         background_grey_1: string;
         background_grey_2: string;
+        green: string;
     }
     TEXT_COLORS: {
         font_blue: string;
+        font_blue_grey: string;
         font_dark: string;
         font_disabled: string;
         font_highlight: string;
@@ -92,6 +103,7 @@ const colors: IMentorColor = {
 
 export const FONTS = {
     blue: 'font_blue',
+    blue_grey: 'font_blue_grey',
     dark: 'font_dark',
     disabled: 'font_disabled',
     error: 'font_error',

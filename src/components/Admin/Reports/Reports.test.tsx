@@ -9,19 +9,19 @@ import Reports from "./Reports";
 
 describe('Reports Test',() => {
     let props: any;
-    let mountedConsoleDatePicker: any;
-    const report = () => {
-        if (!mountedConsoleDatePicker) {
-            mountedConsoleDatePicker = shallow(
+    let mountedDatePickerBase: any;
+    const getComponent = () => {
+        if (!mountedDatePickerBase) {
+            mountedDatePickerBase = shallow(
                 <Reports {...props} />
             );
         }
-        return mountedConsoleDatePicker;
+        return mountedDatePickerBase;
     };
 
     beforeEach(() => {
         props = {};
-        mountedConsoleDatePicker = undefined;
+        mountedDatePickerBase = undefined;
         moxios.install();
     });
 
@@ -30,26 +30,26 @@ describe('Reports Test',() => {
     });
 
     it("methods: searchResults is called if Object is valid", () => {
-        const component = report();
+        const component = getComponent();
         const spySearchResults = jest.spyOn(component.instance(), 'searchResults');
         component.instance().updateState({type: 'SESSIONS'});
         expect(spySearchResults).toHaveBeenCalled()
     });
 
     it("methods: searchResults is not called if Object is invalid", () => {
-        const component = report();
+        const component = getComponent();
         const spySearchResults = jest.spyOn(component.instance(), 'searchResults');
         component.instance().updateState({startDate: new Date()});
         expect(spySearchResults).not.toHaveBeenCalled()
     });
 
     it("methods: searchResults should update table with data", (done) => {
-        const component = report();
+        const component = getComponent();
         const object = new ReportRequestBean();
         object.type = REPORT_SESSIONS;
         component.instance().searchResults(object);
         moxios.wait(() => {
-            const request = moxios.requests.mostRecent()
+            const request = moxios.requests.mostRecent();
             request.respondWith({
                 response: Dummy.data,
                 status: 200
@@ -63,7 +63,7 @@ describe('Reports Test',() => {
     });
 
     it("methods: searchResults should update table with no data", (done) => {
-        const component = report();
+        const component = getComponent();
         const object = new ReportRequestBean();
         object.type = REPORT_STUDENTS;
         component.instance().searchResults(object);

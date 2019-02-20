@@ -1,11 +1,3 @@
-import {IBaseUser} from "./User.interface";
-
-export interface ISkill {
-    color: string;
-    id: string;
-    name: string;
-}
-
 export interface IArea {
     id: string;
     name: string;
@@ -20,16 +12,6 @@ export interface ISessionTypes {
     key: string;
 }
 
-export interface IMentor {
-    id: string;
-    user: IBaseUser;
-    interestAreas: IArea[];
-    sessions: {
-        totalMinutes: number;
-    }
-    status: string;
-    skills: ISkill[];
-}
 
 export interface IMentorDescription {
     id: string;

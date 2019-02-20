@@ -1,6 +1,6 @@
 import * as moment from "moment";
 import * as React from "react";
-import ConsoleDatePicker from "../../../../../common/ConsoleDatePicker/ConsoleDatePicker";
+import DatePickerBase from "../../../../../common/DatePickerBase/DatePickerBase";
 import './InputDatePicker.scss';
 
 interface IStateInputDatePicker {
@@ -29,7 +29,7 @@ class InputDatePicker extends React.Component <IPropsInputDatePicker, IStateInpu
     public render() {
         return (
             <div className={`InputDatePicker ${this.props.error ? 'InputDatePicker--error' : ''}`}>
-                <ConsoleDatePicker
+                <DatePickerBase
                     id={this.props.id}
                     date={moment(this.props.date)}
                     focus={this.state.focus}

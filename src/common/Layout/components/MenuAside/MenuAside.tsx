@@ -1,7 +1,8 @@
 import * as React from 'react';
 import { Link } from 'react-router-dom';
-import { HighlightText, HighlightTextHeading1 } from '../../../ConsoleText';
 import Icon from "../../../Icon/Icon";
+import colors from "../../../MentorColor";
+import {Body1, LIGHT_TEXT} from '../../../MentorText';
 import './MenuAside.scss';
 
 interface IPropsListMentors {
@@ -12,10 +13,7 @@ interface IPropsListMentors {
 }
 
 const iconStyles: React.CSSProperties = {
-    fill: 'rgb(193, 193, 193)',
-    left: -5,
-    position: 'relative',
-    top: 3
+    fill: colors.TEXT_COLORS.font_dark
 };
 
 class MenuAside extends React.Component<IPropsListMentors, {}> {
@@ -31,13 +29,13 @@ class MenuAside extends React.Component<IPropsListMentors, {}> {
                 <div className="Menu u-LayoutMargin">
                     <div className="Menu-navbar">
                         <Icon name={icon} style={iconStyles}/>
-                        <HighlightTextHeading1 className="Menu-item" color="textNormalSoft">
-                            <Link to={this.props.url} className='Menu-item--link'>
+                        <Link to={this.props.url} className='Menu-item--link'>
+                            <Body1 className="Menu-item" weight={LIGHT_TEXT}>
                                 {this.props.baseText}
-                            </Link>
-                        </HighlightTextHeading1>
-                        {this.props.textNavigation &&
-                            <HighlightText className="Menu-item" color="textNormalSoft">{this.props.textNavigation}</HighlightText>}
+                            </Body1>
+                        </Link>
+                        {!!this.props.textNavigation &&
+                            <Body1 className="Menu-item" weight={LIGHT_TEXT}>{` > ${this.props.textNavigation}`}</Body1>}
                     </div>
                 </div>
             </React.Fragment>

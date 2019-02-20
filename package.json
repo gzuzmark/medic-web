@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@types/react-tooltip": "^3.9.0",
+    "@types/react-select": "^2.0.11",
     "autoprefixer": "7.1.6",
     "axios": "0.18.0",
     "babel-jest": "22.4.4",
@@ -32,10 +32,12 @@
     "react-dates": "17.1.0",
     "react-dev-utils": "5.0.1",
     "react-dom": "0.14||^15.5.4||^16.1.1",
+    "react-image-crop": "^6.0.12",
     "react-js-pagination": "^3.0.2",
     "react-numeric-input": "2.2.3",
-    "react-responsive-modal": "^3.3.0",
+    "react-responsive-modal": "^3.6.0",
     "react-router-dom": "4.3.1",
+    "react-select": "^2.3.0",
     "react-tooltip": "^3.9.2",
     "resolve": "1.6.0",
     "source-map-loader": "0.2.3",
@@ -54,15 +56,18 @@
     "webpack-dev-server": "2.9.4",
     "webpack-manifest-plugin": "1.3.2",
     "whatwg-fetch": "2.0.3",
-    "yup": "0.25.1"
+    "yup": "^0.26.10"
   },
   "scripts": {
     "start": "node scripts/start.js",
     "build": "node scripts/build.js",
     "test": "node scripts/test.js --env=jsdom",
-    "test:coverage": "node scripts/test.js --env=jsdom --coverage --coverageDirectory=output/coverage/jest",
+    "test:coverage": "node scripts/test.js --env=jsdom --coverage --coverageDirectory=output/coverage/jest  --collectCoverageFrom=src/components/**/*.tsx --collectCoverageFrom=src/common/**/*.tsx --collectCoverageFrom=src/domain/**/*.ts",
     "deploy:qa": "yarn build && firebase deploy -P stage",
     "deploy:prod": "yarn build && firebase deploy -P production"
+  },
+  "resolutions": {
+    "@types/react": "16.4.0"
   },
   "devDependencies": {
     "@types/chai": "4.1.4",
@@ -76,16 +81,20 @@
     "@types/react-big-calendar": "0.18.1",
     "@types/react-dates": "16.7.0",
     "@types/react-dom": "16.0.6",
+    "@types/react-image-crop": "^6.0.0",
     "@types/react-js-pagination": "3.0.1",
     "@types/react-numeric-input": "2.2.1",
     "@types/react-router-dom": "4.2.7",
-    "@types/yup": "0.24.7",
+    "@types/react-tooltip": "^3.9.0",
+    "@types/yup": "^0.26.7",
     "chai": "4.1.2",
-    "enzyme": "3.3.0",
-    "enzyme-adapter-react-16": "1.1.1",
+    "enzyme": "3.8.0",
+    "enzyme-adapter-react-16": "1.9.1",
     "firebase": "^5.5.8",
+    "jest-canvas-mock": "^2.0.0-alpha.2",
     "jest-junit": "^5.1.0",
     "jest-localstorage-mock": "2.2.0",
+    "jest-styled-components": "^6.3.1",
     "moxios": "0.4.0",
     "node-sass": "4.9.0",
     "sass-loader": "7.0.3",
@@ -97,7 +106,8 @@
       "src/**/*.{js,jsx,ts,tsx}"
     ],
     "setupFiles": [
-      "<rootDir>/config/polyfills.js"
+      "<rootDir>/config/polyfills.js",
+      "jest-canvas-mock"
     ],
     "testMatch": [
       "<rootDir>/src/**/__tests__/**/*.(j|t)s?(x)",

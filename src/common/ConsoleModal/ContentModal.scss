@@ -9,24 +9,24 @@
     height: 80px;
     width: 80px;
   }
+  &_header {
+    .icon {
+      height: 96px;
+      width: 96px;
+      fill: #561cac!important;
+    }
+  }
   &_body {
     padding: 12px 0;
   }
-  .icon {
-    fill: #561cac!important;
-    height: 180px;
-    margin-bottom: 15px;
-    width: 180px;
-  }
   &_title {
     text-align: center;
-    span {
-      color: #4a4a4a!important;
-    }
   }
   &_description {
-    margin: 10px auto;
+    align-items: center;
+    display: flex;
+    margin: 20px auto;
     text-align: center;
-    width: 350px;
+    width: 100%;
   }
 }

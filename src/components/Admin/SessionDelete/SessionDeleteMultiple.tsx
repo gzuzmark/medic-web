@@ -4,7 +4,7 @@ import ConfirmButtons from "../../../common/ConfirmButtons/ConfirmButtons";
 import ModalCancel from "../../../common/ConsoleModal/ModalCancel/ModalCancel";
 import ConsoleTableLoader from "../../../common/ConsoleTable/components/ConsoleTableLoader/ConsoleTableLoader";
 import { SmallText1, Text2, Title3 } from '../../../common/ConsoleText';
-import {backToPagePreviously} from "../../../common/ConsoleUtils";
+import {backToPagePreviously} from "../../../common/DateUtilities";
 import {IListItem} from "../../../common/FilterList/FilterList";
 import Layout from "../../../common/Layout/Layout";
 import MentorDetail from "../../../common/MentorDetail/MentorDetail";
@@ -12,8 +12,8 @@ import MenuLeft from "../../../common/MenuLeft/MenuLeft";
 import Sticky from "../../../common/Sticky/Sticky";
 import {ISessionItem} from "../../../domain/FormSession/FormSessionBaseBean";
 import FormSessionDeleteBean, {ISessionsToDelete} from "../../../domain/FormSession/FormSessionDeleteBean";
+import {IMentorBase} from "../../../domain/Mentor/MentorBase";
 import {IMatchParam} from "../../../interfaces/MatchParam.interface";
-import {IMentor} from "../../../interfaces/Mentor.interface";
 import InterestAreaService from "../../../services/InterestArea/InterestArea.service";
 import MentorService from '../../../services/Mentor/Mentor.service';
 import SessionService from "../../../services/Session/Session.service";
@@ -28,7 +28,7 @@ interface IPropsSessionDeleteMultiple {
 }
 
 interface IStateSessionDeleteMultiple {
-    mentor?: IMentor;
+    mentor?: IMentorBase;
     sessions: ISessionsToDelete[];
     currentSession: ISessionItem;
     status: {
@@ -114,7 +114,7 @@ class SessionDeleteMultiple extends React.Component<IPropsSessionDeleteMultiple,
 
     public renderMenu() {
         const textNavigation = this.state.mentor ?
-            'Eliminar sesiones de ' + this.state.mentor.user.name : 'Eliminar sesiones';
+            `Eliminar sesiones de ${this.state.mentor.user.name} ${this.state.mentor.user.lastname}` : 'Eliminar sesiones';
         return (
             <MenuLeft baseText={'Mentores'} url={'/admin/mentores'} textNavigation={textNavigation} />
         )

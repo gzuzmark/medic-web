@@ -90,7 +90,7 @@ const StudentFullCard: React.StatelessComponent<IPropsStudentFullCard> = (props)
 
 export const StudentFullCardHeader: React.StatelessComponent<any> = () => {
     return (
-        <div className="StudentFullCard_header" style={{background: colors.MISC_COLORS.background_blue}}>
+        <div className="StudentFullCard_header" style={{background: colors.BACKGROUND_COLORS.background_blue}}>
             <div className="StudentFullCard_header-column-1">
                 <Small1 color={FONTS.blue}>Alumnos en la sesión</Small1></div>
             <div className="StudentFullCard_header-column-2">

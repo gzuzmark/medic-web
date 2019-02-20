@@ -4,7 +4,8 @@ import { HighlightText, Text } from '../../../../../common/ConsoleText';
 import {default as FilterList, IListItem} from '../../../../../common/FilterList/FilterList';
 import Loader from '../../../../../common/Loader/Loader';
 import {FactorySessionBean} from "../../../../../domain/FactorySession/FactorySessionBean";
-import {IArea, IMentor} from '../../../../../interfaces/Mentor.interface';
+import {IMentorBase} from "../../../../../domain/Mentor/MentorBase";
+import {IArea} from '../../../../../interfaces/Mentor.interface';
 import {ISessionSchedule} from '../../../../../interfaces/Session.interface';
 import FormSection from '../../components/FormSection/FormSection';
 import { SESSION_SELECTED } from "../../ScheduleSession.constants";
@@ -30,7 +31,7 @@ export interface IFormCallbacks {
 }
 
 interface IPropsScheduleSessionForm {
-    mentor?: IMentor;
+    mentor?: IMentorBase;
     savingData: boolean;
     loading: boolean;
     callbacks: IFormCallbacks;

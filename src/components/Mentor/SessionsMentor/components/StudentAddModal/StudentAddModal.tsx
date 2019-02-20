@@ -28,8 +28,8 @@ const StudentAddModal: React.StatelessComponent<IPropsStudentAddModal> = (props)
     let propsButton = {};
     if (props.options.loading) {
         propsButton = {
-            disabled: "true",
-            loading: "true"
+            disabled: "",
+            loading: ""
         }
     }
     return !!props.options.user && (
@@ -49,7 +49,7 @@ const StudentAddModal: React.StatelessComponent<IPropsStudentAddModal> = (props)
                     </div>
                 </div>
                 <div className={"StudentModalCard_body-right"}>
-                    <Text2>{props.options.user.student.name}</Text2>
+                    <Text2>{props.options.user.student.name} {props.options.user.student.lastname}</Text2>
                     <Text3>{props.options.user.student.code}</Text3>
                 </div>
             </div>
