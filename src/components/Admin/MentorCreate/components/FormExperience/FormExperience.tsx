@@ -128,6 +128,7 @@ class FormExperience extends React.Component <{}, {}> {
                                     label={"CARGO"}
                                     error={hasError(index, "position")}
                                     attrs={{
+                                        maxLength: 150,
                                         name: `experiences[${index}].position`,
                                         onBlur: ctxt.handleBlur,
                                         onChange: ctxt.handleChange,
@@ -139,6 +140,7 @@ class FormExperience extends React.Component <{}, {}> {
                                     label={"EMPRESA"}
                                     error={hasError(index, "company")}
                                     attrs={{
+                                        maxLength: 150,
                                         name: `experiences[${index}].company`,
                                         onBlur: ctxt.handleBlur,
                                         onChange: ctxt.handleChange,

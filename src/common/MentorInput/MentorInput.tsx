@@ -2,6 +2,7 @@ import * as React from 'react';
 import {CSSProperties} from "react";
 import styled from "styled-components";
 import {Body1, LIGHT_TEXT, Small1} from '../../common/MentorText';
+import FormLabel from "../FormLabel/FormLabel";
 import Icon from "../Icon/Icon";
 import Loader from "../Loader/Loader";
 import './MentorInput.scss';
@@ -22,6 +23,7 @@ interface IPropsMentorInput {
         enable?: boolean;
         text?: string;
     };
+    info?: string;
     attrs?: any;
 }
 
@@ -38,6 +40,7 @@ const LoaderInput = styled(Loader)`
     transform: scale(0.46);
     width: 48px;
 `;
+
 
 // todo: pasar a styled component
 class MentorInput extends React.Component<IPropsMentorInput, IStateMentorInput> {
@@ -86,10 +89,7 @@ class MentorInput extends React.Component<IPropsMentorInput, IStateMentorInput> 
         }
         return (
             <div style={{...this.props.styleContainer}} onClick={this.onClick}>
-                {!!this.props.label &&
-                <label>
-                    <Small1 style={{marginBottom: 3, display: 'block'}}>{this.props.label}</Small1>
-                </label>}
+                <FormLabel label={this.props.label} info={this.props.info} uppercase={true}/>
                 <div
                     className={`MentorInput ${inputClass}`}
                     style={{...this.props.style}}>

@@ -50,6 +50,7 @@ const TEXT_COLORS = {
     font_highlight: MISC.blue,
     font_light: SECONDARY_COLORS.white,
     font_medium: SECONDARY_COLORS.medium_grey,
+    font_purple: PRIMARY_COLORS.indigo_purple
 };
 
 const BACKGROUND_COLORS = {
@@ -92,6 +93,7 @@ interface IMentorColor {
         font_light: string;
         font_medium: string;
         font_grey: string;
+        font_purple: string;
     }
 };
 
@@ -109,7 +111,8 @@ export const FONTS = {
     error: 'font_error',
     grey: 'font_grey',
     highlight: 'font_highlight',
-    medium: 'font_medium'
+    medium: 'font_medium',
+    purple: 'font_purple'
 };
 
 export default colors;

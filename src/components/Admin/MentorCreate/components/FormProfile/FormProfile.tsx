@@ -47,6 +47,7 @@ class FormProfile extends React.Component <{}, {}> {
                                         label={"CARGO"}
                                         error={touched.currentPosition && errors.currentPosition}
                                         attrs={{
+                                            maxLength: 150,
                                             name: "currentPosition",
                                             onBlur: context.handleBlur,
                                             onChange: context.handleChange,
@@ -58,6 +59,7 @@ class FormProfile extends React.Component <{}, {}> {
                                         label={"EMPRESA ACTUAL"}
                                         error={touched.currentCompany && errors.currentCompany}
                                         attrs={{
+                                            maxLength: 150,
                                             name: "currentCompany",
                                             onBlur: context.handleBlur,
                                             onChange: context.handleChange,

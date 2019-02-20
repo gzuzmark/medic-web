@@ -5,7 +5,7 @@ import {documentTypeList} from "../../../../../repository/DocumentsIdentificatio
 import FormColumn from "../../../ScheduleSession/components/FormRow/components/FormColumn/FormColumn";
 import FormRow from "../../../ScheduleSession/components/FormRow/FormRow";
 import MentorCreateContext, {IMentorCreateContext} from "../../MentorCreate.context";
-import {IFormManagerDisabledFields} from "../FormManager/FormManager";
+import {IFormManagerDisabledFields, IFormManagerInfoFields} from "../FormManager/FormManager";
 
 interface IStateFormPersonalData {
     loading: boolean;
@@ -13,6 +13,7 @@ interface IStateFormPersonalData {
 
 interface IPropsFormPersonalData {
     disableFields: IFormManagerDisabledFields;
+    infoFields?: IFormManagerInfoFields;
 }
 class FormPersonalData extends React.Component <IPropsFormPersonalData, IStateFormPersonalData> {
     public state: IStateFormPersonalData;
@@ -48,7 +49,9 @@ class FormPersonalData extends React.Component <IPropsFormPersonalData, IStateFo
                                     <MentorInput
                                         label={"NOMBRE"}
                                         error={touched.firstName && errors.firstName}
+                                        info={this.props.infoFields && this.props.infoFields.firstName}
                                         attrs={{
+                                            maxLength: 150,
                                             name: "firstName",
                                             onBlur: context.handleBlur,
                                             onChange: context.handleChange,
@@ -60,7 +63,9 @@ class FormPersonalData extends React.Component <IPropsFormPersonalData, IStateFo
                                     <MentorInput
                                         label={"APELLIDO"}
                                         error={touched.lastName && errors.lastName}
+                                        info={this.props.infoFields && this.props.infoFields.lastName}
                                         attrs={{
+                                            maxLength: 150,
                                             name: "lastName",
                                             onBlur: context.handleBlur,
                                             onChange: context.handleChange,
@@ -76,6 +81,7 @@ class FormPersonalData extends React.Component <IPropsFormPersonalData, IStateFo
                                         name={"documentType"}
                                         disabled={documentTypeDisabled}
                                         value={context.values.documentType.value}
+                                        info={this.props.infoFields && this.props.infoFields.documentType}
                                         triggerChange={this.handlerDocumentType(context)}
                                         placeholder="DNI, Carné de extranjería, etc."
                                         options={documentTypeList} />
@@ -84,6 +90,7 @@ class FormPersonalData extends React.Component <IPropsFormPersonalData, IStateFo
                                     <MentorInput
                                         label={"NÚMERO DE DOCUMENTO"}
                                         error={touched.document && errors.document}
+                                        info={this.props.infoFields && this.props.infoFields.document}
                                         attrs={{
                                             name: "document",
                                             onBlur: context.handleBlur,
@@ -123,6 +130,7 @@ class FormPersonalData extends React.Component <IPropsFormPersonalData, IStateFo
                                         label={"NÚMERO DE CONTACTO"}
                                         error={touched.contactNumber && errors.contactNumber}
                                         attrs={{
+                                            maxLength: 20,
                                             name: "contactNumber",
                                             onBlur: context.handleBlur,
                                             onChange: context.handleChange,

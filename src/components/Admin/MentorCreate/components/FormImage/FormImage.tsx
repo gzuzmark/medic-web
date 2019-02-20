@@ -115,7 +115,7 @@ class FormImage extends React.Component <IPropsFormImage, IStateFormImage> {
                                         fill: colors.BACKGROUND_COLORS.background_purple,
                                         marginRight: 4
                                     }}/>
-                                    <TextInput>Subir foto del mentor</TextInput>
+                                    <TextInput>{!!context.selectedImage ? 'Cambiar foto' : 'Subir foto del mentor' }</TextInput>
                                 </div>
                             </label>
                             <input type={"file"} id={this.props.id} accept="image/*" className={"FormImage_file"} onChange={this.onSelectFile} />

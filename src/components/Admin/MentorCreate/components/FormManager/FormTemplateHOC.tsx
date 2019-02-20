@@ -4,7 +4,7 @@ import colors from "../../../../../common/MentorColor";
 import {Heading2, LIGHT_TEXT, Subhead1} from "../../../../../common/MentorText";
 
 export interface IPropsFormTemplateHOC {
-    title: string;
+    title?: string;
     name?: string;
     subTitle?: string;
 }
@@ -26,7 +26,8 @@ export const formTemplateHOC = <P extends object>(Component: React.ComponentType
             const { title, subTitle, name, ...props } = this.props as IPropsFormTemplateHOC;
             return (
                     <div className='FormTemplate'>
-                        <Title>{title}</Title>
+                        {!!title &&
+                            <Title>{title}</Title>}
                         {!!name &&
                             <Title>{name}</Title>}
                         {!!subTitle &&

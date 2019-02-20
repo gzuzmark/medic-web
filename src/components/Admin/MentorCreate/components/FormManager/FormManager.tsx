@@ -35,6 +35,13 @@ export interface IFormManagerDisabledFields {
     document: boolean;
 }
 
+export interface IFormManagerInfoFields {
+    firstName: string;
+    lastName: string;
+    documentType: string;
+    document: string;
+}
+
 interface IStateFormManager {
     disabledFields: IFormManagerDisabledFields;
     modal: boolean;

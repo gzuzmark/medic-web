@@ -37,7 +37,7 @@ const defaultStep = {active: true, animation: false, complete: false};
 
 class MentorCreate extends React.Component <{}, IStateMentorCreate> {
     public state: IStateMentorCreate;
-    public mentorCreateData: MentorCreateData;
+    private mentorCreateData: MentorCreateData;
     private sitesService: SitesService;
     private skillService: SkillService;
     private mentorService: MentorService;
