@@ -22,6 +22,7 @@ export interface IMentorBaseForm  extends IBaseUser {
     experiences?: IMentorExperience[];
     title?: string;
     company?: string;
+    photoPath: string;
     timeZone?: string;
     utp?: boolean;
     shortDescription?: string;
@@ -41,6 +42,7 @@ class MentorBaseForm {
         this.mentor.sitesId = mentor.sitesId || [] as number[];
         this.mentor.skillsId = mentor.skillsId || [] as string[];
         this.mentor.photo = mentor.photo || '';
+        this.mentor.photoPath = mentor.photoPath || '';
         this.mentor.description = mentor.description || '';
         this.mentor.experiences = mentor.experiences || [] as IMentorExperience[];
         this.mentor.company = mentor.company || '';

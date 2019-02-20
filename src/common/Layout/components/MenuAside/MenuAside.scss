@@ -1,15 +1,15 @@
 @import "../../../../assets/styles/01-settings/settings";
 
 .Menu {
-  padding: 28px 10px;
   background: white;
+  padding: 28px 10px;
   &-navbar {
-    position: relative;
+    align-items: center;
+    display: flex;
   }
   &-item {
     padding-left: 6px;
     &--link {
-      color: $grey-light!important;
       text-decoration: none!important;
     }
     & + .Menu-item {

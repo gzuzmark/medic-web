@@ -45,7 +45,7 @@ class Layout extends React.Component<IPropsLayout, {}> {
                                 </Link>
                             </div>
                             <div className="Header_section">
-                                <Subhead1 color="font_light" weight={LIGHT_TEXT} style={{padding: '0 10px'}}>Hola, {UserRepository.getUser().name}</Subhead1>
+                                <Subhead1 color="font_light" weight={LIGHT_TEXT} style={{padding: '0 10px'}}>Hola, {UserRepository.getUser().name} {UserRepository.getUser().lastname}</Subhead1>
                                 <Avatar size={32} source={UserRepository.getUser().photo}/>
                                 <MenuTop />
                             </div>

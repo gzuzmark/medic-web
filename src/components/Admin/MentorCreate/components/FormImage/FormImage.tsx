@@ -161,13 +161,20 @@ class FormImage extends React.Component <IPropsFormImage, IStateFormImage> {
         return () => {
             const { croppedTmp, loading } = this.state;
             if (!loading) {
-                this.setState({ loading: true }, () => {
+                this.setState({ loading: true }, async() => {
+                    // const croppedFile =  this.parseBlobToFile(this.state.croppedTmp);
+                    // tslint:disable:no-console
+                    const file = await fetch(croppedTmp);
+                    const bytes = await file.blob();
+                    const metadata = {
+                        type: 'image/jpeg'
+                    };
+                    const croppedImage = new File([bytes], "newImage.jpg", metadata);
+                    console.log(croppedImage, this.state.selectedFile)
                     const bodyFormData = new FormData();
                     bodyFormData.append('content-type', 'multipart/form-data');
-                    bodyFormData.append('file', this.state.selectedFile);
+                    bodyFormData.append('file', croppedImage);
                     this.mentorService.uploadPhoto(bodyFormData).then((response: any) => {
-                        // tslint:disable:no-console
-                        console.log(response)
                         context.setFieldValue("picture", response.data);
                         context.updateImage(croppedTmp);
                         this.setState({
@@ -245,7 +252,6 @@ class FormImage extends React.Component <IPropsFormImage, IStateFormImage> {
             }, 'image/jpeg');
         });
     }
-
 }
 
 export default FormImage;

@@ -114,7 +114,7 @@ class SessionDeleteMultiple extends React.Component<IPropsSessionDeleteMultiple,
 
     public renderMenu() {
         const textNavigation = this.state.mentor ?
-            'Eliminar sesiones de ' + this.state.mentor.user.name : 'Eliminar sesiones';
+            `Eliminar sesiones de ${this.state.mentor.user.name} ${this.state.mentor.user.lastname}` : 'Eliminar sesiones';
         return (
             <MenuLeft baseText={'Mentores'} url={'/admin/mentores'} textNavigation={textNavigation} />
         )

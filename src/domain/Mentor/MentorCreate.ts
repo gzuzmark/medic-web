@@ -76,7 +76,7 @@ class MentorCreateData extends MentorBaseForm {
             firstName: m.name || '',
             lastName: m.lastname || '',
             location: {} as IFormItemBase,
-            picture: m.photo || '',
+            picture: m.photoPath || '',
             skills: [] as IFormItemBase[],
             status: '',
             utp: !!m.utp
@@ -101,6 +101,7 @@ class MentorCreateData extends MentorBaseForm {
         this.mentor.email = values.email.trim();
         this.mentor.name = values.firstName.trim();
         this.mentor.lastname = values.lastName.trim();
+        this.mentor.photoPath = values.picture.trim();
         this.mentor.document= values.document.trim();
         this.mentor.documentType = values.documentType.value;
         this.mentor.skillsId = values.skills.map((v) => v.value);
