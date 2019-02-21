@@ -6,7 +6,7 @@
     height: 22px;
     position: relative;
     transform: rotate(0deg);
-    transition: .5s ease-in-out;
+    transition: transform 0.2s ease-in-out;
     width: 24px;
     &--open {
       .MenuTop-lines {
@@ -54,22 +54,25 @@
     background: white;
     border-radius: 20px;
     display: block;
-    height: 2.5px;
-    left: 0;
+    height: 2px;
     opacity: 1;
     position: absolute;
     transform: rotate(0deg);
-    transition: .25s ease-in-out;
+    transition: transform .2s ease-in-out;
     width: 100%;
     &:nth-child(1) {
+      left: 0;
       top: 0;
     }
     &:nth-child(2),
     &:nth-child(3) {
-      top: 9px;
+      right: 0;
+      top: 8px;
+      width: 75%;
     }
     &:nth-child(1) {
-      top: 18px;
+      left: 0;
+      top: 16px;
     }
   }
 }

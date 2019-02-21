@@ -6,8 +6,8 @@ import './assets/fonts/fonts.scss';
 import './assets/fonts/fontsMentor.scss';
 import './assets/styles/styles.scss';
 import HOCLayout from "./common/Layout/HOCLayout";
-import MentorCreate from "./components/Admin/MentorCreate/MentorCreate";
-import MentorEdit from "./components/Admin/MentorEdit/MentorEdit";
+import MentorFormCreate from "./components/Admin/MentorFormCreate/MentorFormCreate";
+import MentorFormEdit from "./components/Admin/MentorFormEdit/MentorFormEdit";
 import MentorSession from './components/Admin/MentorSession/MentorSession';
 import MentorsList from './components/Admin/MentorsList/MentorsList';
 import Reports from "./components/Admin/Reports/Reports";
@@ -42,7 +42,7 @@ const PageReports = (props: any) => {
 };
 
 const PageCreateMentor = (props: any) => {
-    const LayoutReports = HOCLayout(MentorCreate);
+    const LayoutReports = HOCLayout(MentorFormCreate);
     return <LayoutReports baseText={'Mentores'}
                           url={'/admin'}
                           {...props}
@@ -51,7 +51,7 @@ const PageCreateMentor = (props: any) => {
 };
 
 const PageEditMentor = (props: any) => {
-    const LayoutReports = HOCLayout(MentorEdit);
+    const LayoutReports = HOCLayout(MentorFormEdit);
     return <LayoutReports baseText={'Mentores'}
                           url={'/admin'}
                           {...props}

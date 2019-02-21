@@ -63,6 +63,7 @@ class ListMentorsBody extends React.Component <IPropsListMentorsBody, {}> {
                     <MentorItem skills={skills}
                                 disabled={status === MENTOR_STATUS.INCOMPLETE}
                                 image={user.photo}
+                                id={id}
                                 name={`${user.name} ${user.lastname}`} />
                 </div>
                 <div className="ListMentors_column ListMentors_separator">

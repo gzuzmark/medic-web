@@ -1,4 +1,5 @@
 import * as React from 'react';
+import {Link} from "react-router-dom";
 import styled from "styled-components";
 import Avatar from '../../../../../common/Avatar/Avatar';
 import Icon from "../../../../../common/Icon/Icon";
@@ -11,6 +12,7 @@ export interface IPropsMentorSession {
     name: string;
     skills?: ISkill[];
     image: string;
+    id?: string;
     disabled: boolean;
 }
 
@@ -47,8 +49,10 @@ class MentorItem extends React.Component<IPropsMentorSession, {}> {
         return (
             <div className="MentorItem">
                 <div style={{position: 'relative'}}>
+                    <Link to={`/admin/editar-mentor/${this.props.id}`}>
                     <Avatar size={48} source={this.props.image} style={{marginTop: 16}}/>
                     <EditOption><Icon name={"pencil"} /></EditOption>
+                    </Link>
                 </div>
                 <div className='MentorItem_basicInformation'>
                     <Subhead1 style={{margin: '12px 0 7px 0'}}  color={color}>{this.props.name}</Subhead1>

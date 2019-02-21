@@ -1,24 +1,11 @@
 import MentorBaseForm, {IMentorBaseForm, IMentorExperience, IMentorFormExperience} from "./MentorBaseForm";
 
-export interface IMentorCreateData extends IMentorBaseForm {
-    exist: boolean;
-}
 
-class MentorCreateData extends MentorBaseForm {
+class MentorEditData extends MentorBaseForm {
     public exist = false;
-    constructor(mentor: IMentorCreateData) {
+    constructor(mentor: IMentorBaseForm) {
         super(mentor);
-        this.exist = mentor.exist;
-        this.mentor.experiences = [
-            {
-                company: "",
-                from: "",
-                title: "",
-                to: "",
-            }
-        ]
     }
-
     public getFormExperiences(): IMentorFormExperience[] {
         const experiences = this.mentor.experiences ? [...this.mentor.experiences] : [];
         return experiences.map((item: IMentorExperience) => {
@@ -27,6 +14,7 @@ class MentorCreateData extends MentorBaseForm {
             const toDate = !!to ? new Date(to) : '';
             return {
                 company: item.company,
+                currentJob: !toDate,
                 fromMonth: !!fromDate ? fromDate.getMonth().toString() : '',
                 fromYear: !!fromDate ? fromDate.getFullYear().toString() : '',
                 position: item.title ,
@@ -37,4 +25,4 @@ class MentorCreateData extends MentorBaseForm {
     }
 }
 
-export default MentorCreateData;
+export default MentorEditData;
