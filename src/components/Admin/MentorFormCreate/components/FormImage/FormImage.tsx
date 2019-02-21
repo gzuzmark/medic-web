@@ -109,7 +109,7 @@ class FormImage extends React.Component <IPropsFormImage, IStateFormImage> {
                                 <ContentModal.Generic generic={this.errorImage} loading={false} confirm={this.newUploadImage} error={true} />}
                             </MentorModalBase>
                             <label className={"FormImage_label"} htmlFor={this.props.id} ref={this.labelImage}>
-                                <ImageProfile src={context.selectedImage || defaultImage} width={160} height={160} title="Camera" filled={!!context.selectedImage}/>
+                                <ImageProfile src={context.selectedImage || defaultImage} width={160} height={160} title="Perfil de mentor" filled={!!context.selectedImage}/>
                                 <div className={"FormImage_text"}>
                                     <Icon name={"upload"} style={{
                                         fill: colors.BACKGROUND_COLORS.background_purple,

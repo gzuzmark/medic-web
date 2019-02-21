@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Text2, Text3, TextBold1 } from '../../../../../common/ConsoleText';
-import Utilities from "../../../../../common/Utilities";
+import Utilities from "../../../../../common/Utils/Utilities";
 import {IStudentChecklist} from "../../../../../domain/StudentChecklist/StudentChecklistBean";
 import './StudentAddModal.scss';
 

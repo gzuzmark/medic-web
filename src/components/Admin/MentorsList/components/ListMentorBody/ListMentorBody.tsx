@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { getTime } from '../../../../../common/DateUtilities';
 import Icon from "../../../../../common/Icon/Icon";
 import colors, {FONTS} from "../../../../../common/MentorColor";
 import {Heading2, LIGHT_TEXT} from '../../../../../common/MentorText';
+import { getTime } from '../../../../../common/Utils/DateUtilities';
 import {IMentorBase, MENTOR_STATUS} from "../../../../../domain/Mentor/MentorBase";
 import MentorItem from '../MentorItem/MentorItem';
 
@@ -61,7 +61,7 @@ class ListMentorsBody extends React.Component <IPropsListMentorsBody, {}> {
             <ContainerRow status={status}>
                 <div className="ListMentors_column ListMentors_column--mentor">
                     <MentorItem skills={skills}
-                                disabled={status === MENTOR_STATUS.INCOMPLETE}
+                                status={status}
                                 image={user.photo}
                                 id={id}
                                 name={`${user.name} ${user.lastname}`} />

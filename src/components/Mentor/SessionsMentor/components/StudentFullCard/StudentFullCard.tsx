@@ -4,7 +4,7 @@ import * as ReactTooltip from 'react-tooltip';
 import Icon from "../../../../../common/Icon/Icon";
 import colors, {FONTS} from "../../../../../common/MentorColor";
 import {Body1, LIGHT_TEXT, Small1, Subhead1} from '../../../../../common/MentorText';
-import Utilities from "../../../../../common/Utilities";
+import Utilities from "../../../../../common/Utils/Utilities";
 import './StudentFullCard.scss';
 
 export interface IStudentChecklistCard {

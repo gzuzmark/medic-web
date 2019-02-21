@@ -5,7 +5,7 @@ import MentorModalBase from "../../../common/ConsoleModal/MentorModalBase";
 import Icon from "../../../common/Icon/Icon";
 import Loader from "../../../common/Loader/Loader";
 import {IPropsMentorOptionsDropDown} from "../../../common/MentorDropDown/MentorDropDown";
-import Utilities from "../../../common/Utilities";
+import Utilities from "../../../common/Utils/Utilities";
 import {IMentorFormValidations} from "../../../domain/Mentor/MentorBaseForm";
 import MentorCreateData, {IMentorCreateData} from "../../../domain/Mentor/MentorCreate";
 import {ISites} from "../../../domain/Sites/Sites";
@@ -63,7 +63,7 @@ class MentorFormCreate extends React.Component <{}, IStateMentorCreate> {
             modal: false,
             saving: false,
             selectedImage: "",
-            stepActive: 3,
+            stepActive: 1,
             stepsBar: [{...defaultStep, title: "Correo"},
                 {...emptyStep, title: "Datos personales"},
                 {...emptyStep, title: "Perfil (opcional)"},

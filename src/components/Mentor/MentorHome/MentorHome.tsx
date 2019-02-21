@@ -3,7 +3,7 @@ import Icon from "../../../common/Icon/Icon";
 import Layout from "../../../common/Layout/Layout";
 import Loader from "../../../common/Loader/Loader";
 import { Headline1 } from '../../../common/MentorText';
-import Utilities from "../../../common/Utilities";
+import Utilities from "../../../common/Utils/Utilities";
 import {MomentDateParser} from "../../../domain/DateManager/MomentDateParser";
 import {ListenerFirebase} from "../../../domain/Listener/ListenerFirebase";
 import {IBoxDayDescription, SessionCollector} from "../../../domain/Session/SessionCollector";

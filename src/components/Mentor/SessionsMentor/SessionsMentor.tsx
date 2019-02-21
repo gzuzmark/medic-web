@@ -162,7 +162,7 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
                     <Text3>{`Sesión ${this.state.fullCardSession.type.toLowerCase()}`}</Text3>
                 </div>}
                 {this.state.loading && !this.state.isEmpty &&
-                    <Loader top={10} height={50}/>}
+                    <Loader style={{marginTop: 10}} />}
                 {!this.state.loading &&
                     <React.Fragment>
                         <SessionFullCard session={this.state.fullCardSession}/>

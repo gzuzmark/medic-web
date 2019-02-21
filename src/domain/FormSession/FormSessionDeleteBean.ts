@@ -1,5 +1,5 @@
 import {FILTER_LIST_ALL} from "../../common/FilterList/FilterList";
-import Utilities from "../../common/Utilities";
+import Utilities from "../../common/Utils/Utilities";
 import {SESSION_VIRTUAL} from "../../repository/SessionTypeConstants";
 import {
     IInterestAreaBlock,

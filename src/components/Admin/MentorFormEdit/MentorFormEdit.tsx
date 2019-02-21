@@ -2,6 +2,7 @@ import { Formik } from 'formik';
 import * as React from "react";
 import styled from "styled-components";
 import {ButtonNormal} from "../../../common/Buttons/Buttons";
+import Loader from "../../../common/Loader/Loader";
 import {FONTS} from "../../../common/MentorColor";
 import {IPropsMentorOptionsDropDown} from "../../../common/MentorDropDown/MentorDropDown";
 import { Heading2 } from "../../../common/MentorText";
@@ -26,7 +27,7 @@ interface IStateMentorEdit  {
     listSites: IPropsMentorOptionsDropDown[];
     listSkills: IPropsMentorOptionsDropDown[];
     selectedImage: string;
-    mentor: any;
+    mentor: IMentorFormValidations | null;
     loader: boolean;
     modal: boolean;
 }
@@ -69,7 +70,7 @@ class MentorFormEdit  extends React.Component <IPropsMentorEdit, IStateMentorEdi
             listSites: [] as IPropsMentorOptionsDropDown[],
             listSkills: [] as IPropsMentorOptionsDropDown[],
             loader: true,
-            mentor: this.mentorCreateData.getMentorValues,
+            mentor: null,
             modal: false,
             selectedImage: ""
         };
@@ -98,7 +99,8 @@ class MentorFormEdit  extends React.Component <IPropsMentorEdit, IStateMentorEdi
                 this.updateListSkills(mentor.sitesId[0].toString());
             }
             this.setState({
-                mentor: this.mentorCreateData.getMentorValues
+                mentor: this.mentorCreateData.getMentorValues,
+                selectedImage: mentor.photo
             })
         }).catch(() => {
             // tslint:disable:no-console
@@ -120,8 +122,11 @@ class MentorFormEdit  extends React.Component <IPropsMentorEdit, IStateMentorEdi
         return (
             <div className="u-LayoutMargin">
                 <MentorEditContainer>
-                    <Heading2 color={FONTS.purple}>Mario Augusto Benedetti de las Casas Montalván</Heading2>
-                    {this.state.mentor.email && this.state.listSkills &&
+                    {!this.state.mentor &&
+                        <Loader style={{marginTop: 100}}/>}
+                    {!!this.state.mentor &&
+                        <Heading2 color={FONTS.purple}>{this.state.mentor.firstName} {this.state.mentor.lastName}</Heading2>}
+                    {!!this.state.mentor && this.state.listSkills &&
                     <Formik
                         initialValues={this.state.mentor}
                         validationSchema={mentorFormBaseSchema}

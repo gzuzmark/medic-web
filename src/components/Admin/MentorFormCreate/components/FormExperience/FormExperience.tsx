@@ -1,13 +1,13 @@
 import {ArrayHelpers, FieldArray} from "formik";
 import * as React from "react";
 import styled from "styled-components";
-import {date} from "../../../../../common/DateUtilities";
 import Icon from "../../../../../common/Icon/Icon";
 import MentorCheckbox from "../../../../../common/MentorCheckbox/MentorCheckbox";
 import colors from "../../../../../common/MentorColor";
 import MentorDropDown, {IPropsMentorOptionsDropDown} from "../../../../../common/MentorDropDown/MentorDropDown";
 import MentorInput from "../../../../../common/MentorInput/MentorInput";
 import {Body1, Subhead1} from "../../../../../common/MentorText";
+import {date} from "../../../../../common/Utils/DateUtilities";
 import {IMentorFormExperience} from "../../../../../domain/Mentor/MentorBaseForm";
 import FormColumn from "../../../ScheduleSession/components/FormRow/components/FormColumn/FormColumn";
 import FormRow from "../../../ScheduleSession/components/FormRow/FormRow";

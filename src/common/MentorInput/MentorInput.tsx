@@ -36,9 +36,9 @@ const LoaderInput = styled(Loader)`
     height: 30px;
     position: absolute;
     right: 0;
-    top: 0;
+    top: 2px;
     transform: scale(0.46);
-    width: 48px;
+    width: 70px;
 `;
 
 

@@ -6,7 +6,7 @@ import Avatar from '../Avatar/Avatar';
 import colors from "../MentorColor";
 import {Body1, LIGHT_TEXT, Subhead1} from '../MentorText';
 import Sticky from '../Sticky/Sticky';
-import Utilities from "../Utilities";
+import Utilities from "../Utils/Utilities";
 import MenuTop from "./components/MenuTop/MenuTop";
 import './Footer.scss';
 import './Header.scss';

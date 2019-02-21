@@ -2,7 +2,7 @@ import * as React from 'react';
 import {IMentorBase} from "../../domain/Mentor/MentorBase";
 import Avatar from '../Avatar/Avatar';
 import { Heading2, Text } from '../ConsoleText';
-import { getTime } from '../DateUtilities';
+import { getTime } from '../Utils/DateUtilities';
 import './MentorDetail.scss';
 
 

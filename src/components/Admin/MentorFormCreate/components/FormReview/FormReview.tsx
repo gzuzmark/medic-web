@@ -1,9 +1,9 @@
 import * as React from "react";
 import styled from "styled-components";
 import errorCamera from "../../../../../assets/images/error_camera.png"
-import {date} from "../../../../../common/DateUtilities";
 import colors, {FONTS} from "../../../../../common/MentorColor";
 import {Body1, Heading3, LIGHT_TEXT, Subhead1} from "../../../../../common/MentorText";
+import {date} from "../../../../../common/Utils/DateUtilities";
 import {IMentorFormExperience} from "../../../../../domain/Mentor/MentorBaseForm";
 import MentorFormCreateContext, {IMentorFormCreateContext} from "../../MentorFormCreate.context";
 import ImageProfile from '../ImageProfile/ImageProfile'
