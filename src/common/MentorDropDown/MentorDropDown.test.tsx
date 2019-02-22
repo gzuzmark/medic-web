@@ -1,4 +1,4 @@
-import { shallow } from 'enzyme';
+import { mount } from 'enzyme';
 import 'jest-localstorage-mock';
 import * as React from 'react';
 import {Small1} from "../MentorText";
@@ -10,7 +10,7 @@ describe('MentorDropDown Test',() => {
     let mountedReportTable: any;
     const getComponent = () => {
         if (!mountedReportTable) {
-            mountedReportTable = shallow(
+            mountedReportTable = mount(
                 <MentorDropDown {...props} />
             );
         }
@@ -32,7 +32,7 @@ describe('MentorDropDown Test',() => {
     it("render: label should be 'Elegir Opción'", () => {
         props = {...props, label: "Elegir Opción"};
         const component = getComponent();
-        expect(component.find("label").find(Small1).children().text()).toEqual("Elegir Opción");
+        expect(component.find("label").find(Small1).children().text()).toEqual("ELEGIR OPCIÓN");
     });
 
     it("render: error should be 'Esta mal'", () => {

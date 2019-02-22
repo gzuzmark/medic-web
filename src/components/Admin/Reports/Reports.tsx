@@ -5,7 +5,7 @@ import BoxMessage from "../../../common/BoxMessage/BoxMessage";
 import ConsolePager from "../../../common/ConsolePager/ConsolePager";
 import ConsoleTableLoader from "../../../common/ConsoleTable/components/ConsoleTableLoader/ConsoleTableLoader";
 import { Text } from '../../../common/ConsoleText';
-import Utilities from "../../../common/Utilities";
+import Utilities from "../../../common/Utils/Utilities";
 import {IReportForSession, IReportForStudent} from "../../../interfaces/Reports.interface";
 import SessionService from "../../../services/Session/Session.service";
 import StudentService from "../../../services/Student/Student.service";

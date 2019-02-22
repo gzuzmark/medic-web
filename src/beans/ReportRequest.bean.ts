@@ -1,5 +1,5 @@
 import {PAGE_ITEMS_RANGE} from "../common/ConsolePager/ConsolePager.const";
-import Utilities from "../common/Utilities";
+import Utilities from "../common/Utils/Utilities";
 
 export type ReportType = 'SESSIONS' | 'STUDENTS' | '';
 

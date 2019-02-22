@@ -1,7 +1,6 @@
 import * as React from 'react';
-import * as ReactTooltip from 'react-tooltip';
 import styled from "styled-components";
-import Icon from "../Icon/Icon";
+import FormLabel from "../FormLabel/FormLabel";
 import colors, {FONTS} from "../MentorColor";
 import {Body1, defaultFont, LIGHT_TEXT } from "../MentorText";
 
@@ -64,25 +63,7 @@ class MentorTextArea extends React.Component<IPropsMentorTextArea, {}> {
         const hasError = this.props.limit && value.length > this.props.limit;
         return (
             <div>
-                <div style={{display: "flex", justifyContent: "space-between"}}>
-                    {!!this.props.label &&
-                    <label>
-                        <Body1 style={{marginBottom: 3, display: 'block'}}>{this.props.label}</Body1>
-                    </label>}
-                    {!!this.props.info &&
-                        <React.Fragment>
-                            <ReactTooltip effect={"solid"} place={"top"} multiline={true}/>
-                            <Icon name={"alert"}
-                                  attr={{"data-tip": this.props.info}}
-                                  style={{
-                                      cursor: 'pointer',
-                                      fill: colors.BACKGROUND_COLORS.background_purple,
-                                      height: 24,
-                                      width: 24
-                                  }}/>
-                        </React.Fragment>
-                    }
-                </div>
+                <FormLabel label={this.props.label} info={this.props.info} />
                 <TextAreaComponent error={hasError} attrs={{...this.props.attrs}} />
                 {!!this.props.limit &&
                 <div className={"MentorTextArea_limit"} style={{textAlign: 'right'}}>

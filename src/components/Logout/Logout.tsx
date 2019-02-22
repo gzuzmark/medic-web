@@ -12,7 +12,7 @@ class Logout extends React.Component <{}, {}> {
 
     public render() {
         return (
-            <Loader top={200} height={200}/>
+            <Loader style={{marginTop: 200}}/>
         );
     }
 }

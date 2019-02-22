@@ -46,14 +46,16 @@ const Generic: React.StatelessComponent<IPropsGenericContentModal> = (props) => 
                     {
                         !!props.generic.title &&
                         <div className={"GenericContentModal_title"}>
-                            <Heading3>{props.generic.title}</Heading3>
+                            <Heading3 style={{margin: '0 auto'}}>{props.generic.title}</Heading3>
                         </div>
                     }
                     {
                         !!props.generic.description &&
                         <div className={"GenericContentModal_description"}>
                             {!!props.error && <Icon name={"alert"} style={{fill: colors.TEXT_COLORS.font_error}}/>}
-                            <Body1 color={!!props.error ? FONTS.error : ''} weight={LIGHT_TEXT}>{props.generic.description}</Body1>
+                            <Body1 color={!!props.error ? FONTS.error : ''} weight={LIGHT_TEXT} style={{margin: '0 auto'}}>
+                                {props.generic.description}
+                                </Body1>
                         </div>
                     }
                 </div>
@@ -62,7 +64,7 @@ const Generic: React.StatelessComponent<IPropsGenericContentModal> = (props) => 
                 !!props.generic.button &&
                 <div className={"GenericContentModal_footer"}>
                     <ButtonNormal attrs={{onClick, ...propsButton}}
-                                  className="GenericContentModal_button u-Button"
+                                  className="GenericContentModal_button"
                                   text={props.generic.button} />
                 </div>
             }

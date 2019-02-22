@@ -9,7 +9,7 @@ export interface IButtonProps {
     size?: string;
     disabled?: string;
     loading?: string;
-    attrs?: object;
+    attrs?: any;
     className?: string;
 }
 
@@ -107,8 +107,10 @@ const buttonTheme = {
     fontDisabled
 };
 
-const Button: React.SFC<IButtonProps> = props =>
-    <button className={props.className} {...props.attrs}>{getFont(props.text)}</button>;
+const Button: React.SFC<IButtonProps> = props =>  (
+    <button className={props.className} {...props.attrs}>{getFont(props.text)}</button>
+);
+
 
 const Link: React.SFC<IButtonProps> = props =>
     <a className={props.className} {...props.attrs}>{getFont(props.text)}</a>;
@@ -158,7 +160,7 @@ const ButtonNormal = styled(Button)`
     overflow: hidden;
     &:before {
       color: ${(props: IButtonProps) => props.type === THEME_SECONDARY ?
-    colors.BACKGROUND_COLORS.background_purple : colors.BACKGROUND_COLORS.background_white};
+    colors.BACKGROUND_COLORS.background_purple: colors.BACKGROUND_COLORS.background_white};
       display: block;
       filter: progid:DXImageTransform.Microsoft.Alpha(enabled=false);
       margin: 0 auto;

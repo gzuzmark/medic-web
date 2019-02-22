@@ -1,5 +1,5 @@
 import {IListItem} from "../../common/FilterList/FilterList";
-import Utilities from "../../common/Utilities";
+import Utilities from "../../common/Utils/Utilities";
 import {SESSION_PHYSICAL, SESSION_UNDEFINED, SESSION_VIRTUAL} from "../../repository/SessionTypeConstants";
 import {
     IBase,

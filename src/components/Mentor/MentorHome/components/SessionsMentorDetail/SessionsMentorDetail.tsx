@@ -5,7 +5,7 @@ import { Text1, TextBold3, Title2 } from "../../../../../common/ConsoleText"
 import Icon from "../../../../../common/Icon/Icon";
 import {FONTS} from "../../../../../common/MentorColor";
 import { Headline1 } from "../../../../../common/MentorText"
-import Utilities from "../../../../../common/Utilities";
+import Utilities from "../../../../../common/Utils/Utilities";
 import {ISessionCollector} from "../../../../../domain/Session/SessionCollector";
 import {SessionMentorBean} from "../../../../../domain/Session/SessionMentorBean";
 import CardSession from "../CardSession/CardSession";

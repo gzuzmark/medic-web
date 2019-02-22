@@ -1,9 +1,11 @@
 import * as React from 'react';
+import {Link} from "react-router-dom";
 import styled from "styled-components";
 import Avatar from '../../../../../common/Avatar/Avatar';
 import Icon from "../../../../../common/Icon/Icon";
 import {default as colors, FONTS} from "../../../../../common/MentorColor";
 import {Body1, LIGHT_TEXT, Subhead1} from '../../../../../common/MentorText';
+import {MENTOR_STATUS} from "../../../../../domain/Mentor/MentorBase";
 import {ISkill} from "../../../../../domain/Skill/Skill";
 import './MentorItem.scss';
 
@@ -11,7 +13,8 @@ export interface IPropsMentorSession {
     name: string;
     skills?: ISkill[];
     image: string;
-    disabled: boolean;
+    id?: string;
+    status: string;
 }
 
 const EditOption = styled.div`
@@ -36,22 +39,35 @@ const EditOption = styled.div`
     }
 `;
 
+const NameMentorContainer = styled.div`
+    display: flex;
+    margin: 12px 0 6px 0;
+`;
 class MentorItem extends React.Component<IPropsMentorSession, {}> {
     constructor(props: IPropsMentorSession) {
         super(props);
     }
 
     public render() {
-        const color = this.props.disabled ? FONTS.disabled : FONTS.dark;
-        const background = this.props.disabled ? colors.BACKGROUND_COLORS.background_white : colors.BACKGROUND_COLORS.background_disabled;
+        const disabled = status === MENTOR_STATUS.DISABLED;
+        const incomplete = status === MENTOR_STATUS.INCOMPLETE;
+        const color = disabled ? FONTS.disabled : FONTS.dark;
+        const background = disabled ? colors.BACKGROUND_COLORS.background_white : colors.BACKGROUND_COLORS.background_disabled;
         return (
             <div className="MentorItem">
                 <div style={{position: 'relative'}}>
                     <Avatar size={48} source={this.props.image} style={{marginTop: 16}}/>
-                    <EditOption><Icon name={"pencil"} /></EditOption>
+                    {false &&
+                    <Link to={`/admin/editar-mentor/${this.props.id}`}>
+                        <Avatar size={48} source={this.props.image} style={{marginTop: 16}}/>
+                        <EditOption><Icon name={"pencil"} /></EditOption>
+                    </Link>}
                 </div>
                 <div className='MentorItem_basicInformation'>
-                    <Subhead1 style={{margin: '12px 0 7px 0'}}  color={color}>{this.props.name}</Subhead1>
+                    <NameMentorContainer>
+                        <Subhead1 color={color}>{this.props.name}</Subhead1>
+                        {incomplete && <Subhead1 style={{marginLeft: 8}} color={FONTS.error}>(Perfil pendiente)</Subhead1>}
+                    </NameMentorContainer>
                     <div className='MentorItem_tagWrapper'>
                         {this.props.skills && this.props.skills.map((item, index) => {
                            return (

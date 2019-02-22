@@ -105,7 +105,7 @@ class MentorSession extends React.Component<IPropsMentorSession, IStateMentorSes
                         </div>
                         {
                             this.state.loading ?
-                                <Loader top={50} height={100}/> :
+                                <Loader style={{marginTop: 100}} /> :
                                 <BigCalendar
                                     components={{
                                         agenda: {

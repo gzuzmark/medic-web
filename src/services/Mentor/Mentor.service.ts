@@ -148,6 +148,23 @@ class MentorService extends BaseRequest {
         });
     }
 
+    public get(idMentor: string): Promise<IMentorBaseForm> {
+        return new Promise((resolve, reject) => {
+            this.instance.get(`ugo-admin/mentors-full/${idMentor}`)
+                .then((response: any) => {
+                    if (response.status === 200 && response.data) {
+                        resolve(response.data);
+                    } else {
+                        reject(null);
+                    }
+                })
+                .catch((error: any) => {
+                    this.validSession();
+                    reject(error);
+                });
+        });
+    }
+
 }
 
 export default MentorService;

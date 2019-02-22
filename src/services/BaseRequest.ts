@@ -66,7 +66,7 @@ class BaseRequest {
 
     public setTokenHeader(currentToken?: string) {
         const token =  currentToken || UserRepository.getToken();
-        return Axios.create({
+        this.instance = Axios.create({
             baseURL: this.baseUrl,
             headers: {...headersRequest, 'Authorization': 'Bearer ' + token},
         });
@@ -77,6 +77,7 @@ class BaseRequest {
         if (!exist) {
             window.location.assign('/');
         }
+        return UserRepository.getToken();
     }
 
     private onResponseError(currentInstance?: any) {

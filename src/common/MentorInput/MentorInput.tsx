@@ -2,8 +2,10 @@ import * as React from 'react';
 import {CSSProperties} from "react";
 import styled from "styled-components";
 import {Body1, LIGHT_TEXT, Small1} from '../../common/MentorText';
+import FormLabel from "../FormLabel/FormLabel";
 import Icon from "../Icon/Icon";
 import Loader from "../Loader/Loader";
+import colors from "../MentorColor";
 import './MentorInput.scss';
 
 interface IPropsMentorInput {
@@ -22,6 +24,7 @@ interface IPropsMentorInput {
         enable?: boolean;
         text?: string;
     };
+    info?: string;
     attrs?: any;
 }
 
@@ -33,11 +36,12 @@ const LoaderInput = styled(Loader)`
     display: inline-block;
     height: 30px;
     position: absolute;
-    right: 0;
-    top: 0;
-    transform: scale(0.46);
-    width: 48px;
+    right: -18px;
+    top: 2px;
+    transform: scale(0.37);
+    width: 90px;
 `;
+
 
 // todo: pasar a styled component
 class MentorInput extends React.Component<IPropsMentorInput, IStateMentorInput> {
@@ -86,10 +90,7 @@ class MentorInput extends React.Component<IPropsMentorInput, IStateMentorInput> 
         }
         return (
             <div style={{...this.props.styleContainer}} onClick={this.onClick}>
-                {!!this.props.label &&
-                <label>
-                    <Small1 style={{marginBottom: 3, display: 'block'}}>{this.props.label}</Small1>
-                </label>}
+                <FormLabel label={this.props.label} info={this.props.info} uppercase={true}/>
                 <div
                     className={`MentorInput ${inputClass}`}
                     style={{...this.props.style}}>
@@ -98,7 +99,7 @@ class MentorInput extends React.Component<IPropsMentorInput, IStateMentorInput> 
                         className={`MentorInput_input`}
                         type={"text"}
                         {...this.props.attrs}/>
-                        {this.props.loading && <LoaderInput/>}
+                        {this.props.loading && <LoaderInput color={colors.TEXT_COLORS.font_dark}/>}
                         {!!icon && !this.props.loading && <Icon name={icon} style={{...this.props.iconStyles}} click={this.onClickIcon}/>}
                         {!!this.props.animation && <Body1>{this.props.animation.text}</Body1>}
                         {!!this.props.error &&

@@ -1,6 +1,7 @@
 import * as React from "react";
 import Select, {components}  from 'react-select';
 import styled from "styled-components";
+import FormLabel from "../FormLabel/FormLabel";
 import Icon from "../Icon/Icon";
 import colors, {FONTS} from "../MentorColor";
 import {LIGHT_TEXT, Small1} from '../MentorText';
@@ -20,6 +21,7 @@ export interface IPropsMentorDropDown {
     isSearchable?: boolean;
     value?: string | string[];
     name: string;
+    info?: string;
     isMulti?: boolean;
     style?: React.CSSProperties;
     triggerChange(name: string, option: IPropsMentorOptionsDropDown | IPropsMentorOptionsDropDown[]):void;
@@ -75,10 +77,7 @@ class MentorDropDown extends React.Component<IPropsMentorDropDown, {}> {
         });
         return (
             <CustomDropdown style={{...this.props.style}}>
-                {!!this.props.label &&
-                <label>
-                    <Small1 style={{marginBottom: 3, display: 'block'}}>{this.props.label}</Small1>
-                </label>}
+                <FormLabel label={this.props.label} info={this.props.info} uppercase={true}/>
                 <Select
                     isDisabled={!!this.props.disabled}
                     isSearchable={!!this.props.isSearchable}

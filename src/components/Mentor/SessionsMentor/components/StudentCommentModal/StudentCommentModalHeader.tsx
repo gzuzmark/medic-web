@@ -1,7 +1,7 @@
 import * as React from 'react';
 import colors from "../../../../../common/MentorColor";
 import {Body1, Heading3, LIGHT_TEXT} from '../../../../../common/MentorText';
-import Utilities from "../../../../../common/Utilities";
+import Utilities from "../../../../../common/Utils/Utilities";
 import {ITagModalStudentChecklistBoard} from "./StudentCommentModal";
 import './StudentCommentModalHeader.scss';
 
