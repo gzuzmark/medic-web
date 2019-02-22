@@ -1,8 +1,8 @@
 import { mount } from 'enzyme';
 import 'jest-styled-components';
 import * as React from 'react';
-import FormLabel, {IPropsFormLabel} from "./FormLabel";
 import {Body1, Small1} from "../MentorText";
+import FormLabel, {IPropsFormLabel} from "./FormLabel";
 
 
 describe('FormLabel Test',() => {
