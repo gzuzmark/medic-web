@@ -2,7 +2,11 @@ import { Formik } from 'formik';
 import * as React from "react";
 import styled from "styled-components";
 import {ButtonNormal} from "../../../common/Buttons/Buttons";
+import ContentModal, {IGenericContentModal} from "../../../common/ConsoleModal/ContentModal";
+import MentorModalBase from "../../../common/ConsoleModal/MentorModalBase";
+import Icon from "../../../common/Icon/Icon";
 import Loader from "../../../common/Loader/Loader";
+import LoaderFullScreen from "../../../common/Loader/LoaderFullsScreen";
 import {FONTS} from "../../../common/MentorColor";
 import {IPropsMentorOptionsDropDown} from "../../../common/MentorDropDown/MentorDropDown";
 import { Heading2 } from "../../../common/MentorText";
@@ -30,9 +34,11 @@ interface IStateMentorEdit  {
     mentor: IMentorFormValidations | null;
     loader: boolean;
     modal: boolean;
+    saving: boolean;
+    success: boolean;
 }
 
-interface IPropsMentorEdit {
+export interface IPropsMentorEdit {
     match: IMatchParam;
 }
 
@@ -57,10 +63,14 @@ class MentorFormEdit  extends React.Component <IPropsMentorEdit, IStateMentorEdi
     private mentorService: MentorService;
     private disabledFields: IFormManagerDisabledFields;
     private infoFields: IFormManagerInfoFields;
+    private warningContent: IGenericContentModal;
     constructor(props: any) {
         super(props);
         this.updateListSkills = this.updateListSkills.bind(this);
         this.updateImage = this.updateImage.bind(this);
+        this.updateMentor = this.updateMentor.bind(this);
+        this.openConfirmModal = this.openConfirmModal.bind(this);
+        this.closeConfirmModal = this.closeConfirmModal.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
         this.mentorCreateData = new MentorEditData({} as IMentorBaseForm);
         this.sitesService = new SitesService();
@@ -72,7 +82,9 @@ class MentorFormEdit  extends React.Component <IPropsMentorEdit, IStateMentorEdi
             loader: true,
             mentor: null,
             modal: false,
-            selectedImage: ""
+            saving: false,
+            selectedImage: "",
+            success: false
         };
         this.idMentor = this.props.match.params.id;
         this.disabledFields = {
@@ -87,8 +99,12 @@ class MentorFormEdit  extends React.Component <IPropsMentorEdit, IStateMentorEdi
             firstName: "Estos datos no podrán cambiarse",
             lastName: "Estos datos no podrán cambiarse"
         };
-        // tslint:disable:no-console
-        console.log(this.idMentor)
+        this.warningContent = {
+            button: "Aceptar",
+            description: "Los cambios que realices se guardarán en el perfil del mentor.",
+            image: <Icon name={'alert'} />,
+            title: "¿Estás seguro que deseas guardar los cambios?"
+        }
     }
 
     public componentDidMount() {
@@ -121,6 +137,12 @@ class MentorFormEdit  extends React.Component <IPropsMentorEdit, IStateMentorEdi
         const selectedImage = this.state.selectedImage;
         return (
             <div className="u-LayoutMargin">
+                {this.state.saving && <LoaderFullScreen text={"Cargando..."}/>}
+                <MentorModalBase show={this.state.modal} onCloseModal={this.closeConfirmModal} hideClose={this.state.success}>
+                    {this.state.success ?
+                        <ContentModal.Success description={"Cambios guardados con éxito"} />:
+                        <ContentModal.Generic generic={this.warningContent} loading={false} confirm={this.updateMentor} />}
+                </MentorModalBase>
                 <MentorEditContainer>
                     {!this.state.mentor &&
                         <Loader style={{marginTop: 100}}/>}
@@ -153,7 +175,10 @@ class MentorFormEdit  extends React.Component <IPropsMentorEdit, IStateMentorEdi
                                         <FormPersonalDataTemplate disableFields={this.disabledFields} infoFields={this.infoFields} />
                                         <FormProfileTemplate/>
                                         <FormExperienceTemplate/>
-                                        <ButtonNormal text={"Guardar Cambios"} attrs={{style: {margin : '40px 0 0 auto'}}}/>
+                                        <ButtonNormal text={"Guardar Cambios"}
+                                                      attrs={{
+                                                          onClick: this.openConfirmModal,
+                                                          style: {margin : '40px 0 0 auto'}}}/>
                                     </form>
                                 </MentorFormCreateContext.Provider>
                             )
@@ -162,6 +187,28 @@ class MentorFormEdit  extends React.Component <IPropsMentorEdit, IStateMentorEdi
                 </MentorEditContainer>
             </div>
         )
+    }
+
+    private updateMentor() {
+        this.setState({saving: true, modal: false});
+        setTimeout(() => {
+            this.setState({saving: false, modal: true, success: true});
+            setTimeout( () => {
+                this.closeConfirmModal();
+            }, 2000)
+        }, 2000)
+    }
+
+    private openConfirmModal() {
+        this.setState({modal: true})
+    }
+
+    private closeConfirmModal() {
+        this.setState({modal: false}, () => {
+            setTimeout(() => {
+                this.setState({success: false})
+            }, 500)
+        });
     }
 
     private onSubmit(values: IMentorFormValidations) {

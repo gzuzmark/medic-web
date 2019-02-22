@@ -5,6 +5,7 @@ import {Body1, LIGHT_TEXT, Small1} from '../../common/MentorText';
 import FormLabel from "../FormLabel/FormLabel";
 import Icon from "../Icon/Icon";
 import Loader from "../Loader/Loader";
+import colors from "../MentorColor";
 import './MentorInput.scss';
 
 interface IPropsMentorInput {
@@ -35,10 +36,10 @@ const LoaderInput = styled(Loader)`
     display: inline-block;
     height: 30px;
     position: absolute;
-    right: 0;
+    right: -18px;
     top: 2px;
-    transform: scale(0.46);
-    width: 70px;
+    transform: scale(0.37);
+    width: 90px;
 `;
 
 
@@ -98,7 +99,7 @@ class MentorInput extends React.Component<IPropsMentorInput, IStateMentorInput> 
                         className={`MentorInput_input`}
                         type={"text"}
                         {...this.props.attrs}/>
-                        {this.props.loading && <LoaderInput/>}
+                        {this.props.loading && <LoaderInput color={colors.TEXT_COLORS.font_dark}/>}
                         {!!icon && !this.props.loading && <Icon name={icon} style={{...this.props.iconStyles}} click={this.onClickIcon}/>}
                         {!!this.props.animation && <Body1>{this.props.animation.text}</Body1>}
                         {!!this.props.error &&

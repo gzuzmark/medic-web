@@ -4,7 +4,6 @@ import mentorFormBaseSchema from "../MentorFormBase/MentorFormBase.validations";
 
 export const errorRequired = 'Campo es requerido.';
 export const emailRequired = emailStatus.EMAIL_NOT_VALID;
-export const limitDescription = 120;
 
 const mentorCreateSchema = mentorFormBaseSchema.clone();
 

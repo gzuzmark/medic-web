@@ -23,6 +23,6 @@ describe('Loader Test',() => {
 
     it("render: should have three childs", () => {
         const component = getComponent();
-        expect(component.find(".Loader-child").length).toEqual(3);
+        expect(component.find('div > div').length).toEqual(3);
     });
 });

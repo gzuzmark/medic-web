@@ -111,6 +111,7 @@ export const FONTS = {
     error: 'font_error',
     grey: 'font_grey',
     highlight: 'font_highlight',
+    light: 'font_light',
     medium: 'font_medium',
     purple: 'font_purple'
 };

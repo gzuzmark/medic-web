@@ -5,7 +5,7 @@ import ContentModal, {IGenericContentModal} from "../../../../../common/ConsoleM
 import MentorModalBase from "../../../../../common/ConsoleModal/MentorModalBase";
 import Icon from "../../../../../common/Icon/Icon";
 import {emailStatus, IMentorFormExperience, IMentorFormValidations} from "../../../../../domain/Mentor/MentorBaseForm";
-import {limitDescription} from "../../MentorFormCreate.validations";
+import {limitDescription} from "../../../MentorFormBase/MentorFormBase.validations";
 import FormExperience from "../FormExperience/FormExperience";
 import FormImage from "../FormImage/FormImage";
 import FormMail from "../FormMail/FormMail";

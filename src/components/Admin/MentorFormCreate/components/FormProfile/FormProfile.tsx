@@ -3,10 +3,10 @@ import styled from "styled-components";
 import MentorInput from "../../../../../common/MentorInput/MentorInput";
 import {Subhead1} from "../../../../../common/MentorText";
 import MentorTextArea from "../../../../../common/MentorTextArea/MentorTextArea";
+import {limitDescription} from "../../../MentorFormBase/MentorFormBase.validations";
 import FormColumn from "../../../ScheduleSession/components/FormRow/components/FormColumn/FormColumn";
 import FormRow from "../../../ScheduleSession/components/FormRow/FormRow";
 import MentorFormCreateContext, {IMentorFormCreateContext} from "../../MentorFormCreate.context";
-import {limitDescription} from "../../MentorFormCreate.validations";
 
 export const SubTitle = styled(Subhead1)`
     text-align: center;

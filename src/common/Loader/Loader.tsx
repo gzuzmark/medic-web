@@ -1,6 +1,6 @@
 import * as React from 'react';
 import styled from "styled-components";
-import hexToRgba from "../Utils/HexToRgba";
+import colors from "../MentorColor";
 import './Loader.scss';
 
 export interface IPropsLoader {
@@ -18,7 +18,10 @@ interface ILoaderContainer {
 const LoaderContainer = styled.div`
     margin: 5px auto;
     text-align: center;
-    & > div {
+    min-width: ${(props: ILoaderContainer) => { 
+        return !!props.size ? `${props.size * 6}px` : '90px';
+    }}
+    div {
         display: inline-block;
         width: ${(props: ILoaderContainer) => {
             return  !!props.size ? `${props.size}px` : '15px';  
@@ -26,10 +29,11 @@ const LoaderContainer = styled.div`
         height: ${(props: ILoaderContainer) => {
             return !!props.size ? `${props.size}px` : '15px';  
         }};
-        margin: 0 4px 0 4px;
+        margin: ${(props: ILoaderContainer) => {
+            return !!props.size ? `0 ${props.size/2}px` : '0 7.5px';
+        }};
         background: ${(props: ILoaderContainer) => {
-            const color = props.color || "#000";
-            return hexToRgba(color, '0.25');
+            return props.color || colors.BACKGROUND_COLORS.background_purple;
         }};
         border-radius: 50%;
         transform: translateY(0);
@@ -47,26 +51,13 @@ const LoaderContainer = styled.div`
     @keyframes wave
     {
       0%, 60%, 100% {
-        background: ${(props: ILoaderContainer) => {
-            const color = props.color || "#000";
-            return hexToRgba(color, '0.25');
-        }};
         transform: translateY(0);
       }
-    
       20% {
-        background: ${(props: ILoaderContainer) => {
-            const color = props.color || "#000";
-            return hexToRgba(color, '0.75');
-        }};
         transform: translateY(13px);
       }
     
       40% {
-        background: ${(props: ILoaderContainer) => {
-            const color = props.color || "#000";
-            return hexToRgba(color, '0.75');
-        }};
         transform: translateY(-13px);
       }
     }
@@ -74,7 +65,7 @@ const LoaderContainer = styled.div`
 
 const Loader: React.StatelessComponent<IPropsLoader> = (props) => {
     return (
-        <LoaderContainer className={`${!!props.className && props.className}`} size={props.size} color={props.color} style={{...props.style}}>
+        <LoaderContainer className={`${!!props.className && props.className || ''}`} size={props.size} color={props.color} style={{...props.style}}>
             <div />
             <div />
             <div />

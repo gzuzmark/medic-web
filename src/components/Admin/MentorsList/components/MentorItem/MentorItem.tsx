@@ -41,7 +41,7 @@ const EditOption = styled.div`
 
 const NameMentorContainer = styled.div`
     display: flex;
-    margin: 12px 0 7px 0;
+    margin: 12px 0 6px 0;
 `;
 class MentorItem extends React.Component<IPropsMentorSession, {}> {
     constructor(props: IPropsMentorSession) {
@@ -56,10 +56,12 @@ class MentorItem extends React.Component<IPropsMentorSession, {}> {
         return (
             <div className="MentorItem">
                 <div style={{position: 'relative'}}>
-                    <Link to={`/admin/editar-mentor/${this.props.id}`}>
                     <Avatar size={48} source={this.props.image} style={{marginTop: 16}}/>
-                    <EditOption><Icon name={"pencil"} /></EditOption>
-                    </Link>
+                    {false &&
+                    <Link to={`/admin/editar-mentor/${this.props.id}`}>
+                        <Avatar size={48} source={this.props.image} style={{marginTop: 16}}/>
+                        <EditOption><Icon name={"pencil"} /></EditOption>
+                    </Link>}
                 </div>
                 <div className='MentorItem_basicInformation'>
                     <NameMentorContainer>

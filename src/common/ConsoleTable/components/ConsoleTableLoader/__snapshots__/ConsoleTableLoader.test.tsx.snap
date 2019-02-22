@@ -24,15 +24,7 @@ ShallowWrapper {
     "nodeType": "host",
     "props": Object {
       "children": Array [
-        <Loader
-          height={100}
-          style={
-            Object {
-              "top": -37,
-            }
-          }
-          top={50}
-        />,
+        <Loader />,
         <styled.span
           style={
             Object {
@@ -53,13 +45,7 @@ ShallowWrapper {
         "instance": null,
         "key": undefined,
         "nodeType": "function",
-        "props": Object {
-          "height": 100,
-          "style": Object {
-            "top": -37,
-          },
-          "top": 50,
-        },
+        "props": Object {},
         "ref": null,
         "rendered": null,
         "type": [Function],
@@ -89,15 +75,7 @@ ShallowWrapper {
       "nodeType": "host",
       "props": Object {
         "children": Array [
-          <Loader
-            height={100}
-            style={
-              Object {
-                "top": -37,
-              }
-            }
-            top={50}
-          />,
+          <Loader />,
           <styled.span
             style={
               Object {
@@ -118,13 +96,7 @@ ShallowWrapper {
           "instance": null,
           "key": undefined,
           "nodeType": "function",
-          "props": Object {
-            "height": 100,
-            "style": Object {
-              "top": -37,
-            },
-            "top": 50,
-          },
+          "props": Object {},
           "ref": null,
           "rendered": null,
           "type": [Function],

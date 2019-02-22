@@ -1,6 +1,5 @@
 import * as React from 'react';
 import styled from "styled-components";
-import Loader from "../Loader/Loader";
 import colors from "../MentorColor";
 import { Body1 } from '../MentorText';
 
@@ -108,30 +107,16 @@ const buttonTheme = {
     fontDisabled
 };
 
-const LoaderButton = styled(Loader)`
-    margin-top: 6px;
-    transform: scale(0.55);
-`
+const Button: React.SFC<IButtonProps> = props =>  (
+    <button className={props.className} {...props.attrs}>{getFont(props.text)}</button>
+);
 
-const Button: React.SFC<IButtonProps> = props => {
-    const color = props.type === THEME_SECONDARY ?
-        colors.BACKGROUND_COLORS.background_purple : colors.BACKGROUND_COLORS.background_white;
-    return (
-        <button className={props.className} {...props.attrs}>
-            {
-                (props.attrs && !!props.attrs.loading) ?
-                    <LoaderButton color={color} />:
-                    getFont(props.text)
-            }
-        </button>
-    );
-};
 
 const Link: React.SFC<IButtonProps> = props =>
     <a className={props.className} {...props.attrs}>{getFont(props.text)}</a>;
 
 const ButtonNormal = styled(Button)`
-  @properties disabled;
+  @properties disabled, loading;
   align-items: center;
   border: 1px solid ${colors.BACKGROUND_COLORS.background_purple};
   background: ${(props: IButtonProps) => buttonTheme.colorDefault(props, !INVERSE_COLORS)};
@@ -168,6 +153,34 @@ const ButtonNormal = styled(Button)`
     ${Body1} {
       color: ${(props: IButtonProps) => buttonTheme.fontDisabled(props, !INVERSE_COLORS)}!important;
     }
+  }
+  &[loading] {
+    text-indent: -9999px;
+    white-space: nowrap;
+    overflow: hidden;
+    &:before {
+      color: ${(props: IButtonProps) => props.type === THEME_SECONDARY ?
+    colors.BACKGROUND_COLORS.background_purple: colors.BACKGROUND_COLORS.background_white};
+      display: block;
+      filter: progid:DXImageTransform.Microsoft.Alpha(enabled=false);
+      margin: 0 auto;
+      opacity: 1;
+    }
+  }
+  &:before {
+    animation-duration: 1s;
+    animation-iteration-count: infinite;
+    animation-name: rotate;
+    animation-timing-function: linear;
+    border: 4px solid;
+    border-left-color: transparent;
+    border-radius: 50%;
+    content: '';
+    display: none;
+    filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=0);
+    height: 20px;
+    opacity: 0;
+    width: 20px;
   }
 `;
 

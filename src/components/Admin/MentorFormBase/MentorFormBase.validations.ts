@@ -1,7 +1,7 @@
 import * as Yup from 'yup';
 export const errorRequired = 'Campo es requerido.';
 export const phoneRequired = 'Número de contacto incorrecto.';
-export const limitDescription = 120;
+export const limitDescription = 150;
 
 const getDate = (year: number, month: number) =>
     new Date(year, month);

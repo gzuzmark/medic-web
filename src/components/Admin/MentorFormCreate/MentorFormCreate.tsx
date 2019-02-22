@@ -194,7 +194,13 @@ class MentorFormCreate extends React.Component <{}, IStateMentorCreate> {
     private getActiveStepsBar(counter: number, newStepsBar?: IStepsBar[]) {
         const stepsBar = newStepsBar || [...this.state.stepsBar];
         return stepsBar.map((step, index) => {
-            step.active = index + 1 === counter;
+            if (index + 1 > counter) {
+                step = {...step, ...emptyStep};
+            } else if (index + 1 === counter) {
+                step = {...step, ...defaultStep};
+            } else {
+                step.active = false;
+            }
             return step;
         })
     }

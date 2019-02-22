@@ -15,7 +15,7 @@ const ConsoleTableLoader: React.StatelessComponent<IPropsConsoleTableLoader> = (
     }
     return (
         <div className={`ConsoleTableLoader ${props.center && 'ConsoleTableLoader--center'}`} style={{...props.style}}>
-            <Loader style={{width: 120}}/>
+            <Loader />
             <TextBold1 style={{fontWeight: 'bold', marginLeft: 30}}>
                 {props.children}
             </TextBold1>

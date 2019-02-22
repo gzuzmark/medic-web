@@ -5,7 +5,7 @@ import Icon from "../Icon/Icon";
 import colors from "../MentorColor";
 import {Body1, Small1} from '../MentorText';
 
-export interface IPropsConsoleTable {
+export interface IPropsFormLabel {
     label?: string;
     info?: string;
     uppercase?: boolean;
@@ -19,7 +19,7 @@ const LabelContainer = styled.div`
 `;
 
 
-const FormLabel: React.StatelessComponent<IPropsConsoleTable> = (props) => {
+const FormLabel: React.StatelessComponent<IPropsFormLabel> = (props) => {
     return (
         <LabelContainer>
             {!!props.label &&
