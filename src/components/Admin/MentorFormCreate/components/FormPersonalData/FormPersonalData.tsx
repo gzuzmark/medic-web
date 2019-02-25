@@ -69,7 +69,7 @@ class FormPersonalData extends React.Component <IPropsFormPersonalData, IStateFo
                                             name: "lastName",
                                             onBlur: context.handleBlur,
                                             onChange: context.handleChange,
-                                            placeholder: "Ingresa el apellido",
+                                            placeholder: "Ingrese los apellidos",
                                             value: context.values.lastName,
                                             ...lastNameAttrs}}/>
                                 </FormColumn>

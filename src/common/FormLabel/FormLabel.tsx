@@ -31,9 +31,9 @@ const FormLabel: React.StatelessComponent<IPropsFormLabel> = (props) => {
             </label>}
             {!!props.info &&
             <React.Fragment>
-                <ReactTooltip effect={"solid"} place={"top"} multiline={true}/>
+                <ReactTooltip id="FormLabelToolTip" effect={"solid"} place={"top"} multiline={true}/>
                 <Icon name={"alert"}
-                      attr={{"data-tip": props.info}}
+                      attr={{"data-tip": props.info, "data-for": "FormLabelToolTip"}}
                       style={{
                           cursor: 'pointer',
                           fill: colors.BACKGROUND_COLORS.background_purple,

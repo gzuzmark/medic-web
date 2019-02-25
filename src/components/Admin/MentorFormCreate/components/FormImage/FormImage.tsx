@@ -1,5 +1,6 @@
 import * as React from "react";
 import * as ReactCrop from 'react-image-crop';
+import * as ReactTooltip from 'react-tooltip';
 import styled from "styled-components";
 import camera from '../../../../../assets/images/camera.png';
 import {ButtonNormal} from "../../../../../common/Buttons/Buttons";
@@ -86,6 +87,7 @@ class FormImage extends React.Component <IPropsFormImage, IStateFormImage> {
                 {(context: IMentorFormCreateContext) => {
                     return (
                         <div className={"FormImage"}>
+                            <ReactTooltip effect={"solid"} place={"top"} id={"FormImageToolTip"} multiline={true}/>
                             <MentorModalBase
                                 show={this.state.modal}
                                 onCloseModal={this.closeModal}>
@@ -108,8 +110,11 @@ class FormImage extends React.Component <IPropsFormImage, IStateFormImage> {
                                 </div>:
                                 <ContentModal.Generic generic={this.errorImage} loading={false} confirm={this.newUploadImage} error={true} />}
                             </MentorModalBase>
-                            <label className={"FormImage_label"} htmlFor={this.props.id} ref={this.labelImage}>
-                                <ImageProfile src={context.selectedImage || defaultImage} width={160} height={160} title="Perfil de mentor" filled={!!context.selectedImage}/>
+                            <label className={"FormImage_label"} htmlFor={this.props.id} ref={this.labelImage}
+                                   data-for="FormImageToolTip"
+                                   data-tip={'La foto debe ser amigable (se recomienda una foto sonriente), <br>con fondo blanco y mira al frente.'}>
+                                <ImageProfile src={context.selectedImage || defaultImage} width={160} height={160}
+                                              title="Perfil de mentor" filled={!!context.selectedImage}/>
                                 <div className={"FormImage_text"}>
                                     <Icon name={"upload"} style={{
                                         fill: colors.BACKGROUND_COLORS.background_purple,

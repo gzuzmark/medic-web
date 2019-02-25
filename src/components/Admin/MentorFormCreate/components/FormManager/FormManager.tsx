@@ -205,7 +205,9 @@ class FormManager extends React.Component <IPropsFormManager, IStateFormManager>
     }
 
     private openModal() {
-        if (!this.props.saving) {
+        if (this.props.currentStep === 1 ) {
+            this.redirect();
+        } else if (!this.props.saving) {
             this.setState({modal: true})
         }
     }

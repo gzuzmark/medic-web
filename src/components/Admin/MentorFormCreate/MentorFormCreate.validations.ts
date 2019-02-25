@@ -1,13 +1,10 @@
 import * as Yup from 'yup';
 import {emailStatus} from "../../../domain/Mentor/MentorBaseForm";
-import mentorFormBaseSchema from "../MentorFormBase/MentorFormBase.validations";
+import mentorFormBaseSchema, {errorRequired} from "../MentorFormBase/MentorFormBase.validations";
 
-export const errorRequired = 'Campo es requerido.';
 export const emailRequired = emailStatus.EMAIL_NOT_VALID;
 
-const mentorCreateSchema = mentorFormBaseSchema.clone();
-
-mentorCreateSchema.shape({
+const mentorCreateSchema = mentorFormBaseSchema.clone().shape({
     email: Yup.string().required(errorRequired)
         .test('emailValidation', emailRequired, (email: string) => {
             let isValid = false;
@@ -16,7 +13,6 @@ mentorCreateSchema.shape({
                 isValid = re.test(email.trim());
             }
             return isValid
-        }),
-})
+        }),});
 
 export default mentorCreateSchema;
