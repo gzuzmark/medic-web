@@ -53,7 +53,7 @@ class FormMail extends React.Component <IPropsFormMail, IStateFormMail> {
                                     name: "email",
                                     onBlur: context.handleBlur,
                                     onChange: this.onChange(context),
-                                    placeholder: "Ingresa el correo UTP del mentor o crea un nuevo correo",
+                                    placeholder: "Ingresa el correo UTP del mentor",
                                     value: context.values.email
                                 }}
                                 styleContainer={{padding: '30px 65px'}}/>

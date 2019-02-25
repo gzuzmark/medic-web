@@ -102,7 +102,7 @@ class FormReview extends React.Component <IPropsFormReview, IStateFormReview> {
                            {context.values.experiences.map((value: IMentorFormExperience, index: number) => (
                                value.position && value.company && !!this.getDateExperience(value) &&
                                <ExperienceItem key={`form_view_experiences_${index}`}>
-                                   <Subhead1>{value.position}</Subhead1>
+                                   <Subhead1 color={FONTS.medium}>{value.position}</Subhead1>
                                    <Body1 weight={LIGHT_TEXT}>{value.company}</Body1>
                                    <Body1 weight={LIGHT_TEXT} color={FONTS.blue_grey}>{this.getDateExperience(value)}</Body1>
                                </ExperienceItem>))}

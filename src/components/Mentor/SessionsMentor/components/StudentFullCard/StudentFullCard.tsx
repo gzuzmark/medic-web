@@ -39,7 +39,7 @@ const StudentFullCard: React.StatelessComponent<IPropsStudentFullCard> = (props)
     const iconTooltip = props.student.commented ? 'Ver observación' : 'Añadir observación';
     return (
         <div className={`StudentFullCard ${props.student.new ? 'StudentFullCard--new': ''}`} style={{...props.styles}}>
-            <ReactTooltip effect={"solid"} place={"left"}/>
+            <ReactTooltip effect={"solid"} place={"left"} id={"StudentFullCardToolTip"}/>
             <div className={"StudentFullCard_left"}>
                 <div className={"StudentFullCard_image-container u-ImageContainer"}>
                     <img src={props.student.photo}
@@ -58,7 +58,7 @@ const StudentFullCard: React.StatelessComponent<IPropsStudentFullCard> = (props)
                 {props.student.isEnabledForComment ?
                     <Icon name={iconId}
                           click={props.showTagModal}
-                          attr={{"data-tip": iconTooltip}}
+                          attr={{"data-tip": iconTooltip, "data-for": "StudentFullCardToolTip"}}
                           style={{
                               cursor: 'pointer',
                               fill: colors.BACKGROUND_COLORS.background_purple,

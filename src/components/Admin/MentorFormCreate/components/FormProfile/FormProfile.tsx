@@ -35,7 +35,7 @@ class FormProfile extends React.Component <{}, {}> {
                                             name: "description",
                                             onBlur: context.handleBlur,
                                             onChange: context.handleChange,
-                                            placeholder: "Ingresa una descripción para el mentor. Por ejemplo: ¡Hola! Tengo más de 10 años de experiencia como docente en diferentes universidades y estoy dispuesto a ayudarte.",
+                                            placeholder: "Ingresa una descripción para el mentor. Por ejemplo: ¡Hola! Soy Fabbian y mi objetivo es ser tu mejor compañero de estudios fuera de clase, conmigo podrás resolver tus dudas acerca de los cursos de química.",
                                             style: {height: 112},
                                             value: context.values.description
                                         }} />

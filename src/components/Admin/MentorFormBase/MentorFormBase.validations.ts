@@ -17,7 +17,7 @@ const createDate = (year?: string, month?: string) => {
 const isFirstDateGreater = (date1: Date | null, date2: Date | null) => {
     return !!date2 && !!date1 && date2.getTime() <= date1.getTime()
 };
-const mentorFormBaseSchema = Yup.object({
+const mentorFormBaseSchema = Yup.object().shape({
     contactNumber: Yup.string()
         .test('phoneValidation', phoneRequired, (phoneContact: string) => {
             let isValid = true;
