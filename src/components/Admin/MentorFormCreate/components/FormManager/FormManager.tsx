@@ -5,12 +5,12 @@ import ContentModal, {IGenericContentModal} from "../../../../../common/ConsoleM
 import MentorModalBase from "../../../../../common/ConsoleModal/MentorModalBase";
 import Icon from "../../../../../common/Icon/Icon";
 import {emailStatus, IMentorFormExperience, IMentorFormValidations} from "../../../../../domain/Mentor/MentorBaseForm";
+import FormExperience from "../../../MentorFormBase/components/FormExperience/FormExperience";
+import FormImage from "../../../MentorFormBase/components/FormImage/FormImage";
+import FormPersonalData from "../../../MentorFormBase/components/FormPersonalData/FormPersonalData";
+import FormProfile from "../../../MentorFormBase/components/FormProfile/FormProfile";
 import {limitDescription} from "../../../MentorFormBase/MentorFormBase.validations";
-import FormExperience from "../FormExperience/FormExperience";
-import FormImage from "../FormImage/FormImage";
 import FormMail from "../FormMail/FormMail";
-import FormPersonalData from "../FormPersonalData/FormPersonalData";
-import FormProfile from "../FormProfile/FormProfile";
 import FormReview from "../FormReview/FormReview";
 import {formTemplateHOC} from "./FormTemplateHOC";
 
@@ -28,6 +28,11 @@ interface IPropsFormManager {
     onHandleSubmit: (e: any) => void;
 }
 
+interface IStateFormManager {
+    disabledFields: IFormManagerDisabledFields;
+    modal: boolean;
+}
+
 export interface IFormManagerDisabledFields {
     firstName: boolean;
     lastName: boolean;
@@ -40,11 +45,6 @@ export interface IFormManagerInfoFields {
     lastName: string;
     documentType: string;
     document: string;
-}
-
-interface IStateFormManager {
-    disabledFields: IFormManagerDisabledFields;
-    modal: boolean;
 }
 
 const filter = {

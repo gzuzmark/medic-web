@@ -2,10 +2,10 @@ import * as React from "react";
 import MentorDropDown, {IPropsMentorOptionsDropDown} from "../../../../../common/MentorDropDown/MentorDropDown";
 import MentorInput from "../../../../../common/MentorInput/MentorInput";
 import {documentTypeList} from "../../../../../repository/DocumentsIdentification";
+import {IFormManagerDisabledFields, IFormManagerInfoFields} from "../../../MentorFormCreate/components/FormManager/FormManager";
 import FormColumn from "../../../ScheduleSession/components/FormRow/components/FormColumn/FormColumn";
 import FormRow from "../../../ScheduleSession/components/FormRow/FormRow";
-import MentorFormCreateContext, {IMentorFormCreateContext} from "../../MentorFormCreate.context";
-import {IFormManagerDisabledFields, IFormManagerInfoFields} from "../FormManager/FormManager";
+import MentorFormBaseContext, {IMentorFormBaseContext} from "../../MentorFormBase.context";
 
 interface IStateFormPersonalData {
     loading: boolean;
@@ -21,7 +21,7 @@ class FormPersonalData extends React.Component <IPropsFormPersonalData, IStateFo
         super(props);
         this.state = {
             loading: false
-        }
+        };
         this.handlerDocumentType = this.handlerDocumentType.bind(this);
         this.handlerLocation = this.handlerLocation.bind(this);
         this.handlerSkills = this.handlerSkills.bind(this);
@@ -33,8 +33,8 @@ class FormPersonalData extends React.Component <IPropsFormPersonalData, IStateFo
     public render() {
         let counter = 0;
         return (
-            <MentorFormCreateContext.Consumer>
-                {(context: IMentorFormCreateContext) => {
+            <MentorFormBaseContext.Consumer>
+                {(context: IMentorFormBaseContext) => {
                     const {errors, touched} = context;
                     const documentAttrs = this.getDocumentAttr(this.props.disableFields.document, context.values.documentType.value);
                     const firstNameAttrs = this.getAttrs(this.props.disableFields.firstName);
@@ -141,7 +141,7 @@ class FormPersonalData extends React.Component <IPropsFormPersonalData, IStateFo
                         </React.Fragment>
                     )
                 }}
-            </MentorFormCreateContext.Consumer>
+            </MentorFormBaseContext.Consumer>
         )
     }
 
@@ -166,7 +166,7 @@ class FormPersonalData extends React.Component <IPropsFormPersonalData, IStateFo
         return attr;
     }
 
-    private handlerLocation(context: IMentorFormCreateContext) {
+    private handlerLocation(context: IMentorFormBaseContext) {
         return (name: string, option: IPropsMentorOptionsDropDown) => {
             context.setFieldValue(name, option);
             context.setFieldTouched(name);
@@ -179,7 +179,7 @@ class FormPersonalData extends React.Component <IPropsFormPersonalData, IStateFo
         }
     }
 
-    private hasErrorSkills(context: IMentorFormCreateContext) {
+    private hasErrorSkills(context: IMentorFormBaseContext) {
         let message = '';
         const hasError = !!context.values.location.value && !context.listSkills.length && !this.state.loading;
         if (hasError) {
@@ -188,7 +188,7 @@ class FormPersonalData extends React.Component <IPropsFormPersonalData, IStateFo
         return message
     }
 
-    private handlerDocumentType(context: IMentorFormCreateContext) {
+    private handlerDocumentType(context: IMentorFormBaseContext) {
         return (name: string, option: IPropsMentorOptionsDropDown) => {
             context.setFieldValue(name, option);
             context.setFieldTouched(name);
@@ -197,7 +197,7 @@ class FormPersonalData extends React.Component <IPropsFormPersonalData, IStateFo
         }
     }
 
-    private handlerSkills(context: IMentorFormCreateContext) {
+    private handlerSkills(context: IMentorFormBaseContext) {
         return (name: string, option: IPropsMentorOptionsDropDown[]) => {
             context.setFieldValue(name, option);
             context.setFieldTouched(name);

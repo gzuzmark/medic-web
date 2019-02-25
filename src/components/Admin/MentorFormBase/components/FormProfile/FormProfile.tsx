@@ -3,10 +3,10 @@ import styled from "styled-components";
 import MentorInput from "../../../../../common/MentorInput/MentorInput";
 import {Subhead1} from "../../../../../common/MentorText";
 import MentorTextArea from "../../../../../common/MentorTextArea/MentorTextArea";
-import {limitDescription} from "../../../MentorFormBase/MentorFormBase.validations";
 import FormColumn from "../../../ScheduleSession/components/FormRow/components/FormColumn/FormColumn";
 import FormRow from "../../../ScheduleSession/components/FormRow/FormRow";
-import MentorFormCreateContext, {IMentorFormCreateContext} from "../../MentorFormCreate.context";
+import MentorFormBaseContext, {IMentorFormBaseContext} from "../../MentorFormBase.context";
+import {limitDescription} from "../../MentorFormBase.validations";
 
 export const SubTitle = styled(Subhead1)`
     text-align: center;
@@ -20,8 +20,8 @@ class FormProfile extends React.Component <{}, {}> {
     public render() {
         let counter = 0;
         return (
-            <MentorFormCreateContext.Consumer>
-                {(context: IMentorFormCreateContext) => {
+            <MentorFormBaseContext.Consumer>
+                {(context: IMentorFormBaseContext) => {
                     const {errors, touched} = context;
                     return (
                         <React.Fragment>
@@ -70,7 +70,7 @@ class FormProfile extends React.Component <{}, {}> {
                         </React.Fragment>
                     )
                 }}
-            </MentorFormCreateContext.Consumer>
+            </MentorFormBaseContext.Consumer>
         )
     }
 }

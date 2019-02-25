@@ -11,7 +11,7 @@ import {date} from "../../../../../common/Utils/DateUtilities";
 import {IMentorFormExperience} from "../../../../../domain/Mentor/MentorBaseForm";
 import FormColumn from "../../../ScheduleSession/components/FormRow/components/FormColumn/FormColumn";
 import FormRow from "../../../ScheduleSession/components/FormRow/FormRow";
-import MentorFormCreateContext, {IMentorFormCreateContext} from "../../MentorFormCreate.context";
+import MentorFormBaseContext, {IMentorFormBaseContext} from "../../MentorFormBase.context";
 
 
 export const SubTitle = styled(Subhead1)`
@@ -81,8 +81,8 @@ class FormExperience extends React.Component <{}, {}> {
 
     public render() {
         return (
-            <MentorFormCreateContext.Consumer>
-                {(context: IMentorFormCreateContext) => {
+            <MentorFormBaseContext.Consumer>
+                {(context: IMentorFormBaseContext) => {
                     return (
                         <div style={{padding: '30px 0'}}>
                             <SubTitle>Otras experiencias laborales</SubTitle>
@@ -92,11 +92,11 @@ class FormExperience extends React.Component <{}, {}> {
                         </div>
                     )
                 }}
-            </MentorFormCreateContext.Consumer>
+            </MentorFormBaseContext.Consumer>
         )
     }
 
-    private renderExperience(ctxt: IMentorFormCreateContext) {
+    private renderExperience(ctxt: IMentorFormBaseContext) {
         let counter = 0;
         const experiences = !!ctxt.values.experiences ? ctxt.values.experiences : [] as IMentorFormExperience[];
         const {touched, errors} = ctxt;
@@ -228,7 +228,7 @@ class FormExperience extends React.Component <{}, {}> {
         }
     }
 
-    private handlerCurrentJob(context: IMentorFormCreateContext, index: number) {
+    private handlerCurrentJob(context: IMentorFormBaseContext, index: number) {
         return (e: any) => {
             context.setFieldTouched(`experiences[${index}].fromMonth`);
             context.setFieldTouched(`experiences[${index}].fromYear`);
@@ -238,7 +238,7 @@ class FormExperience extends React.Component <{}, {}> {
         }
     }
 
-    private handlerDate(context: IMentorFormCreateContext) {
+    private handlerDate(context: IMentorFormBaseContext) {
         return (name: string, selectedOption: IPropsMentorOptionsDropDown | IPropsMentorOptionsDropDown[]) => {
             if (!Array.isArray(selectedOption)) {
                 context.setFieldValue(name, selectedOption.value);

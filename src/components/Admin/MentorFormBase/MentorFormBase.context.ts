@@ -2,7 +2,7 @@ import * as React from "react";
 import {IPropsMentorOptionsDropDown} from "../../../common/MentorDropDown/MentorDropDown";
 import {IMentorFormValidations} from "../../../domain/Mentor/MentorBaseForm";
 
-export interface IMentorFormCreateContext {
+export interface IMentorFormBaseContext {
     errors: any;
     handleBlur: any;
     handleChange: any;
@@ -17,7 +17,7 @@ export interface IMentorFormCreateContext {
     values: IMentorFormValidations;
 }
 
-const defaultValue: IMentorFormCreateContext = {
+const defaultValue: IMentorFormBaseContext = {
     errors: {},
     handleBlur: (event: any) => void(0),
     handleChange: (event: any) => void(0),
@@ -32,6 +32,6 @@ const defaultValue: IMentorFormCreateContext = {
     values: {} as IMentorFormValidations
 };
 
-const MentorFormCreateContext = React.createContext(defaultValue);
+const MentorFormBaseContext = React.createContext(defaultValue);
 
-export default MentorFormCreateContext;
+export default MentorFormBaseContext;

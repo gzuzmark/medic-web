@@ -3,10 +3,10 @@ import {IFormItemBase} from "../../../domain/Mentor/MentorBaseForm";
 import MentorCreateData, {
     IMentorCreateData
 } from "../../../domain/Mentor/MentorCreate";
-import {IMentorFormCreateContext} from "./MentorFormCreate.context";
+import {IMentorFormBaseContext} from "./MentorFormBase.context";
 
 const mentorCreateData = new MentorCreateData({} as IMentorCreateData);
-export const getDefaultValues = ():IMentorFormCreateContext => (
+export const getDefaultValues = ():IMentorFormBaseContext => (
     {
         errors: {},
         handleBlur: (event: any) => void(0),
@@ -23,7 +23,7 @@ export const getDefaultValues = ():IMentorFormCreateContext => (
     }
 );
 
-export const getFullValues = ():IMentorFormCreateContext => (
+export const getFullValues = ():IMentorFormBaseContext => (
     {
         errors: {},
         handleBlur: (event: any) => void(0),

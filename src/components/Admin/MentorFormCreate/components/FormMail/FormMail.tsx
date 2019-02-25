@@ -3,7 +3,7 @@ import colors from "../../../../../common/MentorColor";
 import MentorInput from "../../../../../common/MentorInput/MentorInput";
 import {emailStatus, IMentorBaseForm} from "../../../../../domain/Mentor/MentorBaseForm";
 import MentorService from "../../../../../services/Mentor/Mentor.service";
-import MentorFormCreateContext, {IMentorFormCreateContext} from "../../MentorFormCreate.context";
+import MentorFormBaseContext, {IMentorFormBaseContext} from "../../../MentorFormBase/MentorFormBase.context";
 import {IFormManagerDisabledFields} from "../FormManager/FormManager";
 
 interface IStateFormMail {
@@ -34,8 +34,8 @@ class FormMail extends React.Component <IPropsFormMail, IStateFormMail> {
 
     public render() {
         return (
-            <MentorFormCreateContext.Consumer>
-                {(context: IMentorFormCreateContext) => {
+            <MentorFormBaseContext.Consumer>
+                {(context: IMentorFormBaseContext) => {
                     const {errors, touched, values} = context;
                     const errorEmail = !!touched.email && errors.email;
                     const statusEmail = this.getStatusEmail(values.status);
@@ -60,7 +60,7 @@ class FormMail extends React.Component <IPropsFormMail, IStateFormMail> {
                         </React.Fragment>
                     )
                 }}
-            </MentorFormCreateContext.Consumer>
+            </MentorFormBaseContext.Consumer>
         )
     }
 
@@ -70,7 +70,7 @@ class FormMail extends React.Component <IPropsFormMail, IStateFormMail> {
         return alreadyRegistered || errorProcess || '';
     }
 
-    private fillMentorData(value: IMentorBaseForm, context: IMentorFormCreateContext) {
+    private fillMentorData(value: IMentorBaseForm, context: IMentorFormBaseContext) {
         context.setFieldValue("status", emailStatus.FULL_DATA);
         context.setFieldValue("documentType", {value: value.documentType});
         context.setFieldTouched("documentType");
@@ -90,7 +90,7 @@ class FormMail extends React.Component <IPropsFormMail, IStateFormMail> {
         })
     }
 
-    private cleanMentorData(context: IMentorFormCreateContext) {
+    private cleanMentorData(context: IMentorFormBaseContext) {
         context.setFieldValue("status", emailStatus.CLEAN);
         context.setFieldValue("documentType", {value: ''});
         context.setFieldTouched("documentType", false);
@@ -110,7 +110,7 @@ class FormMail extends React.Component <IPropsFormMail, IStateFormMail> {
         })
     }
 
-    private updateStatusEmailValidation(code: number, context: IMentorFormCreateContext) {
+    private updateStatusEmailValidation(code: number, context: IMentorFormBaseContext) {
         if (code === 404) {
             context.setFieldValue("status", emailStatus.NO_DATA);
         } else if (code === 409) {
@@ -122,7 +122,7 @@ class FormMail extends React.Component <IPropsFormMail, IStateFormMail> {
         }
     }
 
-    private verifyMentor(email: string, context: IMentorFormCreateContext) {
+    private verifyMentor(email: string, context: IMentorFormBaseContext) {
         this.mentorService.verify(email.trim()).then((mentor: IMentorBaseForm) => {
             this.setState({loading: false});
             this.fillMentorData(mentor, context);
@@ -134,7 +134,7 @@ class FormMail extends React.Component <IPropsFormMail, IStateFormMail> {
         });
     }
 
-    private onChange(context: IMentorFormCreateContext) {
+    private onChange(context: IMentorFormBaseContext) {
         return (e: any) => {
             context.handleChange(e);
             this.cleanMentorData(context);

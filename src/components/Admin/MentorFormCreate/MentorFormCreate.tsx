@@ -14,9 +14,9 @@ import MentorRepository from "../../../repository/MentorsRepository";
 import MentorService from "../../../services/Mentor/Mentor.service";
 import SitesService from "../../../services/Sites/Sites.service";
 import SkillService from "../../../services/Skill/Skill.service";
+import MentorFormBaseContext from "../MentorFormBase/MentorFormBase.context";
 import FormManager from "./components/FormManager/FormManager";
 import StepsBar, {IStepsBar} from "./components/StepsBar/StepsBar";
-import MentorFormCreateContext from "./MentorFormCreate.context";
 import './MentorFormCreate.scss';
 import mentorCreateSchema from "./MentorFormCreate.validations";
 
@@ -109,7 +109,7 @@ class MentorFormCreate extends React.Component <{}, IStateMentorCreate> {
                             onSubmit={this.onSubmit}>
                             {({ errors, touched, values, handleBlur, handleChange, handleSubmit, setFieldValue, setFieldTouched}) => {
                                 return (
-                                    <MentorFormCreateContext.Provider
+                                    <MentorFormBaseContext.Provider
                                         value={{
                                             errors,
                                             handleBlur,
@@ -133,7 +133,7 @@ class MentorFormCreate extends React.Component <{}, IStateMentorCreate> {
                                                          saving={this.state.saving}
                                                          submitText={this.state.submitText}/>
                                         </form>
-                                    </MentorFormCreateContext.Provider>
+                                    </MentorFormBaseContext.Provider>
                                 )
                             }}
                         </Formik>

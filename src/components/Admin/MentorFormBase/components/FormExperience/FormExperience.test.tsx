@@ -1,10 +1,10 @@
 import { mount } from 'enzyme';
 import 'jest-styled-components';
 import * as React from 'react';
-import {IMentorFormCreateContext} from "../../MentorFormCreate.context";
-import {getDefaultValues} from "../../MentorFormCreate.mock";
+import {IMentorFormBaseContext} from "../../MentorFormBase.context";
+import {getDefaultValues} from "../../MentorFormBase.mock";
 
-const getContext = (context: IMentorFormCreateContext) => {
+const getContext = (context: IMentorFormBaseContext) => {
     jest.doMock('../../MentorFormCreate.context', () => {
         return {
             default: {
@@ -18,7 +18,7 @@ const getContext = (context: IMentorFormCreateContext) => {
 
 describe('FormExperience Test',() => {
     let props: any;
-    let ctxt: IMentorFormCreateContext;
+    let ctxt: IMentorFormBaseContext;
     let mountedComponent: any;
     const getComponent = () => {
         if (!mountedComponent) {
