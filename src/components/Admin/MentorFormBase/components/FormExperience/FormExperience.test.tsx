@@ -36,7 +36,7 @@ describe('FormExperience Test',() => {
         ctxt = getDefaultValues();
         mountedComponent = undefined;
     });
-    
+
     it("render: should have only one add option in item list with one item,", () => {
         const component = getComponent();
         expect(component.find('.ExperienceItem').at(0).find("button").length)
