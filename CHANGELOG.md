@@ -1,4 +1,13 @@
-# [0.1.0](https://ssh.dev.azure.com/v3/UGOTeam/ugo-admin/ugo-admin/compare/1.0.1...0.1.0) (2019-02-26)
+# [0.1.0](https://ssh.dev.azure.com/v3/UGOTeam/ugo-admin/ugo-admin/compare/1.0.2...0.1.0) (2019-02-26)
+
+
+
+## [1.0.2](https://ssh.dev.azure.com/v3/UGOTeam/ugo-admin/ugo-admin/compare/1.0.1...1.0.2) (2019-02-26)
+
+
+### Bug Fixes
+
+* **list-mentors:** add tooltip to option edit ([3178544](https://ssh.dev.azure.com/v3/UGOTeam/ugo-admin/ugo-admin/commits/3178544))
 
 
 
