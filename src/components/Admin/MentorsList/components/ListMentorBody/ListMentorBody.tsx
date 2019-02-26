@@ -66,7 +66,7 @@ class ListMentorsBody extends React.Component <IPropsListMentorsBody, {}> {
                                 id={id}
                                 name={`${user.name} ${user.lastname}`} />
                 </div>
-                <div className="ListMentors_column ListMentors_separator">
+                <div className="ListMentors_column ListMentors_separator" style={{borderColor: status === MENTOR_STATUS.DISABLED ? colors.MISC_COLORS.background_grey_1 : colors.MISC_COLORS.background_grey_2}}>
                     {status !== MENTOR_STATUS.INCOMPLETE &&
                         <Heading2 weight={LIGHT_TEXT} color={color}>{getTime(sessions.totalMinutes)}</Heading2>}
                 </div>

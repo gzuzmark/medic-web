@@ -7,7 +7,7 @@ import {default as colors, FONTS} from "../../../common/MentorColor";
 import MentorDropDown, {IPropsMentorOptionsDropDown} from "../../../common/MentorDropDown/MentorDropDown";
 import { Headline1 } from '../../../common/MentorText';
 import Sticky from '../../../common/Sticky/Sticky';
-import {IMentorBase} from "../../../domain/Mentor/MentorBase";
+import {IMentorBase, MENTOR_STATUS} from "../../../domain/Mentor/MentorBase";
 import {ISkill} from "../../../domain/Skill/Skill";
 import MentorRepository from "../../../repository/MentorsRepository";
 import MentorService from '../../../services/Mentor/Mentor.service';
@@ -95,11 +95,12 @@ class MentorsList extends React.Component <{}, IStateListMentor> {
                             </div>
                         )}
                         {!this.state.loading && this.state.filteredMentors.map((item, index) => {
-                            const styles =  this.newMentors.indexOf(item.id) !== -1 ? {order: --this.counter, background: colors.MISC_COLORS.background_grey_1} : {};
+                            const newMentorStyle =  this.newMentors.indexOf(item.id) !== -1 ? {order: --this.counter, background: colors.MISC_COLORS.background_grey_1} : {};
+                            const disableStyle =  item.status === MENTOR_STATUS.DISABLED ? {borderBottom: `1px solid ${colors.MISC_COLORS.background_grey_1}`} : {borderBottom: `1px solid ${colors.MISC_COLORS.background_grey_2}`};
                             return (
                                 <div key={'list-mentor-row' + index}
                                      className={`ListMentors_row ListMentors_row--border u-ListMentors_padding`}
-                                     style={{...styles}}>
+                                     style={{...newMentorStyle, ...disableStyle}}>
                                     <ListMentorsBody mentor={item}/>
                                 </div>);
                         })}
@@ -113,8 +114,10 @@ class MentorsList extends React.Component <{}, IStateListMentor> {
         this.setState({loading: true});
         this.mentorService.list('all').then((mentors: IMentorBase[]) => {
             window.scrollTo(0, 0);
+            const mentorsDisabled = mentors.filter((mentor: IMentorBase) => mentor.status === MENTOR_STATUS.DISABLED);
+            const mentorsNoDisabled = mentors.filter((mentor: IMentorBase) => mentor.status !== MENTOR_STATUS.DISABLED);
             this.setState({
-                filteredMentors: mentors,
+                filteredMentors: [...mentorsNoDisabled, ...mentorsDisabled],
                 loading: false,
                 mentors,
             })
