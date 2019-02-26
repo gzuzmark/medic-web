@@ -28,6 +28,40 @@ interface IPropsMentorInput {
     attrs?: any;
 }
 
+const InputContainer = styled.div`
+    @properties disabled, loading;
+    height: 40px;
+    input {
+        border: 0;
+        border-radius: 4px;
+        display: none;
+        font-weight: 300;
+        height: 40px;
+        left: 0;
+        padding: 0 70px 0 16px;
+        position: absolute;
+        top: 0;
+        transition: border 0.2s ease-in;
+        width: 100%;
+        &[disabled] {
+            border: solid 1px ${colors.BACKGROUND_COLORS.background_disabled};
+            color: ${colors.TEXT_COLORS.font_disabled};
+        }
+        &::-webkit-input-placeholder {color: ${colors.TEXT_COLORS.font_blue_grey};transition: color 0.2s ease-in;}
+        &:-moz-placeholder           {color: ${colors.TEXT_COLORS.font_blue_grey}: color 0.2s ease-in;}
+        &::-moz-placeholder          {color: ${colors.TEXT_COLORS.font_blue_grey}: color 0.2s ease-in;}
+        &:-ms-input-placeholder      {color: ${colors.TEXT_COLORS.font_blue_grey}: color 0.2s ease-in;}
+        
+        &:focus {
+            border: solid 1px ${colors.TEXT_COLORS.font_dark};
+            &::-webkit-input-placeholder {color: ${colors.TEXT_COLORS.font_dark};transition: color 0.2s ease-in;}
+            &:-moz-placeholder           {color: ${colors.TEXT_COLORS.font_dark}: color 0.2s ease-in;}
+            &::-moz-placeholder          {color: ${colors.TEXT_COLORS.font_dark}: color 0.2s ease-in;}
+            &:-ms-input-placeholder      {color: ${colors.TEXT_COLORS.font_dark}: color 0.2s ease-in;}
+        }
+    }
+`;
+
 interface IStateMentorInput {
     focus: boolean;
 }
@@ -41,7 +75,6 @@ const LoaderInput = styled(Loader)`
     transform: scale(0.37);
     width: 90px;
 `;
-
 
 // todo: pasar a styled component
 class MentorInput extends React.Component<IPropsMentorInput, IStateMentorInput> {
@@ -91,7 +124,7 @@ class MentorInput extends React.Component<IPropsMentorInput, IStateMentorInput> 
         return (
             <div style={{...this.props.styleContainer}} onClick={this.onClick}>
                 <FormLabel label={this.props.label} info={this.props.info} uppercase={true}/>
-                <div
+                <InputContainer
                     className={`MentorInput ${inputClass}`}
                     style={{...this.props.style}}>
                     <input
@@ -104,7 +137,7 @@ class MentorInput extends React.Component<IPropsMentorInput, IStateMentorInput> 
                         {!!this.props.animation && <Body1>{this.props.animation.text}</Body1>}
                         {!!this.props.error &&
                         <div className={'MentorInput_message'}><Small1 weight={LIGHT_TEXT}>{this.props.error}</Small1></div>}
-                </div>
+                </InputContainer>
             </div>
         );
     }

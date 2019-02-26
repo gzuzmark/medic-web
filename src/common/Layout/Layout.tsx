@@ -50,6 +50,7 @@ class Layout extends React.Component<IPropsLayout, {}> {
                                 <MenuTop />
                             </div>
                         </div>
+                        <div className={"Header_notifications"} />
                     </div>
                 </Sticky>
                 {!!this.props.menu && this.props.menu}

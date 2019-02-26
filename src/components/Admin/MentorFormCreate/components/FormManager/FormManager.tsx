@@ -4,15 +4,16 @@ import {ButtonLink, ButtonNormal, THEME_SECONDARY} from "../../../../../common/B
 import ContentModal, {IGenericContentModal} from "../../../../../common/ConsoleModal/ContentModal";
 import MentorModalBase from "../../../../../common/ConsoleModal/MentorModalBase";
 import Icon from "../../../../../common/Icon/Icon";
-import {emailStatus, IMentorFormExperience, IMentorFormValidations} from "../../../../../domain/Mentor/MentorBaseForm";
+import {emailStatus, IMentorFormValidations} from "../../../../../domain/Mentor/MentorBaseForm";
+import FormExperience from "../../../MentorFormBase/components/FormExperience/FormExperience";
+import getExperiencesWithError from "../../../MentorFormBase/components/FormExperience/ValidateExperiences";
+import FormImage from "../../../MentorFormBase/components/FormImage/FormImage";
+import FormPersonalData from "../../../MentorFormBase/components/FormPersonalData/FormPersonalData";
+import FormProfile from "../../../MentorFormBase/components/FormProfile/FormProfile";
+import {formTemplateHOC} from "../../../MentorFormBase/components/FormTemplate/FormTemplateHOC";
 import {limitDescription} from "../../../MentorFormBase/MentorFormBase.validations";
-import FormExperience from "../FormExperience/FormExperience";
-import FormImage from "../FormImage/FormImage";
 import FormMail from "../FormMail/FormMail";
-import FormPersonalData from "../FormPersonalData/FormPersonalData";
-import FormProfile from "../FormProfile/FormProfile";
 import FormReview from "../FormReview/FormReview";
-import {formTemplateHOC} from "./FormTemplateHOC";
 
 interface IPropsFormManager {
     currentStep: number;
@@ -26,6 +27,11 @@ interface IPropsFormManager {
     onNextStep: () => void;
     submitText: string;
     onHandleSubmit: (e: any) => void;
+}
+
+interface IStateFormManager {
+    disabledFields: IFormManagerDisabledFields;
+    modal: boolean;
 }
 
 export interface IFormManagerDisabledFields {
@@ -42,15 +48,6 @@ export interface IFormManagerInfoFields {
     document: string;
 }
 
-interface IStateFormManager {
-    disabledFields: IFormManagerDisabledFields;
-    modal: boolean;
-}
-
-const filter = {
-    EVERY: 'every',
-    SOME: 'some'
-}
 
 export const FormManagerContainer = styled.div`
     margin: 100px auto 80px auto;
@@ -74,7 +71,6 @@ class FormManager extends React.Component <IPropsFormManager, IStateFormManager>
         this.buttonAttrContinue = {type: "button", style: {marginLeft: 24, width: 136}};
         this.buttonAttrCancel = {};
         this.updateDisabledFields = this.updateDisabledFields.bind(this);
-        this.getExperiencesWithError = this.getExperiencesWithError.bind(this);
         this.closeModal = this.closeModal.bind(this);
         this.emailIsNotAllowed = this.emailIsNotAllowed.bind(this);
         this.openModal = this.openModal.bind(this);
@@ -129,7 +125,7 @@ class FormManager extends React.Component <IPropsFormManager, IStateFormManager>
                 buttonAttrContinue = {...buttonAttrContinue, disabled: true};
             }
         } else if (3 === this.props.currentStep) {
-            const experiencesStatus = this.getExperiencesWithError(values.experiences, errors);
+            const experiencesStatus = getExperiencesWithError(values.experiences, errors);
             if (values.description && values.description.length > limitDescription) {
                 buttonAttrContinue = {...buttonAttrContinue, disabled: true};
             } else if (experiencesStatus.some(error => !!error)) {
@@ -222,39 +218,6 @@ class FormManager extends React.Component <IPropsFormManager, IStateFormManager>
             status === emailStatus.ALREADY_REGISTERED ||
             status === emailStatus.ERROR_PROCESS ||
             status === emailStatus.CLEAN)
-    }
-
-    private getExperiencesWithError(experiences: IMentorFormExperience[], errors: any) {
-        const experiencesCompleted = experiences.filter((experience, index) => {
-            return (!experience.currentJob && experience.toYear && experience.toYear.length > 0) ||
-                (!experience.currentJob && experience.toMonth && experience.toMonth.length > 0) ||
-                (!!experience.currentJob) ||
-                this.isValidFields(experience, ["fromMonth", "fromYear", "company", "position"], filter.SOME);
-        });
-        const experiencesStatus = experiencesCompleted.map((experience, index) => {
-            let hasError = false;
-            const allShouldBeFull =
-                (!!experience.currentJob || (!experience.currentJob && experience.toYear && experience.toYear.length > 0)) &&
-                (!!experience.currentJob ||(!experience.currentJob && experience.toMonth && experience.toMonth.length > 0)) &&
-                this.isValidFields(experience, ["fromMonth", "fromYear", "company", "position"], filter.EVERY);
-            hasError = !allShouldBeFull || (!!errors.experiences && !!errors.experiences[index])
-            return hasError;
-        });
-        return experiencesStatus
-    }
-
-    private isValidFields(experience: IMentorFormExperience, keys: string[], mode: string) {
-        let status = false;
-        if (mode === filter.SOME) {
-            status = keys.some((key: string) => {
-                return !!experience[key] && experience[key].trim().length > 0;
-            })
-        } else if (mode === filter.EVERY) {
-            status = keys.every((key: string) => {
-                return !!experience[key] && experience[key].trim().length > 0;
-            })
-        }
-        return status
     }
 }
 

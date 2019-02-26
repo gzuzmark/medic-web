@@ -56,12 +56,10 @@ class MentorItem extends React.Component<IPropsMentorSession, {}> {
         return (
             <div className="MentorItem">
                 <div style={{position: 'relative'}}>
-                    <Avatar size={48} source={this.props.image} style={{marginTop: 16}}/>
-                    {false &&
                     <Link to={`/admin/editar-mentor/${this.props.id}`}>
                         <Avatar size={48} source={this.props.image} style={{marginTop: 16}}/>
                         <EditOption><Icon name={"pencil"} /></EditOption>
-                    </Link>}
+                    </Link>
                 </div>
                 <div className='MentorItem_basicInformation'>
                     <NameMentorContainer>

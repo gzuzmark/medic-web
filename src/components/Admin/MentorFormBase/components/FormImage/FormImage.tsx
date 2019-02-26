@@ -10,7 +10,7 @@ import Icon from "../../../../../common/Icon/Icon";
 import colors from "../../../../../common/MentorColor";
 import { Body1, Heading2 } from "../../../../../common/MentorText";
 import MentorService from "../../../../../services/Mentor/Mentor.service";
-import MentorFormCreateContext, {IMentorFormCreateContext} from "../../MentorFormCreate.context";
+import MentorFormBaseContext, {IMentorFormBaseContext} from "../../MentorFormBase.context";
 import ImageProfile from '../ImageProfile/ImageProfile';
 import './FormImage.scss';
 import './ReactCrop.scss';
@@ -83,8 +83,8 @@ class FormImage extends React.Component <IPropsFormImage, IStateFormImage> {
         }
 
         return (
-            <MentorFormCreateContext.Consumer>
-                {(context: IMentorFormCreateContext) => {
+            <MentorFormBaseContext.Consumer>
+                {(context: IMentorFormBaseContext) => {
                     return (
                         <div className={"FormImage"}>
                             <ReactTooltip effect={"solid"} place={"top"} id={"FormImageToolTip"} multiline={true}/>
@@ -127,7 +127,7 @@ class FormImage extends React.Component <IPropsFormImage, IStateFormImage> {
                         </div>
                     )
                 }}
-            </MentorFormCreateContext.Consumer>
+            </MentorFormBaseContext.Consumer>
         )
     }
 
@@ -162,7 +162,7 @@ class FormImage extends React.Component <IPropsFormImage, IStateFormImage> {
         }
     }
 
-    private uploadImage(context: IMentorFormCreateContext) {
+    private uploadImage(context: IMentorFormBaseContext) {
         return () => {
             const { croppedTmp, loading } = this.state;
             if (!loading) {

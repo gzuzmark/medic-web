@@ -11,7 +11,8 @@ import {date} from "../../../../../common/Utils/DateUtilities";
 import {IMentorFormExperience} from "../../../../../domain/Mentor/MentorBaseForm";
 import FormColumn from "../../../ScheduleSession/components/FormRow/components/FormColumn/FormColumn";
 import FormRow from "../../../ScheduleSession/components/FormRow/FormRow";
-import MentorFormCreateContext, {IMentorFormCreateContext} from "../../MentorFormCreate.context";
+import MentorFormBaseContext, {IMentorFormBaseContext} from "../../MentorFormBase.context";
+import getBorderColor from "../FormTemplate/FormTemplateField";
 
 
 export const SubTitle = styled(Subhead1)`
@@ -71,9 +72,14 @@ export const OptionsHandler = styled.div`
     }
 `;
 
+export interface IPropsFormExperience {
+    isEdit?: boolean;
+}
 
-class FormExperience extends React.Component <{}, {}> {
-    constructor(props: any) {
+const PASS = 'pass';
+
+class FormExperience extends React.Component <IPropsFormExperience, {}> {
+    constructor(props: IPropsFormExperience) {
         super(props);
         this.handlerDate = this.handlerDate.bind(this);
         this.renderExperience = this.renderExperience.bind(this);
@@ -81,8 +87,8 @@ class FormExperience extends React.Component <{}, {}> {
 
     public render() {
         return (
-            <MentorFormCreateContext.Consumer>
-                {(context: IMentorFormCreateContext) => {
+            <MentorFormBaseContext.Consumer>
+                {(context: IMentorFormBaseContext) => {
                     return (
                         <div style={{padding: '30px 0'}}>
                             <SubTitle>Otras experiencias laborales</SubTitle>
@@ -92,11 +98,11 @@ class FormExperience extends React.Component <{}, {}> {
                         </div>
                     )
                 }}
-            </MentorFormCreateContext.Consumer>
+            </MentorFormBaseContext.Consumer>
         )
     }
 
-    private renderExperience(ctxt: IMentorFormCreateContext) {
+    private renderExperience(ctxt: IMentorFormBaseContext) {
         let counter = 0;
         const experiences = !!ctxt.values.experiences ? ctxt.values.experiences : [] as IMentorFormExperience[];
         const {touched, errors} = ctxt;
@@ -119,6 +125,13 @@ class FormExperience extends React.Component <{}, {}> {
                 }
             };
             return experiences.map((value: IMentorFormExperience, index: number) => {
+                const isEdit = !!this.props.isEdit;
+                const positionEmpty = counter === 0 && !value.position ? '' : PASS;
+                const companyEmpty = counter === 0 && !value.company ? '' : PASS;
+                const fromMonthEmpty = counter === 0 && !value.fromMonth && isEdit;
+                const fromYearEmpty = counter === 0 && !value.fromYear && isEdit;
+                const toMonthEmpty = counter === 0 && !value.toMonth && isEdit && !value.currentJob;
+                const toYearEmpty = counter === 0 && !value.toYear && isEdit && !value.currentJob;
                 return (
                     <ExperienceItem key={index} className={'ExperienceItem'}>
                         <FormRow style={{padding: '30px 0 40px 0', margin: 0}} columns={[
@@ -132,6 +145,7 @@ class FormExperience extends React.Component <{}, {}> {
                                         onBlur: ctxt.handleBlur,
                                         onChange: ctxt.handleChange,
                                         placeholder: "Ingresa su cargo actual",
+                                        style: {borderColor: getBorderColor(positionEmpty, isEdit)},
                                         value: value.position}}/>
                             </FormColumn>,
                             <FormColumn width={2} key={`FormColumn-PersonalData_${++counter}`}>
@@ -144,6 +158,7 @@ class FormExperience extends React.Component <{}, {}> {
                                         onBlur: ctxt.handleBlur,
                                         onChange: ctxt.handleChange,
                                         placeholder: "Ingresa el nombre de la empresa",
+                                        style: {borderColor: getBorderColor(companyEmpty, isEdit)},
                                         value: value.company}}/>
                             </FormColumn>
                         ]}/>
@@ -154,6 +169,7 @@ class FormExperience extends React.Component <{}, {}> {
                                         <MentorDropDown
                                             label={"FECHA DE INICIO"}
                                             value={value.fromMonth}
+                                            empty={fromMonthEmpty}
                                             error={(hasError(index, "toYear") || hasError(index, "fromYear")) && "  " }
                                             name={`experiences[${index}].fromMonth`}
                                             triggerChange={this.handlerDate(ctxt)}
@@ -164,6 +180,7 @@ class FormExperience extends React.Component <{}, {}> {
                                         <MentorDropDown
                                             label={" "}
                                             value={value.fromYear}
+                                            empty={fromYearEmpty}
                                             error={(hasError(index, "toYear") || hasError(index, "fromYear")) && "  "}
                                             name={`experiences[${index}].fromYear`}
                                             triggerChange={this.handlerDate(ctxt)}
@@ -177,6 +194,7 @@ class FormExperience extends React.Component <{}, {}> {
                                         <MentorDropDown
                                             label={"FECHA DE FIN"}
                                             value={value.toMonth}
+                                            empty={toMonthEmpty}
                                             disabled={value.currentJob}
                                             error={hasError(index, "toYear") && "  "}
                                             name={`experiences[${index}].toMonth`}
@@ -188,6 +206,7 @@ class FormExperience extends React.Component <{}, {}> {
                                         <MentorDropDown
                                             label={" "}
                                             value={value.toYear}
+                                            empty={toYearEmpty}
                                             disabled={value.currentJob}
                                             error={hasError(index, "toYear") && "  "}
                                             name={`experiences[${index}].toYear`}
@@ -228,7 +247,7 @@ class FormExperience extends React.Component <{}, {}> {
         }
     }
 
-    private handlerCurrentJob(context: IMentorFormCreateContext, index: number) {
+    private handlerCurrentJob(context: IMentorFormBaseContext, index: number) {
         return (e: any) => {
             context.setFieldTouched(`experiences[${index}].fromMonth`);
             context.setFieldTouched(`experiences[${index}].fromYear`);
@@ -238,7 +257,7 @@ class FormExperience extends React.Component <{}, {}> {
         }
     }
 
-    private handlerDate(context: IMentorFormCreateContext) {
+    private handlerDate(context: IMentorFormBaseContext) {
         return (name: string, selectedOption: IPropsMentorOptionsDropDown | IPropsMentorOptionsDropDown[]) => {
             if (!Array.isArray(selectedOption)) {
                 context.setFieldValue(name, selectedOption.value);

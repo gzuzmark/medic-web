@@ -16,6 +16,7 @@ export interface IPropsMentorDropDown {
     options: IPropsMentorOptionsDropDown[];
     label?: string;
     disabled?: boolean;
+    empty?: boolean;
     error?: string;
     placeholder?: string;
     isSearchable?: boolean;
@@ -82,7 +83,7 @@ class MentorDropDown extends React.Component<IPropsMentorDropDown, {}> {
                     isDisabled={!!this.props.disabled}
                     isSearchable={!!this.props.isSearchable}
                     isClearable={false}
-                    styles={MentorDropDownTheme.baseStyle(!!this.props.error, !!this.props.disabled)}
+                    styles={MentorDropDownTheme.baseStyle(!!this.props.error, !!this.props.disabled, !!this.props.empty)}
                     placeholder={this.props.placeholder || ''}
                     name={name}
                     onChange={this.handleChange}

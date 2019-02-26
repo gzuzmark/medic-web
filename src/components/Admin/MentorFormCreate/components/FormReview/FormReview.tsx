@@ -5,8 +5,8 @@ import colors, {FONTS} from "../../../../../common/MentorColor";
 import {Body1, Heading3, LIGHT_TEXT, Subhead1} from "../../../../../common/MentorText";
 import {date} from "../../../../../common/Utils/DateUtilities";
 import {IMentorFormExperience} from "../../../../../domain/Mentor/MentorBaseForm";
-import MentorFormCreateContext, {IMentorFormCreateContext} from "../../MentorFormCreate.context";
-import ImageProfile from '../ImageProfile/ImageProfile'
+import ImageProfile from '../../../MentorFormBase/components/ImageProfile/ImageProfile'
+import MentorFormBaseContext, {IMentorFormBaseContext} from "../../../MentorFormBase/MentorFormBase.context";
 
 interface IStateFormReview {
 submitText: string;
@@ -57,8 +57,8 @@ class FormReview extends React.Component <IPropsFormReview, IStateFormReview> {
 
     public render() {
         return (
-            <MentorFormCreateContext.Consumer>
-                {(context: IMentorFormCreateContext) => {
+            <MentorFormBaseContext.Consumer>
+                {(context: IMentorFormBaseContext) => {
                    return (
                        <div style={{padding: '20px 0'}}>
                            <Header>
@@ -109,7 +109,7 @@ class FormReview extends React.Component <IPropsFormReview, IStateFormReview> {
                        </div>
                    )
                 }}
-            </MentorFormCreateContext.Consumer>
+            </MentorFormBaseContext.Consumer>
         )
     }
 

@@ -23,7 +23,7 @@ class SessionDeleteSingle extends React.Component<IPropsSessionDeleteSingle, {}>
         const textNavigation = this.mentorId ?
             'Crear sesiones para ' + this.mentorId : 'Crear sesiones';
         return (
-            <Sticky height={90} top={80}>
+            <Sticky height={120} top={80}>
                 <div className="u-LayoutMargin" style={{display: 'flex', flexDirection: 'row'}}>
                     <div style={{
                         minWidth: 395,

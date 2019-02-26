@@ -2,16 +2,10 @@ import { shallow } from 'enzyme';
 import 'jest-styled-components';
 import * as React from 'react';
 import {getFullValues} from "../../../MentorFormBase/MentorFormBase.mock";
-import FormManager, {FormManagerContainer} from "./FormManager";
-
-jest.doMock('react-responsive-modal', () => {
-    return {
-        default: (props: any) => <div>props.children()</div>
-    }
-});
+import FormManager, {IPropsFormManager} from "./FormManager";
 
 describe('FormManager Test',() => {
-    let props: any;
+    let props: IPropsFormManager;
     let mountedComponent: any;
     const getComponent = () => {
         if (!mountedComponent) {
@@ -23,27 +17,22 @@ describe('FormManager Test',() => {
     };
 
     beforeEach(() => {
-        jest.resetModules();
         props = {
-            currentStep: 1,
             formData: {
                 errors: {},
                 touched: {},
-                values:  getFullValues().values
+                values: getFullValues().values
             },
-            onBeforeStep: () => '',
             onHandleSubmit: (e: any) => '',
-            onNextStep: () => '',
-            saving: false,
-            submitText: "continuar"
         };
         mountedComponent = undefined;
     });
 
-    it("render: Show two containers", () => {
+    it("render: Show progress as 0", () => {
         const component = getComponent();
-        expect(component.find(FormManagerContainer).length)
-            .toEqual(2)
+        expect(component)
+            .not.toEqual(0)
     });
+
 
 });

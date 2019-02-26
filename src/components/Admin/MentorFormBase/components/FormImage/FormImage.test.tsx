@@ -2,8 +2,8 @@
 import { mount } from 'enzyme';
 import 'jest-styled-components';
 import * as React from 'react';
-import {IMentorFormCreateContext} from "../../MentorFormCreate.context";
-import { getDefaultValues } from "../../MentorFormCreate.mock";
+import {IMentorFormBaseContext} from "../../MentorFormBase.context";
+import { getDefaultValues } from "../../MentorFormBase.mock";
 import {IPropsFormImage} from "./FormImage";
 
 jest.doMock('react-responsive-modal', () => {
@@ -12,8 +12,8 @@ jest.doMock('react-responsive-modal', () => {
     }
 });
 
-const getContext = (context: IMentorFormCreateContext) => {
-    jest.doMock('../../MentorFormCreate.context', () => {
+const getContext = (context: IMentorFormBaseContext) => {
+    jest.doMock('../../MentorFormBase.context', () => {
         return {
             default: {
                 Consumer: (props: any) => props.children(context)
@@ -25,7 +25,7 @@ const getContext = (context: IMentorFormCreateContext) => {
 
 describe('FormImage Test',() => {
     let props: IPropsFormImage;
-    let ctxt: IMentorFormCreateContext;
+    let ctxt: IMentorFormBaseContext;
     let mountedComponent: any;
     const src = 'image_content.jpeg';
     const file = new Blob([src], {type : 'image/jpeg'});
