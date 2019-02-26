@@ -1,5 +1,6 @@
 import * as React from 'react';
 import {Link} from "react-router-dom";
+import * as ReactTooltip from 'react-tooltip';
 import styled from "styled-components";
 import Avatar from '../../../../../common/Avatar/Avatar';
 import Icon from "../../../../../common/Icon/Icon";
@@ -53,14 +54,13 @@ class MentorItem extends React.Component<IPropsMentorSession, {}> {
         const incomplete = this.props.status === MENTOR_STATUS.INCOMPLETE;
         const color = disabled ? FONTS.disabled : FONTS.dark;
         const background = disabled ? colors.BACKGROUND_COLORS.background_white : colors.BACKGROUND_COLORS.background_disabled;
-        // tslint:disable:no-console
-        console.log(incomplete, disabled, this.props.status)
         return (
             <div className="MentorItem">
+                <ReactTooltip id="ListMentor_MentorItem" effect={"solid"} place={"bottom"} />
                 <div style={{position: 'relative'}}>
                     <Link to={`/admin/editar-mentor/${this.props.id}`}>
                         <Avatar size={48} source={this.props.image} style={{marginTop: 16}}/>
-                        <EditOption><Icon name={"pencil"} /></EditOption>
+                        <EditOption data-tip={"Editar mentor"} data-for={"ListMentor_MentorItem"}><Icon name={"pencil"} /></EditOption>
                     </Link>
                 </div>
                 <div className='MentorItem_basicInformation'>

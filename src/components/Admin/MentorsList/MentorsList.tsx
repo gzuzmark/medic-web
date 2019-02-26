@@ -112,6 +112,7 @@ class MentorsList extends React.Component <{}, IStateListMentor> {
 
     private loadMentors() {
         this.setState({loading: true});
+        window.scrollTo(0, 0);
         this.mentorService.list('all').then((mentors: IMentorBase[]) => {
             window.scrollTo(0, 0);
             const mentorsDisabled = mentors.filter((mentor: IMentorBase) => mentor.status === MENTOR_STATUS.DISABLED);
