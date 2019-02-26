@@ -5,7 +5,7 @@ import {IMentorFormBaseContext} from "../../../MentorFormBase/MentorFormBase.con
 import {getDefaultValues} from "../../../MentorFormBase/MentorFormBase.mock";
 
 const getContext = (context: IMentorFormBaseContext) => {
-    jest.doMock('../../MentorFormCreate.context', () => {
+    jest.doMock('../../../MentorFormBase/MentorFormBase.context', () => {
         return {
             default: {
                 Consumer: (props: any) => props.children(context)

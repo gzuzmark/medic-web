@@ -124,7 +124,7 @@ class SessionDeleteMultiple extends React.Component<IPropsSessionDeleteMultiple,
         const selectedColor = this.state.selection.length > 0? 'purpleLighter' : 'greyDark';
         return(
             <Layout menu={this.renderMenu()}>
-                <Sticky height={0} top={80} style={{zIndex: -1}}>
+                <Sticky height={30} top={80} style={{zIndex: -1}}>
                     <MentorDetail mentor={this.state.mentor}/>
                 </Sticky>
                 <ModalCancel

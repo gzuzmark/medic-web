@@ -62,7 +62,7 @@ ShallowWrapper {
           }
         />,
       ],
-      "icon": "warning",
+      "icon": "alert",
       "show": true,
       "title": "Titulo de la modal",
     },
@@ -188,7 +188,7 @@ ShallowWrapper {
             }
           />,
         ],
-        "icon": "warning",
+        "icon": "alert",
         "show": true,
         "title": "Titulo de la modal",
       },

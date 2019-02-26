@@ -148,9 +148,9 @@ class MentorService extends BaseRequest {
         });
     }
 
-    public put(mentor: IMentorBaseForm) {
+    public put(id: string, mentor: IMentorBaseForm) {
         return new Promise((resolve, reject) => {
-            this.instance.put('ugo-admin/mentors-full', mentor)
+            this.instance.put(`ugo-admin/mentors-full/${id}`, mentor)
                 .then((response: any) => {
                     if (response.status === 200 && response.data) {
                         resolve(response.data);

@@ -7,13 +7,17 @@ import FormColumn from "../../../ScheduleSession/components/FormRow/components/F
 import FormRow from "../../../ScheduleSession/components/FormRow/FormRow";
 import MentorFormBaseContext, {IMentorFormBaseContext} from "../../MentorFormBase.context";
 import {limitDescription} from "../../MentorFormBase.validations";
+import getBorderColor from "../FormTemplate/FormTemplateField";
 
+export interface IPropsFormProfile {
+    isEdit?: boolean;
+}
 export const SubTitle = styled(Subhead1)`
     text-align: center;
 `;
 
-class FormProfile extends React.Component <{}, {}> {
-    constructor(props: any) {
+class FormProfile extends React.Component <IPropsFormProfile, {}> {
+    constructor(props: IPropsFormProfile) {
         super(props);
     }
 
@@ -22,7 +26,8 @@ class FormProfile extends React.Component <{}, {}> {
         return (
             <MentorFormBaseContext.Consumer>
                 {(context: IMentorFormBaseContext) => {
-                    const {errors, touched} = context;
+                    const {errors, touched, values} = context;
+                    const isEdit = !!this.props.isEdit;
                     return (
                         <React.Fragment>
                             <FormRow style={{padding: '30px 0 40px 0', margin: 0}} columns={[
@@ -36,7 +41,7 @@ class FormProfile extends React.Component <{}, {}> {
                                             onBlur: context.handleBlur,
                                             onChange: context.handleChange,
                                             placeholder: "Ingresa una descripción para el mentor. Por ejemplo: ¡Hola! Soy Fabbian y mi objetivo es ser tu mejor compañero de estudios fuera de clase, conmigo podrás resolver tus dudas acerca de los cursos de química.",
-                                            style: {height: 112},
+                                            style: {height: 112, borderColor: getBorderColor(values.description, isEdit)},
                                             value: context.values.description
                                         }} />
                                 </FormColumn>
@@ -52,6 +57,7 @@ class FormProfile extends React.Component <{}, {}> {
                                             onBlur: context.handleBlur,
                                             onChange: context.handleChange,
                                             placeholder: "Ingresa su cargo actual",
+                                            style: {borderColor: getBorderColor(values.currentPosition, isEdit)},
                                             value: context.values.currentPosition}}/>
                                 </FormColumn>,
                                 <FormColumn width={2} key={`FormColumn-PersonalData_${++counter}`}>
@@ -64,6 +70,7 @@ class FormProfile extends React.Component <{}, {}> {
                                             onBlur: context.handleBlur,
                                             onChange: context.handleChange,
                                             placeholder: "Ingresa el nombre de la empresa",
+                                            style: {borderColor: getBorderColor(values.currentCompany, isEdit)},
                                             value: context.values.currentCompany}}/>
                                 </FormColumn>
                             ]}/>

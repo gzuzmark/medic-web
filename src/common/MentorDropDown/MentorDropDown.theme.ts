@@ -9,7 +9,7 @@ const baseFont = {
     lineHeight: '20px'
 };
 
-const baseStyle = (error: boolean, disabled: boolean)  => {
+const baseStyle = (error: boolean, disabled: boolean, empty?: boolean)  => {
     return {
         control: (provided: any, state: any) => {
             const minHeight = 40;
@@ -17,6 +17,8 @@ const baseStyle = (error: boolean, disabled: boolean)  => {
             if (disabled) {
                 borderColor = `${colors.BACKGROUND_COLORS.background_disabled}!important`;
             } else if (error) {
+                borderColor = `${colors.TEXT_COLORS.font_error}!important`;
+            } else if (!!empty) {
                 borderColor = `${colors.TEXT_COLORS.font_error}!important`;
             }
             const transition = 'border 0.2s ease-in';
@@ -69,7 +71,10 @@ const baseStyle = (error: boolean, disabled: boolean)  => {
             return {...provided, ...baseFont, backgroundColor, cursor, color, fontFamily, ":active": active}
         },
         placeholder: (provided: any, state: any) => {
-            const color = colors.TEXT_COLORS.font_blue_grey;
+            let color = colors.TEXT_COLORS.font_blue_grey;
+            if (disabled) {
+                color = colors.TEXT_COLORS.font_disabled;
+            }
             const transition = "color 0.2s ease-in";
             return { ...provided, color, transition, ...baseFont};
         },

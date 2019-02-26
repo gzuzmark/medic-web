@@ -1,7 +1,7 @@
 import { shallow } from 'enzyme';
 import 'jest-styled-components';
 import * as React from 'react';
-import {IMentorFormValidations} from "../../../../../domain/Mentor/MentorBaseForm";
+import {getFullValues} from "../../../MentorFormBase/MentorFormBase.mock";
 import FormManager, {FormManagerContainer} from "./FormManager";
 
 jest.doMock('react-responsive-modal', () => {
@@ -29,7 +29,7 @@ describe('FormManager Test',() => {
             formData: {
                 errors: {},
                 touched: {},
-                values:  {} as IMentorFormValidations
+                values:  getFullValues().values
             },
             onBeforeStep: () => '',
             onHandleSubmit: (e: any) => '',

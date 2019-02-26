@@ -92,7 +92,7 @@ class ScheduleSession extends React.Component<IPropsScheduleSession, IStateSched
             <ScheduleSessionContext.Provider
                 value={{session: this.factory, listSession: this.state.listSession, locations: this.locations}} >
                 <Layout menu={this.renderMenu()}>
-                    <Sticky height={0} top={80} style={{zIndex: -1}}>
+                    <Sticky height={30} top={80} style={{zIndex: -1}}>
                         <MentorDetail mentor={this.state.mentor}/>
                     </Sticky>
                     <div className="u-LayoutMargin">

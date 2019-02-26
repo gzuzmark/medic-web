@@ -42,7 +42,7 @@ export const getFullValues = ():IMentorFormBaseContext => (
             currentPosition: 'FrontEnd Developer',
             description: 'Esta es una descripcion',
             document: '46942026',
-            documentType: {} as IFormItemBase,
+            documentType: {value: 'DNI', label: 'DNI'} as IFormItemBase,
             email: 'carlos.hs.92@gmail.com',
             experiences: [
                 {

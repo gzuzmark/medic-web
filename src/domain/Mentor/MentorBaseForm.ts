@@ -63,7 +63,7 @@ export interface IMentorBaseForm  extends IBaseUser {
     timeZone?: string;
     utp?: boolean;
     shortDescription?: string;
-
+    status?: string;
 }
 
 abstract class MentorBaseForm {

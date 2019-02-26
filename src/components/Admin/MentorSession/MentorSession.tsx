@@ -73,7 +73,7 @@ class MentorSession extends React.Component<IPropsMentorSession, IStateMentorSes
         const textNavigation = this.state.mentor ?
             `Calendario de sesiones de ${this.state.mentor.user.name} ${this.state.mentor.user.lastname}` : 'Calendario de sesiones';
         return (
-            <Sticky height={90} top={80}>
+            <Sticky height={120} top={80}>
                 <MenuAside baseText={'Mentores'}
                            url={'/admin/mentores'}
                            textNavigation={textNavigation}/>

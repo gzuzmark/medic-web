@@ -8,7 +8,7 @@ class MentorEditData extends MentorBaseForm {
     }
     public getFormExperiences(): IMentorFormExperience[] {
         const experiences = this.mentor.experiences ? [...this.mentor.experiences] : [];
-        return experiences.map((item: IMentorExperience) => {
+        const formExperiences = experiences.map((item: IMentorExperience) => {
             const {from, to} = item;
             const fromDate = !!from ? new Date(from) : '';
             const toDate = !!to ? new Date(to) : '';
@@ -22,6 +22,18 @@ class MentorEditData extends MentorBaseForm {
                 toYear: !!toDate ? toDate.getFullYear().toString() : ''
             }
         });
+        if (formExperiences.length === 0) {
+            formExperiences.push({
+                    company: "",
+                    currentJob: false,
+                    fromMonth: "",
+                    fromYear: "",
+                    position: "",
+                    toMonth: "",
+                    toYear: ""
+            })
+        }
+        return formExperiences;
     }
 }
 

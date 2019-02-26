@@ -97,9 +97,9 @@ const mentorFormBaseSchema = Yup.object().shape({
     firstName: Yup.string().required(errorRequired),
     lastName: Yup.string().required(errorRequired),
     location: Yup.string().required(errorRequired),
-    picture: Yup.string().required(errorRequired),
+    picture: Yup.string(),
     skills: Yup.array().min(0).of(Yup.string()),
-    status: Yup.string().required(errorRequired),
+    status: Yup.string(),
     utp: Yup.boolean()
 });
 

@@ -6,38 +6,12 @@
 }
 
 .MentorInput {
-  height: 40px;
-  &_input {
-    border: 0;
-    border-radius: 4px;
-    display: none;
-    font-weight: 300;
-    height: 40px;
-    left: 0;
-    padding: 0 70px 0 16px;
-    position: absolute;
-    top: 0;
-    transition: border 0.2s ease-in;
-    width: 100%;
-    @include placeholder ($placeholder_color: #748e98);
-    &:focus {
-      @include placeholder ($placeholder_color: #4a4a4a);
-    }
-    &[disabled] {
-      border: solid 1px #e6edf2!important;
-      color: #CCD6DD!important;
-    }
-  }
   &_message {
     display: none;
   }
   &--default {
     .MentorInput_input {
       border: solid 1px #ccd6dc;
-      &:focus {
-        @include placeholder ($placeholder_color: #4a4a4a);
-        border: solid 1px #4a4a4a;
-      }
     }
     .icon {
       fill: #ccd6dc;

@@ -13,7 +13,7 @@ jest.doMock('react-responsive-modal', () => {
 });
 
 const getContext = (context: IMentorFormBaseContext) => {
-    jest.doMock('../../MentorFormCreate.context', () => {
+    jest.doMock('../../MentorFormBase.context', () => {
         return {
             default: {
                 Consumer: (props: any) => props.children(context)
