@@ -5,12 +5,17 @@ import {Heading2, LIGHT_TEXT, Subhead1} from "../../../../../common/MentorText";
 
 export interface IPropsFormTemplateHOC {
     title?: string;
+    titleForm?: string;
     name?: string;
     subTitle?: string;
 }
 
 export const Title = styled(Heading2)`
     color: ${colors.BACKGROUND_COLORS.background_purple}
+    text-align: center;
+`;
+
+export const SubTitle = styled(Subhead1)`
     text-align: center;
 `;
 
@@ -23,7 +28,7 @@ export const FormTemplateContainer = styled.div`
 export const formTemplateHOC = <P extends object>(Component: React.ComponentType<P>, Component2?: React.ComponentType<P>) =>
     class FormTemplate extends React.Component<P & IPropsFormTemplateHOC> {
         public render() {
-            const { title, subTitle, name, ...props } = this.props as IPropsFormTemplateHOC;
+            const { title, subTitle, name, titleForm, ...props } = this.props as IPropsFormTemplateHOC;
             return (
                     <div className='FormTemplate'>
                         {!!title &&
@@ -36,6 +41,8 @@ export const formTemplateHOC = <P extends object>(Component: React.ComponentType
                             this.props.children}
                         <FormTemplateContainer>
                             <div style={{padding: '30px 85px'}}>
+                                {!!titleForm &&
+                                    <SubTitle>{titleForm}</SubTitle>}
                                 <Component {...props}/>
                             </div>
                         </FormTemplateContainer>

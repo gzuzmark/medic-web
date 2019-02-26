@@ -4,7 +4,7 @@ import {IBaseUser} from "../User/AbstractUser";
 
 export const MENTOR_STATUS = {
     DISABLED: 'NEW',
-    INCOMPLETE: 'INCOMPLETE',
+    INCOMPLETE: 'INCOMPLETED',
     PUBLISHED: 'PUBLISHED'
 
 };
@@ -17,5 +17,5 @@ export interface IMentorBase {
         totalMinutes: number;
     }
     status: string;
-    skills: ISkill[];
+    skills?: ISkill[];
 }

@@ -160,6 +160,7 @@ class FormManager extends React.Component <IPropsFormManager, IStateFormManager>
                     <FormManagerContainer>
                         <FormExperienceTemplate
                             title={"Perfil del mentor"}
+                            titleForm={"Otras experiencias laborales"}
                             name={`${values.firstName} ${values.lastName}`}
                             subTitle={"Esta información será visible en el perfil del mentor"} >
                             <FormImage id={"fileImageUploader"}/>

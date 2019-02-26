@@ -37,31 +37,6 @@ describe('FormExperience Test',() => {
         mountedComponent = undefined;
     });
 
-    it("render: should have only one title", () => {
-        const component = getComponent();
-        expect(component.find('h4').length).toEqual(1);
-    });
-
-    it("render: should have only one title when list have more than one items", () => {
-        ctxt.values.experiences =  [{
-            company: '',
-            fromMonth: '',
-            fromYear: '',
-            position: '' ,
-            toMonth:  '',
-            toYear:  ''
-        },{
-            company: '',
-            fromMonth: '',
-            fromYear: '',
-            position: '' ,
-            toMonth:  '',
-            toYear:  ''
-        }];
-        const component = getComponent();
-        expect(component.find('h4').length).toEqual(1);
-    });
-
     it("render: should have only one add option in item list with one item,", () => {
         const component = getComponent();
         expect(component.find('.ExperienceItem').at(0).find("button").length)

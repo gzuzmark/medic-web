@@ -1,7 +1,5 @@
 import * as React from "react";
-import styled from "styled-components";
 import MentorInput from "../../../../../common/MentorInput/MentorInput";
-import {Subhead1} from "../../../../../common/MentorText";
 import MentorTextArea from "../../../../../common/MentorTextArea/MentorTextArea";
 import FormColumn from "../../../ScheduleSession/components/FormRow/components/FormColumn/FormColumn";
 import FormRow from "../../../ScheduleSession/components/FormRow/FormRow";
@@ -12,9 +10,6 @@ import getBorderColor from "../FormTemplate/FormTemplateField";
 export interface IPropsFormProfile {
     isEdit?: boolean;
 }
-export const SubTitle = styled(Subhead1)`
-    text-align: center;
-`;
 
 class FormProfile extends React.Component <IPropsFormProfile, {}> {
     constructor(props: IPropsFormProfile) {
