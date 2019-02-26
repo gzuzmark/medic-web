@@ -50,7 +50,8 @@ class FormManager extends React.Component <IPropsFormManager, IStateFormManager>
         };
         this.buttonAttrUpdate = {
             onClick: this.openModal,
-            style: {margin : '40px 0 0 auto'}};
+            style: {margin : '40px 0 0 auto'},
+            type: "button"};
         this.disabledFields = {
             document: true,
             documentType: true,
@@ -110,9 +111,16 @@ class FormManager extends React.Component <IPropsFormManager, IStateFormManager>
                     <ContentModal.Generic generic={this.warningContent} loading={false} confirm={this.onHandleSubmit} />
                 </MentorModalBase>
                 <FormImage id={"FormImageEdit"}/>
-                <FormPersonalDataTemplate disableFields={this.disabledFields} infoFields={this.infoFields} />
-                <FormProfileTemplate isEdit={true} />
-                <FormExperienceTemplate isEdit={true} />
+                <FormPersonalDataTemplate
+                    titleForm={"Datos personales"}
+                    disableFields={this.disabledFields}
+                    infoFields={this.infoFields} />
+                <FormProfileTemplate
+                    titleForm={"Datos de perfil"}
+                    isEdit={true} />
+                <FormExperienceTemplate
+                    titleForm={"Otras experiencias laborales"}
+                    isEdit={true} />
                 <ButtonNormal text={"Guardar Cambios"}
                               attrs={...buttonAttrUpdate}/>
             </React.Fragment>

@@ -107,6 +107,7 @@ class FormPersonalData extends React.Component <IPropsFormPersonalData, IStateFo
                                         name={"location"}
                                         value={context.values.location.value}
                                         triggerChange={this.handlerLocation(context)}
+                                        onBlur={context.handleBlur}
                                         placeholder="Ejmpl.: Lima norte, Lima centro, etc."
                                         options={context.listSites} />
                                 </FormColumn>,
@@ -119,6 +120,7 @@ class FormPersonalData extends React.Component <IPropsFormPersonalData, IStateFo
                                         disabled={this.state.loading}
                                         isSearchable={true}
                                         value={skills}
+                                        onBlur={context.handleBlur}
                                         triggerChange={this.handlerSkills(context)}
                                         placeholder="Ejmpl.: Química general, matemáti..."
                                         options={context.listSkills} />
@@ -181,9 +183,12 @@ class FormPersonalData extends React.Component <IPropsFormPersonalData, IStateFo
 
     private hasErrorSkills(context: IMentorFormBaseContext) {
         let message = '';
-        const hasError = !!context.values.location.value && !context.listSkills.length && !this.state.loading;
-        if (hasError) {
+        const emptyLocation = !!context.values.location.value && !context.listSkills.length && !this.state.loading;
+        const noSkillSelected = !!context.touched.skills && context.errors.skills;
+        if (emptyLocation) {
             message = 'La sede seleccionada no contiene curso alguno'
+        } else if (noSkillSelected) {
+            message = 'Seleccione al menos un curso'
         }
         return message
     }

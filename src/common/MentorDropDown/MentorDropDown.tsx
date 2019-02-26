@@ -25,6 +25,7 @@ export interface IPropsMentorDropDown {
     info?: string;
     isMulti?: boolean;
     style?: React.CSSProperties;
+    onBlur?: (e: any) => {};
     triggerChange(name: string, option: IPropsMentorOptionsDropDown | IPropsMentorOptionsDropDown[]):void;
 }
 
@@ -86,6 +87,7 @@ class MentorDropDown extends React.Component<IPropsMentorDropDown, {}> {
                     styles={MentorDropDownTheme.baseStyle(!!this.props.error, !!this.props.disabled, !!this.props.empty)}
                     placeholder={this.props.placeholder || ''}
                     name={name}
+                    onBlur={this.props.onBlur}
                     onChange={this.handleChange}
                     isMulti={!!this.props.isMulti}
                     noOptionsMessage={this.noOptions}

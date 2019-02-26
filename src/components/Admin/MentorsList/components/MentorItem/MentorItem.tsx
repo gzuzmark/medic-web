@@ -49,10 +49,12 @@ class MentorItem extends React.Component<IPropsMentorSession, {}> {
     }
 
     public render() {
-        const disabled = status === MENTOR_STATUS.DISABLED;
-        const incomplete = status === MENTOR_STATUS.INCOMPLETE;
+        const disabled = this.props.status === MENTOR_STATUS.DISABLED;
+        const incomplete = this.props.status === MENTOR_STATUS.INCOMPLETE;
         const color = disabled ? FONTS.disabled : FONTS.dark;
         const background = disabled ? colors.BACKGROUND_COLORS.background_white : colors.BACKGROUND_COLORS.background_disabled;
+        // tslint:disable:no-console
+        console.log(incomplete, disabled, this.props.status)
         return (
             <div className="MentorItem">
                 <div style={{position: 'relative'}}>

@@ -131,7 +131,7 @@ class MentorsList extends React.Component <{}, IStateListMentor> {
                     filteredMentors = mentors
                 } else {
                     filteredMentors = mentors.filter((mentor: IMentorBase) => {
-                        const skills = mentor.skills.map(s => s.id);
+                        const skills = mentor.skills ? mentor.skills.map(s => s.id) : [];
                         return skills.indexOf(option.value) !== -1;
                     })
                 }

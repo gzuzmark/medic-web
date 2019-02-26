@@ -56,7 +56,7 @@ class ListMentorsBody extends React.Component <IPropsListMentorsBody, {}> {
 
     public render() {
         const { sessions, skills, user, id, status} = this.props.mentor;
-        const color = status === MENTOR_STATUS.INCOMPLETE ? FONTS.disabled : FONTS.dark;
+        const color = status === MENTOR_STATUS.DISABLED ? FONTS.disabled : FONTS.dark;
         return (
             <ContainerRow status={status}>
                 <div className="ListMentors_column ListMentors_column--mentor">
@@ -67,7 +67,8 @@ class ListMentorsBody extends React.Component <IPropsListMentorsBody, {}> {
                                 name={`${user.name} ${user.lastname}`} />
                 </div>
                 <div className="ListMentors_column ListMentors_separator">
-                    <Heading2 weight={LIGHT_TEXT} color={color}>{getTime(sessions.totalMinutes)}</Heading2>
+                    {status !== MENTOR_STATUS.INCOMPLETE &&
+                        <Heading2 weight={LIGHT_TEXT} color={color}>{getTime(sessions.totalMinutes)}</Heading2>}
                 </div>
                 <div className="ListMentors_column">
                     {status === MENTOR_STATUS.PUBLISHED ?

@@ -167,7 +167,8 @@ class ScheduleSessionForm extends React.Component<IPropsScheduleSessionForm, {}>
         if (this.props.mentor) {
             const currentArea = this.props.mentor.interestAreas.filter((area: IArea) => area.id === session.factorySession.interestAreaId)[0];
             if (currentArea) {
-                items = this.props.mentor.skills.filter((skill) => currentArea.skills.indexOf(skill.id) !== -1);
+                const skills = this.props.mentor.skills || [];
+                items =  skills.filter((skill) => currentArea.skills.indexOf(skill.id) !== -1);
             }
         }
         return items;

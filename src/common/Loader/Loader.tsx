@@ -1,7 +1,6 @@
 import * as React from 'react';
 import styled from "styled-components";
 import colors from "../MentorColor";
-import './Loader.scss';
 
 export interface IPropsLoader {
     className?: string;

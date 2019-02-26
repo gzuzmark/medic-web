@@ -90,12 +90,9 @@ class FormExperience extends React.Component <IPropsFormExperience, {}> {
             <MentorFormBaseContext.Consumer>
                 {(context: IMentorFormBaseContext) => {
                     return (
-                        <div style={{padding: '30px 0'}}>
-                            <SubTitle>Otras experiencias laborales</SubTitle>
-                            <FieldArray
-                                name="experiences"
-                                render={this.renderExperience(context)}/>
-                        </div>
+                        <FieldArray
+                            name="experiences"
+                            render={this.renderExperience(context)}/>
                     )
                 }}
             </MentorFormBaseContext.Consumer>
@@ -262,12 +259,6 @@ class FormExperience extends React.Component <IPropsFormExperience, {}> {
             if (!Array.isArray(selectedOption)) {
                 context.setFieldValue(name, selectedOption.value);
                 context.setFieldTouched(name);
-                /*
-                if (name === "toYear") {
-                    context.setFieldTouched("fromMonth");
-                    context.setFieldTouched("toMonth");
-                }
-                */
             }
         };
     }
