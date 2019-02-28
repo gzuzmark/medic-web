@@ -11,8 +11,8 @@ import colors, {FONTS} from "../../../common/MentorColor";
 import {IPropsMentorOptionsDropDown} from "../../../common/MentorDropDown/MentorDropDown";
 import { Body1, Heading2 } from "../../../common/MentorText";
 import {MENTOR_STATUS} from "../../../domain/Mentor/MentorBase";
-import {IMentorBaseForm, IMentorFormValidations} from "../../../domain/Mentor/MentorBaseForm";
-import MentorEditData from "../../../domain/Mentor/MentorEdit";
+import {IMentorFormValidations} from "../../../domain/Mentor/MentorBaseForm";
+import MentorEditData, {IMentorEditCreateData, IMentorEditFormValidations} from "../../../domain/Mentor/MentorEdit";
 import {ISites} from "../../../domain/Sites/Sites";
 import {ISkill} from "../../../domain/Skill/Skill";
 import {IMatchParam} from "../../../interfaces/MatchParam.interface";
@@ -27,7 +27,7 @@ interface IStateMentorEdit  {
     listSites: IPropsMentorOptionsDropDown[];
     listSkills: IPropsMentorOptionsDropDown[];
     selectedImage: string;
-    mentor: IMentorFormValidations | null;
+    mentor: IMentorEditFormValidations | null;
     loader: boolean;
     modal: boolean;
     saving: boolean;
@@ -72,7 +72,7 @@ class MentorFormEdit  extends React.Component <IPropsMentorEdit, IStateMentorEdi
         this.openConfirmModal = this.openConfirmModal.bind(this);
         this.closeConfirmModal = this.closeConfirmModal.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
-        this.mentorCreateData = new MentorEditData({} as IMentorBaseForm);
+        this.mentorCreateData = new MentorEditData({} as IMentorEditCreateData);
         this.sitesService = new SitesService();
         this.skillService =  new SkillService();
         this.mentorService =  new MentorService();
@@ -90,16 +90,16 @@ class MentorFormEdit  extends React.Component <IPropsMentorEdit, IStateMentorEdi
     }
 
     public componentDidMount() {
-        this.mentorService.get(this.idMentor).then((mentor: IMentorBaseForm) => {
+        this.mentorService.get(this.idMentor).then((mentor: IMentorEditCreateData) => {
             const mentorEdit = {exist: false, ...mentor};
             this.mentorCreateData = new MentorEditData(mentorEdit);
             if (!!mentor.sitesId) {
                 this.updateListSkills(mentor.sitesId[0].toString());
             }
             this.setState({
-                mentor: this.mentorCreateData.getMentorValues,
+                mentor: {...this.mentorCreateData.getMentorValues, otherUtpRole: !!mentor.otherUtpRole},
                 selectedImage: mentor.photo
-            })
+            });
             if (mentor.status !== MENTOR_STATUS.PUBLISHED) {
                 ReactDOM.render(
                     <WarningBox>
@@ -124,6 +124,7 @@ class MentorFormEdit  extends React.Component <IPropsMentorEdit, IStateMentorEdi
         const listSites = this.state.listSites;
         const listSkills = this.state.listSkills;
         const selectedImage = this.state.selectedImage;
+        const disablePersonalData = !!this.state.mentor && !!this.state.mentor.otherUtpRole;
         return (
             <div className="u-LayoutMargin">
                 {this.state.saving && <LoaderFullScreen text={"Cargando..."}/>}
@@ -139,8 +140,9 @@ class MentorFormEdit  extends React.Component <IPropsMentorEdit, IStateMentorEdi
                     <Formik
                         initialValues={this.state.mentor}
                         validationSchema={mentorFormBaseSchema}
+                        isInitialValid={false}
                         onSubmit={this.onSubmit}>
-                        {({ errors, touched, values, handleBlur, handleChange, handleSubmit, setFieldValue, setFieldTouched}) => {
+                        {({ errors, touched, values, handleBlur, handleChange, handleSubmit, setFieldValue, setFieldTouched, validateForm}) => {
                             return (
                                 <MentorFormBaseContext.Provider
                                     value={{
@@ -159,7 +161,13 @@ class MentorFormEdit  extends React.Component <IPropsMentorEdit, IStateMentorEdi
                                     }}>
                                     <form onSubmit={handleSubmit}>
                                         <FormManager formData={{errors, touched, values}}
-                                                     onHandleSubmit={this.onSubmit}/>
+                                                     mentor={{
+                                                         id: this.idMentor,
+                                                         status: this.mentorCreateData.mentor && this.mentorCreateData.mentor.status || ''
+                                                     }}
+                                                     onHandleSubmit={this.onSubmit}
+                                                     validateForm={validateForm}
+                                                     disablePersonalData={disablePersonalData}  />
                                     </form>
                                 </MentorFormBaseContext.Provider>
                             )

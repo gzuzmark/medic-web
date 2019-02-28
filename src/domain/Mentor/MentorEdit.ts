@@ -1,9 +1,21 @@
-import MentorBaseForm, {IMentorBaseForm, IMentorExperience, IMentorFormExperience} from "./MentorBaseForm";
+import MentorBaseForm, {
+    IMentorBaseForm,
+    IMentorExperience,
+    IMentorFormExperience,
+    IMentorFormValidations
+} from "./MentorBaseForm";
 
+export interface IMentorEditCreateData extends IMentorBaseForm {
+    otherUtpRole: boolean;
+}
+
+export interface IMentorEditFormValidations extends IMentorFormValidations{
+    otherUtpRole: boolean;
+}
 
 class MentorEditData extends MentorBaseForm {
     public exist = false;
-    constructor(mentor: IMentorBaseForm) {
+    constructor(mentor: IMentorEditCreateData) {
         super(mentor);
     }
     public getFormExperiences(): IMentorFormExperience[] {

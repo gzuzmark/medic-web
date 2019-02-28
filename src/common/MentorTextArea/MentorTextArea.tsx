@@ -63,7 +63,7 @@ class MentorTextArea extends React.Component<IPropsMentorTextArea, {}> {
         const hasError = this.props.limit && value.length > this.props.limit;
         return (
             <div>
-                <FormLabel label={this.props.label} info={this.props.info} />
+                {this.props.label && <FormLabel label={this.props.label} info={this.props.info} />}
                 <TextAreaComponent error={hasError} attrs={{...this.props.attrs}} />
                 {!!this.props.limit &&
                 <div className={"MentorTextArea_limit"} style={{textAlign: 'right'}}>

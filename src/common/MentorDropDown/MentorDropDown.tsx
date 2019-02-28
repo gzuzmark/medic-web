@@ -79,7 +79,7 @@ class MentorDropDown extends React.Component<IPropsMentorDropDown, {}> {
         });
         return (
             <CustomDropdown style={{...this.props.style}}>
-                <FormLabel label={this.props.label} info={this.props.info} uppercase={true}/>
+                {this.props.label && <FormLabel label={this.props.label} info={this.props.info} uppercase={true}/>}
                 <Select
                     isDisabled={!!this.props.disabled}
                     isSearchable={!!this.props.isSearchable}

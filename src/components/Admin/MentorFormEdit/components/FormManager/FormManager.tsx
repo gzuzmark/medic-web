@@ -15,14 +15,21 @@ import {
     IFormManagerDisabledFields,
     IFormManagerInfoFields
 } from "../../../MentorFormCreate/components/FormManager/FormManager";
+import UpdateStatus from "../UpdateStatus/UpdateStatus";
 
 export interface IPropsFormManager {
+    disablePersonalData: boolean;
     formData: {
         errors: any;
         touched: any;
         values: IMentorFormValidations;
+    },
+    mentor: {
+        status: string;
+        id: string;
     }
     onHandleSubmit: (e: any) => void;
+    validateForm: () => void;
 }
 
 interface IStateFormManager {
@@ -42,6 +49,7 @@ class FormManager extends React.Component <IPropsFormManager, IStateFormManager>
     constructor(props: IPropsFormManager) {
         super(props);
         this.onHandleSubmit = this.onHandleSubmit.bind(this);
+        this.updateDisableFields = this.updateDisableFields.bind(this);
         this.openModal = this.openModal.bind(this);
         this.closeModal = this.closeModal.bind(this);
         this.initialDisabledFields = this.initialDisabledFields.bind(this);
@@ -74,20 +82,16 @@ class FormManager extends React.Component <IPropsFormManager, IStateFormManager>
     }
 
     public componentDidMount() {
-        this.initialDisabledFields()
+        this.initialDisabledFields();
+        this.props.validateForm();
     }
 
     public render() {
         const {errors, values} = this.props.formData;
-
         let buttonAttrUpdate = {...this.buttonAttrUpdate};
         if (!!errors.firstName) {
             buttonAttrUpdate = {...buttonAttrUpdate, disabled: true};
         } else if (!!errors.lastName) {
-            buttonAttrUpdate = {...buttonAttrUpdate, disabled: true};
-        } else if (!!errors.documentType) {
-            buttonAttrUpdate = {...buttonAttrUpdate, disabled: true};
-        } else if (!!errors.document) {
             buttonAttrUpdate = {...buttonAttrUpdate, disabled: true};
         } else if (!!errors.location) {
             buttonAttrUpdate = {...buttonAttrUpdate, disabled: true};
@@ -110,10 +114,13 @@ class FormManager extends React.Component <IPropsFormManager, IStateFormManager>
                 <MentorModalBase show={this.state.modal} onCloseModal={this.closeModal}>
                     <ContentModal.Generic generic={this.warningContent} loading={false} confirm={this.onHandleSubmit} />
                 </MentorModalBase>
-                <FormImage id={"FormImageEdit"}/>
+                <FormImage id={"FormImageEdit"}>
+                    <UpdateStatus status={this.props.mentor.status} idMentor={this.props.mentor.id}/>
+                </FormImage>
                 <FormPersonalDataTemplate
-                    titleForm={"Datos personales"}
+                    titleForm={"Datos Personales"}
                     disableFields={this.disabledFields}
+                    isEdit={true}
                     infoFields={this.infoFields} />
                 <FormProfileTemplate
                     titleForm={"Datos de perfil"}
@@ -158,10 +165,10 @@ class FormManager extends React.Component <IPropsFormManager, IStateFormManager>
     }
 
     private updateDisableFields(values: IMentorFormValidations) {
-        const {firstName, lastName, documentType, document} = values;
+        const {documentType, document} = values;
         const disabledFields = {...this.disabledFields};
-        disabledFields.firstName = !!firstName && firstName.trim().length > 0;
-        disabledFields.lastName = !!lastName && lastName.trim().length > 0;
+        disabledFields.firstName = this.props.disablePersonalData;
+        disabledFields.lastName = this.props.disablePersonalData;
         disabledFields.documentType = !!documentType && documentType.value.trim().length > 0;
         disabledFields.document = !!document && document.trim().length > 0;
         return disabledFields;

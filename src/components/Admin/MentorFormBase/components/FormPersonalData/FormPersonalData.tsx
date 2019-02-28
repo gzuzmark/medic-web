@@ -14,6 +14,7 @@ interface IStateFormPersonalData {
 interface IPropsFormPersonalData {
     disableFields: IFormManagerDisabledFields;
     infoFields?: IFormManagerInfoFields;
+    isEdit?: boolean;
 }
 class FormPersonalData extends React.Component <IPropsFormPersonalData, IStateFormPersonalData> {
     public state: IStateFormPersonalData;
@@ -48,7 +49,7 @@ class FormPersonalData extends React.Component <IPropsFormPersonalData, IStateFo
                                 <FormColumn width={2} key={`FormColumn-PersonalData_${++counter}`}>
                                     <MentorInput
                                         label={"NOMBRE"}
-                                        error={touched.firstName && errors.firstName}
+                                        error={(touched.lastName && errors.firstName) || (this.props.isEdit && errors.firstName)}
                                         info={this.props.infoFields && this.props.infoFields.firstName}
                                         attrs={{
                                             maxLength: 150,
@@ -62,7 +63,7 @@ class FormPersonalData extends React.Component <IPropsFormPersonalData, IStateFo
                                 <FormColumn width={2} key={`FormColumn-PersonalData_${++counter}`}>
                                     <MentorInput
                                         label={"APELLIDO"}
-                                        error={touched.lastName && errors.lastName}
+                                        error={(touched.lastName && errors.lastName) || (this.props.isEdit && errors.lastName)}
                                         info={this.props.infoFields && this.props.infoFields.lastName}
                                         attrs={{
                                             maxLength: 150,

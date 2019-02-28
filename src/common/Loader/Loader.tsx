@@ -64,7 +64,10 @@ const LoaderContainer = styled.div`
 
 const Loader: React.StatelessComponent<IPropsLoader> = (props) => {
     return (
-        <LoaderContainer className={`${!!props.className && props.className || ''}`} size={props.size} color={props.color} style={{...props.style}}>
+        <LoaderContainer className={`${!!props.className && props.className || ''}`}
+                         size={props.size}
+                         color={props.color}
+                         style={{...props.style}}>
             <div />
             <div />
             <div />

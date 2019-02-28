@@ -123,7 +123,7 @@ class MentorInput extends React.Component<IPropsMentorInput, IStateMentorInput> 
         }
         return (
             <div style={{...this.props.styleContainer}} onClick={this.onClick}>
-                <FormLabel label={this.props.label} info={this.props.info} uppercase={true}/>
+                {this.props.label && <FormLabel label={this.props.label} info={this.props.info} uppercase={true}/>}
                 <InputContainer
                     className={`MentorInput ${inputClass}`}
                     style={{...this.props.style}}>

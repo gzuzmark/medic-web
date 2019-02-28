@@ -124,6 +124,7 @@ class FormImage extends React.Component <IPropsFormImage, IStateFormImage> {
                                 </div>
                             </label>
                             <input type={"file"} id={this.props.id} accept="image/*" className={"FormImage_file"} onChange={this.onSelectFile} />
+                            {this.props.children}
                         </div>
                     )
                 }}
