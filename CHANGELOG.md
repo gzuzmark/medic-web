@@ -1,4 +1,14 @@
-# [0.1.0](https://ssh.dev.azure.com/v3/UGOTeam/ugo-admin/ugo-admin/compare/1.0.2...0.1.0) (2019-02-26)
+# [0.1.0](https://ssh.dev.azure.com/v3/UGOTeam/ugo-admin/ugo-admin/compare/1.0.3...0.1.0) (2019-02-28)
+
+
+
+## [1.0.3](https://ssh.dev.azure.com/v3/UGOTeam/ugo-admin/ugo-admin/compare/1.0.2...1.0.3) (2019-02-28)
+
+
+### Features
+
+* **edit-mentor:** disable fields when  mentor is disabled ([71542d4](https://ssh.dev.azure.com/v3/UGOTeam/ugo-admin/ugo-admin/commits/71542d4))
+* **edit-mentor:** disable mentor ([f41a4cc](https://ssh.dev.azure.com/v3/UGOTeam/ugo-admin/ugo-admin/commits/f41a4cc))
 
 
 
