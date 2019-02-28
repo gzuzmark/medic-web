@@ -3,6 +3,7 @@ import {ButtonNormal} from "../../../../../common/Buttons/Buttons";
 import ContentModal, {IGenericContentModal} from "../../../../../common/ConsoleModal/ContentModal";
 import MentorModalBase from "../../../../../common/ConsoleModal/MentorModalBase";
 import Icon from "../../../../../common/Icon/Icon";
+import {MENTOR_STATUS} from "../../../../../domain/Mentor/MentorBase";
 import {IMentorFormValidations} from "../../../../../domain/Mentor/MentorBaseForm";
 import FormExperience from "../../../MentorFormBase/components/FormExperience/FormExperience";
 import getExperiencesWithError from "../../../MentorFormBase/components/FormExperience/ValidateExperiences";
@@ -46,9 +47,11 @@ class FormManager extends React.Component <IPropsFormManager, IStateFormManager>
     private disabledFields: IFormManagerDisabledFields;
     private infoFields: IFormManagerInfoFields;
     private buttonAttrUpdate: any;
+    private forceDisable: boolean;
     constructor(props: IPropsFormManager) {
         super(props);
         this.onHandleSubmit = this.onHandleSubmit.bind(this);
+        this.updateInfoFields = this.updateInfoFields.bind(this);
         this.updateDisableFields = this.updateDisableFields.bind(this);
         this.openModal = this.openModal.bind(this);
         this.closeModal = this.closeModal.bind(this);
@@ -56,6 +59,7 @@ class FormManager extends React.Component <IPropsFormManager, IStateFormManager>
         this.state = {
             modal: false
         };
+        this.forceDisable = this.props.mentor.status === MENTOR_STATUS.DISABLED;
         this.buttonAttrUpdate = {
             onClick: this.openModal,
             style: {margin : '40px 0 0 auto'},
@@ -67,10 +71,10 @@ class FormManager extends React.Component <IPropsFormManager, IStateFormManager>
             lastName: true
         };
         this.infoFields = {
-            document: "Estos datos no podrán cambiarse",
-            documentType: "Estos datos no podrán cambiarse",
-            firstName: "Estos datos no podrán cambiarse",
-            lastName: "Estos datos no podrán cambiarse"
+            document: "",
+            documentType: "",
+            firstName: "",
+            lastName: ""
         };
         this.warningContent = {
             button: "Aceptar",
@@ -89,7 +93,9 @@ class FormManager extends React.Component <IPropsFormManager, IStateFormManager>
     public render() {
         const {errors, values} = this.props.formData;
         let buttonAttrUpdate = {...this.buttonAttrUpdate};
-        if (!!errors.firstName) {
+        if (this.forceDisable) {
+            buttonAttrUpdate = {...buttonAttrUpdate, disabled: true};
+        } else if (!!errors.firstName) {
             buttonAttrUpdate = {...buttonAttrUpdate, disabled: true};
         } else if (!!errors.lastName) {
             buttonAttrUpdate = {...buttonAttrUpdate, disabled: true};
@@ -114,19 +120,23 @@ class FormManager extends React.Component <IPropsFormManager, IStateFormManager>
                 <MentorModalBase show={this.state.modal} onCloseModal={this.closeModal}>
                     <ContentModal.Generic generic={this.warningContent} loading={false} confirm={this.onHandleSubmit} />
                 </MentorModalBase>
-                <FormImage id={"FormImageEdit"}>
+                <FormImage id={"FormImageEdit"}
+                           forceDisable={this.forceDisable}>
                     <UpdateStatus status={this.props.mentor.status} idMentor={this.props.mentor.id}/>
                 </FormImage>
                 <FormPersonalDataTemplate
                     titleForm={"Datos Personales"}
                     disableFields={this.disabledFields}
                     isEdit={true}
+                    forceDisable={this.forceDisable}
                     infoFields={this.infoFields} />
                 <FormProfileTemplate
                     titleForm={"Datos de perfil"}
+                    forceDisable={this.forceDisable}
                     isEdit={true} />
                 <FormExperienceTemplate
                     titleForm={"Otras experiencias laborales"}
+                    forceDisable={this.forceDisable}
                     isEdit={true} />
                 <ButtonNormal text={"Guardar Cambios"}
                               attrs={...buttonAttrUpdate}/>
@@ -157,10 +167,10 @@ class FormManager extends React.Component <IPropsFormManager, IStateFormManager>
     private updateInfoFields(disabledFields: IFormManagerDisabledFields) {
         const {firstName, lastName, documentType, document} = disabledFields;
         return {
-            document: document ? "Estos datos no podrán cambiarse" : "",
-            documentType: documentType ? "Estos datos no podrán cambiarse" : "",
-            firstName: firstName ? "Estos datos no podrán cambiarse" : "",
-            lastName: lastName ? "Estos datos no podrán cambiarse" : ""
+            document: document && !this.forceDisable ? "Estos datos no podrán cambiarse" : "",
+            documentType: documentType && !this.forceDisable ? "Estos datos no podrán cambiarse" : "",
+            firstName: firstName && !this.forceDisable ? "Estos datos no podrán cambiarse" : "",
+            lastName: lastName && !this.forceDisable ? "Estos datos no podrán cambiarse" : ""
         }
     }
 

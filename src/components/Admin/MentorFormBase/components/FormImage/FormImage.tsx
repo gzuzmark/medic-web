@@ -26,10 +26,13 @@ interface IStateFormImage {
 
 export interface IPropsFormImage {
     id: string;
+    forceDisable?: boolean;
 }
 
 const TextInput = styled(Body1)`
-    color: ${colors.BACKGROUND_COLORS.background_purple};
+    color: ${(props: any) => {
+        return props.disabled ? colors.TEXT_COLORS.font_disabled : colors.BACKGROUND_COLORS.background_purple;
+    }};
 `;
 
 
@@ -110,19 +113,24 @@ class FormImage extends React.Component <IPropsFormImage, IStateFormImage> {
                                 </div>:
                                 <ContentModal.Generic generic={this.errorImage} loading={false} confirm={this.newUploadImage} error={true} />}
                             </MentorModalBase>
-                            <label className={"FormImage_label"} htmlFor={this.props.id} ref={this.labelImage}
-                                   data-for="FormImageToolTip"
-                                   data-tip={'La foto debe ser amigable (se recomienda una foto sonriente), <br>con fondo blanco y mira al frente.'}>
-                                <ImageProfile src={context.selectedImage || defaultImage} width={160} height={160}
-                                              title="Perfil de mentor" filled={!!context.selectedImage}/>
-                                <div className={"FormImage_text"}>
-                                    <Icon name={"upload"} style={{
-                                        fill: colors.BACKGROUND_COLORS.background_purple,
-                                        marginRight: 4
-                                    }}/>
-                                    <TextInput>{!!context.selectedImage ? 'Cambiar foto' : 'Subir foto del mentor' }</TextInput>
-                                </div>
-                            </label>
+                            <div className={this.props.forceDisable ? 'FormImage_disabled' : ''}>
+                                <label className={"FormImage_label"}
+                                       htmlFor={this.props.id} ref={this.labelImage}
+                                       data-for="FormImageToolTip"
+                                       data-tip={'La foto debe ser amigable (se recomienda una foto sonriente), <br>con fondo blanco y mira al frente.'}>
+                                    <ImageProfile src={context.selectedImage || defaultImage} width={160} height={160}
+                                                  title="Perfil de mentor" filled={!!context.selectedImage}/>
+                                    <div className={"FormImage_text"}>
+                                        <Icon name={"upload"} style={{
+                                            fill: this.props.forceDisable ? colors.TEXT_COLORS.font_disabled : colors.BACKGROUND_COLORS.background_purple,
+                                            marginRight: 4
+                                        }}/>
+                                        <TextInput disabled={!!this.props.forceDisable}>
+                                            {!!context.selectedImage ? 'Cambiar foto' : 'Subir foto del mentor' }
+                                            </TextInput>
+                                    </div>
+                                </label>
+                            </div>
                             <input type={"file"} id={this.props.id} accept="image/*" className={"FormImage_file"} onChange={this.onSelectFile} />
                             {this.props.children}
                         </div>

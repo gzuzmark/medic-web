@@ -8,6 +8,7 @@ export interface IPropsMentorTextArea {
     label?: string;
     info?: string;
     limit?: number;
+    disabled?: boolean;
     attrs?: any;
 }
 
@@ -34,6 +35,14 @@ export const TextAreaComponent = styled(TextArea)`
    padding: 11px 20px;
    resize: none;
    width: 100%;    
+   &[disabled] {
+       border: solid 1px ${colors.BACKGROUND_COLORS.background_disabled};
+       color: ${colors.TEXT_COLORS.font_disabled};
+       &::-webkit-input-placeholder {color: ${colors.BACKGROUND_COLORS.background_disabled};transition: color 0.2s ease-in;}
+       &:-moz-placeholder           {color: ${colors.BACKGROUND_COLORS.background_disabled}: color 0.2s ease-in;}
+       &::-moz-placeholder          {color: ${colors.BACKGROUND_COLORS.background_disabled}: color 0.2s ease-in;}
+       &:-ms-input-placeholder      {color: ${colors.BACKGROUND_COLORS.background_disabled}: color 0.2s ease-in;}
+   }
    &:focus {
       background: ${colors.BACKGROUND_COLORS.background_white};
       border: 1px solid ${(props: any) => {
@@ -60,14 +69,20 @@ class MentorTextArea extends React.Component<IPropsMentorTextArea, {}> {
 
     public render() {
         const value = this.props.attrs && this.props.attrs.value || "";
+        let attrs = this.props.attrs;
         const hasError = this.props.limit && value.length > this.props.limit;
+        let color = hasError ? FONTS.error : '';
+        if (!!this.props.disabled) {
+            attrs = {...attrs, disabled: true};
+            color = FONTS.disabled;
+        }
         return (
             <div>
                 {this.props.label && <FormLabel label={this.props.label} info={this.props.info} />}
-                <TextAreaComponent error={hasError} attrs={{...this.props.attrs}} />
+                <TextAreaComponent error={hasError} attrs={{...attrs}} />
                 {!!this.props.limit &&
                 <div className={"MentorTextArea_limit"} style={{textAlign: 'right'}}>
-                    <Body1 weight={LIGHT_TEXT} color={value.length > this.props.limit ? FONTS.error : ''}>
+                    <Body1 weight={LIGHT_TEXT} color={color}>
                         {`${value.length}/${this.props.limit}`}
                     </Body1>
                 </div>}

@@ -100,7 +100,7 @@ class MentorFormEdit  extends React.Component <IPropsMentorEdit, IStateMentorEdi
                 mentor: {...this.mentorCreateData.getMentorValues, otherUtpRole: !!mentor.otherUtpRole},
                 selectedImage: mentor.photo
             });
-            if (mentor.status !== MENTOR_STATUS.PUBLISHED) {
+            if (mentor.status === MENTOR_STATUS.INCOMPLETE) {
                 ReactDOM.render(
                     <WarningBox>
                         <Icon name={"alert"} style={{fill: colors.BACKGROUND_COLORS.background_white}} />

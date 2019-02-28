@@ -9,6 +9,7 @@ import getBorderColor from "../FormTemplate/FormTemplateField";
 
 export interface IPropsFormProfile {
     isEdit?: boolean;
+    forceDisable?: boolean;
 }
 
 class FormProfile extends React.Component <IPropsFormProfile, {}> {
@@ -29,6 +30,7 @@ class FormProfile extends React.Component <IPropsFormProfile, {}> {
                                 <FormColumn width={1} key={`FormColumn-PersonalData_${++counter}`}>
                                     <MentorTextArea
                                         limit={limitDescription}
+                                        disabled={!!this.props.forceDisable}
                                         label={"Descripción del mentor"}
                                         info={"Este mensaje debe ser corto, <br> inspirador y conciso."}
                                         attrs={{
@@ -46,6 +48,7 @@ class FormProfile extends React.Component <IPropsFormProfile, {}> {
                                     <MentorInput
                                         label={"CARGO"}
                                         error={touched.currentPosition && errors.currentPosition}
+                                        disabled={!!this.props.forceDisable}
                                         attrs={{
                                             maxLength: 150,
                                             name: "currentPosition",
@@ -59,6 +62,7 @@ class FormProfile extends React.Component <IPropsFormProfile, {}> {
                                     <MentorInput
                                         label={"EMPRESA ACTUAL"}
                                         error={touched.currentCompany && errors.currentCompany}
+                                        disabled={!!this.props.forceDisable}
                                         attrs={{
                                             maxLength: 150,
                                             name: "currentCompany",

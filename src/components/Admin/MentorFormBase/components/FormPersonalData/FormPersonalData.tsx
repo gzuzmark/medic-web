@@ -15,6 +15,7 @@ interface IPropsFormPersonalData {
     disableFields: IFormManagerDisabledFields;
     infoFields?: IFormManagerInfoFields;
     isEdit?: boolean;
+    forceDisable?: boolean;
 }
 class FormPersonalData extends React.Component <IPropsFormPersonalData, IStateFormPersonalData> {
     public state: IStateFormPersonalData;
@@ -26,7 +27,6 @@ class FormPersonalData extends React.Component <IPropsFormPersonalData, IStateFo
         this.handlerDocumentType = this.handlerDocumentType.bind(this);
         this.handlerLocation = this.handlerLocation.bind(this);
         this.handlerSkills = this.handlerSkills.bind(this);
-        this.getAttrs = this.getAttrs.bind(this);
         this.getDocumentAttr = this.getDocumentAttr.bind(this);
         this.hasErrorSkills = this.hasErrorSkills.bind(this);
     }
@@ -37,9 +37,7 @@ class FormPersonalData extends React.Component <IPropsFormPersonalData, IStateFo
             <MentorFormBaseContext.Consumer>
                 {(context: IMentorFormBaseContext) => {
                     const {errors, touched} = context;
-                    const documentAttrs = this.getDocumentAttr(this.props.disableFields.document, context.values.documentType.value);
-                    const firstNameAttrs = this.getAttrs(this.props.disableFields.firstName);
-                    const lastNameAttrs = this.getAttrs(this.props.disableFields.lastName);
+                    const documentAttrs = this.getDocumentAttr(context.values.documentType.value);
                     const documentTypeDisabled = this.props.disableFields.documentType;
                     const skills = context.values.skills.map((v: IPropsMentorOptionsDropDown) => v.value);
                     const skillsError = this.hasErrorSkills(context);
@@ -51,28 +49,28 @@ class FormPersonalData extends React.Component <IPropsFormPersonalData, IStateFo
                                         label={"NOMBRE"}
                                         error={(touched.lastName && errors.firstName) || (this.props.isEdit && errors.firstName)}
                                         info={this.props.infoFields && this.props.infoFields.firstName}
+                                        disabled={this.props.disableFields.firstName || !!this.props.forceDisable}
                                         attrs={{
                                             maxLength: 150,
                                             name: "firstName",
                                             onBlur: context.handleBlur,
                                             onChange: context.handleChange,
                                             placeholder: "Ingresa el nombre completo",
-                                            value: context.values.firstName,
-                                            ...firstNameAttrs}}/>
+                                            value: context.values.firstName}}/>
                                 </FormColumn>,
                                 <FormColumn width={2} key={`FormColumn-PersonalData_${++counter}`}>
                                     <MentorInput
                                         label={"APELLIDO"}
                                         error={(touched.lastName && errors.lastName) || (this.props.isEdit && errors.lastName)}
                                         info={this.props.infoFields && this.props.infoFields.lastName}
+                                        disabled={this.props.disableFields.lastName || !!this.props.forceDisable}
                                         attrs={{
                                             maxLength: 150,
                                             name: "lastName",
                                             onBlur: context.handleBlur,
                                             onChange: context.handleChange,
                                             placeholder: "Ingrese los apellidos",
-                                            value: context.values.lastName,
-                                            ...lastNameAttrs}}/>
+                                            value: context.values.lastName}}/>
                                 </FormColumn>
                             ]}/>
                             <FormRow style={{padding: '30px 0 40px 0', margin: 0}} columns={[
@@ -80,7 +78,7 @@ class FormPersonalData extends React.Component <IPropsFormPersonalData, IStateFo
                                     <MentorDropDown
                                         label={"TIPO DE DOCUMENTO"}
                                         name={"documentType"}
-                                        disabled={documentTypeDisabled}
+                                        disabled={documentTypeDisabled || !!this.props.forceDisable}
                                         value={context.values.documentType.value}
                                         info={this.props.infoFields && this.props.infoFields.documentType}
                                         triggerChange={this.handlerDocumentType(context)}
@@ -92,6 +90,7 @@ class FormPersonalData extends React.Component <IPropsFormPersonalData, IStateFo
                                         label={"NÚMERO DE DOCUMENTO"}
                                         error={touched.document && errors.document}
                                         info={this.props.infoFields && this.props.infoFields.document}
+                                        disabled={this.props.disableFields.document || !!this.props.forceDisable}
                                         attrs={{
                                             name: "document",
                                             onBlur: context.handleBlur,
@@ -106,6 +105,7 @@ class FormPersonalData extends React.Component <IPropsFormPersonalData, IStateFo
                                     <MentorDropDown
                                         label={"SEDE"}
                                         name={"location"}
+                                        disabled={!!this.props.forceDisable}
                                         value={context.values.location.value}
                                         triggerChange={this.handlerLocation(context)}
                                         onBlur={context.handleBlur}
@@ -118,7 +118,7 @@ class FormPersonalData extends React.Component <IPropsFormPersonalData, IStateFo
                                         name={"skills"}
                                         isMulti={true}
                                         error={skillsError}
-                                        disabled={this.state.loading}
+                                        disabled={this.state.loading || !!this.props.forceDisable}
                                         isSearchable={true}
                                         value={skills}
                                         onBlur={context.handleBlur}
@@ -131,6 +131,7 @@ class FormPersonalData extends React.Component <IPropsFormPersonalData, IStateFo
                                 <FormColumn width={2} key={`FormColumn-PersonalData_${++counter}`}>
                                     <MentorInput
                                         label={"NÚMERO DE CONTACTO"}
+                                        disabled={!!this.props.forceDisable}
                                         error={touched.contactNumber && errors.contactNumber}
                                         attrs={{
                                             maxLength: 20,
@@ -148,23 +149,12 @@ class FormPersonalData extends React.Component <IPropsFormPersonalData, IStateFo
         )
     }
 
-    private getAttrs(disabled: boolean) {
-        let attr: object = {};
-        if (disabled) {
-            attr = {disabled: true};
-        }
-        return attr;
-    }
-
-    private getDocumentAttr(disabled: boolean, documentType?: string) {
+    private getDocumentAttr(documentType?: string) {
         let attr: object = {disabled: true};
         if (!!documentType) {
             attr = {
                 maxLength: documentType === 'DNI' ? 8 : 12
             }
-        }
-        if (disabled) {
-            attr = {...attr, disabled: true};
         }
         return attr;
     }
