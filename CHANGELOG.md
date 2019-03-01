@@ -1,4 +1,13 @@
-# [0.1.0](https://ssh.dev.azure.com/v3/UGOTeam/ugo-admin/ugo-admin/compare/1.0.3...0.1.0) (2019-02-28)
+# [0.1.0](https://ssh.dev.azure.com/v3/UGOTeam/ugo-admin/ugo-admin/compare/1.0.4...0.1.0) (2019-03-01)
+
+
+
+## [1.0.4](https://ssh.dev.azure.com/v3/UGOTeam/ugo-admin/ugo-admin/compare/1.0.3...1.0.4) (2019-03-01)
+
+
+### Features
+
+* **create-mentor:** validate document ([a1cde62](https://ssh.dev.azure.com/v3/UGOTeam/ugo-admin/ugo-admin/commits/a1cde62))
 
 
 
