@@ -131,6 +131,7 @@ class MentorFormCreate extends React.Component <{}, IStateMentorCreate> {
                                                          onNextStep={this.onNextStep}
                                                          onHandleSubmit={this.onSubmit}
                                                          saving={this.state.saving}
+                                                         updateField={this.updateField(setFieldValue, setFieldTouched)}
                                                          submitText={this.state.submitText}/>
                                         </form>
                                     </MentorFormBaseContext.Provider>
@@ -141,6 +142,13 @@ class MentorFormCreate extends React.Component <{}, IStateMentorCreate> {
                 </div>
             </div>
         )
+    }
+
+    private updateField(setFieldValue: any, setFieldTouched: any) {
+        return (field: string, value: string) => {
+            setFieldTouched(field, false);
+            setFieldValue(field, value);
+        }
     }
 
     private onSubmit(values: IMentorFormValidations) {

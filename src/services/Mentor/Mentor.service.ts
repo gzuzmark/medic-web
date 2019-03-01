@@ -114,6 +114,28 @@ class MentorService extends BaseRequest {
         });
     }
 
+    public verifyDocument(document: string): Promise<IMentorBaseForm> {
+        if (!!this.verifyMenorCancelToken) {
+            this.verifyMenorCancelToken.cancel();
+        }
+        this.verifyMenorCancelToken = this.generateCancelToken();
+        const instance = this.getCustomInstance(this.verifyMenorCancelToken);
+        return new Promise<IMentorBaseForm>((resolve, reject) => {
+            instance.get('ugo-admin/mentors/verify/document/' + document.trim())
+                .then((response: any) => {
+                    if (response.status === 200 && response.data) {
+                        resolve(response.data);
+                    } else {
+                        reject(response);
+                    }
+                })
+                .catch((error: any) => {
+                    this.validSession();
+                    reject(error);
+                });
+        });
+    }
+
     public uploadPhoto(formData: FormData): Promise<IMentorSession[]> {
         return new Promise((resolve, reject) => {
             this.instance.post('ugo-admin/mentors/photo', formData)

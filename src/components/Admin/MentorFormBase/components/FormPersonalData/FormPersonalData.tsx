@@ -2,13 +2,23 @@ import * as React from "react";
 import MentorDropDown, {IPropsMentorOptionsDropDown} from "../../../../../common/MentorDropDown/MentorDropDown";
 import MentorInput from "../../../../../common/MentorInput/MentorInput";
 import {documentTypeList} from "../../../../../repository/DocumentsIdentification";
+import MentorService from "../../../../../services/Mentor/Mentor.service";
 import {IFormManagerDisabledFields, IFormManagerInfoFields} from "../../../MentorFormCreate/components/FormManager/FormManager";
 import FormColumn from "../../../ScheduleSession/components/FormRow/components/FormColumn/FormColumn";
 import FormRow from "../../../ScheduleSession/components/FormRow/FormRow";
 import MentorFormBaseContext, {IMentorFormBaseContext} from "../../MentorFormBase.context";
 
+export const DOCUMENT_STATUS = {
+    ERROR: 1,
+    EXIST: 409,
+    FOUND: 200,
+    NOT_FOUND: 404,
+    WAITING: 0
+};
+
 interface IStateFormPersonalData {
-    loading: boolean;
+    loadingSkills: boolean;
+    loadingDocument: boolean;
 }
 
 interface IPropsFormPersonalData {
@@ -16,19 +26,24 @@ interface IPropsFormPersonalData {
     infoFields?: IFormManagerInfoFields;
     isEdit?: boolean;
     forceDisable?: boolean;
+    onChangeDocument?: (status: number) => void;
 }
 class FormPersonalData extends React.Component <IPropsFormPersonalData, IStateFormPersonalData> {
     public state: IStateFormPersonalData;
+    private mentorService: MentorService;
     constructor(props: IPropsFormPersonalData) {
         super(props);
         this.state = {
-            loading: false
+            loadingDocument: false,
+            loadingSkills: false
         };
         this.handlerDocumentType = this.handlerDocumentType.bind(this);
+        this.handlerDocument = this.handlerDocument.bind(this);
         this.handlerLocation = this.handlerLocation.bind(this);
         this.handlerSkills = this.handlerSkills.bind(this);
         this.getDocumentAttr = this.getDocumentAttr.bind(this);
         this.hasErrorSkills = this.hasErrorSkills.bind(this);
+        this.mentorService = new MentorService();
     }
 
     public render() {
@@ -47,7 +62,7 @@ class FormPersonalData extends React.Component <IPropsFormPersonalData, IStateFo
                                 <FormColumn width={2} key={`FormColumn-PersonalData_${++counter}`}>
                                     <MentorInput
                                         label={"NOMBRE"}
-                                        error={(touched.lastName && errors.firstName) || (this.props.isEdit && errors.firstName)}
+                                        error={(touched.lastName && errors.firstName) || (!!this.props.isEdit && errors.firstName)}
                                         info={this.props.infoFields && this.props.infoFields.firstName}
                                         disabled={this.props.disableFields.firstName || !!this.props.forceDisable}
                                         attrs={{
@@ -91,10 +106,11 @@ class FormPersonalData extends React.Component <IPropsFormPersonalData, IStateFo
                                         error={touched.document && errors.document}
                                         info={this.props.infoFields && this.props.infoFields.document}
                                         disabled={this.props.disableFields.document || !!this.props.forceDisable}
+                                        loading={this.state.loadingDocument}
                                         attrs={{
                                             name: "document",
                                             onBlur: context.handleBlur,
-                                            onChange: context.handleChange,
+                                            onChange: this.handlerDocument(context),
                                             placeholder: "Ingresa el número de documento",
                                             value: context.values.document,
                                             ...documentAttrs}}/>
@@ -118,7 +134,7 @@ class FormPersonalData extends React.Component <IPropsFormPersonalData, IStateFo
                                         name={"skills"}
                                         isMulti={true}
                                         error={skillsError}
-                                        disabled={this.state.loading || !!this.props.forceDisable}
+                                        disabled={this.state.loadingSkills || !!this.props.forceDisable}
                                         isSearchable={true}
                                         value={skills}
                                         onBlur={context.handleBlur}
@@ -165,16 +181,39 @@ class FormPersonalData extends React.Component <IPropsFormPersonalData, IStateFo
             context.setFieldTouched(name);
             context.setFieldValue('skills', []);
             context.setFieldTouched('skills', false);
-            this.setState({loading: true});
+            this.setState({loadingSkills: true});
             context.updateListSkills(option.value).then(() => {
-                this.setState({loading: false});
+                this.setState({loadingSkills: false});
             });
+        }
+    }
+
+    private handlerDocument(context: IMentorFormBaseContext) {
+        return (e: any) => {
+            context.handleChange(e);
+            this.handleLoading(true, DOCUMENT_STATUS.WAITING);
+            this.mentorService.verifyDocument(e.target.value).then(() => {
+                this.handleLoading(false, DOCUMENT_STATUS.FOUND);
+            }).catch((error) => {
+                if (error.response && error.response.data) {
+                    this.handleLoading(false, error.response.data.code);
+                } else {
+                    this.handleLoading(false, DOCUMENT_STATUS.ERROR);
+                }
+            });
+        }
+    }
+
+    private handleLoading(loadingDocument: boolean, status: number) {
+        this.setState({loadingDocument});
+        if (this.props.onChangeDocument) {
+            this.props.onChangeDocument(status);
         }
     }
 
     private hasErrorSkills(context: IMentorFormBaseContext) {
         let message = '';
-        const emptyLocation = !!context.values.location.value && !context.listSkills.length && !this.state.loading;
+        const emptyLocation = !!context.values.location.value && !context.listSkills.length && !this.state.loadingSkills;
         const noSkillSelected = !!context.touched.skills && context.errors.skills;
         if (emptyLocation) {
             message = 'La sede seleccionada no contiene curso alguno'

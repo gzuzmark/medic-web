@@ -8,7 +8,7 @@ import {emailStatus, IMentorFormValidations} from "../../../../../domain/Mentor/
 import FormExperience from "../../../MentorFormBase/components/FormExperience/FormExperience";
 import getExperiencesWithError from "../../../MentorFormBase/components/FormExperience/ValidateExperiences";
 import FormImage from "../../../MentorFormBase/components/FormImage/FormImage";
-import FormPersonalData from "../../../MentorFormBase/components/FormPersonalData/FormPersonalData";
+import FormPersonalData, {DOCUMENT_STATUS} from "../../../MentorFormBase/components/FormPersonalData/FormPersonalData";
 import FormProfile from "../../../MentorFormBase/components/FormProfile/FormProfile";
 import {formTemplateHOC} from "../../../MentorFormBase/components/FormTemplate/FormTemplateHOC";
 import {limitDescription} from "../../../MentorFormBase/MentorFormBase.validations";
@@ -23,6 +23,7 @@ interface IPropsFormManager {
         touched: any;
         values: IMentorFormValidations;
     }
+    updateField?: (field: string, value: string) => void;
     onBeforeStep: () => void;
     onNextStep: () => void;
     submitText: string;
@@ -32,6 +33,7 @@ interface IPropsFormManager {
 interface IStateFormManager {
     disabledFields: IFormManagerDisabledFields;
     modal: boolean;
+    documentStatus: number;
 }
 
 export interface IFormManagerDisabledFields {
@@ -65,12 +67,15 @@ class FormManager extends React.Component <IPropsFormManager, IStateFormManager>
     private buttonAttrContinue: any;
     private buttonAttrCancel: any;
     private warningContent: IGenericContentModal;
+    private errorDocumentContent: IGenericContentModal;
     constructor(props: IPropsFormManager) {
         super(props);
         this.buttonAttrBack = {type: "button", style: {marginLeft: 24, width: 136}};
         this.buttonAttrContinue = {type: "button", style: {marginLeft: 24, width: 136}};
         this.buttonAttrCancel = {};
         this.updateDisabledFields = this.updateDisabledFields.bind(this);
+        this.cleanDocument = this.cleanDocument.bind(this);
+        this.onChangeDocument = this.onChangeDocument.bind(this);
         this.closeModal = this.closeModal.bind(this);
         this.emailIsNotAllowed = this.emailIsNotAllowed.bind(this);
         this.openModal = this.openModal.bind(this);
@@ -81,6 +86,7 @@ class FormManager extends React.Component <IPropsFormManager, IStateFormManager>
                 firstName: false,
                 lastName: false,
             },
+            documentStatus: DOCUMENT_STATUS.WAITING,
             modal: false
         };
         this.warningContent = {
@@ -88,6 +94,12 @@ class FormManager extends React.Component <IPropsFormManager, IStateFormManager>
             description: "Si cancelas, perderás todos los datos ingresados",
             image: <Icon name={'alert'} />,
             title: "¿Seguro que deseas cancelar?"
+        };
+        this.errorDocumentContent = {
+            button: "Aceptar",
+            description: "El DNI ya lo tiene un mentor o un estudiante",
+            image: <Icon name={'alert'} />,
+            title: "Este DNI ya se encuentra en uso"
         }
     }
 
@@ -117,6 +129,8 @@ class FormManager extends React.Component <IPropsFormManager, IStateFormManager>
                 buttonAttrContinue = {...buttonAttrContinue, disabled: true};
             } else if (!!errors.document || !touched.document) {
                 buttonAttrContinue = {...buttonAttrContinue, disabled: true};
+            } else if (this.state.documentStatus !== DOCUMENT_STATUS.NOT_FOUND) {
+                buttonAttrContinue = {...buttonAttrContinue, disabled: true};
             } else if (!!errors.location || !touched.location) {
                 buttonAttrContinue = {...buttonAttrContinue, disabled: true};
             } else if (!!errors.skills || !touched.skills) {
@@ -143,6 +157,11 @@ class FormManager extends React.Component <IPropsFormManager, IStateFormManager>
                     onCloseModal={this.closeModal}>
                     <ContentModal.Generic generic={this.warningContent} loading={false} confirm={this.redirect} />
                 </MentorModalBase>
+                <MentorModalBase
+                    show={this.state.documentStatus === DOCUMENT_STATUS.EXIST || this.state.documentStatus === DOCUMENT_STATUS.FOUND}
+                    hideClose={true}>
+                    <ContentModal.Generic generic={this.errorDocumentContent} loading={false} confirm={this.cleanDocument} />
+                </MentorModalBase>
                 {1 === this.props.currentStep &&
                     <FormManagerContainer>
                         <FormMailTemplate
@@ -154,6 +173,7 @@ class FormManager extends React.Component <IPropsFormManager, IStateFormManager>
                         <FormPersonalDataTemplate
                             disableFields={this.state.disabledFields}
                             title={"Datos personales del mentor"}
+                            onChangeDocument={this.onChangeDocument}
                             subTitle={"Ingresa los datos del mentor que deseas agregar"} />
                     </FormManagerContainer>}
                 {3 === this.props.currentStep &&
@@ -195,6 +215,10 @@ class FormManager extends React.Component <IPropsFormManager, IStateFormManager>
         this.setState({modal: false})
     }
 
+    private onChangeDocument(status: number) {
+        this.setState({documentStatus: status});
+    }
+
     private onSubmit(values: IMentorFormValidations) {
         return () => {
             this.props.onHandleSubmit(values);
@@ -211,6 +235,13 @@ class FormManager extends React.Component <IPropsFormManager, IStateFormManager>
 
     private redirect() {
         window.location.assign('/');
+    }
+
+    private cleanDocument() {
+        this.setState({documentStatus: DOCUMENT_STATUS.WAITING})
+        if (this.props.updateField) {
+            this.props.updateField('document', '');
+        }
     }
 
     private emailIsNotAllowed(status: string, errors: any, touched: any) {
