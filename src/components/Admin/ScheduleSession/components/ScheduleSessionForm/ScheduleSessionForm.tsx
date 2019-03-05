@@ -1,9 +1,10 @@
 import * as moment from 'moment';
 import * as React from 'react';
 import { HighlightText, Text } from '../../../../../common/ConsoleText';
-import {default as FilterList, IListItem} from '../../../../../common/FilterList/FilterList';
+import FilterList from '../../../../../common/FilterList/FilterList';
 import Loader from '../../../../../common/Loader/Loader';
 import {FactorySessionBean} from "../../../../../domain/FactorySession/FactorySessionBean";
+import {IListItem} from "../../../../../domain/Lists";
 import {IMentorBase} from "../../../../../domain/Mentor/MentorBase";
 import {IArea} from '../../../../../interfaces/Mentor.interface';
 import {ISessionSchedule} from '../../../../../interfaces/Session.interface';

@@ -1,6 +1,7 @@
 import * as moment from 'moment';
 import * as React from 'react';
-import {default as FilterList, IListItem} from "../FilterList/FilterList";
+import {IListItem} from "../../domain/Lists";
+import FilterList from "../FilterList/FilterList";
 
 interface IPropTimePicker {
     defaultText: string;

@@ -103,7 +103,7 @@ class MentorHome extends React.Component<{}, IStateMentorHome> {
                 <SessionsMentorDetail
                     sessionDetail={this.state.sessionDetail}
                     selectedDate={this.state.selectedDate} /> :
-                <Loader style={{marginTop: 300}}/>}
+                <Loader style={{marginTop: 150}}/>}
             </div>
         </Layout>
     }

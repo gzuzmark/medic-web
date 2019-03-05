@@ -1,9 +1,10 @@
 import * as React from 'react';
 import * as NumericInput from 'react-numeric-input';
 import { Text } from '../../../../../../../common/ConsoleText';
-import FilterList, {IListItem} from '../../../../../../../common/FilterList/FilterList';
+import FilterList from '../../../../../../../common/FilterList/FilterList';
 import {FactorySessionBean} from "../../../../../../../domain/FactorySession/FactorySessionBean";
 import {FormLocationDependency} from "../../../../../../../domain/FormSession/FormLocationDependency";
+import {IListItem} from "../../../../../../../domain/Lists";
 import {ISkill} from "../../../../../../../domain/Skill/Skill";
 import {IMentorDescription, ISessionTypes} from '../../../../../../../interfaces/Mentor.interface';
 import {

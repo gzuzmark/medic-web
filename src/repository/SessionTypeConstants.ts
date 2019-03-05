@@ -1,5 +1,3 @@
-import {IListItem} from "../common/FilterList/FilterList";
-
 export const SESSION_VIRTUAL = 'VIRTUAL';
 export const SESSION_PHYSICAL = 'PHYSICAL';
 export const SESSION_UNDEFINED = 'UNDEFINED';
@@ -8,7 +6,12 @@ export const SESSION_WORKSHOP = 'WORKSHOP';
 export const AREA_TYPE_SERVICE = 'SERVICE';
 export const AREA_TYPE_TUTORY = 'TUTORY';
 
-export const SESSION_TYPES_TUTORIES: IListItem[] = [
+export interface ISessionsTypes {
+    id: string;
+    name: string;
+}
+
+export const SESSION_TYPES_TUTORIES: ISessionsTypes[] = [
     {
         id: SESSION_VIRTUAL,
         name: 'Tutoría virtual'
@@ -23,7 +26,7 @@ export const SESSION_TYPES_TUTORIES: IListItem[] = [
     },
 ];
 
-export const SESSION_TYPES_SERVICES: IListItem[] = [
+export const SESSION_TYPES_SERVICES: ISessionsTypes[] = [
     {
         id: SESSION_VIRTUAL,
         name: 'Virtual'

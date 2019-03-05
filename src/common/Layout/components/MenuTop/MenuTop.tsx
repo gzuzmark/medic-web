@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {findDOMNode} from "react-dom";
 import UserRepository, {ROL_ADMIN} from "../../../../repository/UserRepository";
-import {IListItem} from "../../../FilterList/FilterList";
+import {IFilerListItem} from "../../../FilterList/FilterList";
 import SelectList from "../../../SelectList/SelectList";
 import './MenuTop.scss';
 
@@ -9,7 +9,7 @@ interface IStateMenu {
     open: boolean;
 }
 
-const listAdmin: IListItem[] = [{
+const listAdmin: IFilerListItem[] = [{
     extra: {
         url: '/admin/mentores'
     },
@@ -25,13 +25,22 @@ const listAdmin: IListItem[] = [{
     name: 'Reportes'
 }];
 
+const listMentor: IFilerListItem[] = [{
+    extra: {
+        url: '/mentor/perfil'
+    },
+    icon: 'user',
+    id: 'profile_mentor',
+    name: 'Mi perfil'
+}];
+
 const styleSelectList: React.CSSProperties = {
     boxShadow: 'none',
     position: 'relative',
     top: 0,
 };
 
-const menuList = UserRepository.getUser().rol === ROL_ADMIN ? listAdmin : [] as IListItem[];
+const menuList = UserRepository.getUser().rol === ROL_ADMIN ? listAdmin : listMentor;
 menuList.push({
     extra: {
         url: '/logout'
@@ -92,7 +101,7 @@ class MenuTop extends React.Component <{}, IStateMenu> {
         this.setState({open: !state.open});
     }
 
-    private redirect(item: IListItem) {
+    private redirect(item: IFilerListItem) {
         window.location.href = item.extra.url;
     }
 }

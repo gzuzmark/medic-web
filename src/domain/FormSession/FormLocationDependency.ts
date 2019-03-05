@@ -1,5 +1,5 @@
-import {IListItem} from "../../common/FilterList/FilterList";
 import {SESSION_PHYSICAL, SESSION_VIRTUAL} from "../../repository/SessionTypeConstants";
+import {IListItem} from "../Lists";
 
 export interface IRoomTree {
     id?: string;

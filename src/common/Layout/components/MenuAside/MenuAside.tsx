@@ -5,11 +5,14 @@ import colors from "../../../MentorColor";
 import {Body1, LIGHT_TEXT} from '../../../MentorText';
 import './MenuAside.scss';
 
-interface IPropsListMentors {
-    baseText: string;
-    url: string;
-    textNavigation?: string;
+export interface INavBarItem {
+    url?: string;
+    text: string;
+}
+
+export interface IPropsListMentors {
     icon?: string;
+    items: INavBarItem[];
 }
 
 const iconStyles: React.CSSProperties = {
@@ -29,13 +32,21 @@ class MenuAside extends React.Component<IPropsListMentors, {}> {
                 <div className="Menu u-LayoutMargin">
                     <div className="Menu-navbar">
                         <Icon name={icon} style={iconStyles}/>
-                        <Link to={this.props.url} className='Menu-item--link'>
-                            <Body1 className="Menu-item" weight={LIGHT_TEXT}>
-                                {this.props.baseText}
-                            </Body1>
-                        </Link>
-                        {!!this.props.textNavigation &&
-                            <Body1 className="Menu-item" weight={LIGHT_TEXT}>{` > ${this.props.textNavigation}`}</Body1>}
+                        {this.props.items.map((item: INavBarItem, index: number) => {
+                            return !!item.url ?
+                                (
+                                    <Link to={item.url} className='Menu-item--link' key={`MenuAside_${index}`}>
+                                        <Body1 className="Menu-item" weight={LIGHT_TEXT}>
+                                            {`${index !== 0 ? ' > ' : ''}${item.text}`}
+                                        </Body1>
+                                    </Link>
+                                ) :
+                                (
+                                    <Body1 className="Menu-item" weight={LIGHT_TEXT} key={`MenuAside_${index}`}>
+                                        {`${index !== 0 ? ' > ' : ''}${item.text}`}
+                                    </Body1>
+                                )
+                        })}
                     </div>
                 </div>
             </React.Fragment>

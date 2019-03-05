@@ -17,9 +17,7 @@ const MenuLeft: React.StatelessComponent<IPropsMenuLeft> = (props) => {
                     minWidth: 395,
                     position: 'relative',
                 }}/>
-                <MenuAside baseText={props.baseText}
-                           url={props.url}
-                           textNavigation={props.textNavigation}
+                <MenuAside items={[{text: props.baseText, url: props.url}, {text: props.textNavigation}]}
                            icon={props.icon}/>
             </div>
         </Sticky>

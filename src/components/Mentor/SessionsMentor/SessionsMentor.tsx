@@ -162,7 +162,7 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
                     <Text3>{`Sesión ${this.state.fullCardSession.type.toLowerCase()}`}</Text3>
                 </div>}
                 {this.state.loading && !this.state.isEmpty &&
-                    <Loader style={{marginTop: 10}} />}
+                    <Loader style={{marginTop: 100}} />}
                 {!this.state.loading &&
                     <React.Fragment>
                         <SessionFullCard session={this.state.fullCardSession}/>
@@ -209,7 +209,6 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
             modalCheck: this.cleanCheckModal(StudentCheckModalScreens.NO_ATTENDED)
         })
     }
-
 
     private onConfirmCheck(screen: string) {
         if (screen === StudentCheckModalScreens.ATTENDED) {

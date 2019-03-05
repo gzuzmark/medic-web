@@ -1,7 +1,7 @@
-import { IListItem } from '../../common/FilterList/FilterList';
 import {lpad} from '../../common/Utils/DateUtilities';
 import {ISessionSchedule} from '../../interfaces/Session.interface';
 import {SESSION_VIRTUAL} from "../../repository/SessionTypeConstants";
+import {IListItem} from "../Lists";
 
 export interface IFactorySession {
     from: string;

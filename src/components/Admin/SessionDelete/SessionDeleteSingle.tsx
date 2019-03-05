@@ -29,9 +29,8 @@ class SessionDeleteSingle extends React.Component<IPropsSessionDeleteSingle, {}>
                         minWidth: 395,
                         position: 'relative',
                     }}/>
-                    <MenuAside baseText={'Mentores'}
-                               url={'/admin/mentores'}
-                               textNavigation={textNavigation} />
+                    <MenuAside  icon={'book'}
+                                items={[{text: 'Mentores', url: '/admin/mentores'}, {text: textNavigation}]}  />
                 </div>
             </Sticky>
         )

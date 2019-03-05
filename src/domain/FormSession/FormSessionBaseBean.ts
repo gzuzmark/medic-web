@@ -1,4 +1,3 @@
-import {IListItem} from "../../common/FilterList/FilterList";
 import Utilities from "../../common/Utils/Utilities";
 import {SESSION_PHYSICAL, SESSION_UNDEFINED, SESSION_VIRTUAL} from "../../repository/SessionTypeConstants";
 import {
@@ -6,6 +5,7 @@ import {
     IInterestAreaParent,
     IInterestAreaService, IInterestAreaSite
 } from "../../services/InterestArea/InterestArea.service";
+import {IListItem} from "../Lists";
 import {ISessionItemBase} from "../Session/SessionBean";
 
 export interface ISessionListForm extends IListItem {
