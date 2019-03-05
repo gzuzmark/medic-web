@@ -6,6 +6,7 @@ import colors, {FONTS} from "../../../common/MentorColor";
 import {Body1, Heading2, LIGHT_TEXT, Subhead1} from '../../../common/MentorText';
 import ImageProfile from '../../../components/Admin/MentorFormBase/components/ImageProfile/ImageProfile';
 import {ExperienceItem, FormReviewHeader, Separator} from "../../../components/Admin/MentorFormBase/MentorFormBase.styled";
+import MentorRating from "./components/MentorRating/MentorRating";
 
 const COLUMN =  'column';
 
@@ -24,10 +25,8 @@ const Wrapper = styled.div`
 `;
 
 class SessionsMentor extends React.Component<{}, {}> {
-    private sessionId: string;
     constructor(props: any) {
         super(props);
-        this.sessionId = 'dsadsadsa';
     }
 
     public render() {
@@ -42,7 +41,7 @@ class SessionsMentor extends React.Component<{}, {}> {
                     <Heading2 color={FONTS.purple} style={{margin: '40px 0 10px 0'}}>Mario Augusto Benedetti de las Casas Montalván</Heading2>
                     <Subhead1 color={FONTS.error} style={{margin: '3px 0'}}>Cargo Actual (Pendiente)</Subhead1>
                     <Subhead1 color={FONTS.error} style={{margin: '3px 0'}}>Empresas Actual (Pendiente)</Subhead1>
-                    {this.sessionId}
+                    <MentorRating count={1} average={4.5}/>
                 </BasicData>
                 <Separator />
                 <FormReviewHeader>
