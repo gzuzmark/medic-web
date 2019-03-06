@@ -11,6 +11,7 @@ export interface IButtonProps {
     loading?: string;
     attrs?: any;
     className?: string;
+    link?: boolean;
 }
 
 export interface IButtonSizesAttr {
@@ -107,9 +108,13 @@ const buttonTheme = {
     fontDisabled
 };
 
-const Button: React.SFC<IButtonProps> = props =>  (
-    <button className={props.className} {...props.attrs}>{getFont(props.text)}</button>
-);
+const Button: React.SFC<IButtonProps> = props => {
+    let element = <button className={props.className} {...props.attrs}>{getFont(props.text)}</button>;
+    if (!!props.link) {
+        element = <a className={props.className} {...props.attrs}>{getFont(props.text)}</a>;
+    }
+    return element;
+};
 
 
 const Link: React.SFC<IButtonProps> = props =>

@@ -55,13 +55,11 @@ const WarningBox = styled.div`
     min-width: 100vw;    
 `;
 
-
-
 class MentorFormEdit  extends React.Component <IPropsMentorEdit, IStateMentorEdit > {
     public state: IStateMentorEdit ;
     private sitesService: SitesService;
     private idMentor: string;
-    private mentorCreateData: MentorEditData;
+    private mentorEditData: MentorEditData;
     private skillService: SkillService;
     private mentorService: MentorService;
     constructor(props: any) {
@@ -72,7 +70,7 @@ class MentorFormEdit  extends React.Component <IPropsMentorEdit, IStateMentorEdi
         this.openConfirmModal = this.openConfirmModal.bind(this);
         this.closeConfirmModal = this.closeConfirmModal.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
-        this.mentorCreateData = new MentorEditData({} as IMentorEditCreateData);
+        this.mentorEditData = new MentorEditData({} as IMentorEditCreateData);
         this.sitesService = new SitesService();
         this.skillService =  new SkillService();
         this.mentorService =  new MentorService();
@@ -92,12 +90,12 @@ class MentorFormEdit  extends React.Component <IPropsMentorEdit, IStateMentorEdi
     public componentDidMount() {
         this.mentorService.get(this.idMentor).then((mentor: IMentorEditCreateData) => {
             const mentorEdit = {exist: false, ...mentor};
-            this.mentorCreateData = new MentorEditData(mentorEdit);
+            this.mentorEditData = new MentorEditData(mentorEdit);
             if (!!mentor.sitesId) {
                 this.updateListSkills(mentor.sitesId[0].toString());
             }
             this.setState({
-                mentor: {...this.mentorCreateData.getMentorValues, otherUtpRole: !!mentor.otherUtpRole},
+                mentor: {...this.mentorEditData.getMentorValues, otherUtpRole: !!mentor.otherUtpRole},
                 selectedImage: mentor.photo
             });
             if (mentor.status === MENTOR_STATUS.INCOMPLETE) {
@@ -163,11 +161,11 @@ class MentorFormEdit  extends React.Component <IPropsMentorEdit, IStateMentorEdi
                                         <FormManager formData={{errors, touched, values}}
                                                      mentor={{
                                                          id: this.idMentor,
-                                                         status: this.mentorCreateData.mentor && this.mentorCreateData.mentor.status || ''
+                                                         status: this.mentorEditData.mentor && this.mentorEditData.mentor.status || ''
                                                      }}
                                                      onHandleSubmit={this.onSubmit}
                                                      validateForm={validateForm}
-                                                     disablePersonalData={disablePersonalData}  />
+                                                     disablePersonalData={disablePersonalData}/>
                                     </form>
                                 </MentorFormBaseContext.Provider>
                             )
@@ -180,7 +178,7 @@ class MentorFormEdit  extends React.Component <IPropsMentorEdit, IStateMentorEdi
 
     private updateMentor() {
         this.setState({saving: true, modal: false});
-        this.mentorService.put(this.idMentor, this.mentorCreateData.mentor).then(() => {
+        this.mentorService.put(this.idMentor, this.mentorEditData.mentor).then(() => {
             this.setState({saving: false, modal: true, success: true});
             setTimeout( () => {
                 window.location.reload();
@@ -203,7 +201,7 @@ class MentorFormEdit  extends React.Component <IPropsMentorEdit, IStateMentorEdi
     }
 
     private onSubmit(values: IMentorFormValidations) {
-        this.mentorCreateData.prepareData(values);
+        this.mentorEditData.prepareData(values);
         this.updateMentor();
     }
 

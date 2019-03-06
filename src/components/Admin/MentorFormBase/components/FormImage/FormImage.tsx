@@ -27,6 +27,8 @@ interface IStateFormImage {
 export interface IPropsFormImage {
     id: string;
     forceDisable?: boolean;
+    className?: string;
+    size?: number;
 }
 
 const TextInput = styled(Body1)`
@@ -89,7 +91,7 @@ class FormImage extends React.Component <IPropsFormImage, IStateFormImage> {
             <MentorFormBaseContext.Consumer>
                 {(context: IMentorFormBaseContext) => {
                     return (
-                        <div className={"FormImage"}>
+                        <div className={`FormImage ${this.props.className ? this.props.className : ''}`}>
                             <ReactTooltip effect={"solid"} place={"top"} id={"FormImageToolTip"} multiline={true}/>
                             <MentorModalBase
                                 show={this.state.modal}
@@ -113,12 +115,14 @@ class FormImage extends React.Component <IPropsFormImage, IStateFormImage> {
                                 </div>:
                                 <ContentModal.Generic generic={this.errorImage} loading={false} confirm={this.newUploadImage} error={true} />}
                             </MentorModalBase>
-                            <div className={this.props.forceDisable ? 'FormImage_disabled' : ''}>
+                            <div className={this.props.forceDisable ? 'FormImage_disabled' : ''} style={{textAlign: 'center'}}>
                                 <label className={"FormImage_label"}
                                        htmlFor={this.props.id} ref={this.labelImage}
                                        data-for="FormImageToolTip"
                                        data-tip={'La foto debe ser amigable (se recomienda una foto sonriente), <br>con fondo blanco y mira al frente.'}>
-                                    <ImageProfile src={context.selectedImage || defaultImage} width={160} height={160}
+                                    <ImageProfile src={context.selectedImage || defaultImage}
+                                                  width={this.props.size || 160}
+                                                  height={this.props.size || 160}
                                                   title="Perfil de mentor" filled={!!context.selectedImage}/>
                                     <div className={"FormImage_text"}>
                                         <Icon name={"upload"} style={{

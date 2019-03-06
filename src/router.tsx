@@ -17,6 +17,7 @@ import SessionDeleteSingle from "./components/Admin/SessionDelete/SessionDeleteS
 import Login from './components/Login/Login';
 import Logout from './components/Logout/Logout';
 import MentorHome from "./components/Mentor/MentorHome/MentorHome";
+import ProfileEditMentor from "./components/Mentor/ProfileEditMentor/ProfileEditMentor";
 import ProfileMentor from "./components/Mentor/ProfileMentor/ProfileMentor";
 import SessionsMentor from "./components/Mentor/SessionsMentor/SessionsMentor";
 import UserRepository, {ROL_ADMIN, ROL_MENTOR} from "./repository/UserRepository";
@@ -63,6 +64,15 @@ const PageProfileMentor = (props: any) => {
     return <LayoutProfileMentor icon={'book'}
                                 items={[{url: '/mentor', text: 'Inicio'}, {text: 'Ver perfil'}]}
                                 {...props} />;
+};
+
+const PageEditProfileMentor = (props: any) => {
+    const LayoutProfileEditMentor = HOCLayout(ProfileEditMentor);
+    return <LayoutProfileEditMentor icon={'book'}
+                                    items={[
+                                        {url: '/mentor', text: 'Inicio'},
+                                        {text: 'Ver perfil', url: '/mentor/perfil'}, {text: 'Editar perfil'}]}
+                                    {...props} />;
 }
 
 export const initRouter = () => {
@@ -82,6 +92,7 @@ export const initRouter = () => {
                 <Route exact={true} path="/admin/mentores/:id/sesiones/eliminar" render={GuardComponent(SessionDeleteMultiple, ROL_ADMIN)} />
                 <Route exact={true} path="/mentor" render={GuardComponent(MentorHome, ROL_MENTOR)} />
                 <Route exact={true} path="/mentor/perfil" render={GuardComponent(PageProfileMentor, ROL_MENTOR)} />
+                <Route exact={true} path="/mentor/editar-perfil" render={GuardComponent(PageEditProfileMentor, ROL_MENTOR)} />
                 <Route exact={true} path="/mentor/sesion/:session/" render={GuardComponent(SessionsMentor, ROL_MENTOR)} />
             </div>
         </Router>,

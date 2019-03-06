@@ -6,7 +6,7 @@ import colors, {FONTS} from "../../../common/MentorColor";
 import {Body1, Heading2, LIGHT_TEXT, Subhead1} from '../../../common/MentorText';
 import ImageProfile from '../../../components/Admin/MentorFormBase/components/ImageProfile/ImageProfile';
 import {ExperienceItem, FormReviewHeader, Separator} from "../../../components/Admin/MentorFormBase/MentorFormBase.styled";
-import MentorRating from "./components/MentorRating/MentorRating";
+import MentorRating from "../components/MentorRating/MentorRating";
 
 const COLUMN =  'column';
 
@@ -24,7 +24,13 @@ const Wrapper = styled.div`
     margin: 0 56px;
 `;
 
-class SessionsMentor extends React.Component<{}, {}> {
+
+const FormProfileContainer = styled.div`
+    margin: 0 auto;
+    width: 930px;
+`;
+
+class ProfileMentor extends React.Component<{}, {}> {
     constructor(props: any) {
         super(props);
     }
@@ -32,7 +38,7 @@ class SessionsMentor extends React.Component<{}, {}> {
     public render() {
         const selectedImage = 'https://neilpatel-qvjnwj7eutn3.netdna-ssl.com/wp-content/uploads/2017/05/LinkedIn.jpg';
         return (
-            <div className="u-LayoutMargin">
+            <FormProfileContainer className="u-LayoutMargin">
                 <BasicData>
                     <ImageProfile src={selectedImage || errorCamera}
                                   width={88} height={88}
@@ -75,12 +81,13 @@ class SessionsMentor extends React.Component<{}, {}> {
                     </ExperienceItem>
                 </Wrapper>
                 <Separator />
-                <ButtonNormal text={"Editar información"} attrs={{
-                    style: {margin: '0 0 0 auto'}
+                <ButtonNormal text={"Editar información"} link={true} attrs={{
+                    href: '/mentor/editar-perfil',
+                    style: {margin: '0 0 0 auto', width: 150}
                 }}/>
-            </div>
+            </FormProfileContainer>
         )
     }
 }
 
-export default SessionsMentor;
+export default ProfileMentor;

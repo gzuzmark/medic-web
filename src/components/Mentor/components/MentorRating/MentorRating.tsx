@@ -1,9 +1,9 @@
 import * as React from "react";
 import styled from "styled-components";
-import blankStar from '../../../../../assets/images/rated/blank-star.png';
-import fullStar from '../../../../../assets/images/rated/full-star.png';
-import { FONTS } from "../../../../../common/MentorColor";
-import { Body1 } from '../../../../../common/MentorText';
+import blankStar from '../../../../assets/images/rated/blank-star.png';
+import fullStar from '../../../../assets/images/rated/full-star.png';
+import { FONTS } from "../../../../common/MentorColor";
+import { Body1 } from '../../../../common/MentorText';
 
 const RatingSpriteContainer = styled.div`
     display: flex;
