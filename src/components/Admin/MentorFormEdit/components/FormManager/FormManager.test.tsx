@@ -27,7 +27,8 @@ describe('FormManager Test',() => {
             },
             mentor: {
                 id: "asdsad",
-                status: MENTOR_STATUS.PUBLISHED
+                status: MENTOR_STATUS.PUBLISHED,
+                updateMentor: (e: string) => '',
             },
             onHandleSubmit: (e: any) => '',
             validateForm: () => ''

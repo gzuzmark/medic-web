@@ -28,6 +28,7 @@ export interface IPropsFormManager {
     mentor: {
         status: string;
         id: string;
+        updateMentor: (status: string) => void;
     }
     onHandleSubmit: (e: any) => void;
     validateForm: () => void;
@@ -93,7 +94,8 @@ class FormManager extends React.Component <IPropsFormManager, IStateFormManager>
     public render() {
         const {errors, values} = this.props.formData;
         let buttonAttrUpdate = {...this.buttonAttrUpdate};
-        if (this.forceDisable) {
+        const forceDisable = this.props.mentor.status === MENTOR_STATUS.DISABLED;
+        if (forceDisable) {
             buttonAttrUpdate = {...buttonAttrUpdate, disabled: true};
         } else if (!!errors.firstName) {
             buttonAttrUpdate = {...buttonAttrUpdate, disabled: true};
@@ -121,23 +123,25 @@ class FormManager extends React.Component <IPropsFormManager, IStateFormManager>
                     <ContentModal.Generic generic={this.warningContent} loading={false} confirm={this.onHandleSubmit} />
                 </MentorModalBase>
                 <FormImage id={"FormImageEdit"}
-                           forceDisable={this.forceDisable}
+                           forceDisable={forceDisable}
                            mentor={false}>
-                    <UpdateStatus status={this.props.mentor.status} idMentor={this.props.mentor.id}/>
+                    <UpdateStatus status={this.props.mentor.status}
+                                  idMentor={this.props.mentor.id}
+                                  updateMentor={this.props.mentor.updateMentor}/>
                 </FormImage>
                 <FormPersonalDataTemplate
                     titleForm={"Datos Personales"}
                     disableFields={this.disabledFields}
                     isEdit={true}
-                    forceDisable={this.forceDisable}
+                    forceDisable={forceDisable}
                     infoFields={this.infoFields} />
                 <FormProfileTemplate
                     titleForm={"Datos de perfil"}
-                    forceDisable={this.forceDisable}
+                    forceDisable={forceDisable}
                     isEdit={true} />
                 <FormExperienceTemplate
                     titleForm={"Otras experiencias laborales"}
-                    forceDisable={this.forceDisable}
+                    forceDisable={forceDisable}
                     isEdit={true} />
                 <ButtonNormal text={"Guardar Cambios"}
                               attrs={...buttonAttrUpdate}/>
