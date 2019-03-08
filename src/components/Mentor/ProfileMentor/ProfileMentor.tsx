@@ -22,7 +22,7 @@ const BasicData = styled.div`
 
 const Wrapper = styled.div`
     display: flex;
-    flex-direction: ${(props: any) => {
+    flex-direction: ${(props: {type?: string}) => {
         return props.type === COLUMN ? 'column' : 'row';
     }};
     margin: 0 56px;

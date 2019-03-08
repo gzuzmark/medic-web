@@ -28,7 +28,7 @@ export const FormTemplateContainer = styled.div`
 export const formTemplateHOC = <P extends object>(Component: React.ComponentType<P>, Component2?: React.ComponentType<P>) =>
     class FormTemplate extends React.Component<P & IPropsFormTemplateHOC> {
         public render() {
-            const { title, subTitle, name, titleForm, ...props } = this.props as IPropsFormTemplateHOC;
+            const { title, subTitle, name, titleForm } = this.props as IPropsFormTemplateHOC;
             return (
                     <div className='FormTemplate'>
                         {!!title &&
@@ -43,13 +43,13 @@ export const formTemplateHOC = <P extends object>(Component: React.ComponentType
                             <div style={{padding: '30px 85px'}}>
                                 {!!titleForm &&
                                     <SubTitle>{titleForm}</SubTitle>}
-                                <Component {...props}/>
+                                <Component {...this.props}/>
                             </div>
                         </FormTemplateContainer>
                         {!!Component2 &&
                             <FormTemplateContainer>
                                 <div style={{padding: '30px 85px'}}>
-                                    <Component2 {...props} />
+                                    <Component2 {...this.props} />
                                 </div>
                             </FormTemplateContainer>}
                     </div>

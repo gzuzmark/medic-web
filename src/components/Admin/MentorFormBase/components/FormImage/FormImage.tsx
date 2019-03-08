@@ -33,7 +33,7 @@ export interface IPropsFormImage {
 }
 
 const TextInput = styled(Body1)`
-    color: ${(props: any) => {
+    color: ${(props: {disabled: boolean}) => {
         return props.disabled ? colors.TEXT_COLORS.font_disabled : colors.BACKGROUND_COLORS.background_purple;
     }};
 `;
@@ -132,7 +132,7 @@ class FormImage extends React.Component <IPropsFormImage, IStateFormImage> {
                                         }}/>
                                         <TextInput disabled={!!this.props.forceDisable}>
                                             {!!context.selectedImage ? 'Cambiar foto' : 'Subir foto del mentor' }
-                                            </TextInput>
+                                        </TextInput>
                                     </div>
                                 </label>
                             </div>
@@ -163,9 +163,11 @@ class FormImage extends React.Component <IPropsFormImage, IStateFormImage> {
                 this.setState({selectedFile: event.target.files[0]});
                 const reader = new FileReader();
                 reader.addEventListener('load', () => {
-                    this.setState({ src: reader.result }, () => {
-                        this.setState({ modal: true });
-                    });
+                    if (reader.result) {
+                        this.setState({ src: reader.result.toString() }, () => {
+                            this.setState({ modal: true });
+                        });
+                    }
                 });
                 reader.readAsDataURL(event.target.files[0]);
                 event.target.value = null;

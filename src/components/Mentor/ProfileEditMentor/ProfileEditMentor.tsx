@@ -88,7 +88,7 @@ class ProfileEditMentor extends React.Component<{}, IStateProfileEditMentor> {
                                         setFieldValue,
                                         touched,
                                         updateImage: this.updateImage,
-                                        values
+                                        values: values as IMentorFormValidations
                                     }}>
                                     <form onSubmit={handleSubmit}>
                                         <FormEditManager

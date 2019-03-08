@@ -23,7 +23,7 @@ export interface IPropsFormManager {
     formData: {
         errors: any;
         touched: any;
-        values: IMentorFormValidations;
+        values: IMentorFormValidations | any;
     },
     mentor: {
         status: string;

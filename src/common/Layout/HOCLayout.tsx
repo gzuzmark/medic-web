@@ -16,10 +16,11 @@ const renderMenu = (items: INavBarItem[], icon: string) => {
 const HOCLayout = <P extends object>(Component: React.ComponentType<P>) =>
     class WithMenu extends React.Component<P & IPropsHOCLayout> {
         public render() {
-            const { items, icon, ...props } = this.props as IPropsHOCLayout;
+            const { items, icon } = this.props as IPropsHOCLayout;
+            const componentsProps = {...this.props};
             return (
                 <Layout menu={renderMenu(items, icon)}>
-                    <Component {...props} />
+                    <Component {...componentsProps} />
                 </Layout>
             );
         }

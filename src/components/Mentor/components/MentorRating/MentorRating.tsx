@@ -29,7 +29,7 @@ const RatingSpriteTotal =  styled.span`
     display:block;
     float: left;
     height: 17px;
-    width: ${(props: any) => {
+    width: ${(props: {width: number}) => {
         return `${props.width}%`
     }}
 `;
@@ -39,7 +39,7 @@ export interface IPropsMentorRating {
 }
 
 
-const MentorRating: React.StatelessComponent<IPropsMentorRating> = (props) => {
+const MentorRating: React.FC<IPropsMentorRating> = (props) => {
     const average = props.average || 0;
     const percent = (props.count > 0 ? average : 0) * 20;
     return (

@@ -122,7 +122,7 @@ class MentorFormCreate extends React.Component <{}, IStateMentorCreate> {
                                             touched,
                                             updateImage: this.updateImage,
                                             updateListSkills: this.updateListSkills,
-                                            values
+                                            values: values as IMentorFormValidations
                                         }}>
                                         <form onSubmit={handleSubmit}>
                                             <FormManager currentStep={this.state.stepActive}

@@ -21,7 +21,7 @@ interface IPropsFormManager {
     formData: {
         errors: any;
         touched: any;
-        values: IMentorFormValidations;
+        values: IMentorFormValidations | any;
     }
     updateField?: (field: string, value: string) => void;
     onBeforeStep: () => void;

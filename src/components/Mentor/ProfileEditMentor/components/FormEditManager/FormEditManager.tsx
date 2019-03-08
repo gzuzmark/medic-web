@@ -19,7 +19,7 @@ export interface IPropsFormEditManager {
     formData: {
         errors: any;
         touched: any;
-        values: IMentorFormValidations;
+        values: IMentorFormValidations | any;
     },
     onHandleSubmit: (e: any) => void;
     validateForm: () => void;

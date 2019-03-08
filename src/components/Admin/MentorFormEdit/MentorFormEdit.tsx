@@ -148,7 +148,7 @@ class MentorFormEdit  extends React.Component <IPropsMentorEdit, IStateMentorEdi
                                         touched,
                                         updateImage: this.updateImage,
                                         updateListSkills: this.updateListSkills,
-                                        values
+                                        values: values as IMentorFormValidations
                                     }}>
                                     <form onSubmit={handleSubmit}>
                                         <FormManager formData={{errors, touched, values}}

@@ -62,7 +62,7 @@ const LoaderContainer = styled.div`
     }
 `
 
-const Loader: React.StatelessComponent<IPropsLoader> = (props) => {
+const Loader: React.FC<IPropsLoader> = (props) => {
     return (
         <LoaderContainer className={`${!!props.className && props.className || ''}`}
                          size={props.size}
