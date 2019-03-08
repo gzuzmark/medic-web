@@ -29,6 +29,7 @@ export interface IPropsFormImage {
     forceDisable?: boolean;
     className?: string;
     size?: number;
+    mentor?: boolean;
 }
 
 const TextInput = styled(Body1)`
@@ -189,7 +190,7 @@ class FormImage extends React.Component <IPropsFormImage, IStateFormImage> {
                     const bodyFormData = new FormData();
                     bodyFormData.append('content-type', 'multipart/form-data');
                     bodyFormData.append('file', croppedImage);
-                    this.mentorService.uploadPhoto(bodyFormData).then((response: any) => {
+                    this.mentorService.uploadPhoto(bodyFormData, !!this.props.mentor).then((response: any) => {
                         context.setFieldValue("picture", response.data);
                         context.updateImage(croppedTmp);
                         this.setState({

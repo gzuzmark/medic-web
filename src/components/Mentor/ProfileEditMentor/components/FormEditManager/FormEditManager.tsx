@@ -89,7 +89,7 @@ class FormEditManager extends React.Component <IPropsFormEditManager, IStateForm
                 <MentorModalBase show={this.state.modal} onCloseModal={this.closeModal}>
                     <ContentModal.Generic generic={this.warningContent} loading={false} confirm={this.onHandleSubmit} />
                 </MentorModalBase>
-                <FormImageColumn id={"FormImageProfileEdit"} forceDisable={false} size={88}>
+                <FormImageColumn id={"FormImageProfileEdit"} forceDisable={false} size={88} mentor={true}>
                     <BasicData>
                         <Heading2 color={FONTS.purple} style={{margin: '40px 0 10px 0'}}>Mario Augusto Benedetti de las Casas Montalván</Heading2>
                         <MentorRating count={1} average={4.5}/>

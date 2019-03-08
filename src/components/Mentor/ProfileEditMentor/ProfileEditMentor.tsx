@@ -1,52 +1,76 @@
 import {Formik} from "formik";
 import * as React from 'react';
 import styled from "styled-components";
-import {IPropsMentorOptionsDropDown} from "../../../common/MentorDropDown/MentorDropDown";
+import ContentModal from "../../../common/ConsoleModal/ContentModal";
+import MentorModalBase from "../../../common/ConsoleModal/MentorModalBase";
+import LoaderFullScreen from "../../../common/Loader/LoaderFullsScreen";
 import {IMentorFormValidations} from "../../../domain/Mentor/MentorBaseForm";
-import MentorEditData, {IMentorEditCreateData, IMentorEditFormValidations} from "../../../domain/Mentor/MentorEdit";
+import MentorEditProfileData, {IMentorEditProfileData} from "../../../domain/Mentor/MentorEditProfile";
+import { IMentorProfileFormValidations } from "../../../domain/Mentor/MentorProfile";
+import MentorService from "../../../services/Mentor/Mentor.service";
 import MentorFormBaseContext from "../../Admin/MentorFormBase/MentorFormBase.context";
 import mentorFormBaseSchema from "../../Admin/MentorFormBase/MentorFormBase.validations";
 import FormEditManager from "./components/FormEditManager/FormEditManager";
 
 const MentorEditContainer = styled.div`
     margin: 0 auto;
+    position: relative;
     width: 930px;
 `;
 
 interface IStateProfileEditMentor  {
-    listSites: IPropsMentorOptionsDropDown[];
-    listSkills: IPropsMentorOptionsDropDown[];
+    loadingData: boolean;
+    mentor: IMentorProfileFormValidations;
+    modalSuccess: boolean;
+    saving: boolean;
     selectedImage: string;
-    mentor: IMentorEditFormValidations | null;
 }
+
 
 class ProfileEditMentor extends React.Component<{}, IStateProfileEditMentor> {
     public state: IStateProfileEditMentor;
-    private mentorEditData: MentorEditData;
+    private mentorProfileData: MentorEditProfileData;
+    private mentorService: MentorService;
     constructor(props: any) {
         super(props);
-        this.mentorEditData = new MentorEditData({} as IMentorEditCreateData);
+        this.mentorProfileData = new MentorEditProfileData({} as IMentorEditProfileData);
         this.onSubmit = this.onSubmit.bind(this);
-        this.updateListSkills = this.updateListSkills.bind(this);
         this.updateImage = this.updateImage.bind(this);
+        this.updateMentor = this.updateMentor.bind(this);
+        this.mentorService =  new MentorService();
         this.state = {
-            listSites: [] as IPropsMentorOptionsDropDown[],
-            listSkills: [] as IPropsMentorOptionsDropDown[],
-            mentor: {...this.mentorEditData.getMentorValues, otherUtpRole: !!true},
+            loadingData: true,
+            mentor: {...this.mentorProfileData.getMentorValues},
+            modalSuccess: false,
+            saving: false,
             selectedImage: ''
         };
     }
 
+    public componentDidMount() {
+        this.mentorService.getProfile().then((mentor) => {
+            this.mentorProfileData = new MentorEditProfileData(mentor);
+            this.setState({
+                loadingData: false,
+                mentor: this.mentorProfileData.getMentorProfileValues,
+                selectedImage: mentor.photo
+            });
+        })
+    }
+
     public render() {
-        const listSites = this.state.listSites;
-        const listSkills = this.state.listSkills;
         const selectedImage = this.state.selectedImage;
         return (
             <div className="u-LayoutMargin">
+                {this.state.saving && <LoaderFullScreen modal={true} text={"Cargando..."}/>}
+                <MentorModalBase show={this.state.modalSuccess} onCloseModal={this.closeConfirmModal} hideClose={true}>
+                    <ContentModal.Success description={"Cambios guardados con éxito"} />
+                </MentorModalBase>
                 <MentorEditContainer>
-                    {this.state.mentor &&
+                    {this.state.loadingData && <LoaderFullScreen />}
                     <Formik
                         initialValues={this.state.mentor}
+                        enableReinitialize={true}
                         validationSchema={mentorFormBaseSchema}
                         isInitialValid={false}
                         onSubmit={this.onSubmit}>
@@ -57,14 +81,13 @@ class ProfileEditMentor extends React.Component<{}, IStateProfileEditMentor> {
                                         errors,
                                         handleBlur,
                                         handleChange,
-                                        listSites,
-                                        listSkills,
+                                        listSites: [],
+                                        listSkills: [] ,
                                         selectedImage,
                                         setFieldTouched,
                                         setFieldValue,
                                         touched,
                                         updateImage: this.updateImage,
-                                        updateListSkills: this.updateListSkills,
                                         values
                                     }}>
                                     <form onSubmit={handleSubmit}>
@@ -76,30 +99,32 @@ class ProfileEditMentor extends React.Component<{}, IStateProfileEditMentor> {
                                 </MentorFormBaseContext.Provider>
                             )
                         }}
-                    </Formik>}
+                    </Formik>
                 </MentorEditContainer>
             </div>
         )
     }
 
-    private onSubmit(values: IMentorFormValidations) {
-        this.mentorEditData.prepareData(values);
+    private updateMentor() {
+        this.setState({saving: true, modalSuccess: false});
+        this.mentorService.updateProfile(this.mentorProfileData.mentorUpdateParams).then(() => {
+            this.setState({saving: false, modalSuccess: true});
+            setTimeout( () => {
+                this.setState({modalSuccess: false});
+            }, 2000)
+        }).catch(() => {
+            this.setState({saving: false, modalSuccess: false});
+        });
     }
 
-    private updateListSkills(siteId: string) {
-        return new Promise((resolve, reject) => {
-            this.setState({listSkills: []}, () => {
-                /*
-                this.skillService.listBySite(siteId).then((skills: ISkill[]) => {
-                    const listSkills = skills.map((v) => ({value: v.id, label: v.name}));
-                    this.setState({listSkills});
-                    resolve()
-                }).catch(() => {
-                    reject()
-                })
-                */
-            })
-        })
+
+    private closeConfirmModal() {
+        this.setState({modalSuccess: false});
+    }
+
+    private onSubmit(values: IMentorFormValidations) {
+        this.mentorProfileData.prepareData(values);
+        this.updateMentor();
     }
 
     private updateImage(selectedImage: string) {

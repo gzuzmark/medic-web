@@ -10,9 +10,9 @@ import LoaderFullScreen from "../../../common/Loader/LoaderFullsScreen";
 import colors, {FONTS} from "../../../common/MentorColor";
 import {IPropsMentorOptionsDropDown} from "../../../common/MentorDropDown/MentorDropDown";
 import { Body1, Heading2 } from "../../../common/MentorText";
+import MentorAdminEditData, {IMentorAdminEditCreateData, IMentorAdminEditFormValidations} from "../../../domain/Mentor/MentorAdminEdit";
 import {MENTOR_STATUS} from "../../../domain/Mentor/MentorBase";
 import {IMentorFormValidations} from "../../../domain/Mentor/MentorBaseForm";
-import MentorEditData, {IMentorEditCreateData, IMentorEditFormValidations} from "../../../domain/Mentor/MentorEdit";
 import {ISites} from "../../../domain/Sites/Sites";
 import {ISkill} from "../../../domain/Skill/Skill";
 import {IMatchParam} from "../../../interfaces/MatchParam.interface";
@@ -27,7 +27,7 @@ interface IStateMentorEdit  {
     listSites: IPropsMentorOptionsDropDown[];
     listSkills: IPropsMentorOptionsDropDown[];
     selectedImage: string;
-    mentor: IMentorEditFormValidations | null;
+    mentor: IMentorAdminEditFormValidations | null;
     loader: boolean;
     modal: boolean;
     saving: boolean;
@@ -59,7 +59,7 @@ class MentorFormEdit  extends React.Component <IPropsMentorEdit, IStateMentorEdi
     public state: IStateMentorEdit ;
     private sitesService: SitesService;
     private idMentor: string;
-    private mentorEditData: MentorEditData;
+    private mentorEditData: MentorAdminEditData;
     private skillService: SkillService;
     private mentorService: MentorService;
     constructor(props: any) {
@@ -70,7 +70,7 @@ class MentorFormEdit  extends React.Component <IPropsMentorEdit, IStateMentorEdi
         this.openConfirmModal = this.openConfirmModal.bind(this);
         this.closeConfirmModal = this.closeConfirmModal.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
-        this.mentorEditData = new MentorEditData({} as IMentorEditCreateData);
+        this.mentorEditData = new MentorAdminEditData({} as IMentorAdminEditCreateData);
         this.sitesService = new SitesService();
         this.skillService =  new SkillService();
         this.mentorService =  new MentorService();
@@ -88,9 +88,9 @@ class MentorFormEdit  extends React.Component <IPropsMentorEdit, IStateMentorEdi
     }
 
     public componentDidMount() {
-        this.mentorService.get(this.idMentor).then((mentor: IMentorEditCreateData) => {
+        this.mentorService.get(this.idMentor).then((mentor: IMentorAdminEditCreateData) => {
             const mentorEdit = {exist: false, ...mentor};
-            this.mentorEditData = new MentorEditData(mentorEdit);
+            this.mentorEditData = new MentorAdminEditData(mentorEdit);
             if (!!mentor.sitesId) {
                 this.updateListSkills(mentor.sitesId[0].toString());
             }
@@ -125,7 +125,7 @@ class MentorFormEdit  extends React.Component <IPropsMentorEdit, IStateMentorEdi
         const disablePersonalData = !!this.state.mentor && !!this.state.mentor.otherUtpRole;
         return (
             <div className="u-LayoutMargin">
-                {this.state.saving && <LoaderFullScreen text={"Cargando..."}/>}
+                {this.state.saving && <LoaderFullScreen modal={true} text={"Cargando..."}/>}
                 <MentorModalBase show={this.state.modal} onCloseModal={this.closeConfirmModal} hideClose={this.state.success}>
                     <ContentModal.Success description={"Cambios guardados con éxito"} />
                 </MentorModalBase>
@@ -181,7 +181,7 @@ class MentorFormEdit  extends React.Component <IPropsMentorEdit, IStateMentorEdi
         this.mentorService.put(this.idMentor, this.mentorEditData.mentor).then(() => {
             this.setState({saving: false, modal: true, success: true});
             setTimeout( () => {
-                window.location.reload();
+                this.setState({modal: false, success: false});
             }, 2000)
         }).catch(() => {
             this.setState({saving: false, modal: false, success: false});

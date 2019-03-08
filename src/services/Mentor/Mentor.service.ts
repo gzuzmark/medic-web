@@ -1,5 +1,6 @@
 import {IMentorBase} from "../../domain/Mentor/MentorBase";
 import {IMentorBaseForm} from "../../domain/Mentor/MentorBaseForm";
+import {IMentorEditParams} from "../../domain/Mentor/MentorEditProfile";
 import {IMentorSession} from '../../interfaces/Mentor.interface';
 import BaseRequest from '../BaseRequest';
 
@@ -136,9 +137,10 @@ class MentorService extends BaseRequest {
         });
     }
 
-    public uploadPhoto(formData: FormData): Promise<IMentorSession[]> {
+    public uploadPhoto(formData: FormData, mentor: boolean): Promise<IMentorSession[]> {
+        const service = mentor ? 'ugo/mentors-api/me/photo ' : 'ugo-admin/mentors/photo';
         return new Promise((resolve, reject) => {
-            this.instance.post('ugo-admin/mentors/photo', formData)
+            this.instance.post(service, formData)
                 .then((response: any) => {
                     if (response.status === 200 && response.data) {
                         resolve(response.data);
@@ -155,7 +157,7 @@ class MentorService extends BaseRequest {
 
     public save(mentor: IMentorBaseForm) {
         return new Promise((resolve, reject) => {
-            this.instance.post('ugo-admin/mentors-full', mentor)
+            this.instance.post('ugo-admin/mentors/full', mentor)
                 .then((response: any) => {
                     if (response.status === 200 && response.data) {
                         resolve(response.data);
@@ -172,7 +174,7 @@ class MentorService extends BaseRequest {
 
     public put(id: string, mentor: IMentorBaseForm) {
         return new Promise((resolve, reject) => {
-            this.instance.put(`ugo-admin/mentors-full/${id}`, mentor)
+            this.instance.put(`ugo-admin/mentors/${id}/full`, mentor)
                 .then((response: any) => {
                     if (response.status === 200 && response.data) {
                         resolve(response.data);
@@ -189,7 +191,7 @@ class MentorService extends BaseRequest {
 
     public get(idMentor: string): Promise<IMentorBaseForm> {
         return new Promise((resolve, reject) => {
-            this.instance.get(`ugo-admin/mentors-full/${idMentor}`)
+            this.instance.get(`ugo-admin/mentors/${idMentor}/full`)
                 .then((response: any) => {
                     if (response.status === 200 && response.data) {
                         resolve(response.data);
@@ -220,6 +222,41 @@ class MentorService extends BaseRequest {
                 });
         });
     }
+
+    public getProfile(): Promise<IMentorBaseForm> {
+        return new Promise((resolve, reject) => {
+            this.instance.get(`ugo/mentors-api/me/full`)
+                .then((response: any) => {
+                    if (response.status === 200 && response.data) {
+                        resolve(response.data);
+                    } else {
+                        reject(null);
+                    }
+                })
+                .catch((error: any) => {
+                    this.validSession();
+                    reject(error);
+                });
+        });
+    }
+
+    public updateProfile(mentor: IMentorEditParams): Promise<any> {
+        return new Promise((resolve, reject) => {
+            this.instance.put(`ugo/mentors-api/me/full`, mentor)
+                .then((response: any) => {
+                    if (response.status === 200 && response.data) {
+                        resolve(response.data);
+                    } else {
+                        reject(null);
+                    }
+                })
+                .catch((error: any) => {
+                    this.validSession();
+                    reject(error);
+                });
+        });
+    }
+
 
 }
 

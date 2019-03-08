@@ -5,19 +5,34 @@ import MentorBaseForm, {
     IMentorFormValidations
 } from "./MentorBaseForm";
 
-export interface IMentorEditCreateData extends IMentorBaseForm {
-    otherUtpRole: boolean;
+export interface IMentorProfileData extends IMentorBaseForm {
+    rating?: {
+        average: number;
+        count: number;
+    };
 }
 
-export interface IMentorEditFormValidations extends IMentorFormValidations{
-    otherUtpRole: boolean;
+export interface IMentorProfileFormValidations extends IMentorFormValidations{
+    rating?: {
+        average: number;
+        count: number;
+    };
 }
 
-class MentorEditData extends MentorBaseForm {
-    public exist = false;
-    constructor(mentor: IMentorEditCreateData) {
+class MentorProfileData extends MentorBaseForm {
+    public rating = {
+        average: 0,
+        count: 0
+    };
+    constructor(mentor: IMentorProfileData) {
         super(mentor);
+        this.rating = mentor.rating || this.rating;
     }
+
+    get getMentorProfileValues(): IMentorProfileFormValidations{
+        return {...this.getMentorValues, rating: this.rating};
+    }
+
     public getFormExperiences(): IMentorFormExperience[] {
         const experiences = this.mentor.experiences ? [...this.mentor.experiences] : [];
         const formExperiences = experiences.map((item: IMentorExperience) => {
@@ -34,19 +49,8 @@ class MentorEditData extends MentorBaseForm {
                 toYear: !!toDate ? toDate.getFullYear().toString() : ''
             }
         });
-        if (formExperiences.length === 0) {
-            formExperiences.push({
-                    company: "",
-                    currentJob: false,
-                    fromMonth: "",
-                    fromYear: "",
-                    position: "",
-                    toMonth: "",
-                    toYear: ""
-            })
-        }
         return formExperiences;
     }
 }
 
-export default MentorEditData;
+export default MentorProfileData;

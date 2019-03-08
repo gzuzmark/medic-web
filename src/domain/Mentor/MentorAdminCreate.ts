@@ -1,12 +1,12 @@
 import MentorBaseForm, {IMentorBaseForm, IMentorExperience, IMentorFormExperience} from "./MentorBaseForm";
 
-export interface IMentorCreateData extends IMentorBaseForm {
+export interface IMentorAdminCreateData extends IMentorBaseForm {
     exist: boolean;
 }
 
-class MentorCreateData extends MentorBaseForm {
+class MentorAdminCreateData extends MentorBaseForm {
     public exist = false;
-    constructor(mentor: IMentorCreateData) {
+    constructor(mentor: IMentorAdminCreateData) {
         super(mentor);
         this.exist = mentor.exist;
         this.mentor.experiences = [
@@ -37,4 +37,4 @@ class MentorCreateData extends MentorBaseForm {
     }
 }
 
-export default MentorCreateData;
+export default MentorAdminCreateData;

@@ -121,7 +121,8 @@ class FormManager extends React.Component <IPropsFormManager, IStateFormManager>
                     <ContentModal.Generic generic={this.warningContent} loading={false} confirm={this.onHandleSubmit} />
                 </MentorModalBase>
                 <FormImage id={"FormImageEdit"}
-                           forceDisable={this.forceDisable}>
+                           forceDisable={this.forceDisable}
+                           mentor={false}>
                     <UpdateStatus status={this.props.mentor.status} idMentor={this.props.mentor.id}/>
                 </FormImage>
                 <FormPersonalDataTemplate

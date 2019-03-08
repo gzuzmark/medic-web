@@ -47,7 +47,7 @@ class UpdateStatus extends React.Component <IPropsUpdateStatus, IStateUpdateStat
         const finalStatus = this.props.status === MENTOR_STATUS.PUBLISHED ? 'deshabilitado' : 'habilitado';
         return (
             <React.Fragment>
-                {this.state.saving && <LoaderFullScreen text={"Cargando..."}/>}
+                {this.state.saving && <LoaderFullScreen modal={true} text={"Cargando..."}/>}
                 <MentorModalBase show={this.state.modal} onCloseModal={this.closeModal}>
                     <ContentModal.Generic generic={this.warningContent} loading={false} confirm={this.updateMentorStatus} />
                 </MentorModalBase>

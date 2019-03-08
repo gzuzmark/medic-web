@@ -182,9 +182,11 @@ class FormPersonalData extends React.Component <IPropsFormPersonalData, IStateFo
             context.setFieldValue('skills', []);
             context.setFieldTouched('skills', false);
             this.setState({loadingSkills: true});
-            context.updateListSkills(option.value).then(() => {
-                this.setState({loadingSkills: false});
-            });
+            if (context.updateListSkills) {
+                context.updateListSkills(option.value).then(() => {
+                    this.setState({loadingSkills: false});
+                });
+            }
         }
     }
 

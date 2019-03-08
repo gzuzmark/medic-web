@@ -1,11 +1,11 @@
 import {IPropsMentorOptionsDropDown} from "../../../common/MentorDropDown/MentorDropDown";
+import MentorAdminCreateData, {
+    IMentorAdminCreateData
+} from "../../../domain/Mentor/MentorAdminCreate";
 import {IFormItemBase} from "../../../domain/Mentor/MentorBaseForm";
-import MentorCreateData, {
-    IMentorCreateData
-} from "../../../domain/Mentor/MentorCreate";
 import {IMentorFormBaseContext} from "./MentorFormBase.context";
 
-const mentorCreateData = new MentorCreateData({} as IMentorCreateData);
+const mentorCreateData = new MentorAdminCreateData({} as IMentorAdminCreateData);
 export const getDefaultValues = ():IMentorFormBaseContext => (
     {
         errors: {},
