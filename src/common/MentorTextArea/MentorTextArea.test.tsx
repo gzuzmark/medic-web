@@ -1,7 +1,6 @@
 import { mount } from 'enzyme';
 import 'jest-styled-components';
 import * as React from 'react';
-import Icon from "../Icon/Icon";
 import colors from "../MentorColor";
 import {Body1} from "../MentorText";
 import MentorTextArea, {IPropsMentorTextArea, TextAreaComponent} from "./MentorTextArea";
@@ -31,15 +30,6 @@ describe('MentorTextArea Test',() => {
         const component = getComponent();
         expect(component.find("label").find(Body1).children().text()).toEqual("Campo TextArea");
     });
-
-    it("render: info should be 'This is an information'", () => {
-        props = {
-            info: "This is an information"
-        };
-        const component = getComponent();
-        expect(component.find(Icon).props().attr["data-tip"]).toEqual("This is an information");
-    });
-
 
     it("render: limit should be '0/200'", () => {
         props = {

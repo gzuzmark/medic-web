@@ -56,7 +56,8 @@ class MentorsList extends React.Component <{}, IStateListMentor> {
     public renderMenu() {
         return (
             <Sticky height={244} top={80} style={{background: 'white'}}>
-                <MenuAside baseText={'Mentores'} url={'/admin/mentores'}/>
+                <MenuAside  icon={'book'}
+                            items={[{text: 'Mentores', url: '/admin/mentores'}]} />
                 <div className='u-LayoutMargin u-ListMentors_padding ListMentors_sticky'>
                     <MentorDropDown
                         options={this.state.skills}

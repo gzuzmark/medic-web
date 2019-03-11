@@ -9,7 +9,7 @@ interface IPropsConsoleTableLoader {
     style?: React.CSSProperties;
 }
 
-const ConsoleTableLoader: React.StatelessComponent<IPropsConsoleTableLoader> = (props) => {
+const ConsoleTableLoader: React.FC<IPropsConsoleTableLoader> = (props) => {
     if (!props.loading) {
         return null;
     }

@@ -1,46 +1,72 @@
-// TODO: Hola Carlos del futuro esto quizas te sirva para mejorar el buscador de la lista => https://react-select.com/home#async
 import * as React from 'react';
-import { Text } from '../ConsoleText';
-import {IListItem} from "../FilterList/FilterList";
+import styled from "styled-components";
+import {IFilerListItem} from "../FilterList/FilterList";
 import Icon from "../Icon/Icon";
+import colors from "../MentorColor";
+import {LIGHT_TEXT, Subhead1} from '../MentorText';
 import './SelectList.scss';
 
 
 interface IPropsSelectList {
-    list: IListItem[];
-    onChange: (item: IListItem) => void;
+    list: IFilerListItem[];
+    onChange: (item: IFilerListItem) => void;
     removeFilters?: () => void;
     style?: React.CSSProperties;
 }
 
 const iconStyles: React.CSSProperties = {
-    height: 20,
+    fill: colors.TEXT_COLORS.font_dark,
+    height: 32,
     marginLeft:12,
     marginRight: 12,
     paddingRight: 2,
-    width: 20
+    width: 32
 };
 
-const SelectList: React.StatelessComponent<IPropsSelectList> = (props) => {
+const ItemMenu = styled.li`
+    align-items: center;
+    display: flex;
+    list-style-type: none;
+    padding: 12px 10px;
+    &:hover {
+      background: #eef2f6;
+    }
+    &:focus, &:active {
+      background: ${colors.BACKGROUND_COLORS.background_purple};
+      ${Subhead1}, span {
+        color: ${colors.TEXT_COLORS.font_light};
+      }
+      svg {
+        fill: ${colors.TEXT_COLORS.font_light}!important;
+      }
+    }
+`;
+
+const click = (item: IFilerListItem, callback: (item: IFilerListItem) => void) => {
+    return () => {
+        callback(item);
+    }
+};
+
+const SelectList: React.FC<IPropsSelectList> = (props) => {
     return (
         <ul className="SelectList" style={{...props.style}}>
             {props.list.map((item, index) => {
-                const click = () => {
-                    props.onChange(item);
-                };
                 return (
-                    <li key={'select-list-' + index}
-                        className="SelectList-item"
-                        onClick={click}>
+                    <ItemMenu key={'select-list-' + index}
+                        onClick={click(item, props.onChange)}>
                         {item.icon && <Icon name={item.icon} style={iconStyles}/>}
-                        <Text className="SelectList-item_text">{item.name}</Text>
-                    </li>
+                        {typeof(item.name) === "string" ?
+                            (<Subhead1 weight={LIGHT_TEXT}>{item.name}</Subhead1>) :
+                            item.name
+                        }
+                    </ItemMenu>
                 );
             })}
             {!!props.removeFilters &&
-            <li className="SelectList-item" onClick={props.removeFilters}>
-                <Text className="SelectList-item_text">Mostrar todo</Text>
-            </li>}
+            <ItemMenu onClick={props.removeFilters}>
+                <Subhead1>Mostrar todo</Subhead1>
+            </ItemMenu>}
         </ul>
     );
 };

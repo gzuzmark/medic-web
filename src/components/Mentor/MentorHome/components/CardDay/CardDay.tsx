@@ -12,7 +12,7 @@ export interface IPropsCardDay {
 }
 
 
-const CardDay: React.StatelessComponent<IPropsCardDay> = (props) => {
+const CardDay: React.FC<IPropsCardDay> = (props) => {
     const classToday = props.today ? 'CardDay--today' : '';
     return (
         <div className={`CardDay CardDay--${props.status} ${classToday}`} onClick={props.click}>

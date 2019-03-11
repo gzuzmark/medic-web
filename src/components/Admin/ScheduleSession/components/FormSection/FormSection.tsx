@@ -9,7 +9,7 @@ interface IPropsFormSection {
     itemStyle?: React.CSSProperties;
 }
 
-const FormSection: React.StatelessComponent<IPropsFormSection> = (props) => {
+const FormSection: React.FC<IPropsFormSection> = (props) => {
     const ellipsis = props.main ? 'FormSection--ellipsis': '';
     return (
         <React.Fragment>

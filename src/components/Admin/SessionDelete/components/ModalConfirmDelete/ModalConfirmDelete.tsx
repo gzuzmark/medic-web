@@ -16,7 +16,7 @@ interface IPropsModalConfirmDelete {
     onConfirm(): void;
 }
 
-const ModalConfirmDelete: React.StatelessComponent<IPropsModalConfirmDelete> = (props) => {
+const ModalConfirmDelete: React.FC<IPropsModalConfirmDelete> = (props) => {
     const firstText = props.totalSessions === 1 ? 'la sesión' : 'las sesiones';
     const secondText = props.totalSessions === 1 ? 'esta sesión' : 'estas sesiones';
     return (

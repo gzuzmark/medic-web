@@ -6,7 +6,7 @@ interface IPropsConsoleInputRadio {
     title: string;
     attrs: any;
 }
-const ConsoleInputRadio: React.StatelessComponent<IPropsConsoleInputRadio> = (props) => {
+const ConsoleInputRadio: React.FC<IPropsConsoleInputRadio> = (props) => {
     return (
         <label className="ConsoleInputRadio">
             <Body1 weight={LIGHT_TEXT} style={{marginLeft: 5, display: 'block'}}>{props.title}</Body1>

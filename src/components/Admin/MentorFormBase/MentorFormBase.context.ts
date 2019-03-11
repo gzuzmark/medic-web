@@ -13,7 +13,7 @@ export interface IMentorFormBaseContext {
     setFieldValue: any;
     touched: any;
     updateImage: (image: string) => void;
-    updateListSkills: (siteId: string) => Promise<any>;
+    updateListSkills?: (siteId: string) => Promise<any>;
     values: IMentorFormValidations;
 }
 

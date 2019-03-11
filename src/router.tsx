@@ -17,6 +17,8 @@ import SessionDeleteSingle from "./components/Admin/SessionDelete/SessionDeleteS
 import Login from './components/Login/Login';
 import Logout from './components/Logout/Logout';
 import MentorHome from "./components/Mentor/MentorHome/MentorHome";
+import ProfileEditMentor from "./components/Mentor/ProfileEditMentor/ProfileEditMentor";
+import ProfileMentor from "./components/Mentor/ProfileMentor/ProfileMentor";
 import SessionsMentor from "./components/Mentor/SessionsMentor/SessionsMentor";
 import UserRepository, {ROL_ADMIN, ROL_MENTOR} from "./repository/UserRepository";
 
@@ -38,25 +40,39 @@ const GuardComponent = <P extends object>(Component: React.ComponentType, rol: s
 
 const PageReports = (props: any) => {
     const LayoutReports = HOCLayout(Reports);
-    return <LayoutReports baseText={'Reportes'} url={'/admin/reportes'} {...props} keyPage={'report'}/>;
+    return <LayoutReports icon={'report'}
+                          items={[{url: '/admin/reportes', text: 'Reportes'}]}
+                          {...props}/>;
 };
 
 const PageCreateMentor = (props: any) => {
-    const LayoutReports = HOCLayout(MentorFormCreate);
-    return <LayoutReports baseText={'Mentores'}
-                          url={'/admin'}
-                          {...props}
-                          keyPage={'book'}
-                          textNavigation={"Agregar mentor"}/>;
+    const LayoutCreateMentor = HOCLayout(MentorFormCreate);
+    return <LayoutCreateMentor icon={'book'}
+                               items={[{url: '/admin', text: 'Mentores'}, {text: 'Agregar mentor'}]}
+                               {...props}/>;
 };
 
 const PageEditMentor = (props: any) => {
-    const LayoutReports = HOCLayout(MentorFormEdit);
-    return <LayoutReports baseText={'Mentores'}
-                          url={'/admin'}
-                          {...props}
-                          keyPage={'book'}
-                          textNavigation={"Editar mentor"}/>;
+    const LayoutEditMentor = HOCLayout(MentorFormEdit);
+    return <LayoutEditMentor icon={'book'}
+                             items={[{url: '/admin', text: 'Mentores'}, {text: 'Editar mentor'}]}
+                             {...props}/>;
+};
+
+const PageProfileMentor = (props: any) => {
+    const LayoutProfileMentor = HOCLayout(ProfileMentor);
+    return <LayoutProfileMentor icon={'book'}
+                                items={[{url: '/mentor', text: 'Inicio'}, {text: 'Ver perfil'}]}
+                                {...props} />;
+};
+
+const PageEditProfileMentor = (props: any) => {
+    const LayoutProfileEditMentor = HOCLayout(ProfileEditMentor);
+    return <LayoutProfileEditMentor icon={'book'}
+                                    items={[
+                                        {url: '/mentor', text: 'Inicio'},
+                                        {text: 'Ver perfil', url: '/mentor/perfil'}, {text: 'Editar perfil'}]}
+                                    {...props} />;
 }
 
 export const initRouter = () => {
@@ -75,6 +91,8 @@ export const initRouter = () => {
                 <Route exact={true} path="/admin/mentores/:id/sesiones/:session/eliminar" render={GuardComponent(SessionDeleteSingle, ROL_ADMIN)} />
                 <Route exact={true} path="/admin/mentores/:id/sesiones/eliminar" render={GuardComponent(SessionDeleteMultiple, ROL_ADMIN)} />
                 <Route exact={true} path="/mentor" render={GuardComponent(MentorHome, ROL_MENTOR)} />
+                <Route exact={true} path="/mentor/perfil" render={GuardComponent(PageProfileMentor, ROL_MENTOR)} />
+                <Route exact={true} path="/mentor/editar-perfil" render={GuardComponent(PageEditProfileMentor, ROL_MENTOR)} />
                 <Route exact={true} path="/mentor/sesion/:session/" render={GuardComponent(SessionsMentor, ROL_MENTOR)} />
             </div>
         </Router>,

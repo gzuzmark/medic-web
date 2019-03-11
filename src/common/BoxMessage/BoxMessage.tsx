@@ -1,5 +1,3 @@
-// TODO: Hola Carlos del futuro esto quizas te sirva para mejorar el buscador de la lista => https://react-select.com/home#async
-
 import * as React from 'react';
 import { Text } from '../ConsoleText';
 import Icon from "../Icon/Icon";
@@ -19,7 +17,7 @@ const getKeyIcon = (key: string): string => {
     return icon;
 };
 
-const BoxMessage: React.StatelessComponent<IPropsBoxMessage> = (props) => {
+const BoxMessage: React.FC<IPropsBoxMessage> = (props) => {
     if (!props.show) {
         return null;
     }

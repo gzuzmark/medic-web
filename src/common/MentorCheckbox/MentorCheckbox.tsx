@@ -64,7 +64,7 @@ export const CheckboxContainer = styled.label`
         position: absolute;
         width: 0;
     }
-    input:checked ~ ${CheckboxStyled} {
+    input:checked(:not[disabled]) ~ ${CheckboxStyled} {
         background: ${colors.BACKGROUND_COLORS.background_white};
     }
     input:checked ~ ${CheckboxStyled}:after {

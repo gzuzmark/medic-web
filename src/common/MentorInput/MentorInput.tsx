@@ -19,6 +19,7 @@ interface IPropsMentorInput {
     style?: React.CSSProperties;
     styleContainer?: React.CSSProperties;
     label?: string;
+    disabled?: boolean;
     onClickIcon?: (value: string) => void,
     animation?: {
         enable?: boolean;
@@ -46,6 +47,10 @@ const InputContainer = styled.div`
         &[disabled] {
             border: solid 1px ${colors.BACKGROUND_COLORS.background_disabled};
             color: ${colors.TEXT_COLORS.font_disabled};
+            &::-webkit-input-placeholder {color: ${colors.BACKGROUND_COLORS.background_disabled};transition: color 0.2s ease-in;}
+            &:-moz-placeholder           {color: ${colors.BACKGROUND_COLORS.background_disabled}: color 0.2s ease-in;}
+            &::-moz-placeholder          {color: ${colors.BACKGROUND_COLORS.background_disabled}: color 0.2s ease-in;}
+            &:-ms-input-placeholder      {color: ${colors.BACKGROUND_COLORS.background_disabled}: color 0.2s ease-in;}
         }
         &::-webkit-input-placeholder {color: ${colors.TEXT_COLORS.font_blue_grey};transition: color 0.2s ease-in;}
         &:-moz-placeholder           {color: ${colors.TEXT_COLORS.font_blue_grey}: color 0.2s ease-in;}
@@ -107,6 +112,7 @@ class MentorInput extends React.Component<IPropsMentorInput, IStateMentorInput> 
     public render() {
         let inputClass = 'MentorInput--inactive';
         let icon = this.props.icon;
+        let attrs = this.props.attrs;
         const noAnimation = this.props.animation && this.props.animation.enable === false || this.props.active;
         if (this.props.enable && (this.props.active || noAnimation)) {
             const status = this.state.focus ? 'focus' : 'default';
@@ -121,9 +127,13 @@ class MentorInput extends React.Component<IPropsMentorInput, IStateMentorInput> 
         if (!!this.props.error) {
             icon = 'close'
         }
+
+        if (!!this.props.disabled) {
+            attrs = {...attrs, disabled: true};
+        }
         return (
             <div style={{...this.props.styleContainer}} onClick={this.onClick}>
-                <FormLabel label={this.props.label} info={this.props.info} uppercase={true}/>
+                {this.props.label && <FormLabel label={this.props.label} info={this.props.info} uppercase={true}/>}
                 <InputContainer
                     className={`MentorInput ${inputClass}`}
                     style={{...this.props.style}}>
@@ -131,7 +141,7 @@ class MentorInput extends React.Component<IPropsMentorInput, IStateMentorInput> 
                         ref={this.input}
                         className={`MentorInput_input`}
                         type={"text"}
-                        {...this.props.attrs}/>
+                        {...attrs}/>
                         {this.props.loading && <LoaderInput color={colors.TEXT_COLORS.font_dark}/>}
                         {!!icon && !this.props.loading && <Icon name={icon} style={{...this.props.iconStyles}} click={this.onClickIcon}/>}
                         {!!this.props.animation && <Body1>{this.props.animation.text}</Body1>}

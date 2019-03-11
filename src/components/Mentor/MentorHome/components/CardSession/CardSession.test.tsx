@@ -26,11 +26,6 @@ describe('CardSession Test',() => {
         mountedCardSession = undefined;
     });
 
-    it("render: render CardSession", () => {
-        const component = getComponent();
-        expect(component).toMatchSnapshot();
-    });
-
     it("render: render CardSession RESOLVE", () => {
         const session = {...sessionMentorDummy};
         const from = new Date();

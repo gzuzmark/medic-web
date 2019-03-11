@@ -19,7 +19,7 @@ const LabelContainer = styled.div`
 `;
 
 
-const FormLabel: React.StatelessComponent<IPropsFormLabel> = (props) => {
+const FormLabel: React.FC<IPropsFormLabel> = (props) => {
     return (
         <LabelContainer>
             {!!props.label &&

@@ -1,26 +1,26 @@
 import * as React from 'react';
-import MenuAside from "./components/MenuAside/MenuAside";
+import MenuAside, {INavBarItem} from "./components/MenuAside/MenuAside";
 import Layout from "./Layout";
 
 interface IPropsHOCLayout {
-    baseText: string;
-    url: string;
-    keyPage: string;
-    textNavigation?: string;
+    items: INavBarItem[];
+    icon: string;
 }
-const renderMenu = (...args: any[]) => {
+
+const renderMenu = (items: INavBarItem[], icon: string) => {
     return (
-        <MenuAside baseText={args[0]} url={args[1]} icon={args[2]} textNavigation={args[3]} />
+        <MenuAside items={items} icon={icon}/>
     )
 };
 
 const HOCLayout = <P extends object>(Component: React.ComponentType<P>) =>
     class WithMenu extends React.Component<P & IPropsHOCLayout> {
         public render() {
-            const { baseText, url, keyPage, textNavigation, ...props } = this.props as IPropsHOCLayout;
+            const { items, icon } = this.props as IPropsHOCLayout;
+            const componentsProps = {...this.props};
             return (
-                <Layout menu={renderMenu(baseText, url, keyPage, textNavigation)}>
-                    <Component {...props} />
+                <Layout menu={renderMenu(items, icon)}>
+                    <Component {...componentsProps} />
                 </Layout>
             );
         }

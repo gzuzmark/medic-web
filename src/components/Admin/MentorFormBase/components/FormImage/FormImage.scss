@@ -6,6 +6,16 @@
   &_label {
     cursor: pointer;
   }
+  &_disabled {
+    position: relative;
+    &:before {
+      background: rgba(255, 255, 255, 0.5);
+      content: '';
+      height: 100%;
+      position: absolute;
+      width: 100%;
+    }
+  }
   &_text {
     align-items: center;
     display: flex;

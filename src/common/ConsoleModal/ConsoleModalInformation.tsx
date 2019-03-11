@@ -8,7 +8,7 @@ interface IPropsConsoleModalInformation {
     onCloseModal(): void;
 }
 
-const ConsoleModalInformation: React.StatelessComponent<IPropsConsoleModalInformation> = (props) => {
+const ConsoleModalInformation: React.FC<IPropsConsoleModalInformation> = (props) => {
     return (
         <ConsoleModal show={props.show} styles={{backgroundColor: ConsoleColor.TEXT_COLORS.purpleDark, position: 'relative'}} onCloseModal={props.onCloseModal}/>
     );

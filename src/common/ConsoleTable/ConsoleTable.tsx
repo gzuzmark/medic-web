@@ -18,7 +18,7 @@ interface IPropsConsoleTable {
 }
 
 
-const ConsoleTable: React.StatelessComponent<IPropsConsoleTable> = (props) => {
+const ConsoleTable: React.FC<IPropsConsoleTable> = (props) => {
     return (
         <div style={{position: 'relative'}}>
             <div className={`ConsoleTable ${!!props.loading ? 'ConsoleTable--loading' : ''}`} style={{...props.style}}>

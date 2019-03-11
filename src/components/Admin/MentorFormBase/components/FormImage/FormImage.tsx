@@ -26,10 +26,16 @@ interface IStateFormImage {
 
 export interface IPropsFormImage {
     id: string;
+    forceDisable?: boolean;
+    className?: string;
+    size?: number;
+    mentor?: boolean;
 }
 
 const TextInput = styled(Body1)`
-    color: ${colors.BACKGROUND_COLORS.background_purple};
+    color: ${(props: {disabled: boolean}) => {
+        return props.disabled ? colors.TEXT_COLORS.font_disabled : colors.BACKGROUND_COLORS.background_purple;
+    }};
 `;
 
 
@@ -86,7 +92,7 @@ class FormImage extends React.Component <IPropsFormImage, IStateFormImage> {
             <MentorFormBaseContext.Consumer>
                 {(context: IMentorFormBaseContext) => {
                     return (
-                        <div className={"FormImage"}>
+                        <div className={`FormImage ${this.props.className ? this.props.className : ''}`}>
                             <ReactTooltip effect={"solid"} place={"top"} id={"FormImageToolTip"} multiline={true}/>
                             <MentorModalBase
                                 show={this.state.modal}
@@ -110,20 +116,28 @@ class FormImage extends React.Component <IPropsFormImage, IStateFormImage> {
                                 </div>:
                                 <ContentModal.Generic generic={this.errorImage} loading={false} confirm={this.newUploadImage} error={true} />}
                             </MentorModalBase>
-                            <label className={"FormImage_label"} htmlFor={this.props.id} ref={this.labelImage}
-                                   data-for="FormImageToolTip"
-                                   data-tip={'La foto debe ser amigable (se recomienda una foto sonriente), <br>con fondo blanco y mira al frente.'}>
-                                <ImageProfile src={context.selectedImage || defaultImage} width={160} height={160}
-                                              title="Perfil de mentor" filled={!!context.selectedImage}/>
-                                <div className={"FormImage_text"}>
-                                    <Icon name={"upload"} style={{
-                                        fill: colors.BACKGROUND_COLORS.background_purple,
-                                        marginRight: 4
-                                    }}/>
-                                    <TextInput>{!!context.selectedImage ? 'Cambiar foto' : 'Subir foto del mentor' }</TextInput>
-                                </div>
-                            </label>
+                            <div className={this.props.forceDisable ? 'FormImage_disabled' : ''} style={{textAlign: 'center'}}>
+                                <label className={"FormImage_label"}
+                                       htmlFor={this.props.id} ref={this.labelImage}
+                                       data-for="FormImageToolTip"
+                                       data-tip={'La foto debe ser amigable (se recomienda una foto sonriente), <br>con fondo blanco y mira al frente.'}>
+                                    <ImageProfile src={context.selectedImage || defaultImage}
+                                                  width={this.props.size || 160}
+                                                  height={this.props.size || 160}
+                                                  title="Perfil de mentor" filled={!!context.selectedImage}/>
+                                    <div className={"FormImage_text"}>
+                                        <Icon name={"upload"} style={{
+                                            fill: this.props.forceDisable ? colors.TEXT_COLORS.font_disabled : colors.BACKGROUND_COLORS.background_purple,
+                                            marginRight: 4
+                                        }}/>
+                                        <TextInput disabled={!!this.props.forceDisable}>
+                                            {!!context.selectedImage ? 'Cambiar foto' : 'Subir foto del mentor' }
+                                        </TextInput>
+                                    </div>
+                                </label>
+                            </div>
                             <input type={"file"} id={this.props.id} accept="image/*" className={"FormImage_file"} onChange={this.onSelectFile} />
+                            {this.props.children}
                         </div>
                     )
                 }}
@@ -149,9 +163,11 @@ class FormImage extends React.Component <IPropsFormImage, IStateFormImage> {
                 this.setState({selectedFile: event.target.files[0]});
                 const reader = new FileReader();
                 reader.addEventListener('load', () => {
-                    this.setState({ src: reader.result }, () => {
-                        this.setState({ modal: true });
-                    });
+                    if (reader.result) {
+                        this.setState({ src: reader.result.toString() }, () => {
+                            this.setState({ modal: true });
+                        });
+                    }
                 });
                 reader.readAsDataURL(event.target.files[0]);
                 event.target.value = null;
@@ -176,7 +192,7 @@ class FormImage extends React.Component <IPropsFormImage, IStateFormImage> {
                     const bodyFormData = new FormData();
                     bodyFormData.append('content-type', 'multipart/form-data');
                     bodyFormData.append('file', croppedImage);
-                    this.mentorService.uploadPhoto(bodyFormData).then((response: any) => {
+                    this.mentorService.uploadPhoto(bodyFormData, !!this.props.mentor).then((response: any) => {
                         context.setFieldValue("picture", response.data);
                         context.updateImage(croppedTmp);
                         this.setState({
@@ -229,7 +245,7 @@ class FormImage extends React.Component <IPropsFormImage, IStateFormImage> {
         canvas.width = pixelCrop.width;
         canvas.height = pixelCrop.height;
         const ctx = canvas.getContext('2d');
-        if (!!ctx) {
+        if (!!ctx && !!ctx.drawImage) {
             ctx.drawImage(
                 image,
                 pixelCrop.x,
@@ -244,14 +260,18 @@ class FormImage extends React.Component <IPropsFormImage, IStateFormImage> {
 
         }
         return new Promise((resolve, reject) => {
-            canvas.toBlob((blob: any) => {
-                if (!blob) {
-                    return;
-                }
-                blob.name = fileName;
-                const fileUrl = window.URL.createObjectURL(blob);
-                resolve(fileUrl);
-            }, 'image/jpeg');
+            try {
+                canvas.toBlob((blob: any) => {
+                    if (!blob) {
+                        return;
+                    }
+                    blob.name = fileName;
+                    const fileUrl = window.URL.createObjectURL(blob);
+                    resolve(fileUrl);
+                }, 'image/jpeg');
+            } catch (e) {
+                reject(e)
+            }
         });
     }
 }

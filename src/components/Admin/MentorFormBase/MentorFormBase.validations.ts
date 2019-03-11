@@ -1,5 +1,6 @@
 import * as Yup from 'yup';
 export const errorRequired = 'Campo es requerido.';
+export const errorLetter = 'Campo solo permite letras.';
 export const phoneRequired = 'Número de contacto incorrecto.';
 export const limitDescription = 150;
 
@@ -18,7 +19,7 @@ const isFirstDateGreater = (date1: Date | null, date2: Date | null) => {
     return !!date2 && !!date1 && date2.getTime() <= date1.getTime()
 };
 const mentorFormBaseSchema = Yup.object().shape({
-    contactNumber: Yup.string()
+    contactNumber: Yup.string().trim()
         .test('phoneValidation', phoneRequired, (phoneContact: string) => {
             let isValid = true;
             if (!!phoneContact && phoneContact.length >= 6) {
@@ -35,9 +36,9 @@ const mentorFormBaseSchema = Yup.object().shape({
             }
             return isValid;
         }),
-    currentCompany: Yup.string(),
-    currentPosition: Yup.string(),
-    description: Yup.string().max(limitDescription, `Campo tiene más de ${limitDescription}`),
+    currentCompany: Yup.string().trim(),
+    currentPosition: Yup.string().trim(),
+    description: Yup.string().trim().max(limitDescription, `Campo tiene más de ${limitDescription}`),
     document: Yup.string().required(errorRequired)
         .test('documentTypeValidation', 'El campo no es válido', function (document: string) {
             const documentType = this.resolve(Yup.ref('documentType'));
@@ -54,7 +55,7 @@ const mentorFormBaseSchema = Yup.object().shape({
     documentType: Yup.object().required(errorRequired),
     experiences: Yup.array().min(1).max(3).of(
         Yup.object().shape({
-            company: Yup.string(),
+            company: Yup.string().trim(),
             currentJob: Yup.boolean(),
             fromMonth: Yup.string(),
             fromYear: Yup.string()
@@ -66,7 +67,7 @@ const mentorFormBaseSchema = Yup.object().shape({
                     isValid = isFirstDateGreater(current, from);
                     return isValid;
                 }),
-            position: Yup.string(),
+            position: Yup.string().trim(),
             toMonth: Yup.string(),
             toYear: Yup.string()
                 .test('currentDateValidationTo', 'Fecha "Hasta" fuera de rango',  function (toYear: string) {
@@ -94,8 +95,10 @@ const mentorFormBaseSchema = Yup.object().shape({
                 })
         })
     ),
-    firstName: Yup.string().required(errorRequired),
-    lastName: Yup.string().required(errorRequired),
+    firstName: Yup.string().required(errorRequired).trim()
+        .matches(/^[a-zA-Z áéíóúñÁÉÍÓÚÑ]+$/, { message: errorLetter, excludeEmptyString: true }),
+    lastName: Yup.string().required(errorRequired).trim()
+        .matches(/^[a-zA-Z áéíóúñÁÉÍÓÚÑ]+$/, { message: errorLetter,  excludeEmptyString: true }),
     location: Yup.string().required(errorRequired),
     picture: Yup.string(),
     skills: Yup.array().required(errorRequired).min(1).of(Yup.string()),

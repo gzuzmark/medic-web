@@ -4,11 +4,11 @@ import * as React from 'react';
 import BigCalendar from 'react-big-calendar';
 import { Link } from 'react-router-dom';
 import ConsoleColor from '../../../common/ConsoleColor';
-import { IListItem } from '../../../common/FilterList/FilterList';
 import MenuAside from '../../../common/Layout/components/MenuAside/MenuAside';
 import Layout from '../../../common/Layout/Layout';
 import Loader from '../../../common/Loader/Loader';
 import Sticky from '../../../common/Sticky/Sticky';
+import {IListItem} from "../../../domain/Lists";
 import {IMentorBase} from "../../../domain/Mentor/MentorBase";
 import { IEvent } from '../../../interfaces/Event.interface';
 import { IMatchParam } from '../../../interfaces/MatchParam.interface';
@@ -74,9 +74,8 @@ class MentorSession extends React.Component<IPropsMentorSession, IStateMentorSes
             `Calendario de sesiones de ${this.state.mentor.user.name} ${this.state.mentor.user.lastname}` : 'Calendario de sesiones';
         return (
             <Sticky height={120} top={80}>
-                <MenuAside baseText={'Mentores'}
-                           url={'/admin/mentores'}
-                           textNavigation={textNavigation}/>
+                <MenuAside icon={'book'}
+                           items={[{text: 'Mentores', url: '/admin/mentores'}, {text: textNavigation}]} />
             </Sticky>
         )
     }

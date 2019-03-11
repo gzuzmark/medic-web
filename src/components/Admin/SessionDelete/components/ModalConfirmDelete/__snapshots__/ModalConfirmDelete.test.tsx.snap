@@ -1,562 +1,68 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`ModalConfirmDelete Test render: render ModalConfirmDelete 1`] = `
-ShallowWrapper {
-  Symbol(enzyme.__root__): [Circular],
-  Symbol(enzyme.__unrendered__): <ModalConfirmDelete
+<ConsoleModalConfirm
+  show={true}
+  title="¿Estás seguro que deseas eliminar
+las sesiones?"
+>
+  <div
+    className="ModalConfirmDelete"
+  >
+    <styled.h2
+      style={
+        Object {
+          "color": "#ee5c7d",
+        }
+      }
+    >
+      <span
+        style={
+          Object {
+            "position": "relative",
+          }
+        }
+      >
+        <Icon
+          name="exclamation"
+          style={
+            Object {
+              "fill": "#ee5c7d",
+              "height": 24,
+              "position": "absolute",
+              "top": 4,
+              "width": 24,
+            }
+          }
+        />
+      </span>
+       
+      <span
+        style={
+          Object {
+            "paddingLeft": 25,
+          }
+        }
+      >
+        Si eliminas 
+        estas sesiones
+         no podrás revertir esta acción más adelante.
+      </span>
+    </styled.h2>
+  </div>
+  <ConfirmButtons
+    cancelText="No, volver"
+    confirmText="Si, eliminar"
     disabled={false}
     loading={false}
     onCancel={[Function]}
     onConfirm={[Function]}
-    show={true}
-  >
-    Contenido de la Modal
-  </ModalConfirmDelete>,
-  Symbol(enzyme.__renderer__): Object {
-    "batchedUpdates": [Function],
-    "checkPropTypes": [Function],
-    "getNode": [Function],
-    "render": [Function],
-    "simulateError": [Function],
-    "simulateEvent": [Function],
-    "unmount": [Function],
-  },
-  Symbol(enzyme.__node__): Object {
-    "instance": null,
-    "key": undefined,
-    "nodeType": "function",
-    "props": Object {
-      "children": Array [
-        <div
-          className="ModalConfirmDelete"
-        >
-          <styled.h2
-            style={
-              Object {
-                "color": "#ee5c7d",
-              }
-            }
-          >
-            <span
-              style={
-                Object {
-                  "position": "relative",
-                }
-              }
-            >
-              <Icon
-                name="exclamation"
-                style={
-                  Object {
-                    "fill": "#ee5c7d",
-                    "height": 24,
-                    "position": "absolute",
-                    "top": 4,
-                    "width": 24,
-                  }
-                }
-              />
-            </span>
-             
-            <span
-              style={
-                Object {
-                  "paddingLeft": 25,
-                }
-              }
-            >
-              Si eliminas 
-              estas sesiones
-               no podrás revertir esta acción más adelante.
-            </span>
-          </styled.h2>
-        </div>,
-        <ConfirmButtons
-          cancelText="No, volver"
-          confirmText="Si, eliminar"
-          disabled={false}
-          loading={false}
-          onCancel={[Function]}
-          onConfirm={[Function]}
-          styles={
-            Object {
-              "margin": "60px auto 20px auto",
-              "width": "74%",
-            }
-          }
-        />,
-      ],
-      "show": true,
-      "title": "¿Estás seguro que deseas eliminar
-las sesiones?",
-    },
-    "ref": null,
-    "rendered": Array [
+    styles={
       Object {
-        "instance": null,
-        "key": undefined,
-        "nodeType": "host",
-        "props": Object {
-          "children": <styled.h2
-            style={
-              Object {
-                "color": "#ee5c7d",
-              }
-            }
-          >
-            <span
-              style={
-                Object {
-                  "position": "relative",
-                }
-              }
-            >
-              <Icon
-                name="exclamation"
-                style={
-                  Object {
-                    "fill": "#ee5c7d",
-                    "height": 24,
-                    "position": "absolute",
-                    "top": 4,
-                    "width": 24,
-                  }
-                }
-              />
-            </span>
-             
-            <span
-              style={
-                Object {
-                  "paddingLeft": 25,
-                }
-              }
-            >
-              Si eliminas 
-              estas sesiones
-               no podrás revertir esta acción más adelante.
-            </span>
-          </styled.h2>,
-          "className": "ModalConfirmDelete",
-        },
-        "ref": null,
-        "rendered": Object {
-          "instance": null,
-          "key": undefined,
-          "nodeType": "class",
-          "props": Object {
-            "children": Array [
-              <span
-                style={
-                  Object {
-                    "position": "relative",
-                  }
-                }
-              >
-                <Icon
-                  name="exclamation"
-                  style={
-                    Object {
-                      "fill": "#ee5c7d",
-                      "height": 24,
-                      "position": "absolute",
-                      "top": 4,
-                      "width": 24,
-                    }
-                  }
-                />
-              </span>,
-              " ",
-              <span
-                style={
-                  Object {
-                    "paddingLeft": 25,
-                  }
-                }
-              >
-                Si eliminas 
-                estas sesiones
-                 no podrás revertir esta acción más adelante.
-              </span>,
-            ],
-            "style": Object {
-              "color": "#ee5c7d",
-            },
-          },
-          "ref": null,
-          "rendered": Array [
-            Object {
-              "instance": null,
-              "key": undefined,
-              "nodeType": "host",
-              "props": Object {
-                "children": <Icon
-                  name="exclamation"
-                  style={
-                    Object {
-                      "fill": "#ee5c7d",
-                      "height": 24,
-                      "position": "absolute",
-                      "top": 4,
-                      "width": 24,
-                    }
-                  }
-                />,
-                "style": Object {
-                  "position": "relative",
-                },
-              },
-              "ref": null,
-              "rendered": Object {
-                "instance": null,
-                "key": undefined,
-                "nodeType": "function",
-                "props": Object {
-                  "name": "exclamation",
-                  "style": Object {
-                    "fill": "#ee5c7d",
-                    "height": 24,
-                    "position": "absolute",
-                    "top": 4,
-                    "width": 24,
-                  },
-                },
-                "ref": null,
-                "rendered": null,
-                "type": [Function],
-              },
-              "type": "span",
-            },
-            " ",
-            Object {
-              "instance": null,
-              "key": undefined,
-              "nodeType": "host",
-              "props": Object {
-                "children": Array [
-                  "Si eliminas ",
-                  "estas sesiones",
-                  " no podrás revertir esta acción más adelante.",
-                ],
-                "style": Object {
-                  "paddingLeft": 25,
-                },
-              },
-              "ref": null,
-              "rendered": Array [
-                "Si eliminas ",
-                "estas sesiones",
-                " no podrás revertir esta acción más adelante.",
-              ],
-              "type": "span",
-            },
-          ],
-          "type": [Function],
-        },
-        "type": "div",
-      },
-      Object {
-        "instance": null,
-        "key": undefined,
-        "nodeType": "function",
-        "props": Object {
-          "cancelText": "No, volver",
-          "confirmText": "Si, eliminar",
-          "disabled": false,
-          "loading": false,
-          "onCancel": [Function],
-          "onConfirm": [Function],
-          "styles": Object {
-            "margin": "60px auto 20px auto",
-            "width": "74%",
-          },
-        },
-        "ref": null,
-        "rendered": null,
-        "type": [Function],
-      },
-    ],
-    "type": [Function],
-  },
-  Symbol(enzyme.__nodes__): Array [
-    Object {
-      "instance": null,
-      "key": undefined,
-      "nodeType": "function",
-      "props": Object {
-        "children": Array [
-          <div
-            className="ModalConfirmDelete"
-          >
-            <styled.h2
-              style={
-                Object {
-                  "color": "#ee5c7d",
-                }
-              }
-            >
-              <span
-                style={
-                  Object {
-                    "position": "relative",
-                  }
-                }
-              >
-                <Icon
-                  name="exclamation"
-                  style={
-                    Object {
-                      "fill": "#ee5c7d",
-                      "height": 24,
-                      "position": "absolute",
-                      "top": 4,
-                      "width": 24,
-                    }
-                  }
-                />
-              </span>
-               
-              <span
-                style={
-                  Object {
-                    "paddingLeft": 25,
-                  }
-                }
-              >
-                Si eliminas 
-                estas sesiones
-                 no podrás revertir esta acción más adelante.
-              </span>
-            </styled.h2>
-          </div>,
-          <ConfirmButtons
-            cancelText="No, volver"
-            confirmText="Si, eliminar"
-            disabled={false}
-            loading={false}
-            onCancel={[Function]}
-            onConfirm={[Function]}
-            styles={
-              Object {
-                "margin": "60px auto 20px auto",
-                "width": "74%",
-              }
-            }
-          />,
-        ],
-        "show": true,
-        "title": "¿Estás seguro que deseas eliminar
-las sesiones?",
-      },
-      "ref": null,
-      "rendered": Array [
-        Object {
-          "instance": null,
-          "key": undefined,
-          "nodeType": "host",
-          "props": Object {
-            "children": <styled.h2
-              style={
-                Object {
-                  "color": "#ee5c7d",
-                }
-              }
-            >
-              <span
-                style={
-                  Object {
-                    "position": "relative",
-                  }
-                }
-              >
-                <Icon
-                  name="exclamation"
-                  style={
-                    Object {
-                      "fill": "#ee5c7d",
-                      "height": 24,
-                      "position": "absolute",
-                      "top": 4,
-                      "width": 24,
-                    }
-                  }
-                />
-              </span>
-               
-              <span
-                style={
-                  Object {
-                    "paddingLeft": 25,
-                  }
-                }
-              >
-                Si eliminas 
-                estas sesiones
-                 no podrás revertir esta acción más adelante.
-              </span>
-            </styled.h2>,
-            "className": "ModalConfirmDelete",
-          },
-          "ref": null,
-          "rendered": Object {
-            "instance": null,
-            "key": undefined,
-            "nodeType": "class",
-            "props": Object {
-              "children": Array [
-                <span
-                  style={
-                    Object {
-                      "position": "relative",
-                    }
-                  }
-                >
-                  <Icon
-                    name="exclamation"
-                    style={
-                      Object {
-                        "fill": "#ee5c7d",
-                        "height": 24,
-                        "position": "absolute",
-                        "top": 4,
-                        "width": 24,
-                      }
-                    }
-                  />
-                </span>,
-                " ",
-                <span
-                  style={
-                    Object {
-                      "paddingLeft": 25,
-                    }
-                  }
-                >
-                  Si eliminas 
-                  estas sesiones
-                   no podrás revertir esta acción más adelante.
-                </span>,
-              ],
-              "style": Object {
-                "color": "#ee5c7d",
-              },
-            },
-            "ref": null,
-            "rendered": Array [
-              Object {
-                "instance": null,
-                "key": undefined,
-                "nodeType": "host",
-                "props": Object {
-                  "children": <Icon
-                    name="exclamation"
-                    style={
-                      Object {
-                        "fill": "#ee5c7d",
-                        "height": 24,
-                        "position": "absolute",
-                        "top": 4,
-                        "width": 24,
-                      }
-                    }
-                  />,
-                  "style": Object {
-                    "position": "relative",
-                  },
-                },
-                "ref": null,
-                "rendered": Object {
-                  "instance": null,
-                  "key": undefined,
-                  "nodeType": "function",
-                  "props": Object {
-                    "name": "exclamation",
-                    "style": Object {
-                      "fill": "#ee5c7d",
-                      "height": 24,
-                      "position": "absolute",
-                      "top": 4,
-                      "width": 24,
-                    },
-                  },
-                  "ref": null,
-                  "rendered": null,
-                  "type": [Function],
-                },
-                "type": "span",
-              },
-              " ",
-              Object {
-                "instance": null,
-                "key": undefined,
-                "nodeType": "host",
-                "props": Object {
-                  "children": Array [
-                    "Si eliminas ",
-                    "estas sesiones",
-                    " no podrás revertir esta acción más adelante.",
-                  ],
-                  "style": Object {
-                    "paddingLeft": 25,
-                  },
-                },
-                "ref": null,
-                "rendered": Array [
-                  "Si eliminas ",
-                  "estas sesiones",
-                  " no podrás revertir esta acción más adelante.",
-                ],
-                "type": "span",
-              },
-            ],
-            "type": [Function],
-          },
-          "type": "div",
-        },
-        Object {
-          "instance": null,
-          "key": undefined,
-          "nodeType": "function",
-          "props": Object {
-            "cancelText": "No, volver",
-            "confirmText": "Si, eliminar",
-            "disabled": false,
-            "loading": false,
-            "onCancel": [Function],
-            "onConfirm": [Function],
-            "styles": Object {
-              "margin": "60px auto 20px auto",
-              "width": "74%",
-            },
-          },
-          "ref": null,
-          "rendered": null,
-          "type": [Function],
-        },
-      ],
-      "type": [Function],
-    },
-  ],
-  Symbol(enzyme.__options__): Object {
-    "adapter": ReactSixteenAdapter {
-      "options": Object {
-        "enableComponentDidUpdateOnSetState": true,
-        "legacyContextMode": "parent",
-        "lifecycles": Object {
-          "componentDidUpdate": Object {
-            "onSetState": true,
-          },
-          "getChildContext": Object {
-            "calledByRenderer": false,
-          },
-          "getDerivedStateFromProps": true,
-          "getSnapshotBeforeUpdate": true,
-          "setState": Object {
-            "skipsComponentDidUpdateOnNullish": true,
-          },
-        },
-      },
-    },
-  },
-}
+        "margin": "60px auto 20px auto",
+        "width": "74%",
+      }
+    }
+  />
+</ConsoleModalConfirm>
 `;

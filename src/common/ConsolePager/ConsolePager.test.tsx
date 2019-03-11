@@ -28,7 +28,6 @@ describe('ConsolePager Test',() => {
 
     it("render: render ConsolePager", () => {
         const component = getComponent();
-        expect(component).toMatchSnapshot();
         expect(component.find('.ConsolePager').length).toBe(1);
     });
 

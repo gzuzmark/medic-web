@@ -1,20 +1,32 @@
 import MentorBaseForm, {IMentorBaseForm, IMentorExperience, IMentorFormExperience} from "./MentorBaseForm";
 
+export interface IMentorAdminCreateData extends IMentorBaseForm {
+    exist: boolean;
+}
 
-class MentorEditData extends MentorBaseForm {
+class MentorAdminCreateData extends MentorBaseForm {
     public exist = false;
-    constructor(mentor: IMentorBaseForm) {
+    constructor(mentor: IMentorAdminCreateData) {
         super(mentor);
+        this.exist = mentor.exist;
+        this.mentor.experiences = [
+            {
+                company: "",
+                from: "",
+                title: "",
+                to: "",
+            }
+        ]
     }
+
     public getFormExperiences(): IMentorFormExperience[] {
         const experiences = this.mentor.experiences ? [...this.mentor.experiences] : [];
-        const formExperiences = experiences.map((item: IMentorExperience) => {
+        return experiences.map((item: IMentorExperience) => {
             const {from, to} = item;
             const fromDate = !!from ? new Date(from) : '';
             const toDate = !!to ? new Date(to) : '';
             return {
                 company: item.company,
-                currentJob: !toDate,
                 fromMonth: !!fromDate ? fromDate.getMonth().toString() : '',
                 fromYear: !!fromDate ? fromDate.getFullYear().toString() : '',
                 position: item.title ,
@@ -22,19 +34,7 @@ class MentorEditData extends MentorBaseForm {
                 toYear: !!toDate ? toDate.getFullYear().toString() : ''
             }
         });
-        if (formExperiences.length === 0) {
-            formExperiences.push({
-                    company: "",
-                    currentJob: false,
-                    fromMonth: "",
-                    fromYear: "",
-                    position: "",
-                    toMonth: "",
-                    toYear: ""
-            })
-        }
-        return formExperiences;
     }
 }
 
-export default MentorEditData;
+export default MentorAdminCreateData;

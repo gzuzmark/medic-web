@@ -13,7 +13,7 @@ export interface IPropsSimpleFullCard {
     card: ISimpleFullCard;
 }
 
-const SimpleFullCard: React.StatelessComponent<IPropsSimpleFullCard> = (props) => {
+const SimpleFullCard: React.FC<IPropsSimpleFullCard> = (props) => {
     return (
         <div className={`SimpleFullCard`}>
             <div className={"SimpleFullCard_header"}>

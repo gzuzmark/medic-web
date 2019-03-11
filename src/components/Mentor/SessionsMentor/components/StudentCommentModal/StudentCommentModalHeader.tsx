@@ -10,7 +10,7 @@ export interface IPropsStudentCommentModalHeader {
 }
 
 
-const StudentCommentModalHeader: React.StatelessComponent<IPropsStudentCommentModalHeader> = (props) => {
+const StudentCommentModalHeader: React.FC<IPropsStudentCommentModalHeader> = (props) => {
     const isAddForm = props.modal.tags && props.modal.tags.every(tag => !!tag.id);
 
     return !!props.modal.student && (

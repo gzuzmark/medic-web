@@ -14,7 +14,7 @@ interface IPropsMentorModalBase {
     onCloseModal?(): void;
 }
 
-const MentorModalBase: React.StatelessComponent<IPropsMentorModalBase> = (props) => {
+const MentorModalBase: React.FC<IPropsMentorModalBase> = (props) => {
     let onClose = () => {
         //
     };

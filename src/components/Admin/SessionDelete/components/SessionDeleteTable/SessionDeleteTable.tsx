@@ -18,7 +18,7 @@ const onClick = (onSelectItem: any, id: string) => {
 };
 
 
-const SessionDeleteTable: React.StatelessComponent<IPropsSessionDeleteTable> = (props) => {
+const SessionDeleteTable: React.FC<IPropsSessionDeleteTable> = (props) => {
     const tableBase = [{
         name: <div><input type={"checkbox"}
                           checked={props.items.length === props.selection.length}

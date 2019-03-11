@@ -6,8 +6,8 @@ import Icon from "../../../common/Icon/Icon";
 import Loader from "../../../common/Loader/Loader";
 import {IPropsMentorOptionsDropDown} from "../../../common/MentorDropDown/MentorDropDown";
 import Utilities from "../../../common/Utils/Utilities";
+import MentorAdminCreateData, {IMentorAdminCreateData} from "../../../domain/Mentor/MentorAdminCreate";
 import {IMentorFormValidations} from "../../../domain/Mentor/MentorBaseForm";
-import MentorCreateData, {IMentorCreateData} from "../../../domain/Mentor/MentorCreate";
 import {ISites} from "../../../domain/Sites/Sites";
 import {ISkill} from "../../../domain/Skill/Skill";
 import MentorRepository from "../../../repository/MentorsRepository";
@@ -38,14 +38,14 @@ const defaultStep = {active: true, animation: false, complete: false};
 
 class MentorFormCreate extends React.Component <{}, IStateMentorCreate> {
     public state: IStateMentorCreate;
-    private mentorCreateData: MentorCreateData;
+    private mentorCreateData: MentorAdminCreateData;
     private sitesService: SitesService;
     private skillService: SkillService;
     private mentorService: MentorService;
     private successContent: IGenericContentModal;
     constructor(props: any) {
         super(props);
-        this.mentorCreateData = new MentorCreateData({} as IMentorCreateData);
+        this.mentorCreateData = new MentorAdminCreateData({} as IMentorAdminCreateData);
         this.onSelectStep = this.onSelectStep.bind(this);
         this.onNextStep = this.onNextStep.bind(this);
         this.onBeforeStep = this.onBeforeStep.bind(this);
@@ -122,7 +122,7 @@ class MentorFormCreate extends React.Component <{}, IStateMentorCreate> {
                                             touched,
                                             updateImage: this.updateImage,
                                             updateListSkills: this.updateListSkills,
-                                            values
+                                            values: values as IMentorFormValidations
                                         }}>
                                         <form onSubmit={handleSubmit}>
                                             <FormManager currentStep={this.state.stepActive}
@@ -131,6 +131,7 @@ class MentorFormCreate extends React.Component <{}, IStateMentorCreate> {
                                                          onNextStep={this.onNextStep}
                                                          onHandleSubmit={this.onSubmit}
                                                          saving={this.state.saving}
+                                                         updateField={this.updateField(setFieldValue, setFieldTouched)}
                                                          submitText={this.state.submitText}/>
                                         </form>
                                     </MentorFormBaseContext.Provider>
@@ -141,6 +142,13 @@ class MentorFormCreate extends React.Component <{}, IStateMentorCreate> {
                 </div>
             </div>
         )
+    }
+
+    private updateField(setFieldValue: any, setFieldTouched: any) {
+        return (field: string, value: string) => {
+            setFieldTouched(field, false);
+            setFieldValue(field, value);
+        }
     }
 
     private onSubmit(values: IMentorFormValidations) {

@@ -6,16 +6,15 @@ import './FilterList.scss';
 
 export const FILTER_LIST_ALL = 'all';
 
-export interface IListItem {
+export interface IFilerListItem {
     id: string;
     name: string;
     icon?: string;
     extra?: any;
 }
-
 interface IPropsFilterList {
-    onChange: (item: IListItem) => void;
-    list: IListItem[];
+        onChange: (item: IFilerListItem) => void;
+    list: IFilerListItem[];
     defaultText: string;
     name: string;
     style?: React.CSSProperties;

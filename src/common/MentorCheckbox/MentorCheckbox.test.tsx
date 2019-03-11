@@ -1,4 +1,4 @@
-import { shallow } from 'enzyme';
+import { mount } from 'enzyme';
 import 'jest-localstorage-mock';
 import * as React from 'react';
 import {Body1} from "../MentorText";
@@ -10,7 +10,7 @@ describe('MentorCheckbox Test',() => {
     let mountedReportTable: any;
     const getComponent = () => {
         if (!mountedReportTable) {
-            mountedReportTable = shallow(
+            mountedReportTable = mount(
                 <MentorCheckbox {...props} />
             );
         }

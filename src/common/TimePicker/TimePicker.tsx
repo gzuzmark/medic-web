@@ -1,6 +1,7 @@
 import * as moment from 'moment';
 import * as React from 'react';
-import {default as FilterList, IListItem} from "../FilterList/FilterList";
+import {IListItem} from "../../domain/Lists";
+import FilterList from "../FilterList/FilterList";
 
 interface IPropTimePicker {
     defaultText: string;
@@ -27,7 +28,7 @@ const listTimes = (from: Date, to: Date, step = 15): IListItem[] => {
     return times
 };
 
-const TimePicker: React.StatelessComponent<IPropTimePicker> = (props) => {
+const TimePicker: React.FunctionComponent<IPropTimePicker> = (props) => {
     return (
         <FilterList
             onChange={props.onChange}

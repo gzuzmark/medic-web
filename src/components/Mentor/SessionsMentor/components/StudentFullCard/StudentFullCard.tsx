@@ -28,7 +28,7 @@ export interface IPropsStudentFullCard {
     showTagModal: () => void;
 }
 
-const StudentFullCard: React.StatelessComponent<IPropsStudentFullCard> = (props) => {
+const StudentFullCard: React.FC<IPropsStudentFullCard> = (props) => {
     let propsInput = {};
     if (props.student.disabled) {
         propsInput = {
@@ -88,7 +88,7 @@ const StudentFullCard: React.StatelessComponent<IPropsStudentFullCard> = (props)
     );
 };
 
-export const StudentFullCardHeader: React.StatelessComponent<any> = () => {
+export const StudentFullCardHeader: React.FC<any> = () => {
     return (
         <div className="StudentFullCard_header" style={{background: colors.BACKGROUND_COLORS.background_blue}}>
             <div className="StudentFullCard_header-column-1">

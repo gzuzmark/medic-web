@@ -11,7 +11,7 @@ interface IPropsConfirmButtons {
     onConfirm(): void;
 }
 
-const ConfirmButtons: React.StatelessComponent<IPropsConfirmButtons> = (props) => {
+const ConfirmButtons: React.FC<IPropsConfirmButtons> = (props) => {
     return (
         <div className="ConfirmButtons" style={{...props.styles}}>
             <button className="u-Button u-Button--white ConfirmButtons-button"

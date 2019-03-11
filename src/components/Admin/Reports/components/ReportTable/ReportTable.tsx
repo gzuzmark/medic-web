@@ -81,7 +81,7 @@ const tableRatingComment = [...tableRating, {
     width: 140
 }] as IRowConsoleTable[];
 
-const ReportTable: React.StatelessComponent<IPropsReportTable> = (props) => {
+const ReportTable: React.FC<IPropsReportTable> = (props) => {
     let table = props.type === REPORT_SESSIONS ? tableBase : tableStudents;
     table = props.type === REPORT_SESSIONS ? table.concat(tableRating) : table.concat(tableRatingComment);
     return (

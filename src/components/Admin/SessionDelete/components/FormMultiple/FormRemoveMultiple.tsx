@@ -52,7 +52,7 @@ const isDayBlocked = (date: Date, force: boolean) => {
     }
 };
 
-const FormRemoveMultiple: React.StatelessComponent<IPropsFormRemoveMultiple> = (props) => {
+const FormRemoveMultiple: React.FC<IPropsFormRemoveMultiple> = (props) => {
     let counter = 0;
     const fromDate = props.currentSession.from ? new Date(props.currentSession.from) : new Date();
     const toDate = props.currentSession.to ? new Date(props.currentSession.to) : new Date();

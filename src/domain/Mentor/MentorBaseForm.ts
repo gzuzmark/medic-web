@@ -110,7 +110,7 @@ abstract class MentorBaseForm {
             location: {} as IFormItemBase,
             picture: m.photoPath || '',
             skills: [] as IFormItemBase[],
-            status: '',
+            status: m.status || '',
             utp: !!m.utp
         };
 

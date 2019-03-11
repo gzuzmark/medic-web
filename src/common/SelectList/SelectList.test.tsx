@@ -1,4 +1,4 @@
-import { shallow } from 'enzyme';
+import { mount } from 'enzyme';
 import 'jest-localstorage-mock';
 import * as React from 'react';
 import SelectList from './SelectList';
@@ -9,7 +9,7 @@ describe('SelectList Test',() => {
     let mountedSelectList: any;
     const selectList = () => {
         if (!mountedSelectList) {
-            mountedSelectList = shallow(
+            mountedSelectList = mount(
                 <SelectList {...props} />
             );
         }
@@ -30,7 +30,7 @@ describe('SelectList Test',() => {
             list: [],
             onChange: () => void(0),
         };
-        const item = selectList().find(".SelectList-item");
+        const item = selectList().find("li");
         expect(item.length).toEqual(0)
     });
 
@@ -45,7 +45,7 @@ describe('SelectList Test',() => {
             }],
             onChange: () => void(0),
         };
-        const item = selectList().find(".SelectList-item");
+        const item = selectList().find("li");
         expect(item.length).toEqual(2)
     });
 
@@ -61,7 +61,7 @@ describe('SelectList Test',() => {
             onChange: () => void(0),
             removeFilters: () => void(0)
         };
-        const item = selectList().find(".SelectList-item");
+        const item = selectList().find("li");
         expect(item.length).toEqual(3)
     });
 
@@ -77,7 +77,7 @@ describe('SelectList Test',() => {
             }],
             onChange: click,
         };
-        selectList().find(".SelectList-item").first().simulate('click');
+        selectList().find("li").first().simulate('click');
         expect(click).toHaveBeenCalled();
     });
 
@@ -94,7 +94,7 @@ describe('SelectList Test',() => {
             onChange: void(0),
             removeFilters: click
         };
-        selectList().find(".SelectList-item").last().simulate('click');
+        selectList().find("li").last().simulate('click');
         expect(click).toHaveBeenCalled();
     });
 });

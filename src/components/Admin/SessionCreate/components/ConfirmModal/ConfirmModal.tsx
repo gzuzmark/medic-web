@@ -12,7 +12,7 @@ interface IPropsConfirmModal {
     _onConfirm(): void;
 }
 
-const ConfirmModal: React.StatelessComponent<IPropsConfirmModal> = (props) => {
+const ConfirmModal: React.FC<IPropsConfirmModal> = (props) => {
     return (
         <ConsoleModalConfirm show={false} onCloseModal={props._onCancel} title={'Estás apunto de crear las siguientes sesiones'}>
             <div>

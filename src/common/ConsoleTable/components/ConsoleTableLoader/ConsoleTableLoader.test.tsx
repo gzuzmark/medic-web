@@ -1,4 +1,4 @@
-import { shallow } from 'enzyme';
+import { mount } from 'enzyme';
 import 'jest-localstorage-mock';
 import * as React from 'react';
 import ConsoleTableLoader from './ConsoleTableLoader';
@@ -8,7 +8,7 @@ describe('ConsoleTableLoader Test',() => {
     let mountedConsoleTableLoader: any;
     const getComponent = () => {
         if (!mountedConsoleTableLoader) {
-            mountedConsoleTableLoader = shallow(
+            mountedConsoleTableLoader = mount(
                 <ConsoleTableLoader {...props}>Caja de Mensajes</ConsoleTableLoader>
             );
         }
@@ -21,11 +21,6 @@ describe('ConsoleTableLoader Test',() => {
             loading: true
         };
         mountedConsoleTableLoader = undefined;
-    });
-
-    it("render: render ConsoleTableLoader", () => {
-        const component = getComponent();
-        expect(component).toMatchSnapshot();
     });
 
     it("render: render ConsoleTableLoader should have class center", () => {

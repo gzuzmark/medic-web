@@ -8,8 +8,8 @@ interface IPropsHOCLoader {
 const HOCLoader = <P extends object>(Component: React.ComponentType<P>) =>
     class WithLoading extends React.Component<P & IPropsHOCLoader> {
         public render() {
-            const { loading, ...props } = this.props as IPropsHOCLoader;
-            return loading ? <Loader /> : <Component {...props} />;
+            const { loading } = this.props as IPropsHOCLoader;
+            return loading ? <Loader /> : <Component {...this.props} />;
         }
     };
 
