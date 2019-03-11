@@ -6,7 +6,7 @@ interface IPropsFormRow {
     style?: React.CSSProperties;
 }
 
-const FormRow: React.StatelessComponent<IPropsFormRow> = (props) => {
+const FormRow: React.FC<IPropsFormRow> = (props) => {
     return (
         <div className='FormRow' style={{...props.style}}>
             {props.columns.map((column) => column)}

@@ -12,7 +12,7 @@ export interface IPropsSessionFullCard {
     session: ISessionFullCard;
 }
 
-const SessionFullCard: React.StatelessComponent<IPropsSessionFullCard> = (props) => {
+const SessionFullCard: React.FC<IPropsSessionFullCard> = (props) => {
     return (
         <div className={`SessionFullCard`}>
             <div className={"SessionFullCard_left"}>

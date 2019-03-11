@@ -1,161 +1,31 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`ConfirmButtons Test render: render ConfirmButtons 1`] = `
-ShallowWrapper {
-  Symbol(enzyme.__root__): [Circular],
-  Symbol(enzyme.__unrendered__): <ConfirmButtons
-    cancelText="Cancelar"
-    confirmText="Confirmar"
-    disabled={false}
-    loading={false}
-    onCancel={[Function]}
-    onConfirm={[Function]}
-  />,
-  Symbol(enzyme.__renderer__): Object {
-    "batchedUpdates": [Function],
-    "checkPropTypes": [Function],
-    "getNode": [Function],
-    "render": [Function],
-    "simulateError": [Function],
-    "simulateEvent": [Function],
-    "unmount": [Function],
-  },
-  Symbol(enzyme.__node__): Object {
-    "instance": null,
-    "key": undefined,
-    "nodeType": "host",
-    "props": Object {
-      "children": Array [
-        <button
-          className="u-Button u-Button--white ConfirmButtons-button"
-          onClick={[Function]}
-        >
-          Cancelar
-        </button>,
-        <button
-          className="u-Button ConfirmButtons-button"
-          data-loading={undefined}
-          disabled={false}
-          onClick={[Function]}
-        >
-          Confirmar
-        </button>,
-      ],
-      "className": "ConfirmButtons",
-      "style": Object {},
-    },
-    "ref": null,
-    "rendered": Array [
-      Object {
-        "instance": null,
-        "key": undefined,
-        "nodeType": "host",
-        "props": Object {
-          "children": "Cancelar",
-          "className": "u-Button u-Button--white ConfirmButtons-button",
-          "onClick": [Function],
-        },
-        "ref": null,
-        "rendered": "Cancelar",
-        "type": "button",
-      },
-      Object {
-        "instance": null,
-        "key": undefined,
-        "nodeType": "host",
-        "props": Object {
-          "children": "Confirmar",
-          "className": "u-Button ConfirmButtons-button",
-          "data-loading": undefined,
-          "disabled": false,
-          "onClick": [Function],
-        },
-        "ref": null,
-        "rendered": "Confirmar",
-        "type": "button",
-      },
-    ],
-    "type": "div",
-  },
-  Symbol(enzyme.__nodes__): Array [
-    Object {
-      "instance": null,
-      "key": undefined,
-      "nodeType": "host",
-      "props": Object {
-        "children": Array [
-          <button
-            className="u-Button u-Button--white ConfirmButtons-button"
-            onClick={[Function]}
-          >
-            Cancelar
-          </button>,
-          <button
-            className="u-Button ConfirmButtons-button"
-            data-loading={undefined}
-            disabled={false}
-            onClick={[Function]}
-          >
-            Confirmar
-          </button>,
-        ],
-        "className": "ConfirmButtons",
-        "style": Object {},
-      },
-      "ref": null,
-      "rendered": Array [
-        Object {
-          "instance": null,
-          "key": undefined,
-          "nodeType": "host",
-          "props": Object {
-            "children": "Cancelar",
-            "className": "u-Button u-Button--white ConfirmButtons-button",
-            "onClick": [Function],
-          },
-          "ref": null,
-          "rendered": "Cancelar",
-          "type": "button",
-        },
-        Object {
-          "instance": null,
-          "key": undefined,
-          "nodeType": "host",
-          "props": Object {
-            "children": "Confirmar",
-            "className": "u-Button ConfirmButtons-button",
-            "data-loading": undefined,
-            "disabled": false,
-            "onClick": [Function],
-          },
-          "ref": null,
-          "rendered": "Confirmar",
-          "type": "button",
-        },
-      ],
-      "type": "div",
-    },
-  ],
-  Symbol(enzyme.__options__): Object {
-    "adapter": ReactSixteenAdapter {
-      "options": Object {
-        "enableComponentDidUpdateOnSetState": true,
-        "legacyContextMode": "parent",
-        "lifecycles": Object {
-          "componentDidUpdate": Object {
-            "onSetState": true,
-          },
-          "getChildContext": Object {
-            "calledByRenderer": false,
-          },
-          "getDerivedStateFromProps": true,
-          "getSnapshotBeforeUpdate": true,
-          "setState": Object {
-            "skipsComponentDidUpdateOnNullish": true,
-          },
-        },
-      },
-    },
-  },
-}
+<ConfirmButtons
+  cancelText="Cancelar"
+  confirmText="Confirmar"
+  disabled={false}
+  loading={false}
+  onCancel={[Function]}
+  onConfirm={[Function]}
+>
+  <div
+    className="ConfirmButtons"
+    style={Object {}}
+  >
+    <button
+      className="u-Button u-Button--white ConfirmButtons-button"
+      onClick={[Function]}
+    >
+      Cancelar
+    </button>
+    <button
+      className="u-Button ConfirmButtons-button"
+      disabled={false}
+      onClick={[Function]}
+    >
+      Confirmar
+    </button>
+  </div>
+</ConfirmButtons>
 `;

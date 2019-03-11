@@ -245,7 +245,7 @@ class FormImage extends React.Component <IPropsFormImage, IStateFormImage> {
         canvas.width = pixelCrop.width;
         canvas.height = pixelCrop.height;
         const ctx = canvas.getContext('2d');
-        if (!!ctx) {
+        if (!!ctx && !!ctx.drawImage) {
             ctx.drawImage(
                 image,
                 pixelCrop.x,
@@ -260,14 +260,18 @@ class FormImage extends React.Component <IPropsFormImage, IStateFormImage> {
 
         }
         return new Promise((resolve, reject) => {
-            canvas.toBlob((blob: any) => {
-                if (!blob) {
-                    return;
-                }
-                blob.name = fileName;
-                const fileUrl = window.URL.createObjectURL(blob);
-                resolve(fileUrl);
-            }, 'image/jpeg');
+            try {
+                canvas.toBlob((blob: any) => {
+                    if (!blob) {
+                        return;
+                    }
+                    blob.name = fileName;
+                    const fileUrl = window.URL.createObjectURL(blob);
+                    resolve(fileUrl);
+                }, 'image/jpeg');
+            } catch (e) {
+                reject(e)
+            }
         });
     }
 }

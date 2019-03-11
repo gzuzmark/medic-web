@@ -1,4 +1,4 @@
-import { shallow } from "enzyme";
+import { mount } from "enzyme";
 import * as React from 'react';
 import InputDatePicker from "./InputDatePicker";
 
@@ -7,7 +7,7 @@ describe('InputDatePicker Test',() => {
     let mountedInputDatePicker: any;
     const getComponent = () => {
         if (!mountedInputDatePicker) {
-            mountedInputDatePicker = shallow(
+            mountedInputDatePicker = mount(
                 <InputDatePicker {...props} />
             );
         }

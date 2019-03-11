@@ -48,7 +48,7 @@ const click = (item: IFilerListItem, callback: (item: IFilerListItem) => void) =
     }
 };
 
-const SelectList: React.StatelessComponent<IPropsSelectList> = (props) => {
+const SelectList: React.FC<IPropsSelectList> = (props) => {
     return (
         <ul className="SelectList" style={{...props.style}}>
             {props.list.map((item, index) => {

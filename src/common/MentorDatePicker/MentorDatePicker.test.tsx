@@ -1,13 +1,15 @@
-import { shallow } from "enzyme";
+import { mount } from "enzyme";
+import toJson from 'enzyme-to-json';
 import * as React from 'react';
 import MentorDatePicker from "./MentorDatePicker";
+
 
 describe('MentorDatePicker Test',() => {
     let props: any;
     let mountedMentorDatePicker: any;
     const getComponent = () => {
         if (!mountedMentorDatePicker) {
-            mountedMentorDatePicker = shallow(
+            mountedMentorDatePicker = mount(
                 <MentorDatePicker {...props} />
             );
         }
@@ -25,6 +27,6 @@ describe('MentorDatePicker Test',() => {
 
     it("render: render MentorDatePicker", () => {
         const component = getComponent();
-        expect(component).toMatchSnapshot();
+        expect(toJson(component)).toMatchSnapshot();
     });
 });

@@ -62,8 +62,8 @@
   "scripts": {
     "start": "node scripts/start.js",
     "build": "node scripts/build.js",
-    "test": "node scripts/test.js --env=jsdom",
-    "test:coverage": "node scripts/test.js --env=jsdom --coverage --coverageDirectory=output/coverage/jest  --collectCoverageFrom=src/components/**/*.tsx --collectCoverageFrom=src/common/**/*.tsx --collectCoverageFrom=src/domain/**/*.ts",
+    "test": "node --max-old-space-size=4096 scripts/test.js --env=jsdom",
+    "test:coverage": "node --max-old-space-size=4096 scripts/test.js --env=jsdom --coverage --coverageDirectory=output/coverage/jest  --collectCoverageFrom=src/components/**/*.tsx --collectCoverageFrom=src/common/**/*.tsx --collectCoverageFrom=src/domain/**/*.ts",
     "deploy:qa": "yarn build && firebase deploy -P stage",
     "deploy:prod": "yarn build && firebase deploy -P production"
   },
@@ -74,6 +74,7 @@
     "@types/chai": "4.1.4",
     "@types/enzyme": "3.1.11",
     "@types/enzyme-adapter-react-16": "1.0.2",
+    "@types/enzyme-to-json": "^1.5.3",
     "@types/jest": "24.0.9",
     "@types/moxios": "0.4.8",
     "@types/node": "11.10.4",
@@ -89,8 +90,9 @@
     "@types/react-tooltip": "^3.9.0",
     "@types/yup": "^0.26.7",
     "chai": "4.1.2",
-    "enzyme": "3.8.0",
+    "enzyme": "3.9.0",
     "enzyme-adapter-react-16": "1.9.1",
+    "enzyme-to-json": "^3.3.5",
     "firebase": "^5.5.8",
     "jest-canvas-mock": "^2.0.0-alpha.2",
     "jest-junit": "^5.1.0",
@@ -110,6 +112,7 @@
       "<rootDir>/config/polyfills.js",
       "jest-canvas-mock"
     ],
+    "snapshotSerializers": ["enzyme-to-json/serializer"],
     "testMatch": [
       "<rootDir>/src/**/__tests__/**/*.(j|t)s?(x)",
       "<rootDir>/src/**/?(*.)(spec|test).(j|t)s?(x)"

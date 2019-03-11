@@ -12,7 +12,7 @@ export interface IPropsCardSession {
 }
 
 
-const CardSession: React.StatelessComponent<IPropsCardSession> = (props) => {
+const CardSession: React.FC<IPropsCardSession> = (props) => {
 
     return (
         <div className={`CardSession CardSession--${props.item.getStatus()}`}>

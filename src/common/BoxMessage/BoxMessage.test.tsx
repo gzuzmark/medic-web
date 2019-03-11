@@ -1,4 +1,5 @@
 import { shallow } from 'enzyme';
+import toJson from 'enzyme-to-json';
 import 'jest-localstorage-mock';
 import * as React from 'react';
 import BoxMessage from './BoxMessage';
@@ -29,7 +30,7 @@ describe('BoxMessage Test',() => {
             type: 'error'
         };
         const component = getComponent();
-        expect(component).toMatchSnapshot();
+        expect(toJson(component)).toMatchSnapshot();
     });
 
     it("render: render BoxMessage should be null", () => {

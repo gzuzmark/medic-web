@@ -12,7 +12,7 @@ interface IPropsModalSessionHandler {
     _onCancel(): void;
 }
 
-const ModalSessionHandler: React.StatelessComponent<IPropsModalSessionHandler> = (props) => {
+const ModalSessionHandler: React.FC<IPropsModalSessionHandler> = (props) => {
     return (
         <ConsoleModalConfirm
             show={props.show}

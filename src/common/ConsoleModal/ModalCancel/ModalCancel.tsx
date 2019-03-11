@@ -15,7 +15,7 @@ interface IPropsModalCancel {
     onConfirm(): void;
 }
 
-const ModalCancel: React.StatelessComponent<IPropsModalCancel> = (props) => {
+const ModalCancel: React.FC<IPropsModalCancel> = (props) => {
     return (
         <ConsoleModalConfirm
             show={props.show}

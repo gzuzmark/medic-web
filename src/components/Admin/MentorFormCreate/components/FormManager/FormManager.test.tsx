@@ -10,6 +10,12 @@ jest.doMock('react-responsive-modal', () => {
     }
 });
 
+jest.doMock('../../../../../common/ConsoleModal/MentorModalBase', () => {
+    return {
+        default: (props: any) => <div>props.children()</div>
+    }
+});
+
 describe('FormManager Test',() => {
     let props: any;
     let mountedComponent: any;

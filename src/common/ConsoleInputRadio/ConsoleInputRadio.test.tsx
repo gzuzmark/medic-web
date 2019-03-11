@@ -1,4 +1,5 @@
 import { shallow } from 'enzyme';
+import toJson from 'enzyme-to-json';
 import * as React from 'react';
 import ConsoleInputRadio from "./ConsoleInputRadio";
 
@@ -32,6 +33,6 @@ describe('ConsoleInputRadio Test',() => {
 
     it("render: render ConsoleInputRadio", () => {
         const component = getComponent();
-        expect(component).toMatchSnapshot();
+        expect(toJson(component)).toMatchSnapshot();
     });
 });

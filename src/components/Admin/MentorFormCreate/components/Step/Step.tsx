@@ -99,7 +99,7 @@ export const StepCircleText = styled(Subhead1)`
     }};
 `;
 
-const Step: React.StatelessComponent<IPropsStep> = (props) => {
+const Step: React.FC<IPropsStep> = (props) => {
     const {title, step, click, ...status} = props;
     return (
         <StepContainer onClick={click}>

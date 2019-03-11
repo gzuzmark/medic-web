@@ -6,7 +6,7 @@ interface IPropsFormColumn {
     width: number;
 }
 
-const FormColumn: React.StatelessComponent<IPropsFormColumn> = (props) => {
+const FormColumn: React.FC<IPropsFormColumn> = (props) => {
     const margin = props.width === 1 ? 0 : 3;
     const width = Math.round(100 / props.width) - margin;
     return (

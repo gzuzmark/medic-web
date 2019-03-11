@@ -1,8 +1,21 @@
 import { shallow } from 'enzyme';
+import toJson from 'enzyme-to-json';
 import 'jest-localstorage-mock';
+
 import * as React from 'react';
 import ModalCancel from './ModalCancel';
 
+jest.doMock('react-responsive-modal', () => {
+    return {
+        default: (props: any) => <div>props.children()</div>
+    }
+});
+
+jest.doMock('../ConsoleModalConfirm', () => {
+    return {
+        default: (props: any) => <div>props.children()</div>
+    }
+});
 
 describe('ModalCancel Test',() => {
     let props: any;
@@ -34,6 +47,6 @@ describe('ModalCancel Test',() => {
 
     it("render: render ModalCancel", () => {
         const component = getComponent();
-        expect(component).toMatchSnapshot();
+        expect(toJson(component)).toMatchSnapshot();
     });
 });

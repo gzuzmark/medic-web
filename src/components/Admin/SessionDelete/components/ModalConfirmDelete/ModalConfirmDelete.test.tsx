@@ -1,8 +1,13 @@
 import { shallow } from 'enzyme';
-import 'jest-localstorage-mock';
+import toJson from 'enzyme-to-json';
 import * as React from 'react';
 import ModalConfirmDelete from './ModalConfirmDelete';
 
+jest.doMock('../../../../../common/ConsoleModal/ConsoleModalConfirm', () => {
+    return {
+        default: (props: any) => <div>props.children()</div>
+    }
+});
 
 describe('ModalConfirmDelete Test',() => {
     let props: any;
@@ -33,6 +38,6 @@ describe('ModalConfirmDelete Test',() => {
 
     it("render: render ModalConfirmDelete", () => {
         const component = getComponent();
-        expect(component).toMatchSnapshot();
+        expect(toJson(component)).toMatchSnapshot();
     });
 });

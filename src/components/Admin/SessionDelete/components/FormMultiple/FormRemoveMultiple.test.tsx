@@ -1,4 +1,4 @@
-import { shallow } from 'enzyme';
+import { mount } from 'enzyme';
 import 'jest-localstorage-mock';
 import * as React from 'react';
 import FormRemoveMultiple from './FormRemoveMultiple';
@@ -9,7 +9,7 @@ describe('FormRemoveMultiple Test',() => {
     let mountedFormRemoveMultiple: any;
     const getComponent = () => {
         if (!mountedFormRemoveMultiple) {
-            mountedFormRemoveMultiple = shallow(
+            mountedFormRemoveMultiple = mount(
                 <FormRemoveMultiple {...props}>Contenido de la Modal</FormRemoveMultiple>
             );
         }

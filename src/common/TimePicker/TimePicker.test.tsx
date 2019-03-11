@@ -35,7 +35,7 @@ describe('TimePicker Test',() => {
         component.find(".FilterList-field").first().simulate('click', "");
         component.update();
         // 10:00, 10:15, 10:30, 10:45, 11:00, 11:15, 11:30, 11:45, 12:00
-        expect(component.find(".SelectList-item").length).toBe(9)
+        expect(component.find("li").length).toBe(9)
 
     });
 
@@ -47,7 +47,7 @@ describe('TimePicker Test',() => {
         component.find(".FilterList-field").first().simulate('click', "");
         component.update();
         // 10:00, 10:30, 11:00, 11:30, 12:00
-        expect(component.find(".SelectList-item").length).toBe(5)
+        expect(component.find("li").length).toBe(5)
 
     });
 
@@ -61,6 +61,6 @@ describe('TimePicker Test',() => {
         const component = getComponent();
         component.find(".FilterList-field").first().simulate('click', "");
         component.update();
-        expect(component.find(".SelectList-item").length).toBe(0)
+        expect(component.find("li").length).toBe(0)
     });
 });

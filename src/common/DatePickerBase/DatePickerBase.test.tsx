@@ -1,4 +1,5 @@
 import { shallow } from 'enzyme';
+import toJson from 'enzyme-to-json';
 import 'jest-localstorage-mock';
 import * as moment from "moment";
 import * as React from 'react';
@@ -33,6 +34,6 @@ describe('DatePickerBase Test',() => {
 
     it("render: render DatePickerBase", () => {
         const component = consoleDatePicker();
-        expect(component).toMatchSnapshot();
+        expect(toJson(component)).toMatchSnapshot();
     });
 });

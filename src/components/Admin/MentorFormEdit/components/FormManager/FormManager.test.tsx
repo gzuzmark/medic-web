@@ -5,6 +5,18 @@ import {MENTOR_STATUS} from "../../../../../domain/Mentor/MentorBase";
 import {getFullValues} from "../../../MentorFormBase/MentorFormBase.mock";
 import FormManager, {IPropsFormManager} from "./FormManager";
 
+jest.doMock('react-responsive-modal', () => {
+    return {
+        default: (props: any) => <div>props.children()</div>
+    }
+});
+
+jest.doMock('../../../../../common/ConsoleModal/MentorModalBase', () => {
+    return {
+        default: (props: any) => <div>props.children()</div>
+    }
+});
+
 describe('FormManager Test',() => {
     let props: IPropsFormManager;
     let mountedComponent: any;

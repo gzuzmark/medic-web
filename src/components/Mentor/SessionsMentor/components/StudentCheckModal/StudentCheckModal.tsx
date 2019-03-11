@@ -57,7 +57,7 @@ const getScreenData = (screen: string): IStudentCheckModalScreen => {
     }
 };
 
-const StudentCheckModal: React.StatelessComponent<IPropsStudentCheckModalCard> = (props) => {
+const StudentCheckModal: React.FC<IPropsStudentCheckModalCard> = (props) => {
     const confirm = () => {
         props.confirm(props.options.screen)
     };

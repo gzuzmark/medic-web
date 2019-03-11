@@ -8,7 +8,7 @@ interface IPropsConsoleModal {
     onCloseModal?(): void;
 }
 
-const ConsoleModal: React.StatelessComponent<IPropsConsoleModal> = (props) => {
+const ConsoleModal: React.FC<IPropsConsoleModal> = (props) => {
     let onClose = () => {
         //
     };

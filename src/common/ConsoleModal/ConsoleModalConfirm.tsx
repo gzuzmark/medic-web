@@ -13,7 +13,7 @@ interface IPropsConsoleModalConfirm {
     onCloseModal?(): void;
 }
 
-const ConsoleModalConfirm: React.StatelessComponent<IPropsConsoleModalConfirm> = (props) => {
+const ConsoleModalConfirm: React.FC<IPropsConsoleModalConfirm> = (props) => {
     return (
         <ConsoleModal
             show={props.show}

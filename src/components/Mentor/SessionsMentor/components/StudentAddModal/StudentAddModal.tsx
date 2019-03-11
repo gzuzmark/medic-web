@@ -17,7 +17,7 @@ export interface IPropsStudentAddModal {
 }
 
 
-const StudentAddModal: React.StatelessComponent<IPropsStudentAddModal> = (props) => {
+const StudentAddModal: React.FC<IPropsStudentAddModal> = (props) => {
 
     const onClick = () => {
         if (props.options.user) {

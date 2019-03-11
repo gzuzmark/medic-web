@@ -9,7 +9,7 @@ interface IPropsMenuLeft {
     icon?: string;
 }
 
-const MenuLeft: React.StatelessComponent<IPropsMenuLeft> = (props) => {
+const MenuLeft: React.FC<IPropsMenuLeft> = (props) => {
     return (
         <Sticky height={90} top={80}>
             <div className="u-LayoutMargin" style={{display: 'flex', flexDirection: 'row'}}>

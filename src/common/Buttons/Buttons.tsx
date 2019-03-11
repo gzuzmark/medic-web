@@ -108,7 +108,7 @@ const buttonTheme = {
     fontDisabled
 };
 
-const Button: React.SFC<IButtonProps> = props => {
+const Button: React.FC<IButtonProps> = props => {
     let element = <button className={props.className} {...props.attrs}>{getFont(props.text)}</button>;
     if (!!props.link) {
         element = <a className={props.className} {...props.attrs}>{getFont(props.text)}</a>;
@@ -117,7 +117,7 @@ const Button: React.SFC<IButtonProps> = props => {
 };
 
 
-const Link: React.SFC<IButtonProps> = props =>
+const Link: React.FC<IButtonProps> = props =>
     <a className={props.className} {...props.attrs}>{getFont(props.text)}</a>;
 
 const ButtonNormal = styled(Button)`

@@ -20,7 +20,7 @@ export interface IPropsGenericContentModal {
     error?: boolean;
 }
 
-const Generic: React.StatelessComponent<IPropsGenericContentModal> = (props) => {
+const Generic: React.FC<IPropsGenericContentModal> = (props) => {
 
     const onClick = () => {
         if (props.confirm) {
@@ -72,7 +72,7 @@ const Generic: React.StatelessComponent<IPropsGenericContentModal> = (props) => 
     )
 };
 
-const Success: React.StatelessComponent<{description: string}> = (props) => {
+const Success: React.FC<{description: string}> = (props) => {
     const generic: IGenericContentModal = {
         button: "",
         description: props.description,
@@ -83,8 +83,8 @@ const Success: React.StatelessComponent<{description: string}> = (props) => {
 };
 
 const ContentModal: {
-    Generic: React.StatelessComponent<IPropsGenericContentModal>,
-    Success: React.StatelessComponent<{description: string}>} = {
+    Generic: React.FC<IPropsGenericContentModal>,
+    Success: React.FC<{description: string}>} = {
     Generic, Success
 };
 

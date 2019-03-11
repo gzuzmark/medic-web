@@ -12,7 +12,7 @@ interface IPropsInputRadioReports {
     updateState: (params: object) => void;
 }
 
-const InputRadioReports: React.StatelessComponent<IPropsInputRadioReports> = (props) => {
+const InputRadioReports: React.FC<IPropsInputRadioReports> = (props) => {
     const onChange = (event: any) => {
         props.updateState({[props.name]: event.target.value})
     };

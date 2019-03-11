@@ -9,7 +9,7 @@ interface IPropsIcon {
     attr?: any;
 }
 
-const Icon: React.StatelessComponent<IPropsIcon> = (props) => {
+const Icon: React.FC<IPropsIcon> = (props) => {
     let events = {};
     if (!!props.click) {
         events = {

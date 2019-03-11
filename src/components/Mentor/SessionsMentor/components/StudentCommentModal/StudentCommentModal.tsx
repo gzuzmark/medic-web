@@ -89,7 +89,7 @@ const LiStyled = styled("li")`
 `;
 
 
-export const ItemTag: React.StatelessComponent<{id: string, onClick: () => void }> = (props) => {
+export const ItemTag: React.FC<{id: string, onClick: () => void }> = (props) => {
     return (
         <LiStyled>
             {!!props.id && <input type="checkbox" id={props.id} onChange={props.onClick} value={props.id}/>}

@@ -17,59 +17,50 @@ interface IPropsLayout {
     title?: string;
 }
 
-class Layout extends React.Component<IPropsLayout, {}> {
-    private date: Date;
-    constructor(props: IPropsLayout) {
-        super(props);
-        this.date = new Date();
-    }
+const Layout: React.FC<IPropsLayout> = props => {
+    const date = new Date();
+    Utilities.scrollToTop();
 
-    public componentDidMount() {
-        Utilities.scrollToTop();
-    }
-
-    public render() {
-        return (
-            <React.Fragment>
-                <Sticky height={80} top={80} style={{'zIndex': 6}}>
-                    <div className="Header" style={{background: colors.BACKGROUND_COLORS.background_purple}}>
-                        <div className="Header_wrapper u-LayoutMargin">
-                            <div className="Header_section">
-                                <Link to={'/'}>
-                                    <div className="Header_container-image">
-                                        <img className="Header_image" src={logo_header} height='18'/>
-                                    </div>
-                                    <Subhead1 color="font_light" weight={LIGHT_TEXT} style={{padding: '0 14px'}}>
-                                        {UserRepository.getUser().rol === ROL_ADMIN ? 'Administrador' : 'Mentores'}
-                                    </Subhead1>
-                                </Link>
-                            </div>
-                            <div className="Header_section">
-                                <Subhead1 color="font_light" weight={LIGHT_TEXT} style={{padding: '0 10px'}}>Hola, {UserRepository.getUser().name} {UserRepository.getUser().lastname}</Subhead1>
-                                <Avatar size={32} source={UserRepository.getUser().photo}/>
-                                <MenuTop />
-                            </div>
+    return (
+        <React.Fragment>
+            <Sticky height={80} top={80} style={{'zIndex': 6}}>
+                <div className="Header" style={{background: colors.BACKGROUND_COLORS.background_purple}}>
+                    <div className="Header_wrapper u-LayoutMargin">
+                        <div className="Header_section">
+                            <Link to={'/'}>
+                                <div className="Header_container-image">
+                                    <img className="Header_image" src={logo_header} height='18'/>
+                                </div>
+                                <Subhead1 color="font_light" weight={LIGHT_TEXT} style={{padding: '0 14px'}}>
+                                    {UserRepository.getUser().rol === ROL_ADMIN ? 'Administrador' : 'Mentores'}
+                                </Subhead1>
+                            </Link>
                         </div>
-                        <div className={"Header_notifications"} />
-                    </div>
-                </Sticky>
-                {!!this.props.menu && this.props.menu}
-                <div className="Layout">
-                    <div>{this.props.children}</div>
-                </div>
-                <div className="Footer" style={{background: colors.MISC_COLORS.background_grey_1}}>
-                    <div className="Footer-wrapper u-LayoutMargin">
-                        <div className="Footer-section">
-                            <Body1 className="Footer-text" weight={LIGHT_TEXT}>UGO {UserRepository.getUser().rol === ROL_ADMIN ? 'Administrador' : 'Mentores'} {this.date.getFullYear()}. Todos los derechos reservados</Body1>
-                        </div>
-                        <div className="Footer-section">
-                            <a className="Footer-link" href="mailto:ugoadministrador@ugo.com.pe"><Body1 className="Footer-text" weight={LIGHT_TEXT}>ugoadministrador@ugo.com.pe</Body1></a>
+                        <div className="Header_section">
+                            <Subhead1 color="font_light" weight={LIGHT_TEXT} style={{padding: '0 10px'}}>Hola, {UserRepository.getUser().name} {UserRepository.getUser().lastname}</Subhead1>
+                            <Avatar size={32} source={UserRepository.getUser().photo}/>
+                            <MenuTop />
                         </div>
                     </div>
+                    <div className={"Header_notifications"} />
                 </div>
-            </React.Fragment>
-        );
-    }
+            </Sticky>
+            {!!props.menu && props.menu}
+            <div className="Layout">
+                <div>{props.children}</div>
+            </div>
+            <div className="Footer" style={{background: colors.MISC_COLORS.background_grey_1}}>
+                <div className="Footer-wrapper u-LayoutMargin">
+                    <div className="Footer-section">
+                        <Body1 className="Footer-text" weight={LIGHT_TEXT}>UGO {UserRepository.getUser().rol === ROL_ADMIN ? 'Administrador' : 'Mentores'} {date.getFullYear()}. Todos los derechos reservados</Body1>
+                    </div>
+                    <div className="Footer-section">
+                        <a className="Footer-link" href="mailto:ugoadministrador@ugo.com.pe"><Body1 className="Footer-text" weight={LIGHT_TEXT}>ugoadministrador@ugo.com.pe</Body1></a>
+                    </div>
+                </div>
+            </div>
+        </React.Fragment>
+    )
 }
 
 export default Layout;

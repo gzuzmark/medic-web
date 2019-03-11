@@ -28,7 +28,7 @@ const listTimes = (from: Date, to: Date, step = 15): IListItem[] => {
     return times
 };
 
-const TimePicker: React.StatelessComponent<IPropTimePicker> = (props) => {
+const TimePicker: React.FunctionComponent<IPropTimePicker> = (props) => {
     return (
         <FilterList
             onChange={props.onChange}

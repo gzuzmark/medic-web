@@ -7,7 +7,7 @@ export interface IPropsEmptyCard {
     addEnabled: boolean;
 }
 
-const EmptyCard: React.StatelessComponent<IPropsEmptyCard> = (props) => {
+const EmptyCard: React.FC<IPropsEmptyCard> = (props) => {
     return (
         <div className={`EmptyCard EmptyCard--inline`}>
             <div className={"EmptyCard_item"}>

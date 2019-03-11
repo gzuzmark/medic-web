@@ -14,7 +14,7 @@ interface IPropsDatePickerBase {
     configs?: object;
 }
 const baseConfigCalendar = BaseConfigCalendar;
-const DatePickerBase: React.StatelessComponent<IPropsDatePickerBase> = (props) => {
+const DatePickerBase: React.FC<IPropsDatePickerBase> = (props) => {
     return (
         <SingleDatePicker
             date={props.date} // momentPropTypes.momentObj or null

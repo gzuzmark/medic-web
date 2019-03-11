@@ -1,4 +1,4 @@
-import { mount } from 'enzyme';
+import { shallow } from 'enzyme';
 import 'jest-localstorage-mock';
 import * as React from 'react';
 import MenuTop from './MenuTop';
@@ -8,7 +8,7 @@ describe('MenuTop Test',() => {
     let mountedMenuTop: any;
     const menuTop = () => {
         if (!mountedMenuTop) {
-            mountedMenuTop = mount(
+            mountedMenuTop = shallow(
                 <MenuTop {...props} />
             );
         }

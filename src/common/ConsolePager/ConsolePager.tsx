@@ -12,7 +12,7 @@ interface IPropsConsolePaginator {
     style?: React.CSSProperties;
 }
 
-const ConsolePager: React.StatelessComponent<IPropsConsolePaginator> = (props) => {
+const ConsolePager: React.FC<IPropsConsolePaginator> = (props) => {
     if (props.totalItemsCount <= PAGE_ITEMS_RANGE) {
         return null;
     }

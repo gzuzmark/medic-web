@@ -1,4 +1,4 @@
-import { shallow } from 'enzyme';
+import { mount } from 'enzyme';
 import 'jest-localstorage-mock';
 import * as React from 'react';
 import ConfirmButtons from './ConfirmButtons';
@@ -8,7 +8,7 @@ describe('ConfirmButtons Test',() => {
     let mountedConfirmButtons: any;
     const getComponent = () => {
         if (!mountedConfirmButtons) {
-            mountedConfirmButtons = shallow(
+            mountedConfirmButtons = mount(
                 <ConfirmButtons {...props} />
             );
         }

@@ -16,7 +16,7 @@ interface IStateWeekendPicker {
     mentor?: IMentorDescription;
 }
 
-const ColumnTable: React.StatelessComponent<{type: string, style?: React.CSSProperties}> = ({children, type, style}) => {
+const ColumnTable: React.FC<{type: string, style?: React.CSSProperties}> = ({children, type, style}) => {
     return (
         <div className="WeekendPicker-column">
             <Text style={{...style}} className={`WeekendPicker-${type}`}>{children}</Text>
@@ -24,7 +24,7 @@ const ColumnTable: React.StatelessComponent<{type: string, style?: React.CSSProp
     );
 };
 
-const ColumnInput: React.StatelessComponent<{value: string, onChange(): void}> = ({value, onChange}) => {
+const ColumnInput: React.FC<{value: string, onChange(): void}> = ({value, onChange}) => {
     return (
         <label className="WeekendPicker-column WeekendPicker--box-selection">
             <input type="checkbox" value={value} name="WeekendPickerInput" onChange={onChange}/>

@@ -44,7 +44,7 @@ export const StepsBarContainer = styled.div`
     }
 `;
 
-const StepsBar: React.StatelessComponent<IPropsStepsBar> = (props) => {
+const StepsBar: React.FC<IPropsStepsBar> = (props) => {
     let progress = props.steps.filter((step) => step.complete).length / (props.steps.length - 1);
     progress = progress > 1 ? 1 : progress;
     return (

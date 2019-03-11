@@ -1,4 +1,4 @@
-import { shallow } from 'enzyme';
+import { mount } from 'enzyme';
 import 'jest-localstorage-mock';
 import * as moxios from 'moxios';
 import * as React from 'react';
@@ -12,7 +12,7 @@ describe('Reports Test',() => {
     let mountedDatePickerBase: any;
     const getComponent = () => {
         if (!mountedDatePickerBase) {
-            mountedDatePickerBase = shallow(
+            mountedDatePickerBase = mount(
                 <Reports {...props} />
             );
         }
