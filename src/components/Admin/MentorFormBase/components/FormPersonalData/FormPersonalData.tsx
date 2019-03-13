@@ -2,7 +2,10 @@ import * as React from "react";
 import MentorDropDown, {IPropsMentorOptionsDropDown} from "../../../../../common/MentorDropDown/MentorDropDown";
 import MentorInput from "../../../../../common/MentorInput/MentorInput";
 import {documentTypeList} from "../../../../../repository/DocumentsIdentification";
-import useHandlerDocument, {IUseHandlerDocument} from "../../../MentorFormCreate/components/FormMail/UseHandlerDocument";
+import useHandlerDocument, {
+    DOCUMENT_STATUS,
+    IUseHandlerDocument
+} from "../../../MentorFormCreate/components/FormMail/UseHandlerDocument";
 import {IFormManagerDisabledFields, IFormManagerInfoFields} from "../../../MentorFormCreate/components/FormManager/FormManager";
 import FormColumn from "../../../ScheduleSession/components/FormRow/components/FormColumn/FormColumn";
 import FormRow from "../../../ScheduleSession/components/FormRow/FormRow";
@@ -205,7 +208,7 @@ class FormPersonalDataCore extends React.Component <IPropsFormPersonalDataCore, 
 }
 
 const FormPersonalData: React.FC<IPropsFormPersonalData> = (props) => {
-    const document = useHandlerDocument(props.onChangeDocument || (() => void(0)));
+    const document = useHandlerDocument(props.onChangeDocument || (() => void(0)), DOCUMENT_STATUS.NOT_FOUND);
     return (
         <FormPersonalDataCore {...props} document={document} />
     )

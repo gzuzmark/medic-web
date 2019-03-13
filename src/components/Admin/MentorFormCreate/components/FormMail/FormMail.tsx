@@ -13,11 +13,12 @@ interface IPropsFormMail {
     updateDisabledFields: (fields: IFormManagerDisabledFields) => void;
     disableFields: IFormManagerDisabledFields;
     onChangeDocument: (status: number) => void;
+    documentStatus: number;
 }
 
 const FormMail: React.FC<IPropsFormMail> = (props) => {
-    const email = useHandlerEmail(props.updateDisabledFields);
-    const document = useHandlerDocument(props.onChangeDocument);
+    const email = useHandlerEmail(props.updateDisabledFields, props.onChangeDocument);
+    const document = useHandlerDocument(props.onChangeDocument, props.documentStatus);
     let counter = 0;
     return (
         <React.Fragment>

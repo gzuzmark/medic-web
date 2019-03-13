@@ -3,10 +3,11 @@ import {emailStatus, IMentorBaseForm} from "../../../../../domain/Mentor/MentorB
 import MentorService from "../../../../../services/Mentor/Mentor.service";
 import MentorFormBaseContext from "../../../MentorFormBase/MentorFormBase.context";
 import {IFormManagerDisabledFields} from "../FormManager/FormManager";
+import {DOCUMENT_STATUS} from "./UseHandlerDocument";
 
 const mentorService = new MentorService();
 
-const useHandlerEmail = (updateDisabledFields: (fields: IFormManagerDisabledFields) => void) => {
+const useHandlerEmail = (updateDisabledFields: (fields: IFormManagerDisabledFields) => void, onChangeDocument: (status: number) => void) => {
     const [timer, setTimer] = React.useState(0 as any);
     const [state, setState] = React.useState({error: '', loadSuccess: ''});
     const [loading, setLoading] = React.useState(false);
@@ -28,7 +29,8 @@ const useHandlerEmail = (updateDisabledFields: (fields: IFormManagerDisabledFiel
     const getStatusEmail = (status: string) => {
         const alreadyRegistered = status === emailStatus.ALREADY_REGISTERED && emailStatus.ALREADY_REGISTERED;
         const errorProcess = status === emailStatus.ERROR_PROCESS && emailStatus.ERROR_PROCESS;
-        return alreadyRegistered || errorProcess || '';
+        const emailNotValid = status === emailStatus.EMAIL_NOT_VALID && emailStatus.EMAIL_NOT_VALID;
+        return alreadyRegistered || errorProcess || emailNotValid || '';
     };
 
     const updateStatusEmailValidation = (code: number) => {
@@ -57,7 +59,8 @@ const useHandlerEmail = (updateDisabledFields: (fields: IFormManagerDisabledFiel
             context.setFieldValue("documentType", {value: value.documentType});
             context.setFieldTouched("documentType", !!value);
             context.setFieldValue("document", value.document);
-            context.setFieldTouched("document");
+            context.setFieldTouched("document", !!value);
+            onChangeDocument(DOCUMENT_STATUS.EMPTY);
         }
         updateDisabledFields({
             document: !!value && !!value.document && !!value.document.trim(),

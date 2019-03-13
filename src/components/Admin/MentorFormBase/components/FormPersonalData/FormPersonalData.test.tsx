@@ -1,30 +1,25 @@
-import { mount } from 'enzyme';
+import { shallow } from 'enzyme';
 import 'jest-styled-components';
 import * as React from 'react';
-import {IMentorFormBaseContext} from "../../MentorFormBase.context";
+import MentorFormBaseContext from "../../MentorFormBase.context";
 import {getDefaultValues} from "../../MentorFormBase.mock";
+import FormPersonalData from "./FormPersonalData";
 
-const getContext = (context: IMentorFormBaseContext) => {
-    jest.doMock('../../MentorFormBase.context', () => {
-        return {
-            default: {
-                Consumer: (props: any) => props.children(context)
-            }
-        }
-    });
-    return require('./FormPersonalData').default;
-};
+
 
 // TODO: Implementar pruebas
 describe('FormPersonalData Test',() => {
     let props: any;
-    let ctxt: IMentorFormBaseContext;
     let mountedComponent: any;
     const getComponent = () => {
         if (!mountedComponent) {
-            const FormPersonalData = getContext(ctxt);
-            mountedComponent = mount(
-                <FormPersonalData {...props} />
+            const TestComponent = () => (
+                <MentorFormBaseContext.Provider value={getDefaultValues()}>
+                    <FormPersonalData {...props} />
+                </MentorFormBaseContext.Provider>
+            );
+            mountedComponent = shallow(
+                <TestComponent />
             );
         }
         return mountedComponent;
@@ -40,7 +35,6 @@ describe('FormPersonalData Test',() => {
                 lastName: false
             }
         };
-        ctxt = getDefaultValues();
         mountedComponent = undefined;
     });
 

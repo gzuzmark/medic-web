@@ -121,12 +121,14 @@ class FormManager extends React.Component <IPropsFormManager, IStateFormManager>
                 buttonAttrContinue = {...buttonAttrContinue, disabled: true};
             } else if (this.emailIsNotAllowed(values.status, errors, touched)) {
                 buttonAttrContinue = {...buttonAttrContinue, disabled: true};
-            } else if (!!errors.documentType || !touched.documentType) {
-                buttonAttrContinue = {...buttonAttrContinue, disabled: true};
-            } else if (!!errors.document || !touched.document) {
-                buttonAttrContinue = {...buttonAttrContinue, disabled: true};
-            } else if (this.state.documentStatus !== DOCUMENT_STATUS.NOT_FOUND) {
-                buttonAttrContinue = {...buttonAttrContinue, disabled: true};
+            } else if (values.status !== emailStatus.FULL_DATA) {
+                if (!!errors.documentType || !touched.documentType) {
+                    buttonAttrContinue = {...buttonAttrContinue, disabled: true};
+                } else if (!!errors.document || !touched.document) {
+                    buttonAttrContinue = {...buttonAttrContinue, disabled: true};
+                } else if (this.state.documentStatus !== DOCUMENT_STATUS.NOT_FOUND) {
+                    buttonAttrContinue = {...buttonAttrContinue, disabled: true};
+                }
             }
         } else if (2 === this.props.currentStep) {
             if (!!errors.firstName || !touched.firstName) {
@@ -171,6 +173,7 @@ class FormManager extends React.Component <IPropsFormManager, IStateFormManager>
                             title={"Para empezar, ingresa el correo del mentor"}
                             disableFields={this.state.disabledFields}
                             onChangeDocument={this.onChangeDocument}
+                            documentStatus={this.state.documentStatus}
                             updateDisabledFields={this.updateDisabledFields}/>
                     </FormManagerContainer>}
                 {2 === this.props.currentStep &&
