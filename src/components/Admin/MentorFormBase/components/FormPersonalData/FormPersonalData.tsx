@@ -2,19 +2,14 @@ import * as React from "react";
 import MentorDropDown, {IPropsMentorOptionsDropDown} from "../../../../../common/MentorDropDown/MentorDropDown";
 import MentorInput from "../../../../../common/MentorInput/MentorInput";
 import {documentTypeList} from "../../../../../repository/DocumentsIdentification";
-import MentorService from "../../../../../services/Mentor/Mentor.service";
+import useHandlerDocument, {
+    DOCUMENT_STATUS,
+    IUseHandlerDocument
+} from "../../../MentorFormCreate/components/FormMail/UseHandlerDocument";
 import {IFormManagerDisabledFields, IFormManagerInfoFields} from "../../../MentorFormCreate/components/FormManager/FormManager";
 import FormColumn from "../../../ScheduleSession/components/FormRow/components/FormColumn/FormColumn";
 import FormRow from "../../../ScheduleSession/components/FormRow/FormRow";
 import MentorFormBaseContext, {IMentorFormBaseContext} from "../../MentorFormBase.context";
-
-export const DOCUMENT_STATUS = {
-    ERROR: 1,
-    EXIST: 409,
-    FOUND: 200,
-    NOT_FOUND: 404,
-    WAITING: 0
-};
 
 interface IStateFormPersonalData {
     loadingSkills: boolean;
@@ -28,22 +23,23 @@ interface IPropsFormPersonalData {
     forceDisable?: boolean;
     onChangeDocument?: (status: number) => void;
 }
-class FormPersonalData extends React.Component <IPropsFormPersonalData, IStateFormPersonalData> {
+
+interface IPropsFormPersonalDataCore extends IPropsFormPersonalData {
+    document: IUseHandlerDocument;
+}
+
+class FormPersonalDataCore extends React.Component <IPropsFormPersonalDataCore, IStateFormPersonalData> {
     public state: IStateFormPersonalData;
-    private mentorService: MentorService;
-    constructor(props: IPropsFormPersonalData) {
+    constructor(props: IPropsFormPersonalDataCore) {
         super(props);
         this.state = {
             loadingDocument: false,
             loadingSkills: false
         };
-        this.handlerDocumentType = this.handlerDocumentType.bind(this);
-        this.handlerDocument = this.handlerDocument.bind(this);
         this.handlerLocation = this.handlerLocation.bind(this);
         this.handlerSkills = this.handlerSkills.bind(this);
         this.getDocumentAttr = this.getDocumentAttr.bind(this);
         this.hasErrorSkills = this.hasErrorSkills.bind(this);
-        this.mentorService = new MentorService();
     }
 
     public render() {
@@ -52,7 +48,6 @@ class FormPersonalData extends React.Component <IPropsFormPersonalData, IStateFo
             <MentorFormBaseContext.Consumer>
                 {(context: IMentorFormBaseContext) => {
                     const {errors, touched} = context;
-                    const documentAttrs = this.getDocumentAttr(context.values.documentType.value);
                     const documentTypeDisabled = this.props.disableFields.documentType;
                     const skills = context.values.skills.map((v: IPropsMentorOptionsDropDown) => v.value);
                     const skillsError = this.hasErrorSkills(context);
@@ -88,34 +83,36 @@ class FormPersonalData extends React.Component <IPropsFormPersonalData, IStateFo
                                             value: context.values.lastName}}/>
                                 </FormColumn>
                             ]}/>
-                            <FormRow style={{padding: '30px 0 40px 0', margin: 0}} columns={[
-                                <FormColumn width={2} key={`FormColumn-PersonalData_${++counter}`}>
-                                    <MentorDropDown
-                                        label={"TIPO DE DOCUMENTO"}
-                                        name={"documentType"}
-                                        disabled={documentTypeDisabled || !!this.props.forceDisable}
-                                        value={context.values.documentType.value}
-                                        info={this.props.infoFields && this.props.infoFields.documentType}
-                                        triggerChange={this.handlerDocumentType(context)}
-                                        placeholder="DNI, Carné de extranjería, etc."
-                                        options={documentTypeList} />
-                                </FormColumn>,
-                                <FormColumn width={2} key={`FormColumn-PersonalData_${++counter}`}>
-                                    <MentorInput
-                                        label={"NÚMERO DE DOCUMENTO"}
-                                        error={touched.document && errors.document}
-                                        info={this.props.infoFields && this.props.infoFields.document}
-                                        disabled={this.props.disableFields.document || !!this.props.forceDisable}
-                                        loading={this.state.loadingDocument}
-                                        attrs={{
-                                            name: "document",
-                                            onBlur: context.handleBlur,
-                                            onChange: this.handlerDocument(context),
-                                            placeholder: "Ingresa el número de documento",
-                                            value: context.values.document,
-                                            ...documentAttrs}}/>
-                                </FormColumn>
-                            ]}/>
+                            {this.props.isEdit &&
+                                <FormRow style={{padding: '30px 0 40px 0', margin: 0}} columns={[
+                                    <FormColumn width={2} key={`FormColumn-PersonalData_${++counter}`}>
+                                        <MentorDropDown
+                                            label={"TIPO DE DOCUMENTO"}
+                                            name={"documentType"}
+                                            disabled={documentTypeDisabled || !!this.props.forceDisable}
+                                            value={this.props.document.valueType}
+                                            info={this.props.infoFields && this.props.infoFields.documentType}
+                                            triggerChange={this.props.document.onChange}
+                                            placeholder="DNI, Carné de extranjería, etc."
+                                            options={documentTypeList} />
+                                    </FormColumn>,
+                                    <FormColumn width={2} key={`FormColumn-PersonalData_${++counter}`}>
+                                        <MentorInput
+                                            label={"NÚMERO DE DOCUMENTO"}
+                                            error={this.props.document.error}
+                                            info={this.props.infoFields && this.props.infoFields.document}
+                                            disabled={this.props.disableFields.document || !!this.props.forceDisable}
+                                            loading={this.state.loadingDocument}
+                                            attrs={{
+                                                name: "document",
+                                                onBlur: this.props.document.handleBlur,
+                                                onChange: this.props.document.onChangeType,
+                                                placeholder: "Ingresa el número de documento",
+                                                value: this.props.document.value,
+                                                ...this.props.document.attrs}}/>
+                                    </FormColumn>
+                                ]}/>
+                            }
                             <FormRow style={{padding: '30px 0 40px 0', margin: 0}} columns={[
                                 <FormColumn width={2} key={`FormColumn-PersonalData_${++counter}`}>
                                     <MentorDropDown
@@ -190,29 +187,6 @@ class FormPersonalData extends React.Component <IPropsFormPersonalData, IStateFo
         }
     }
 
-    private handlerDocument(context: IMentorFormBaseContext) {
-        return (e: any) => {
-            context.handleChange(e);
-            this.handleLoading(true, DOCUMENT_STATUS.WAITING);
-            this.mentorService.verifyDocument(e.target.value).then(() => {
-                this.handleLoading(false, DOCUMENT_STATUS.FOUND);
-            }).catch((error) => {
-                if (error.response && error.response.data) {
-                    this.handleLoading(false, error.response.data.code);
-                } else {
-                    this.handleLoading(false, DOCUMENT_STATUS.ERROR);
-                }
-            });
-        }
-    }
-
-    private handleLoading(loadingDocument: boolean, status: number) {
-        this.setState({loadingDocument});
-        if (this.props.onChangeDocument) {
-            this.props.onChangeDocument(status);
-        }
-    }
-
     private hasErrorSkills(context: IMentorFormBaseContext) {
         let message = '';
         const emptyLocation = !!context.values.location.value && !context.listSkills.length && !this.state.loadingSkills;
@@ -225,21 +199,19 @@ class FormPersonalData extends React.Component <IPropsFormPersonalData, IStateFo
         return message
     }
 
-    private handlerDocumentType(context: IMentorFormBaseContext) {
-        return (name: string, option: IPropsMentorOptionsDropDown) => {
-            context.setFieldValue(name, option);
-            context.setFieldTouched(name);
-            context.setFieldValue('document', '');
-            context.setFieldTouched('document', false);
-        }
-    }
-
     private handlerSkills(context: IMentorFormBaseContext) {
         return (name: string, option: IPropsMentorOptionsDropDown[]) => {
             context.setFieldValue(name, option);
             context.setFieldTouched(name);
         }
     }
+}
+
+const FormPersonalData: React.FC<IPropsFormPersonalData> = (props) => {
+    const document = useHandlerDocument(props.onChangeDocument || (() => void(0)), DOCUMENT_STATUS.NOT_FOUND);
+    return (
+        <FormPersonalDataCore {...props} document={document} />
+    )
 }
 
 export default FormPersonalData;

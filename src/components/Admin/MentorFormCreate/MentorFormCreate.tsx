@@ -107,7 +107,7 @@ class MentorFormCreate extends React.Component <{}, IStateMentorCreate> {
                             initialValues={this.mentorCreateData.getMentorValues}
                             validationSchema={mentorCreateSchema}
                             onSubmit={this.onSubmit}>
-                            {({ errors, touched, values, handleBlur, handleChange, handleSubmit, setFieldValue, setFieldTouched}) => {
+                            {({ errors, touched, values, handleBlur, handleChange, handleSubmit, setFieldValue, setFieldTouched, setValues, setTouched}) => {
                                 return (
                                     <MentorFormBaseContext.Provider
                                         value={{
@@ -119,6 +119,8 @@ class MentorFormCreate extends React.Component <{}, IStateMentorCreate> {
                                             selectedImage,
                                             setFieldTouched,
                                             setFieldValue,
+                                            setTouched,
+                                            setValues,
                                             touched,
                                             updateImage: this.updateImage,
                                             updateListSkills: this.updateListSkills,

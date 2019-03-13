@@ -74,7 +74,7 @@ class ProfileEditMentor extends React.Component<{}, IStateProfileEditMentor> {
                         validationSchema={mentorFormBaseSchema}
                         isInitialValid={false}
                         onSubmit={this.onSubmit}>
-                        {({ errors, touched, values, handleBlur, handleChange, handleSubmit, setFieldValue, setFieldTouched, validateForm}) => {
+                        {({ errors, touched, values, handleBlur, handleChange, handleSubmit, setFieldValue, setFieldTouched, validateForm, setValues, setTouched}) => {
                             return (
                                 <MentorFormBaseContext.Provider
                                     value={{
@@ -86,6 +86,8 @@ class ProfileEditMentor extends React.Component<{}, IStateProfileEditMentor> {
                                         selectedImage,
                                         setFieldTouched,
                                         setFieldValue,
+                                        setTouched,
+                                        setValues,
                                         touched,
                                         updateImage: this.updateImage,
                                         values: values as IMentorFormValidations

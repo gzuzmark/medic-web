@@ -57,7 +57,7 @@ class MentorItem extends React.Component<IPropsMentorSession, {}> {
         return (
             <div className="MentorItem">
                 <ReactTooltip id="ListMentor_MentorItem" effect={"solid"} place={"bottom"} />
-                <div style={{position: 'relative'}}>
+                <div style={{position: 'relative', height: 80}}>
                     <Link to={`/admin/editar-mentor/${this.props.id}`}>
                         <Avatar size={48} source={this.props.image} style={{marginTop: 16}}/>
                         <EditOption data-tip={"Editar mentor"} data-for={"ListMentor_MentorItem"}><Icon name={"pencil"} /></EditOption>
