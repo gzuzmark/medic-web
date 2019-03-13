@@ -8,11 +8,12 @@ import {emailStatus, IMentorFormValidations} from "../../../../../domain/Mentor/
 import FormExperience from "../../../MentorFormBase/components/FormExperience/FormExperience";
 import getExperiencesWithError from "../../../MentorFormBase/components/FormExperience/ValidateExperiences";
 import FormImage from "../../../MentorFormBase/components/FormImage/FormImage";
-import FormPersonalData, {DOCUMENT_STATUS} from "../../../MentorFormBase/components/FormPersonalData/FormPersonalData";
+import FormPersonalData from "../../../MentorFormBase/components/FormPersonalData/FormPersonalData";
 import FormProfile from "../../../MentorFormBase/components/FormProfile/FormProfile";
 import {formTemplateHOC} from "../../../MentorFormBase/components/FormTemplate/FormTemplateHOC";
 import {limitDescription} from "../../../MentorFormBase/MentorFormBase.validations";
 import FormMail from "../FormMail/FormMail";
+import {DOCUMENT_STATUS} from "../FormMail/UseHandlerDocument";
 import FormReview from "../FormReview/FormReview";
 
 interface IPropsFormManager {
@@ -107,6 +108,7 @@ class FormManager extends React.Component <IPropsFormManager, IStateFormManager>
         let buttonAttrCancel = {...this.buttonAttrCancel};
         let buttonAttrBack = {...this.buttonAttrBack};
         let buttonAttrContinue = {...this.buttonAttrContinue};
+        let submitText = this.props.submitText;
         const {errors, touched, values} = this.props.formData;
         if (!!this.props.saving) {
             buttonAttrCancel = {...buttonAttrCancel, disabled: ' '};
@@ -119,17 +121,17 @@ class FormManager extends React.Component <IPropsFormManager, IStateFormManager>
                 buttonAttrContinue = {...buttonAttrContinue, disabled: true};
             } else if (this.emailIsNotAllowed(values.status, errors, touched)) {
                 buttonAttrContinue = {...buttonAttrContinue, disabled: true};
-            }
-        } else if (2 === this.props.currentStep) {
-            if (!!errors.firstName || !touched.firstName) {
-                buttonAttrContinue = {...buttonAttrContinue, disabled: true};
-            } else if (!!errors.lastName || !touched.lastName) {
-                buttonAttrContinue = {...buttonAttrContinue, disabled: true};
             } else if (!!errors.documentType || !touched.documentType) {
                 buttonAttrContinue = {...buttonAttrContinue, disabled: true};
             } else if (!!errors.document || !touched.document) {
                 buttonAttrContinue = {...buttonAttrContinue, disabled: true};
             } else if (this.state.documentStatus !== DOCUMENT_STATUS.NOT_FOUND) {
+                buttonAttrContinue = {...buttonAttrContinue, disabled: true};
+            }
+        } else if (2 === this.props.currentStep) {
+            if (!!errors.firstName || !touched.firstName) {
+                buttonAttrContinue = {...buttonAttrContinue, disabled: true};
+            } else if (!!errors.lastName || !touched.lastName) {
                 buttonAttrContinue = {...buttonAttrContinue, disabled: true};
             } else if (!!errors.location || !touched.location) {
                 buttonAttrContinue = {...buttonAttrContinue, disabled: true};
@@ -149,6 +151,7 @@ class FormManager extends React.Component <IPropsFormManager, IStateFormManager>
             }
         } else if (4 === this.props.currentStep) {
             buttonAttrContinue = {...buttonAttrContinue, onClick: this.onSubmit(values)};
+            submitText = "Guardar";
         }
         return (
             <React.Fragment>
@@ -166,6 +169,8 @@ class FormManager extends React.Component <IPropsFormManager, IStateFormManager>
                     <FormManagerContainer>
                         <FormMailTemplate
                             title={"Para empezar, ingresa el correo del mentor"}
+                            disableFields={this.state.disabledFields}
+                            onChangeDocument={this.onChangeDocument}
                             updateDisabledFields={this.updateDisabledFields}/>
                     </FormManagerContainer>}
                 {2 === this.props.currentStep &&
@@ -200,7 +205,7 @@ class FormManager extends React.Component <IPropsFormManager, IStateFormManager>
                     <ButtonNormal text={"Retroceder"}
                                   type={THEME_SECONDARY}
                                   attrs={{onClick: this.props.onBeforeStep, ...buttonAttrBack}} />
-                    <ButtonNormal text={this.props.submitText}
+                    <ButtonNormal text={submitText}
                                   attrs={{onClick: this.props.onNextStep, ...buttonAttrContinue}}/>
                 </FormManagerContainer>
             </React.Fragment>
@@ -249,6 +254,7 @@ class FormManager extends React.Component <IPropsFormManager, IStateFormManager>
             !touched.status ||
             status === emailStatus.ALREADY_REGISTERED ||
             status === emailStatus.ERROR_PROCESS ||
+            status === emailStatus.EMAIL_NOT_VALID ||
             status === emailStatus.CLEAN)
     }
 }

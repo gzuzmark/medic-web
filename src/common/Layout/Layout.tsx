@@ -1,15 +1,18 @@
 import * as React from 'react';
 import {Link} from "react-router-dom";
+import styled from "styled-components";
 import logo_header from '../../assets/images/logo_header.png';
 import UserRepository, {ROL_ADMIN} from '../../repository/UserRepository';
 import Avatar from '../Avatar/Avatar';
-import colors from "../MentorColor";
+import Icon from "../Icon/Icon";
+import colors, {FONTS} from "../MentorColor";
 import {Body1, LIGHT_TEXT, Subhead1} from '../MentorText';
 import Sticky from '../Sticky/Sticky';
 import Utilities from "../Utils/Utilities";
 import MenuTop from "./components/MenuTop/MenuTop";
 import './Footer.scss';
 import './Header.scss';
+import LayoutContext, {defaultNotificationValues, TypeHeaderNotification} from "./Layout.context";
 import './Layout.scss';
 
 interface IPropsLayout {
@@ -17,12 +20,28 @@ interface IPropsLayout {
     title?: string;
 }
 
+const NotificationBox = styled.div`
+    align-items: center;
+    background: ${(props: {type: TypeHeaderNotification}) => {
+        let color = colors.MISC_COLORS.green;
+        if (props.type === "ERROR") {
+            color = colors.TEXT_COLORS.font_error
+        }    
+        return color;
+    }};
+    display: flex;
+    height: 40px;
+    justify-content: center;
+    min-width: 100vw;    
+`;
+
 const Layout: React.FC<IPropsLayout> = props => {
     const date = new Date();
+    const [notification, setNotification] = React.useState(defaultNotificationValues);
     Utilities.scrollToTop();
 
     return (
-        <React.Fragment>
+        <LayoutContext.Provider value={{notification, setNotification}}>
             <Sticky height={80} top={80} style={{'zIndex': 6}}>
                 <div className="Header" style={{background: colors.BACKGROUND_COLORS.background_purple}}>
                     <div className="Header_wrapper u-LayoutMargin">
@@ -42,7 +61,13 @@ const Layout: React.FC<IPropsLayout> = props => {
                             <MenuTop />
                         </div>
                     </div>
-                    <div className={"Header_notifications"} />
+                    <div className={"Header_notifications"}>
+                        {notification.show &&
+                        <NotificationBox type={notification.type}>
+                            <Icon name={"alert"} style={{fill: colors.BACKGROUND_COLORS.background_white}} />
+                            <Body1 color={FONTS.light}>{notification.text}</Body1>
+                        </NotificationBox>}
+                    </div>
                 </div>
             </Sticky>
             {!!props.menu && props.menu}
@@ -59,8 +84,8 @@ const Layout: React.FC<IPropsLayout> = props => {
                     </div>
                 </div>
             </div>
-        </React.Fragment>
+        </LayoutContext.Provider>
     )
-}
+};
 
 export default Layout;

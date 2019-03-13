@@ -1,15 +1,14 @@
 import { Formik } from 'formik';
 import * as React from "react";
-import * as ReactDOM from 'react-dom';
 import styled from "styled-components";
 import ContentModal from "../../../common/ConsoleModal/ContentModal";
 import MentorModalBase from "../../../common/ConsoleModal/MentorModalBase";
-import Icon from "../../../common/Icon/Icon";
+import LayoutContext, {IHeaderNotification} from "../../../common/Layout/Layout.context";
 import Loader from "../../../common/Loader/Loader";
 import LoaderFullScreen from "../../../common/Loader/LoaderFullsScreen";
-import colors, {FONTS} from "../../../common/MentorColor";
+import {FONTS} from "../../../common/MentorColor";
 import {IPropsMentorOptionsDropDown} from "../../../common/MentorDropDown/MentorDropDown";
-import { Body1, Heading2 } from "../../../common/MentorText";
+import { Heading2 } from "../../../common/MentorText";
 import MentorAdminEditData, {IMentorAdminEditCreateData, IMentorAdminEditFormValidations} from "../../../domain/Mentor/MentorAdminEdit";
 import {MENTOR_STATUS} from "../../../domain/Mentor/MentorBase";
 import {IMentorFormValidations} from "../../../domain/Mentor/MentorBaseForm";
@@ -28,13 +27,17 @@ interface IStateMentorEdit  {
     listSkills: IPropsMentorOptionsDropDown[];
     selectedImage: string;
     mentor: IMentorAdminEditFormValidations | null;
-    loader: boolean;
     modal: boolean;
     saving: boolean;
 }
 
 export interface IPropsMentorEdit {
     match: IMatchParam;
+}
+
+export interface IPropsMentorEditCore{
+    match: IMatchParam;
+    setNotification(notification: IHeaderNotification): void;
 }
 
 const MentorEditContainer = styled.div`
@@ -45,29 +48,19 @@ const MentorEditContainer = styled.div`
     }
 `;
 
-const WarningBox = styled.div`
-    align-items: center;
-    background: ${colors.TEXT_COLORS.font_error};
-    display: flex;
-    height: 40px;
-    justify-content: center;
-    min-width: 100vw;    
-`;
-
-class MentorFormEdit  extends React.Component <IPropsMentorEdit, IStateMentorEdit > {
+class MentorFormEditCore  extends React.Component <IPropsMentorEditCore, IStateMentorEdit > {
     public state: IStateMentorEdit ;
     private sitesService: SitesService;
-    private idMentor: string;
     private mentorEditData: MentorAdminEditData;
     private skillService: SkillService;
     private mentorService: MentorService;
+    private readonly idMentor: string;
     constructor(props: any) {
         super(props);
         this.updateListSkills = this.updateListSkills.bind(this);
         this.updateImage = this.updateImage.bind(this);
         this.updateMentor = this.updateMentor.bind(this);
         this.saveMentor = this.saveMentor.bind(this);
-        this.openConfirmModal = this.openConfirmModal.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
         this.mentorEditData = new MentorAdminEditData({} as IMentorAdminEditCreateData);
         this.sitesService = new SitesService();
@@ -76,7 +69,6 @@ class MentorFormEdit  extends React.Component <IPropsMentorEdit, IStateMentorEdi
         this.state = {
             listSites: [] as IPropsMentorOptionsDropDown[],
             listSkills: [] as IPropsMentorOptionsDropDown[],
-            loader: true,
             mentor: null,
             modal: false,
             saving: false,
@@ -93,7 +85,7 @@ class MentorFormEdit  extends React.Component <IPropsMentorEdit, IStateMentorEdi
                 this.updateListSkills(mentor.sitesId[0].toString());
             }
             this.setState({
-                mentor: {...this.mentorEditData.getMentorValues, otherUtpRole: !!mentor.otherUtpRole},
+                mentor: {...this.mentorEditData.getMentorValues},
                 selectedImage: mentor.photo
             });
             const status = mentor.status ? mentor.status : '';
@@ -104,9 +96,9 @@ class MentorFormEdit  extends React.Component <IPropsMentorEdit, IStateMentorEdi
         });
         this.sitesService.list().then((sites: ISites[]) => {
             const listSites = sites.map((v) => ({value: v.id, label: v.name}));
-            this.setState({listSites, loader: false});
+            this.setState({listSites});
         }).catch(() => {
-            this.setState({loader: true});
+            this.setState({listSites: []});
         })
     }
 
@@ -133,7 +125,7 @@ class MentorFormEdit  extends React.Component <IPropsMentorEdit, IStateMentorEdi
                         validationSchema={mentorFormBaseSchema}
                         isInitialValid={false}
                         onSubmit={this.onSubmit}>
-                        {({ errors, touched, values, handleBlur, handleChange, handleSubmit, setFieldValue, setFieldTouched, validateForm}) => {
+                        {({ errors, touched, values, handleBlur, handleChange, handleSubmit, setFieldValue, setFieldTouched, validateForm, setValues, setTouched}) => {
                             return (
                                 <MentorFormBaseContext.Provider
                                     value={{
@@ -145,6 +137,8 @@ class MentorFormEdit  extends React.Component <IPropsMentorEdit, IStateMentorEdi
                                         selectedImage,
                                         setFieldTouched,
                                         setFieldValue,
+                                        setTouched,
+                                        setValues,
                                         touched,
                                         updateImage: this.updateImage,
                                         updateListSkills: this.updateListSkills,
@@ -180,28 +174,40 @@ class MentorFormEdit  extends React.Component <IPropsMentorEdit, IStateMentorEdi
 
     private showWarningBox(status: string) {
         if (status === MENTOR_STATUS.INCOMPLETE) {
-            ReactDOM.render(
-                <WarningBox>
-                    <Icon name={"alert"} style={{fill: colors.BACKGROUND_COLORS.background_white}} />
-                    <Body1 color={FONTS.light}>Datos pendientes</Body1>
-                </WarningBox>, document.getElementsByClassName('Header_notifications')[0])
+            this.props.setNotification({
+                show: true,
+                text: "Datos pendientes",
+                type: "ERROR"
+            })
+        } else {
+            this.props.setNotification({
+                show: false,
+                text: "",
+                type: "ERROR"
+            })
         }
     }
 
     private saveMentor() {
         this.setState({saving: true, modal: false});
-        this.mentorService.put(this.idMentor, this.mentorEditData.mentor).then(() => {
-            this.setState({saving: false, modal: true});
+        this.mentorService.put(this.idMentor, this.mentorEditData.mentor).then((mentor: IMentorAdminEditCreateData) => {
+            const mentorEdit = {...mentor};
+            this.mentorEditData = new MentorAdminEditData(mentorEdit);
+            const status = mentor.status ? mentor.status : '';
+            const oldMentor = {...this.state.mentor};
+            this.showWarningBox(status);
+            this.setState({
+                mentor: {...oldMentor, ...this.mentorEditData.getMentorValues},
+                modal: true,
+                saving: false,
+                selectedImage: mentor.photo
+            });
             setTimeout( () => {
                 this.setState({modal: false});
             }, 2000)
         }).catch(() => {
             this.setState({saving: false, modal: false});
         });
-    }
-
-    private openConfirmModal() {
-        this.setState({modal: true})
     }
 
     private onSubmit(values: IMentorFormValidations) {
@@ -226,6 +232,13 @@ class MentorFormEdit  extends React.Component <IPropsMentorEdit, IStateMentorEdi
     private updateImage(selectedImage: string) {
         this.setState({selectedImage});
     }
+}
+
+const MentorFormEdit: React.FC<IPropsMentorEdit> = props => {
+    const context = React.useContext(LayoutContext);
+    return (
+        <MentorFormEditCore match={props.match} setNotification={context.setNotification}/>
+    )
 }
 
 export default MentorFormEdit ;
