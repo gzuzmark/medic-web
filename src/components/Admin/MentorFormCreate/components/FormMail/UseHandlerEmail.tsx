@@ -57,9 +57,9 @@ const useHandlerEmail = (updateDisabledFields: (fields: IFormManagerDisabledFiel
         context.setFieldTouched("firstName");
         if (value) {
             context.setFieldValue("documentType", {value: value.documentType});
-            context.setFieldTouched("documentType", !!value);
+            context.setFieldTouched("documentType", !value);
             context.setFieldValue("document", value.document);
-            context.setFieldTouched("document", !!value);
+            context.setFieldTouched("document", !value);
             onChangeDocument(DOCUMENT_STATUS.EMPTY);
         }
         updateDisabledFields({
