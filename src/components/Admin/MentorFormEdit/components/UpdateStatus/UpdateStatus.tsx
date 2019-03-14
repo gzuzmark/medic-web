@@ -1,6 +1,6 @@
 import * as React from "react";
 import {ButtonNormal, THEME_SECONDARY} from "../../../../../common/Buttons/Buttons";
-import ContentModal, {IGenericContentModal} from "../../../../../common/ConsoleModal/ContentModal";
+import ContentModal from "../../../../../common/ConsoleModal/ContentModal";
 import MentorModalBase from "../../../../../common/ConsoleModal/MentorModalBase";
 import Icon from "../../../../../common/Icon/Icon";
 import LoaderFullScreen from "../../../../../common/Loader/LoaderFullsScreen";
@@ -14,101 +14,93 @@ export interface IPropsUpdateStatus {
     updateMentor: (status: string) => void;
 }
 
-interface IStateUpdateStatus {
-    modal: boolean;
-    saving: boolean;
-    success: boolean;
-}
+const mentorService = new MentorService();
 
-class UpdateStatus extends React.Component <IPropsUpdateStatus, IStateUpdateStatus> {
-    public state: IStateUpdateStatus;
-    private warningContent: IGenericContentModal;
-    private mentorService: MentorService;
-    constructor(props: IPropsUpdateStatus) {
-        super(props);
-        this.openModal = this.openModal.bind(this);
-        this.closeModal = this.closeModal.bind(this);
-        this.updateMentorStatus = this.updateMentorStatus.bind(this);
-        this.mentorService = new MentorService();
-        this.state = {
-            modal: false,
-            saving: false,
-            success: false
-        };
-        this.warningContent = {
-            button: "Aceptar",
-            description: '',
-            image: <Icon name={'alert'} />,
-            title: ''
-        }
-    }
+const UpdateStatus: React.FC<IPropsUpdateStatus> = (props) => {
+    const [isPublished, setIsPublished] = React.useState(false);
+    const [finalStatus, setFinalStatus] =  React.useState('');
+    const [nexStatus, setNexStatus] =  React.useState('');
+    const [currentStatus, setCurrentStatus] =  React.useState('');
+    const [state, setState] = React.useState({
+        modal: false,
+        saving: false,
+        success: false
+    });
+    const warningContent = {
+        button: "Aceptar",
+        description: isPublished?
+            "No le podrás crear sesiones a los mentores deshabilitados." :
+            "Sus datos e información de perfil serán visibles.",
+        image: <Icon name={'alert'} />,
+        title: `¿Estás seguro que deseas ${nexStatus.toLowerCase()} a este mentor?`
+    };
 
-    public render() {
-        const isPublished = this.props.status === MENTOR_STATUS.PUBLISHED;
-        const finalStatus = isPublished ? 'habilitado' : 'deshabilitado';
-        const nexStatus = isPublished ? 'Deshabilitar' : 'Habilitar';
-        const warningContent = {...this.warningContent,
-            description: isPublished?
-                "No le podrás crear sesiones a los mentores deshabilitados." :
-                "Sus datos e información de perfil serán visibles.",
-            title: `¿Estás seguro que deseas ${nexStatus.toLowerCase()} a este mentor?`
-        };
-        return (
-            <React.Fragment>
-                {this.state.saving && <LoaderFullScreen modal={true} text={"Cargando..."}/>}
-                <MentorModalBase show={this.state.modal} onCloseModal={this.closeModal}>
-                    <ContentModal.Generic generic={warningContent} loading={false} confirm={this.updateMentorStatus} />
-                </MentorModalBase>
-                <MentorModalBase show={this.state.success} hideClose={true}>
-                    <ContentModal.Success description={`Mentor ${finalStatus}`} />
-                </MentorModalBase>
-                <ButtonNormal text={`${nexStatus} mentor`} type={THEME_SECONDARY} attrs={{
-                    onClick: this.openModal,
-                    style: {
-                        bottom: 10,
-                        position: 'absolute',
-                        right: 0,
-                    },
-                    type: "button",
-                }}/>
-            </React.Fragment>
-        )
-    }
+    React.useEffect(() => {
+        setIsPublished(props.status === MENTOR_STATUS.PUBLISHED || props.status === MENTOR_STATUS.INCOMPLETE);
+        setFinalStatus(isPublished ? 'habilitado' : 'deshabilitado');
+        setNexStatus(isPublished ? 'Deshabilitar' : 'Habilitar');
+    }, [currentStatus, props.status]);
 
-    public openModal() {
-        this.setState({
+    const openModal = () => {
+        setState({
+            ...state,
             modal: true
         })
-    }
+    };
 
-    public closeModal() {
-        this.setState({
+    const closeModal = () => {
+        setState({
+            ...state,
             modal: false
         })
-    }
+    };
 
-    public updateMentorStatus() {
-        this.setState({
+    const updateMentorStatus = () => {
+        setState({
+            ...state,
             modal: false,
             saving: true
-        }, () => {
-            const status = this.props.status === MENTOR_STATUS.PUBLISHED ? MENTOR_STATUS.DISABLED : MENTOR_STATUS.PUBLISHED;
-            this.mentorService.updateStatus(this.props.idMentor, status).then((mentor: IMentorAdminEditCreateData) => {
-                const newStatus = !!mentor.status ? mentor.status : '';
-                this.props.updateMentor(newStatus);
-                this.setState({
-                    saving: false,
-                    success: true
-                }, () => {
-                    setTimeout(() => {
-                        this.setState({modal: false, success: false});
-                    }, 2000);
-                })
-
-            })
         });
-    }
+        const status = isPublished ? MENTOR_STATUS.DISABLED : MENTOR_STATUS.PUBLISHED;
+        mentorService.updateStatus(props.idMentor, status).then((mentor: IMentorAdminEditCreateData) => {
+            const newStatus = !!mentor.status ? mentor.status : '';
+            props.updateMentor(newStatus);
+            setCurrentStatus(newStatus);
+            setState({
+                ...state,
+                modal: false,
+                saving: false,
+                success: true
+            });
+            setTimeout(() => {
+                setState({
+                    ...state,
+                    modal: false,
+                    success: false});
+            }, 2000);
+        })
+    };
 
-}
+    return (
+        <React.Fragment>
+            {state.saving && <LoaderFullScreen modal={true} text={"Cargando..."}/>}
+            <MentorModalBase show={state.modal} onCloseModal={closeModal}>
+                <ContentModal.Generic generic={warningContent} loading={false} confirm={updateMentorStatus} />
+            </MentorModalBase>
+            <MentorModalBase show={state.success} hideClose={true}>
+                <ContentModal.Success description={`Mentor ${finalStatus}`} />
+            </MentorModalBase>
+            <ButtonNormal text={`${nexStatus} mentor`} type={THEME_SECONDARY} attrs={{
+                onClick: openModal,
+                style: {
+                    bottom: 10,
+                    position: 'absolute',
+                    right: 0,
+                },
+                type: "button",
+            }}/>
+        </React.Fragment>
+    )
+};
 
 export default UpdateStatus;

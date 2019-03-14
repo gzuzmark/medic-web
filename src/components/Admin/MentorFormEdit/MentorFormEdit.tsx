@@ -178,7 +178,13 @@ class MentorFormEditCore  extends React.Component <IPropsMentorEditCore, IStateM
                 show: true,
                 text: "Datos pendientes",
                 type: "ERROR"
-            })
+            });
+        } else if (status === MENTOR_STATUS.DISABLED) {
+            this.props.setNotification({
+                show: true,
+                text: "Mentor deshabilitado.",
+                type: "ERROR"
+            });
         } else {
             this.props.setNotification({
                 show: false,
