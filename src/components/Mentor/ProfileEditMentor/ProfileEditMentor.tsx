@@ -95,6 +95,7 @@ class ProfileEditMentor extends React.Component<{}, IStateProfileEditMentor> {
                                     <form onSubmit={handleSubmit}>
                                         <FormEditManager
                                             formData={{errors, touched, values}}
+                                            rating={this.state.mentor.rating}
                                             onHandleSubmit={this.onSubmit}
                                             validateForm={validateForm}/>
                                     </form>

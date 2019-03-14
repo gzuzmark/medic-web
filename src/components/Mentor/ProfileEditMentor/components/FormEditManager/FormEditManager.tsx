@@ -7,6 +7,7 @@ import Icon from "../../../../../common/Icon/Icon";
 import {FONTS} from "../../../../../common/MentorColor";
 import { Heading2 } from '../../../../../common/MentorText';
 import {IMentorFormValidations} from "../../../../../domain/Mentor/MentorBaseForm";
+import {IMentorRating} from "../../../../../domain/Mentor/MentorProfile";
 import FormExperience from "../../../../Admin/MentorFormBase/components/FormExperience/FormExperience";
 import getExperiencesWithError from "../../../../Admin/MentorFormBase/components/FormExperience/ValidateExperiences";
 import FormImage from "../../../../Admin/MentorFormBase/components/FormImage/FormImage";
@@ -23,6 +24,7 @@ export interface IPropsFormEditManager {
         values: IMentorFormValidations | any;
     },
     onHandleSubmit: (e: any) => void;
+    rating?: IMentorRating;
     validateForm: () => void;
 }
 
@@ -92,7 +94,7 @@ const FormEditManager: React.FC<IPropsFormEditManager> = (props) => {
                     <Heading2 color={FONTS.purple} style={{margin: '40px 0 10px 0'}}>
                         {context.values.firstName} {context.values.lastName}
                         </Heading2>
-                    <MentorRating count={1} average={4.5}/>
+                    {props.rating && <MentorRating count={props.rating.count} average={props.rating.average}/>}
                 </BasicData>
             </FormImageColumn>
             <FormProfileTemplate
