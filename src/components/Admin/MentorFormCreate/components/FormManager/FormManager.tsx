@@ -68,7 +68,6 @@ class FormManager extends React.Component <IPropsFormManager, IStateFormManager>
     private buttonAttrContinue: any;
     private buttonAttrCancel: any;
     private warningContent: IGenericContentModal;
-    private errorDocumentContent: IGenericContentModal;
     constructor(props: IPropsFormManager) {
         super(props);
         this.buttonAttrBack = {type: "button", style: {marginLeft: 24, width: 136}};
@@ -96,12 +95,6 @@ class FormManager extends React.Component <IPropsFormManager, IStateFormManager>
             image: <Icon name={'alert'} />,
             title: "¿Seguro que deseas cancelar?"
         };
-        this.errorDocumentContent = {
-            button: "Aceptar",
-            description: "El DNI ya lo tiene un mentor o un estudiante",
-            image: <Icon name={'alert'} />,
-            title: "Este DNI ya se encuentra en uso"
-        }
     }
 
     public render() {
@@ -161,11 +154,6 @@ class FormManager extends React.Component <IPropsFormManager, IStateFormManager>
                     show={this.state.modal}
                     onCloseModal={this.closeModal}>
                     <ContentModal.Generic generic={this.warningContent} loading={false} confirm={this.redirect} />
-                </MentorModalBase>
-                <MentorModalBase
-                    show={this.state.documentStatus === DOCUMENT_STATUS.EXIST || this.state.documentStatus === DOCUMENT_STATUS.FOUND}
-                    hideClose={true}>
-                    <ContentModal.Generic generic={this.errorDocumentContent} loading={false} confirm={this.cleanDocument} />
                 </MentorModalBase>
                 {1 === this.props.currentStep &&
                     <FormManagerContainer>

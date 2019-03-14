@@ -48,17 +48,18 @@ const useHandlerDocument = (onChangeDocument: (status: number) => void, document
     const handleBlur = context.handleBlur;
     React.useEffect(() => {
         const {touched, errors} = context;
-        const documentError =
+        const documentHasError =
             documentStatus === DOCUMENT_STATUS.EXIST ||
-            documentStatus === DOCUMENT_STATUS.FOUND ||
-            documentStatus === DOCUMENT_STATUS.REQUEST_ERROR;
+            documentStatus === DOCUMENT_STATUS.FOUND;
+        const requestHasError = documentStatus === DOCUMENT_STATUS.REQUEST_ERROR;
 
-        const errorDocument =  touched.document && errors.document;
-        const errorRequest = documentError && "Documento no válido";
+        const errorValidation =  touched.document && errors.document;
+        const errorRequest = requestHasError && "Documento no válido";
+        const errorDocument = documentHasError && "Documento Inválido. Verifícalo e ingrésalo nuevamente. ";
         const documentCheck  = documentStatus === DOCUMENT_STATUS.NOT_FOUND;
         setState({
             ...state,
-            error: errorDocument || errorRequest,
+            error: errorValidation || errorRequest || errorDocument,
             loadSuccess: documentCheck ? 'check': ''
         });
 
