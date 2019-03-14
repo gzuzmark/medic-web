@@ -47,7 +47,7 @@ const MentorRating: React.FC<IPropsMentorRating> = (props) => {
             <div>
                 <RatingSpriteTotal width={percent}/>
             </div>
-            <Body1 color={FONTS.blue_grey}>{props.count > 0 ? `${percent}%` : 'Sin calificación'}</Body1>
+            <Body1 color={FONTS.blue_grey}>{props.count > 0 ? `${average}` : 'Sin calificación'}</Body1>
         </RatingSpriteContainer>
     );
 };

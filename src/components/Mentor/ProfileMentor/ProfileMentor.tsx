@@ -88,14 +88,16 @@ class ProfileMentor extends React.Component<{}, IStateProfileMentor> {
                 <FormReviewHeader>
                     <Wrapper>
                         <Subhead1>Descripción</Subhead1>
-                        {!mentor.description && <Subhead1 color={FONTS.error}>(Pendiente)</Subhead1>}
+                        {mentor.description.trim().length === 0 &&
+                            <Subhead1 color={FONTS.error}>(Pendiente)</Subhead1>}
                     </Wrapper>
                 </FormReviewHeader>
-                <Wrapper>
-                    <div style={{background: colors.MISC_COLORS.background_grey_1, padding: "22px 16px", width: '100%'}}>
-                        <Subhead1 weight={LIGHT_TEXT} style={{overflowWrap: 'break-word'}}>“{mentor.description}”</Subhead1>
-                    </div>
-                </Wrapper>
+                {mentor.description.trim().length > 0 &&
+                    <Wrapper>
+                        <div style={{background: colors.MISC_COLORS.background_grey_1, padding: "22px 16px", width: '100%'}}>
+                            <Subhead1 weight={LIGHT_TEXT} style={{overflowWrap: 'break-word'}}>“{mentor.description}”</Subhead1>
+                        </div>
+                    </Wrapper>}
                 <Separator />
                 <FormReviewHeader>
                     <Wrapper>
@@ -103,17 +105,19 @@ class ProfileMentor extends React.Component<{}, IStateProfileMentor> {
                         {(!mentor.experiences.length) && <Subhead1 color={FONTS.error}>(Pendiente)</Subhead1>}
                     </Wrapper>
                 </FormReviewHeader>
-                <Wrapper type={COLUMN}>
-                    {mentor.experiences.map((item, index) => {
-                        return (
-                            <ExperienceItem key={`form_view_experiences_${index}`}>
-                                <Subhead1 color={FONTS.medium}>{item.position}</Subhead1>
-                                <Body1 weight={LIGHT_TEXT}>{item.company}</Body1>
-                                <Body1 weight={LIGHT_TEXT} color={FONTS.blue_grey}>{getDateExperience(item)}</Body1>
-                            </ExperienceItem>
-                        )
-                    })}
-                </Wrapper>
+                {mentor.experiences.length > 0 &&
+                    <Wrapper type={COLUMN}>
+                        {mentor.experiences.map((item, index) => {
+                            return (
+                                <ExperienceItem key={`form_view_experiences_${index}`}>
+                                    <Subhead1 color={FONTS.medium}>{item.position}</Subhead1>
+                                    <Body1 weight={LIGHT_TEXT}>{item.company}</Body1>
+                                    <Body1 weight={LIGHT_TEXT} color={FONTS.blue_grey}>{getDateExperience(item)}</Body1>
+                                </ExperienceItem>
+                            )
+                        })}
+                    </Wrapper>}
+
                 <Separator />
                 <ButtonNormal text={"Editar información"} link={true} attrs={{
                     href: '/mentor/editar-perfil',

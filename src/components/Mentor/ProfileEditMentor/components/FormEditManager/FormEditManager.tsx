@@ -1,7 +1,7 @@
 import * as React from "react";
 import styled from "styled-components";
 import {ButtonNormal} from "../../../../../common/Buttons/Buttons";
-import ContentModal, {IGenericContentModal} from "../../../../../common/ConsoleModal/ContentModal";
+import ContentModal from "../../../../../common/ConsoleModal/ContentModal";
 import MentorModalBase from "../../../../../common/ConsoleModal/MentorModalBase";
 import Icon from "../../../../../common/Icon/Icon";
 import {FONTS} from "../../../../../common/MentorColor";
@@ -12,6 +12,7 @@ import getExperiencesWithError from "../../../../Admin/MentorFormBase/components
 import FormImage from "../../../../Admin/MentorFormBase/components/FormImage/FormImage";
 import FormProfile from "../../../../Admin/MentorFormBase/components/FormProfile/FormProfile";
 import {formTemplateHOC} from "../../../../Admin/MentorFormBase/components/FormTemplate/FormTemplateHOC";
+import MentorFormBaseContext from "../../../../Admin/MentorFormBase/MentorFormBase.context";
 import {limitDescription} from "../../../../Admin/MentorFormBase/MentorFormBase.validations";
 import MentorRating from "../../../components/MentorRating/MentorRating";
 
@@ -23,10 +24,6 @@ export interface IPropsFormEditManager {
     },
     onHandleSubmit: (e: any) => void;
     validateForm: () => void;
-}
-
-interface IStateFormEditManager {
-    modal: boolean;
 }
 
 const BasicData = styled.div`
@@ -44,38 +41,31 @@ const FormImageColumn = styled(FormImage)`
 const FormProfileTemplate = formTemplateHOC(FormProfile);
 const FormExperienceTemplate = formTemplateHOC(FormExperience);
 
-class FormEditManager extends React.Component <IPropsFormEditManager, IStateFormEditManager> {
-    public state: IStateFormEditManager;
-    private warningContent: IGenericContentModal;
-    private buttonAttrUpdate: any;
-    constructor(props: IPropsFormEditManager) {
-        super(props);
-        this.onHandleSubmit = this.onHandleSubmit.bind(this);
-        this.openModal = this.openModal.bind(this);
-        this.closeModal = this.closeModal.bind(this);
-        this.state = {
-            modal: false
-        };
-        this.buttonAttrUpdate = {
-            onClick: this.openModal,
-            style: {margin : '40px 0 0 auto'},
-            type: "button"};
-        this.warningContent = {
-            button: "Aceptar",
-            description: "Los cambios que realices se guardarán en el perfil del mentor.",
-            image: <Icon name={'alert'} />,
-            title: "¿Estás seguro que deseas guardar los cambios?"
-        }
+const FormEditManager: React.FC<IPropsFormEditManager> = (props) => {
+    const [modal, setModal] = React.useState(false);
+    const context = React.useContext(MentorFormBaseContext);
+    const validateForm = props.validateForm;
+    const openModal = () => setModal(true);
 
-    }
+    const buttonAttrBase: any = {
+        onClick: openModal,
+        style: {margin : '40px 0 0 auto'},
+        type: "button"};
+    let buttonAttrUpdate = buttonAttrBase;
+    const warningContent = {
+        button: "Aceptar",
+        description: "Los cambios que realices se guardarán en tu perfil.",
+        image: <Icon name={'alert'} />,
+        title: "¿Estás seguro que deseas guardar los cambios?"
+    };
 
-    public componentDidMount() {
-        this.props.validateForm();
-    }
+    React.useEffect(() => {
+        validateForm();
+    }, [0]);
 
-    public render() {
-        const {errors, values} = this.props.formData;
-        let buttonAttrUpdate = {...this.buttonAttrUpdate};
+    React.useEffect(() => {
+        const {errors, values} = props.formData;
+        buttonAttrUpdate = {...buttonAttrBase};
         const experiencesStatus = getExperiencesWithError(values.experiences, errors);
         if (values.description && values.description.length > limitDescription) {
             buttonAttrUpdate = {...buttonAttrUpdate, disabled: true};
@@ -84,42 +74,37 @@ class FormEditManager extends React.Component <IPropsFormEditManager, IStateForm
         }else if (experiencesStatus.length < values.experiences.length && values.experiences.length > 1 ) {
             buttonAttrUpdate = {...buttonAttrUpdate, disabled: true};
         }
-        return (
-            <React.Fragment>
-                <MentorModalBase show={this.state.modal} onCloseModal={this.closeModal}>
-                    <ContentModal.Generic generic={this.warningContent} loading={false} confirm={this.onHandleSubmit} />
-                </MentorModalBase>
-                <FormImageColumn id={"FormImageProfileEdit"} forceDisable={false} size={88} mentor={true}>
-                    <BasicData>
-                        <Heading2 color={FONTS.purple} style={{margin: '40px 0 10px 0'}}>Mario Augusto Benedetti de las Casas Montalván</Heading2>
-                        <MentorRating count={1} average={4.5}/>
-                    </BasicData>
-                </FormImageColumn>
-                <FormProfileTemplate
-                    titleForm={"Datos de perfil"}
-                    isEdit={true} />
-                <FormExperienceTemplate
-                    titleForm={"Otras experiencias laborales"}
-                    isEdit={true} />
+    }, [props.formData.values.experiences]);
 
-                <ButtonNormal text={"Guardar Cambios"}
-                              attrs={...buttonAttrUpdate}/>
-            </React.Fragment>
-        )
-    }
+    const onHandleSubmit = () => {
+        closeModal();
+        props.onHandleSubmit(props.formData.values)
+    };
 
-    private onHandleSubmit() {
-        this.closeModal();
-        this.props.onHandleSubmit(this.props.formData.values)
-    }
-
-    private openModal() {
-        this.setState({modal: true})
-    }
-
-    private closeModal() {
-        this.setState({modal: false})
-    }
+    const closeModal = () => setModal(false);
+    return (
+        <React.Fragment>
+            <MentorModalBase show={modal} onCloseModal={closeModal}>
+                <ContentModal.Generic generic={warningContent} loading={false} confirm={onHandleSubmit} />
+            </MentorModalBase>
+            <FormImageColumn id={"FormImageProfileEdit"} forceDisable={false} size={88} mentor={true}>
+                <BasicData>
+                    <Heading2 color={FONTS.purple} style={{margin: '40px 0 10px 0'}}>
+                        {context.values.firstName} {context.values.lastName}
+                        </Heading2>
+                    <MentorRating count={1} average={4.5}/>
+                </BasicData>
+            </FormImageColumn>
+            <FormProfileTemplate
+                titleForm={"Tu información de perfil"}
+                isEdit={true} />
+            <FormExperienceTemplate
+                titleForm={"Otras experiencias laborales"}
+                isEdit={true} />
+            <ButtonNormal text={"Guardar Cambios"}
+                          attrs={...buttonAttrUpdate}/>
+        </React.Fragment>
+    )
 }
 
 export default FormEditManager;
