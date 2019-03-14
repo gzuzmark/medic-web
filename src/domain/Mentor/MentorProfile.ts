@@ -12,11 +12,13 @@ export interface IMentorProfileData extends IMentorBaseForm {
     };
 }
 
+export interface IMentorRating {
+    average: number;
+    count: number;
+};
+
 export interface IMentorProfileFormValidations extends IMentorFormValidations{
-    rating?: {
-        average: number;
-        count: number;
-    };
+    rating?: IMentorRating;
 }
 
 class MentorProfileData extends MentorBaseForm {
