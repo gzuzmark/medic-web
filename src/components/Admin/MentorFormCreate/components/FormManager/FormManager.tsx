@@ -11,9 +11,12 @@ import FormImage from "../../../MentorFormBase/components/FormImage/FormImage";
 import FormPersonalData from "../../../MentorFormBase/components/FormPersonalData/FormPersonalData";
 import FormProfile from "../../../MentorFormBase/components/FormProfile/FormProfile";
 import {formTemplateHOC} from "../../../MentorFormBase/components/FormTemplate/FormTemplateHOC";
-import {limitDescription} from "../../../MentorFormBase/MentorFormBase.validations";
+import {
+    DOCUMENT_STATUS,
+    limitDescription,
+    listValidDocumentStatus
+} from "../../../MentorFormBase/MentorFormBase.validations";
 import FormMail from "../FormMail/FormMail";
-import {DOCUMENT_STATUS} from "../FormMail/UseHandlerDocument";
 import FormReview from "../FormReview/FormReview";
 
 interface IPropsFormManager {
@@ -115,11 +118,11 @@ class FormManager extends React.Component <IPropsFormManager, IStateFormManager>
             } else if (this.emailIsNotAllowed(values.status, errors, touched)) {
                 buttonAttrContinue = {...buttonAttrContinue, disabled: true};
             } else if (values.status !== emailStatus.FULL_DATA) {
-                if (!!errors.documentType || !touched.documentType) {
+                if (!!errors.documentType) {
                     buttonAttrContinue = {...buttonAttrContinue, disabled: true};
                 } else if (!!errors.document || !touched.document) {
                     buttonAttrContinue = {...buttonAttrContinue, disabled: true};
-                } else if (this.state.documentStatus !== DOCUMENT_STATUS.NOT_FOUND) {
+                } else if (listValidDocumentStatus.indexOf(this.state.documentStatus) === -1) {
                     buttonAttrContinue = {...buttonAttrContinue, disabled: true};
                 }
             }

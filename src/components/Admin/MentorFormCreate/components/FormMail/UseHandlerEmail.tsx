@@ -2,12 +2,12 @@ import * as React from "react";
 import {emailStatus, IMentorBaseForm} from "../../../../../domain/Mentor/MentorBaseForm";
 import MentorService from "../../../../../services/Mentor/Mentor.service";
 import MentorFormBaseContext from "../../../MentorFormBase/MentorFormBase.context";
-import {IFormManagerDisabledFields} from "../FormManager/FormManager";
-import {DOCUMENT_STATUS} from "./UseHandlerDocument";
+import {DOCUMENT_STATUS} from "../../../MentorFormBase/MentorFormBase.validations";
+import {fnOnChangeDocument, fnUpdateDisabledFields} from "./FormMail";
 
 const mentorService = new MentorService();
 
-const useHandlerEmail = (updateDisabledFields: (fields: IFormManagerDisabledFields) => void, onChangeDocument: (status: number) => void) => {
+const useHandlerEmail = (updateDisabledFields: fnUpdateDisabledFields, onChangeDocument: fnOnChangeDocument) => {
     const [timer, setTimer] = React.useState(0 as any);
     const [state, setState] = React.useState({error: '', loadSuccess: ''});
     const [loading, setLoading] = React.useState(false);

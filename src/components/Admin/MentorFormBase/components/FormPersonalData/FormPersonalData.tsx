@@ -3,13 +3,13 @@ import MentorDropDown, {IPropsMentorOptionsDropDown} from "../../../../../common
 import MentorInput from "../../../../../common/MentorInput/MentorInput";
 import {documentTypeList} from "../../../../../repository/DocumentsIdentification";
 import useHandlerDocument, {
-    DOCUMENT_STATUS,
     IUseHandlerDocument
 } from "../../../MentorFormCreate/components/FormMail/UseHandlerDocument";
 import {IFormManagerDisabledFields, IFormManagerInfoFields} from "../../../MentorFormCreate/components/FormManager/FormManager";
 import FormColumn from "../../../ScheduleSession/components/FormRow/components/FormColumn/FormColumn";
 import FormRow from "../../../ScheduleSession/components/FormRow/FormRow";
 import MentorFormBaseContext, {IMentorFormBaseContext} from "../../MentorFormBase.context";
+import {DOCUMENT_STATUS} from "../../MentorFormBase.validations";
 
 interface IStateFormPersonalData {
     loadingSkills: boolean;

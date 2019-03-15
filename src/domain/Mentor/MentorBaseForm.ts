@@ -1,3 +1,4 @@
+import {documentDefaultSelection} from "../../repository/DocumentsIdentification";
 import {IBaseUser} from "../User/AbstractUser";
 
 export const emailStatus = {
@@ -120,8 +121,8 @@ abstract class MentorBaseForm {
         } as IFormItemBase;
 
         formValues.documentType = {
-            label: m.documentType,
-            value: m.documentType
+            label: m.documentType || documentDefaultSelection.label,
+            value: m.documentType || documentDefaultSelection.value
         } as IFormItemBase;
 
         formValues.skills = !!m.skillsId ? m.skillsId.map((v) => ({label: '', value: v})) : [];

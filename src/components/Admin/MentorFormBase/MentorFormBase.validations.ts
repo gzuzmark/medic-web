@@ -3,6 +3,16 @@ export const errorRequired = 'Campo es requerido.';
 export const errorLetter = 'Campo solo permite letras.';
 export const phoneRequired = 'Número de contacto incorrecto.';
 export const limitDescription = 150;
+export const DOCUMENT_STATUS = {
+    EMPTY: 3,
+    ERROR: 1,
+    EXIST: 409,
+    FOUND: 200,
+    NOT_FOUND: 404,
+    REQUEST_ERROR: 400,
+    WAITING: 0
+};
+export const listValidDocumentStatus = [DOCUMENT_STATUS.NOT_FOUND, DOCUMENT_STATUS.FOUND];
 
 const getDate = (year: number, month: number) =>
     new Date(year, month);
