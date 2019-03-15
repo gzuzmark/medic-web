@@ -81,7 +81,7 @@ export class SessionBean {
     }
 
     public getDate(dateFormatter: AbstractDateParser): string {
-        return `${dateFormatter.parseDateToString(this.session.from, "dddd DD [de] MMMM")}`;
+        return `${dateFormatter.parseDateToString(this.session.from, "dddd, DD [de] MMMM")}`;
     }
 
     public isVirtual(): boolean {
@@ -103,7 +103,8 @@ export class SessionBean {
         return location;
     }
 
-    public getSessionType() {
+    public getSessionType(text?: string) {
+        const before = text ? text + ' ':'';
         let type = '';
         if (this.isVirtual()) {
             type = 'virtual';
@@ -112,7 +113,7 @@ export class SessionBean {
         } else {
             type = 'indefinido'
         }
-        return `Sesión ${type}`;
+        return `${before}${type}`;
     }
 
     public getStatus() {

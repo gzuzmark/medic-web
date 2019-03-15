@@ -1,7 +1,7 @@
 import { shallow } from 'enzyme';
 import 'jest-localstorage-mock';
 import * as React from 'react';
-import MentorHome from './MentorHome';
+import {MentorHomeCore} from './MentorHome';
 
 
 describe('MentorHome Test',() => {
@@ -10,14 +10,20 @@ describe('MentorHome Test',() => {
     const getComponent = () => {
         if (!mountedMentorHome) {
             mountedMentorHome = shallow(
-                <MentorHome {...props} />
+                <MentorHomeCore {...props} />
             );
         }
         return mountedMentorHome;
     };
 
     beforeEach(() => {
-        props = {};
+        props = {
+            noAttendedSessions: {
+                doRequest: () => void(0),
+                item: null,
+                loading: false
+            }
+        };
         mountedMentorHome = undefined;
     });
 

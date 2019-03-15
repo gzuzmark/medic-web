@@ -100,6 +100,23 @@ class SessionService extends BaseRequest {
         });
     }
 
+    public listNoAttendedSessions(): Promise<ISessionMentor[]> {
+        return new Promise((resolve, reject) => {
+            this.instance.get(`ugo/mentors-api/me/sessions/noattended?limit=1`)
+                .then((response: any) => {
+                    if (response.status === 200 && response.data) {
+                        resolve(response.data.items);
+                    } else {
+                        reject(null);
+                    }
+                })
+                .catch((error: any) => {
+                    this.validSession();
+                    reject(error);
+                });
+        });
+    }
+
     public getSessionMentor(session: string): Promise<ISessionMentor> {
         return new Promise((resolve, reject) => {
             this.instance.get(`ugo/mentors-api/me/sessions/${session}`)

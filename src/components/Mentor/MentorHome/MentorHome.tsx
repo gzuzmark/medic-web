@@ -11,6 +11,7 @@ import {ISessionMentor, SessionMentorBean} from "../../../domain/Session/Session
 import UserRepository from "../../../repository/UserRepository";
 import SessionService from "../../../services/Session/Session.service";
 import DayHandlerBar, {IDayHandlerBar} from "./components/DayHandlerBar/DayHandlerBar";
+import ModalTakeList from "./components/ModalTakeList/ModalTakeList";
 import SessionsMentorDetail, {ISessionMentorDetail} from "./components/SessionsMentorDetail/SessionsMentorDetail";
 import './MentorHome.scss';
 
@@ -20,15 +21,44 @@ export interface IRangeDay {
     date: string;
 }
 
-interface IStateMentorHome {
+interface IStateMentorHomeCore {
     daysBar: IDayHandlerBar;
     loading: boolean;
     selectedDate: string;
     sessionDetail: ISessionMentorDetail;
 }
 
-class MentorHome extends React.Component<{}, IStateMentorHome> {
-    public state: IStateMentorHome;
+interface IUseHandlerNoAttendedsessions {
+    loading: boolean;
+    session: SessionMentorBean | null;
+    doRequest: () => void;
+}
+
+interface IPropsMentorHomeCore {
+    noAttendedSessions: IUseHandlerNoAttendedsessions;
+}
+
+const useHandlerNoAttendedSessions = (): IUseHandlerNoAttendedsessions => {
+    const [loading, setLoading] = React.useState(true);
+    const [session, setSession] = React.useState(null as null | SessionMentorBean);
+    const sessionService = new SessionService();
+    const doRequest = () => {
+        sessionService.listNoAttendedSessions().then((sessions: ISessionMentor[]) => {
+            const item = new SessionMentorBean(sessions[0]);
+            setSession(item);
+            setLoading(false);
+        }).catch(() => {
+            setSession(null);
+        })
+    };
+    React.useEffect(() => {
+        doRequest();
+    }, [0]);
+    return {loading, session, doRequest}
+};
+
+export class MentorHomeCore extends React.Component<IPropsMentorHomeCore, IStateMentorHomeCore> {
+    public state: IStateMentorHomeCore;
     private sessionCollector: SessionCollector<SessionMentorBean> =  new SessionCollector<SessionMentorBean>(
         [], Utilities.getMonday().toISOString(), 1);
     private sessionService = new SessionService();
@@ -36,7 +66,7 @@ class MentorHome extends React.Component<{}, IStateMentorHome> {
     private listenerFirebase: ListenerFirebase;
     private mdp: MomentDateParser;
     private interval: any = 0;
-    constructor(props: any) {
+    constructor(props: IPropsMentorHomeCore) {
         super(props);
         this.state = {
             daysBar: this.updateDaysBar(0),
@@ -53,6 +83,7 @@ class MentorHome extends React.Component<{}, IStateMentorHome> {
         this.updateScrollTop = this.updateScrollTop.bind(this);
         this.buildRefURL = this.buildRefURL.bind(this);
         this.updateSessionDetail = this.updateSessionDetail.bind(this);
+        this.refreshSession = this.refreshSession.bind(this);
         this.updateDaysBar = this.updateDaysBar.bind(this);
         this.firstLoad = this.firstLoad.bind(this);
         this.mdp = new MomentDateParser();
@@ -64,6 +95,15 @@ class MentorHome extends React.Component<{}, IStateMentorHome> {
             this.firstLoad();
         }
     }
+
+    public shouldComponentUpdate(nextProps: IPropsMentorHomeCore, nextState: IStateMentorHomeCore) {
+        return !Utilities.deepEqual(nextProps, this.props) || !Utilities.deepEqual(nextState, this.state);
+    }
+
+    public componentWillUnmount() {
+        this.listenerFirebase.stopListener();
+    }
+
 
     public firstLoad() {
         const date = Utilities.getMonday();
@@ -81,13 +121,10 @@ class MentorHome extends React.Component<{}, IStateMentorHome> {
             this.listenerFirebase.startListener();
         });
     }
-
-    public componentWillUnmount() {
-        this.listenerFirebase.stopListener();
-    }
-
     public render() {
         return <Layout title={"Tutores"}>
+            <ModalTakeList item={this.props.noAttendedSessions.session}
+                           loadNoAttendedSessions={this.props.noAttendedSessions.doRequest} />
             <div className="MentorHome u-LayoutMentorMargin">
                 <div className={"MentorHome_title"}>
                     <Icon name={"calendar"}/>
@@ -115,6 +152,7 @@ class MentorHome extends React.Component<{}, IStateMentorHome> {
 
     private updateDate(selectedDate: string) {
         const date = new Date(selectedDate);
+        this.refreshSession(date);
         this.setState({
             selectedDate,
             sessionDetail: this.updateSessionDetail(date)
@@ -156,6 +194,7 @@ class MentorHome extends React.Component<{}, IStateMentorHome> {
                 const isSameWeek = this.mdp.isSameWeek(from.toISOString(), this.sessionCollector.selectedDate);
                 if (!this.state.sessionDetail.sessions || !!forceRefresh) {
                     const selectedDate = new Date(this.state.selectedDate);
+                    this.refreshSession(selectedDate, sessionCollector);
                     newState = {
                         selectedDate: selectedDate.toISOString(),
                         sessionDetail: this.updateSessionDetail(selectedDate, sessionCollector)
@@ -205,6 +244,14 @@ class MentorHome extends React.Component<{}, IStateMentorHome> {
 
     private updateSessionDetail(date: Date, sessionCollector?: SessionCollector<SessionMentorBean>) {
         const collector = sessionCollector || this.sessionCollector;
+        return {
+            ...this.state.sessionDetail,
+            sessions: collector.getSessionsFrom(date.getDay())
+        }
+    }
+
+    private refreshSession(date: Date, sessionCollector?: SessionCollector<SessionMentorBean>) {
+        const collector = sessionCollector || this.sessionCollector;
         clearInterval(this.interval);
         this.interval = setInterval(() => {
             collector.updateCollector();
@@ -215,11 +262,15 @@ class MentorHome extends React.Component<{}, IStateMentorHome> {
                 }
             });
         }, 1100);
-        return {
-            ...this.state.sessionDetail,
-            sessions: collector.getSessionsFrom(date.getDay())
-        }
     }
+}
+
+const MentorHome: React.FC<{}> = () => {
+    const noAttendedSessions = useHandlerNoAttendedSessions();
+
+    return (
+        <MentorHomeCore noAttendedSessions={noAttendedSessions} />
+    )
 }
 
 export default MentorHome;
