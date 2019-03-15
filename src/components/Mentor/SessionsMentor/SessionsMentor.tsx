@@ -367,7 +367,7 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
     private getFullCardSession(): ISessionFullCard {
         const schedule = this.sessionMentor.getTime(new MomentDateParser());
         return {
-            title: `${this.sessionMentor.getSessionType()} - ${schedule}`,
+            title: `${this.sessionMentor.getSessionType('Sesión')} - ${schedule}`,
             type: this.sessionMentor.getStatus() === SESSION_LIFE.ACTIVE ? 'En curso' : 'Activa'
         };
     }

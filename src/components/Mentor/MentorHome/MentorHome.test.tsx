@@ -1,23 +1,36 @@
 import { shallow } from 'enzyme';
 import 'jest-localstorage-mock';
 import * as React from 'react';
-import MentorHome from './MentorHome';
+import Utilities from "../../../common/Utils/Utilities";
+import {SessionCollector} from "../../../domain/Session/SessionCollector";
+import {SessionMentorBean} from "../../../domain/Session/SessionMentorBean";
+import {MentorHomeCore} from './MentorHome';
 
 
 describe('MentorHome Test',() => {
     let props: any;
     let mountedMentorHome: any;
+    const firstMonday = Utilities.getMonday().toISOString();
     const getComponent = () => {
         if (!mountedMentorHome) {
             mountedMentorHome = shallow(
-                <MentorHome {...props} />
+                <MentorHomeCore {...props} />
             );
         }
         return mountedMentorHome;
     };
 
     beforeEach(() => {
-        props = {};
+        const sessionCollector = new SessionCollector<SessionMentorBean>([], firstMonday, 1);
+        props = {
+            noAttendedSessions: {
+                doRequest: () => void(0),
+                item: null,
+                loading: false
+            },
+            sessionCollector,
+            setSessionCollector: (s: SessionCollector<SessionMentorBean>) => void(0)
+        };
         mountedMentorHome = undefined;
     });
 
