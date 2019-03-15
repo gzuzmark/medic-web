@@ -36,6 +36,8 @@ interface IUseHandlerNoAttendedsessions {
 
 interface IPropsMentorHomeCore {
     noAttendedSessions: IUseHandlerNoAttendedsessions;
+    sessionCollector: SessionCollector<SessionMentorBean>;
+    setSessionCollector: (s: SessionCollector<SessionMentorBean>) => void
 }
 
 const useHandlerNoAttendedSessions = (): IUseHandlerNoAttendedsessions => {
@@ -59,8 +61,6 @@ const useHandlerNoAttendedSessions = (): IUseHandlerNoAttendedsessions => {
 
 export class MentorHomeCore extends React.Component<IPropsMentorHomeCore, IStateMentorHomeCore> {
     public state: IStateMentorHomeCore;
-    private sessionCollector: SessionCollector<SessionMentorBean> =  new SessionCollector<SessionMentorBean>(
-        [], Utilities.getMonday().toISOString(), 1);
     private sessionService = new SessionService();
     private mentorId: string;
     private listenerFirebase: ListenerFirebase;
@@ -103,7 +103,6 @@ export class MentorHomeCore extends React.Component<IPropsMentorHomeCore, IState
     public componentWillUnmount() {
         this.listenerFirebase.stopListener();
     }
-
 
     public firstLoad() {
         const date = Utilities.getMonday();
@@ -191,7 +190,7 @@ export class MentorHomeCore extends React.Component<IPropsMentorHomeCore, IState
                 let newState = {};
                 const mentorSessions = sessions.map((item) => new SessionMentorBean(item));
                 const sessionCollector = new SessionCollector<SessionMentorBean>(mentorSessions, from.toISOString(), 1);
-                const isSameWeek = this.mdp.isSameWeek(from.toISOString(), this.sessionCollector.selectedDate);
+                const isSameWeek = this.mdp.isSameWeek(from.toISOString(), this.props.sessionCollector.selectedDate);
                 if (!this.state.sessionDetail.sessions || !!forceRefresh) {
                     const selectedDate = new Date(this.state.selectedDate);
                     this.refreshSession(selectedDate, sessionCollector);
@@ -201,7 +200,7 @@ export class MentorHomeCore extends React.Component<IPropsMentorHomeCore, IState
                     }
                 }
                 if (isSameWeek || !forceRefresh) {
-                    this.sessionCollector = sessionCollector;
+                    this.props.setSessionCollector(sessionCollector);
                     this.setState({
                         daysBar: this.updateDaysBar(counter),
                         loading: false,
@@ -233,7 +232,7 @@ export class MentorHomeCore extends React.Component<IPropsMentorHomeCore, IState
 
     private updateDaysBar(counter: number, sessionCollector?: SessionCollector<SessionMentorBean>) {
         if (!sessionCollector) {
-            sessionCollector = this.sessionCollector;
+            sessionCollector = this.props.sessionCollector;
         }
         return {
             counter,
@@ -243,7 +242,7 @@ export class MentorHomeCore extends React.Component<IPropsMentorHomeCore, IState
     }
 
     private updateSessionDetail(date: Date, sessionCollector?: SessionCollector<SessionMentorBean>) {
-        const collector = sessionCollector || this.sessionCollector;
+        const collector = sessionCollector || this.props.sessionCollector;
         return {
             ...this.state.sessionDetail,
             sessions: collector.getSessionsFrom(date.getDay())
@@ -251,7 +250,7 @@ export class MentorHomeCore extends React.Component<IPropsMentorHomeCore, IState
     }
 
     private refreshSession(date: Date, sessionCollector?: SessionCollector<SessionMentorBean>) {
-        const collector = sessionCollector || this.sessionCollector;
+        const collector = sessionCollector || this.props.sessionCollector;
         clearInterval(this.interval);
         this.interval = setInterval(() => {
             collector.updateCollector();
@@ -266,10 +265,17 @@ export class MentorHomeCore extends React.Component<IPropsMentorHomeCore, IState
 }
 
 const MentorHome: React.FC<{}> = () => {
+    const firstMonday = Utilities.getMonday().toISOString();
+    const [sessionCollector, setSessionCollector] =  React.useState(
+        new SessionCollector<SessionMentorBean>([], firstMonday, 1));
+
     const noAttendedSessions = useHandlerNoAttendedSessions();
 
     return (
-        <MentorHomeCore noAttendedSessions={noAttendedSessions} />
+        <MentorHomeCore
+            sessionCollector={sessionCollector}
+            setSessionCollector={setSessionCollector}
+            noAttendedSessions={noAttendedSessions} />
     )
 }
 

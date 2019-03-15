@@ -17,7 +17,8 @@ export interface IPropsUpdateStatus {
 const mentorService = new MentorService();
 
 const UpdateStatus: React.FC<IPropsUpdateStatus> = (props) => {
-    const [isPublished, setIsPublished] = React.useState(false);
+    const [isPublished, setIsPublished] = React.useState(
+        props.status === MENTOR_STATUS.PUBLISHED || props.status === MENTOR_STATUS.INCOMPLETE);
     const [finalStatus, setFinalStatus] =  React.useState('');
     const [nexStatus, setNexStatus] =  React.useState('');
     const [currentStatus, setCurrentStatus] =  React.useState('');
