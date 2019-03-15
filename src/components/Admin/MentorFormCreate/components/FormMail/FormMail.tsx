@@ -9,16 +9,20 @@ import {IFormManagerDisabledFields} from "../FormManager/FormManager";
 import useHandlerDocument from "./UseHandlerDocument";
 import useHandlerEmail from "./UseHandlerEmail";
 
+export type fnUpdateDisabledFields  = (fields: IFormManagerDisabledFields) => void;
+export type fnOnChangeDocument  = (status: number) => void;
+
 interface IPropsFormMail {
-    updateDisabledFields: (fields: IFormManagerDisabledFields) => void;
+    updateDisabledFields: fnUpdateDisabledFields,
     disableFields: IFormManagerDisabledFields;
-    onChangeDocument: (status: number) => void;
+    onChangeDocument: fnOnChangeDocument;
     documentStatus: number;
 }
 
+
 const FormMail: React.FC<IPropsFormMail> = (props) => {
     const email = useHandlerEmail(props.updateDisabledFields, props.onChangeDocument);
-    const document = useHandlerDocument(props.onChangeDocument, props.documentStatus);
+    const document = useHandlerDocument(props.onChangeDocument, props.documentStatus, props.updateDisabledFields);
     let counter = 0;
     return (
         <React.Fragment>
