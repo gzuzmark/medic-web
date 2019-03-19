@@ -29,6 +29,7 @@ interface IStateMentorEdit  {
     mentor: IMentorAdminEditFormValidations | null;
     modal: boolean;
     saving: boolean;
+    error: boolean;
 }
 
 export interface IPropsMentorEdit {
@@ -67,6 +68,7 @@ class MentorFormEditCore  extends React.Component <IPropsMentorEditCore, IStateM
         this.skillService =  new SkillService();
         this.mentorService =  new MentorService();
         this.state = {
+            error: false,
             listSites: [] as IPropsMentorOptionsDropDown[],
             listSkills: [] as IPropsMentorOptionsDropDown[],
             mentor: null,
@@ -112,6 +114,9 @@ class MentorFormEditCore  extends React.Component <IPropsMentorEditCore, IStateM
                 {this.state.saving && <LoaderFullScreen modal={true} text={"Cargando..."}/>}
                 <MentorModalBase show={this.state.modal} hideClose={true}>
                     <ContentModal.Success description={"Cambios guardados con éxito"} />
+                </MentorModalBase>
+                <MentorModalBase show={this.state.error}>
+                    <ContentModal.Warning description={"Necesitas eliminar algunos skills"} />
                 </MentorModalBase>
                 <MentorEditContainer>
                     {!this.state.mentor &&
@@ -211,8 +216,15 @@ class MentorFormEditCore  extends React.Component <IPropsMentorEditCore, IStateM
             setTimeout( () => {
                 this.setState({modal: false});
             }, 2000)
-        }).catch(() => {
-            this.setState({saving: false, modal: false});
+        }).catch((e) => {
+            if (e.response.status === 409) {
+                this.setState({error: true, saving: false, modal: false});
+                setTimeout( () => {
+                    this.setState({error: false});
+                }, 2000)
+            } else {
+                this.setState({saving: false, modal: false});
+            }
         });
     }
 
