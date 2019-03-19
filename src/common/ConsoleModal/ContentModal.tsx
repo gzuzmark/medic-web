@@ -82,10 +82,21 @@ const Success: React.FC<{description: string}> = (props) => {
     return <Generic generic={generic} loading={false} />
 };
 
+const Warning: React.FC<{description: string}> = (props) => {
+    const generic: IGenericContentModal = {
+        button: "",
+        description: props.description,
+        image: <Icon name={'alert'} />,
+        title: "¡Ups! Algo se descontroló"
+    };
+    return <Generic generic={generic} loading={false} />
+};
+
 const ContentModal: {
     Generic: React.FC<IPropsGenericContentModal>,
-    Success: React.FC<{description: string}>} = {
-    Generic, Success
+    Success: React.FC<{description: string}>,
+    Warning: React.FC<{description: string}>}= {
+    Generic, Success, Warning
 };
 
 export default ContentModal;
