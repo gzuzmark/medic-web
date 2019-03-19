@@ -30,7 +30,7 @@ interface IStateProfileEditMentorCore  {
 }
 
 interface IPropsProfileEditMentorCore {
-    setStatus(notification: string): void;
+    updateProfile(user: IMentorProfileData): void;
 }
 
 class ProfileEditMentorCore extends React.Component<IPropsProfileEditMentorCore, IStateProfileEditMentorCore> {
@@ -56,6 +56,7 @@ class ProfileEditMentorCore extends React.Component<IPropsProfileEditMentorCore,
     public componentDidMount() {
         this.mentorService.getProfile().then((mentor) => {
             this.mentorProfileData = new MentorEditProfileData(mentor);
+            this.props.updateProfile(mentor);
             this.setState({
                 loadingData: false,
                 mentor: this.mentorProfileData.getMentorProfileValues,
@@ -118,9 +119,7 @@ class ProfileEditMentorCore extends React.Component<IPropsProfileEditMentorCore,
         this.setState({saving: true, modalSuccess: false});
         this.mentorService.updateProfile(this.mentorProfileData.mentorUpdateParams).then((mentor: IMentorProfileData) => {
             this.setState({saving: false, modalSuccess: true});
-            if (mentor.status) {
-                this.props.setStatus(mentor.status);
-            }
+            this.props.updateProfile(mentor);
             setTimeout( () => {
                 this.setState({modalSuccess: false});
             }, 2000)
@@ -146,11 +145,18 @@ class ProfileEditMentorCore extends React.Component<IPropsProfileEditMentorCore,
 
 const ProfileEditMentor: React.FC<any> = () => {
     const context = React.useContext(LayoutContext);
-    if (context.status === MENTOR_STATUS.INCOMPLETE) {
+    if (context.user.status === MENTOR_STATUS.INCOMPLETE) {
         context.setNotification(errorLocatedNotification);
     }
+
+    const updateProfile = (mentor: IMentorProfileData) => {
+        if (mentor.status) {
+            context.setUser({...context.user, status: mentor.status, photo: mentor.photo })
+        }
+    };
+
     return (
-        <ProfileEditMentorCore setStatus={context.setStatus} />
+        <ProfileEditMentorCore updateProfile={updateProfile} />
     )
 }
 

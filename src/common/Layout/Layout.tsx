@@ -3,6 +3,7 @@ import {Link} from "react-router-dom";
 import styled from "styled-components";
 import logo_header from '../../assets/images/logo_header.png';
 import {MENTOR_STATUS} from "../../domain/Mentor/MentorBase";
+import {IUser} from "../../interfaces/User.interface";
 import UserRepository, {ROL_ADMIN, ROL_MENTOR} from '../../repository/UserRepository';
 import Avatar from '../Avatar/Avatar';
 import Icon from "../Icon/Icon";
@@ -62,7 +63,8 @@ const Layout: React.FC<IPropsLayout> = props => {
     const date = new Date();
 
     const [notification, setNotification] = React.useState(defaultNotificationValues as IHeaderNotification);
-    const [status, setStatus] = React.useState(UserRepository.getUser().status);
+    const [user, setUser] = React.useState(UserRepository.getUser());
+
     React.useEffect(() => {
         if (UserRepository.getUser().rol === ROL_MENTOR) {
             if (status === MENTOR_STATUS.INCOMPLETE) {
@@ -71,17 +73,20 @@ const Layout: React.FC<IPropsLayout> = props => {
                 setNotification(defaultNotificationValues);
             }
         }
-    }, [status]);
+    }, [user]);
+
+    React.useEffect(() => {
+        UserRepository.setUser({...user})
+    }, [user]);
 
     Utilities.scrollToTop();
 
-    const updateStatus = (newStatus: string) => {
-        setStatus(newStatus);
-        UserRepository.setUser({...UserRepository.getUser(), status: newStatus})
+    const updateUser = (newUser: IUser) => {
+        setUser({...newUser});
     };
 
     return (
-        <LayoutContext.Provider value={{status, notification, setNotification, setStatus: updateStatus}}>
+        <LayoutContext.Provider value={{user, notification, setNotification, setUser: updateUser}}>
             <Sticky height={80} top={80} style={{'zIndex': 6}}>
                 <div className="Header" style={{background: colors.BACKGROUND_COLORS.background_purple}}>
                     <div className="Header_wrapper u-LayoutMargin">
@@ -91,14 +96,14 @@ const Layout: React.FC<IPropsLayout> = props => {
                                     <img className="Header_image" src={logo_header} height='18'/>
                                 </div>
                                 <Subhead1 color="font_light" weight={LIGHT_TEXT} style={{padding: '0 14px'}}>
-                                    {UserRepository.getUser().rol === ROL_ADMIN ? 'Administrador' : 'Mentores'}
+                                    {user.rol === ROL_ADMIN ? 'Administrador' : 'Mentores'}
                                 </Subhead1>
                             </Link>
                         </div>
                         <div className="Header_section">
-                            <Subhead1 color="font_light" weight={LIGHT_TEXT} style={{padding: '0 10px'}}>Hola, {UserRepository.getUser().name} {UserRepository.getUser().lastname}</Subhead1>
-                            <Avatar size={32} source={UserRepository.getUser().photo}/>
-                            <MenuTop warningProfile={UserRepository.getUser().rol === ROL_MENTOR && status === MENTOR_STATUS.INCOMPLETE} />
+                            <Subhead1 color="font_light" weight={LIGHT_TEXT} style={{padding: '0 10px'}}>Hola, {user.name} {user.lastname}</Subhead1>
+                            <Avatar size={32} source={user.photo}/>
+                            <MenuTop warningProfile={user.rol === ROL_MENTOR && status === MENTOR_STATUS.INCOMPLETE} />
                         </div>
                     </div>
                     <div className={"Header_notifications"}>
@@ -117,7 +122,7 @@ const Layout: React.FC<IPropsLayout> = props => {
             <div className="Footer" style={{background: colors.MISC_COLORS.background_grey_1}}>
                 <div className="Footer-wrapper u-LayoutMargin">
                     <div className="Footer-section">
-                        <Body1 className="Footer-text" weight={LIGHT_TEXT}>UGO {UserRepository.getUser().rol === ROL_ADMIN ? 'Administrador' : 'Mentores'} {date.getFullYear()}. Todos los derechos reservados</Body1>
+                        <Body1 className="Footer-text" weight={LIGHT_TEXT}>UGO {user.rol === ROL_ADMIN ? 'Administrador' : 'Mentores'} {date.getFullYear()}. Todos los derechos reservados</Body1>
                     </div>
                     <div className="Footer-section">
                         <a className="Footer-link" href="mailto:ugoadministrador@ugo.com.pe"><Body1 className="Footer-text" weight={LIGHT_TEXT}>ugoadministrador@ugo.com.pe</Body1></a>

@@ -1,8 +1,31 @@
-# [0.1.0](https://ssh.dev.azure.com/v3/UGOTeam/ugo-admin/ugo-admin/compare/1.0.4...0.1.0) (2019-03-05)
+# [0.1.0](https://ssh.dev.azure.com/v3/UGOTeam/ugo-admin/ugo-admin/compare/1.1.0...0.1.0) (2019-03-19)
+
+
+
+# [1.1.0](https://ssh.dev.azure.com/v3/UGOTeam/ugo-admin/ugo-admin/compare/1.0.4...1.1.0) (2019-03-19)
+
+
+### Bug Fixes
+
+* **add-mentor:** move document validation to first step ([1a28fa6](https://ssh.dev.azure.com/v3/UGOTeam/ugo-admin/ugo-admin/commits/1a28fa6))
+* **add-mentor:** remove modal from error ([bb7aa7e](https://ssh.dev.azure.com/v3/UGOTeam/ugo-admin/ugo-admin/commits/bb7aa7e))
+* **add-mentor:** validate services and behaviour ([1b56c63](https://ssh.dev.azure.com/v3/UGOTeam/ugo-admin/ugo-admin/commits/1b56c63))
+* **create-mentor:** add alert to top header when mentor is disabled ([9ed95ac](https://ssh.dev.azure.com/v3/UGOTeam/ugo-admin/ugo-admin/commits/9ed95ac))
+* **create-mentor:** update document validation ([65c2a76](https://ssh.dev.azure.com/v3/UGOTeam/ugo-admin/ugo-admin/commits/65c2a76))
+* **edit-mentor:** no reloads to update mentor ([3058273](https://ssh.dev.azure.com/v3/UGOTeam/ugo-admin/ugo-admin/commits/3058273))
+* **edit-mentor:** show error on skill dependencies ([5db39dd](https://ssh.dev.azure.com/v3/UGOTeam/ugo-admin/ugo-admin/commits/5db39dd))
+* change text button disabled ([24f8347](https://ssh.dev.azure.com/v3/UGOTeam/ugo-admin/ugo-admin/commits/24f8347))
+* **layout-notification:** add notification logic ([397ee74](https://ssh.dev.azure.com/v3/UGOTeam/ugo-admin/ugo-admin/commits/397ee74))
+* **mentor:** update rating component values ([cecfd71](https://ssh.dev.azure.com/v3/UGOTeam/ugo-admin/ugo-admin/commits/cecfd71))
+* **mentor:** update review page according to zeplin ([90c04fe](https://ssh.dev.azure.com/v3/UGOTeam/ugo-admin/ugo-admin/commits/90c04fe))
 
 
 ### Features
 
+* **edit-mentor:** connection with services ([9036b99](https://ssh.dev.azure.com/v3/UGOTeam/ugo-admin/ugo-admin/commits/9036b99))
+* **edit-mentor:** edit mentor from mentor admin ([91cd317](https://ssh.dev.azure.com/v3/UGOTeam/ugo-admin/ugo-admin/commits/91cd317))
+* **mentor:** add modal for taking list ([c86ae8d](https://ssh.dev.azure.com/v3/UGOTeam/ugo-admin/ugo-admin/commits/c86ae8d))
+* **mentor-rating:** add component mentor rating ([bda6d13](https://ssh.dev.azure.com/v3/UGOTeam/ugo-admin/ugo-admin/commits/bda6d13))
 * **view-mentor:** add view-mentor components ([13abf7c](https://ssh.dev.azure.com/v3/UGOTeam/ugo-admin/ugo-admin/commits/13abf7c))
 
 

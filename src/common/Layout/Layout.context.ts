@@ -1,4 +1,5 @@
 import * as React from "react";
+import {IUser} from "../../interfaces/User.interface";
 
 export type TypeHeaderNotification = "ERROR";
 
@@ -10,9 +11,9 @@ export interface IHeaderNotification {
 
 export interface ILayoutContext {
     notification: IHeaderNotification;
-    status: string;
+    user: IUser;
     setNotification(notification: IHeaderNotification): void;
-    setStatus(notification: string): void;
+    setUser(user: IUser): void;
 }
 
 export const defaultNotificationValues: IHeaderNotification = {
@@ -24,8 +25,8 @@ export const defaultNotificationValues: IHeaderNotification = {
 const defaultValue: ILayoutContext = {
     notification: defaultNotificationValues,
     setNotification: (notification: IHeaderNotification) => void(0),
-    setStatus: (status: string) => void(0),
-    status: ''
+    setUser: (status: IUser) => void(0),
+    user: {} as IUser
 };
 
 const LayoutContext = React.createContext(defaultValue);

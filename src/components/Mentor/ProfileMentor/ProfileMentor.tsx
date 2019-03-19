@@ -43,7 +43,11 @@ export interface IStateProfileMentorCore {
     selectedImage: string;
 }
 
-class ProfileMentorCore extends React.Component<{}, IStateProfileMentorCore> {
+export interface IPropsProfileMentorCore {
+    updateProfile(user: IMentorProfileData): void;
+}
+
+class ProfileMentorCore extends React.Component<IPropsProfileMentorCore, IStateProfileMentorCore> {
     public state: IStateProfileMentorCore;
     private mentorEditData: MentorProfileData;
     private mentorService: MentorService;
@@ -61,6 +65,7 @@ class ProfileMentorCore extends React.Component<{}, IStateProfileMentorCore> {
     public componentDidMount() {
         this.mentorService.getProfile().then((mentor) => {
             this.mentorEditData = new MentorProfileData(mentor);
+            this.props.updateProfile(mentor);
             this.setState({
                 loadingData: false,
                 mentor: this.mentorEditData.getMentorProfileValues,
@@ -137,11 +142,18 @@ class ProfileMentorCore extends React.Component<{}, IStateProfileMentorCore> {
 
 const ProfileMentor: React.FC<any> = () => {
     const context = React.useContext(LayoutContext);
-    if (context.status === MENTOR_STATUS.INCOMPLETE) {
+    if (context.user.status === MENTOR_STATUS.INCOMPLETE) {
         context.setNotification(errorLocatedNotification);
     }
+
+    const updateProfile = (mentor: IMentorProfileData) => {
+        if (mentor.status) {
+            context.setUser({...context.user, status: mentor.status, photo: mentor.photo })
+        }
+    };
+
     return (
-        <ProfileMentorCore  />
+        <ProfileMentorCore updateProfile={updateProfile} />
     )
 };
 
