@@ -1,12 +1,16 @@
 import * as React from 'react';
 import styled from "styled-components";
+import defaultCamera from '../../../assets/images/camera.png';
 import errorCamera from '../../../assets/images/error_camera.png';
 import {ButtonNormal} from "../../../common/Buttons/Buttons";
+import {errorLocatedNotification} from "../../../common/Layout/Layout";
+import LayoutContext from "../../../common/Layout/Layout.context";
 import LoaderFullScreen from "../../../common/Loader/LoaderFullsScreen";
 import colors, {FONTS} from "../../../common/MentorColor";
 import {Body1, Heading2, LIGHT_TEXT, Subhead1} from '../../../common/MentorText';
 import ImageProfile from '../../../components/Admin/MentorFormBase/components/ImageProfile/ImageProfile';
 import {ExperienceItem, FormReviewHeader, Separator} from "../../../components/Admin/MentorFormBase/MentorFormBase.styled";
+import {MENTOR_STATUS} from "../../../domain/Mentor/MentorBase";
 import MentorProfileData, {IMentorProfileData, IMentorProfileFormValidations} from "../../../domain/Mentor/MentorProfile";
 import MentorService from "../../../services/Mentor/Mentor.service";
 import {getDateExperience} from "../../Admin/MentorFormBase/MentorFormBase.utils";
@@ -33,14 +37,14 @@ const FormProfileContainer = styled.div`
     width: 930px;
 `;
 
-export interface IStateProfileMentor {
+export interface IStateProfileMentorCore {
     loadingData: boolean;
     mentor: IMentorProfileFormValidations;
     selectedImage: string;
 }
 
-class ProfileMentor extends React.Component<{}, IStateProfileMentor> {
-    public state: IStateProfileMentor;
+class ProfileMentorCore extends React.Component<{}, IStateProfileMentorCore> {
+    public state: IStateProfileMentorCore;
     private mentorEditData: MentorProfileData;
     private mentorService: MentorService;
     constructor(props: any) {
@@ -67,28 +71,32 @@ class ProfileMentor extends React.Component<{}, IStateProfileMentor> {
 
     public render() {
         const {selectedImage, mentor} = this.state;
+        const camera = this.state.loadingData ? defaultCamera : errorCamera;
         return (
             <FormProfileContainer className="u-LayoutMargin" style={{position: 'relative'}}>
                 {this.state.loadingData && <LoaderFullScreen/>}
                 <BasicData>
-                    <ImageProfile src={selectedImage || errorCamera}
+                    <ImageProfile src={selectedImage || camera}
                                   width={88} height={88}
                                   title={!!selectedImage ? "Foto de perfil" : "Falta foto de perfil"}
-                                  filled={!!selectedImage }/>
-                    <Heading2 color={FONTS.purple} style={{margin: '40px 0 10px 0'}}>{`${mentor.firstName} ${mentor.lastName}`}</Heading2>
-                    <Subhead1 color={!mentor.currentPosition ? FONTS.error : FONTS.dark} style={{margin: '3px 0'}}>
-                        {!mentor.currentPosition ? 'Cargo Actual (Pendiente)' : mentor.currentPosition}
-                    </Subhead1>
-                    <Subhead1 color={!mentor.currentCompany ? FONTS.error : FONTS.dark} style={{margin: '3px 0'}}>
-                        {!mentor.currentCompany ? 'Empresa Actual (Pendiente)' : mentor.currentCompany}
-                    </Subhead1>
-                    {mentor.rating && <MentorRating count={mentor.rating.count} average={mentor.rating.average}/>}
+                                  filled={!!selectedImage || this.state.loadingData}/>
+                    {!this.state.loadingData &&
+                        <React.Fragment>
+                            <Heading2 color={FONTS.purple} style={{margin: '40px 0 10px 0'}}>{`${mentor.firstName} ${mentor.lastName}`}</Heading2>
+                            <Subhead1 color={!mentor.currentPosition ? FONTS.error : FONTS.dark} style={{margin: '3px 0'}}>
+                                {!mentor.currentPosition ? 'Cargo Actual (Pendiente)' : mentor.currentPosition}
+                            </Subhead1>
+                            <Subhead1 color={!mentor.currentCompany ? FONTS.error : FONTS.dark} style={{margin: '3px 0'}}>
+                                {!mentor.currentCompany ? 'Empresa Actual (Pendiente)' : mentor.currentCompany}
+                            </Subhead1>
+                            {mentor.rating && <MentorRating count={mentor.rating.count} average={mentor.rating.average}/>}
+                        </React.Fragment>}
                 </BasicData>
                 <Separator />
                 <FormReviewHeader>
                     <Wrapper>
                         <Subhead1>Descripción</Subhead1>
-                        {mentor.description.trim().length === 0 &&
+                        {!this.state.loadingData && mentor.description.trim().length === 0 &&
                             <Subhead1 color={FONTS.error}>(Pendiente)</Subhead1>}
                     </Wrapper>
                 </FormReviewHeader>
@@ -102,7 +110,7 @@ class ProfileMentor extends React.Component<{}, IStateProfileMentor> {
                 <FormReviewHeader>
                     <Wrapper>
                         <Subhead1>Experiencia laboral</Subhead1>
-                        {(!mentor.experiences.length) && <Subhead1 color={FONTS.error}>(Pendiente)</Subhead1>}
+                        {(!this.state.loadingData && !mentor.experiences.length) && <Subhead1 color={FONTS.error}>(Pendiente)</Subhead1>}
                     </Wrapper>
                 </FormReviewHeader>
                 {mentor.experiences.length > 0 &&
@@ -113,8 +121,7 @@ class ProfileMentor extends React.Component<{}, IStateProfileMentor> {
                                     <Subhead1 color={FONTS.medium}>{item.position}</Subhead1>
                                     <Body1 weight={LIGHT_TEXT}>{item.company}</Body1>
                                     <Body1 weight={LIGHT_TEXT} color={FONTS.blue_grey}>{getDateExperience(item)}</Body1>
-                                </ExperienceItem>
-                            )
+                                </ExperienceItem>)
                         })}
                     </Wrapper>}
 
@@ -127,5 +134,16 @@ class ProfileMentor extends React.Component<{}, IStateProfileMentor> {
         )
     }
 }
+
+const ProfileMentor: React.FC<any> = () => {
+    const context = React.useContext(LayoutContext);
+    if (context.status === MENTOR_STATUS.INCOMPLETE) {
+        context.setNotification(errorLocatedNotification);
+    }
+    return (
+        <ProfileMentorCore  />
+    )
+};
+
 
 export default ProfileMentor;

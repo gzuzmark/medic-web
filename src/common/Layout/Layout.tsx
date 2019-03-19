@@ -2,7 +2,8 @@ import * as React from 'react';
 import {Link} from "react-router-dom";
 import styled from "styled-components";
 import logo_header from '../../assets/images/logo_header.png';
-import UserRepository, {ROL_ADMIN} from '../../repository/UserRepository';
+import {MENTOR_STATUS} from "../../domain/Mentor/MentorBase";
+import UserRepository, {ROL_ADMIN, ROL_MENTOR} from '../../repository/UserRepository';
 import Avatar from '../Avatar/Avatar';
 import Icon from "../Icon/Icon";
 import colors, {FONTS} from "../MentorColor";
@@ -12,7 +13,7 @@ import Utilities from "../Utils/Utilities";
 import MenuTop from "./components/MenuTop/MenuTop";
 import './Footer.scss';
 import './Header.scss';
-import LayoutContext, {defaultNotificationValues, TypeHeaderNotification} from "./Layout.context";
+import LayoutContext, {defaultNotificationValues, IHeaderNotification, TypeHeaderNotification} from "./Layout.context";
 import './Layout.scss';
 
 interface IPropsLayout {
@@ -35,13 +36,52 @@ const NotificationBox = styled.div`
     min-width: 100vw;    
 `;
 
+const baseErrorNotification = <React.Fragment>
+    <Body1 color={FONTS.light}>Tu perfil está incompleto.</Body1>
+    <Body1 color={FONTS.light} weight={LIGHT_TEXT}>Recuerda si tu perfil está incompleto, tu coordinador no podrá programarte sesiones. </Body1>
+</React.Fragment>;
+
+export const errorLocatedNotification = {
+    show: true,
+    text: <span>
+        {baseErrorNotification}
+    </span>,
+    type: "ERROR" as TypeHeaderNotification
+};
+
+export const errorDefaultNotification  = {
+    show: true,
+    text: <span>
+        {baseErrorNotification}
+        <Link to={"/mentor/perfil"}> <Body1 color={FONTS.light}>Ir al perfil</Body1></Link>
+    </span>,
+    type: "ERROR" as TypeHeaderNotification
+};
+
 const Layout: React.FC<IPropsLayout> = props => {
     const date = new Date();
-    const [notification, setNotification] = React.useState(defaultNotificationValues);
+
+    const [notification, setNotification] = React.useState(defaultNotificationValues as IHeaderNotification);
+    const [status, setStatus] = React.useState(UserRepository.getUser().status);
+    React.useEffect(() => {
+        if (UserRepository.getUser().rol === ROL_MENTOR) {
+            if (status === MENTOR_STATUS.INCOMPLETE) {
+                setNotification(errorDefaultNotification);
+            } else {
+                setNotification(defaultNotificationValues);
+            }
+        }
+    }, [status]);
+
     Utilities.scrollToTop();
 
+    const updateStatus = (newStatus: string) => {
+        setStatus(newStatus);
+        UserRepository.setUser({...UserRepository.getUser(), status: newStatus})
+    };
+
     return (
-        <LayoutContext.Provider value={{notification, setNotification}}>
+        <LayoutContext.Provider value={{status, notification, setNotification, setStatus: updateStatus}}>
             <Sticky height={80} top={80} style={{'zIndex': 6}}>
                 <div className="Header" style={{background: colors.BACKGROUND_COLORS.background_purple}}>
                     <div className="Header_wrapper u-LayoutMargin">
@@ -58,7 +98,7 @@ const Layout: React.FC<IPropsLayout> = props => {
                         <div className="Header_section">
                             <Subhead1 color="font_light" weight={LIGHT_TEXT} style={{padding: '0 10px'}}>Hola, {UserRepository.getUser().name} {UserRepository.getUser().lastname}</Subhead1>
                             <Avatar size={32} source={UserRepository.getUser().photo}/>
-                            <MenuTop />
+                            <MenuTop warningProfile={UserRepository.getUser().rol === ROL_MENTOR && status === MENTOR_STATUS.INCOMPLETE} />
                         </div>
                     </div>
                     <div className={"Header_notifications"}>

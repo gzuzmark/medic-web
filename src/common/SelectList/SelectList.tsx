@@ -17,8 +17,8 @@ interface IPropsSelectList {
 const iconStyles: React.CSSProperties = {
     fill: colors.TEXT_COLORS.font_dark,
     height: 32,
-    marginLeft:12,
-    marginRight: 12,
+    marginLeft: 5,
+    marginRight: 5,
     paddingRight: 2,
     width: 32
 };
