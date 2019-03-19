@@ -1,13 +1,26 @@
 import * as React from 'react';
 import {findDOMNode} from "react-dom";
+import styled from "styled-components";
 import UserRepository, {ROL_ADMIN} from "../../../../repository/UserRepository";
 import {IFilerListItem} from "../../../FilterList/FilterList";
+import Icon from "../../../Icon/Icon";
+import colors from "../../../MentorColor";
+import {LIGHT_TEXT, Subhead1} from '../../../MentorText';
 import SelectList from "../../../SelectList/SelectList";
 import './MenuTop.scss';
 
-interface IStateMenu {
+interface IPropsMenuTop {
+    warningProfile: boolean;
+}
+
+interface IStateMenuTop {
     open: boolean;
 }
+
+const ItemContainer = styled.div`
+    align-items: center;
+    display: flex;
+`;
 
 const listAdmin: IFilerListItem[] = [{
     extra: {
@@ -25,33 +38,9 @@ const listAdmin: IFilerListItem[] = [{
     name: 'Reportes'
 }];
 
-const listMentor: IFilerListItem[] = [{
-    extra: {
-        url: '/mentor/perfil'
-    },
-    icon: 'user',
-    id: 'profile_mentor',
-    name: 'Mi perfil'
-}];
-
-const styleSelectList: React.CSSProperties = {
-    boxShadow: 'none',
-    position: 'relative',
-    top: 0,
-};
-
-const menuList = UserRepository.getUser().rol === ROL_ADMIN ? listAdmin : listMentor;
-menuList.push({
-    extra: {
-        url: '/logout'
-    },
-    icon: 'off',
-    id: 'logout',
-    name: 'Salir'
-});
-
-class MenuTop extends React.Component <{}, IStateMenu> {
-    public state : IStateMenu;
+class MenuTop extends React.Component <IPropsMenuTop, IStateMenuTop> {
+    public state : IStateMenuTop;
+    private styleSelectList: React.CSSProperties;
     constructor (props: any) {
        super(props);
        this.state = {
@@ -71,6 +60,33 @@ class MenuTop extends React.Component <{}, IStateMenu> {
 
     public render() {
         const openClass = this.state.open ? 'MenuTop-nav--open' : '';
+
+        this.styleSelectList = {
+            boxShadow: 'none',
+            position: 'relative',
+            top: 0,
+        };
+        const listMentor = [{
+            extra: {
+                url: '/mentor/perfil'
+            },
+            icon: 'user',
+            id: 'profile_mentor',
+            name: this.props.warningProfile ? <ItemContainer>
+                <Subhead1 weight={LIGHT_TEXT}>Mi perfil</Subhead1>
+                <Icon style={{fill: colors.TEXT_COLORS.font_error, marginLeft: 3}} name={"alert"}/>
+            </ItemContainer> : 'Mi perfil'
+        }];
+
+        const menuList = UserRepository.getUser().rol === ROL_ADMIN ? [...listAdmin] : listMentor;
+        menuList.push({
+            extra: {
+                url: '/logout'
+            },
+            icon: 'off',
+            id: 'logout',
+            name: 'Salir'
+        });
         return (
             !!menuList.length && <div className="MenuTop">
                 <div className={`MenuTop-nav ${openClass}`} onClick={this.toggleMenu}>
@@ -81,7 +97,7 @@ class MenuTop extends React.Component <{}, IStateMenu> {
                 </div>
                 { this.state.open &&
                 <div className="MenuTop-options">
-                    <SelectList list={menuList} onChange={this.redirect} style={styleSelectList}/>
+                    <SelectList list={menuList} onChange={this.redirect} style={this.styleSelectList}/>
                 </div>}
             </div>
         )

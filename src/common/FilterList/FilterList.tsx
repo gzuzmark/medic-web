@@ -8,7 +8,7 @@ export const FILTER_LIST_ALL = 'all';
 
 export interface IFilerListItem {
     id: string;
-    name: string;
+    name: string | React.ReactElement<any>;
     icon?: string;
     extra?: any;
 }

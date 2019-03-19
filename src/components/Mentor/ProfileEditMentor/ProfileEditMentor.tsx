@@ -3,10 +3,13 @@ import * as React from 'react';
 import styled from "styled-components";
 import ContentModal from "../../../common/ConsoleModal/ContentModal";
 import MentorModalBase from "../../../common/ConsoleModal/MentorModalBase";
+import {errorLocatedNotification} from "../../../common/Layout/Layout";
+import LayoutContext from "../../../common/Layout/Layout.context";
 import LoaderFullScreen from "../../../common/Loader/LoaderFullsScreen";
+import {MENTOR_STATUS} from "../../../domain/Mentor/MentorBase";
 import {IMentorFormValidations} from "../../../domain/Mentor/MentorBaseForm";
 import MentorEditProfileData, {IMentorEditProfileData} from "../../../domain/Mentor/MentorEditProfile";
-import { IMentorProfileFormValidations } from "../../../domain/Mentor/MentorProfile";
+import {IMentorProfileData, IMentorProfileFormValidations} from "../../../domain/Mentor/MentorProfile";
 import MentorService from "../../../services/Mentor/Mentor.service";
 import MentorFormBaseContext from "../../Admin/MentorFormBase/MentorFormBase.context";
 import mentorFormBaseSchema from "../../Admin/MentorFormBase/MentorFormBase.validations";
@@ -18,7 +21,7 @@ const MentorEditContainer = styled.div`
     width: 930px;
 `;
 
-interface IStateProfileEditMentor  {
+interface IStateProfileEditMentorCore  {
     loadingData: boolean;
     mentor: IMentorProfileFormValidations;
     modalSuccess: boolean;
@@ -26,9 +29,12 @@ interface IStateProfileEditMentor  {
     selectedImage: string;
 }
 
+interface IPropsProfileEditMentorCore {
+    setStatus(notification: string): void;
+}
 
-class ProfileEditMentor extends React.Component<{}, IStateProfileEditMentor> {
-    public state: IStateProfileEditMentor;
+class ProfileEditMentorCore extends React.Component<IPropsProfileEditMentorCore, IStateProfileEditMentorCore> {
+    public state: IStateProfileEditMentorCore;
     private mentorProfileData: MentorEditProfileData;
     private mentorService: MentorService;
     constructor(props: any) {
@@ -110,8 +116,11 @@ class ProfileEditMentor extends React.Component<{}, IStateProfileEditMentor> {
 
     private updateMentor() {
         this.setState({saving: true, modalSuccess: false});
-        this.mentorService.updateProfile(this.mentorProfileData.mentorUpdateParams).then(() => {
+        this.mentorService.updateProfile(this.mentorProfileData.mentorUpdateParams).then((mentor: IMentorProfileData) => {
             this.setState({saving: false, modalSuccess: true});
+            if (mentor.status) {
+                this.props.setStatus(mentor.status);
+            }
             setTimeout( () => {
                 this.setState({modalSuccess: false});
             }, 2000)
@@ -133,6 +142,16 @@ class ProfileEditMentor extends React.Component<{}, IStateProfileEditMentor> {
     private updateImage(selectedImage: string) {
         this.setState({selectedImage});
     }
+}
+
+const ProfileEditMentor: React.FC<any> = () => {
+    const context = React.useContext(LayoutContext);
+    if (context.status === MENTOR_STATUS.INCOMPLETE) {
+        context.setNotification(errorLocatedNotification);
+    }
+    return (
+        <ProfileEditMentorCore setStatus={context.setStatus} />
+    )
 }
 
 export default ProfileEditMentor;
