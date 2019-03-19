@@ -66,8 +66,8 @@ const Layout: React.FC<IPropsLayout> = props => {
     const [user, setUser] = React.useState(UserRepository.getUser());
 
     React.useEffect(() => {
-        if (UserRepository.getUser().rol === ROL_MENTOR) {
-            if (status === MENTOR_STATUS.INCOMPLETE) {
+        if (user.rol === ROL_MENTOR) {
+            if (user.status === MENTOR_STATUS.INCOMPLETE) {
                 setNotification(errorDefaultNotification);
             } else {
                 setNotification(defaultNotificationValues);
@@ -103,7 +103,7 @@ const Layout: React.FC<IPropsLayout> = props => {
                         <div className="Header_section">
                             <Subhead1 color="font_light" weight={LIGHT_TEXT} style={{padding: '0 10px'}}>Hola, {user.name} {user.lastname}</Subhead1>
                             <Avatar size={32} source={user.photo}/>
-                            <MenuTop warningProfile={user.rol === ROL_MENTOR && status === MENTOR_STATUS.INCOMPLETE} />
+                            <MenuTop warningProfile={user.rol === ROL_MENTOR && user.status === MENTOR_STATUS.INCOMPLETE} />
                         </div>
                     </div>
                     <div className={"Header_notifications"}>
