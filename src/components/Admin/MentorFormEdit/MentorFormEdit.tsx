@@ -116,7 +116,9 @@ class MentorFormEditCore  extends React.Component <IPropsMentorEditCore, IStateM
                     <ContentModal.Success description={"Cambios guardados con éxito"} />
                 </MentorModalBase>
                 <MentorModalBase show={this.state.error}>
-                    <ContentModal.Warning description={"Necesitas eliminar algunos skills"} />
+                    <ContentModal.Warning
+                        title={"Desasignar un curso" }
+                        description={"Para desasignarle este curso al mentor, primero debes eliminar sus sesiones futuras en el curso"} />
                 </MentorModalBase>
                 <MentorEditContainer>
                     {!this.state.mentor &&

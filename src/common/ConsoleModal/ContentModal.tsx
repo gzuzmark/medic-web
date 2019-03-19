@@ -20,6 +20,11 @@ export interface IPropsGenericContentModal {
     error?: boolean;
 }
 
+export interface IContentModal {
+    description: string;
+    title?: string
+}
+
 const Generic: React.FC<IPropsGenericContentModal> = (props) => {
 
     const onClick = () => {
@@ -72,7 +77,7 @@ const Generic: React.FC<IPropsGenericContentModal> = (props) => {
     )
 };
 
-const Success: React.FC<{description: string}> = (props) => {
+const Success: React.FC<IContentModal> = (props) => {
     const generic: IGenericContentModal = {
         button: "",
         description: props.description,
@@ -82,20 +87,20 @@ const Success: React.FC<{description: string}> = (props) => {
     return <Generic generic={generic} loading={false} />
 };
 
-const Warning: React.FC<{description: string}> = (props) => {
+const Warning: React.FC<IContentModal> = (props) => {
     const generic: IGenericContentModal = {
         button: "",
         description: props.description,
         image: <Icon name={'alert'} />,
-        title: "¡Ups! Algo se descontroló"
+        title: props.title || "¡Ups! Algo salió mal"
     };
     return <Generic generic={generic} loading={false} />
 };
 
 const ContentModal: {
     Generic: React.FC<IPropsGenericContentModal>,
-    Success: React.FC<{description: string}>,
-    Warning: React.FC<{description: string}>}= {
+    Success: React.FC<IContentModal>,
+    Warning: React.FC<IContentModal>}= {
     Generic, Success, Warning
 };
 
