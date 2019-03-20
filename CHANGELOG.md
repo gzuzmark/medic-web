@@ -1,4 +1,16 @@
-# [0.1.0](https://ssh.dev.azure.com/v3/UGOTeam/ugo-admin/ugo-admin/compare/1.1.0...0.1.0) (2019-03-19)
+# [0.1.0](https://ssh.dev.azure.com/v3/UGOTeam/ugo-admin/ugo-admin/compare/1.1.1...0.1.0) (2019-03-20)
+
+
+
+## [1.1.1](https://ssh.dev.azure.com/v3/UGOTeam/ugo-admin/ugo-admin/compare/1.1.0...1.1.1) (2019-03-20)
+
+
+### Bug Fixes
+
+* **add-mentor:** update new modal with design ([1fb9ad8](https://ssh.dev.azure.com/v3/UGOTeam/ugo-admin/ugo-admin/commits/1fb9ad8))
+* **add-mentor:** validate document on insert email ([9656590](https://ssh.dev.azure.com/v3/UGOTeam/ugo-admin/ugo-admin/commits/9656590))
+* **edit-mentor:** update profile data on edit ([d35cef3](https://ssh.dev.azure.com/v3/UGOTeam/ugo-admin/ugo-admin/commits/d35cef3))
+* **edit-mentor:** update variable status from mentor ([546bf6b](https://ssh.dev.azure.com/v3/UGOTeam/ugo-admin/ugo-admin/commits/546bf6b))
 
 
 

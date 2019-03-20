@@ -9,7 +9,7 @@ import './ContentModal.scss';
 export interface IGenericContentModal {
     image?: JSX.Element | null;
     title?: string;
-    description?: string;
+    description?: string | JSX.Element;
     button?: string;
 }
 
@@ -58,9 +58,12 @@ const Generic: React.FC<IPropsGenericContentModal> = (props) => {
                         !!props.generic.description &&
                         <div className={"GenericContentModal_description"}>
                             {!!props.error && <Icon name={"alert"} style={{fill: colors.TEXT_COLORS.font_error}}/>}
-                            <Body1 color={!!props.error ? FONTS.error : ''} weight={LIGHT_TEXT} style={{margin: '0 auto'}}>
-                                {props.generic.description}
-                                </Body1>
+                            {typeof props.generic.description === "string" ?
+                                <Body1 color={!!props.error ? FONTS.error : ''} weight={LIGHT_TEXT} style={{margin: '0 auto'}}>
+                                    {props.generic.description}
+                                </Body1> :
+                                props.generic.description
+                            }
                         </div>
                     }
                 </div>

@@ -1,29 +1,22 @@
 import { mount } from 'enzyme';
 import 'jest-styled-components';
 import * as React from 'react';
-import {IMentorFormBaseContext} from "../../MentorFormBase.context";
+import MentorFormBaseContext from "../../../MentorFormBase/MentorFormBase.context";
 import {getDefaultValues} from "../../MentorFormBase.mock";
-
-const getContext = (context: IMentorFormBaseContext) => {
-    jest.doMock('../../MentorFormBase.context', () => {
-        return {
-            default: {
-                Consumer: (props: any) => props.children(context)
-            }
-        }
-    });
-    return require('./FormProfile').default;
-};
+import FormProfile from "./FormProfile";
 
 describe('FormProfile Test',() => {
     let props: any;
-    let ctxt: IMentorFormBaseContext;
     let mountedComponent: any;
     const getComponent = () => {
         if (!mountedComponent) {
-            const FormProfile = getContext(ctxt);
+            const TestComponent = () => (
+                <MentorFormBaseContext.Provider value={getDefaultValues()}>
+                    <FormProfile {...props} />
+                </MentorFormBaseContext.Provider>
+            );
             mountedComponent = mount(
-                <FormProfile {...props} />
+                <TestComponent />
             );
         }
         return mountedComponent;
@@ -32,7 +25,6 @@ describe('FormProfile Test',() => {
     beforeEach(() => {
         jest.resetModules();
         props = {};
-        ctxt = getDefaultValues();
         mountedComponent = undefined;
     });
 
