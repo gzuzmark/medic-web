@@ -88,7 +88,7 @@ const ModalTakeList: React.FC<IPropsModalTakeList> = (props) => {
                         </SubContainerDescription>
                         <SubContainerDescription borderTop={true}>
                             <Body1 weight={LIGHT_TEXT} style={{textTransform: 'capitalize'}}>{item.getSessionType()}</Body1>
-                            <Body1 weight={LIGHT_TEXT}>{item.getLocation()}</Body1>
+                            {item.isPhysical() && <Body1 weight={LIGHT_TEXT}>{item.getLocation()}</Body1>}
                         </SubContainerDescription>
                     </ContainerDescription>
                     <ContainerButton>
