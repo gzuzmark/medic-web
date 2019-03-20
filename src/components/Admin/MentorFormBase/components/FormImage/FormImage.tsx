@@ -120,7 +120,7 @@ class FormImage extends React.Component <IPropsFormImage, IStateFormImage> {
                                 <label className={"FormImage_label"}
                                        htmlFor={this.props.id} ref={this.labelImage}
                                        data-for="FormImageToolTip"
-                                       data-tip={'La foto debe ser amigable (se recomienda una foto sonriente), <br>con fondo blanco y mira al frente.'}>
+                                       data-tip={'La foto debe ser amigable (se recomienda una foto sonriente), <br>con fondo blanco y mirada al frente.'}>
                                     <ImageProfile src={context.selectedImage || defaultImage}
                                                   width={this.props.size || 160}
                                                   height={this.props.size || 160}
