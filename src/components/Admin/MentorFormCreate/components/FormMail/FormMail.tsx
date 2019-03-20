@@ -1,10 +1,11 @@
 import * as React from "react";
 import ContentModal from "../../../../../common/ConsoleModal/ContentModal";
 import MentorModalBase from "../../../../../common/ConsoleModal/MentorModalBase";
+import Icon from "../../../../../common/Icon/Icon";
 import colors from "../../../../../common/MentorColor";
 import MentorDropDown from "../../../../../common/MentorDropDown/MentorDropDown";
 import MentorInput from "../../../../../common/MentorInput/MentorInput";
-import {LIGHT_TEXT, Small1} from "../../../../../common/MentorText";
+import {Body1, LIGHT_TEXT} from "../../../../../common/MentorText";
 import {emailStatus} from "../../../../../domain/Mentor/MentorBaseForm";
 import {documentDefaultSelection, documentTypeList} from "../../../../../repository/DocumentsIdentification";
 import MentorFormBaseContext from "../../../MentorFormBase/MentorFormBase.context";
@@ -46,8 +47,8 @@ const FormMail: React.FC<IPropsFormMail> = (props) => {
     return (
         <React.Fragment>
             <MentorModalBase show={!!modal} styles={{textAlign: 'center', minHeight: 'auto', paddingBottom: 20}} onCloseModal={onCloseModal}>
-                <ContentModal.Generic loading={false} generic={{title: "Este mentor ya está registrado", description: modal}} />
-                <Small1 style={{textAlign: 'center'}} weight={LIGHT_TEXT}>Recuerda que para cambiar los datos del mentor, puedes acceder a la opción de Edición o enviar un correo a ugomonkeys@lacafetalab.pe</Small1>
+                <ContentModal.Generic loading={false} generic={{image: <Icon name={'alert'} />, title: "Este mentor ya está registrado", description: modal}} />
+                <Body1 style={{textAlign: 'center', marginTop: 25}} weight={LIGHT_TEXT}>Para cambiar los datos del mentor envíanos un <br/> correo a ugomonkeys@lacafetalab.pe</Body1>
             </MentorModalBase>
             <FormRow columns={[
                 <FormColumn width={1} key={`FormColumn-PersonalData_${++counter}`}>
