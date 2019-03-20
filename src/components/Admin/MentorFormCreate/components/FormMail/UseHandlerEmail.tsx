@@ -7,7 +7,7 @@ import {fnOnChangeDocument, fnUpdateDisabledFields} from "./FormMail";
 
 const mentorService = new MentorService();
 
-const useHandlerEmail = (updateDisabledFields: fnUpdateDisabledFields, onChangeDocument: fnOnChangeDocument) => {
+const useHandlerEmail = (updateDisabledFields: fnUpdateDisabledFields, onChangeDocument: fnOnChangeDocument, setModal: (s: string) => void) => {
     const [timer, setTimer] = React.useState(0 as any);
     const [state, setState] = React.useState({error: '', loadSuccess: ''});
     const [loading, setLoading] = React.useState(false);
@@ -33,11 +33,16 @@ const useHandlerEmail = (updateDisabledFields: fnUpdateDisabledFields, onChangeD
         return alreadyRegistered || errorProcess || emailNotValid || '';
     };
 
-    const updateStatusEmailValidation = (code: number) => {
+    const updateStatusEmailValidation = (code: number, message?: string) => {
         if (code === 404) {
             context.setFieldValue("status", emailStatus.NO_DATA);
         } else if (code === 409) {
             context.setFieldValue("status", emailStatus.ALREADY_REGISTERED);
+        } else if (code === 412) {
+            if (!!message) {
+                setModal(message);
+                context.setFieldValue("status", emailStatus.DNI_ALREADY_REGISTERED);
+            }
         } else if (code === 400) {
             context.setFieldValue("status", emailStatus.EMAIL_NOT_VALID);
         } else if (code === 401) {
@@ -78,7 +83,8 @@ const useHandlerEmail = (updateDisabledFields: fnUpdateDisabledFields, onChangeD
         }).catch((error: any) => {
             if (error.response && error.response.data) {
                 setLoading(false);
-                updateStatusEmailValidation(error.response.data.code);
+                const {code, message} = error.response.data;
+                updateStatusEmailValidation(code, message);
             }
         });
     };

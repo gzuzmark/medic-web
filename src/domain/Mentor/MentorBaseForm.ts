@@ -4,6 +4,7 @@ import {IBaseUser} from "../User/AbstractUser";
 export const emailStatus = {
     ALREADY_REGISTERED: "Este correo pertenece a un mentor ya creado",
     CLEAN: "",
+    DNI_ALREADY_REGISTERED: "El usuario con este correo ya tiene su dni anexado a una cuenta",
     EMAIL_NOT_VALID: "Ingrese un correo válido",
     ERROR_PROCESS: "Tuvimos un problema al procesar su correo",
     FULL_DATA: "Se obtuvieron todos datos del usuario",
