@@ -1,7 +1,6 @@
 import * as React from 'react';
 import styled from "styled-components";
 import UserRepository, {ROL_ADMIN} from "../../../../repository/UserRepository";
-import {IFilerListItem} from "../../../FilterList/FilterList";
 import Icon from "../../../Icon/Icon";
 import colors from "../../../MentorColor";
 import {LIGHT_TEXT, Subhead1} from "../../../MentorText";
@@ -11,43 +10,52 @@ const ItemContainer = styled.div`
     display: flex;
 `;
 
+export interface IMenuListItem {
+    id: string;
+    name: string | React.ReactElement<any>;
+    icon?: string;
+    url?: any;
+    children?: IMenuListItem[];
+}
+
 const UseHandlerMenuList = (warningProfile: boolean) => {
-    let menuList: IFilerListItem[] = [];
+    let menuList: IMenuListItem[] = [];
     const updateMenuList = () => {
-        const listAdmin: IFilerListItem[] = [{
-            extra: {
-                url: '/admin/mentores'
-            },
+        const listAdmin: IMenuListItem[] = [{
             icon: 'book',
             id: 'mentor',
-            name: 'Mentores'
+            name: 'Mentores',
+            url: '/admin/mentores'
         }, {
-            extra: {
-                url: '/admin/reportes'
-            },
             icon: 'report',
             id: 'report',
-            name: 'Reportes'
+            name: 'Reportes',
+            url: '/admin/reportes'
+        }, {
+            children: [{
+                id: 'room',
+                name: 'Aulas',
+                url: '/admin/aulas'
+            }],
+            icon: 'order',
+            id: 'admin',
+            name: 'Administración'
         }];
         const listMentor = [{
-            extra: {
-                url: '/mentor/perfil'
-            },
             icon: 'user',
             id: 'profile_mentor',
             name: warningProfile ? <ItemContainer >
                 <Subhead1 weight={LIGHT_TEXT}>Mi perfil</Subhead1>
                 <Icon style={{fill: colors.TEXT_COLORS.font_error, marginLeft: 3}} name={"alert"}/>
-            </ItemContainer> : 'Mi perfil'
+            </ItemContainer> : 'Mi perfil',
+            url: '/mentor/perfil'
         }];
         menuList = UserRepository.getUser().rol === ROL_ADMIN ? listAdmin : listMentor;
         menuList.push({
-            extra: {
-                url: '/logout'
-            },
             icon: 'off',
             id: 'logout',
-            name: 'Salir'
+            name: 'Salir',
+            url: '/logout'
         });
     };
     updateMenuList();
