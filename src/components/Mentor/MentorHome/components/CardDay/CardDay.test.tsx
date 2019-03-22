@@ -1,7 +1,7 @@
 import { mount } from 'enzyme';
 import 'jest-localstorage-mock';
 import * as React from 'react';
-import {STATUS_DAY_SESSIONS} from "../../../../../domain/Session/SessionCollector";
+import {CARD_STATUS} from "../../../../../domain/Card";
 import CardDay, {IPropsCardDay} from './CardDay';
 
 
@@ -25,14 +25,14 @@ describe('CardDay Test',() => {
                 mainText: '25',
                 topText: 'Lunes'
             },
-            status: STATUS_DAY_SESSIONS.DEFAULT,
+            status: CARD_STATUS.DEFAULT,
             today: false
         };
         mountedCardDay = undefined;
     });
 
     it("render: render CardDay STATUS ACTIVE", () => {
-        props = {...props, status: STATUS_DAY_SESSIONS.ACTIVE };
+        props = {...props, status: CARD_STATUS.ACTIVE };
         const component = getComponent();
         expect(component.find('.CardDay--active').length).toEqual(1);
         expect(component.find('.CardDay--disabled').length).toEqual(0);
@@ -40,7 +40,7 @@ describe('CardDay Test',() => {
     });
 
     it("render: render CardDay STATUS DISABLED", () => {
-        props = {...props, status: STATUS_DAY_SESSIONS.DISABLED };
+        props = {...props, status: CARD_STATUS.DISABLED };
         const component = getComponent();
         expect(component.find('.CardDay--active').length).toEqual(0);
         expect(component.find('.CardDay--disabled').length).toEqual(1);
@@ -48,7 +48,7 @@ describe('CardDay Test',() => {
     });
 
     it("render: render CardDay STATUS DEFAULT", () => {
-        props = {...props, status: STATUS_DAY_SESSIONS.DEFAULT };
+        props = {...props, status: CARD_STATUS.DEFAULT };
         const component = getComponent();
         expect(component.find('.CardDay--active').length).toEqual(0);
         expect(component.find('.CardDay--disabled').length).toEqual(0);

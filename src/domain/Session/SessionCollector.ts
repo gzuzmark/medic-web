@@ -1,3 +1,4 @@
+import {CARD_STATUS} from "../Card";
 import { SessionBean } from "./SessionBean";
 
 export interface IBoxDayDescription {
@@ -12,12 +13,6 @@ export interface ISessionCollector<T> {
     date: string;
     pending_sessions: T[];
     resolve_sessions: T[];
-}
-
-export const STATUS_DAY_SESSIONS = {
-    ACTIVE:'active',
-    DEFAULT: 'default',
-    DISABLED: 'disabled'
 }
 
 export class SessionCollector<T extends SessionBean> {
@@ -74,7 +69,7 @@ export class SessionCollector<T extends SessionBean> {
             const date = new Date(item.session.from);
             const collector = this.sessionCollector[date.getDay()];
             if (collector) {
-                collector.status = STATUS_DAY_SESSIONS.DEFAULT;
+                collector.status = CARD_STATUS.DEFAULT;
                 if (item.isActiveAccordingTime) {
                     collector.pending_sessions.push(item);
                 } else {
@@ -102,7 +97,7 @@ export class SessionCollector<T extends SessionBean> {
                 },
                 pending_sessions: [] as T[],
                 resolve_sessions: [] as T[],
-                status: STATUS_DAY_SESSIONS.DISABLED
+                status: CARD_STATUS.DISABLED
             };
             date.setDate(date.getDate() + 1);
         }

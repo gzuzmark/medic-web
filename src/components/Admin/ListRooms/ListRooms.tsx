@@ -6,7 +6,9 @@ import {ButtonNormal} from "../../../common/Buttons/Buttons";
 import Card from "../../../common/Card/Card";
 import colors from "../../../common/MentorColor";
 import {Heading3} from "../../../common/MentorText";
-import {STATUS_DAY_SESSIONS} from "../../../domain/Session/SessionCollector";
+import {CARD_STATUS} from "../../../domain/Card";
+import {ISites} from "../../../domain/Sites/Sites";
+import SitesService from "../../../services/Sites/Sites.service";
 import AccordionRooms, {buildBody, buildTitle} from "./AccordionRooms/AccordionRooms";
 import ModalRoom from "./ModalRoom/ModalRoom";
 
@@ -37,11 +39,55 @@ const RoomText = styled(Heading3)`
     margin-top: 10px;
 `;
 
+interface IPropsHandlerCardRoom {
+    click: (site: ISites) => void;
+}
+
+const HandlerCardRoom: React.FC<IPropsHandlerCardRoom> = (props) => {
+    const [loading, setLoading] = React.useState(true);
+    const [sites, setSites] = React.useState([] as ISites[]);
+    const src = roomActive || roomInactive;
+    React.useEffect(() => {
+        const sitesService = new SitesService();
+        sitesService.list().then((items: ISites[]) => {
+            setSites(items);
+            setLoading(false);
+        }).catch(() => {
+            setLoading(false);
+        });
+    });
+
+    const selectSite = (site: ISites) => {
+        return () => {
+            props.click(site);
+        };
+    }
+    return (
+        <CardRoomContainer>
+            {loading && ["1", "2", "3", "4"].map((item) => (
+                <CardRoom status={CARD_STATUS.DISABLED} key={item}>
+                    <img src={roomInactive} width={24} />
+                    <RoomText>&nbsp;</RoomText>
+                </CardRoom>
+            ))}
+            {sites.map((site) => (
+                <CardRoom status={CARD_STATUS.ACTIVE} click={selectSite(site)} key={site.id}>
+                    <img src={src} width={24} />
+                    <RoomText>{site.name}</RoomText>
+                </CardRoom>
+            ))}
+        </CardRoomContainer>
+    )
+}
+
 const ListRooms: React.FC<{}> = () => {
     const [modal, setModal] = React.useState(false);
+    const [selectedSite, setSelectedSite] = React.useState('');
     const [selectedRoom, setSelectedRoom] = React.useState('');
-    const click = () => void(0);
-    const src = roomActive || roomInactive;
+    const loadSite = () => {
+        alert(selectedSite);
+        setSelectedSite('');
+    };
     const showModal = (item: any) => {
         setModal(true);
         setSelectedRoom(item);
@@ -54,20 +100,7 @@ const ListRooms: React.FC<{}> = () => {
             <HeaderRoomContainer>
                 <ButtonNormal text={"Crear nueva aula"}/>
             </HeaderRoomContainer>
-            <CardRoomContainer>
-                <CardRoom status={STATUS_DAY_SESSIONS.ACTIVE} click={click}>
-                    <img src={src} width={24} />
-                    <RoomText>LIMA NORTE</RoomText>
-                </CardRoom>
-                <CardRoom status={STATUS_DAY_SESSIONS.DEFAULT} click={click}>
-                    <img src={roomInactive} width={24} />
-                    <RoomText>LIMA CENTRO</RoomText>
-                </CardRoom>
-                <CardRoom status={STATUS_DAY_SESSIONS.DEFAULT} click={click}>
-                    <img src={roomInactive} width={24}/>
-                    <RoomText>LIMA SUR</RoomText>
-                </CardRoom>
-            </CardRoomContainer>
+            <HandlerCardRoom click={loadSite} />
             <DescriptionContainer>
                 <AccordionRooms
                     iconStyle={{right: 16}}

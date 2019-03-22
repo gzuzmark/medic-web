@@ -1,12 +1,12 @@
 import * as React from 'react';
 import styled from "styled-components";
-import {STATUS_DAY_SESSIONS} from "../../domain/Session/SessionCollector";
+import {CARD_STATUS} from "../../domain/Card";
 
 export interface IPropsCard {
     status: string;
     main?: boolean;
     className?: string;
-    click: (e: any) => void;
+    click?: (e: any) => void;
 }
 
 export interface IPropsCardStyles {
@@ -18,21 +18,21 @@ const CardStyles = styled.div`
     align-items: center;
     background: ${(props: IPropsCardStyles) => {
         let color = 'white';
-        if (props.status === STATUS_DAY_SESSIONS.ACTIVE) {
+        if (props.status === CARD_STATUS.ACTIVE) {
             color = '#f9fbff';
         }
         return color;
     }};
     border: ${(props: IPropsCardStyles) => {
         let style = '#d4dce0 1px solid';
-        if (props.status === STATUS_DAY_SESSIONS.ACTIVE) {
+        if (props.status === CARD_STATUS.ACTIVE) {
             style = '#81a8d2 2px solid';
         }
         return style;
     }};
     border-radius: 5px;
     cursor: ${(props: IPropsCardStyles) => {
-        return props.status !== STATUS_DAY_SESSIONS.DISABLED ? 'pointer' : '';
+        return props.status !== CARD_STATUS.DISABLED ? 'pointer' : '';
     }};
     display: flex;
     flex-direction: column;
@@ -43,7 +43,7 @@ const CardStyles = styled.div`
     &:before {
         background: ${(props: IPropsCardStyles) => {
             let color = '#9e61f9';
-            if (props.status === STATUS_DAY_SESSIONS.DISABLED) {
+            if (props.status === CARD_STATUS.DISABLED) {
                 color = '#d4dce0';
             }
             return color;
@@ -62,7 +62,7 @@ const CardStyles = styled.div`
     span, h3, h4 {
         ${(props: IPropsCardStyles) => {
             let styles = '';
-            if(props.status === STATUS_DAY_SESSIONS.DISABLED) {
+            if(props.status === CARD_STATUS.DISABLED) {
                 styles = 'color: #d4dce0!important;';
             }
             return styles;
@@ -76,7 +76,7 @@ const CardStyles = styled.div`
                 border: #561cac 2px solid;
                 box-shadow: 4px 4px 16px -2px rgba(74, 74, 74, 0.32);
             `;
-            if(props.status === STATUS_DAY_SESSIONS.DISABLED) {
+            if(props.status === CARD_STATUS.DISABLED) {
                 styles = '';
             }
             return styles;
@@ -89,7 +89,7 @@ const CardStyles = styled.div`
                 border: #561cac 2px solid;
                 box-shadow: 0 0 0 0;
             `;
-            if(props.status === STATUS_DAY_SESSIONS.DISABLED) {
+            if(props.status === CARD_STATUS.DISABLED) {
                 styles = '';
             }
             return styles;
@@ -102,7 +102,7 @@ const Card: React.FC<IPropsCard> = (props) => (
     <CardStyles className={props.className || ''}
                 main={!!props.main}
                 status={props.status}
-                onClick={props.click}>{props.children}</CardStyles>
+                onClick={props.click && props.click}>{props.children}</CardStyles>
 );
 
 

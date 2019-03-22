@@ -2,7 +2,8 @@ import * as React from 'react';
 import Card from "../../../../../common/Card/Card";
 import {FONTS} from "../../../../../common/MentorColor";
 import {Display1, Heading3, LIGHT_TEXT, Subhead1} from '../../../../../common/MentorText';
-import {IBoxDayDescription, STATUS_DAY_SESSIONS} from "../../../../../domain/Session/SessionCollector";
+import {CARD_STATUS} from "../../../../../domain/Card";
+import {IBoxDayDescription} from "../../../../../domain/Session/SessionCollector";
 
 export interface IPropsCardDay {
     status: string;
@@ -15,7 +16,7 @@ export interface IPropsCardDay {
 const CardDay: React.FC<IPropsCardDay> = (props) => {
     return (
         <Card status={props.status} main={props.today} click={props.click}>
-            {props.status === STATUS_DAY_SESSIONS.ACTIVE ?
+            {props.status === CARD_STATUS.ACTIVE ?
                 <React.Fragment>
                     <Heading3>{props.description.topText}</Heading3>
                     <Display1>{props.description.mainText}</Display1>
