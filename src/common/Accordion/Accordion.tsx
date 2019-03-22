@@ -5,6 +5,10 @@ import './Accordion.scss';
 interface IPropsAccordion {
     title: JSX.Element;
     body: JSX.Element;
+    className?: string;
+    iconStyle?: React.CSSProperties;
+    bodyStyle?: React.CSSProperties;
+    headerStyle?: React.CSSProperties;
 }
 
 interface IStateAccordion {
@@ -23,14 +27,16 @@ class Accordion extends React.Component<IPropsAccordion, IStateAccordion> {
 
     public render() {
         return (
-            <div className="Accordion">
+            <div className={`Accordion ${this.props.className || ''}`}>
                 <div
                     onClick={this.updateClose}
+                    style={{...this.props.headerStyle}}
                     className={`Accordion_title ${this.state.open ? '' : 'Accordion_title--close'}`}>
-                    <Icon name={"navigation-arrow"}/>
+                    <Icon name={"navigation-arrow"} style={{...this.props.iconStyle}}/>
                     {this.props.title}
                 </div>
-                <div className={`Accordion_body ${this.state.open ? '' : 'Accordion_body--close'}`}>
+                <div className={`Accordion_body ${this.state.open ? '' : 'Accordion_body--close'}`}
+                     style={{...this.props.bodyStyle}}>
                     {this.props.body}
                 </div>
             </div>

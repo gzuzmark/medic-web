@@ -1,5 +1,5 @@
 import * as React from 'react';
-import emptyState from '../../../../../assets/images/empty-state.png';
+import emptyState from '../../../../../assets/images/empty_state.png';
 import Accordion from "../../../../../common/Accordion/Accordion";
 import { Text1, TextBold3, Title2 } from "../../../../../common/ConsoleText"
 import Icon from "../../../../../common/Icon/Icon";

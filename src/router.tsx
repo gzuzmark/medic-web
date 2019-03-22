@@ -6,6 +6,7 @@ import './assets/fonts/fonts.scss';
 import './assets/fonts/fontsMentor.scss';
 import './assets/styles/styles.scss';
 import HOCLayout from "./common/Layout/HOCLayout";
+import ListRooms from "./components/Admin/ListRooms/ListRooms";
 import MentorFormCreate from "./components/Admin/MentorFormCreate/MentorFormCreate";
 import MentorFormEdit from "./components/Admin/MentorFormEdit/MentorFormEdit";
 import MentorSession from './components/Admin/MentorSession/MentorSession';
@@ -75,6 +76,13 @@ const PageEditProfileMentor = (props: any) => {
                                     {...props} />;
 }
 
+const PageListRooms = (props: any) => {
+    const LayoutListRooms = HOCLayout(ListRooms);
+    return <LayoutListRooms icon={'box'}
+                             items={[{url: '/aulas', text: 'Aulas'}]}
+                             {...props}/>;
+}
+
 export const initRouter = () => {
     ReactDOM.render(
         <Router>
@@ -83,6 +91,7 @@ export const initRouter = () => {
                 <Route exact={true} path="/logout" component={Logout} />
                 <Route exact={true} path="/admin" render={GuardComponent(MentorsList, ROL_ADMIN)} />
                 <Route exact={true} path="/admin/mentores" render={GuardComponent(MentorsList, ROL_ADMIN)} />
+                <Route exact={true} path="/admin/aulas" render={GuardComponent(PageListRooms, ROL_ADMIN)} />
                 <Route exact={true} path="/admin/agregar-mentor" render={GuardComponent(PageCreateMentor, ROL_ADMIN)} />
                 <Route exact={true} path="/admin/editar-mentor/:id" render={GuardComponent(PageEditMentor, ROL_ADMIN)} />
                 <Route exact={true} path="/admin/reportes" render={GuardComponent(PageReports, ROL_ADMIN)}/>

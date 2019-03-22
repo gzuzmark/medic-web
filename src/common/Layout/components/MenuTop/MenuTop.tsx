@@ -21,7 +21,7 @@ const ItemContainerStyled = styled.div`
     padding: 3px 0;
     position: ${(props: {parent: boolean}) => props.parent ? 'relative' : 'absolute'};
     top: 0;
-    width: ${(props: {parent: boolean}) => props.parent ? '100%' : '150px'};
+    width: ${(props: {parent: boolean}) => props.parent ? '190px' : '150px'};
     a {
         width: 100%;
     }

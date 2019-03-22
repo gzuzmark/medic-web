@@ -81,7 +81,9 @@ class DayHandlerBar extends React.Component<IPropsDayHandlerBar, {}> {
 
     private triggerClick(day: string) {
         return () => {
-            this.props.onChangeDate(day);
+            if (!this.props.loading) {
+                this.props.onChangeDate(day);
+            }
         }
     }
 
