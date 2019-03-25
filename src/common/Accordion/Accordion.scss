@@ -6,12 +6,12 @@
       position: absolute;
       right: 0;
       top: 50%;
-      transform: rotate(-90deg) translateX(50%);
+      transform: rotate(90deg) translateX(-50%);
       fill: #561cac;
     }
     &--close {
       .icon {
-        transform: rotate(90deg) translateX(-50%);;
+        transform: rotate(-90deg) translateX(50%);
       }
     }
   }

@@ -1,6 +1,7 @@
 import { mount } from 'enzyme';
 import 'jest-localstorage-mock';
 import * as React from 'react';
+import Card from "../../../../../common/Card/Card";
 import {CARD_STATUS} from "../../../../../domain/Card";
 import CardDay, {IPropsCardDay} from './CardDay';
 
@@ -31,35 +32,11 @@ describe('CardDay Test',() => {
         mountedCardDay = undefined;
     });
 
-    it("render: render CardDay STATUS ACTIVE", () => {
-        props = {...props, status: CARD_STATUS.ACTIVE };
-        const component = getComponent();
-        expect(component.find('.CardDay--active').length).toEqual(1);
-        expect(component.find('.CardDay--disabled').length).toEqual(0);
-        expect(component.find('.CardDay--default').length).toEqual(0);
-    });
-
-    it("render: render CardDay STATUS DISABLED", () => {
-        props = {...props, status: CARD_STATUS.DISABLED };
-        const component = getComponent();
-        expect(component.find('.CardDay--active').length).toEqual(0);
-        expect(component.find('.CardDay--disabled').length).toEqual(1);
-        expect(component.find('.CardDay--default').length).toEqual(0);
-    });
-
-    it("render: render CardDay STATUS DEFAULT", () => {
-        props = {...props, status: CARD_STATUS.DEFAULT };
-        const component = getComponent();
-        expect(component.find('.CardDay--active').length).toEqual(0);
-        expect(component.find('.CardDay--disabled').length).toEqual(0);
-        expect(component.find('.CardDay--default').length).toEqual(1);
-    });
-
     it("event: event click should have been called", () => {
         const click = jasmine.createSpy('click');
         props = {...props, click};
         const component = getComponent();
-        component.find('.CardDay').simulate('click');
+        component.find(Card).simulate('click');
         expect(click).toHaveBeenCalled();
     });
 });

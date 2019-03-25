@@ -5,6 +5,7 @@ import './Accordion.scss';
 interface IPropsAccordion {
     title: JSX.Element;
     body: JSX.Element;
+    open?: boolean;
     className?: string;
     iconStyle?: React.CSSProperties;
     bodyStyle?: React.CSSProperties;
@@ -23,6 +24,10 @@ class Accordion extends React.Component<IPropsAccordion, IStateAccordion> {
             open: true
         }
         this.updateClose = this.updateClose.bind(this);
+    }
+
+    public componentDidMount() {
+        this.setState({open: !!this.props.open})
     }
 
     public render() {

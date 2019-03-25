@@ -33,6 +33,8 @@ const LoaderContainer = styled.div`
 interface IPropsLoaderFullScreen {
     text?: string;
     modal?: boolean;
+    size?: number;
+    styleLoaderContainer?: React.CSSProperties;
 }
 
 const LoaderFullScreen: React.FC<IPropsLoaderFullScreen> = (props) => {
@@ -40,8 +42,8 @@ const LoaderFullScreen: React.FC<IPropsLoaderFullScreen> = (props) => {
     const font = !!props.modal ? FONTS.light : FONTS.purple;
     return (
         <FullScreenContainer modal={!!props.modal}>
-            <LoaderContainer modal={!!props.modal}>
-                <Loader color={color} size={27} style={{marginBottom: 50}} />
+            <LoaderContainer modal={!!props.modal} style={{...props.styleLoaderContainer}}>
+                <Loader color={color} size={props.size || 27} style={{marginBottom: 50}} />
                 {!!props.text && <Heading3 color={font}>{props.text}</Heading3>}
             </LoaderContainer>
         </FullScreenContainer>

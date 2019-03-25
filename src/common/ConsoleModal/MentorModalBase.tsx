@@ -9,6 +9,8 @@ interface IPropsMentorModalBase {
     show: boolean;
     hideClose?: boolean;
     header?: JSX.Element | null;
+    closeOnOverlayClick?: boolean;
+    closeOnEsc?: boolean;
     styles?: React.CSSProperties;
     width?: number;
     onCloseModal?(): void;
@@ -26,8 +28,8 @@ const MentorModalBase: React.FC<IPropsMentorModalBase> = (props) => {
             open={props.show}
             onClose={onClose}
             center={true}
-            closeOnEsc={false}
-            closeOnOverlayClick={false}
+            closeOnEsc={!!props.closeOnEsc}
+            closeOnOverlayClick={!!props.closeOnOverlayClick}
             showCloseIcon={false}
             styles={{
                 modal: {
@@ -46,7 +48,7 @@ const MentorModalBase: React.FC<IPropsMentorModalBase> = (props) => {
                 {
                     !!props.onCloseModal && !props.hideClose &&
                     <button className="MentorModalBase_close" onClick={props.onCloseModal}>
-                        <Icon name="close"/>
+                        <Icon name="close" />
                     </button>
                 }
                 {

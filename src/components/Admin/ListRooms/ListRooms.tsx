@@ -1,26 +1,17 @@
 import * as React from "react";
 import styled from "styled-components";
-import roomActive from '../../../assets/images/room_active.png';
-import roomInactive from '../../../assets/images/room_inactive.png';
 import {ButtonNormal} from "../../../common/Buttons/Buttons";
-import Card from "../../../common/Card/Card";
-import colors from "../../../common/MentorColor";
-import {Heading3} from "../../../common/MentorText";
-import {CARD_STATUS} from "../../../domain/Card";
+import LoaderFullScreen from "../../../common/Loader/LoaderFullsScreen";
+import colors, {FONTS} from "../../../common/MentorColor";
+import {Body1} from "../../../common/MentorText";
+import {IBlock, IRoom} from "../../../domain/Blocks/Blocks";
 import {ISites} from "../../../domain/Sites/Sites";
-import SitesService from "../../../services/Sites/Sites.service";
+import BlocksService from "../../../services/Block/Blocks.service";
 import AccordionRooms, {buildBody, buildTitle} from "./AccordionRooms/AccordionRooms";
+import HandlerCardRoom from "./HandlerCardRoom/HandlerCardRoom";
 import ModalRoom from "./ModalRoom/ModalRoom";
+import './Slides.scss';
 
-const CardRoom = styled(Card)`
-    height: 108px;
-    width: 295px;
-`;
-
-const CardRoomContainer = styled.div`
-    display: flex;
-    justify-content: space-between;
-`;
 
 const HeaderRoomContainer = styled.div`
     display: flex;
@@ -29,97 +20,75 @@ const HeaderRoomContainer = styled.div`
 `;
 
 const DescriptionContainer = styled.div`
-    background: ${colors.MISC_COLORS.background_grey_1};  
+    background: ${(props: {isEmpty: boolean}) => props.isEmpty ?  colors.BACKGROUND_COLORS.background_white : colors.MISC_COLORS.background_grey_1 };   
     border-radius: 8px;
     margin-top: 28px;
-    padding: 16px;
+    min-height: 100px;
+    padding: ${(props: {isEmpty: boolean}) => props.isEmpty ?  '0' : '16px'};
+    position: relative;
 `;
 
-const RoomText = styled(Heading3)`
-    margin-top: 10px;
+const DescriptionEmpty = styled.div`
+    align-items: center;
+    background: ${colors.BACKGROUND_COLORS.background_disabled_button}; 
+    border-radius: 8px;
+    display: flex;
+    height: 56px;
+    justify-content: center;
+    width: 100%;
 `;
-
-interface IPropsHandlerCardRoom {
-    click: (site: ISites) => void;
-}
-
-const HandlerCardRoom: React.FC<IPropsHandlerCardRoom> = (props) => {
-    const [loading, setLoading] = React.useState(true);
-    const [sites, setSites] = React.useState([] as ISites[]);
-    const src = roomActive || roomInactive;
-    React.useEffect(() => {
-        const sitesService = new SitesService();
-        sitesService.list().then((items: ISites[]) => {
-            setSites(items);
-            setLoading(false);
-        }).catch(() => {
-            setLoading(false);
-        });
-    });
-
-    const selectSite = (site: ISites) => {
-        return () => {
-            props.click(site);
-        };
-    }
-    return (
-        <CardRoomContainer>
-            {loading && ["1", "2", "3", "4"].map((item) => (
-                <CardRoom status={CARD_STATUS.DISABLED} key={item}>
-                    <img src={roomInactive} width={24} />
-                    <RoomText>&nbsp;</RoomText>
-                </CardRoom>
-            ))}
-            {sites.map((site) => (
-                <CardRoom status={CARD_STATUS.ACTIVE} click={selectSite(site)} key={site.id}>
-                    <img src={src} width={24} />
-                    <RoomText>{site.name}</RoomText>
-                </CardRoom>
-            ))}
-        </CardRoomContainer>
-    )
-}
+const roomService = new BlocksService();
 
 const ListRooms: React.FC<{}> = () => {
     const [modal, setModal] = React.useState(false);
-    const [selectedSite, setSelectedSite] = React.useState('');
-    const [selectedRoom, setSelectedRoom] = React.useState('');
-    const loadSite = () => {
-        alert(selectedSite);
-        setSelectedSite('');
+    const [loading, setLoading] = React.useState(true);
+    const [selectedSite, setSelectedSite] = React.useState({} as ISites);
+    const [selectedBlock, setSelectedBlock] = React.useState({} as IBlock);
+    const [selectedRoom, setSelectedRoom] = React.useState({} as IRoom);
+    const [blocks, setBlocks] = React.useState([] as IBlock[]);
+
+    const loadSite = (site: ISites) => {
+        setSelectedSite(site);
+        setLoading(true);
+        roomService.listBlocks(site.id).then((items: IBlock[]) => {
+            setBlocks(items);
+            setLoading(false);
+        }).catch(() => {
+            setBlocks([]);
+            setLoading(false);
+        })
     };
-    const showModal = (item: any) => {
-        setModal(true);
-        setSelectedRoom(item);
+
+    const showModal = (block: IBlock) => {
+        return (item: IRoom) => {
+            setSelectedBlock(block);
+            setSelectedRoom(item);
+            setModal(true);
+        };
     };
+
     const closeModal = () => setModal(false);
 
     return (
         <div className="u-LayoutMargin" style={{padding: '0 35px'}}>
-            <ModalRoom modal={modal} closeModal={closeModal} selectedRoom={selectedRoom}/>
+            <ModalRoom modal={modal} closeModal={closeModal} room={selectedRoom} block={selectedBlock}/>
             <HeaderRoomContainer>
                 <ButtonNormal text={"Crear nueva aula"}/>
             </HeaderRoomContainer>
-            <HandlerCardRoom click={loadSite} />
-            <DescriptionContainer>
-                <AccordionRooms
-                    iconStyle={{right: 16}}
-                    bodyStyle={{marginTop: 8, marginBottom: 21}}
-                    headerStyle={{ marginBottom: 1}}
-                    title={buildTitle()}
-                    body={buildBody("modal", showModal)}/>
-                <AccordionRooms
-                    iconStyle={{right: 16}}
-                    bodyStyle={{marginTop: 8, marginBottom: 21}}
-                    headerStyle={{ marginBottom: 1}}
-                    title={buildTitle()}
-                    body={buildBody("modal 2", showModal)}/>
-                <AccordionRooms
-                    iconStyle={{right: 16}}
-                    bodyStyle={{marginTop: 8, marginBottom: 21}}
-                    headerStyle={{ marginBottom: 1}}
-                    title={buildTitle()}
-                    body={buildBody("modal 3", showModal)}/>
+            <HandlerCardRoom click={loadSite} selectedSite={selectedSite}/>
+            <DescriptionContainer isEmpty={blocks.length === 0}>
+                {loading && <LoaderFullScreen size={12} styleLoaderContainer={{margin: '15px auto auto auto'}}/>}
+                {(!loading && blocks.length === 0) && <DescriptionEmpty><Body1 color={FONTS.light}>Aún no tienes direcciones</Body1></DescriptionEmpty>}
+                {blocks.map((block: IBlock, index: number) => (
+                    <AccordionRooms
+                        key={block.id}
+                        open={index===0}
+                        iconStyle={{right: 16}}
+                        bodyStyle={{marginTop: 8, marginBottom: 21}}
+                        headerStyle={{ marginBottom: 1}}
+                        title={buildTitle(block)}
+                        body={buildBody(block.rooms || [] as IRoom[], showModal(block))}/>
+                ))}
             </DescriptionContainer>
         </div>
     )
