@@ -107,7 +107,7 @@ class ProfileMentorCore extends React.Component<IPropsProfileMentorCore, IStateP
                 </FormReviewHeader>
                 {mentor.description.trim().length > 0 &&
                     <Wrapper>
-                        <div style={{background: colors.MISC_COLORS.background_grey_1, padding: "22px 16px", width: '100%'}}>
+                        <div style={{background: colors.MISC_COLORS.background_grey_1, padding: "22px 16px", width: '100%', borderRadius: 4}}>
                             <Subhead1 weight={LIGHT_TEXT} style={{overflowWrap: 'break-word'}}>“{mentor.description}”</Subhead1>
                         </div>
                     </Wrapper>}

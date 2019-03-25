@@ -5,14 +5,13 @@
     .icon {
       position: absolute;
       right: 0;
-      top: 0;
-      transform: rotate(-90deg);
-      transition: transform 0.2s ease-in;
+      top: 50%;
+      transform: rotate(90deg) translateX(-50%);
       fill: #561cac;
     }
     &--close {
       .icon {
-        transform: rotate(90deg);
+        transform: rotate(-90deg) translateX(50%);
       }
     }
   }

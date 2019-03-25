@@ -1,8 +1,8 @@
 import * as moment from 'moment';
 import * as React from 'react';
 import Icon from "../../../../../common/Icon/Icon";
+import {CARD_STATUS} from "../../../../../domain/Card";
 import {MomentDateParser} from "../../../../../domain/DateManager/MomentDateParser";
-import {STATUS_DAY_SESSIONS} from "../../../../../domain/Session/SessionCollector";
 import {IRangeDay} from "../../MentorHome";
 import CardDay from "../CardDay/CardDay";
 import './DayHandlerBar.scss';
@@ -57,9 +57,9 @@ class DayHandlerBar extends React.Component<IPropsDayHandlerBar, {}> {
                     const click = this.triggerClick(day.date);
                     let status = day.status;
                     if (this.props.loading) {
-                        status = STATUS_DAY_SESSIONS.DISABLED
+                        status = CARD_STATUS.DISABLED
                     } else if (this.mdp.isSameDate(this.props.selectedDate, day.date)) {
-                        status = STATUS_DAY_SESSIONS.ACTIVE;
+                        status = CARD_STATUS.ACTIVE;
                     }
                     const today = this.props.daysBar.counter === 0 && this.mdp.isDateToday(day.date);
                     return (
@@ -81,7 +81,9 @@ class DayHandlerBar extends React.Component<IPropsDayHandlerBar, {}> {
 
     private triggerClick(day: string) {
         return () => {
-            this.props.onChangeDate(day);
+            if (!this.props.loading) {
+                this.props.onChangeDate(day);
+            }
         }
     }
 

@@ -3,6 +3,7 @@ import attened from '../../../../../assets/images/student_check_modal/attended.p
 import noAttened from '../../../../../assets/images/student_check_modal/no_attended.png';
 import ContentModal from "../../../../../common/ConsoleModal/ContentModal";
 import Icon from "../../../../../common/Icon/Icon";
+import {Body1, LIGHT_TEXT} from "../../../../../common/MentorText";
 import './StudentCheckModal.scss';
 
 
@@ -25,14 +26,14 @@ interface IPropsStudentCheckModalCard {
 interface IStudentCheckModalScreen {
     image: JSX.Element | null;
     title: string;
-    description: string;
+    description: JSX.Element | string;
     button: string;
 }
 
 const getScreenData = (screen: string): IStudentCheckModalScreen => {
     let image = null;
     let title = '';
-    let description = '';
+    let description: string | JSX.Element= '';
     let button = '';
     if (screen === StudentCheckModalScreens.ATTENDED) {
         image = <img src={attened} />;
@@ -42,7 +43,8 @@ const getScreenData = (screen: string): IStudentCheckModalScreen => {
     } else if (screen === StudentCheckModalScreens.NO_ATTENDED) {
         image = <img src={noAttened} />;
         title = 'Nadie se presentó';
-        description = 'Al parecer los alumnos no se presentaron, por favor presiona confirmar para cerrar la lista.';
+        description = <Body1 weight={LIGHT_TEXT} style={{margin: '0 auto'}}>
+            Al parecer los alumnos no se presentaron, por favor presiona confirmar para <br/> cerrar la lista.</Body1>;
         button = ' Confirmar';
     } else if (screen === StudentCheckModalScreens.SUCCESS) {
         image = <Icon name={'check-circle'} style={{marginTop: 20}}/>;

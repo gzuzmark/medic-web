@@ -13,7 +13,7 @@ export interface IFilerListItem {
     extra?: any;
 }
 interface IPropsFilterList {
-        onChange: (item: IFilerListItem) => void;
+    onChange: (item: IFilerListItem) => void;
     list: IFilerListItem[];
     defaultText: string;
     name: string;

@@ -1,0 +1,90 @@
+.slick-list {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+  &:focus {
+    outline: 0;
+  }
+  &.dragging {
+    cursor: pointer;
+    cursor: hand;
+  }
+}
+.slick-slider {
+  position: relative;
+  display: block;
+  //Instead of the line below you could use @include box-sizing($bs)
+  box-sizing: border-box;
+  //Instead of the line below you could use @include user-select($select)
+  user-select: none;
+  touch-action: pan-y;
+  .slick-list {
+    //Instead of the line below you could use @include transform($scale, $rotate, $transx, $transy, $skewx, $skewy, $originx, $originy)
+    transform: translate3d(0,0,0);
+  }
+  .slick-track {
+    //Instead of the line below you could use @include transform($scale, $rotate, $transx, $transy, $skewx, $skewy, $originx, $originy)
+    transform: translate3d(0,0,0);
+  }
+}
+.slick-track {
+  position: relative;
+  display: block;
+  top: 0;
+  left: 0;
+  &:after {
+    display: table;
+    content: '';
+    clear: both;
+  }
+  &:before {
+    display: table;
+    content: '';
+  }
+}
+.slick-loading {
+  .slick-slide {
+    visibility: hidden;
+  }
+  .slick-track {
+    visibility: hidden;
+  }
+}
+.slick-slide {
+  display: none;
+  float: left;
+  height: 100%;
+  min-height: 1px;
+  img {
+    display: block;
+  }
+  &.slick-loading img {
+    display: none;
+  }
+  &.dragging img {
+    pointer-events: none;
+  }
+}
+[dir=rtl] .slick-slide {
+  float: right;
+}
+.slick-initialized .slick-slide {
+  display: block;
+}
+.slick-vertical .slick-slide {
+  display: block;
+  height: auto;
+  border: 1px solid transparent;
+}
+.slick-arrow.slick-hidden {
+  display: none;
+}
+
+
+// custom
+.slick-initialized .slick-slide {
+  display: flex;
+  justify-content: center;
+}
