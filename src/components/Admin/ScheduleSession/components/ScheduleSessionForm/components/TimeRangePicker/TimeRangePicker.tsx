@@ -2,12 +2,12 @@ import * as moment from 'moment';
 import * as React from 'react';
 import ConsoleColor from "../../../../../../../common/ConsoleColor";
 import { Text } from '../../../../../../../common/ConsoleText';
+import FormColumn from "../../../../../../../common/FormRow/components/FormColumn/FormColumn";
+import FormRow from "../../../../../../../common/FormRow/FormRow";
 import Icon from "../../../../../../../common/Icon/Icon";
 import TimePicker from "../../../../../../../common/TimePicker/TimePicker";
 import {IListItem} from "../../../../../../../domain/Lists";
 import InputDatePicker from "../../../../../Reports/components/InputDatePicker/InputDatePicker";
-import FormColumn from "../../../FormRow/components/FormColumn/FormColumn";
-import FormRow from "../../../FormRow/FormRow";
 import './TimeRangePicker.scss';
 
 interface IPropsTimeRangePicker {

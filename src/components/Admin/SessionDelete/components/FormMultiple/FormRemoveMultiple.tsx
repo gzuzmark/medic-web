@@ -2,10 +2,10 @@ import * as moment from 'moment';
 import * as React from 'react';
 import { Text3 } from '../../../../../common/ConsoleText';
 import FilterList from "../../../../../common/FilterList/FilterList";
+import FormColumn from "../../../../../common/FormRow/components/FormColumn/FormColumn";
+import FormRow from "../../../../../common/FormRow/FormRow";
 import {ISessionItem, ISessionListForm} from "../../../../../domain/FormSession/FormSessionBaseBean";
 import InputDatePicker from "../../../Reports/components/InputDatePicker/InputDatePicker";
-import FormColumn from "../../../ScheduleSession/components/FormRow/components/FormColumn/FormColumn";
-import FormRow from "../../../ScheduleSession/components/FormRow/FormRow";
 import FormSection from "../../../ScheduleSession/components/FormSection/FormSection";
 import './FormRemoveMultiple.scss';
 

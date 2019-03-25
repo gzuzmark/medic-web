@@ -1,10 +1,10 @@
 import * as React from "react";
+import FormColumn from "../../../../../common/FormRow/components/FormColumn/FormColumn";
+import FormRow from "../../../../../common/FormRow/FormRow";
 import LayoutContext from "../../../../../common/Layout/Layout.context";
 import MentorInput from "../../../../../common/MentorInput/MentorInput";
 import MentorTextArea from "../../../../../common/MentorTextArea/MentorTextArea";
 import {ROL_MENTOR} from "../../../../../repository/UserRepository";
-import FormColumn from "../../../ScheduleSession/components/FormRow/components/FormColumn/FormColumn";
-import FormRow from "../../../ScheduleSession/components/FormRow/FormRow";
 import MentorFormBaseContext from "../../MentorFormBase.context";
 import {limitDescription} from "../../MentorFormBase.validations";
 import getBorderColor from "../FormTemplate/FormTemplateField";

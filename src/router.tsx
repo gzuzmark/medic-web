@@ -6,6 +6,7 @@ import './assets/fonts/fonts.scss';
 import './assets/fonts/fontsMentor.scss';
 import './assets/styles/styles.scss';
 import HOCLayout from "./common/Layout/HOCLayout";
+import CreateRoom from "./components/Admin/CreateRoom/CreateRoom";
 import ListRooms from "./components/Admin/ListRooms/ListRooms";
 import MentorFormCreate from "./components/Admin/MentorFormCreate/MentorFormCreate";
 import MentorFormEdit from "./components/Admin/MentorFormEdit/MentorFormEdit";
@@ -72,14 +73,24 @@ const PageEditProfileMentor = (props: any) => {
     return <LayoutProfileEditMentor icon={'book'}
                                     items={[
                                         {url: '/mentor', text: 'Inicio'},
-                                        {text: 'Ver perfil', url: '/mentor/perfil'}, {text: 'Editar perfil'}]}
+                                        {text: 'Ver perfil', url: '/mentor/perfil'},
+                                        {text: 'Editar perfil'}]}
                                     {...props} />;
 }
 
 const PageListRooms = (props: any) => {
     const LayoutListRooms = HOCLayout(ListRooms);
     return <LayoutListRooms icon={'box'}
-                             items={[{url: '/aulas', text: 'Aulas'}]}
+                             items={[{url: '/admin/aulas', text: 'Aulas'}]}
+                             {...props}/>;
+}
+
+const PageCreateRoom = (props: any) => {
+    const LayoutListRooms = HOCLayout(CreateRoom);
+    return <LayoutListRooms icon={'box'}
+                             items={[
+                                 {url: '/admin/aulas', text: 'Aulas'},
+                                 {text: 'Nueva Aula'}]}
                              {...props}/>;
 }
 
@@ -92,6 +103,7 @@ export const initRouter = () => {
                 <Route exact={true} path="/admin" render={GuardComponent(MentorsList, ROL_ADMIN)} />
                 <Route exact={true} path="/admin/mentores" render={GuardComponent(MentorsList, ROL_ADMIN)} />
                 <Route exact={true} path="/admin/aulas" render={GuardComponent(PageListRooms, ROL_ADMIN)} />
+                <Route exact={true} path="/admin/aulas/crear" render={GuardComponent(PageCreateRoom, ROL_ADMIN)} />
                 <Route exact={true} path="/admin/agregar-mentor" render={GuardComponent(PageCreateMentor, ROL_ADMIN)} />
                 <Route exact={true} path="/admin/editar-mentor/:id" render={GuardComponent(PageEditMentor, ROL_ADMIN)} />
                 <Route exact={true} path="/admin/reportes" render={GuardComponent(PageReports, ROL_ADMIN)}/>

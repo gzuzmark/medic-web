@@ -1,4 +1,6 @@
 import * as React from "react";
+import FormColumn from "../../../../../common/FormRow/components/FormColumn/FormColumn";
+import FormRow from "../../../../../common/FormRow/FormRow";
 import MentorDropDown, {IPropsMentorOptionsDropDown} from "../../../../../common/MentorDropDown/MentorDropDown";
 import MentorInput from "../../../../../common/MentorInput/MentorInput";
 import {documentTypeList} from "../../../../../repository/DocumentsIdentification";
@@ -6,8 +8,6 @@ import useHandlerDocument, {
     IUseHandlerDocument
 } from "../../../MentorFormCreate/components/FormMail/UseHandlerDocument";
 import {IFormManagerDisabledFields, IFormManagerInfoFields} from "../../../MentorFormCreate/components/FormManager/FormManager";
-import FormColumn from "../../../ScheduleSession/components/FormRow/components/FormColumn/FormColumn";
-import FormRow from "../../../ScheduleSession/components/FormRow/FormRow";
 import MentorFormBaseContext, {IMentorFormBaseContext} from "../../MentorFormBase.context";
 import {DOCUMENT_STATUS} from "../../MentorFormBase.validations";
 

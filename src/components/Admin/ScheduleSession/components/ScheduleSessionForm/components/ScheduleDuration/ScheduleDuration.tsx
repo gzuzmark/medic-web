@@ -3,8 +3,8 @@ import * as React from 'react';
 import { SingleDatePicker } from 'react-dates';
 import { BaseConfigCalendar } from '../../../../../../../common/Calendar.const';
 import { Text } from '../../../../../../../common/ConsoleText';
-import FormColumn from '../../../FormRow/components/FormColumn/FormColumn';
-import FormRow from '../../../FormRow/FormRow';
+import FormColumn from '../../../../../../../common/FormRow/components/FormColumn/FormColumn';
+import FormRow from '../../../../../../../common/FormRow/FormRow';
 import RangeWeekendSelector from './components/RangeWeekendSelector/RangeWeekendSelector';
 import RepeatSessionInput from './components/RepeatSessionInput/RepeatSessionInput';
 
