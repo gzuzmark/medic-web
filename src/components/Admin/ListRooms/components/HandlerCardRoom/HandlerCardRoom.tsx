@@ -27,6 +27,7 @@ const RoomText = styled(Heading3)`
     overflow:hidden; 
     text-align: center;
     text-overflow:ellipsis;
+    text-transform: uppercase;
     white-space:nowrap; 
     width: 90%;
     word-break: break-word;

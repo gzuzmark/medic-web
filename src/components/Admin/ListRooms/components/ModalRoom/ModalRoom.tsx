@@ -73,7 +73,7 @@ const ModalRoom: React.FC<IPropsModalRoom> = (props) => {
                         props.room.interestAreasId.map((id: string) => (
                             <Small2 weight={LIGHT_TEXT} key={id}>{getNameArea(id)}</Small2>
                         )) :
-                        <Small2 weight={LIGHT_TEXT}>“no tiene áreas relacionadas”</Small2>}
+                        <Small2 weight={LIGHT_TEXT}>No tiene áreas relacionadas</Small2>}
                 </AreaContainer>
             </ModalRoomContainer>
         </MentorModalBase>
