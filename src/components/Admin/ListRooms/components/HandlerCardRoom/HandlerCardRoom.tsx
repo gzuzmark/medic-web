@@ -1,15 +1,15 @@
 import * as React from "react";
 import Slider from "react-slick";
 import styled from "styled-components";
-import roomActive from '../../../../assets/images/room_active.png';
-import roomInactive from '../../../../assets/images/room_inactive.png';
-import Card from "../../../../common/Card/Card";
-import Icon from "../../../../common/Icon/Icon";
-import colors from "../../../../common/MentorColor";
-import {Heading3} from "../../../../common/MentorText";
-import {CARD_STATUS} from "../../../../domain/Card";
-import {ISites} from "../../../../domain/Sites/Sites";
-import SitesService from "../../../../services/Sites/Sites.service";
+import roomActive from '../../../../../assets/images/room_active.png';
+import roomInactive from '../../../../../assets/images/room_inactive.png';
+import Card from "../../../../../common/Card/Card";
+import Icon from "../../../../../common/Icon/Icon";
+import colors from "../../../../../common/MentorColor";
+import {Heading3} from "../../../../../common/MentorText";
+import {CARD_STATUS} from "../../../../../domain/Card";
+import {ISites} from "../../../../../domain/Sites/Sites";
+import SitesService from "../../../../../services/Sites/Sites.service";
 
 
 const CardRoom = styled(Card)`

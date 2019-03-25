@@ -1,16 +1,18 @@
 import * as React from "react";
 import styled from "styled-components";
-import MentorModalBase from "../../../../common/ConsoleModal/MentorModalBase";
-import colors from "../../../../common/MentorColor";
-import {LIGHT_TEXT, Small2, Subhead1} from "../../../../common/MentorText";
-import {IBlock, IRoom} from "../../../../domain/Blocks/Blocks";
-import {IArea} from "../../../../interfaces/Mentor.interface";
-import InterestAreaService from "../../../../services/InterestArea/InterestArea.service";
+import MentorModalBase from "../../../../../common/ConsoleModal/MentorModalBase";
+import colors from "../../../../../common/MentorColor";
+import {LIGHT_TEXT, Small2, Subhead1} from "../../../../../common/MentorText";
+import {IBlock, IRoom} from "../../../../../domain/Blocks/Blocks";
+import {ISites} from "../../../../../domain/Sites/Sites";
+import {IArea} from "../../../../../interfaces/Mentor.interface";
+import InterestAreaService from "../../../../../services/InterestArea/InterestArea.service";
 
 export interface IPropsModalRoom {
     modal: boolean;
     closeModal: () => void;
     block: IBlock;
+    site: ISites;
     room: IRoom;
 }
 
@@ -64,7 +66,7 @@ const ModalRoom: React.FC<IPropsModalRoom> = (props) => {
             styles={{minHeight: 'auto', minWidth: 400, width: 'auto'}}>
             <ModalRoomContainer>
                 <Subhead1>{props.room.description}</Subhead1>
-                <Direction weight={LIGHT_TEXT}>{props.block.address} {props.block.name}</Direction>
+                <Direction weight={LIGHT_TEXT}>{props.block.address} {props.site.name}</Direction>
                 <SkillTitle>Áreas de Interés relacionadas:</SkillTitle>
                 <AreaContainer>
                     {props.room.interestAreasId ?

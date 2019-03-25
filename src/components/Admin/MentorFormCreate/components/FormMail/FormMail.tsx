@@ -1,6 +1,8 @@
 import * as React from "react";
 import ContentModal from "../../../../../common/ConsoleModal/ContentModal";
 import MentorModalBase from "../../../../../common/ConsoleModal/MentorModalBase";
+import FormColumn from "../../../../../common/FormRow/components/FormColumn/FormColumn";
+import FormRow from "../../../../../common/FormRow/FormRow";
 import Icon from "../../../../../common/Icon/Icon";
 import colors from "../../../../../common/MentorColor";
 import MentorDropDown from "../../../../../common/MentorDropDown/MentorDropDown";
@@ -10,8 +12,6 @@ import {emailStatus} from "../../../../../domain/Mentor/MentorBaseForm";
 import {documentDefaultSelection, documentTypeList} from "../../../../../repository/DocumentsIdentification";
 import MentorFormBaseContext from "../../../MentorFormBase/MentorFormBase.context";
 import {DOCUMENT_STATUS} from "../../../MentorFormBase/MentorFormBase.validations";
-import FormColumn from "../../../ScheduleSession/components/FormRow/components/FormColumn/FormColumn";
-import FormRow from "../../../ScheduleSession/components/FormRow/FormRow";
 import {IFormManagerDisabledFields} from "../FormManager/FormManager";
 import useHandlerDocument from "./UseHandlerDocument";
 import useHandlerEmail from "./UseHandlerEmail";

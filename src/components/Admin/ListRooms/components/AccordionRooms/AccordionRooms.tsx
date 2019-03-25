@@ -1,9 +1,9 @@
 import * as React from "react";
 import styled from "styled-components";
-import Accordion from "../../../../common/Accordion/Accordion";
-import colors, {FONTS} from "../../../../common/MentorColor";
-import {Body1, LIGHT_TEXT, Small2, Subhead1} from "../../../../common/MentorText";
-import {IBlock, IRoom} from "../../../../domain/Blocks/Blocks";
+import Accordion from "../../../../../common/Accordion/Accordion";
+import colors, {FONTS} from "../../../../../common/MentorColor";
+import {Body1, LIGHT_TEXT, Small2, Subhead1} from "../../../../../common/MentorText";
+import {IBlock, IRoom} from "../../../../../domain/Blocks/Blocks";
 
 const AccordionHeader = styled.div`
     align-items: center;
@@ -80,7 +80,7 @@ export const buildTitle = (block: IBlock) => {
     return (
         <AccordionHeader>
             <AccordionOrnament>-</AccordionOrnament>
-            <AccordionTitle>{block.address} {block.name}</AccordionTitle>
+            <AccordionTitle>{block.address} ({block.name})</AccordionTitle>
         </AccordionHeader>)
 }
 
@@ -93,7 +93,7 @@ export const buildBody = (rooms: IRoom[], click: (r: IRoom) => void) => {
     const empty = rooms.length % 12 !== 0 ? (rooms.length % 12 - 12) * -1 : 0;
     return(
         <RoomContainer empty={!!rooms.length}>
-            {rooms.length === 0 && <EmptyRooms><Body1 color={FONTS.light}>No hay aulas</Body1></EmptyRooms>}
+            {rooms.length === 0 && <EmptyRooms><Body1 color={FONTS.light}>Aún no hay aulas</Body1></EmptyRooms>}
             {rooms.map((room) => (
                 <RoomStyled onClick={onClick(room)} empty={false} key={room.id}>
                     <RoomName weight={LIGHT_TEXT} color={FONTS.medium} >

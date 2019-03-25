@@ -1,8 +1,8 @@
 import * as React from "react";
 import {ReportType} from "../../../../../beans/ReportRequest.bean";
 import ConsoleInputRadio from "../../../../../common/ConsoleInputRadio/ConsoleInputRadio";
-import FormColumn from "../../../ScheduleSession/components/FormRow/components/FormColumn/FormColumn";
-import FormRow from "../../../ScheduleSession/components/FormRow/FormRow";
+import FormColumn from "../../../../../common/FormRow/components/FormColumn/FormColumn";
+import FormRow from "../../../../../common/FormRow/FormRow";
 import {IInputRadioReports} from "../../Reports";
 
 interface IPropsInputRadioReports {

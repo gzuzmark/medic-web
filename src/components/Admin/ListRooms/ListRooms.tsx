@@ -7,9 +7,9 @@ import {Body1} from "../../../common/MentorText";
 import {IBlock, IRoom} from "../../../domain/Blocks/Blocks";
 import {ISites} from "../../../domain/Sites/Sites";
 import BlocksService from "../../../services/Block/Blocks.service";
-import AccordionRooms, {buildBody, buildTitle} from "./AccordionRooms/AccordionRooms";
-import HandlerCardRoom from "./HandlerCardRoom/HandlerCardRoom";
-import ModalRoom from "./ModalRoom/ModalRoom";
+import AccordionRooms, {buildBody, buildTitle} from "./components/AccordionRooms/AccordionRooms";
+import HandlerCardRoom from "./components/HandlerCardRoom/HandlerCardRoom";
+import ModalRoom from "./components/ModalRoom/ModalRoom";
 import './Slides.scss';
 
 
@@ -71,7 +71,7 @@ const ListRooms: React.FC<{}> = () => {
 
     return (
         <div className="u-LayoutMargin" style={{padding: '0 35px'}}>
-            <ModalRoom modal={modal} closeModal={closeModal} room={selectedRoom} block={selectedBlock}/>
+            <ModalRoom modal={modal} closeModal={closeModal} room={selectedRoom} block={selectedBlock} site={selectedSite}/>
             <HeaderRoomContainer>
                 <ButtonNormal text={"Crear nueva aula"}/>
             </HeaderRoomContainer>

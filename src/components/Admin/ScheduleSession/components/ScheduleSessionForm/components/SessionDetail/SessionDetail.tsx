@@ -2,6 +2,8 @@ import * as React from 'react';
 import * as NumericInput from 'react-numeric-input';
 import { Text } from '../../../../../../../common/ConsoleText';
 import FilterList from '../../../../../../../common/FilterList/FilterList';
+import FormColumn from '../../../../../../../common/FormRow/components/FormColumn/FormColumn';
+import FormRow from '../../../../../../../common/FormRow/FormRow';
 import {FactorySessionBean} from "../../../../../../../domain/FactorySession/FactorySessionBean";
 import {FormLocationDependency} from "../../../../../../../domain/FormSession/FormLocationDependency";
 import {IListItem} from "../../../../../../../domain/Lists";
@@ -17,8 +19,6 @@ import {
     SESSION_TYPE
 } from '../../../../ScheduleSession.constants';
 import ScheduleSessionContext, {IScheduleContext} from '../../../../ScheduleSession.context';
-import FormColumn from '../../../FormRow/components/FormColumn/FormColumn';
-import FormRow from '../../../FormRow/FormRow';
 import './SessionDetail.scss';
 
 
