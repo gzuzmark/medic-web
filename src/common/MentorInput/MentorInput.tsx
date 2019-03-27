@@ -29,7 +29,7 @@ interface IPropsMentorInput {
     attrs?: any;
 }
 
-const InputContainer = styled.div`
+export const InputContainer = styled.div`
     @properties disabled, loading;
     height: 40px;
     input {
@@ -40,7 +40,7 @@ const InputContainer = styled.div`
         height: 40px;
         left: 0;
         padding: 0 70px 0 16px;
-        position: absolute;
+        position: relative;
         top: 0;
         transition: border 0.2s ease-in;
         width: 100%;
@@ -48,21 +48,21 @@ const InputContainer = styled.div`
             border: solid 1px ${colors.BACKGROUND_COLORS.background_disabled};
             color: ${colors.TEXT_COLORS.font_disabled};
             &::-webkit-input-placeholder {color: ${colors.BACKGROUND_COLORS.background_disabled};transition: color 0.2s ease-in;}
-            &:-moz-placeholder           {color: ${colors.BACKGROUND_COLORS.background_disabled}: color 0.2s ease-in;}
-            &::-moz-placeholder          {color: ${colors.BACKGROUND_COLORS.background_disabled}: color 0.2s ease-in;}
-            &:-ms-input-placeholder      {color: ${colors.BACKGROUND_COLORS.background_disabled}: color 0.2s ease-in;}
+            &:-moz-placeholder           {color: ${colors.BACKGROUND_COLORS.background_disabled};transition: color 0.2s ease-in;}
+            &::-moz-placeholder          {color: ${colors.BACKGROUND_COLORS.background_disabled};transition: color 0.2s ease-in;}
+            &:-ms-input-placeholder      {color: ${colors.BACKGROUND_COLORS.background_disabled};transition: color 0.2s ease-in;}
         }
         &::-webkit-input-placeholder {color: ${colors.TEXT_COLORS.font_blue_grey};transition: color 0.2s ease-in;}
-        &:-moz-placeholder           {color: ${colors.TEXT_COLORS.font_blue_grey}: color 0.2s ease-in;}
-        &::-moz-placeholder          {color: ${colors.TEXT_COLORS.font_blue_grey}: color 0.2s ease-in;}
-        &:-ms-input-placeholder      {color: ${colors.TEXT_COLORS.font_blue_grey}: color 0.2s ease-in;}
+        &:-moz-placeholder           {color: ${colors.TEXT_COLORS.font_blue_grey};transition: color 0.2s ease-in;}
+        &::-moz-placeholder          {color: ${colors.TEXT_COLORS.font_blue_grey};transition: color 0.2s ease-in;}
+        &:-ms-input-placeholder      {color: ${colors.TEXT_COLORS.font_blue_grey};transition: color 0.2s ease-in;}
         
         &:focus {
             border: solid 1px ${colors.TEXT_COLORS.font_dark};
             &::-webkit-input-placeholder {color: ${colors.TEXT_COLORS.font_dark};transition: color 0.2s ease-in;}
-            &:-moz-placeholder           {color: ${colors.TEXT_COLORS.font_dark}: color 0.2s ease-in;}
-            &::-moz-placeholder          {color: ${colors.TEXT_COLORS.font_dark}: color 0.2s ease-in;}
-            &:-ms-input-placeholder      {color: ${colors.TEXT_COLORS.font_dark}: color 0.2s ease-in;}
+            &:-moz-placeholder           {color: ${colors.TEXT_COLORS.font_dark};transition: color 0.2s ease-in;}
+            &::-moz-placeholder          {color: ${colors.TEXT_COLORS.font_dark};transition: color 0.2s ease-in;}
+            &:-ms-input-placeholder      {color: ${colors.TEXT_COLORS.font_dark};transition: color 0.2s ease-in;}
         }
     }
 `;
