@@ -1,4 +1,23 @@
-# [0.1.0](https://ssh.dev.azure.com/v3/UGOTeam/ugo-admin/ugo-admin/compare/1.1.1...0.1.0) (2019-03-20)
+# [0.1.0](https://ssh.dev.azure.com/v3/UGOTeam/ugo-admin/ugo-admin/compare/1.2.1...0.1.0) (2019-03-27)
+
+
+
+## [1.2.1](https://ssh.dev.azure.com/v3/UGOTeam/ugo-admin/ugo-admin/compare/1.1.1...1.2.1) (2019-03-27)
+
+
+### Bug Fixes
+
+* remove place virtual in checking list modal ([4a89703](https://ssh.dev.azure.com/v3/UGOTeam/ugo-admin/ugo-admin/commits/4a89703))
+* **list-rooms:** update card text to upper ([a0f0473](https://ssh.dev.azure.com/v3/UGOTeam/ugo-admin/ugo-admin/commits/a0f0473))
+* **list-rooms:** update texts from empty state ([afbaadc](https://ssh.dev.azure.com/v3/UGOTeam/ugo-admin/ugo-admin/commits/afbaadc))
+
+
+### Features
+
+* **create-room:** add form create room ([eb7d453](https://ssh.dev.azure.com/v3/UGOTeam/ugo-admin/ugo-admin/commits/eb7d453))
+* **layout:** add submenu to menu top ([9e720cb](https://ssh.dev.azure.com/v3/UGOTeam/ugo-admin/ugo-admin/commits/9e720cb))
+* **list-rooms:** add list room ([95378b6](https://ssh.dev.azure.com/v3/UGOTeam/ugo-admin/ugo-admin/commits/95378b6))
+* **list-rooms:** add page list rooms ([c322d9f](https://ssh.dev.azure.com/v3/UGOTeam/ugo-admin/ugo-admin/commits/c322d9f))
 
 
 
