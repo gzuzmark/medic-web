@@ -67,8 +67,10 @@ const baseStyle = (error: boolean, disabled: boolean, empty?: boolean)  => {
             const colorActive = colors.BACKGROUND_COLORS.background_white;
             const cursor = "pointer";
             const fontFamily = DEFAULT_WEIGHT;
+            const display = 'flex';
+            const justifyContent = 'flex-start';
             const active = {backgroundColor: backgroundColorActive, color: colorActive};
-            return {...provided, ...baseFont, backgroundColor, cursor, color, fontFamily, ":active": active}
+            return {...provided, ...baseFont, backgroundColor, cursor, color, fontFamily, ":active": active, display, justifyContent}
         },
         placeholder: (provided: any, state: any) => {
             let color = colors.TEXT_COLORS.font_blue_grey;

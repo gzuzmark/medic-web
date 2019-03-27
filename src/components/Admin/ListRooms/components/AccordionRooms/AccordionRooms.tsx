@@ -3,7 +3,8 @@ import styled from "styled-components";
 import Accordion from "../../../../../common/Accordion/Accordion";
 import colors, {FONTS} from "../../../../../common/MentorColor";
 import {Body1, LIGHT_TEXT, Small2, Subhead1} from "../../../../../common/MentorText";
-import {IBlock, IRoom} from "../../../../../domain/Blocks/Blocks";
+import {IBlock} from "../../../../../domain/Blocks/Blocks";
+import {IRoom} from "../../../../../domain/Room/Room";
 
 const AccordionHeader = styled.div`
     align-items: center;

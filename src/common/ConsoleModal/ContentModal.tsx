@@ -8,7 +8,7 @@ import './ContentModal.scss';
 
 export interface IGenericContentModal {
     image?: JSX.Element | null;
-    title?: string;
+    title?: string | JSX.Element;
     description?: string | JSX.Element;
     button?: string;
 }
@@ -51,8 +51,13 @@ const Generic: React.FC<IPropsGenericContentModal> = (props) => {
                     {
                         !!props.generic.title &&
                         <div className={"GenericContentModal_title"}>
-                            <Heading3 style={{margin: '0 auto'}}>{props.generic.title}</Heading3>
+                            {
+                                typeof props.generic.title === "string" ?
+                                    <Heading3 style={{margin: '0 auto'}}>{props.generic.title}</Heading3> :
+                                    props.generic.title
+                            }
                         </div>
+
                     }
                     {
                         !!props.generic.description &&

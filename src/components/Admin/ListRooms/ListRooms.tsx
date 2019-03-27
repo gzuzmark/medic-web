@@ -4,7 +4,8 @@ import {ButtonNormal} from "../../../common/Buttons/Buttons";
 import LoaderFullScreen from "../../../common/Loader/LoaderFullsScreen";
 import colors, {FONTS} from "../../../common/MentorColor";
 import {Body1} from "../../../common/MentorText";
-import {IBlock, IRoom} from "../../../domain/Blocks/Blocks";
+import {IBlock} from "../../../domain/Blocks/Blocks";
+import {IRoom} from "../../../domain/Room/Room";
 import {ISites} from "../../../domain/Sites/Sites";
 import BlocksService from "../../../services/Block/Blocks.service";
 import AccordionRooms, {buildBody, buildTitle} from "./components/AccordionRooms/AccordionRooms";
@@ -73,16 +74,16 @@ const ListRooms: React.FC<{}> = () => {
         <div className="u-LayoutMargin" style={{padding: '0 35px'}}>
             <ModalRoom modal={modal} closeModal={closeModal} room={selectedRoom} block={selectedBlock} site={selectedSite}/>
             <HeaderRoomContainer>
-                <ButtonNormal text={"Crear nueva aula"}/>
+                <ButtonNormal text={"Crear nueva aula"} link={true} attrs={{href: '/admin/aulas/crear'}}/>
             </HeaderRoomContainer>
             <HandlerCardRoom click={loadSite} selectedSite={selectedSite}/>
             <DescriptionContainer isEmpty={blocks.length === 0}>
                 {loading && <LoaderFullScreen size={12} styleLoaderContainer={{margin: '15px auto auto auto'}}/>}
                 {(!loading && blocks.length === 0) && <DescriptionEmpty><Body1 color={FONTS.light}>Aún no tienes direcciones</Body1></DescriptionEmpty>}
-                {blocks.map((block: IBlock, index: number) => (
+                {blocks.map((block: IBlock) => (
                     <AccordionRooms
                         key={block.id}
-                        open={index===0}
+                        open={false}
                         iconStyle={{right: 16}}
                         bodyStyle={{marginTop: 8, marginBottom: 21}}
                         headerStyle={{ marginBottom: 1}}
