@@ -51,6 +51,13 @@ const useHandlerRoom = (block: string) => {
                 verifyRoom(e.target.value.trim());
             }, 250);
             setTimer(newTimer);
+        } else {
+            setLoading(false);
+            context.setIsRepeated(true);
+            setState({
+                error: '',
+                loadSuccess: ''
+            })
         }
 
     };
