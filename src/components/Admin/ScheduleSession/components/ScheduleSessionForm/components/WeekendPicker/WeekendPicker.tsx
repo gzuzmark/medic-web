@@ -71,10 +71,10 @@ class WeekendPicker extends React.Component <IPropsWeekendPicker, IStateWeekendP
     }
 
     private _renderBody(session: FactorySessionBean): JSX.Element[] {
-        const firstSession = 540;
+        const firstSession = 555;
         const nextSession = 60;
-        const lastSession = 1365;
-        const duration = 45;
+        const lastSession = 1380;
+        const duration = 60;
         const rows = [];
         for(let timer = firstSession; timer <= lastSession; timer += nextSession) {
             rows.push(

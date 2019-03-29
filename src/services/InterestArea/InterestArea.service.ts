@@ -35,7 +35,7 @@ class InterestAreaService extends BaseRequest {
 
     public listAreas(): Promise<IArea[]> {
         return new Promise((resolve, reject) => {
-            this.instance.get('ugo-admin/interest-areas?status=PUBLISHED')
+            this.instance.get('ugo-admin/interest-areas')
                 .then((response: any) => {
                     if (response.status === 200 && response.data) {
                         resolve(response.data.items);
