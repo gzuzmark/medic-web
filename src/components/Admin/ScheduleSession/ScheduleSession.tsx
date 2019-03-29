@@ -4,6 +4,7 @@ import Layout from '../../../common/Layout/Layout';
 import MentorDetail from '../../../common/MentorDetail/MentorDetail';
 import MenuLeft from "../../../common/MenuLeft/MenuLeft";
 import Sticky from '../../../common/Sticky/Sticky';
+import Utilities from "../../../common/Utils/Utilities";
 import {FactorySessionBean, IFactorySession} from '../../../domain/FactorySession/FactorySessionBean';
 import {FormLocationDependency} from "../../../domain/FormSession/FormLocationDependency";
 import {IMentorBase} from "../../../domain/Mentor/MentorBase";
@@ -85,6 +86,10 @@ class ScheduleSession extends React.Component<IPropsScheduleSession, IStateSched
                 url={'/admin/mentores'}
                 textNavigation={textNavigation} />
         )
+    }
+
+    public shouldComponentUpdate(nextProps: IPropsScheduleSession, nextState: IStateScheduleSession) {
+        return !Utilities.deepEqual(nextProps, this.props) || !Utilities.deepEqual(nextState, this.state);
     }
 
     public render() {
@@ -228,7 +233,6 @@ class ScheduleSession extends React.Component<IPropsScheduleSession, IStateSched
             }
         }));
         this.setState({listSession, session: this.factory.getFormSession});
-
     }
 
     private _onChangeSessionDetail(type: string, item:any) {

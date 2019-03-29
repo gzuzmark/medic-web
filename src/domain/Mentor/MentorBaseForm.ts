@@ -141,7 +141,7 @@ abstract class MentorBaseForm {
         this.mentor.document= values.document.trim();
         this.mentor.documentType = values.documentType.value;
         this.mentor.skillsId = values.skills.map((v) => v.value);
-        this.mentor.sitesId = [Number(values.location.value)];
+        this.mentor.sitesId = !!values.location.value && [Number(values.location.value)] || [];
         this.mentor.contactNumber = values.contactNumber.trim();
         this.mentor.description = values.description.trim();
         this.mentor.shortDescription = values.description.trim();
