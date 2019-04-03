@@ -24,9 +24,16 @@ const AccordionOrnament = styled.div`
     vertical-align: middle;
 `;
 
+interface IRoomStyled {
+    empty: boolean;
+    isNew: boolean;
+}
+
 const RoomStyled = styled.div`
     align-items: center;
-    background: ${(props: {empty: boolean}) => props.empty ? colors.BACKGROUND_COLORS.background_disabled_button : colors.BACKGROUND_COLORS.background_white};
+    background: ${(props: IRoomStyled) => {
+        return props.empty ? colors.BACKGROUND_COLORS.background_disabled_button : colors.BACKGROUND_COLORS.background_white
+    }};
     border-bottom: 1px solid ${colors.MISC_COLORS.background_grey_1};
     border-right: 1px solid ${colors.MISC_COLORS.background_grey_1};
     box-sizing: border-box;
@@ -34,10 +41,11 @@ const RoomStyled = styled.div`
     display: flex;
     height: 50px;
     justify-content: center;
+    order: ${(props: IRoomStyled) => props.isNew ? '-1' : 'initial'}
     padding: 0 6px;
     width: 98px;
     &:hover {
-        background: ${(props: {empty: boolean}) => props.empty ? colors.BACKGROUND_COLORS.background_disabled_button : colors.MISC_COLORS.background_grey_1}; 
+        background: ${(props: IRoomStyled) => props.empty ? colors.BACKGROUND_COLORS.background_disabled_button : colors.MISC_COLORS.background_grey_1}; 
     }
 `;
 
@@ -87,7 +95,7 @@ export const buildTitle = (block: IBlock) => {
 
 const LIMIT_NAME_ROOM = 25;
 
-export const buildBody = (rooms: IRoom[], click: (r: IRoom) => void) => {
+export const buildBody = (rooms: IRoom[], click: (r: IRoom) => void, defaultRooms: string[]) => {
     const onClick = (r: IRoom) => {
         return () => click(r);
     };
@@ -96,7 +104,7 @@ export const buildBody = (rooms: IRoom[], click: (r: IRoom) => void) => {
         <RoomContainer empty={!!rooms.length}>
             {rooms.length === 0 && <EmptyRooms><Body1 color={FONTS.light}>Aún no hay aulas</Body1></EmptyRooms>}
             {rooms.map((room) => (
-                <RoomStyled onClick={onClick(room)} empty={false} key={room.id}>
+                <RoomStyled onClick={onClick(room)} empty={false} key={room.id} isNew={defaultRooms.indexOf(room.id) !== -1}>
                     <RoomName weight={LIGHT_TEXT} color={FONTS.medium} >
                         {room.description.length > LIMIT_NAME_ROOM ?
                             `${room.description.substring(0, LIMIT_NAME_ROOM)}...` :
@@ -105,7 +113,7 @@ export const buildBody = (rooms: IRoom[], click: (r: IRoom) => void) => {
                 </RoomStyled>
             ))}
             {Array.apply(null, Array(empty)).map((n: any, index: number) => (
-                <RoomStyled empty={true} key={`NullRoom_${index}`}>
+                <RoomStyled empty={true} key={`NullRoom_${index}`} isNew={false}>
                     &nbsp;
                 </RoomStyled>
             ))}

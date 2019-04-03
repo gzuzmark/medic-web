@@ -58,6 +58,11 @@ const ModalRoom: React.FC<IPropsModalRoom> = (props) => {
         return name;
     };
 
+    const getOrderedAreas = (ids: string[]) => {
+        const nameAreas = ids.map(id => getNameArea(id));
+        return nameAreas.sort();
+    };
+
     return (
         <MentorModalBase
             show={props.modal}
@@ -71,8 +76,8 @@ const ModalRoom: React.FC<IPropsModalRoom> = (props) => {
                 <SkillTitle>Áreas de Interés relacionadas:</SkillTitle>
                 <AreaContainer>
                     {props.room.interestAreasId ?
-                        props.room.interestAreasId.map((id: string) => (
-                            <Small2 weight={LIGHT_TEXT} key={id}>{getNameArea(id)}</Small2>
+                        getOrderedAreas(props.room.interestAreasId).map((nameArea, index) => (
+                            <Small2 weight={LIGHT_TEXT} key={`area_index_${index}`}>{nameArea}</Small2>
                         )) :
                         <Small2 weight={LIGHT_TEXT}>No tiene áreas relacionadas</Small2>}
                 </AreaContainer>

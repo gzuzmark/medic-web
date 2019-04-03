@@ -33,7 +33,7 @@ class RoomService extends BaseRequest {
                 {description, interestAreasId, maxStudents})
                 .then((response: any) => {
                     if (response.status === 200 && response.data) {
-                        resolve(response.data.items);
+                        resolve(response.data);
                     } else {
                         reject(null);
                     }

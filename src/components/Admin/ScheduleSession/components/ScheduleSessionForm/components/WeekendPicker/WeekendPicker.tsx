@@ -74,7 +74,7 @@ class WeekendPicker extends React.Component <IPropsWeekendPicker, IStateWeekendP
         const firstSession = 555;
         const nextSession = 60;
         const lastSession = 1380;
-        const duration = 60;
+        const duration = 45;
         const rows = [];
         for(let timer = firstSession; timer <= lastSession; timer += nextSession) {
             rows.push(
