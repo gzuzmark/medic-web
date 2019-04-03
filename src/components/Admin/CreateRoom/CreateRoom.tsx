@@ -3,7 +3,8 @@ import * as React from "react";
 import LoaderFullScreen from "../../../common/Loader/LoaderFullsScreen";
 import {FONTS} from "../../../common/MentorColor";
 import {Heading2, LIGHT_TEXT, Subhead1} from "../../../common/MentorText";
-import RoomAdminCreate, {IRoomAdminCreateRequest} from "../../../domain/Room/Room";
+import RoomAdminCreate, {IRoomAdminCreateRequest, IRoomAdminCreateResponse} from "../../../domain/Room/Room";
+import RoomRepository from "../../../repository/RoomRepository";
 import RoomService from "../../../services/Room/Room.service";
 import {formTemplateHOC} from "../MentorFormBase/components/FormTemplate/FormTemplateHOC";
 import ButtonCreateRoom from "./components/ButtonsCreateRoom/ButtonsCreateRoom";
@@ -22,9 +23,10 @@ const CreateRoom: React.FC<{}> = () => {
     const [isRepeated, setIsRepeated] = React.useState(true);
     const onSubmit = (values: IRoomAdminCreateRequest) => {
         setLoading(true);
-        roomService.create(values.block, values).then(() => {
+        roomService.create(values.block, values).then((room: IRoomAdminCreateResponse) => {
             setLoading(false);
             setSuccess(true);
+            RoomRepository.addedRoomInsert(values.site, values.block, room.id);
         }).catch(() => {
             setLoading(false);
             setSuccess(false);

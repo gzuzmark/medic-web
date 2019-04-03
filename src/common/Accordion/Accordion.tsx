@@ -17,12 +17,15 @@ interface IStateAccordion {
 }
 
 class Accordion extends React.Component<IPropsAccordion, IStateAccordion> {
+    public static defaultProps = {
+        open: true
+    };
     public state: IStateAccordion;
     constructor(props: IPropsAccordion) {
         super(props);
         this.state = {
             open: true
-        }
+        };
         this.updateClose = this.updateClose.bind(this);
     }
 

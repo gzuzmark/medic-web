@@ -7,6 +7,7 @@ import {Body1} from "../../../common/MentorText";
 import {IBlock} from "../../../domain/Blocks/Blocks";
 import {IRoom} from "../../../domain/Room/Room";
 import {ISites} from "../../../domain/Sites/Sites";
+import RoomRepository, {IRoomRepository} from "../../../repository/RoomRepository";
 import BlocksService from "../../../services/Block/Blocks.service";
 import AccordionRooms, {buildBody, buildTitle} from "./components/AccordionRooms/AccordionRooms";
 import HandlerCardRoom from "./components/HandlerCardRoom/HandlerCardRoom";
@@ -47,6 +48,15 @@ const ListRooms: React.FC<{}> = () => {
     const [selectedBlock, setSelectedBlock] = React.useState({} as IBlock);
     const [selectedRoom, setSelectedRoom] = React.useState({} as IRoom);
     const [blocks, setBlocks] = React.useState([] as IBlock[]);
+    const [repository, setRepository] = React.useState({} as IRoomRepository);
+
+    React.useEffect(() => {
+        const repo = RoomRepository.addedRoomGet();
+        if (repo) {
+            setRepository(repo);
+            RoomRepository.addedRoomClean();
+        }
+    }, [0]);
 
     const loadSite = (site: ISites) => {
         setSelectedSite(site);
@@ -76,19 +86,22 @@ const ListRooms: React.FC<{}> = () => {
             <HeaderRoomContainer>
                 <ButtonNormal text={"Crear nueva aula"} link={true} attrs={{href: '/admin/aulas/crear'}}/>
             </HeaderRoomContainer>
-            <HandlerCardRoom click={loadSite} selectedSite={selectedSite}/>
+            <HandlerCardRoom click={loadSite} selectedSite={selectedSite} defaultSite={repository.site}/>
             <DescriptionContainer isEmpty={blocks.length === 0}>
                 {loading && <LoaderFullScreen size={12} styleLoaderContainer={{margin: '15px auto auto auto'}}/>}
                 {(!loading && blocks.length === 0) && <DescriptionEmpty><Body1 color={FONTS.light}>Aún no tienes direcciones</Body1></DescriptionEmpty>}
                 {blocks.map((block: IBlock) => (
                     <AccordionRooms
                         key={block.id}
-                        open={false}
+                        open={repository.blocks.indexOf(block.id) !== -1}
                         iconStyle={{right: 16}}
                         bodyStyle={{marginTop: 8, marginBottom: 21}}
                         headerStyle={{ marginBottom: 1}}
                         title={buildTitle(block)}
-                        body={buildBody(block.rooms || [] as IRoom[], showModal(block))}/>
+                        body={buildBody(
+                            block.rooms || [] as IRoom[],
+                            showModal(block),
+                            repository.rooms)}/>
                 ))}
             </DescriptionContainer>
         </div>

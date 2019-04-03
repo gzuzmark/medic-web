@@ -36,6 +36,7 @@ const RoomText = styled(Heading3)`
 interface IPropsHandlerCardRoom {
     click: (site: ISites) => void;
     selectedSite: ISites;
+    defaultSite?: string;
 }
 
 const SliderNav = styled.div`
@@ -85,19 +86,33 @@ const NavigationNext = styled(Icon)`
 const HandlerCardRoom: React.FC<IPropsHandlerCardRoom> = (props) => {
     const [loading, setLoading] = React.useState(true);
     const [sites, setSites] = React.useState([] as ISites[]);
+    const [orderSites, setOrderSites] = React.useState([] as ISites[]);
 
     React.useEffect(() => {
         const sitesService = new SitesService();
         sitesService.list().then((items: ISites[]) => {
             setSites(items);
             setLoading(false);
-            if (items.length > 0) {
-                props.click(items[0]);
-            }
         }).catch(() => {
             setLoading(false);
         });
     }, [0]);
+
+    React.useEffect(() => {
+        let site;
+        if (props.defaultSite) {
+            site = sites.find(((s:ISites) => s.id === props.defaultSite));
+            const newOrderSites = [...sites];
+            newOrderSites.sort((s: ISites) => s.id === props.defaultSite ? -1 : 1);
+            setOrderSites(newOrderSites);
+        }
+
+        if (site) {
+            props.click(site);
+        } else if (sites.length > 0) {
+            props.click(sites[0]);
+        }
+    }, [props.defaultSite, sites]);
 
     const selectSite = (site: ISites) => {
         return () => {
@@ -114,6 +129,21 @@ const HandlerCardRoom: React.FC<IPropsHandlerCardRoom> = (props) => {
         slidesToShow: 4
     };
 
+    const listRooms = (listSites: ISites[]) => {
+        return listSites.map(
+            (site) => (
+                <CardRoom
+                    status={site.id === props.selectedSite.id ? CARD_STATUS.ACTIVE : CARD_STATUS.DEFAULT}
+                    click={selectSite(site)}
+                    key={site.id}>
+                    <img src={site.id === props.selectedSite.id ? roomActive : roomInactive}
+                         width={24} />
+                    <RoomText>{site.name}</RoomText>
+                </CardRoom>)
+        )
+
+    }
+
     return (
         <React.Fragment>
             {loading &&
@@ -128,15 +158,8 @@ const HandlerCardRoom: React.FC<IPropsHandlerCardRoom> = (props) => {
             {(!loading && sites.length > 4) &&
             <div style={{margin: '0 35px'}}>
                 <Slider {...settings}>
-                    {sites.map((site) => (
-                        <CardRoom
-                            status={site.id === props.selectedSite.id ? CARD_STATUS.ACTIVE : CARD_STATUS.DEFAULT}
-                            click={selectSite(site)}
-                            key={site.id}>
-                            <img src={site.id === props.selectedSite.id ? roomActive : roomInactive}
-                                 width={24} />
-                            <RoomText>{site.name}</RoomText>
-                        </CardRoom>))}
+                    {orderSites.length === 0 && listRooms(sites)}
+                    {orderSites.length > 0 && listRooms(orderSites)}
                 </Slider>
             </div>}
         </React.Fragment>
