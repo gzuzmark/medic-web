@@ -10,7 +10,6 @@ import Icon from "../Icon/Icon";
 import colors, {FONTS} from "../MentorColor";
 import {Body1, LIGHT_TEXT, Subhead1} from '../MentorText';
 import Sticky from '../Sticky/Sticky';
-import Utilities from "../Utils/Utilities";
 import MenuTop from "./components/MenuTop/MenuTop";
 import './Footer.scss';
 import './Header.scss';
@@ -78,8 +77,6 @@ const Layout: React.FC<IPropsLayout> = props => {
     React.useEffect(() => {
         UserRepository.setUser({...user})
     }, [user]);
-
-    Utilities.scrollToTop();
 
     const updateUser = (newUser: IUser) => {
         setUser({...newUser});
