@@ -19,6 +19,22 @@ export interface IFactorySession {
     typeKey?: string;
 }
 
+export interface ISessionsDates {
+    from: string;
+    to: string;
+}
+
+export interface IRequestSaveSessions {
+    skillId : string;
+    interestAreaId: string;
+    type: string;
+    room: number;
+    credits: number;
+    maxStudents: number;
+    isWorkshop: boolean;
+    sessions: ISessionsDates[]
+}
+
 export class FactorySessionBean {
     public factorySession: IFactorySession;
     public selectedSite = '';
@@ -65,6 +81,58 @@ export class FactorySessionBean {
     public typeName(listType: IListItem[]): string {
         const type = listType.find(item => item.id === this.factorySession.type);
         return type ? type.name : '';
+    }
+
+    public requestSaveSessions(isWorkshop: boolean): IRequestSaveSessions{
+        let sessions = [] as ISessionsDates[];
+        // tslint:disable:no-console
+        // tslint:disable:no-debugger
+        if (!isWorkshop) {
+            console.log(this.factorySession.from)
+            const initial = new Date(this.factorySession.from);
+            const end = new Date(this.factorySession.to);
+            const endLoop = new Date(this.factorySession.to);
+            endLoop.setDate(endLoop.getDate() + 7);
+            let current = initial.getTime();
+            const todayTime = (new Date()).getTime();
+            while (current <= endLoop.getTime()) {
+                const temporalDate = new Date(current);
+                this.factorySession.sessions.forEach((item) => {
+                    if (typeof(item.weekDay) !== "undefined") {
+                        let from = new Date(temporalDate);
+                        let to = new Date(temporalDate);
+                        from = this.setHoursToCurrentDate(from, item.from);
+                        to = this.setHoursToCurrentDate(to, item.to);
+                        console.log('from', item.from, 'to', item.to, 'weekDay', item.weekDay);
+                        const dayDistance = (temporalDate.getDay() + 1) - item.weekDay; // sabado 6 - domingo 0 => 6
+                        const differenceDay = dayDistance < 0 ? 7 : dayDistance; // 6
+                        from.setDate(from.getDate() - differenceDay);
+                        to.setDate(to.getDate() - differenceDay);
+                        if (todayTime < from.getTime() && from.getTime() < end.getTime()) {
+                            sessions.push({
+                                from: from.toISOString(),
+                                to: to.toISOString(),
+                            })
+                        }
+                    }
+
+                });
+                temporalDate.setDate(temporalDate.getDate() + 7);
+                current = temporalDate.getTime();
+            }
+        } else {
+            sessions = this.factorySession.sessions;
+        }
+        return {
+            credits: 0,
+            interestAreaId: this.factorySession.interestAreaId,
+            isWorkshop,
+            maxStudents: this.factorySession.maxStudents,
+            room: Number(this.factorySession.room),
+            sessions,
+            skillId : this.factorySession.skillId,
+            type: this.factorySession.type
+        }
     }
 
     get listSessions(): ISessionSchedule[] {
@@ -114,21 +182,7 @@ export class FactorySessionBean {
     }
 
     public updateUTCSessions(values: ISessionSchedule[]): ISessionSchedule[] {
-        this.factorySession.sessions = values.map((item: ISessionSchedule):ISessionSchedule => {
-            const initialDay = new Date(this.factorySession.from);
-            const from = this.getUTCTime(initialDay, item.from);
-            const to = this.getUTCTime(initialDay, item.to);
-            let weekDay = -9999;
-            if (typeof(item.weekDay) !== "undefined") {
-                weekDay = this.hasDayChange(initialDay, item.to) ? item.weekDay + 1 : item.weekDay;
-                weekDay = weekDay > 7 ? 1 : weekDay;
-            }
-            return {
-                from,
-                to,
-                weekDay,
-            }
-        });
+        this.factorySession.sessions = values;
         return this.factorySession.sessions;
     }
 
@@ -195,27 +249,28 @@ export class FactorySessionBean {
     }
 
     private getTime(initialDay: Date, utcTime: string) {
-        const time = utcTime.split(':');
-        const hour = Number(time[0]);
-        const minutes = Number(time[1]);
+        const {hour, minutes} = this.getHours(utcTime);
         initialDay.setUTCHours(hour, minutes);
         return `${lpad(initialDay.getHours(), 2)}:${lpad(initialDay.getMinutes(), 2)}:00`;
     }
 
     private hasDayChange(initialDay: Date, utcTime: string) {
-        const time = utcTime.split(':');
-        const hour = Number(time[0]);
-        const minutes = Number(time[1]);
+        const {hour, minutes} = this.getHours(utcTime);
         initialDay.setHours(hour, minutes);
         return initialDay.getUTCHours() < initialDay.getHours();
     }
 
-    private getUTCTime(initialDay: Date, utcTime: string) {
-        const time = utcTime.split(':');
-        const hour = Number(time[0]);
-        const minutes = Number(time[1]);
-        initialDay.setHours(hour, minutes);
-        return `${lpad(initialDay.getUTCHours(), 2)}:${lpad(initialDay.getUTCMinutes(), 2)}:00`;
+    private setHoursToCurrentDate(date: Date, time: string) {
+        const {hour, minutes} = this.getHours(time);
+        date.setHours(hour, minutes);
+        return date
+    }
+
+    private getHours(time: string) {
+        const times = time.split(':');
+        const hour = Number(times[0]);
+        const minutes = Number(times[1]);
+        return {hour, minutes}
     }
 
 }

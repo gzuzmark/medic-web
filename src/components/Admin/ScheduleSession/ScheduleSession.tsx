@@ -4,7 +4,6 @@ import Layout from '../../../common/Layout/Layout';
 import MentorDetail from '../../../common/MentorDetail/MentorDetail';
 import MenuLeft from "../../../common/MenuLeft/MenuLeft";
 import Sticky from '../../../common/Sticky/Sticky';
-import Utilities from "../../../common/Utils/Utilities";
 import {FactorySessionBean, IFactorySession} from '../../../domain/FactorySession/FactorySessionBean';
 import {FormLocationDependency} from "../../../domain/FormSession/FormLocationDependency";
 import {IMentorBase} from "../../../domain/Mentor/MentorBase";
@@ -88,10 +87,6 @@ class ScheduleSession extends React.Component<IPropsScheduleSession, IStateSched
         )
     }
 
-    public shouldComponentUpdate(nextProps: IPropsScheduleSession, nextState: IStateScheduleSession) {
-        return !Utilities.deepEqual(nextProps, this.props) || !Utilities.deepEqual(nextState, this.state);
-    }
-
     public render() {
         return (
             <ScheduleSessionContext.Provider
@@ -143,7 +138,7 @@ class ScheduleSession extends React.Component<IPropsScheduleSession, IStateSched
         session.factorySession.from = dateFrom.toISOString();
         session.factorySession.to = dateTo.toISOString();
         if (session.isWorkshop) {
-            this.mentorService.bulkWorkshop(this.mentorId, session.factorySession).then((items: any[]) => {
+            this.mentorService.bulk(this.mentorId, session.requestSaveSessions(session.isWorkshop)).then((items: any[]) => {
                 if (items.length > 0 ) {
                     window.location.assign('/admin');
                 } else {
@@ -155,7 +150,7 @@ class ScheduleSession extends React.Component<IPropsScheduleSession, IStateSched
                 this.setState({savingData: false});
             });
         } else {
-            this.mentorService.bulk(this.mentorId, session.factorySession).then((items: any[]) => {
+            this.mentorService.bulk(this.mentorId, session.requestSaveSessions(session.isWorkshop)).then((items: any[]) => {
                 if (items.length > 0 ) {
                     window.location.assign('/admin');
                 } else {
