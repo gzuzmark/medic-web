@@ -137,31 +137,17 @@ class ScheduleSession extends React.Component<IPropsScheduleSession, IStateSched
         dateTo.setHours(0,0,0,0);
         session.factorySession.from = dateFrom.toISOString();
         session.factorySession.to = dateTo.toISOString();
-        if (session.isWorkshop) {
-            this.mentorService.bulk(this.mentorId, session.requestSaveSessions(session.isWorkshop)).then((items: any[]) => {
-                if (items.length > 0 ) {
-                    window.location.assign('/admin');
-                } else {
-                    alert('Hay Conflictos de Horarios');
-                }
-                this.setState({savingData: false});
-            }, () => {
+        this.mentorService.bulk(this.mentorId, session.requestSaveSessions(session.isWorkshop)).then((items: any[]) => {
+            if (items.length > 0 ) {
+                window.location.assign('/admin');
+            } else {
                 alert('Hay Conflictos de Horarios');
-                this.setState({savingData: false});
-            });
-        } else {
-            this.mentorService.bulk(this.mentorId, session.requestSaveSessions(session.isWorkshop)).then((items: any[]) => {
-                if (items.length > 0 ) {
-                    window.location.assign('/admin');
-                } else {
-                    alert('Hay Conflictos de Horarios');
-                }
-                this.setState({savingData: false});
-            }, () => {
-                alert('Hay Conflictos de Horarios');
-                this.setState({savingData: false});
-            });
-        }
+            }
+            this.setState({savingData: false});
+        }, () => {
+            alert('Hay Conflictos de Horarios');
+            this.setState({savingData: false});
+        });
     }
 
     private _onClickSaveBulk() {
