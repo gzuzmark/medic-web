@@ -85,10 +85,7 @@ export class FactorySessionBean {
 
     public requestSaveSessions(isWorkshop: boolean): IRequestSaveSessions{
         let sessions = [] as ISessionsDates[];
-        // tslint:disable:no-console
-        // tslint:disable:no-debugger
         if (!isWorkshop) {
-            console.log(this.factorySession.from)
             const initial = new Date(this.factorySession.from);
             const end = new Date(this.factorySession.to);
             const endLoop = new Date(this.factorySession.to);
@@ -103,7 +100,6 @@ export class FactorySessionBean {
                         let to = new Date(temporalDate);
                         from = this.setHoursToCurrentDate(from, item.from);
                         to = this.setHoursToCurrentDate(to, item.to);
-                        console.log('from', item.from, 'to', item.to, 'weekDay', item.weekDay);
                         const dayDistance = (temporalDate.getDay() + 1) - item.weekDay; // sabado 6 - domingo 0 => 6
                         const differenceDay = dayDistance < 0 ? 7 : dayDistance; // 6
                         from.setDate(from.getDate() - differenceDay);
