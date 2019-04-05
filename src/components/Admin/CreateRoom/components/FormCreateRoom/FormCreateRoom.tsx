@@ -33,11 +33,17 @@ const FormCreateRoom: React.FC<{}> = () => {
         ctxt.setFieldValue('site', option.value);
         setSelectedBlock('');
         ctxt.setFieldValue('block', '');
+        room.handleChange(null);
+        ctxt.setFieldTouched('description', false);
+        ctxt.setFieldValue('description', '');
     };
 
     const onChangeBlock = (name: string, option: IPropsMentorOptionsDropDown) => {
         setSelectedBlock(option.value);
         ctxt.setFieldValue('block', option.value);
+        room.handleChange(null);
+        ctxt.setFieldTouched('description', false);
+        ctxt.setFieldValue('description', '');
     };
 
     const onChangeMax = (n: number) => {
@@ -76,7 +82,7 @@ const FormCreateRoom: React.FC<{}> = () => {
                         styleContainer={{width: '70%'}}
                         error={room.error}
                         loading={room.loading}
-                        icon={room.loadSuccess}
+                        icon={ctxt.values.description.length > 0 ? room.loadSuccess : ''}
                         iconStyles={{fill: colors.MISC_COLORS.green}}
                         disabled={!selectedBlock}
                         attrs={{
