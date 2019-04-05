@@ -54,9 +54,11 @@ const ListRooms: React.FC<{}> = () => {
         const repo = RoomRepository.addedRoomGet();
         if (repo) {
             setRepository(repo);
-            RoomRepository.addedRoomClean();
+            if (repo.site === selectedSite.id) {
+                RoomRepository.addedRoomClean();
+            }
         }
-    }, [0]);
+    }, [selectedSite]);
 
     const loadSite = (site: ISites) => {
         setSelectedSite(site);
