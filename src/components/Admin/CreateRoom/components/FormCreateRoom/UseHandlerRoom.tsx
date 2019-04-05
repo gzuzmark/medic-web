@@ -42,10 +42,12 @@ const useHandlerRoom = (block: string) => {
     };
 
     const onChange = (e: any) => {
-        context.handleChange(e);
-        setLoading(true);
+        if (e !== null) {
+            context.handleChange(e);
+            setLoading(true);
+        }
         clearTimeout(timer);
-        if (e.target.value.trim().length) {
+        if (e && e.target.value.trim().length) {
             const newTimer = setTimeout(() => {
                 setLoading(true);
                 verifyRoom(e.target.value.trim());
