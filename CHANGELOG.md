@@ -1,4 +1,18 @@
-# [0.1.0](https://ssh.dev.azure.com/v3/UGOTeam/ugo-admin/ugo-admin/compare/1.2.1...0.1.0) (2019-03-27)
+# [0.1.0](https://ssh.dev.azure.com/v3/UGOTeam/ugo-admin/ugo-admin/compare/1.2.2...0.1.0) (2019-04-05)
+
+
+
+## [1.2.2](https://ssh.dev.azure.com/v3/UGOTeam/ugo-admin/ugo-admin/compare/1.2.1...1.2.2) (2019-04-05)
+
+
+### Bug Fixes
+
+* stop loading input number when is empty ([522b69d](https://ssh.dev.azure.com/v3/UGOTeam/ugo-admin/ugo-admin/commits/522b69d))
+* **admin:** adjust variables from interest areas and schedule session ([a6630c0](https://ssh.dev.azure.com/v3/UGOTeam/ugo-admin/ugo-admin/commits/a6630c0))
+* **create-sessions:** update params for sessions's schedule ([86c0086](https://ssh.dev.azure.com/v3/UGOTeam/ugo-admin/ugo-admin/commits/86c0086))
+* **list-room:** show new rooms at the begining ([020abb4](https://ssh.dev.azure.com/v3/UGOTeam/ugo-admin/ugo-admin/commits/020abb4))
+* **list-rooms:** highlight created rooms ([ffa1285](https://ssh.dev.azure.com/v3/UGOTeam/ugo-admin/ugo-admin/commits/ffa1285))
+* **scroll:** remove scroll on render ([0e56b21](https://ssh.dev.azure.com/v3/UGOTeam/ugo-admin/ugo-admin/commits/0e56b21))
 
 
 

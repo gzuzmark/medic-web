@@ -47,6 +47,16 @@ const RoomStyled = styled.div`
     &:hover {
         background: ${(props: IRoomStyled) => props.empty ? colors.BACKGROUND_COLORS.background_disabled_button : colors.MISC_COLORS.background_grey_1}; 
     }
+    ${(props: IRoomStyled) => {
+        return props.isNew ? `
+            animation: highlightBackground 2s linear 4s forwards;
+            background: ${colors.MISC_COLORS.background_grey_1};
+            @keyframes highlightBackground {
+              from {background-color: ${colors.MISC_COLORS.background_grey_1};}
+              to {background-color: ${colors.BACKGROUND_COLORS.background_white};}
+            }
+        ` : '';
+    }}
 `;
 
 const RoomContainer = styled.div`
