@@ -21,7 +21,7 @@ describe('CardSession Test',() => {
     beforeEach(() => {
         props = {
             item: new SessionMentorBean(sessionMentorDummy),
-            link: "https://talky.io/"
+            link: "https://ugo.lacafetalab.pe/"
         };
         mountedCardSession = undefined;
     });

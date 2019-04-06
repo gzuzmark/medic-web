@@ -101,10 +101,13 @@ export class FactorySessionBean {
                         from = this.setHoursToCurrentDate(from, item.from);
                         to = this.setHoursToCurrentDate(to, item.to);
                         const dayDistance = (temporalDate.getDay() + 1) - item.weekDay; // sabado 6 - domingo 0 => 6
-                        const differenceDay = dayDistance < 0 ? 7 : dayDistance; // 6
-                        from.setDate(from.getDate() - differenceDay);
-                        to.setDate(to.getDate() - differenceDay);
-                        if (todayTime < from.getTime() && from.getTime() < end.getTime()) {
+                        const fromGetDate = from.getDate();
+                        const toGetDate = to.getDate();
+                        from.setDate(fromGetDate - dayDistance);
+                        to.setDate(toGetDate - dayDistance);
+                        if (todayTime < from.getTime() &&
+                            initial.getTime() < from.getTime() &&
+                            to.getTime()< end.getTime()) {
                             sessions.push({
                                 from: from.toISOString(),
                                 to: to.toISOString(),
