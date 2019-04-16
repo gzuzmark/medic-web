@@ -7,7 +7,6 @@ export const headersRequest = {
     'platformName': 'web',
     'resolution': 'hdpi'
 };
-
 class BaseRequest {
     protected instance: any;
     private baseUrl = '';
@@ -92,6 +91,8 @@ class BaseRequest {
                     const token = await this.refreshToken();
                     error.config.headers = {...error.config.headers, 'Authorization': `Bearer ${token}`};
                     instance.headers = {...instance.headers, 'Authorization': `Bearer ${token}`};
+                    error.config._retry = false;
+                    this.source = Axios.CancelToken.source();
                     return instance(error.config);
                 } catch (error) {
                     error.config._retry = false;

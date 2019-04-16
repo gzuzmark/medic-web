@@ -3,7 +3,7 @@ import BoxMessage from "../../../common/BoxMessage/BoxMessage";
 import ConfirmButtons from "../../../common/ConfirmButtons/ConfirmButtons";
 import ModalCancel from "../../../common/ConsoleModal/ModalCancel/ModalCancel";
 import ConsoleTableLoader from "../../../common/ConsoleTable/components/ConsoleTableLoader/ConsoleTableLoader";
-import { SmallText1, Text2, Title3 } from '../../../common/ConsoleText';
+import { Text2, Title3 } from '../../../common/ConsoleText';
 import Layout from "../../../common/Layout/Layout";
 import MentorDetail from "../../../common/MentorDetail/MentorDetail";
 import MenuLeft from "../../../common/MenuLeft/MenuLeft";
@@ -172,9 +172,6 @@ class SessionDeleteMultiple extends React.Component<IPropsSessionDeleteMultiple,
                                         onSelectAll={this._selectAll}
                                         loading={this.state.status.searching}
                                         selection={this.state.selection}/>
-                                    <SmallText1 style={{padding: '12px 0 0 20px', display: 'block'}}>
-                                        Solo se muestran las sesiones sin alumnos inscritos. Si deseas eliminar una sesión con alumnos, comunícate con <b>soporteugo@lacafetalab.pe</b>
-                                    </SmallText1>
                                 </React.Fragment>
                                 }
                             </FormSection>

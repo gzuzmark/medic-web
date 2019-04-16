@@ -1,4 +1,16 @@
-# [0.1.0](https://ssh.dev.azure.com/v3/UGOTeam/ugo-admin/ugo-admin/compare/1.2.2...0.1.0) (2019-04-05)
+# [0.1.0](https://ssh.dev.azure.com/v3/UGOTeam/ugo-admin/ugo-admin/compare/1.2.3...0.1.0) (2019-04-16)
+
+
+
+## [1.2.3](https://ssh.dev.azure.com/v3/UGOTeam/ugo-admin/ugo-admin/compare/1.2.2...1.2.3) (2019-04-16)
+
+
+### Bug Fixes
+
+* **create-room:** clean description after change sites or block ([cbc694e](https://ssh.dev.azure.com/v3/UGOTeam/ugo-admin/ugo-admin/commits/cbc694e))
+* delete sessions from current date ([175ac61](https://ssh.dev.azure.com/v3/UGOTeam/ugo-admin/ugo-admin/commits/175ac61))
+* update logic to create schedules ([0e5f7cb](https://ssh.dev.azure.com/v3/UGOTeam/ugo-admin/ugo-admin/commits/0e5f7cb))
+* update refresh token logic ([6a97b2a](https://ssh.dev.azure.com/v3/UGOTeam/ugo-admin/ugo-admin/commits/6a97b2a))
 
 
 

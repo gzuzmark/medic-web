@@ -22,13 +22,13 @@ const SessionDeleteTable: React.FC<IPropsSessionDeleteTable> = (props) => {
     const tableBase = [{
         name: <div><input type={"checkbox"}
                           checked={props.items.length === props.selection.length}
-                          onClick={props.onSelectAll}/></div>,
+                          onChange={props.onSelectAll}/></div>,
         value: (row: ISessionsToDelete) =>
             <div>
                 <input
                     type={"checkbox"}
                     checked={props.selection.indexOf(row.id) !== -1}
-                    onClick={onClick(props.onSelectItem, row.id)}/>
+                    onChange={onClick(props.onSelectItem, row.id)}/>
             </div>,
         width: 30
     },{
