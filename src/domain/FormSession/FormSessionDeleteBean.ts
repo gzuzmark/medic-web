@@ -72,10 +72,12 @@ class FormSessionDeleteBean extends FormSessionBaseBean {
         let urlFilters = '';
         if (this.selectedSession.from && this.selectedSession.to) {
             const today = new Date();
-            const from = new Date(this.selectedSession.from);
+            let from = new Date(this.selectedSession.from);
             const to = new Date(this.selectedSession.to);
             if (from.getDate() !== today.getDate()) {
                 from.setHours(0);
+            } else {
+                from = today;
             }
             to.setDate(to.getDate() + 1);
             params.push(`from=${from.toISOString()}`);
