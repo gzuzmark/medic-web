@@ -71,14 +71,9 @@ class FormSessionDeleteBean extends FormSessionBaseBean {
         const params = [];
         let urlFilters = '';
         if (this.selectedSession.from && this.selectedSession.to) {
-            const today = new Date();
-            let from = new Date(this.selectedSession.from);
+            const from = new Date(this.selectedSession.from);
             const to = new Date(this.selectedSession.to);
-            if (from.getDate() !== today.getDate()) {
-                from.setHours(0);
-            } else {
-                from = today;
-            }
+            from.setHours(0);
             to.setDate(to.getDate() + 1);
             params.push(`from=${from.toISOString()}`);
             params.push(`to=${to.toISOString()}`);
@@ -199,7 +194,18 @@ class FormSessionDeleteBean extends FormSessionBaseBean {
     }
 
     public setSessions(sessions: ISessionsToDelete[]) {
-        this.sessions = sessions;
+        const today = new Date();
+        if (this.selectedSession.from) {
+            const from = new Date(this.selectedSession.from);
+            if (today.getDate() ===  from.getDate() && today.getMonth() ===  from.getMonth() && today.getFullYear() ===  from.getFullYear()) {
+                this.sessions = sessions.filter((session: ISessionsToDelete) => {
+                    const to = new Date(session.to);
+                    return to.getTime() >= today.getTime();
+                });
+            } else {
+                this.sessions = sessions;
+            }
+        }
     }
 
     public automaticSelectionRooms() {
