@@ -134,7 +134,8 @@ class SessionDeleteMultiple extends React.Component<IPropsSessionDeleteMultiple,
                         confirm={this._handlerModal("errorModal", false)}
                         button={'Entendido'}
                         description={'Parece que hubo un error. Por favor inténtalo nuevamente.'}
-                        title={'¡Uy! No se han podido eliminar las sesiones'}  />
+                        title={`¡Uy! No se ${this.state.selection.length > 1 ?
+                            'han podido eliminar las sesiones' : 'ha podido eliminar la sesión'}`}  />
                 </MentorModalBase>
                 <ModalCancel
                     show={this.state.modals.cancelModal}
