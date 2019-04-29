@@ -1,8 +1,10 @@
 import * as React from 'react';
-import ConfirmButtons from "../../../../../common/ConfirmButtons/ConfirmButtons";
-import ConsoleModalConfirm from "../../../../../common/ConsoleModal/ConsoleModalConfirm";
-import {Title2} from "../../../../../common/ConsoleText";
+import {ButtonNormal, THEME_SECONDARY} from "../../../../../common/Buttons/Buttons";
+import MentorModalBase from "../../../../../common/ConsoleModal/MentorModalBase";
 import Icon from "../../../../../common/Icon/Icon";
+import LoaderFullScreen from "../../../../../common/Loader/LoaderFullsScreen";
+import {FONTS} from "../../../../../common/MentorColor";
+import {Heading3, LIGHT_TEXT, Small1, Subhead1} from '../../../../../common/MentorText';
 import './ModalConfirmDelete.scss';
 
 
@@ -10,6 +12,7 @@ interface IPropsModalConfirmDelete {
     show: boolean;
     styles?: React.CSSProperties;
     disabled: boolean;
+    booked: boolean;
     loading: boolean;
     totalSessions: number;
     onCancel(): void;
@@ -17,30 +20,30 @@ interface IPropsModalConfirmDelete {
 }
 
 const ModalConfirmDelete: React.FC<IPropsModalConfirmDelete> = (props) => {
-    const firstText = props.totalSessions === 1 ? 'la sesión' : 'las sesiones';
+    const firstText = props.totalSessions === 1 ? 'esta sesión' : `las ${props.totalSessions} sesiones`;
     const secondText = props.totalSessions === 1 ? 'esta sesión' : 'estas sesiones';
     return (
-        <ConsoleModalConfirm
-            show={props.show}
-            title={`¿Estás seguro que deseas eliminar\n${firstText}?`} >
-            <div className={'ModalConfirmDelete'}>
-                <Title2 style={{color: "#ee5c7d"}}>
-                    <span style={{position: 'relative'}}>
-                        <Icon name={'exclamation'} style={
-                            {fill: "#ee5c7d", height: 24, width: 24, position: 'absolute', top: 4 }}/>
-                    </span>&nbsp;
-                    <span style={{paddingLeft: 25}}>Si eliminas {secondText} no podrás revertir esta acción más adelante.</span>
-                </Title2>
+        props.loading ?
+        <LoaderFullScreen modal={true} />:
+        <MentorModalBase show={props.show}>
+            <div className='ModalConfirmDelete'>
+                <div className='ModalConfirmDelete_texts'>
+                    <Heading3 style={{margin: '7px 0'}}>¿Estás seguro que deseas eliminar {firstText}?</Heading3>
+                    <Subhead1 weight={LIGHT_TEXT} style={{margin: '7px 0'}}>Si eliminas {secondText} no podrás revertir esta acción más adelante.</Subhead1>
+                    {props.booked &&
+                    <Small1 className='ModalConfirmDelete_error' color={FONTS.error} style={{margin: '7px 0'}}>
+                        <Icon name={'alert'}/>
+                        Algunas de las sesiones tienen alumnos inscritos. Se les notificará de la cancelación de la sesión.
+                    </Small1>}
+                </div>
+                <div className='ModalConfirmDelete_buttons'>
+                    <ButtonNormal attrs={{onClick: props.onCancel}}
+                                  type={THEME_SECONDARY} text="Cancelar"/>
+                    <ButtonNormal attrs={{onClick: props.onConfirm}} text="Aceptar"/>
+                </div>
             </div>
-            <ConfirmButtons
-                styles={{width: '74%', margin: '60px auto 20px auto'}}
-                disabled={props.disabled}
-                loading={props.loading}
-                cancelText={'No, volver'}
-                confirmText={'Si, eliminar'}
-                onCancel={props.onCancel}
-                onConfirm={props.onConfirm} />
-        </ConsoleModalConfirm>
+        </MentorModalBase>
+
     );
 };
 

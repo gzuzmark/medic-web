@@ -1,4 +1,15 @@
 .ModalCancel {
-  padding: 50px 0 0 0;
-  text-align: center;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  &_texts {
+    margin: auto 0;
+    text-align: center;
+  }
+  &_buttons {
+    display: flex;
+    justify-content: space-around;
+    margin: 0 auto;
+    width: 60%;
+  }
 }

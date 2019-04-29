@@ -1,9 +1,8 @@
 import * as React from 'react';
-import ConfirmButtons from "../../ConfirmButtons/ConfirmButtons";
-import {Title2} from "../../ConsoleText";
-import ConsoleModalConfirm from "../ConsoleModalConfirm";
+import {ButtonNormal, THEME_SECONDARY} from "../../Buttons/Buttons";
+import {Heading3, LIGHT_TEXT, Subhead1} from '../../MentorText';
+import MentorModalBase from "../MentorModalBase";
 import './ModalCancel.scss';
-
 
 interface IPropsModalCancel {
     show: boolean;
@@ -16,24 +15,27 @@ interface IPropsModalCancel {
 }
 
 const ModalCancel: React.FC<IPropsModalCancel> = (props) => {
+    const buttonProps = {};
+    if (!!props.disabled) {
+        buttonProps['disabled'] = true;
+    } else if (!!props.loading) {
+        buttonProps['loading'] = true;
+    }
     return (
-        <ConsoleModalConfirm
-            show={props.show}
-            title={props.title}
-            icon={'alert'}>
+        <MentorModalBase show={props.show}>
             <div className={'ModalCancel'}>
-                <Title2 color="textBold">Si cancelas, se perderá la información actual.</Title2>
-                <Title2 color="textBold" style={{fontWeight: 'normal'}}>¿Estás seguro?</Title2>
+                <div className='ModalCancel_texts'>
+                    <Heading3 style={{margin: '7px 0'}}>Cancelar eliminar sesiones</Heading3>
+                    <Subhead1 weight={LIGHT_TEXT} style={{margin: '7px 0'}}>Si cancelas, se perderá la información actual.</Subhead1>
+                    <Subhead1 weight={LIGHT_TEXT} style={{margin: '7px 0'}}>¿Estás seguro?</Subhead1>
+                </div>
+                <div className='ModalCancel_buttons'>
+                    <ButtonNormal attrs={{...buttonProps, onClick: props.onCancel}}
+                                  type={THEME_SECONDARY} text="No, volver"/>
+                    <ButtonNormal attrs={{...buttonProps, onClick: props.onConfirm}} text="Sí, cancelar"/>
+                </div>
             </div>
-            <ConfirmButtons
-                styles={{width: '74%', margin: '60px auto 20px auto'}}
-                disabled={props.disabled}
-                loading={props.loading}
-                cancelText={'No, volver'}
-                confirmText={'Sí, cancelar'}
-                onCancel={props.onCancel}
-                onConfirm={props.onConfirm}/>
-        </ConsoleModalConfirm>
+        </MentorModalBase>
     );
 };
 

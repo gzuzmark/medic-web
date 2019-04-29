@@ -1,10 +1,13 @@
 import * as React from 'react';
 import BoxMessage from "../../../common/BoxMessage/BoxMessage";
 import ConfirmButtons from "../../../common/ConfirmButtons/ConfirmButtons";
+import ContentModal from "../../../common/ConsoleModal/ContentModal";
+import MentorModalBase from "../../../common/ConsoleModal/MentorModalBase";
 import ModalCancel from "../../../common/ConsoleModal/ModalCancel/ModalCancel";
 import ConsoleTableLoader from "../../../common/ConsoleTable/components/ConsoleTableLoader/ConsoleTableLoader";
 import { Text2, Title3 } from '../../../common/ConsoleText';
 import Layout from "../../../common/Layout/Layout";
+import LoaderFullScreen from "../../../common/Loader/LoaderFullsScreen";
 import MentorDetail from "../../../common/MentorDetail/MentorDetail";
 import MenuLeft from "../../../common/MenuLeft/MenuLeft";
 import Sticky from "../../../common/Sticky/Sticky";
@@ -40,6 +43,7 @@ interface IStateSessionDeleteMultiple {
     modals: {
         cancelModal: boolean;
         confirmModal: boolean;
+        errorModal: boolean;
     }
     listAreas: IListItem[];
     listSkills: IListItem[];
@@ -71,7 +75,8 @@ class SessionDeleteMultiple extends React.Component<IPropsSessionDeleteMultiple,
             mentor: undefined,
             modals: {
                 cancelModal: false,
-                confirmModal: false
+                confirmModal: false,
+                errorModal: false
             },
             selection: [],
             sessions: [],
@@ -124,9 +129,14 @@ class SessionDeleteMultiple extends React.Component<IPropsSessionDeleteMultiple,
         const selectedColor = this.state.selection.length > 0? 'purpleLighter' : 'greyDark';
         return(
             <Layout menu={this.renderMenu()}>
-                <Sticky height={30} top={80} style={{zIndex: -1}}>
-                    <MentorDetail mentor={this.state.mentor}/>
-                </Sticky>
+                <MentorModalBase show={this.state.modals.errorModal}>
+                    <ContentModal.Warning
+                        confirm={this._handlerModal("errorModal", false)}
+                        button={'Entendido'}
+                        description={'Parece que hubo un error. Por favor inténtalo nuevamente.'}
+                        title={`¡Uy! No se ${this.state.selection.length > 1 ?
+                            'han podido eliminar las sesiones' : 'ha podido eliminar la sesión'}`}  />
+                </MentorModalBase>
                 <ModalCancel
                     show={this.state.modals.cancelModal}
                     title={"Cancelar eliminar sesiones"}
@@ -135,13 +145,17 @@ class SessionDeleteMultiple extends React.Component<IPropsSessionDeleteMultiple,
                     onConfirm={backToPagePreviously} />
                 <ModalConfirmDelete
                     show={this.state.modals.confirmModal}
+                    booked={!this.state.sessions.some((s) => s.bookedStudents)}
                     disabled={this._isSelectionValid() || this.state.status.savingData}
                     loading={this.state.status.savingData}
                     totalSessions={this.state.selection.length}
                     onCancel={this._handlerModal("confirmModal", false)}
                     onConfirm={this._onConfirmDelete}/>
+                <Sticky height={30} top={80} style={{zIndex: -1}}>
+                    <MentorDetail mentor={this.state.mentor}/>
+                </Sticky>
                 <div className="u-LayoutMargin">
-                    { this.state.currentSession &&
+                    { (this.state.currentSession && !!this.state.mentor) ?
                     <div className="SessionDelete">
                         <Title3 color={"actionColor"}>Selecciona las características de las sesiones  por eliminar:</Title3>
                         <FormRemoveMultiple
@@ -158,23 +172,23 @@ class SessionDeleteMultiple extends React.Component<IPropsSessionDeleteMultiple,
                             empty={this.state.status.empty}
                             noResults={(this.state.status.dirty && this.state.sessions.length === 0)}
                             currentSession={this.state.currentSession} />
-                            <FormSection
-                                style={{marginTop: 80}}
-                                title={'Elige las sesiones que quieres eliminar'}>
-                                {!!this.state.sessions.length && this.state.status.dirty &&
-                                <React.Fragment>
-                                    <Text2 style={{padding: '18px 0 10px 6px', display: 'block'}} color={selectedColor}>
-                                        {this.state.selection.length} Sesiones seleccionadas
-                                    </Text2>
-                                    <SessionDeleteTable
-                                        items={this.state.sessions}
-                                        onSelectItem={this._updateSelection}
-                                        onSelectAll={this._selectAll}
-                                        loading={this.state.status.searching}
-                                        selection={this.state.selection}/>
-                                </React.Fragment>
-                                }
-                            </FormSection>
+                        <FormSection
+                            style={{marginTop: 80}}
+                            title={'Elige las sesiones que quieres eliminar'}>
+                            {!!this.state.sessions.length && this.state.status.dirty &&
+                            <React.Fragment>
+                                <Text2 style={{padding: '18px 0 10px 6px', display: 'block'}} color={selectedColor}>
+                                    {this.state.selection.length} Sesiones seleccionadas
+                                </Text2>
+                                <SessionDeleteTable
+                                    items={this.state.sessions}
+                                    onSelectItem={this._updateSelection}
+                                    onSelectAll={this._selectAll}
+                                    loading={this.state.status.searching}
+                                    selection={this.state.selection}/>
+                            </React.Fragment>
+                            }
+                        </FormSection>
 
                         <div className={'SessionDelete_error-box'}>
                             <BoxMessage type={'error'} show={!this.state.sessions.length && this.state.status.dirty && !this.state.status.searching}>
@@ -182,9 +196,9 @@ class SessionDeleteMultiple extends React.Component<IPropsSessionDeleteMultiple,
                                     'No se encontraron sesiones en las fechas solicitadas' : 'No se encontraron sesiones con estas características' }
                             </BoxMessage>
                             {this.state.status.searching && !this.state.sessions.length &&
-                                <ConsoleTableLoader loading={this.state.status.searching} center={false}>
-                                    Espera un momento mientras buscamos las sesiones
-                                </ConsoleTableLoader>}
+                            <ConsoleTableLoader loading={this.state.status.searching} center={false}>
+                                Espera un momento mientras buscamos las sesiones
+                            </ConsoleTableLoader>}
                         </div>
                         <ConfirmButtons
                             styles={{justifyContent: 'flex-end'}}
@@ -193,7 +207,8 @@ class SessionDeleteMultiple extends React.Component<IPropsSessionDeleteMultiple,
                             cancelText={'Cancelar'} confirmText={'Eliminar'}
                             onCancel={this._handlerModal("cancelModal", true)}
                             onConfirm={this._handlerModal("confirmModal", true)} />
-                    </div>}
+                    </div>:
+                    <LoaderFullScreen styleLoaderContainer={{margin: '260px auto auto auto'}}/>}
                 </div>
             </Layout>
         )
@@ -280,17 +295,15 @@ class SessionDeleteMultiple extends React.Component<IPropsSessionDeleteMultiple,
         newStateStatus.savingData = true;
         this.setState({status: {...newStateStatus}});
         this.sessionService.deleteSessions(this.state.selection).then(() => {
-            newStateStatus.savingData = false;
-            this.setState({status: newStateStatus});
             window.location.assign(`/admin/mentores/${this.mentorId}/sesiones/`);
         }, () => {
             newStateStatus.savingData = false;
             newStateModals.confirmModal = false;
+            newStateModals.errorModal = true;
             this.setState({
                 modals: newStateModals,
                 status: newStateStatus
             });
-            alert("hubo un error");
         });
     }
 

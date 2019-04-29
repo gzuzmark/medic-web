@@ -24,6 +24,7 @@ export interface ISessionsToDelete {
     maxStudents: number;
     rating: number;
     status: string;
+    bookedStudents: boolean;
 }
 
 class FormSessionDeleteBean extends FormSessionBaseBean {
