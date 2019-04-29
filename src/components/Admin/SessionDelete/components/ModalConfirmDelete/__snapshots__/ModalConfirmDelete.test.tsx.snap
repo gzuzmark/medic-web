@@ -1,68 +1,60 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`ModalConfirmDelete Test render: render ModalConfirmDelete 1`] = `
-<ConsoleModalConfirm
+<MentorModalBase
   show={true}
-  title="¿Estás seguro que deseas eliminar
-las sesiones?"
 >
   <div
     className="ModalConfirmDelete"
   >
-    <styled.h2
-      style={
-        Object {
-          "color": "#ee5c7d",
-        }
-      }
+    <div
+      className="ModalConfirmDelete_texts"
     >
-      <span
+      <styled.h3
         style={
           Object {
-            "position": "relative",
+            "margin": "7px 0",
           }
         }
       >
-        <Icon
-          name="exclamation"
-          style={
-            Object {
-              "fill": "#ee5c7d",
-              "height": 24,
-              "position": "absolute",
-              "top": 4,
-              "width": 24,
-            }
-          }
-        />
-      </span>
-       
-      <span
+        ¿Estás seguro que deseas eliminar 
+        las undefined sesiones
+        ?
+      </styled.h3>
+      <styled.h4
         style={
           Object {
-            "paddingLeft": 25,
+            "margin": "7px 0",
           }
         }
+        weight="300"
       >
         Si eliminas 
         estas sesiones
          no podrás revertir esta acción más adelante.
-      </span>
-    </styled.h2>
+      </styled.h4>
+    </div>
+    <div
+      className="ModalConfirmDelete_buttons"
+    >
+      <Styled(Button)
+        attrs={
+          Object {
+            "onClick": [Function],
+          }
+        }
+        text="Cancelar"
+        type="secondary"
+      />
+      <Styled(Button)
+        attrs={
+          Object {
+            "onClick": [Function],
+          }
+        }
+        text="Aceptar"
+      />
+    </div>
   </div>
-  <ConfirmButtons
-    cancelText="No, volver"
-    confirmText="Si, eliminar"
-    disabled={false}
-    loading={false}
-    onCancel={[Function]}
-    onConfirm={[Function]}
-    styles={
-      Object {
-        "margin": "60px auto 20px auto",
-        "width": "74%",
-      }
-    }
-  />
-</ConsoleModalConfirm>
+</MentorModalBase>
 `;

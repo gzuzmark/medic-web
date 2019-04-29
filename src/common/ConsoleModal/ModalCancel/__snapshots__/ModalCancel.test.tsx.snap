@@ -1,43 +1,66 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`ModalCancel Test render: render ModalCancel 1`] = `
-<ConsoleModalConfirm
-  icon="alert"
+<MentorModalBase
   show={true}
-  title="Titulo de la modal"
 >
   <div
     className="ModalCancel"
   >
-    <styled.h2
-      color="textBold"
+    <div
+      className="ModalCancel_texts"
     >
-      Si cancelas, se perderá la información actual.
-    </styled.h2>
-    <styled.h2
-      color="textBold"
-      style={
-        Object {
-          "fontWeight": "normal",
+      <styled.h3
+        style={
+          Object {
+            "margin": "7px 0",
+          }
         }
-      }
+      >
+        Cancelar eliminar sesiones
+      </styled.h3>
+      <styled.h4
+        style={
+          Object {
+            "margin": "7px 0",
+          }
+        }
+        weight="300"
+      >
+        Si cancelas, se perderá la información actual.
+      </styled.h4>
+      <styled.h4
+        style={
+          Object {
+            "margin": "7px 0",
+          }
+        }
+        weight="300"
+      >
+        ¿Estás seguro?
+      </styled.h4>
+    </div>
+    <div
+      className="ModalCancel_buttons"
     >
-      ¿Estás seguro?
-    </styled.h2>
+      <Styled(Button)
+        attrs={
+          Object {
+            "onClick": [Function],
+          }
+        }
+        text="No, volver"
+        type="secondary"
+      />
+      <Styled(Button)
+        attrs={
+          Object {
+            "onClick": [Function],
+          }
+        }
+        text="Sí, cancelar"
+      />
+    </div>
   </div>
-  <ConfirmButtons
-    cancelText="No, volver"
-    confirmText="Sí, cancelar"
-    disabled={false}
-    loading={false}
-    onCancel={[Function]}
-    onConfirm={[Function]}
-    styles={
-      Object {
-        "margin": "60px auto 20px auto",
-        "width": "74%",
-      }
-    }
-  />
-</ConsoleModalConfirm>
+</MentorModalBase>
 `;
