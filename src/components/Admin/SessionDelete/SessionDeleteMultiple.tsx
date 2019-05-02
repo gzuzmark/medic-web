@@ -93,6 +93,7 @@ class SessionDeleteMultiple extends React.Component<IPropsSessionDeleteMultiple,
         this._updateSelection = this._updateSelection.bind(this);
         this._handlerModal = this._handlerModal.bind(this);
         this._onConfirmDelete = this._onConfirmDelete.bind(this);
+        this._onRefresh = this._onRefresh.bind(this);
         this._selectAll = this._selectAll.bind(this);
         this._isSelectionValid = this._isSelectionValid.bind(this);
     }
@@ -133,7 +134,7 @@ class SessionDeleteMultiple extends React.Component<IPropsSessionDeleteMultiple,
             <Layout menu={this.renderMenu()}>
                 <MentorModalBase show={this.state.modals.errorModal}>
                     <ContentModal.Warning
-                        confirm={this._handlerModal("errorModal", false)}
+                        confirm={this._onRefresh}
                         button={'Entendido'}
                         description={'Parece que hubo un error. Por favor inténtalo nuevamente.'}
                         title={`¡Uy! No se ${this.state.selection.length > 1 ?
@@ -288,6 +289,36 @@ class SessionDeleteMultiple extends React.Component<IPropsSessionDeleteMultiple,
                 statusFinishingSearch.searching = false;
                 this.setState({sessions: this.formSessionDeleteBean.sessions, status: statusFinishingSearch})
             });
+        });
+    }
+
+    private _onRefresh() {
+        const statusSearching = {...this.state.status};
+        statusSearching.searching = true;
+        this.setState({status: statusSearching}, () => {
+            this._handlerModal("errorModal", false)();
+        });
+        const params = `mentor=${this.mentorId}&${this.formSessionDeleteBean.getParams}`;
+        const selection = [...this.state.selection];
+        this.sessionService.searchSessions(params).then((sessions: ISessionsToDelete[]) => {
+            this.formSessionDeleteBean.setSessions(sessions);
+            const statusFinishingSearch = {...this.state.status};
+            statusFinishingSearch.dirty = true;
+            statusFinishingSearch.empty = sessions.length === 0;
+            statusFinishingSearch.searching = false;
+            const newSelection = selection.filter((id: string) => {
+                return this.formSessionDeleteBean.sessions.some((s) => s.id === id);
+            });
+            this.setState({
+                selection: newSelection,
+                sessions: this.formSessionDeleteBean.sessions,
+                status: statusFinishingSearch,
+            })
+        }, () => {
+            const statusFinishingSearch = {...this.state.status};
+            statusFinishingSearch.dirty = true;
+            statusFinishingSearch.searching = false;
+            this.setState({sessions: this.formSessionDeleteBean.sessions, status: statusFinishingSearch})
         });
     }
 
