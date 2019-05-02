@@ -127,6 +127,8 @@ class SessionDeleteMultiple extends React.Component<IPropsSessionDeleteMultiple,
 
     public render() {
         const selectedColor = this.state.selection.length > 0? 'purpleLighter' : 'greyDark';
+        const isBooked = this.state.sessions.filter(
+            (s) => s.bookedStudents > 0 && this.state.selection.indexOf(s.id) !== -1).length > 0;
         return(
             <Layout menu={this.renderMenu()}>
                 <MentorModalBase show={this.state.modals.errorModal}>
@@ -145,7 +147,7 @@ class SessionDeleteMultiple extends React.Component<IPropsSessionDeleteMultiple,
                     onConfirm={backToPagePreviously} />
                 <ModalConfirmDelete
                     show={this.state.modals.confirmModal}
-                    booked={!this.state.sessions.some((s) => s.bookedStudents && this.state.selection.indexOf(s.id) !== -1)}
+                    booked={isBooked}
                     disabled={this._isSelectionValid() || this.state.status.savingData}
                     loading={this.state.status.savingData}
                     totalSessions={this.state.selection.length}

@@ -65,7 +65,7 @@ const SelectList: React.FC<IPropsSelectList> = (props) => {
             })}
             {!!props.removeFilters &&
             <ItemMenu onClick={props.removeFilters}>
-                <Subhead1>Mostrar todo</Subhead1>
+                <Subhead1 weight={LIGHT_TEXT}>Mostrar todo</Subhead1>
             </ItemMenu>}
         </ul>
     );
