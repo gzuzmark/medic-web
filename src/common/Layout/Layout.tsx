@@ -122,7 +122,7 @@ const Layout: React.FC<IPropsLayout> = props => {
                         <Body1 className="Footer-text" weight={LIGHT_TEXT}>UGO {user.rol === ROL_ADMIN ? 'Administrador' : 'Mentores'} {date.getFullYear()}. Todos los derechos reservados</Body1>
                     </div>
                     <div className="Footer-section">
-                        <a className="Footer-link" href="mailto:ugoadministrador@ugo.com.pe"><Body1 className="Footer-text" weight={LIGHT_TEXT}>ugoadministrador@ugo.com.pe</Body1></a>
+                        <a className="Footer-link" href="mailto:ugoadministrador@ugo.com.pe"><Body1 className="Footer-text" weight={LIGHT_TEXT}>soporteugo@lacafetalab.pe</Body1></a>
                     </div>
                 </div>
             </div>
