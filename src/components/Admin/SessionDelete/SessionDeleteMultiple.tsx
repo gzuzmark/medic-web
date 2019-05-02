@@ -145,7 +145,7 @@ class SessionDeleteMultiple extends React.Component<IPropsSessionDeleteMultiple,
                     onConfirm={backToPagePreviously} />
                 <ModalConfirmDelete
                     show={this.state.modals.confirmModal}
-                    booked={!this.state.sessions.some((s) => s.bookedStudents)}
+                    booked={!this.state.sessions.some((s) => s.bookedStudents && this.state.selection.indexOf(s.id) !== -1)}
                     disabled={this._isSelectionValid() || this.state.status.savingData}
                     loading={this.state.status.savingData}
                     totalSessions={this.state.selection.length}
