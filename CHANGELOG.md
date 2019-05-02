@@ -1,4 +1,21 @@
-# [0.1.0](https://ssh.dev.azure.com/v3/UGOTeam/ugo-admin/ugo-admin/compare/1.2.3...0.1.0) (2019-04-16)
+# [0.1.0](https://ssh.dev.azure.com/v3/UGOTeam/ugo-admin/ugo-admin/compare/1.3.0...0.1.0) (2019-05-02)
+
+
+
+# [1.3.0](https://ssh.dev.azure.com/v3/UGOTeam/ugo-admin/ugo-admin/compare/1.2.3...1.3.0) (2019-05-02)
+
+
+### Bug Fixes
+
+* filter schedules by current time ([0a5bda6](https://ssh.dev.azure.com/v3/UGOTeam/ugo-admin/ugo-admin/commits/0a5bda6))
+* texto de modales en singular ([3d4295e](https://ssh.dev.azure.com/v3/UGOTeam/ugo-admin/ugo-admin/commits/3d4295e))
+* **delete-sessions:** agregar validación de selección al abrir modal de confirmación ([8e4dfbc](https://ssh.dev.azure.com/v3/UGOTeam/ugo-admin/ugo-admin/commits/8e4dfbc))
+* **delete-sessions:** agregar validación de selección al abrir modal de confirmación ([f29bebe](https://ssh.dev.azure.com/v3/UGOTeam/ugo-admin/ugo-admin/commits/f29bebe))
+
+
+### Features
+
+* creación de modales ([0329345](https://ssh.dev.azure.com/v3/UGOTeam/ugo-admin/ugo-admin/commits/0329345))
 
 
 
