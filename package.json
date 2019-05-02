@@ -62,6 +62,7 @@
     "yup": "^0.26.10"
   },
   "scripts": {
+    "version": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0",
     "start": "node scripts/start.js",
     "build": "node scripts/build.js",
     "test": "node --max-old-space-size=4096 scripts/test.js --env=jsdom",
