@@ -307,6 +307,7 @@ class SessionDeleteMultiple extends React.Component<IPropsSessionDeleteMultiple,
             const newSelection = selection.filter((id: string) => {
                 return this.formSessionDeleteBean.sessions.some((s) => s.id === id);
             });
+            this.selectedCheckboxes = newSelection;
             this.setState({
                 selection: newSelection,
                 sessions: this.formSessionDeleteBean.sessions,
