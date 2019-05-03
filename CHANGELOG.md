@@ -1,4 +1,13 @@
-# [0.1.0](https://ssh.dev.azure.com/v3/UGOTeam/ugo-admin/ugo-admin/compare/1.3.2...0.1.0) (2019-05-03)
+# [0.1.0](https://ssh.dev.azure.com/v3/UGOTeam/ugo-admin/ugo-admin/compare/1.3.3...0.1.0) (2019-05-03)
+
+
+
+## [1.3.3](https://ssh.dev.azure.com/v3/UGOTeam/ugo-admin/ugo-admin/compare/1.3.2...1.3.3) (2019-05-03)
+
+
+### Bug Fixes
+
+* **create-rooms:** update placeholder from room ([7fb873f](https://ssh.dev.azure.com/v3/UGOTeam/ugo-admin/ugo-admin/commits/7fb873f))
 
 
 
