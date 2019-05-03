@@ -90,7 +90,7 @@ const FormCreateRoom: React.FC<{}> = () => {
                             name: 'description',
                             onBlur: room.handleBlur,
                             onChange: room.handleChange,
-                            placeholder: "Ejmpl.: A301, C2001, etc.",
+                            placeholder: "Ejmpl.: Aula A301, Aula C2001, etc.",
                             style: {padding: "0 24px 0 16px"},
                             value: ctxt.values.description
                         }}
