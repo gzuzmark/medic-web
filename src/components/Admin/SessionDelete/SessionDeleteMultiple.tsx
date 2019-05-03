@@ -199,9 +199,7 @@ class SessionDeleteMultiple extends React.Component<IPropsSessionDeleteMultiple,
                                     'No se encontraron sesiones en las fechas solicitadas' : 'No se encontraron sesiones con estas características' }
                             </BoxMessage>
                             {this.state.status.searching && !this.state.sessions.length &&
-                            <ConsoleTableLoader loading={this.state.status.searching} center={false}>
-                                Espera un momento mientras buscamos las sesiones
-                            </ConsoleTableLoader>}
+                            <ConsoleTableLoader loading={this.state.status.searching} center={false} />}
                         </div>
                         <ConfirmButtons
                             styles={{justifyContent: 'flex-end'}}
@@ -309,6 +307,7 @@ class SessionDeleteMultiple extends React.Component<IPropsSessionDeleteMultiple,
             const newSelection = selection.filter((id: string) => {
                 return this.formSessionDeleteBean.sessions.some((s) => s.id === id);
             });
+            this.selectedCheckboxes = newSelection;
             this.setState({
                 selection: newSelection,
                 sessions: this.formSessionDeleteBean.sessions,

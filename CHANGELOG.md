@@ -1,4 +1,14 @@
-# [0.1.0](https://ssh.dev.azure.com/v3/UGOTeam/ugo-admin/ugo-admin/compare/1.3.3...0.1.0) (2019-05-03)
+# [0.1.0](https://ssh.dev.azure.com/v3/UGOTeam/ugo-admin/ugo-admin/compare/1.3.4...0.1.0) (2019-05-03)
+
+
+
+## [1.3.4](https://ssh.dev.azure.com/v3/UGOTeam/ugo-admin/ugo-admin/compare/1.3.3...1.3.4) (2019-05-03)
+
+
+### Bug Fixes
+
+* **delete-sessions:** remove text from table loader ([9181457](https://ssh.dev.azure.com/v3/UGOTeam/ugo-admin/ugo-admin/commits/9181457))
+* **delete-sessions:** update selection after trying delete ([76d67fa](https://ssh.dev.azure.com/v3/UGOTeam/ugo-admin/ugo-admin/commits/76d67fa))
 
 
 
