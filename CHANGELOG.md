@@ -1,4 +1,22 @@
-# [0.1.0](https://ssh.dev.azure.com/v3/UGOTeam/ugo-admin/ugo-admin/compare/1.3.0...0.1.0) (2019-05-02)
+# [0.1.0](https://ssh.dev.azure.com/v3/UGOTeam/ugo-admin/ugo-admin/compare/1.3.2...0.1.0) (2019-05-03)
+
+
+
+## [1.3.2](https://ssh.dev.azure.com/v3/UGOTeam/ugo-admin/ugo-admin/compare/1.3.1...1.3.2) (2019-05-03)
+
+
+### Bug Fixes
+
+* **delete-sessions:** filter dates on the first load ([2d438dc](https://ssh.dev.azure.com/v3/UGOTeam/ugo-admin/ugo-admin/commits/2d438dc))
+
+
+
+## [1.3.1](https://ssh.dev.azure.com/v3/UGOTeam/ugo-admin/ugo-admin/compare/1.3.0...1.3.1) (2019-05-02)
+
+
+### Bug Fixes
+
+* **delete-sessions:** refresh sessions on error ([473eda6](https://ssh.dev.azure.com/v3/UGOTeam/ugo-admin/ugo-admin/commits/473eda6))
 
 
 
