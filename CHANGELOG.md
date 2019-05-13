@@ -1,4 +1,13 @@
-# [0.1.0](https://ssh.dev.azure.com/v3/UGOTeam/ugo-admin/ugo-admin/compare/1.3.4...0.1.0) (2019-05-03)
+# [0.1.0](https://ssh.dev.azure.com/v3/UGOTeam/ugo-admin/ugo-admin/compare/1.3.5...0.1.0) (2019-05-13)
+
+
+
+## [1.3.5](https://ssh.dev.azure.com/v3/UGOTeam/ugo-admin/ugo-admin/compare/1.3.4...1.3.5) (2019-05-13)
+
+
+### Bug Fixes
+
+* **not-enanle-modal:** add modal not enable text ([e2a5a0c](https://ssh.dev.azure.com/v3/UGOTeam/ugo-admin/ugo-admin/commits/e2a5a0c))
 
 
 
