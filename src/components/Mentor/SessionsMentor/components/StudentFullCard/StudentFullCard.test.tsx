@@ -37,7 +37,8 @@ describe('StudentFullCard Test',() => {
         props = {
             showTagModal: click,
             student,
-            styles: {}
+            styles: {},
+            updateSelection: () => void(0)
         };
         mounted = undefined;
     });

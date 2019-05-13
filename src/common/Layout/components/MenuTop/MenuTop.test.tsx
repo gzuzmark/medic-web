@@ -23,7 +23,7 @@ describe('MenuTop Test',() => {
 
     it("render: render MenuAside nav", () => {
         const divs = menuTop().find(ItemMenuTop);
-        expect(divs.length).toEqual(2)
+        expect(divs.length).toEqual(3)
     });
 
 });

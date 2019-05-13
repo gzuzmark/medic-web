@@ -97,6 +97,7 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
         };
         this.sessionId = this.props.match.params.session || '';
         this.onSearch = this.onSearch.bind(this);
+        this.onSelect = this.onSelect.bind(this);
         this.searchStudent = this.searchStudent.bind(this);
         this.addStudent = this.addStudent.bind(this);
         this.closeModal = this.closeModal.bind(this);
@@ -182,6 +183,7 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
                             <StudentChecklistBoard
                                 board={this.state.board}
                                 onSearch={this.onSearch}
+                                onSelect={this.onSelect}
                                 requestAttended={this.showModalAttended}
                                 requestNoAttended={this.showModalNoAttended}
                                 searchValue={this.state.searchValue}
@@ -378,6 +380,13 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
         } else {
             this.closeModal(true);
         }
+    }
+
+    private onSelect(id: string) {
+        this.studentChecklistCollector.updateSelectionFor(id);
+        this.setState({
+            board: this.getBoard()
+        })
     }
 
     private onSearch(searchValue: string, action: string) {
