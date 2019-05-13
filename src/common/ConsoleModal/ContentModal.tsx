@@ -11,6 +11,7 @@ export interface IGenericContentModal {
     title?: string | JSX.Element;
     description?: string | JSX.Element;
     button?: string;
+    confirm?: () => void;
 }
 
 export interface IPropsGenericContentModal {
@@ -22,6 +23,7 @@ export interface IPropsGenericContentModal {
 
 export interface IContentModal {
     description: string;
+    image?: JSX.Element | null;
     title?: string
     button?: string;
     confirm?: () => void;
@@ -101,7 +103,7 @@ const Warning: React.FC<IContentModal> = (props) => {
     const generic: IGenericContentModal = {
         button: props.button || "",
         description: props.description,
-        image: <Icon name={'alert'} />,
+        image: props.image || <Icon name={'alert'} />,
         title: props.title || "¡Ups! Algo salió mal"
     };
     return <Generic generic={generic} loading={false} confirm={props.confirm} />

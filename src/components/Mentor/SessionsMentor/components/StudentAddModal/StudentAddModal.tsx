@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { ButtonNormal } from "../../../../../common/Buttons/Buttons";
 import { Text2, Text3, TextBold1 } from '../../../../../common/ConsoleText';
 import Utilities from "../../../../../common/Utils/Utilities";
 import {IStudentChecklist} from "../../../../../domain/StudentChecklist/StudentChecklistBean";
@@ -54,10 +55,9 @@ const StudentAddModal: React.FC<IPropsStudentAddModal> = (props) => {
                 </div>
             </div>
             <div className={"StudentModalCard_footer"}>
-                <button onClick={onClick}
-                        className="StudentModalCard_button u-Button"
-                        {...propsButton}
-                >Aceptar</button>
+                <ButtonNormal attrs={{onClick, ...propsButton}}
+                              className="StudentModalCard_button u-Button"
+                              text={'Aceptar'} />
             </div>
         </div>
     ) || null;

@@ -5,6 +5,7 @@ export interface IStudentChecklist {
     id: string;
     status: string;
     booked?: boolean;
+    enableToReserve?: boolean;
     commented?: boolean;
     tags?: string[];
     mentorComment?: string;

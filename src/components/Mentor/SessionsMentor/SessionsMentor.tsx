@@ -1,5 +1,7 @@
 import * as React from 'react';
 import {Link} from "react-router-dom";
+import noAttened from '../../../assets/images/student_check_modal/no_attended.png';
+import ContentModal from "../../../common/ConsoleModal/ContentModal";
 import MentorModalBase from "../../../common/ConsoleModal/MentorModalBase";
 import { Text3 } from '../../../common/ConsoleText';
 import Layout from "../../../common/Layout/Layout";
@@ -46,6 +48,7 @@ interface IStateSessionsMentor {
     loading: boolean;
     searchValue: string;
     modal: boolean;
+    modalError: boolean;
     modalAdd: IStudentModal;
     modalCheck: IStudentCheckModal;
     tags: ITags[];
@@ -88,6 +91,7 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
             modal: false,
             modalAdd: this.cleanAddModal(),
             modalCheck: this.cleanCheckModal(''),
+            modalError: true,
             searchValue: '',
             tags: [],
         };
@@ -99,6 +103,7 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
         this.requestAttended = this.requestAttended.bind(this);
         this.requestNoAttended = this.requestNoAttended.bind(this);
         this.onConfirmCheck = this.onConfirmCheck.bind(this);
+        this.closeModalError = this.closeModalError.bind(this);
         this.showModalNoAttended = this.showModalNoAttended.bind(this);
         this.showModalAttended = this.showModalAttended.bind(this);
         this.studentCommented = this.studentCommented.bind(this);
@@ -143,7 +148,7 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
             <MentorModalBase
                 show={this.state.modal}
                 onCloseModal={this.closeModal}
-                hideClose={this.state.modalCheck.screen === StudentCheckModalScreens.SUCCESS}>
+                hideClose={this.state.modalCheck.screen === StudentCheckModalScreens.SUCCESS || this.state.modalError}>
                 {!!this.state.modalAdd.user?
                     <StudentAddModal
                         options={this.state.modalAdd}
@@ -152,6 +157,13 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
                     <StudentCheckModal
                         options={this.state.modalCheck}
                         confirm={this.onConfirmCheck}/> : null}
+                {!!this.state.modalError ?
+                    <ContentModal.Warning
+                        confirm={this.closeModalError}
+                        image={<img src={noAttened} />}
+                        button={"Entendido"}
+                        description={"Este alumno aún no ha descargado la aplicación. Podrás agregarlo una vez que esta sesión haya iniciado."}
+                        title={"Lo sentimos, no se pudo agregar al alumno."}/> : null}
             </MentorModalBase>
             <div className="SessionsMentor u-LayoutMentorMargin">
                 {this.sessionMentor &&
@@ -189,16 +201,26 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
             this.setState({
                 modal: false,
                 modalAdd: this.cleanAddModal(),
-                modalCheck: this.cleanCheckModal('')
+                modalCheck: this.cleanCheckModal(''),
+                modalError: false
             })
         }
+    }
+
+    private closeModalError() {
+        this.setState({
+            searchValue: ''
+        }, () => {
+            this.closeModal(true);
+        })
     }
 
     private showModalAttended() {
         this.setState({
             modal: true,
             modalAdd: this.cleanAddModal(),
-            modalCheck: this.cleanCheckModal(StudentCheckModalScreens.ATTENDED)
+            modalCheck: this.cleanCheckModal(StudentCheckModalScreens.ATTENDED),
+            modalError: false
         })
     }
 
@@ -206,7 +228,8 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
         this.setState({
             modal: true,
             modalAdd: this.cleanAddModal(),
-            modalCheck: this.cleanCheckModal(StudentCheckModalScreens.NO_ATTENDED)
+            modalCheck: this.cleanCheckModal(StudentCheckModalScreens.NO_ATTENDED),
+            modalError: false
         })
     }
 
@@ -286,14 +309,22 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
                 if (!student) {
                     this.studentsService.searchStudentFromSession(this.sessionId, studentCode)
                         .then((response: IStudentChecklist) => {
-                            this.setState({
-                                modal: true,
-                                modalAdd: {
-                                    loading: false,
-                                    message: MESSAGE_ADD_STUDENT,
-                                    user: response
-                                }
-                            });
+                            if (response.enableToReserve) {
+                                this.setState({
+                                    modal: true,
+                                    modalAdd: {
+                                        loading: false,
+                                        message: MESSAGE_ADD_STUDENT,
+                                        user: response
+                                    },
+                                    modalError: false
+                                });
+                            } else {
+                                this.setState({
+                                    modal: true,
+                                    modalError: true
+                                })
+                            }
                         })
                         .catch((error) => {
                             if (error.response.status === 400) {
@@ -310,7 +341,8 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
                             loading: false,
                             message: MESSAGE_REPEAT_STUDENT,
                             user: student.getContract
-                        }
+                        },
+                        modalError: false
                     });
                 }
             }
