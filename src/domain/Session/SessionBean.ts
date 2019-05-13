@@ -46,7 +46,7 @@ export const SESSION_LIFE = {
     ACTIVE: 'active',
     PENDING: 'pending',
     RESOLVE: 'resolve'
-}
+};
 
 export class SessionBean {
     public session: ISessionBase;

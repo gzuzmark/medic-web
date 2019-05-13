@@ -18,6 +18,7 @@ import SessionDeleteMultiple from "./components/Admin/SessionDelete/SessionDelet
 import SessionDeleteSingle from "./components/Admin/SessionDelete/SessionDeleteSingle";
 import Login from './components/Login/Login';
 import Logout from './components/Logout/Logout';
+import ListStudents from "./components/Mentor/ListStudents/ListStudents";
 import MentorHome from "./components/Mentor/MentorHome/MentorHome";
 import ProfileEditMentor from "./components/Mentor/ProfileEditMentor/ProfileEditMentor";
 import ProfileMentor from "./components/Mentor/ProfileMentor/ProfileMentor";
@@ -85,6 +86,15 @@ const PageListRooms = (props: any) => {
                              {...props}/>;
 }
 
+const PageListStudents = (props: any) => {
+    const LayoutListStudents = HOCLayout(ListStudents);
+    return <LayoutListStudents icon={'box'}
+                             items={[
+                                 {url: '/mentor', text: 'Inicio'},
+                                 {url: '/mentor/alumnos', text: 'Mis alumnos'}]}
+                             {...props}/>;
+}
+
 const PageCreateRoom = (props: any) => {
     const LayoutListRooms = HOCLayout(CreateRoom);
     return <LayoutListRooms icon={'box'}
@@ -113,6 +123,7 @@ export const initRouter = () => {
                 <Route exact={true} path="/admin/mentores/:id/sesiones/eliminar" render={GuardComponent(SessionDeleteMultiple, ROL_ADMIN)} />
                 <Route exact={true} path="/mentor" render={GuardComponent(MentorHome, ROL_MENTOR)} />
                 <Route exact={true} path="/mentor/perfil" render={GuardComponent(PageProfileMentor, ROL_MENTOR)} />
+                <Route exact={true} path="/mentor/alumnos" render={GuardComponent(PageListStudents, ROL_MENTOR)} />
                 <Route exact={true} path="/mentor/editar-perfil" render={GuardComponent(PageEditProfileMentor, ROL_MENTOR)} />
                 <Route exact={true} path="/mentor/sesion/:session/" render={GuardComponent(SessionsMentor, ROL_MENTOR)} />
             </div>

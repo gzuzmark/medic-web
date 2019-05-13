@@ -26,13 +26,14 @@ export interface IPropsStudentFullCard {
     student: IStudentChecklistCard;
     styles: React.CSSProperties;
     showTagModal: () => void;
+    updateSelection: () => void;
 }
 
 const StudentFullCard: React.FC<IPropsStudentFullCard> = (props) => {
     let propsInput = {};
     if (props.student.disabled) {
         propsInput = {
-            disabled: 'true'
+            disabled: ''
         }
     }
     const iconId = props.student.commented ? 'eye' : 'pencil';
@@ -78,7 +79,8 @@ const StudentFullCard: React.FC<IPropsStudentFullCard> = (props) => {
                     type={"checkbox"}
                     value={props.student.id}
                     id={`StudentFullCard${props.student.id}`}
-                    defaultChecked={props.student.checked}
+                    checked={props.student.checked}
+                    onChange={props.updateSelection}
                     {...propsInput}/>
                 <label
                     className="StudentFullCard_label"

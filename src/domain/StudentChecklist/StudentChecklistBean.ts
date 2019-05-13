@@ -54,11 +54,15 @@ export class StudentChecklistBean {
     }
 
     get isChecked(): boolean {
-        return this.isAttended && this.checked;
+        return this.isAttended || this.checked;
     }
 
     get isBooked(): boolean {
         return this.booked;
+    }
+
+    public setIsChecked() {
+        this.checked = !this.checked;
     }
 
     public setAsNewStudent() {

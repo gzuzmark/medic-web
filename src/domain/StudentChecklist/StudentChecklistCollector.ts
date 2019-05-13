@@ -71,6 +71,14 @@ export class StudentChecklistCollector {
         });
     }
 
+    public updateSelectionFor(id: string) {
+        this.sessions.forEach((item: StudentChecklistBean) => {
+            if (item.id === id) {
+                item.setIsChecked();
+            }
+        });
+    }
+
     public addStudent(student: StudentChecklistBean) {
         student.setAsNewStudent();
         this.sessions.push(student);

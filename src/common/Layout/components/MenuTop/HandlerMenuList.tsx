@@ -42,6 +42,11 @@ const UseHandlerMenuList = (warningProfile: boolean) => {
             name: 'Administración'
         }];
         const listMentor = [{
+            icon: 'users',
+            id: 'users',
+            name: 'Mis alumnos',
+            url: '/mentor/alumnos'
+        }, {
             icon: 'user',
             id: 'profile_mentor',
             name: warningProfile ? <ItemContainer >

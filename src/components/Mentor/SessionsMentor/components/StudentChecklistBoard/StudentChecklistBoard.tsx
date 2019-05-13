@@ -14,6 +14,7 @@ import './StudentChecklistBoard.scss';
 
 type fnSearch = (value: string, action: string) => void;
 type fnClear = (action: string) => void;
+type fnSelect = (id: string) => void;
 
 export interface IStudentChecklistBoard {
     addEnabled: boolean;
@@ -28,6 +29,7 @@ interface IPropsStudentChecklistBoard {
     tags: ITags[];
     isEmpty: boolean;
     onSearch: fnSearch;
+    onSelect: fnSelect;
     searchValue: string;
     sessionId: string;
     studentCommented(request: ITagConfirm): void;
@@ -124,12 +126,12 @@ class StudentChecklistBoard extends  React.Component<IPropsStudentChecklistBoard
         let propsAttendedButton = {};
         if (this.props.board.noAttendedButton || this.props.isEmpty) {
             propsNoAttendedButton = {
-                disabled: "true"
+                disabled: ""
             };
         }
         if (this.props.board.attendedButton || this.props.isEmpty) {
             propsAttendedButton = {
-                disabled: "true"
+                disabled: ""
             };
         }
         const students = (
@@ -157,8 +159,10 @@ class StudentChecklistBoard extends  React.Component<IPropsStudentChecklistBoard
                         {this.props.board.studentList.map((student: IStudentChecklistCard, index: number) => {
                             const order = student.new ? ++this.counter : 0;
                             const showTagModal = this.showTagModal(student);
+                            const updateSelection = this.updateSelection(student);
                             return (
                                 <StudentFullCard
+                                    updateSelection={updateSelection}
                                     showTagModal={showTagModal}
                                     student={student}
                                     key={`${index}`}
@@ -245,6 +249,12 @@ class StudentChecklistBoard extends  React.Component<IPropsStudentChecklistBoard
             })
 
         });
+    }
+
+    private updateSelection(student: IStudentChecklistCard) {
+        return () => {
+            this.props.onSelect(student.id)
+        }
     }
 
     private showTagModal(student: IStudentChecklistCard) {
