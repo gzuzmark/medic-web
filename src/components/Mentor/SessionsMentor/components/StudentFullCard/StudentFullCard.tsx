@@ -33,7 +33,7 @@ const StudentFullCard: React.FC<IPropsStudentFullCard> = (props) => {
     let propsInput = {};
     if (props.student.disabled) {
         propsInput = {
-            disabled: ''
+            disabled: true
         }
     }
     const iconId = props.student.commented ? 'eye' : 'pencil';

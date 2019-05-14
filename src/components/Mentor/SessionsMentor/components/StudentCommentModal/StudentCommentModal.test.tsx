@@ -109,7 +109,7 @@ describe('StudentCommentModal Test',() => {
     it("render: button save should be disable at the beginning", () => {
         const component = getComponent();
         expect(component.find(".StudentModalCard_footer button").at(1).prop('disabled'))
-            .toEqual("");
+            .toEqual(true);
     });
 
     it("render: render text tag correctly", () => {

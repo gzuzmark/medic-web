@@ -126,12 +126,12 @@ class StudentChecklistBoard extends  React.Component<IPropsStudentChecklistBoard
         let propsAttendedButton = {};
         if (this.props.board.noAttendedButton || this.props.isEmpty) {
             propsNoAttendedButton = {
-                disabled: ""
+                disabled: true
             };
         }
         if (this.props.board.attendedButton || this.props.isEmpty) {
             propsAttendedButton = {
-                disabled: ""
+                disabled: true
             };
         }
         const students = (

@@ -133,12 +133,12 @@ class StudentCommentModal extends  React.Component<IPropsStudentCommentModal, IS
         const isAddForm = this.props.modal.tags && this.props.modal.tags.every(tag => !!tag.id);
         if (this.props.loading) {
             propsButton = {
-                disabled: "",
-                loading: ""
+                disabled: true,
+                loading: "true"
             }
         } else if (this.state.disableForm) {
             propsButton = {
-                disabled: ""
+                disabled: true
             }
         }
 
