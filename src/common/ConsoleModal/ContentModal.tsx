@@ -40,7 +40,7 @@ const Generic: React.FC<IPropsGenericContentModal> = (props) => {
     let propsButton = {};
     if (props.loading) {
         propsButton = {
-            disabled: "true",
+            disabled: true,
             loading: "true"
         }
     }
@@ -61,7 +61,6 @@ const Generic: React.FC<IPropsGenericContentModal> = (props) => {
                                     props.generic.title
                             }
                         </div>
-
                     }
                     {
                         !!props.generic.description &&

@@ -107,8 +107,8 @@ class FormManager extends React.Component <IPropsFormManager, IStateFormManager>
         let submitText = this.props.submitText;
         const {errors, touched, values} = this.props.formData;
         if (!!this.props.saving) {
-            buttonAttrCancel = {...buttonAttrCancel, disabled: ' '};
-            buttonAttrBack = {...buttonAttrBack, disabled: ' '};
+            buttonAttrCancel = {...buttonAttrCancel, disabled: true};
+            buttonAttrBack = {...buttonAttrBack, disabled: true};
             buttonAttrContinue = {...buttonAttrContinue, loading: 'true'};
         }
         if (1 === this.props.currentStep) {

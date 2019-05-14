@@ -29,7 +29,7 @@ const StudentAddModal: React.FC<IPropsStudentAddModal> = (props) => {
     let propsButton = {};
     if (props.options.loading) {
         propsButton = {
-            disabled: "",
+            disabled: true,
             loading: ""
         }
     }
