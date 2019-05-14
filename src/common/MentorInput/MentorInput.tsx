@@ -131,6 +131,10 @@ class MentorInput extends React.Component<IPropsMentorInput, IStateMentorInput> 
         if (!!this.props.disabled) {
             attrs = {...attrs, disabled: true};
         }
+        const iconStyles = {...this.props.iconStyles};
+        if (this.props.disabled) {
+            iconStyles['fill'] = colors.BACKGROUND_COLORS.background_disabled;
+        }
         return (
             <div style={{...this.props.styleContainer}} onClick={this.onClick}>
                 {this.props.label && <FormLabel label={this.props.label} info={this.props.info} uppercase={true}/>}
@@ -143,7 +147,8 @@ class MentorInput extends React.Component<IPropsMentorInput, IStateMentorInput> 
                         type={"text"}
                         {...attrs}/>
                         {this.props.loading && <LoaderInput color={colors.TEXT_COLORS.font_dark}/>}
-                        {!!icon && !this.props.loading && <Icon name={icon} style={{...this.props.iconStyles}} click={this.onClickIcon}/>}
+                        {!!icon && !this.props.loading &&
+                            <Icon name={icon} style={{...iconStyles}} click={this.onClickIcon}/>}
                         {!!this.props.animation && <Body1>{this.props.animation.text}</Body1>}
                         {!!this.props.error &&
                         <div className={'MentorInput_message'}><Small1 weight={LIGHT_TEXT}>{this.props.error}</Small1></div>}
