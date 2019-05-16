@@ -1,3 +1,5 @@
+import defaultProfile from '../../assets/images/default.png';
+
 const donwloadLink = (link: string, filename: string, ext: string) => {
     const tempLink = document.createElement('a');
     tempLink.style.display = 'none';
@@ -98,7 +100,7 @@ const todayDate = () => {
 
 const onErrorStudentImage = (e: any) => {
     e.target.onerror = null;
-    e.target.src="https://storage.googleapis.com/ugo-utp.appspot.com/mentors/default.png"
+    e.target.src = defaultProfile;
 };
 
 const deepEqual = (a: any,b: any) => {
