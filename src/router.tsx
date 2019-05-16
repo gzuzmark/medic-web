@@ -88,7 +88,7 @@ const PageListRooms = (props: any) => {
 
 const PageListStudents = (props: any) => {
     const LayoutListStudents = HOCLayout(ListStudents);
-    return <LayoutListStudents icon={'box'}
+    return <LayoutListStudents icon={'book'}
                              items={[
                                  {url: '/mentor', text: 'Inicio'},
                                  {url: '/mentor/alumnos', text: 'Mis alumnos'}]}

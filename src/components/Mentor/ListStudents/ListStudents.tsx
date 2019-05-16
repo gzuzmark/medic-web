@@ -135,7 +135,7 @@ const ListStudents: React.FC<{}> = () => {
                                 <Body1 weight={LIGHT_TEXT}>{s.sessionsStatistics.attended}</Body1>
                             </TableBody>
                             <TableBody center={true}>
-                                <Body1 weight={LIGHT_TEXT}>{Number(s.sessionsStatistics.attendedRatio) * 100}%</Body1>
+                                <Body1 weight={LIGHT_TEXT}>{(Number(s.sessionsStatistics.attendedRatio) * 100).toFixed(0)}%</Body1>
                             </TableBody>
                         </React.Fragment>
                     )
