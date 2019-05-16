@@ -1,6 +1,7 @@
 import * as React from "react";
 import Icon from "../../../common/Icon/Icon";
 import Loader from "../../../common/Loader/Loader";
+import LoaderFullScreen from "../../../common/Loader/LoaderFullsScreen";
 import colors, {FONTS} from "../../../common/MentorColor";
 import MentorDropDown, {IPropsMentorOptionsDropDown} from "../../../common/MentorDropDown/MentorDropDown";
 import MentorInput from "../../../common/MentorInput/MentorInput";
@@ -68,6 +69,7 @@ const ListStudents: React.FC<{}> = () => {
 
     return (
         <div className="u-LayoutMargin" style={{padding: '0 35px'}}>
+            {skills.length === 0 && <LoaderFullScreen/>}
             <ToolBar>
                 <MentorDropDown
                     options={skills}
