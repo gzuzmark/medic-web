@@ -1,4 +1,40 @@
-# [0.1.0](https://ssh.dev.azure.com/v3/UGOTeam/ugo-admin/ugo-admin/compare/1.4.0...0.1.0) (2019-05-16)
+# [0.1.0](https://ssh.dev.azure.com/v3/UGOTeam/ugo-admin/ugo-admin/compare/1.4.4...0.1.0) (2019-05-16)
+
+
+
+## [1.4.4](https://ssh.dev.azure.com/v3/UGOTeam/ugo-admin/ugo-admin/compare/1.4.3...1.4.4) (2019-05-16)
+
+
+### Bug Fixes
+
+* **list-students:** move default image to firebase ([c73314d](https://ssh.dev.azure.com/v3/UGOTeam/ugo-admin/ugo-admin/commits/c73314d))
+
+
+
+## [1.4.3](https://ssh.dev.azure.com/v3/UGOTeam/ugo-admin/ugo-admin/compare/1.4.2...1.4.3) (2019-05-16)
+
+
+### Bug Fixes
+
+* **list-students:** loading fullscreen remove even if first request is empty ([2ecc467](https://ssh.dev.azure.com/v3/UGOTeam/ugo-admin/ugo-admin/commits/2ecc467))
+
+
+
+## [1.4.2](https://ssh.dev.azure.com/v3/UGOTeam/ugo-admin/ugo-admin/compare/1.4.1...1.4.2) (2019-05-16)
+
+
+### Bug Fixes
+
+* **list-students:** remove infinite decimals to percent ([59a4aca](https://ssh.dev.azure.com/v3/UGOTeam/ugo-admin/ugo-admin/commits/59a4aca))
+
+
+
+## [1.4.1](https://ssh.dev.azure.com/v3/UGOTeam/ugo-admin/ugo-admin/compare/1.4.0...1.4.1) (2019-05-16)
+
+
+### Bug Fixes
+
+* **list-students:** add loading at the beginning ([f391865](https://ssh.dev.azure.com/v3/UGOTeam/ugo-admin/ugo-admin/commits/f391865))
 
 
 
