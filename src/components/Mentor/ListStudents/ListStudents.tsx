@@ -14,9 +14,10 @@ const skillService = new SkillService();
 
 const ListStudents: React.FC<{}> = () => {
     const [skills, setSkills] = React.useState([] as any[]);
+    const [loadingsSkills, setLoadingSkills] = React.useState(true);
     const [skillSelected, setSkillSelected] = React.useState({} as IPropsMentorOptionsDropDown );
     const [students, setStudents] = React.useState([] as any[]);
-    const [loading, setLoading] = React.useState(false);
+    const [loadingStudents, setLoadingStudents] = React.useState(false);
     const [filteredStudents, setFilteredStudents] =  React.useState([] as any[]);
     const [search, setSearch] = React.useState('');
     const [orderRatio, setOrderRatio] = React.useState(false);
@@ -28,17 +29,18 @@ const ListStudents: React.FC<{}> = () => {
                 setSkills(response.map((v) => {
                     return {label: v.name, value: v.id}
                 }));
+                setLoadingSkills(false);
             }
         });
     }, [0]);
 
     const triggerChange = (name: string, selectedOption: IPropsMentorOptionsDropDown) => {
         setSkillSelected(selectedOption);
-        setLoading(true);
+        setLoadingStudents(true);
         skillService.listStudents(selectedOption.value).then((response: any[]) => {
             setStudents(response);
             setFilteredStudents(response);
-            setLoading(false);
+            setLoadingStudents(false);
             setSearch('')
         })
     };
@@ -69,11 +71,12 @@ const ListStudents: React.FC<{}> = () => {
 
     return (
         <div className="u-LayoutMargin" style={{padding: '0 35px'}}>
-            {skills.length === 0 && <LoaderFullScreen/>}
+            {loadingsSkills && <LoaderFullScreen/>}
             <ToolBar>
                 <MentorDropDown
                     options={skills}
                     name={"selection"}
+                    disabled={skills.length === 0}
                     triggerChange={triggerChange}
                     isSearchable={true}
                     value={skillSelected.value}
@@ -93,7 +96,7 @@ const ListStudents: React.FC<{}> = () => {
                 <TableHeader center={true}><Small1 color={FONTS.highlight}>Sesiones agendadas</Small1></TableHeader>
                 <TableHeader center={true}><Small1 color={FONTS.highlight}>Asistencia a asesiones</Small1></TableHeader>
                 <TableHeader center={true} onClick={updateOrderRatio}><Small1 color={FONTS.highlight}>Porcentaje de asistencias a UGO</Small1></TableHeader>
-                {students.length === 0 && !!skillSelected.value && !loading &&
+                {students.length === 0 && !!skillSelected.value && !loadingStudents &&
                 <TableFull message={true}>
                     <Icon name={"alert"}
                           style={{
@@ -102,7 +105,7 @@ const ListStudents: React.FC<{}> = () => {
                               width: 40}}/>
                     <Body1 color={FONTS.disabled}>¡Uy! No encontramos alumnos en este curos</Body1>
                 </TableFull>}
-                {filteredStudents.length === 0 && !!search && !loading &&
+                {filteredStudents.length === 0 && !!search && !loadingStudents &&
                 <TableFull message={true}>
                     <Icon name={"alert"}
                           style={{
@@ -111,8 +114,8 @@ const ListStudents: React.FC<{}> = () => {
                               width: 40}}/>
                     <Body1 color={FONTS.disabled}>¡Uy! No encontramos alumnos con este nombre o código</Body1>
                 </TableFull>}
-                {loading && <TableFull><Loader/></TableFull>}
-                {!loading && filteredStudents.map((s: any, i: number) => {
+                {loadingStudents && <TableFull><Loader/></TableFull>}
+                {!loadingStudents && filteredStudents.map((s: any, i: number) => {
                     return (
                         <React.Fragment key={`students_list-${i}`}>
                             <TableBody>
