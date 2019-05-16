@@ -1,4 +1,20 @@
-# [0.1.0](https://ssh.dev.azure.com/v3/UGOTeam/ugo-admin/ugo-admin/compare/1.3.5...0.1.0) (2019-05-13)
+# [0.1.0](https://ssh.dev.azure.com/v3/UGOTeam/ugo-admin/ugo-admin/compare/1.4.0...0.1.0) (2019-05-16)
+
+
+
+# [1.4.0](https://ssh.dev.azure.com/v3/UGOTeam/ugo-admin/ugo-admin/compare/1.3.5...1.4.0) (2019-05-16)
+
+
+### Bug Fixes
+
+* **session-mentor:** update disable buttons ([9c53433](https://ssh.dev.azure.com/v3/UGOTeam/ugo-admin/ugo-admin/commits/9c53433))
+* **session-mentor:** update student selection ([1f92cc5](https://ssh.dev.azure.com/v3/UGOTeam/ugo-admin/ugo-admin/commits/1f92cc5))
+
+
+### Features
+
+* **list-students:** add design ([1d92ca9](https://ssh.dev.azure.com/v3/UGOTeam/ugo-admin/ugo-admin/commits/1d92ca9))
+* **list-students:** add functionality ([b3516a4](https://ssh.dev.azure.com/v3/UGOTeam/ugo-admin/ugo-admin/commits/b3516a4))
 
 
 
