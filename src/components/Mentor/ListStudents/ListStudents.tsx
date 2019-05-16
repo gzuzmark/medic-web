@@ -1,100 +1,97 @@
 import * as React from "react";
-import styled from "styled-components";
 import Icon from "../../../common/Icon/Icon";
 import Loader from "../../../common/Loader/Loader";
-import {default as colors, FONTS} from "../../../common/MentorColor";
-import MentorDropDown from "../../../common/MentorDropDown/MentorDropDown";
+import colors, {FONTS} from "../../../common/MentorColor";
+import MentorDropDown, {IPropsMentorOptionsDropDown} from "../../../common/MentorDropDown/MentorDropDown";
 import MentorInput from "../../../common/MentorInput/MentorInput";
 import {Body1, LIGHT_TEXT, Small1, Subhead1} from "../../../common/MentorText";
 import Utilities from "../../../common/Utils/Utilities";
+import SkillService from "../../../services/Skill/Skill.service";
+import {StudentCard, TableBody, TableContainer, TableFull, TableHeader, ToolBar} from './Styles'
 
-const ToolBar = styled.div`
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 48px;
-    & > div {
-        flex-basis: 380px;
-    }
-`;
-
-const TableContainer = styled.div`
-    display: grid;
-    grid-template-columns: 40% 20% 20% 20%;
-    margin-bottom: 70px;
-    & > div {
-        padding-left: 16px;
-    }
-`;
-
-const TableHeader = styled.div`
-    background: ${colors.BACKGROUND_COLORS.background_blue};
-    height: 48px;
-    line-height: 48px;
-    text-align: ${(props: {center?: boolean}) => props.center ? 'center' : 'left'};
-    ${Small1} {
-        text-transform: uppercase;
-    }
-`;
-
-const TableBody =  styled.div`
-    align-items: center;
-    border-bottom: 1px solid ${colors.BACKGROUND_COLORS.background_disabled};
-    display: flex;
-    justify-content: ${(props: {center?: boolean}) => props.center ? 'center' : 'flex-start'};
-    height: 72px;    
-`;
-
-const TableFull = styled.div`
-    grid-column: 1/span 4;
-    margin-top: 4px;
-    padding: 32px 0;
-    ${(props: {message?: boolean}) => {
-        return !!props.message ? `
-            align-items: center;
-            background: ${colors.BACKGROUND_COLORS.background_blue};
-            display: flex;
-            justify-content: center;
-        ` : ''
-    }}
-`;
-
-
-const StudentCard = styled.div`
-    display: flex;
-    img {
-        border-radius: 50%;
-        margin-right: 12px;
-    }
-    div {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        
-    }
-`;
+const skillService = new SkillService();
 
 const ListStudents: React.FC<{}> = () => {
-    const triggerChange = () => void(0);
+    const [skills, setSkills] = React.useState([] as any[]);
+    const [skillSelected, setSkillSelected] = React.useState({} as IPropsMentorOptionsDropDown );
+    const [students, setStudents] = React.useState([] as any[]);
+    const [loading, setLoading] = React.useState(false);
+    const [filteredStudents, setFilteredStudents] =  React.useState([] as any[]);
+    const [search, setSearch] = React.useState('');
+    const [orderRatio, setOrderRatio] = React.useState(false);
+    let timer: any;
+    React.useEffect(() => {
+        timer = 0;
+        skillService.listByMentor().then((response) => {
+            if (response) {
+                setSkills(response.map((v) => {
+                    return {label: v.name, value: v.id}
+                }));
+            }
+        });
+    }, [0]);
+
+    const triggerChange = (name: string, selectedOption: IPropsMentorOptionsDropDown) => {
+        setSkillSelected(selectedOption);
+        setLoading(true);
+        skillService.listStudents(selectedOption.value).then((response: any[]) => {
+            setStudents(response);
+            setFilteredStudents(response);
+            setLoading(false);
+            setSearch('')
+        })
+    };
+
+    const onChangeText = (e: any) => {
+        const value = e.target.value.toLocaleLowerCase();
+        setSearch(value);
+        setTimeout(timer);
+        timer = setTimeout(() => {
+            setOrderRatio(false);
+            setFilteredStudents(students.filter((s) => {
+                return `${s.name.toLocaleLowerCase()} ${s.lastname.toLocaleLowerCase()}`.indexOf(value) !== -1 ||
+                    s.code.toLocaleLowerCase().indexOf(value) !== -1;
+            }))
+        }, 800);
+    };
+
+    const updateOrderRatio = () => {
+        setOrderRatio(!orderRatio);
+        const order = [...filteredStudents];
+        order.sort((a, b) => {
+            return orderRatio ?
+                Number(a.sessionsStatistics.attendedRatio) -  Number(b.sessionsStatistics.attendedRatio) :
+                Number(b.sessionsStatistics.attendedRatio) -  Number(a.sessionsStatistics.attendedRatio);
+        });
+        setFilteredStudents(order);
+    };
+
     return (
         <div className="u-LayoutMargin" style={{padding: '0 35px'}}>
             <ToolBar>
                 <MentorDropDown
-                    options={[]}
+                    options={skills}
                     name={"selection"}
                     triggerChange={triggerChange}
+                    isSearchable={true}
+                    value={skillSelected.value}
                     placeholder={'Ejmpl. Introducción a la matemática para economía'}
                     label={"Elige el curso que deseas buscar"}/>
                 <MentorInput
-                    disabled={true}
+                    disabled={students.length === 0}
                     label={"Buscar alumno"}
                     icon={"search"}
-                    attrs={{placeholder: 'Ingresa el código o nombre del almumno'}}/>
+                    attrs={{
+                        onInput: onChangeText,
+                        placeholder: 'Ingresa el código o nombre del almumno',
+                        value: search}}/>
             </ToolBar>
             <TableContainer>
                 <TableHeader><Small1 color={FONTS.highlight}>Nombre del alumno</Small1></TableHeader>
                 <TableHeader center={true}><Small1 color={FONTS.highlight}>Sesiones agendadas</Small1></TableHeader>
                 <TableHeader center={true}><Small1 color={FONTS.highlight}>Asistencia a asesiones</Small1></TableHeader>
-                <TableHeader center={true}><Small1 color={FONTS.highlight}>Porcentaje de asistencias a UGO</Small1></TableHeader>
+                <TableHeader center={true} onClick={updateOrderRatio}><Small1 color={FONTS.highlight}>Porcentaje de asistencias a UGO</Small1></TableHeader>
+                {students.length === 0 && !!skillSelected.value && !loading &&
                 <TableFull message={true}>
                     <Icon name={"alert"}
                           style={{
@@ -102,53 +99,45 @@ const ListStudents: React.FC<{}> = () => {
                               height: 40,
                               width: 40}}/>
                     <Body1 color={FONTS.disabled}>¡Uy! No encontramos alumnos en este curos</Body1>
-                </TableFull>
-                <TableFull><Loader/></TableFull>
-                <TableBody>
-                    <StudentCard>
-                        <img
-                            width="56"
-                            height="56"
-                            src="https://storage.googleapis.com/ugo-utp.appspot.com/mentors/default.png"
-                            onError={Utilities.onErrorStudentImage}/>
-                        <div>
-                            <Subhead1 color={FONTS.medium}>Anabele Suarez Fukuda</Subhead1>
-                            <Body1 weight={LIGHT_TEXT} color={FONTS.medium}>U20031827</Body1>
-                        </div>
-                    </StudentCard>
-                </TableBody>
-                <TableBody center={true}>
-                    <Body1 weight={LIGHT_TEXT}>4</Body1>
-                </TableBody>
-                <TableBody center={true}>
-                    <Body1 weight={LIGHT_TEXT}>4</Body1>
-                </TableBody>
-                <TableBody center={true}>
-                    <Body1 weight={LIGHT_TEXT}>12%</Body1>
-                </TableBody>
-
-                <TableBody>
-                    <StudentCard>
-                        <img
-                            width="56"
-                            height="56"
-                            src="https://storage.googleapis.com/ugo-utp.appspot.com/mentors/default.png"
-                            onError={Utilities.onErrorStudentImage}/>
-                        <div>
-                            <Subhead1 color={FONTS.medium}>Anabele Suarez Fukuda</Subhead1>
-                            <Body1 weight={LIGHT_TEXT} color={FONTS.medium}>U20031827</Body1>
-                        </div>
-                    </StudentCard>
-                </TableBody>
-                <TableBody center={true}>
-                    <Body1 weight={LIGHT_TEXT}>4</Body1>
-                </TableBody>
-                <TableBody center={true}>
-                    <Body1 weight={LIGHT_TEXT}>4</Body1>
-                </TableBody>
-                <TableBody center={true}>
-                    <Body1 weight={LIGHT_TEXT}>12%</Body1>
-                </TableBody>
+                </TableFull>}
+                {filteredStudents.length === 0 && !!search && !loading &&
+                <TableFull message={true}>
+                    <Icon name={"alert"}
+                          style={{
+                              fill: colors.BACKGROUND_COLORS.background_disabled_button,
+                              height: 40,
+                              width: 40}}/>
+                    <Body1 color={FONTS.disabled}>¡Uy! No encontramos alumnos con este nombre o código</Body1>
+                </TableFull>}
+                {loading && <TableFull><Loader/></TableFull>}
+                {!loading && filteredStudents.map((s: any, i: number) => {
+                    return (
+                        <React.Fragment key={`students_list-${i}`}>
+                            <TableBody>
+                                <StudentCard>
+                                    <img
+                                        width="56"
+                                        height="56"
+                                        src={s.photo}
+                                        onError={Utilities.onErrorStudentImage}/>
+                                    <div>
+                                        <Subhead1 color={FONTS.medium}>{s.name} {s.lastname}</Subhead1>
+                                        <Body1 weight={LIGHT_TEXT} color={FONTS.medium}>{s.code}</Body1>
+                                    </div>
+                                </StudentCard>
+                            </TableBody>
+                            <TableBody center={true}>
+                                <Body1 weight={LIGHT_TEXT}>{s.sessionsStatistics.scheduled}</Body1>
+                            </TableBody>
+                            <TableBody center={true}>
+                                <Body1 weight={LIGHT_TEXT}>{s.sessionsStatistics.attended}</Body1>
+                            </TableBody>
+                            <TableBody center={true}>
+                                <Body1 weight={LIGHT_TEXT}>{Number(s.sessionsStatistics.attendedRatio) * 100}%</Body1>
+                            </TableBody>
+                        </React.Fragment>
+                    )
+                })}
             </TableContainer>
         </div>
     )
