@@ -329,7 +329,7 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
                             }
                         })
                         .catch((error) => {
-                            if (error.response.status === 400) {
+                            if (error.response.status === 404) {
                                 const newStateBoard = {...this.state.board, noResultsAdd: true};
                                 this.setState({
                                     board: newStateBoard
