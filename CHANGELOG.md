@@ -1,4 +1,8 @@
-# [0.1.0](https://ssh.dev.azure.com/v3/UGOTeam/ugo-admin/ugo-admin/compare/1.4.4...0.1.0) (2019-05-16)
+# [0.1.0](https://ssh.dev.azure.com/v3/UGOTeam/ugo-admin/ugo-admin/compare/1.4.5...0.1.0) (2019-05-17)
+
+
+
+## [1.4.5](https://ssh.dev.azure.com/v3/UGOTeam/ugo-admin/ugo-admin/compare/1.4.4...1.4.5) (2019-05-17)
 
 
 
