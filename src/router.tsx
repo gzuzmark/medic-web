@@ -91,7 +91,7 @@ const PageListStudents = (props: any) => {
     return <LayoutListStudents icon={'book'}
                              items={[
                                  {url: '/mentor', text: 'Inicio'},
-                                 {url: '/mentor/alumnos', text: 'Mis alumnos'}]}
+                                 {url: '/mentor/alumnos', text: 'Alumnos'}]}
                              {...props}/>;
 }
 
