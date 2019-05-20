@@ -46,15 +46,15 @@ const ListStudents: React.FC<{}> = () => {
     };
 
     const onChangeText = (e: any) => {
-        const value = e.target.value.toLocaleLowerCase().trim();
+        const value = e.target.value.toLocaleLowerCase();
         setSearch(value);
         setTimeout(timer);
         timer = setTimeout(() => {
             setOrderRatio(false);
-            if (value.length > 0) {
+            if (value.trim().length > 0) {
                 setFilteredStudents(students.filter((s) => {
-                    return `${s.name.toLocaleLowerCase()} ${s.lastname.toLocaleLowerCase()}`.indexOf(value) !== -1 ||
-                        s.code.toLocaleLowerCase().indexOf(value) !== -1;
+                    return `${s.name.toLocaleLowerCase()} ${s.lastname.toLocaleLowerCase()}`.indexOf(value.trim()) !== -1 ||
+                        s.code.toLocaleLowerCase().indexOf(value.trim()) !== -1;
                 }))
             } else {
                 setFilteredStudents(students);
