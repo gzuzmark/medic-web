@@ -44,7 +44,7 @@ const UseHandlerMenuList = (warningProfile: boolean) => {
         const listMentor = [{
             icon: 'users',
             id: 'users',
-            name: 'Mis alumnos',
+            name: 'Alumnos',
             url: '/mentor/alumnos'
         }, {
             icon: 'user',

@@ -88,7 +88,7 @@ const ListStudents: React.FC<{}> = () => {
                     icon={"search"}
                     attrs={{
                         onInput: onChangeText,
-                        placeholder: 'Ingresa el código o nombre del almumno',
+                        placeholder: 'Ingresa el código o nombre del alumno',
                         value: search}}/>
             </ToolBar>
             <TableContainer>
