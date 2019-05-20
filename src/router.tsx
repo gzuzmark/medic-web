@@ -23,6 +23,7 @@ import MentorHome from "./components/Mentor/MentorHome/MentorHome";
 import ProfileEditMentor from "./components/Mentor/ProfileEditMentor/ProfileEditMentor";
 import ProfileMentor from "./components/Mentor/ProfileMentor/ProfileMentor";
 import SessionsMentor from "./components/Mentor/SessionsMentor/SessionsMentor";
+import Student from "./components/Mentor/Student/Student";
 import UserRepository, {ROL_ADMIN, ROL_MENTOR} from "./repository/UserRepository";
 
 const GuardComponent = <P extends object>(Component: React.ComponentType, rol: string) => {
@@ -77,14 +78,14 @@ const PageEditProfileMentor = (props: any) => {
                                         {text: 'Ver perfil', url: '/mentor/perfil'},
                                         {text: 'Editar perfil'}]}
                                     {...props} />;
-}
+};
 
 const PageListRooms = (props: any) => {
     const LayoutListRooms = HOCLayout(ListRooms);
     return <LayoutListRooms icon={'box'}
                              items={[{url: '/admin/aulas', text: 'Aulas'}]}
                              {...props}/>;
-}
+};
 
 const PageListStudents = (props: any) => {
     const LayoutListStudents = HOCLayout(ListStudents);
@@ -93,7 +94,7 @@ const PageListStudents = (props: any) => {
                                  {url: '/mentor', text: 'Inicio'},
                                  {url: '/mentor/alumnos', text: 'Alumnos'}]}
                              {...props}/>;
-}
+};
 
 const PageCreateRoom = (props: any) => {
     const LayoutListRooms = HOCLayout(CreateRoom);
@@ -102,7 +103,17 @@ const PageCreateRoom = (props: any) => {
                                  {url: '/admin/aulas', text: 'Aulas'},
                                  {text: 'Nueva Aula'}]}
                              {...props}/>;
-}
+};
+
+const PageStudent = (props: any) => {
+    const LayoutStudent = HOCLayout(Student);
+    return <LayoutStudent icon={'book'}
+                             items={[
+                                 {url: '/', text: 'Inicio'},
+                                 {url: '/mentor/alumnos', text: 'Alumnos'},
+                                 {text: 'Perfil de Alumno'}]}
+                             {...props}/>;
+};
 
 export const initRouter = () => {
     ReactDOM.render(
@@ -126,6 +137,7 @@ export const initRouter = () => {
                 <Route exact={true} path="/mentor/alumnos" render={GuardComponent(PageListStudents, ROL_MENTOR)} />
                 <Route exact={true} path="/mentor/editar-perfil" render={GuardComponent(PageEditProfileMentor, ROL_MENTOR)} />
                 <Route exact={true} path="/mentor/sesion/:session/" render={GuardComponent(SessionsMentor, ROL_MENTOR)} />
+                <Route exact={true} path="/mentor/alumno/:id/" render={GuardComponent(PageStudent, ROL_MENTOR)} />
             </div>
         </Router>,
         document.getElementById('root') as HTMLElement

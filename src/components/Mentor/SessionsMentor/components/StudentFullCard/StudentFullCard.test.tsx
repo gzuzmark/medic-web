@@ -1,4 +1,4 @@
-import { mount } from 'enzyme';
+import { shallow } from 'enzyme';
 import 'jest-localstorage-mock';
 import * as React from 'react';
 import Icon from "../../../../../common/Icon/Icon";
@@ -26,7 +26,7 @@ describe('StudentFullCard Test',() => {
     };
     const getComponent = () => {
         if (!mounted) {
-            mounted = mount(
+            mounted = shallow(
                 <StudentFullCard {...props} />
             );
         }
@@ -41,12 +41,6 @@ describe('StudentFullCard Test',() => {
             updateSelection: () => void(0)
         };
         mounted = undefined;
-    });
-
-    it("render: render StudentFullCard same text at right side", () => {
-        const component = getComponent();
-        expect(component.find('.StudentFullCard_right').text())
-            .toEqual(`${student.name}${student.code}`);
     });
 
     it("render: render StudentFullCard icon at left side", () => {
