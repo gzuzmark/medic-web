@@ -8,6 +8,7 @@ import LoaderFullScreen from "../../../common/Loader/LoaderFullsScreen";
 import colors, {FONTS} from '../../../common/MentorColor';
 import {Body1, Heading3, LIGHT_TEXT, Small1, Subhead1} from '../../../common/MentorText';
 import {TableFull, TableHeader} from "../../../common/TableMentor";
+import {date} from "../../../common/Utils/DateUtilities";
 import Utilities from "../../../common/Utils/Utilities";
 import ImageProfile from '../../../components/Admin/MentorFormBase/components/ImageProfile/ImageProfile';
 import {IStudentProfile, ITaggedSessions} from "../../../domain/Student/IStudentProfile";
@@ -68,12 +69,15 @@ const getReviewComments = (taggedSessions?: ITaggedSessions[]) => {
             {!!taggedSessions ?
                 taggedSessions.map((session: ITaggedSessions, index: number) => {
                     const newDate = new Date(session.date);
+                    const day = date.lpad(newDate.getDate(), 2) ;
+                    const month = date.lpad(newDate.getMonth(), 2) ;
+                    const year = newDate.getFullYear();
                     return (
                         <React.Fragment key={`Table_${session.id}`}>
                             <TableBody><Body1 weight={LIGHT_TEXT}>{session.tagsList}</Body1></TableBody>
                             <TableBody center={true}><Body1 weight={LIGHT_TEXT}>{session.comment || 'Sin comentarios'}</Body1></TableBody>
                             <TableBody center={true}><Body1 weight={LIGHT_TEXT}>{session.skillName}</Body1></TableBody>
-                            <TableBody center={true}><Body1 weight={LIGHT_TEXT}>{newDate.getDate()}/{newDate.getMonth()/newDate.getFullYear()}</Body1></TableBody>
+                            <TableBody center={true}><Body1 weight={LIGHT_TEXT}>{day}/{month}/{year}</Body1></TableBody>
                         </React.Fragment>
                     )
                 }) :

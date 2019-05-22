@@ -32,6 +32,7 @@ export const StatisticCard = styled.div`
 
 export const StatisticTextContainer = styled.div`
     position: relative;
+    text-align: center;
     top: ${(props: {top: number}) => `${props.top}px`};
 `;
 
