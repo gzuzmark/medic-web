@@ -87,6 +87,7 @@ const years = (()=> {
 
 export const date = {
     findMonthFromIndex,
+    lpad,
     months,
     years
 };
