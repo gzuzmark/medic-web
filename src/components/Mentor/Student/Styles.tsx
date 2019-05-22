@@ -61,7 +61,8 @@ export const TableBody =  styled.div`
     border-top: 1px solid ${colors.BACKGROUND_COLORS.background_disabled};
     display: flex;
     justify-content: ${(props: {center?: boolean}) => props.center ? 'center' : 'flex-start'};
-    height: 72px;
+    min-height: 72px;
+    padding: 9px 16px;
     &:nth-child(4n) {
         border-right: 1px solid ${colors.BACKGROUND_COLORS.background_disabled};
     }
