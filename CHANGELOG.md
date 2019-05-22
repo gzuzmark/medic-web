@@ -1,8 +1,21 @@
-# [0.1.0](https://ssh.dev.azure.com/v3/UGOTeam/ugo-admin/ugo-admin/compare/1.4.5...0.1.0) (2019-05-17)
+# [0.1.0](https://ssh.dev.azure.com/v3/UGOTeam/ugo-admin/ugo-admin/compare/1.4.5...0.1.0) (2019-05-22)
 
 
 
-## [1.4.5](https://ssh.dev.azure.com/v3/UGOTeam/ugo-admin/ugo-admin/compare/1.4.4...1.4.5) (2019-05-17)
+## [1.4.5](https://ssh.dev.azure.com/v3/UGOTeam/ugo-admin/ugo-admin/compare/1.4.4...1.4.5) (2019-05-22)
+
+
+### Bug Fixes
+
+* **list-students:** update mis alumnos to alumnos ([847d975](https://ssh.dev.azure.com/v3/UGOTeam/ugo-admin/ugo-admin/commits/847d975))
+* **list-students:** update search filter ([33e580d](https://ssh.dev.azure.com/v3/UGOTeam/ugo-admin/ugo-admin/commits/33e580d))
+* **list-students:** update search filter blank spaces ([ed30df6](https://ssh.dev.azure.com/v3/UGOTeam/ugo-admin/ugo-admin/commits/ed30df6))
+* **student-profile:** add redirection when student is not found ([633f9cf](https://ssh.dev.azure.com/v3/UGOTeam/ugo-admin/ugo-admin/commits/633f9cf))
+
+
+### Features
+
+* **student:** add student details ([59966a4](https://ssh.dev.azure.com/v3/UGOTeam/ugo-admin/ugo-admin/commits/59966a4))
 
 
 
