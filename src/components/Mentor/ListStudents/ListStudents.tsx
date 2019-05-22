@@ -1,4 +1,5 @@
 import * as React from "react";
+import {Link} from "react-router-dom";
 import Icon from "../../../common/Icon/Icon";
 import Loader from "../../../common/Loader/Loader";
 import LoaderFullScreen from "../../../common/Loader/LoaderFullsScreen";
@@ -6,9 +7,10 @@ import colors, {FONTS} from "../../../common/MentorColor";
 import MentorDropDown, {IPropsMentorOptionsDropDown} from "../../../common/MentorDropDown/MentorDropDown";
 import MentorInput from "../../../common/MentorInput/MentorInput";
 import {Body1, LIGHT_TEXT, Small1, Subhead1} from "../../../common/MentorText";
+import {TableFull, TableHeader} from "../../../common/TableMentor";
 import Utilities from "../../../common/Utils/Utilities";
 import SkillService from "../../../services/Skill/Skill.service";
-import {StudentCard, TableBody, TableContainer, TableFull, TableHeader, ToolBar} from './Styles'
+import {StudentCard, TableBody, TableContainer, ToolBar} from './Styles'
 
 const skillService = new SkillService();
 
@@ -123,17 +125,19 @@ const ListStudents: React.FC<{}> = () => {
                     return (
                         <React.Fragment key={`students_list-${i}`}>
                             <TableBody>
-                                <StudentCard>
-                                    <img
-                                        width="56"
-                                        height="56"
-                                        src={s.photo}
-                                        onError={Utilities.onErrorStudentImage}/>
-                                    <div>
-                                        <Subhead1 color={FONTS.medium}>{s.name} {s.lastname}</Subhead1>
-                                        <Body1 weight={LIGHT_TEXT} color={FONTS.medium}>{s.code}</Body1>
-                                    </div>
-                                </StudentCard>
+                                <Link to={`/mentor/alumno/${s.id}`}>
+                                    <StudentCard>
+                                        <img
+                                            width="56"
+                                            height="56"
+                                            src={s.photo}
+                                            onError={Utilities.onErrorStudentImage}/>
+                                        <div>
+                                            <Subhead1 color={FONTS.medium}>{s.name} {s.lastname}</Subhead1>
+                                            <Body1 weight={LIGHT_TEXT} color={FONTS.medium}>{s.code}</Body1>
+                                        </div>
+                                    </StudentCard>
+                                </Link>
                             </TableBody>
                             <TableBody center={true}>
                                 <Body1 weight={LIGHT_TEXT}>{s.sessionsStatistics.scheduled}</Body1>

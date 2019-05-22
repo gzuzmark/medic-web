@@ -1,5 +1,5 @@
 import * as React from 'react';
-
+import {Link} from "react-router-dom";
 import * as ReactTooltip from 'react-tooltip';
 import Icon from "../../../../../common/Icon/Icon";
 import colors, {FONTS} from "../../../../../common/MentorColor";
@@ -42,16 +42,20 @@ const StudentFullCard: React.FC<IPropsStudentFullCard> = (props) => {
         <div className={`StudentFullCard ${props.student.new ? 'StudentFullCard--new': ''}`} style={{...props.styles}}>
             <ReactTooltip effect={"solid"} place={"left"} id={"StudentFullCardToolTip"}/>
             <div className={"StudentFullCard_left"}>
-                <div className={"StudentFullCard_image-container u-ImageContainer"}>
-                    <img src={props.student.photo}
-                         title={"Estudiante"}
-                         className={"StudentFullCard_image"}
-                         onError={Utilities.onErrorStudentImage}/>
-                </div>
+                <Link to={`/mentor/alumno/${props.student.studentId}`}>
+                    <div className={"StudentFullCard_image-container u-ImageContainer"}>
+                        <img src={props.student.photo}
+                             title={"Estudiante"}
+                             className={"StudentFullCard_image"}
+                             onError={Utilities.onErrorStudentImage}/>
+                    </div>
+                </Link>
             </div>
             <div className={"StudentFullCard_right"}>
-                <Subhead1 color={FONTS.medium}>{props.student.name}</Subhead1>
-                <Body1 color={FONTS.medium} weight={LIGHT_TEXT} >{props.student.code}</Body1>
+                <Link to={`/mentor/alumno/${props.student.studentId}`}>
+                    <Subhead1 color={FONTS.medium}>{props.student.name}</Subhead1>
+                    <Body1 color={FONTS.medium} weight={LIGHT_TEXT} >{props.student.code}</Body1>
+                </Link>
             </div>
             <div className={`StudentFullCard_option
                             StudentFullCard_option-comment
