@@ -101,7 +101,15 @@ const Student: React.FC<IPropsStudent> = (props) => {
         studentService.getStudentDetail(idStudent).then((data: IStudentProfile) => {
             setDetails(data);
             setLoading(false);
-        })
+        }).catch((error: any) => {
+            if (error.response && error.response.data) {
+                setLoading(false);
+                const {code} = error.response.data;
+                if (code === 404) {
+                    window.location.assign('/');
+                }
+            }
+        });
     }, [0]);
     return (
         <div className="u-LayoutMargin" style={{padding: '0 35px 100px 35px'}}>
