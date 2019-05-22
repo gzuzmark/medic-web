@@ -1,6 +1,11 @@
 # [0.1.0](https://ssh.dev.azure.com/v3/UGOTeam/ugo-admin/ugo-admin/compare/1.4.5...0.1.0) (2019-05-22)
 
 
+### Bug Fixes
+
+* **student-profile:** correct date on table report ([d8bb075](https://ssh.dev.azure.com/v3/UGOTeam/ugo-admin/ugo-admin/commits/d8bb075))
+
+
 
 ## [1.4.5](https://ssh.dev.azure.com/v3/UGOTeam/ugo-admin/ugo-admin/compare/1.4.4...1.4.5) (2019-05-22)
 
