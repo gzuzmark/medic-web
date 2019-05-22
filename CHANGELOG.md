@@ -1,6 +1,10 @@
 # [0.1.0](https://ssh.dev.azure.com/v3/UGOTeam/ugo-admin/ugo-admin/compare/1.4.5...0.1.0) (2019-05-22)
 
 
+
+## [1.4.5](https://ssh.dev.azure.com/v3/UGOTeam/ugo-admin/ugo-admin/compare/1.4.4...1.4.5) (2019-05-22)
+
+
 ### Bug Fixes
 
 * **list-students:** update mis alumnos to alumnos ([847d975](https://ssh.dev.azure.com/v3/UGOTeam/ugo-admin/ugo-admin/commits/847d975))
@@ -12,10 +16,6 @@
 ### Features
 
 * **student:** add student details ([59966a4](https://ssh.dev.azure.com/v3/UGOTeam/ugo-admin/ugo-admin/commits/59966a4))
-
-
-
-## [1.4.5](https://ssh.dev.azure.com/v3/UGOTeam/ugo-admin/ugo-admin/compare/1.4.4...1.4.5) (2019-05-17)
 
 
 
