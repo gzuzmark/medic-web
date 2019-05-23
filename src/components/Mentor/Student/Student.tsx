@@ -28,8 +28,8 @@ const renderTableHeaderReport = (text: string) => {
 
 const getHeaderAccordion = (title: string) => (<Heading3 style={{borderBottom: `1px solid ${colors.MISC_COLORS.background_grey_2}`}}>{title}</Heading3>);
 
-const getUGOHistory = ({attended, attendedRatio, bestTags}: any) => {
-    const tags: string[] = !!bestTags ? bestTags.split(',') : [];
+const getUGOHistory = ({attended, attendedRatio, frequentlyTags}: any) => {
+    const tags: string[] = !!frequentlyTags ? frequentlyTags.split(',') : [];
     const lastTitle = (tags.length === 1) ? 'Mejora recurrente' : 'Mejoras recurrentes';
     const firstTittle = attended === 1 ? 'Sesión asistida' : 'Sesiones asistidas';
     return (
