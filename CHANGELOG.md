@@ -1,13 +1,8 @@
-# [0.1.0](https://ssh.dev.azure.com/v3/UGOTeam/ugo-admin/ugo-admin/compare/1.4.5...0.1.0) (2019-05-22)
-
-
-### Bug Fixes
-
-* **student-profile:** correct date on table report ([d8bb075](https://ssh.dev.azure.com/v3/UGOTeam/ugo-admin/ugo-admin/commits/d8bb075))
+# [0.1.0](https://ssh.dev.azure.com/v3/UGOTeam/ugo-admin/ugo-admin/compare/1.4.5...0.1.0) (2019-05-23)
 
 
 
-## [1.4.5](https://ssh.dev.azure.com/v3/UGOTeam/ugo-admin/ugo-admin/compare/1.4.4...1.4.5) (2019-05-22)
+## [1.4.5](https://ssh.dev.azure.com/v3/UGOTeam/ugo-admin/ugo-admin/compare/1.4.4...1.4.5) (2019-05-23)
 
 
 ### Bug Fixes
@@ -16,6 +11,9 @@
 * **list-students:** update search filter ([33e580d](https://ssh.dev.azure.com/v3/UGOTeam/ugo-admin/ugo-admin/commits/33e580d))
 * **list-students:** update search filter blank spaces ([ed30df6](https://ssh.dev.azure.com/v3/UGOTeam/ugo-admin/ugo-admin/commits/ed30df6))
 * **student-profile:** add redirection when student is not found ([633f9cf](https://ssh.dev.azure.com/v3/UGOTeam/ugo-admin/ugo-admin/commits/633f9cf))
+* **student-profile:** correct date on table report ([d8bb075](https://ssh.dev.azure.com/v3/UGOTeam/ugo-admin/ugo-admin/commits/d8bb075))
+* **student-profile:** height row auto ([18b1c00](https://ssh.dev.azure.com/v3/UGOTeam/ugo-admin/ugo-admin/commits/18b1c00))
+* **student-profile:** update name variable ([0eeabf2](https://ssh.dev.azure.com/v3/UGOTeam/ugo-admin/ugo-admin/commits/0eeabf2))
 
 
 ### Features
