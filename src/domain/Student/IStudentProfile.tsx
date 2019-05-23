@@ -12,7 +12,7 @@ export interface IStudentProfile {
         scheduled: number;
         attended: number;
         attendedRatio: number;
-        bestTags?: string;
+        frequentlyTags?: string;
     }
 }
 
