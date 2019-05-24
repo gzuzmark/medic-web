@@ -7,6 +7,7 @@ interface IPropsImageProfile {
 
 const ImageProfile = styled.img`
     border-radius: 50%;
+    object-fit: cover;
     border: ${(props: IPropsImageProfile) => {
     let border = 'none';
     if (props.filled) {
