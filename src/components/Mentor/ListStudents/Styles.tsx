@@ -14,7 +14,6 @@ export const ToolBar = styled.div`
 export const TableContainer = styled.div`
     display: grid;
     grid-template-columns: 40% 20% 20% 20%;
-    margin-bottom: 70px;
     & > div {
         padding-left: 16px;
     }

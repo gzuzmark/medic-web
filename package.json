@@ -5,6 +5,7 @@
   "dependencies": {
     "@types/react-select": "^2.0.11",
     "@types/react-slick": "^0.23.3",
+    "@types/react-sticky": "^6.0.3",
     "@types/styled-components": "^4.1.12",
     "autoprefixer": "7.1.6",
     "axios": "0.18.0",
@@ -41,6 +42,7 @@
     "react-router-dom": "4.3.1",
     "react-select": "^2.3.0",
     "react-slick": "^0.23.2",
+    "react-sticky": "^6.0.3",
     "react-tooltip": "^3.9.2",
     "resolve": "1.6.0",
     "source-map-loader": "0.2.3",

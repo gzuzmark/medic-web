@@ -135,6 +135,7 @@ export const initRouter = () => {
                 <Route exact={true} path="/mentor" render={GuardComponent(MentorHome, ROL_MENTOR)} />
                 <Route exact={true} path="/mentor/perfil" render={GuardComponent(PageProfileMentor, ROL_MENTOR)} />
                 <Route exact={true} path="/mentor/alumnos" render={GuardComponent(PageListStudents, ROL_MENTOR)} />
+                <Route exact={true} path="/mentor/alumnos/:skill" render={GuardComponent(PageListStudents, ROL_MENTOR)} />
                 <Route exact={true} path="/mentor/editar-perfil" render={GuardComponent(PageEditProfileMentor, ROL_MENTOR)} />
                 <Route exact={true} path="/mentor/sesion/:session/" render={GuardComponent(SessionsMentor, ROL_MENTOR)} />
                 <Route exact={true} path="/mentor/alumno/:id/" render={GuardComponent(PageStudent, ROL_MENTOR)} />

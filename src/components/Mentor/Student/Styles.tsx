@@ -48,8 +48,6 @@ export const StatisticCardsContainer = styled.div`
 export const TableContainer = styled.div`
     display: grid;
     grid-template-columns: 20% 40% 20% 20%;
-    margin-bottom: 70px;
-    margin-top: 20px;
     & > div {
         padding-left: 16px;
     }
@@ -63,10 +61,14 @@ export const TableBody =  styled.div`
     justify-content: ${(props: {center?: boolean}) => props.center ? 'center' : 'flex-start'};
     min-height: 72px;
     padding: 9px 16px;
+    text-align: ${(props: {center?: boolean}) => props.center ? 'center' : 'left'};
     &:nth-child(4n) {
         border-right: 1px solid ${colors.BACKGROUND_COLORS.background_disabled};
     }
     &:nth-last-child(-n+4) {
         border-bottom: 1px solid ${colors.BACKGROUND_COLORS.background_disabled};
+    }
+    span {
+        word-break: break-word;
     }
 `;

@@ -3,8 +3,7 @@
 
 ugo console
 ----
-- request token no se actualuiza
-- modal confirmar
+- actualizar variables de header dinamico
 - actualizar test de commons sobre todo
 - actualizar console admin design system
 
