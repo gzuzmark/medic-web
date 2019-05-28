@@ -288,8 +288,9 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
 
     private showSuccessModal() {
         const options = {loading: false, screen: StudentCheckModalScreens.SUCCESS};
+        const sessions  = this.studentChecklistCollector.filterStudents(this.state.searchValue);
         this.setState({
-            board: this.getBoard(),
+            board: this.getBoard(sessions),
             modalCheck: options
         }, () => {
             setTimeout(() => {
@@ -384,8 +385,9 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
 
     private onSelect(id: string) {
         this.studentChecklistCollector.updateSelectionFor(id);
+        const sessions  = this.studentChecklistCollector.filterStudents(this.state.searchValue);
         this.setState({
-            board: this.getBoard()
+            board: this.getBoard(sessions)
         })
     }
 
@@ -482,8 +484,9 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
             return selectedTag ? selectedTag.name : '';
         });
         this.studentChecklistCollector.addStudentComment(id, selectedTags, comment);
+        const sessions  = this.studentChecklistCollector.filterStudents(this.state.searchValue);
         this.setState({
-            board: this.getBoard()
+            board: this.getBoard(sessions)
         })
     }
 }
