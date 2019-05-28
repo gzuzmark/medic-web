@@ -43,6 +43,7 @@ export const StudentCard = styled.div`
     img {
         border-radius: 50%;
         margin-right: 12px;
+        object-fit: cover;
     }
     div {
         display: flex;
