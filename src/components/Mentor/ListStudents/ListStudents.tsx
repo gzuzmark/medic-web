@@ -44,9 +44,12 @@ const ListStudents: React.FC<IPropsStudent> = (props) => {
                     return {label: v.name, value: v.id}
                 }));
                 setLoadingSkills(false);
+                setLoadingStudents(true);
                 if (skill.value) {
                     setSkillSelected(skill);
                     searchBySkill(skill);
+                } else {
+                    setLoadingStudents(false);
                 }
             }
         });
@@ -63,6 +66,8 @@ const ListStudents: React.FC<IPropsStudent> = (props) => {
             setFilteredStudents(response);
             setLoadingStudents(false);
             setSearch('')
+        }).catch(() => {
+            setLoadingStudents(false);
         })
     };
 
@@ -96,7 +101,7 @@ const ListStudents: React.FC<IPropsStudent> = (props) => {
 
     return (
         <div className="u-LayoutMargin" style={{padding: '0 35px'}}>
-            {loadingsSkills && <LoaderFullScreen/>}
+            {loadingsSkills && <LoaderFullScreen text={"Cargando..."} styleLoaderContainer={{marginTop: 300}} />}
             <ToolBar>
                 <MentorDropDown
                     options={skills}

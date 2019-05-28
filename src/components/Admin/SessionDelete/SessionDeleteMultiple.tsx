@@ -209,7 +209,7 @@ class SessionDeleteMultiple extends React.Component<IPropsSessionDeleteMultiple,
                             onCancel={this._handlerModal("cancelModal", true)}
                             onConfirm={this._handlerModal("confirmModal", true)} />
                     </div>:
-                    <LoaderFullScreen styleLoaderContainer={{margin: '260px auto auto auto'}}/>}
+                    <LoaderFullScreen text={"Cargando..."} styleLoaderContainer={{margin: '260px auto auto auto'}}/>}
                 </div>
             </Layout>
         )

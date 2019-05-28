@@ -74,7 +74,8 @@ class ProfileEditMentorCore extends React.Component<IPropsProfileEditMentorCore,
                     <ContentModal.Success description={"Cambios guardados con éxito"} />
                 </MentorModalBase>
                 <MentorEditContainer>
-                    {this.state.loadingData && <LoaderFullScreen />}
+                    {this.state.loadingData &&
+                        <LoaderFullScreen text={"Cargando..."} styleLoaderContainer={{marginTop: 100}} />}
                     <Formik
                         initialValues={this.state.mentor}
                         enableReinitialize={true}

@@ -79,7 +79,8 @@ class ProfileMentorCore extends React.Component<IPropsProfileMentorCore, IStateP
         const camera = this.state.loadingData ? defaultCamera : errorCamera;
         return (
             <FormProfileContainer className="u-LayoutMargin" style={{position: 'relative'}}>
-                {this.state.loadingData && <LoaderFullScreen/>}
+                {this.state.loadingData &&
+                    <LoaderFullScreen text={"Cargando..."} styleLoaderContainer={{marginTop: 100}} />}
                 <BasicData>
                     <ImageProfile src={selectedImage || camera}
                                   width={88} height={88}

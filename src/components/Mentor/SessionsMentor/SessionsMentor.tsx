@@ -5,7 +5,7 @@ import ContentModal from "../../../common/ConsoleModal/ContentModal";
 import MentorModalBase from "../../../common/ConsoleModal/MentorModalBase";
 import { Text3 } from '../../../common/ConsoleText';
 import Layout from "../../../common/Layout/Layout";
-import Loader from "../../../common/Loader/Loader";
+import LoaderFullScreen from "../../../common/Loader/LoaderFullsScreen";
 import {MomentDateParser} from "../../../domain/DateManager/MomentDateParser";
 import {SESSION_LIFE} from "../../../domain/Session/SessionBean";
 import {SessionMentorBean} from "../../../domain/Session/SessionMentorBean";
@@ -175,7 +175,7 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
                     <Text3>{`Sesión ${this.state.fullCardSession.type.toLowerCase()}`}</Text3>
                 </div>}
                 {this.state.loading && !this.state.isEmpty &&
-                    <Loader style={{marginTop: 100}} />}
+                    <LoaderFullScreen text={"Cargando..."} styleLoaderContainer={{marginTop: 300}} />}
                 {!this.state.loading &&
                     <React.Fragment>
                         <SessionFullCard session={this.state.fullCardSession}/>
