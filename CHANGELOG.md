@@ -1,4 +1,24 @@
-# [0.1.0](https://ssh.dev.azure.com/v3/UGOTeam/ugo-admin/ugo-admin/compare/1.4.5...0.1.0) (2019-05-23)
+# [0.1.0](https://ssh.dev.azure.com/v3/UGOTeam/ugo-admin/ugo-admin/compare/1.4.7...0.1.0) (2019-05-29)
+
+
+
+## [1.4.7](https://ssh.dev.azure.com/v3/UGOTeam/ugo-admin/ugo-admin/compare/1.4.6...1.4.7) (2019-05-29)
+
+
+### Bug Fixes
+
+* move css grid to flex for student list ([06469eb](https://ssh.dev.azure.com/v3/UGOTeam/ugo-admin/ugo-admin/commits/06469eb))
+
+
+
+## [1.4.6](https://ssh.dev.azure.com/v3/UGOTeam/ugo-admin/ugo-admin/compare/1.4.5...1.4.6) (2019-05-28)
+
+
+### Bug Fixes
+
+* **student-profile:** add sticky table ([5d47742](https://ssh.dev.azure.com/v3/UGOTeam/ugo-admin/ugo-admin/commits/5d47742))
+* add loading ([e169823](https://ssh.dev.azure.com/v3/UGOTeam/ugo-admin/ugo-admin/commits/e169823))
+* persist interaction in session mentor from user with ui ([a06d6a9](https://ssh.dev.azure.com/v3/UGOTeam/ugo-admin/ugo-admin/commits/a06d6a9))
 
 
 
