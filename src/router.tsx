@@ -6,24 +6,16 @@ import './assets/fonts/fonts.scss';
 import './assets/fonts/fontsMentor.scss';
 import './assets/styles/styles.scss';
 import HOCLayout from "./common/Layout/HOCLayout";
-import CreateRoom from "./components/Admin/CreateRoom/CreateRoom";
-import ListRooms from "./components/Admin/ListRooms/ListRooms";
-import MentorFormCreate from "./components/Admin/MentorFormCreate/MentorFormCreate";
-import MentorFormEdit from "./components/Admin/MentorFormEdit/MentorFormEdit";
+import LoaderFullScreen from "./common/Loader/LoaderFullsScreen";
 import MentorSession from './components/Admin/MentorSession/MentorSession';
 import MentorsList from './components/Admin/MentorsList/MentorsList';
-import Reports from "./components/Admin/Reports/Reports";
 import AddScheduleSession from "./components/Admin/ScheduleSession/ScheduleSession";
 import SessionDeleteMultiple from "./components/Admin/SessionDelete/SessionDeleteMultiple";
 import SessionDeleteSingle from "./components/Admin/SessionDelete/SessionDeleteSingle";
 import Login from './components/Login/Login';
 import Logout from './components/Logout/Logout';
-import ListStudents from "./components/Mentor/ListStudents/ListStudents";
 import MentorHome from "./components/Mentor/MentorHome/MentorHome";
-import ProfileEditMentor from "./components/Mentor/ProfileEditMentor/ProfileEditMentor";
-import ProfileMentor from "./components/Mentor/ProfileMentor/ProfileMentor";
 import SessionsMentor from "./components/Mentor/SessionsMentor/SessionsMentor";
-import Student from "./components/Mentor/Student/Student";
 import UserRepository, {ROL_ADMIN, ROL_MENTOR} from "./repository/UserRepository";
 
 const GuardComponent = <P extends object>(Component: React.ComponentType, rol: string) => {
@@ -43,6 +35,7 @@ const GuardComponent = <P extends object>(Component: React.ComponentType, rol: s
 
 
 const PageReports = (props: any) => {
+    const Reports = React.lazy(() => import('./components/Admin/Reports/Reports'));
     const LayoutReports = HOCLayout(Reports);
     return <LayoutReports icon={'report'}
                           items={[{url: '/admin/reportes', text: 'Reportes'}]}
@@ -50,6 +43,7 @@ const PageReports = (props: any) => {
 };
 
 const PageCreateMentor = (props: any) => {
+    const MentorFormCreate = React.lazy(() => import('./components/Admin/MentorFormCreate/MentorFormCreate'));
     const LayoutCreateMentor = HOCLayout(MentorFormCreate);
     return <LayoutCreateMentor icon={'book'}
                                items={[{url: '/admin', text: 'Mentores'}, {text: 'Agregar mentor'}]}
@@ -57,6 +51,7 @@ const PageCreateMentor = (props: any) => {
 };
 
 const PageEditMentor = (props: any) => {
+    const MentorFormEdit = React.lazy(() => import('./components/Admin/MentorFormEdit/MentorFormEdit'));
     const LayoutEditMentor = HOCLayout(MentorFormEdit);
     return <LayoutEditMentor icon={'book'}
                              items={[{url: '/admin', text: 'Mentores'}, {text: 'Editar mentor'}]}
@@ -64,6 +59,7 @@ const PageEditMentor = (props: any) => {
 };
 
 const PageProfileMentor = (props: any) => {
+    const ProfileMentor = React.lazy(() => import('./components/Mentor/ProfileMentor/ProfileMentor'));
     const LayoutProfileMentor = HOCLayout(ProfileMentor);
     return <LayoutProfileMentor icon={'book'}
                                 items={[{url: '/mentor', text: 'Inicio'}, {text: 'Ver perfil'}]}
@@ -71,6 +67,7 @@ const PageProfileMentor = (props: any) => {
 };
 
 const PageEditProfileMentor = (props: any) => {
+    const ProfileEditMentor = React.lazy(() => import('./components/Mentor/ProfileEditMentor/ProfileEditMentor'));
     const LayoutProfileEditMentor = HOCLayout(ProfileEditMentor);
     return <LayoutProfileEditMentor icon={'book'}
                                     items={[
@@ -81,6 +78,7 @@ const PageEditProfileMentor = (props: any) => {
 };
 
 const PageListRooms = (props: any) => {
+    const ListRooms = React.lazy(() => import('./components/Admin/ListRooms/ListRooms'));
     const LayoutListRooms = HOCLayout(ListRooms);
     return <LayoutListRooms icon={'box'}
                              items={[{url: '/admin/aulas', text: 'Aulas'}]}
@@ -88,6 +86,7 @@ const PageListRooms = (props: any) => {
 };
 
 const PageListStudents = (props: any) => {
+    const ListStudents = React.lazy(() => import('./components/Mentor/ListStudents/ListStudents'));
     const LayoutListStudents = HOCLayout(ListStudents);
     return <LayoutListStudents icon={'book'}
                              items={[
@@ -97,6 +96,7 @@ const PageListStudents = (props: any) => {
 };
 
 const PageCreateRoom = (props: any) => {
+    const CreateRoom = React.lazy(() => import('./components/Admin/CreateRoom/CreateRoom'));
     const LayoutListRooms = HOCLayout(CreateRoom);
     return <LayoutListRooms icon={'box'}
                              items={[
@@ -106,6 +106,7 @@ const PageCreateRoom = (props: any) => {
 };
 
 const PageStudent = (props: any) => {
+    const Student = React.lazy(() => import('./components/Mentor/Student/Student'));
     const LayoutStudent = HOCLayout(Student);
     return <LayoutStudent icon={'book'}
                              items={[
@@ -118,7 +119,7 @@ const PageStudent = (props: any) => {
 export const initRouter = () => {
     ReactDOM.render(
         <Router>
-            <div>
+            <React.Suspense fallback={<LoaderFullScreen text={"Cargando..."} styleLoaderContainer={{marginTop: 300}} />}>
                 <Route exact={true} path="/" component={Login} />
                 <Route exact={true} path="/logout" component={Logout} />
                 <Route exact={true} path="/admin" render={GuardComponent(MentorsList, ROL_ADMIN)} />
@@ -139,7 +140,7 @@ export const initRouter = () => {
                 <Route exact={true} path="/mentor/editar-perfil" render={GuardComponent(PageEditProfileMentor, ROL_MENTOR)} />
                 <Route exact={true} path="/mentor/sesion/:session/" render={GuardComponent(SessionsMentor, ROL_MENTOR)} />
                 <Route exact={true} path="/mentor/alumno/:id/" render={GuardComponent(PageStudent, ROL_MENTOR)} />
-            </div>
+            </React.Suspense>
         </Router>,
         document.getElementById('root') as HTMLElement
     );

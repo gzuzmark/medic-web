@@ -13,7 +13,7 @@ import {TableFull, TableHeader} from "../../../common/TableMentor";
 import Utilities from "../../../common/Utils/Utilities";
 import {IMatchParam} from "../../../interfaces/MatchParam.interface";
 import SkillService from "../../../services/Skill/Skill.service";
-import {StudentCard, TableBody, TableContainer, ToolBar} from './Styles'
+import {StudentCard, TableBody, TableContainer, TableContainerExtraLarge, ToolBar} from './Styles'
 
 const skillService = new SkillService();
 
@@ -154,9 +154,11 @@ const ListStudents: React.FC<IPropsStudent> = (props) => {
                         <Body1 color={FONTS.disabled}>¡Uy! No encontramos alumnos con este nombre o código</Body1>
                     </TableFull>}
                     {loadingStudents && <TableFull><Loader/></TableFull>}
+                </TableContainer>
+                <TableContainerExtraLarge>
                     {!loadingStudents && filteredStudents.map((s: any, i: number) => {
                         return (
-                            <React.Fragment key={`students_list-${i}`}>
+                            <div key={`students_list-${i}`}>
                                 <TableBody>
                                     <Link to={`/mentor/alumno/${s.id}`}>
                                         <StudentCard>
@@ -181,10 +183,10 @@ const ListStudents: React.FC<IPropsStudent> = (props) => {
                                 <TableBody center={true}>
                                     <Body1 weight={LIGHT_TEXT}>{(Number(s.sessionsStatistics.attendedRatio) * 100).toFixed(0)}%</Body1>
                                 </TableBody>
-                            </React.Fragment>
+                            </div>
                         )
                     })}
-                </TableContainer>
+                </TableContainerExtraLarge>
             </StickyContainer>
         </div>
     )
