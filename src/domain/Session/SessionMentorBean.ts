@@ -38,7 +38,10 @@ export class SessionMentorBean extends SessionBean {
     }
 
     get isDisableAttended() {
-        return this.isNoAttended || !this.session.isEnabledForAttendance;
+        const current = new Date();
+        const to = new Date(this.session.from);
+        const sessionStart = to.getTime() - current.getTime() <= 0;
+        return this.isNoAttended ||  !sessionStart;
     }
 
     public setAsNoAttended() {
