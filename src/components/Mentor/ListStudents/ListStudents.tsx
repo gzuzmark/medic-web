@@ -142,7 +142,7 @@ const ListStudents: React.FC<IPropsStudent> = (props) => {
                                   fill: colors.BACKGROUND_COLORS.background_disabled_button,
                                   height: 40,
                                   width: 40}}/>
-                        <Body1 color={FONTS.disabled}>¡Uy! No encontramos alumnos en este curos</Body1>
+                        <Body1 color={FONTS.disabled}>¡Uy! No encontramos alumnos en este curso</Body1>
                     </TableFull>}
                     {filteredStudents.length === 0 && !!search && !loadingStudents &&
                     <TableFull message={true}>
