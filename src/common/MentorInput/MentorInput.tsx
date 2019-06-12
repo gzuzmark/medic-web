@@ -33,6 +33,7 @@ export const InputContainer = styled.div`
     @properties disabled, loading;
     height: 40px;
     input {
+        background-image: url('')!important;
         border: 0;
         border-radius: 4px;
         display: none;

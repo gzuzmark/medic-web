@@ -5,31 +5,25 @@ import Icon from "../../../../../common/Icon/Icon";
 import {Heading3, LIGHT_TEXT} from "../../../../../common/MentorText";
 
 interface IPropsRoomModalSuccess {
-    success: boolean;
+    show: boolean;
 }
 
-const RoomModalSuccess: React.FC<IPropsRoomModalSuccess> = (props) => {
-
-    const reloadPage = () => {
-        window.location.reload();
-    };
+const RoomModalEditSuccess: React.FC<IPropsRoomModalSuccess> = (props) => {
 
     const onCloseModal = () => {
         window.location.assign('/admin/aulas');
     };
 
     return (
-        <MentorModalBase show={props.success} onCloseModal={onCloseModal} >
+        <MentorModalBase show={props.show} onCloseModal={onCloseModal} >
             <ContentModal.Generic
-                confirm={reloadPage}
                 loading={false}
                 generic={{
-                    button: "Agregar otra aula",
-                    image: <Icon name={'check-circle'} />,
-                    title: <Heading3 style={{margin: '14px auto 22px auto'}} weight={LIGHT_TEXT}>El aula se creo con éxito.</Heading3>
+                    description: <Heading3 style={{margin: '14px auto 22px auto'}} weight={LIGHT_TEXT}>¡Listo! El aula se editó con éxito.</Heading3>,
+                    image: <Icon name={'check-circle'} />
                 }} />
         </MentorModalBase>
     )
-}
+};
 
-export default RoomModalSuccess;
+export default RoomModalEditSuccess;

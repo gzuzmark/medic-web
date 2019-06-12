@@ -10,6 +10,7 @@ import {MentorDropDownTheme} from "./MentorDropDown.theme";
 export interface IPropsMentorOptionsDropDown {
     label: string;
     value: string;
+    disabled?: boolean
 }
 
 export interface IPropsMentorDropDown {
@@ -111,7 +112,15 @@ class MentorDropDown extends React.Component<IPropsMentorDropDown, {}> {
         return "Sin opciones";
     }
 
-    private handleChange(selectedOption: IPropsMentorOptionsDropDown | IPropsMentorOptionsDropDown[]) {
+    private handleChange(selectedOption: IPropsMentorOptionsDropDown | IPropsMentorOptionsDropDown[], { action, removedValue }: any) {
+        switch (action) {
+            case 'remove-value':
+            case 'pop-value':
+                if (!!removedValue.disabled) {
+                    return;
+                }
+                break;
+        }
         this.props.triggerChange(this.props.name, selectedOption);
     }
 }

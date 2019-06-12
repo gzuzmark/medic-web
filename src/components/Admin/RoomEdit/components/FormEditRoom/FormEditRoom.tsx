@@ -6,20 +6,48 @@ import colors from "../../../../../common/MentorColor";
 import MentorDropDown, {IPropsMentorOptionsDropDown} from "../../../../../common/MentorDropDown/MentorDropDown";
 import MentorInput from "../../../../../common/MentorInput/MentorInput";
 import MentorInputNumber from "../../../../../common/MentorInputNumber/MentorInputNumber";
-import CreateRoomContext from "../../CreateRoom.context";
-import HandlerInitialData from "../HandlerInitialData";
-import HandlerListBlocks from "../HandlerListBlocks";
-import useHandlerRoom from "./UseHandlerRoom";
+import {IRoomAdminArea} from "../../../../../domain/Room/Room";
+import {MAX_NAME_ROOM, MAX_STUDENTS_ROOM} from "../../../RoomBase/constRoom";
+import HandlerInitialData from "../../../RoomBase/HandlerInitialData";
+import HandlerListBlocks from "../../../RoomBase/HandlerListBlocks";
+import handlerRoom from "../../../RoomBase/HandlerRoom";
+import RoomEditContext from "../../RoomEdit.context";
 
-const FormCreateRoom: React.FC<{}> = () => {
+interface IFormEditRoomProps {
+    idRoom: string;
+    idBlock: string;
+    interestAreas: any[];
+    minStudents: number;
+}
+
+const listOptions = (areas: IRoomAdminArea[], selectedAreas: IRoomAdminArea[]) => {
+    const options = areas.map((area) => {
+        const isDisabled = selectedAreas.some(selectedArea => selectedArea.id === area.id && !selectedArea.enabled);
+        return {
+            disabled: isDisabled,
+            label: area.name,
+            value: area.id,
+        }
+    });
+
+    return options.filter(v => v.disabled).concat(options.filter(v => !v.disabled));
+};
+
+const FormEditRoom: React.FC<IFormEditRoomProps> = (props) => {
     let counter = 0;
+    const context = React.useContext(RoomEditContext);
     const [selectedSite, setSelectedSite] = React.useState('');
-    const [selectedBlock, setSelectedBlock] = React.useState('');
-    const room = useHandlerRoom(selectedBlock);
+    const [selectedBlock, setSelectedBlock] = React.useState(context.values.block);
+    const room = handlerRoom(selectedBlock, context, props.idRoom);
 
-    const ctxt = React.useContext(CreateRoomContext);
+    const ctxt = React.useContext(RoomEditContext);
     const {areas, loadingAreas, sites} = HandlerInitialData();
     const {blocks, loadingBlocks} = HandlerListBlocks(selectedSite);
+
+    React.useEffect(() => {
+        room.verifyRoom(context.values.description);
+        setSelectedSite(context.values.site);
+    }, [0]);
 
     const onChangeArea = (name: string, option: IPropsMentorOptionsDropDown[]) => {
         ctxt.setFieldValue(name, option.map(o => o.value));
@@ -52,13 +80,13 @@ const FormCreateRoom: React.FC<{}> = () => {
 
     return (
         <React.Fragment>
-            {loadingAreas && <LoaderFullScreen />}
+            {(loadingAreas || loadingBlocks) && <LoaderFullScreen />}
             <FormRow style={{padding: '30px 0 40px 0', margin: 0}} columns={[
                 <FormColumn width={2} key={`FormColumn-PersonalData_${++counter}`}>
                     <MentorDropDown
                         label={"SEDE"}
                         value={selectedSite}
-                        disabled={loadingAreas}
+                        disabled={true}
                         name={`site`}
                         triggerChange={onChangeSite}
                         placeholder="Ejmpl.: Lima Centro, Lima Norte, etc."
@@ -69,7 +97,7 @@ const FormCreateRoom: React.FC<{}> = () => {
                         label={"NOMBRE DE LA DIRECCIÓN"}
                         value={selectedBlock}
                         name={`location`}
-                        disabled={loadingBlocks}
+                        disabled={true}
                         triggerChange={onChangeBlock}
                         placeholder="Ingresa un nombre para la dirección"
                         options={blocks.map(b => ({label: b.name, value: b.id}))} />
@@ -86,7 +114,7 @@ const FormCreateRoom: React.FC<{}> = () => {
                         iconStyles={{fill: colors.MISC_COLORS.green}}
                         disabled={!selectedBlock}
                         attrs={{
-                            maxLength: 25,
+                            maxLength: MAX_NAME_ROOM,
                             name: 'description',
                             onBlur: room.handleBlur,
                             onChange: room.handleChange,
@@ -94,10 +122,12 @@ const FormCreateRoom: React.FC<{}> = () => {
                             style: {padding: "0 24px 0 16px"},
                             value: ctxt.values.description
                         }}
-                        label={"AULA"}/>
+                        label={"AULA"} />
                     <MentorInputNumber
+                        info={"La cap. min. del aula está sujeta<br/>a la cantidad máxima de<br/>alumnos inscritos en las otras<br/>sesiones de esta misma aula."}
                         styleContainer={{marginLeft: 22, width: '30%'}}
-                        max={100}
+                        max={MAX_STUDENTS_ROOM}
+                        min={props.minStudents}
                         label={"CAPACIDAD"}
                         value={ctxt.values.maxStudents && ctxt.values.maxStudents.toString() || ''}
                         onChange={onChangeMax}/>
@@ -113,11 +143,11 @@ const FormCreateRoom: React.FC<{}> = () => {
                         name={`interestAreasId`}
                         triggerChange={onChangeArea}
                         placeholder="Ejmpl.: Tutoría, taller, empleabilidad"
-                        options={areas.map(a => ({label: a.name, value: a.id}))} />
+                        options={listOptions(areas, props.interestAreas)} />
                 </FormColumn>
             ]}/>
         </React.Fragment>
     )
 };
 
-export default FormCreateRoom;
+export default FormEditRoom;

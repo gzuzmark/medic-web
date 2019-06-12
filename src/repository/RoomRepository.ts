@@ -1,9 +1,19 @@
-const keyRoomAdded = 'NEW_ROOM_ADDED';
+const keyRoomAdded = 'ROOM_CREATE_UPDATE';
+export const ROOM_CREATE_ACTION = 'ROOM_CREATE_ACTION';
+export const ROOM_UPDATE_ACTION = 'ROOM_UPDATE_ACTION';
 
 export interface IRoomRepository {
+    action: string;
     site: string;
     blocks: string[];
     rooms: string[];
+}
+
+export interface IRoomRepositoryInsert {
+    block: string;
+    room: string;
+    site: string;
+    action: string;
 }
 
 export const RoomRepository = {
@@ -11,19 +21,21 @@ export const RoomRepository = {
         localStorage.setItem(keyRoomAdded, "");
     },
     addedRoomGet(): IRoomRepository {
-        const repository = localStorage.getItem(keyRoomAdded) || JSON.stringify({site: '', blocks: [], rooms: []});
+        const empty = JSON.stringify({site: '', blocks: [], rooms: [], action: ''});
+        const repository = localStorage.getItem(keyRoomAdded) || empty;
         return JSON.parse(repository);
     },
-    addedRoomInsert(id: string, block: string, room: string) {
+    addedRoomInsert(insert: IRoomRepositoryInsert) {
         let roomRepository = this.addedRoomGet();
-        if (roomRepository && roomRepository.site === id) {
-            roomRepository.rooms.push(room);
-            roomRepository.blocks.push(block);
+        if (roomRepository && roomRepository.site === insert.site && roomRepository.action === ROOM_CREATE_ACTION) {
+            roomRepository.rooms.push(insert.room);
+            roomRepository.blocks.push(insert.block);
         } else {
             roomRepository = {
-                blocks: [block],
-                rooms: [room],
-                site: id
+                action: insert.action,
+                blocks: [insert.block],
+                rooms: [insert.room],
+                site: insert.site
             }
         }
         localStorage.setItem(keyRoomAdded, JSON.stringify(roomRepository));

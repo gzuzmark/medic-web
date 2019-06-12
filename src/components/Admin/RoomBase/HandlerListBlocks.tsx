@@ -1,6 +1,6 @@
 import * as React from "react";
-import {IBlock} from "../../../../domain/Blocks/Blocks";
-import BlocksService from "../../../../services/Block/Blocks.service";
+import {IBlock} from "../../../domain/Blocks/Blocks";
+import BlocksService from "../../../services/Block/Blocks.service";
 
 interface IPropsHandlerListBlocks {
     blocks: IBlock[];

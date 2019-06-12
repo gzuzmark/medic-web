@@ -4,9 +4,9 @@ import {ButtonNormal, THEME_SECONDARY} from "../../../../../common/Buttons/Butto
 import ContentModal from "../../../../../common/ConsoleModal/ContentModal";
 import MentorModalBase from "../../../../../common/ConsoleModal/MentorModalBase";
 import Icon from "../../../../../common/Icon/Icon";
-import CreateRoomContext from "../../CreateRoom.context";
+import RoomEditContext from "../../RoomEdit.context";
 
-interface IPropsButtonCreateRoom {
+interface IPropsButtonEditRoom {
     onSubmit: (e: any) => void;
 }
 
@@ -16,19 +16,17 @@ const ButtonsContainer = styled.div`
     margin: 40px auto;
 `;
 
-const ButtonCreateRoom: React.FC<IPropsButtonCreateRoom> = (props) => {
+const ButtonsEditRoom: React.FC<IPropsButtonEditRoom> = (props) => {
     const [modal, setModal] = React.useState(false);
     const [valid, setValid] = React.useState(false);
     const [empty, setEmpty] = React.useState(true);
-    const ctxt = React.useContext(CreateRoomContext);
+    const ctxt = React.useContext(RoomEditContext);
 
     React.useEffect(() => {
-        const description = !!ctxt.touched.description && !ctxt.errors.description;
+        const description = !ctxt.errors.description;
         const maxStudents = !ctxt.errors.maxStudents;
-        const interestAreasId = !!ctxt.touched.interestAreasId && !ctxt.errors.interestAreasId;
-        const block = !!ctxt.values.block;
-        const site = !!ctxt.values.site;
-        setValid(description && maxStudents && interestAreasId && block && site && !ctxt.isRepeated);
+        const interestAreasId = !ctxt.errors.interestAreasId;
+        setValid(description && maxStudents && interestAreasId && !ctxt.isRepeated && ctxt.values.interestAreasId.length > 0);
     }, [ctxt.errors, ctxt.touched, ctxt.values, ctxt.isRepeated]);
 
     React.useEffect(() => {
@@ -64,15 +62,15 @@ const ButtonCreateRoom: React.FC<IPropsButtonCreateRoom> = (props) => {
                 <ButtonNormal text={"Cancelar"}
                               attrs={{
                                   onClick: empty ? goToListRoom : openModal,
-                                  style: {marginLeft: 24, width: 136},
+                                  style: {marginLeft: 24, width: 150},
                                   type: "button",
                               }}
                               type={THEME_SECONDARY}/>
-                <ButtonNormal text={"Guardar"}
+                <ButtonNormal text={"Guardar Cambios"}
                               attrs={{
                                   disabled: !valid,
                                   onClick: props.onSubmit,
-                                  style: {marginLeft: 24, width: 136},
+                                  style: {marginLeft: 24, width: 150},
                                   type: "button"
                               }}/>
             </ButtonsContainer>
@@ -80,4 +78,4 @@ const ButtonCreateRoom: React.FC<IPropsButtonCreateRoom> = (props) => {
     )
 }
 
-export default ButtonCreateRoom;
+export default ButtonsEditRoom;

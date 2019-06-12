@@ -1,7 +1,7 @@
 import * as React from "react";
 import {IRoomAdminCreateRequest} from "../../../domain/Room/Room";
 
-export interface ICreateRoomContext {
+export interface IRoomEditContext {
     errors: any;
     handleBlur: any;
     handleChange: any;
@@ -15,7 +15,7 @@ export interface ICreateRoomContext {
     values: IRoomAdminCreateRequest;
 }
 
-const defaultValue: ICreateRoomContext = {
+const defaultValue: IRoomEditContext = {
     errors: {},
     handleBlur: (event: any) => void(0),
     handleChange: (event: any) => void(0),
@@ -29,6 +29,6 @@ const defaultValue: ICreateRoomContext = {
     values: {} as IRoomAdminCreateRequest
 };
 
-const CreateRoomContext = React.createContext(defaultValue);
+const RoomEditContext = React.createContext(defaultValue);
 
-export default CreateRoomContext;
+export default RoomEditContext;

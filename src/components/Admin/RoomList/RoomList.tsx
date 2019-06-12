@@ -41,7 +41,7 @@ const DescriptionEmpty = styled.div`
 `;
 const roomService = new BlocksService();
 
-const ListRooms: React.FC<{}> = () => {
+const RoomList: React.FC<{}> = () => {
     const [modal, setModal] = React.useState(false);
     const [loading, setLoading] = React.useState(true);
     const [selectedSite, setSelectedSite] = React.useState({} as ISites);
@@ -92,22 +92,25 @@ const ListRooms: React.FC<{}> = () => {
             <DescriptionContainer isEmpty={blocks.length === 0}>
                 {loading && <LoaderFullScreen size={12} styleLoaderContainer={{margin: '15px auto auto auto'}}/>}
                 {(!loading && blocks.length === 0) && <DescriptionEmpty><Body1 color={FONTS.light}>Aún no tienes direcciones</Body1></DescriptionEmpty>}
-                {blocks.map((block: IBlock) => (
-                    <AccordionRooms
-                        key={block.id}
-                        open={repository.blocks.indexOf(block.id) !== -1}
-                        iconStyle={{right: 16}}
-                        bodyStyle={{marginTop: 8, marginBottom: 21}}
-                        headerStyle={{ marginBottom: 1}}
-                        title={buildTitle(block)}
-                        body={buildBody(
-                            block.rooms || [] as IRoom[],
-                            showModal(block),
-                            repository.rooms)}/>
-                ))}
+                {blocks.map((block: IBlock) => {
+                    const repositoryRoom =  { action: repository.action, defaultRooms: repository.rooms};
+                    return (
+                        <AccordionRooms
+                            key={block.id}
+                            open={repository.blocks.indexOf(block.id) !== -1}
+                            iconStyle={{right: 16}}
+                            bodyStyle={{marginTop: 8, marginBottom: 21}}
+                            headerStyle={{ marginBottom: 1}}
+                            title={buildTitle(block)}
+                            body={buildBody(
+                                block.rooms || [] as IRoom[],
+                                showModal(block),
+                                repositoryRoom)}/>
+                    )
+                })}
             </DescriptionContainer>
         </div>
     )
 };
 
-export default ListRooms;
+export default RoomList;
