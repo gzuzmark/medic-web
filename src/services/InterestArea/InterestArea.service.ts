@@ -33,9 +33,9 @@ export interface IInterestAreaDeleteService extends IInterestAreaService{
 
 class InterestAreaService extends BaseRequest {
 
-    public listAreas(): Promise<IArea[]> {
+    public listAreas(status: string): Promise<IArea[]> {
         return new Promise((resolve, reject) => {
-            this.instance.get('ugo-admin/interest-areas')
+            this.instance.get(`ugo-admin/interest-areas?status=${status}`)
                 .then((response: any) => {
                     if (response.status === 200 && response.data) {
                         resolve(response.data.items);

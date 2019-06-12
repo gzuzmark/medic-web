@@ -1,4 +1,5 @@
 import * as React from "react";
+import {STATUS_ALL} from "../../../domain/Area/const";
 import {IRoomAdminArea} from "../../../domain/Room/Room";
 import {ISites} from "../../../domain/Sites/Sites";
 import InterestAreaService from "../../../services/InterestArea/InterestArea.service";
@@ -19,7 +20,7 @@ const HandlerInitialData = (): IPropsHandlerListAreas => {
     const [loading, setLoading] = React.useState(true);
 
     React.useEffect(() => {
-        interestAreaService.listAreas().then((responseAreas: IRoomAdminArea[]) => {
+        interestAreaService.listAreas(STATUS_ALL).then((responseAreas: IRoomAdminArea[]) => {
             setAreas(responseAreas);
             sitesService.list().then((responseSites: ISites[]) => {
                 setSites(responseSites);
