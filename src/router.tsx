@@ -77,8 +77,8 @@ const PageEditProfileMentor = (props: any) => {
                                     {...props} />;
 };
 
-const PageListRooms = (props: any) => {
-    const ListRooms = React.lazy(() => import('./components/Admin/ListRooms/ListRooms'));
+const PageRoomList = (props: any) => {
+    const ListRooms = React.lazy(() => import('./components/Admin/RoomList/RoomList'));
     const LayoutListRooms = HOCLayout(ListRooms);
     return <LayoutListRooms icon={'box'}
                              items={[{url: '/admin/aulas', text: 'Aulas'}]}
@@ -95,13 +95,23 @@ const PageListStudents = (props: any) => {
                              {...props}/>;
 };
 
-const PageCreateRoom = (props: any) => {
-    const CreateRoom = React.lazy(() => import('./components/Admin/CreateRoom/CreateRoom'));
-    const LayoutListRooms = HOCLayout(CreateRoom);
+const PageRoomCreate = (props: any) => {
+    const RoomCreate = React.lazy(() => import('./components/Admin/RoomCreate/RoomCreate'));
+    const LayoutListRooms = HOCLayout(RoomCreate);
     return <LayoutListRooms icon={'box'}
                              items={[
                                  {url: '/admin/aulas', text: 'Aulas'},
                                  {text: 'Nueva Aula'}]}
+                             {...props}/>;
+};
+
+const PageRoomEdit = (props: any) => {
+    const RoomEdit = React.lazy(() => import('./components/Admin/RoomEdit/RoomEdit'));
+    const LayoutListRooms = HOCLayout(RoomEdit);
+    return <LayoutListRooms icon={'box'}
+                             items={[
+                                 {url: '/admin/aulas', text: 'Aulas'},
+                                 {text: 'Editar Aula'}]}
                              {...props}/>;
 };
 
@@ -124,8 +134,9 @@ export const initRouter = () => {
                 <Route exact={true} path="/logout" component={Logout} />
                 <Route exact={true} path="/admin" render={GuardComponent(MentorsList, ROL_ADMIN)} />
                 <Route exact={true} path="/admin/mentores" render={GuardComponent(MentorsList, ROL_ADMIN)} />
-                <Route exact={true} path="/admin/aulas" render={GuardComponent(PageListRooms, ROL_ADMIN)} />
-                <Route exact={true} path="/admin/aulas/crear" render={GuardComponent(PageCreateRoom, ROL_ADMIN)} />
+                <Route exact={true} path="/admin/aulas" render={GuardComponent(PageRoomList, ROL_ADMIN)} />
+                <Route exact={true} path="/admin/aulas/crear" render={GuardComponent(PageRoomCreate, ROL_ADMIN)} />
+                <Route exact={true} path="/admin/aulas/editar/:room/:block" render={GuardComponent(PageRoomEdit, ROL_ADMIN)} />
                 <Route exact={true} path="/admin/agregar-mentor" render={GuardComponent(PageCreateMentor, ROL_ADMIN)} />
                 <Route exact={true} path="/admin/editar-mentor/:id" render={GuardComponent(PageEditMentor, ROL_ADMIN)} />
                 <Route exact={true} path="/admin/reportes" render={GuardComponent(PageReports, ROL_ADMIN)}/>

@@ -19,9 +19,14 @@ export interface IRoomAdminCreateResponse {
     maxStudents: number;
 }
 
+export interface IRoomAdminArea extends IArea {
+    enabled?: boolean;
+}
+
 export interface IRoomAdminCreateRequest {
     description: string;
     maxStudents: number;
+    minStudents?: number;
     interestAreasId: string[];
     block: string;
     site: string;
@@ -30,10 +35,11 @@ export interface IRoomAdminCreateRequest {
 export interface IRoomAdminCreateForm {
     block?: IBlock;
     description?: string;
-    interestAreas?: IArea[];
+    interestAreas?: IRoomAdminArea[];
     maxStudents?: number;
     site?: ISites;
 }
+
 
 class RoomAdminCreate {
     public room: IRoomAdminCreateForm;

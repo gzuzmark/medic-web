@@ -8,6 +8,7 @@ import {LIGHT_TEXT, Small1} from "../MentorText";
 
 export interface IPropsMentorInputNumber {
     max: number;
+    min?: number;
     value?: string;
     onChange: (n: number) => void
     onBlur?: (n: any) => void
@@ -31,6 +32,11 @@ const getValidNumber = (numericValue: number, max: number) => {
     return value;
 }
 
+interface IFieldContainer {
+    min: number;
+    max: number;
+    value: number;
+}
 const FieldContainer = styled.div`
     .react-numeric-input{
         b {
@@ -52,7 +58,13 @@ const FieldContainer = styled.div`
             &:nth-child(3) {
                 bottom: 1px!important;
                 i {
-                    border-color: transparent ${colors.BACKGROUND_COLORS.background_purple} ${colors.BACKGROUND_COLORS.background_purple}!important;
+                    border-color: ${(props: IFieldContainer) => {
+                        let color = colors.BACKGROUND_COLORS.background_purple;
+                        if (props.min === props.value) {
+                            color = colors.MISC_COLORS.background_grey_2;
+                        }
+                        return `transparent ${color} ${color}!important`
+                    }}
                     margin: -0.75ex 0px 0px -0.50ex!important;
                     transform: rotate(45deg);
                 }
@@ -60,7 +72,13 @@ const FieldContainer = styled.div`
             &:nth-child(2) {
                 top: 1px!important;
                 i {
-                    border-color: transparent ${colors.BACKGROUND_COLORS.background_purple} ${colors.BACKGROUND_COLORS.background_purple}!important;
+                    border-color: ${(props: IFieldContainer) => {
+                        let color = colors.BACKGROUND_COLORS.background_purple;
+                        if (props.max === props.value) {
+                            color = colors.MISC_COLORS.background_grey_2;
+                        }
+                        return `transparent ${color} ${color}!important;`    
+                    }}
                     margin: -0.25ex 0px 0px -0.50ex!important;
                     transform: rotate(-135deg);
                 }
@@ -97,6 +115,7 @@ const FieldContainer = styled.div`
 
 const MentorInputNumber: React.FC<IPropsMentorInputNumber> = (props) => {
     let timer = 0 as any;
+    const min = typeof(props.min) === "undefined" ? 1 : props.min;
     const onChange = (numericValue: number) => {
         clearTimeout(timer);
         timer = setTimeout(() => {
@@ -104,9 +123,9 @@ const MentorInputNumber: React.FC<IPropsMentorInputNumber> = (props) => {
                 const value = getValidNumber(numericValue, props.max);
                 props.onChange(Number(value));
             } else {
-                props.onChange(1);
+                props.onChange(min);
             }
-        }, 1000)
+        }, 400)
     };
 
     const onBlur = (e: any) => {
@@ -114,11 +133,13 @@ const MentorInputNumber: React.FC<IPropsMentorInputNumber> = (props) => {
     };
 
     return (
-        <FieldContainer style={{...props.styleContainer}}>
+        <FieldContainer style={{...props.styleContainer}}
+                        max={props.max} min={min}
+                        value={!!Number(props.value) ? Number(props.value) : min}>
             {props.label && <FormLabel label={props.label} info={props.info} uppercase={true}/>}
             <InputContainer>
                 <NumericInput
-                    min={1}
+                    min={min}
                     max={props.max}
                     value={props.value}
                     onBlur={onBlur}

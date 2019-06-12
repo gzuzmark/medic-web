@@ -1,5 +1,6 @@
 import * as React from "react";
 import styled from "styled-components";
+import {ButtonNormal} from "../../../../../common/Buttons/Buttons";
 import MentorModalBase from "../../../../../common/ConsoleModal/MentorModalBase";
 import colors from "../../../../../common/MentorColor";
 import {LIGHT_TEXT, Small2, Subhead1} from "../../../../../common/MentorText";
@@ -37,6 +38,13 @@ const Direction = styled(Small2)`
 
 const SkillTitle = styled(Small2)`
     margin: 8px 0;
+`;
+
+const ButtonsContainer = styled.div`
+    display: flex;
+    padding: 38px 0 0 0;
+    justify-content: center;
+    width: 100%;
 `;
 
 const areaService = new InterestAreaService();
@@ -81,6 +89,9 @@ const ModalRoom: React.FC<IPropsModalRoom> = (props) => {
                         )) :
                         <Small2 weight={LIGHT_TEXT}>No tiene áreas relacionadas</Small2>}
                 </AreaContainer>
+                <ButtonsContainer>
+                    <ButtonNormal link={true} attrs={{href: `/admin/aulas/editar/${props.room.id}/${props.block.id}`}} text="Editar"/>
+                </ButtonsContainer>
             </ModalRoomContainer>
         </MentorModalBase>
     )

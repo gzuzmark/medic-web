@@ -5,6 +5,7 @@ import colors, {FONTS} from "../../../../../common/MentorColor";
 import {Body1, LIGHT_TEXT, Small2, Subhead1} from "../../../../../common/MentorText";
 import {IBlock} from "../../../../../domain/Blocks/Blocks";
 import {IRoom} from "../../../../../domain/Room/Room";
+import {ROOM_CREATE_ACTION} from "../../../../../repository/RoomRepository";
 
 const AccordionHeader = styled.div`
     align-items: center;
@@ -27,6 +28,7 @@ const AccordionOrnament = styled.div`
 interface IRoomStyled {
     empty: boolean;
     isNew: boolean;
+    isHighlighted: boolean;
 }
 
 const RoomStyled = styled.div`
@@ -48,7 +50,7 @@ const RoomStyled = styled.div`
         background: ${(props: IRoomStyled) => props.empty ? colors.BACKGROUND_COLORS.background_disabled_button : colors.MISC_COLORS.background_grey_1}; 
     }
     ${(props: IRoomStyled) => {
-        return props.isNew ? `
+        return props.isHighlighted ? `
             animation: highlightBackground 2s linear 4s forwards;
             background: ${colors.MISC_COLORS.background_grey_1};
             @keyframes highlightBackground {
@@ -102,10 +104,13 @@ export const buildTitle = (block: IBlock) => {
             <AccordionTitle>{block.address} ({block.name})</AccordionTitle>
         </AccordionHeader>)
 }
-
+interface IRepositoryRooms {
+    defaultRooms: string[];
+    action: string;
+}
 const LIMIT_NAME_ROOM = 25;
 
-export const buildBody = (rooms: IRoom[], click: (r: IRoom) => void, defaultRooms: string[]) => {
+export const buildBody = (rooms: IRoom[], click: (r: IRoom) => void, insertedRooms: IRepositoryRooms) => {
     const onClick = (r: IRoom) => {
         return () => click(r);
     };
@@ -113,17 +118,23 @@ export const buildBody = (rooms: IRoom[], click: (r: IRoom) => void, defaultRoom
     return(
         <RoomContainer empty={!!rooms.length}>
             {rooms.length === 0 && <EmptyRooms><Body1 color={FONTS.light}>Aún no hay aulas</Body1></EmptyRooms>}
-            {rooms.map((room) => (
-                <RoomStyled onClick={onClick(room)} empty={false} key={room.id} isNew={defaultRooms.indexOf(room.id) !== -1}>
-                    <RoomName weight={LIGHT_TEXT} color={FONTS.medium} >
-                        {room.description.length > LIMIT_NAME_ROOM ?
+            {rooms.map((room) => {
+                const isNew = insertedRooms.defaultRooms.indexOf(room.id) !== -1;
+                return (
+                    <RoomStyled onClick={onClick(room)}
+                            empty={false}
+                            key={room.id}
+                            isHighlighted={isNew}
+                            isNew={isNew && insertedRooms.action === ROOM_CREATE_ACTION}>
+                        <RoomName weight={LIGHT_TEXT} color={FONTS.medium}>
+                            {room.description.length > LIMIT_NAME_ROOM ?
                             `${room.description.substring(0, LIMIT_NAME_ROOM)}...` :
                             room.description}
-                    </RoomName>
-                </RoomStyled>
-            ))}
+                        </RoomName>
+                    </RoomStyled>)
+            })}
             {Array.apply(null, Array(empty)).map((n: any, index: number) => (
-                <RoomStyled empty={true} key={`NullRoom_${index}`} isNew={false}>
+                <RoomStyled empty={true} key={`NullRoom_${index}`} isNew={false} isHighlighted={false}>
                     &nbsp;
                 </RoomStyled>
             ))}

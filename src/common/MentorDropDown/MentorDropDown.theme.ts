@@ -37,19 +37,22 @@ const baseStyle = (error: boolean, disabled: boolean, empty?: boolean)  => {
         multiValue: (provided: any, state: any) => {
             const display = 'flex';
             const flexDirection = 'row-reverse';
-            const backgroundColor = colors.MISC_COLORS.background_grey_1;
+            const backgroundColor = state.data.disabled ?
+                colors.BACKGROUND_COLORS.background_disabled : colors.MISC_COLORS.background_grey_1;
             return{...provided, display, flexDirection, backgroundColor};
         },
         multiValueLabel: (provided: any, state: any) => {
             const paddingRight = 6;
-            const paddingLeft = 0;
-            const color = colors.TEXT_COLORS.font_blue_grey;
-            return{...provided, ...baseFont, color, paddingLeft, paddingRight};
+            const paddingLeft = state.data.disabled ? 6 : 0;
+            const color = state.data.disabled ?
+                colors.TEXT_COLORS.font_disabled : colors.TEXT_COLORS.font_blue_grey;
+            return {...provided, ...baseFont, color, paddingLeft, paddingRight};
         },
         multiValueRemove: (provided: any, state: any) => {
             const cursor = 'pointer';
             const backgroundColor = 'transparent!important';
-            return{...provided, backgroundColor, cursor};
+            const display = state.data.disabled ? 'none' : 'flex';
+            return{...provided, backgroundColor, cursor, display};
         },
         noOptionsMessage: (provided: any, state: any) => {
             const height = 42;

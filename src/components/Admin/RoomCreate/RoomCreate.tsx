@@ -4,20 +4,20 @@ import LoaderFullScreen from "../../../common/Loader/LoaderFullsScreen";
 import {FONTS} from "../../../common/MentorColor";
 import {Heading2, LIGHT_TEXT, Subhead1} from "../../../common/MentorText";
 import RoomAdminCreate, {IRoomAdminCreateRequest, IRoomAdminCreateResponse} from "../../../domain/Room/Room";
-import RoomRepository from "../../../repository/RoomRepository";
+import RoomRepository, {ROOM_CREATE_ACTION} from "../../../repository/RoomRepository";
 import RoomService from "../../../services/Room/Room.service";
 import {formTemplateHOC} from "../MentorFormBase/components/FormTemplate/FormTemplateHOC";
 import ButtonCreateRoom from "./components/ButtonsCreateRoom/ButtonsCreateRoom";
 import FormCreateRoom from "./components/FormCreateRoom/FormCreateRoom";
-import RoomModalSuccess from "./components/RoomModalSuccess/RoomModalSuccess";
-import CreateRoomContext from "./CreateRoom.context";
-import roomCreateSchema from "./CreateRoom.validation";
+import RoomModalCreate from "./components/RoomModalCreate/RoomModalCreate";
+import RoomCreateContext from "./RoomCreate.context";
+import roomCreateSchema from "./RoomCreate.validation";
 
 const FormCreateRoomTemplate = formTemplateHOC(FormCreateRoom);
 const roomAdmin = new RoomAdminCreate({});
 const roomService = new RoomService();
 
-const CreateRoom: React.FC<{}> = () => {
+const RoomCreate: React.FC<{}> = () => {
     const [loading, setLoading] = React.useState(false);
     const [success, setSuccess] = React.useState(false);
     const [isRepeated, setIsRepeated] = React.useState(true);
@@ -26,7 +26,12 @@ const CreateRoom: React.FC<{}> = () => {
         roomService.create(values.block, values).then((room: IRoomAdminCreateResponse) => {
             setLoading(false);
             setSuccess(true);
-            RoomRepository.addedRoomInsert(values.site, values.block, room.id);
+            RoomRepository.addedRoomInsert({
+                action: ROOM_CREATE_ACTION,
+                block: values.block,
+                room: room.id,
+                site: values.site,
+            });
         }).catch(() => {
             setLoading(false);
             setSuccess(false);
@@ -36,7 +41,7 @@ const CreateRoom: React.FC<{}> = () => {
     return (
         <div className="u-LayoutMargin" style={{textAlign: 'center', width: 874, position: 'relative'}}>
             {loading && <LoaderFullScreen text={'Cargando...'} modal={true}/>}
-            <RoomModalSuccess success={success}/>
+            <RoomModalCreate success={success}/>
             <Heading2 color={FONTS.purple}>Nueva aula</Heading2>
             <Subhead1 weight={LIGHT_TEXT}>Ingresa los datos del aula que deseas ingresar</Subhead1>
             <Formik
@@ -45,7 +50,7 @@ const CreateRoom: React.FC<{}> = () => {
                 onSubmit={onSubmit}>
                 {({ errors, touched, values, handleBlur, handleChange, handleSubmit, setFieldValue, setFieldTouched, setValues, setTouched}) => {
                     return (
-                        <CreateRoomContext.Provider
+                        <RoomCreateContext.Provider
                             value={{
                                 errors,
                                 handleBlur,
@@ -63,7 +68,7 @@ const CreateRoom: React.FC<{}> = () => {
                                 <FormCreateRoomTemplate />
                                 <ButtonCreateRoom onSubmit={handleSubmit}/>
                             </form>
-                        </CreateRoomContext.Provider>
+                        </RoomCreateContext.Provider>
                     )
                 }}
             </Formik>
@@ -71,4 +76,4 @@ const CreateRoom: React.FC<{}> = () => {
     )
 };
 
-export default CreateRoom;
+export default RoomCreate;
