@@ -2,6 +2,7 @@ export interface IArea {
     id: string;
     name: string;
     type: string;
+    status?: string;
     sessionTypes: ISessionTypes[];
     skills: string[];
 }

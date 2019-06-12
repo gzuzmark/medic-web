@@ -2,8 +2,9 @@ import * as React from "react";
 import styled from "styled-components";
 import {ButtonNormal} from "../../../../../common/Buttons/Buttons";
 import MentorModalBase from "../../../../../common/ConsoleModal/MentorModalBase";
-import colors from "../../../../../common/MentorColor";
+import colors, {FONTS} from "../../../../../common/MentorColor";
 import {LIGHT_TEXT, Small2, Subhead1} from "../../../../../common/MentorText";
+import {STATUS_NEW} from "../../../../../domain/Area/const";
 import {IBlock} from "../../../../../domain/Blocks/Blocks";
 import {IRoom} from "../../../../../domain/Room/Room";
 import {ISites} from "../../../../../domain/Sites/Sites";
@@ -52,23 +53,21 @@ const areaService = new InterestAreaService();
 const ModalRoom: React.FC<IPropsModalRoom> = (props) => {
     const [areas, setAreas] = React.useState([] as IArea[]);
     React.useEffect(() => {
-        areaService.listAreas().then((items: IArea[]) => {
+        areaService.listAreas('all').then((items: IArea[]) => {
             setAreas(items);
         })
     }, [0]);
 
-    const getNameArea = (id: any): string => {
-        let name = '';
+    const getArea = (id: any): IArea => {
         const area = areas.find((a) => a.id === id);
-        if (area) {
-            name = area.name
-        }
-        return name;
+        return area || {} as IArea;
     };
 
     const getOrderedAreas = (ids: string[]) => {
-        const nameAreas = ids.map(id => getNameArea(id));
-        return nameAreas.sort();
+        const areasList = ids.map(id => getArea(id));
+        const areasNew = areasList.filter((area) => area.status === STATUS_NEW);
+        const areasPublished = areasList.filter((area) => area.status !== STATUS_NEW);
+        return [...areasNew, ...areasPublished]
     };
 
     return (
@@ -84,8 +83,11 @@ const ModalRoom: React.FC<IPropsModalRoom> = (props) => {
                 <SkillTitle>Áreas de Interés relacionadas:</SkillTitle>
                 <AreaContainer>
                     {props.room.interestAreasId ?
-                        getOrderedAreas(props.room.interestAreasId).map((nameArea, index) => (
-                            <Small2 weight={LIGHT_TEXT} key={`area_index_${index}`}>{nameArea}</Small2>
+                        getOrderedAreas(props.room.interestAreasId).map((area, index) => (
+                            <Small2 weight={LIGHT_TEXT} key={`area_index_${index}`}
+                                    color={area.status === STATUS_NEW ? FONTS.disabled : FONTS.dark}>
+                                {area.name}
+                            </Small2>
                         )) :
                         <Small2 weight={LIGHT_TEXT}>No tiene áreas relacionadas</Small2>}
                 </AreaContainer>
