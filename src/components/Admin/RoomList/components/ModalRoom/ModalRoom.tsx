@@ -67,7 +67,7 @@ const ModalRoom: React.FC<IPropsModalRoom> = (props) => {
         const areasList = ids.map(id => getArea(id));
         const areasNew = areasList.filter((area) => area.status === STATUS_NEW);
         const areasPublished = areasList.filter((area) => area.status !== STATUS_NEW);
-        return [...areasNew, ...areasPublished]
+        return [...areasPublished, ...areasNew]
     };
 
     return (
