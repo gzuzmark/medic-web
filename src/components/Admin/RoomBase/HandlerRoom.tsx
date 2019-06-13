@@ -18,7 +18,7 @@ const handlerRoom = (block: string, context: any, room?: string) => {
             setLoading(false);
             context.setIsRepeated(true);
             setState({
-                error: 'Esta aula ya existe',
+                error: 'Esta aula ya existe en la dirección seleccionada.',
                 loadSuccess: ''
             })
         }).catch((error: any) => {
