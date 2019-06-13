@@ -22,9 +22,9 @@ const RoomModalEditFail: React.FC<IPropsRoomModalFail> = (props) => {
                 confirm={reloadPage}
                 generic={{
                     button: "Entendido",
-                    description: <Body1 style={{margin: '0'}} weight={LIGHT_TEXT}>Parece que pcurrió un error. Revisa los datos e inténtalo <br/> nuevamente.</Body1>,
+                    description: <Body1 style={{margin: '0'}} weight={LIGHT_TEXT}>Parece que ocurrió un error. Revisa los datos e inténtalo <br/> nuevamente.</Body1>,
                     image: <Icon name={'alert'} />,
-                    title: "¡Uy! No se pudo editar la sesión"
+                    title: "¡Uy! No se pudo editar el aula"
                 }} />
         </MentorModalBase>
     )
