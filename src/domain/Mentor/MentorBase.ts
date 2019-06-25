@@ -19,3 +19,10 @@ export interface IMentorBase {
     status: string;
     skills?: ISkill[];
 }
+
+export interface IMentorPaginated {
+    pageSize: number;
+    totalItems: number;
+    currentPage: number;
+    items: IMentorBase[];
+}

@@ -1,4 +1,4 @@
-import {IMentorBase} from "../../domain/Mentor/MentorBase";
+import {IMentorBase, IMentorPaginated} from "../../domain/Mentor/MentorBase";
 import {IMentorBaseForm} from "../../domain/Mentor/MentorBaseForm";
 import {IMentorEditParams} from "../../domain/Mentor/MentorEditProfile";
 import {IMentorSession} from '../../interfaces/Mentor.interface';
@@ -7,12 +7,12 @@ import BaseRequest from '../BaseRequest';
 class MentorService extends BaseRequest {
     private verifyMenorCancelToken: any = null;
 
-    public list(skillId?: string): Promise<IMentorBase[]> {
+    public list(skillId: string, page: number, pageSize: number): Promise<IMentorPaginated> {
         return new Promise((resolve, reject) => {
-            this.instance.get(`ugo-admin/mentors?skill=${skillId}&pageNumber=1&pageSize=30` )
+            this.instance.get(`ugo-admin/mentors?skill=${skillId}&pageNumber=${page}&pageSize=${pageSize}` )
                 .then((response: any) => {
                     if (response.status === 200 && response.data) {
-                        resolve(response.data.items);
+                        resolve(response.data);
                     } else {
                         reject(null);
                     }

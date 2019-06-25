@@ -374,6 +374,13 @@
   dependencies:
     "@types/react" "*"
 
+"@types/react-infinite-scroller@^1.2.1":
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/@types/react-infinite-scroller/-/react-infinite-scroller-1.2.1.tgz#1cd747ef8f50d3c883e375c0491a906e5436fcb2"
+  integrity sha512-64bpbqdSgtmy1zSZ2AQoFzguwZO7TyKjqJRTEnfNMCAQbnrX90kz+rYufZyY9CmzhwpXMwRO8xR9fMQnbYUkgQ==
+  dependencies:
+    "@types/react" "*"
+
 "@types/react-js-pagination@3.0.1":
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/@types/react-js-pagination/-/react-js-pagination-3.0.1.tgz#5dd082e9e12b4aaac651d338932faf6dc18f6225"
@@ -8324,6 +8331,13 @@ react-image-crop@^6.0.12:
   integrity sha512-KIB7SOp99QPhCEtA+HyD/BGBF3M6MaLbXCj842dTt1d+YHd6ebLuAS4UP3E5zI1H9is8EN5XegYghMl5MO6fhw==
   dependencies:
     "@types/react-image-crop" "^3.0.1"
+
+react-infinite-scroller@^1.2.4:
+  version "1.2.4"
+  resolved "https://registry.yarnpkg.com/react-infinite-scroller/-/react-infinite-scroller-1.2.4.tgz#f67eaec4940a4ce6417bebdd6e3433bfc38826e9"
+  integrity sha512-/oOa0QhZjXPqaD6sictN2edFMsd3kkMiE19Vcz5JDgHpzEJVqYcmq+V3mkwO88087kvKGe1URNksHEOt839Ubw==
+  dependencies:
+    prop-types "^15.5.8"
 
 react-input-autosize@^2.2.1:
   version "2.2.1"
