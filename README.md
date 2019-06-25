@@ -10,7 +10,3 @@ ugo console
 ugo mentores
 ----
 - ios mentores
-
-ugo conference
-----------
-- mobile webrtc

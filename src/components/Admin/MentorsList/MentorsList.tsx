@@ -125,7 +125,7 @@ class MentorsList extends React.Component <{}, IStateListMentor> {
             })
         });
     }
-
+    /*
     private _searchMentors(name: string, option: IPropsMentorOptionsDropDown) {
         if (this.state.selectedFilter !== option.value) {
             this.setState({selectedFilter: option.value}, () => {
@@ -145,6 +145,19 @@ class MentorsList extends React.Component <{}, IStateListMentor> {
 
             });
         }
+    }
+    */
+
+    private _searchMentors(name: string, option: IPropsMentorOptionsDropDown) {
+        this.setState({loading: true, selectedFilter: option.value}, () => {
+            this.mentorService.list(option.value).then((mentors: IMentorBase[]) => {
+                window.scrollTo(0, 0);
+                this.setState({
+                    filteredMentors: mentors,
+                    loading: false,
+                })
+            });
+        });
     }
 
     private loadSkills() {
