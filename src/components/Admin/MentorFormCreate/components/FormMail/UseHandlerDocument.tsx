@@ -84,8 +84,6 @@ const useHandlerDocument = (
     };
 
     const updateMentorData = (data?: IMentorBaseForm) => {
-        context.setFieldValue("utp", data ? data.utp : false);
-        context.setFieldTouched("utp", !!data);
         context.setFieldValue("lastName", data ? data.lastname : '');
         context.setFieldTouched("lastName", !!data);
         context.setFieldValue("firstName", data ? data.name : '');
