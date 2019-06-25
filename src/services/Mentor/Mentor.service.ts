@@ -9,7 +9,7 @@ class MentorService extends BaseRequest {
 
     public list(skillId?: string): Promise<IMentorBase[]> {
         return new Promise((resolve, reject) => {
-            this.instance.get('ugo-admin/mentors?skill=' + skillId)
+            this.instance.get(`ugo-admin/mentors?skill=${skillId}&pageNumber=1&pageSize=30` )
                 .then((response: any) => {
                     if (response.status === 200 && response.data) {
                         resolve(response.data.items);
