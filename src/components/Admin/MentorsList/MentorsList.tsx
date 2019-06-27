@@ -56,7 +56,7 @@ class MentorsList extends React.Component <{}, IStateListMentor> {
         this.getNewMentors = this.getNewMentors.bind(this);
     }
 
-    public componentDidMount() {
+    public componentWillMount() {
         this.loadSkills();
         const mentors = MentorRepository.addedMentorsGet();
         this.setState({
@@ -65,6 +65,7 @@ class MentorsList extends React.Component <{}, IStateListMentor> {
         });
         MentorRepository.addedMentorsClean();
         window.scrollTo(0, 0);
+
     }
 
     public renderMenu() {
@@ -127,11 +128,9 @@ class MentorsList extends React.Component <{}, IStateListMentor> {
                         <Headline1 color={FONTS.medium}>No hay resultados</Headline1>
                     </div>
                 )}
-                {!this.state.loading && this.state.mentors && this.state.mentors.map((item, index) => {
+                {!this.state.loading && !this.state.initialLoad && this.state.mentors.map((item, index) => {
                     const newMentorStyle =  this.getNewMentors().indexOf(item.id) !== -1 ? {order: --this.counter, background: colors.MISC_COLORS.background_grey_1} : {};
                     const disableStyle =  item.status === MENTOR_STATUS.DISABLED ? {borderBottom: `1px solid ${colors.MISC_COLORS.background_grey_1}`} : {borderBottom: `1px solid ${colors.MISC_COLORS.background_grey_2}`};
-                    // tslint:disable:no-console
-                    console.log(item);
                     return (
                         <div key={'list-mentor-row' + item.id}
                              className={`ListMentors_row ListMentors_row--border u-ListMentors_padding`}
@@ -157,7 +156,7 @@ class MentorsList extends React.Component <{}, IStateListMentor> {
                 const hasMore =  this.scroller.pageLoaded * PAGE_SIZE < response.totalItems;
                 this.setState({
                     hasMore,
-                    initialLoad: true,
+                    initialLoad: false,
                     loading: false,
                     mentors: newMentors.filter((item) => !!item),
                 })
