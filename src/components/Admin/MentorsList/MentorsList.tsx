@@ -68,6 +68,10 @@ class MentorsList extends React.Component <{}, IStateListMentor> {
 
     }
 
+    public componentWillUnmount() {
+        window.scrollTo(0, 0);
+    }
+
     public renderMenu() {
         return (
             <Sticky height={244} top={80} style={{background: 'white'}}>
@@ -80,6 +84,7 @@ class MentorsList extends React.Component <{}, IStateListMentor> {
                         name={"mentors-list"}
                         triggerChange={this.changeSkill}
                         isSearchable={true}
+                        disabled={this.state.loading}
                         style={{width: 500}}
                         placeholder={"Filtrar por curso"}/>
                     <ButtonNormal text={"Agregar mentor"}
@@ -123,12 +128,12 @@ class MentorsList extends React.Component <{}, IStateListMentor> {
     private listMentors() {
         return (
             <div className="ListMentors_body u-LayoutMargin">
-                {!this.state.loading && !this.state.initialLoad && this.state.mentors.length === 0 && (
+                {!this.state.initialLoad && this.state.mentors.length === 0 && (
                     <div className="ListMentors_row ListMentors_row--center">
                         <Headline1 color={FONTS.medium}>No hay resultados</Headline1>
                     </div>
                 )}
-                {!this.state.loading && !this.state.initialLoad && this.state.mentors.map((item, index) => {
+                {!this.state.initialLoad && this.state.mentors.map((item, index) => {
                     const newMentorStyle =  this.getNewMentors().indexOf(item.id) !== -1 ? {order: --this.counter, background: colors.MISC_COLORS.background_grey_1} : {};
                     const disableStyle =  item.status === MENTOR_STATUS.DISABLED ? {borderBottom: `1px solid ${colors.MISC_COLORS.background_grey_1}`} : {borderBottom: `1px solid ${colors.MISC_COLORS.background_grey_2}`};
                     return (
@@ -138,32 +143,35 @@ class MentorsList extends React.Component <{}, IStateListMentor> {
                             <ListMentorsBody mentor={item}/>
                         </div>);
                 })}
-                {this.state.loading &&
-                <div className="ListMentors_row ListMentors_row--center">
-                    <Loader />
-                </div>}
             </div>
         )
     }
 
     private loadNextPage(page: number) {
-        const ids = this.state.newMentors.map((m) => m.id);
-        this.mentorService.list(this.state.selectedFilter, ids, page, PAGE_SIZE).then((response: IMentorPaginated) => {
-            const mentors = response.items;
-            if(mentors) {
-                const currentMentors = !this.state.mentors ? [] : this.state.mentors;
-                const newMentors = [...currentMentors, ...mentors];
-                const hasMore =  this.scroller.pageLoaded * PAGE_SIZE < response.totalItems;
-                this.setState({
-                    hasMore,
-                    initialLoad: false,
-                    loading: false,
-                    mentors: newMentors.filter((item) => !!item),
-                })
-            } else {
-                this.setState({hasMore: false})
-            }
-        });
+        if (!this.state.loading) {
+            const ids = this.state.newMentors.map((m) => m.id);
+            this.setState({loading: true}, () => {
+                this.mentorService.list(this.state.selectedFilter, ids, page, PAGE_SIZE).then((response: IMentorPaginated) => {
+                    const mentors = response.items;
+                    if(mentors) {
+                        const currentMentors = !this.state.mentors ? [] : this.state.mentors;
+                        const newMentors = [...currentMentors, ...mentors];
+                        const hasMore =  this.scroller.pageLoaded * PAGE_SIZE < response.totalItems;
+
+                        this.scroller.pageLoaded = page;
+                        this.setState({
+                            hasMore,
+                            initialLoad: false,
+                            loading: false,
+                            mentors: newMentors.filter((item) => !!item),
+                        })
+                    } else {
+                        this.setState({hasMore: false})
+                    }
+                });
+            })
+
+        }
     }
 
     private changeSkill(name: string, option: IPropsMentorOptionsDropDown) {
