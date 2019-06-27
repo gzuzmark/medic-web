@@ -158,7 +158,7 @@ class MentorFormCreate extends React.Component <{}, IStateMentorCreate> {
         this.setState({saving: true});
         this.mentorService.save(this.mentorCreateData.mentor).then((response: any) => {
             this.setState({saving: false, modal: true});
-            MentorRepository.addedMentorsInsert(response.id);
+            MentorRepository.addedMentorsInsert(response);
         }).catch(() => {
             this.setState({saving: false});
         })
