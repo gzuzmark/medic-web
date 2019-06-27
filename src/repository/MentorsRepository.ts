@@ -1,3 +1,5 @@
+import {IMentorBase} from "../domain/Mentor/MentorBase";
+
 const keyMentorAdded = 'NEW_MENTOR_ID';
 
 export const ROL_MENTOR = 'mentor';
@@ -7,14 +9,14 @@ export const MentorRepository = {
     addedMentorsClean() {
         localStorage.setItem(keyMentorAdded, "");
     },
-    addedMentorsGet(): string[] {
-        const mentors = localStorage.getItem(keyMentorAdded) || '';
-        return mentors.split(",")
+    addedMentorsGet(): IMentorBase[] {
+        const mentors = localStorage.getItem(keyMentorAdded) || '[]';
+        return JSON.parse(mentors);
     },
-    addedMentorsInsert(id: any) {
+    addedMentorsInsert(mentor: any) {
         const mentors = this.addedMentorsGet();
-        mentors.push(id);
-        localStorage.setItem(keyMentorAdded, mentors.join(","));
+        mentors.push(mentor);
+        localStorage.setItem(keyMentorAdded, JSON.stringify(mentors));
     }
 };
 
