@@ -84,7 +84,7 @@ class MentorsList extends React.Component <{}, IStateListMentor> {
                         name={"mentors-list"}
                         triggerChange={this.changeSkill}
                         isSearchable={true}
-                        disabled={this.state.loading}
+                        disabled={this.state.initialLoad}
                         style={{width: 500}}
                         placeholder={"Filtrar por curso"}/>
                     <ButtonNormal text={"Agregar mentor"}
@@ -126,11 +126,17 @@ class MentorsList extends React.Component <{}, IStateListMentor> {
     }
 
     private listMentors() {
+        const noResults = !this.state.initialLoad && this.state.mentors.length === 0;
         return (
             <div className="ListMentors_body u-LayoutMargin">
-                {!this.state.initialLoad && this.state.mentors.length === 0 && (
+                {!this.state.loading && noResults && (
                     <div className="ListMentors_row ListMentors_row--center">
                         <Headline1 color={FONTS.medium}>No hay resultados</Headline1>
+                    </div>
+                )}
+                {this.state.loading && noResults && (
+                    <div className="ListMentors_row ListMentors_row--center">
+                        <Loader />
                     </div>
                 )}
                 {!this.state.initialLoad && this.state.mentors.map((item, index) => {
@@ -177,7 +183,7 @@ class MentorsList extends React.Component <{}, IStateListMentor> {
     private changeSkill(name: string, option: IPropsMentorOptionsDropDown) {
         window.scrollTo(0, 0);
         const ids = this.state.newMentors.map((m) => m.id);
-        this.setState({loading: true, selectedFilter: option.value, hasMore: false}, () => {
+        this.setState({loading: true, selectedFilter: option.value, hasMore: false, mentors: []}, () => {
             this.mentorService.list(option.value, ids,1, PAGE_SIZE).then((response: IMentorPaginated) => {
                 this.scroller.pageLoaded = 1;
                 const hasMore =  this.scroller.pageLoaded * PAGE_SIZE < response.totalItems;

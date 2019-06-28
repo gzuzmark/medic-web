@@ -6,10 +6,16 @@ import BaseRequest from '../BaseRequest';
 
 class MentorService extends BaseRequest {
     private verifyMenorCancelToken: any = null;
+    private listMenorCancelToken: any = null;
 
     public list(skillId: string, mentorsId: string[], page: number, pageSize: number): Promise<IMentorPaginated> {
+        if (!!this.listMenorCancelToken) {
+            this.listMenorCancelToken.cancel();
+        }
+        this.listMenorCancelToken = this.generateCancelToken();
+        const instance = this.getCustomInstance(this.listMenorCancelToken);
         return new Promise((resolve, reject) => {
-            this.instance.get(`ugo-admin/mentors?skill=${skillId}&pageNumber=${page}&pageSize=${pageSize}&exclude=${mentorsId.join(",")}` )
+            instance.get(`ugo-admin/mentors?skill=${skillId}&pageNumber=${page}&pageSize=${pageSize}&exclude=${mentorsId.join(",")}` )
                 .then((response: any) => {
                     if (response.status === 200 && response.data) {
                         resolve(response.data);
