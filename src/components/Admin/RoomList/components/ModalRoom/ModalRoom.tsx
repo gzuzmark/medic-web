@@ -50,6 +50,18 @@ const ButtonsContainer = styled.div`
 
 const areaService = new InterestAreaService();
 
+const sortAreaByName = (a: IArea, b: IArea) => {
+    const nameA = a.name.toUpperCase();
+    const nameB = b.name.toUpperCase();
+    if (nameA < nameB) {
+        return -1;
+    }
+    if (nameA > nameB) {
+        return 1;
+    }
+    return 0;
+};
+
 const ModalRoom: React.FC<IPropsModalRoom> = (props) => {
     const [areas, setAreas] = React.useState([] as IArea[]);
     React.useEffect(() => {
@@ -67,6 +79,8 @@ const ModalRoom: React.FC<IPropsModalRoom> = (props) => {
         const areasList = ids.map(id => getArea(id));
         const areasNew = areasList.filter((area) => area.status === STATUS_NEW);
         const areasPublished = areasList.filter((area) => area.status !== STATUS_NEW);
+        areasNew.sort(sortAreaByName);
+        areasPublished.sort(sortAreaByName);
         return [...areasPublished, ...areasNew]
     };
 
