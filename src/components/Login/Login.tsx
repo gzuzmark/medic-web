@@ -116,7 +116,7 @@ class Login extends React.Component <{}, IStateLoginForm> {
         this._errorLogin(
             actions.setSubmitting,
             actions.setFieldError,
-            ErrorsMessage["40005"]);
+            ErrorsMessage["50000"]);
     }
 
     private cleanError() {
