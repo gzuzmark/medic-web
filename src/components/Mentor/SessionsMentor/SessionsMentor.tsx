@@ -420,7 +420,7 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
             sessions = this.studentChecklistCollector.sessions;
         }
         return {
-            addEnabled: this.sessionMentor.isPhysical() && !this.sessionMentor.isNoAttended,
+            addEnabled: !this.sessionMentor.isNoAttended, // this.sessionMentor.isPhysical() &&
             attendedButton: this.studentChecklistCollector.isAllStudentsAttended || this.sessionMentor.isDisableAttended,
             noAttendedButton:this.studentChecklistCollector.atLeastOneAttended || this.sessionMentor.isDisableNoAttended,
             noResultsAdd: false,
