@@ -29,6 +29,14 @@ export class SessionMentorBean extends SessionBean {
         )
     }
 
+    get locationType(): string {
+        let type = '';
+        if (this.session.location) {
+            type = this.session.location.type;
+        }
+        return type;
+    }
+
     get isNoAttended() {
         return this.session.status === SESSION_STATUS.NO_ATTENDED;
     }

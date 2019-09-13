@@ -358,7 +358,7 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
             const idStudent = user.student.id ? user.student.id : '';
             const modalAdd = {...this.state.modalAdd, loading: true};
             this.setState({ modalAdd });
-            this.studentsService.addStudentToSession(this.sessionId, idStudent, this.mentorId)
+            this.studentsService.addStudentToSession(this.sessionId, idStudent, this.mentorId, this.sessionMentor.locationType)
                 .then((response: {id: string}) => {
                     user.id = response.id;
                     user.status = STUDENT_STATUS.SCHEDULED;

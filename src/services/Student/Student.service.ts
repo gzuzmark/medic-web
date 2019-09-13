@@ -1,4 +1,3 @@
-import {SESSION_PHYSICAL} from "../../domain/Session/SessionBean";
 import {IStudentProfile} from "../../domain/Student/IStudentProfile";
 import { IStudentChecklist } from "../../domain/StudentChecklist/StudentChecklistBean";
 import {IReportForStudent} from "../../interfaces/Reports.interface";
@@ -75,11 +74,11 @@ class StudentService extends BaseRequest {
         });
     }
 
-    public addStudentToSession(session:string, student: string, id: string): Promise<{id: string}>  {
+    public addStudentToSession(session:string, student: string, id: string, locationType: string): Promise<{id: string}>  {
         return new Promise((resolve, reject) => {
             this.instance.post(`ugo/mentors-api/sessions/${session}/students/${student}/reservation`, {
                 syncCalendar : true,
-                type : SESSION_PHYSICAL
+                type : locationType
             })
                 .then((response: any) => {
                     if (response.status === 200 && response.data) {
