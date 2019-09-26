@@ -92,6 +92,10 @@ export class SessionBean {
         return !!this.session.location && this.session.location.type === SESSION_PHYSICAL;
     }
 
+    public isUndefined(): boolean {
+        return !!this.session.location && this.session.location.type === SESSION_UNDEFINED;
+    }
+
     public getLocation(): string {
         let location = '';
         if (!!this.session.location && this.isVirtual()) {
