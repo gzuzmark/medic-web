@@ -121,7 +121,7 @@ class SessionDetail extends React.Component <IPropsSessionDetail, IStateSessionD
                                         <FilterList
                                             onChange={onChangeType}
                                             name={session.typeName(this.state.listSession)}
-                                            list={this.state.listSession.filter((item) => !item.name.startsWith('Taller'))}
+                                            list={this.state.listSession.filter((item) => !item.name.startsWith('Indefinido'))}
                                             defaultText='Presencial, Virtual, etc'/>
                                     </FormColumn>,
                                 ]} style={{marginBottom: 70}}/>
