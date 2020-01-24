@@ -162,8 +162,7 @@ class MentorsList extends React.Component <{}, IStateListMentor> {
                     if(mentors) {
                         const currentMentors = !this.state.mentors ? [] : this.state.mentors;
                         const newMentors = [...currentMentors, ...mentors];
-                        const hasMore =  this.scroller.pageLoaded * PAGE_SIZE < response.totalItems;
-
+                        const hasMore =  page * PAGE_SIZE < response.totalItems;
                         this.scroller.pageLoaded = page;
                         this.setState({
                             hasMore,
