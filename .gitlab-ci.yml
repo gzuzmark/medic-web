@@ -22,8 +22,13 @@ install_stage:
 
 build_stage_dev:
   stage: build
+  variables:
+    REACT_APP_BASE_URL: "$API_BASE_URL_DEV"
+    REACT_APP_FIREBASE_KEY: "$FIREBASE_DEPLOY_KEY_DEV"
+    REACT_APP_FIREBASE_ID: "$FIREBASE_ID_DEV"
+    REACT_APP_YANDEX_ID: "-1"
   script:
-    - REACT_ENV=stage yarn build
+    - REACT_ENV=development CI=false yarn build
   dependencies:
     - install_stage
   artifacts:
