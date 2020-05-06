@@ -18,8 +18,7 @@ install_stage:
     paths:
     - node_modules/
   only:
-    - qa
-    - prod
+    - dev
 
 build_stage_dev:
   stage: build
