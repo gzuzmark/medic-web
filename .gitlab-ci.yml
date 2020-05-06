@@ -21,7 +21,7 @@ install_stage:
     - qa
     - prod
 
-build_stage_qa:
+build_stage_dev:
   stage: build
   script:
     - REACT_ENV=stage yarn build
@@ -31,18 +31,7 @@ build_stage_qa:
     paths:
     - build/
   only:
-    - qa
-build_stage_prod:
-  stage: build
-  script:
-    - REACT_ENV=production yarn build
-  dependencies:
-    - install_stage
-  artifacts:
-    paths:
-    - build/
-  only:
-    - prod
+    - dev
 test_stage:
   stage: test
   script:
@@ -50,19 +39,11 @@ test_stage:
   dependencies:
     - install_stage
   only:
-    - qa
-    - prod
-deploy_stage_qa:
+    - dev
+deploy_stage_dev:
   stage: deploy
   only:
-    - qa
+    - dev
   script:
     - yarn global add firebase-tools --cache-folder ./.cache_yarn
-    - firebase deploy -m "Pipeline $CI_PIPELINE_ID, build $CI_BUILD_ID" --non-interactive --token $FIREBASE_DEPLOY_KEY_STAGING --project stage
-deploy_stage_prod:
-  stage: deploy
-  only:
-    - prod
-  script:
-    - yarn global add firebase-tools --cache-folder ./.cache_yarn
-    - firebase deploy -m "Pipeline $CI_PIPELINE_ID, build $CI_BUILD_ID" --non-interactive --token $FIREBASE_DEPLOY_KEY_PRODUCTION --project production
+    - firebase deploy -m "Pipeline $CI_PIPELINE_ID, build $CI_BUILD_ID" --non-interactive --token $FIREBASE_DEPLOY_KEY_DEV
