@@ -8,7 +8,6 @@ cache:
 stages:
   - install
   - build
-  - test
   - deploy
 install_stage:
   stage: install
@@ -34,14 +33,6 @@ build_stage_dev:
   artifacts:
     paths:
     - build/
-  only:
-    - dev
-test_stage:
-  stage: test
-  script:
-    - yarn test:coverage
-  dependencies:
-    - install_stage
   only:
     - dev
 deploy_stage_dev:
