@@ -21,7 +21,7 @@ const ConsoleModalConfirm: React.FC<IPropsConsoleModalConfirm> = (props) => {
             onCloseModal={props.onCloseModal}>
             <div className={'ConsoleModalConfirm_header'}>
                 {props.icon && <Icon name={props.icon}/>}
-                <Title2 color="purple">{props.title}</Title2>
+                <Title2 color="green">{props.title}</Title2>
             </div>
             <div className={'ConsoleModalConfirm_body'}>
                 {props.children}

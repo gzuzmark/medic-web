@@ -14,11 +14,11 @@ export interface ISessionsTypes {
 export const SESSION_TYPES_TUTORIES: ISessionsTypes[] = [
     {
         id: SESSION_VIRTUAL,
-        name: 'Tutoría virtual'
+        name: 'Sesión virtual'
     },
     {
         id: SESSION_PHYSICAL,
-        name: 'Tutoría presencial'
+        name: 'Sesión presencial'
     },
     {
         id: SESSION_UNDEFINED,

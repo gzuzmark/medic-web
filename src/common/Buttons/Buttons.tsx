@@ -64,16 +64,15 @@ const INVERSE_COLORS = true;
 
 const colorActive = (props: IButtonProps, inverse: boolean) => {
     const type = !!props.type ? props.type : THEME_PRIMARY;
-    const {background_white} = colors.BACKGROUND_COLORS;
-    const {dark_purple} = colors.MISC_COLORS;
-    const theme = buildTheme(inverse, dark_purple, background_white);
+    const {background_white, background_dark_green} = colors.BACKGROUND_COLORS;
+    const theme = buildTheme(inverse, background_dark_green, background_white);
     return type === THEME_PRIMARY ? theme.primary : theme.secondary;
 };
 
 const colorDefault = (props: IButtonProps, inverse: boolean) => {
     const type = !!props.type ? props.type : THEME_PRIMARY;
-    const {background_white, background_purple} = colors.BACKGROUND_COLORS;
-    const theme = buildTheme(inverse, background_purple, background_white);
+    const {background_white, background_green} = colors.BACKGROUND_COLORS;
+    const theme = buildTheme(inverse, background_green, background_white);
     return type === THEME_PRIMARY ? theme.primary : theme.secondary;
 };
 
@@ -86,9 +85,8 @@ const colorDisabled = (props: IButtonProps, inverse: boolean) => {
 
 const colorHover = (props: IButtonProps, inverse: boolean) => {
     const type = !!props.type ? props.type : THEME_PRIMARY;
-    const {background_white} = colors.BACKGROUND_COLORS;
-    const {light_purple} = colors.MISC_COLORS;
-    const theme = buildTheme(inverse, light_purple, background_white);
+    const {background_green, background_white} = colors.BACKGROUND_COLORS;
+    const theme = buildTheme(inverse, background_green, background_white);
     return type === THEME_PRIMARY ? theme.primary : theme.secondary;
 };
 
@@ -123,7 +121,7 @@ const Link: React.FC<IButtonProps> = props =>
 const ButtonNormal = styled(Button)`
   @properties disabled, loading;
   align-items: center;
-  border: 1px solid ${colors.BACKGROUND_COLORS.background_purple};
+  border: 1px solid ${colors.BACKGROUND_COLORS.background_green};
   background: ${(props: IButtonProps) => buttonTheme.colorDefault(props, !INVERSE_COLORS)};
   border-radius: 3px;
   cursor: pointer;
@@ -138,14 +136,14 @@ const ButtonNormal = styled(Button)`
     color: ${(props: IButtonProps) => buttonTheme.colorDefault(props, INVERSE_COLORS)};
   }
   &:hover:not([loading]) {
-    border: 1px solid ${colors.MISC_COLORS.light_purple};
-    background: ${(props: IButtonProps) => buttonTheme.colorHover(props, !INVERSE_COLORS)};
+    border: 1px solid ${colors.BACKGROUND_COLORS.background_green};
+    background: ${(props: IButtonProps) => buttonTheme.colorDefault(props, !INVERSE_COLORS)};
     ${Body1} {
-      color: ${(props: IButtonProps) => buttonTheme.colorHover(props, INVERSE_COLORS)};
+      color: ${(props: IButtonProps) => buttonTheme.colorDefault(props, INVERSE_COLORS)};
     }
   }
   &:active:not([loading]) {
-    border: 1px solid ${colors.MISC_COLORS.dark_purple};
+    border: 1px solid ${colors.BACKGROUND_COLORS.background_dark_green};
     background: ${(props: IButtonProps) => buttonTheme.colorActive(props, !INVERSE_COLORS)};
     ${Body1} {
       color: ${(props: IButtonProps) => buttonTheme.colorActive(props, INVERSE_COLORS)};
@@ -165,7 +163,7 @@ const ButtonNormal = styled(Button)`
     overflow: hidden;
     &:before {
       color: ${(props: IButtonProps) => props.type === THEME_SECONDARY ?
-    colors.BACKGROUND_COLORS.background_purple: colors.BACKGROUND_COLORS.background_white};
+    colors.BACKGROUND_COLORS.background_green : colors.BACKGROUND_COLORS.background_white};
       display: block;
       filter: progid:DXImageTransform.Microsoft.Alpha(enabled=false);
       margin: 0 auto;

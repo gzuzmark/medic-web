@@ -161,7 +161,7 @@ class FormManager extends React.Component <IPropsFormManager, IStateFormManager>
                 {1 === this.props.currentStep &&
                     <FormManagerContainer>
                         <FormMailTemplate
-                            title={"Para empezar, ingresa el correo del mentor"}
+                            title={"Para empezar, ingresa el correo del doctor"}
                             disableFields={this.state.disabledFields}
                             onChangeDocument={this.onChangeDocument}
                             documentStatus={this.state.documentStatus}
@@ -171,26 +171,26 @@ class FormManager extends React.Component <IPropsFormManager, IStateFormManager>
                     <FormManagerContainer>
                         <FormPersonalDataTemplate
                             disableFields={this.state.disabledFields}
-                            title={"Datos personales del mentor"}
+                            title={"Datos personales del doctor"}
                             onChangeDocument={this.onChangeDocument}
-                            subTitle={"Ingresa los datos del mentor que deseas agregar"} />
+                            subTitle={"Ingresa los datos del doctor que deseas agregar"} />
                     </FormManagerContainer>}
                 {3 === this.props.currentStep &&
                     <FormManagerContainer>
                         <FormExperienceTemplate
-                            title={"Perfil del mentor"}
+                            title={"Perfil del doctor"}
                             titleForm={"Otras experiencias laborales"}
                             name={`${values.firstName} ${values.lastName}`}
-                            subTitle={"Esta información será visible en el perfil del mentor"} >
+                            subTitle={"Esta información será visible en el perfil del doctor"} >
                             <FormImage id={"fileImageUploader"} mentor={false}/>
                         </FormExperienceTemplate>
                     </FormManagerContainer>}
                 {4 === this.props.currentStep &&
                     <FormManagerContainer>
                         <FormReviewTemplate
-                            title={"Estás agregando al mentor"}
+                            title={"Estás agregando al doctor"}
                             name={`${values.firstName} ${values.lastName}`}
-                            subTitle={"Revisa la información que agregaste del mentor"} />
+                            subTitle={"Revisa la información que agregaste del doctor"} />
                     </FormManagerContainer>}
                 <FormManagerContainer
                     style={{display: 'flex', justifyContent: 'flex-end', margin: ' 0 auto'}}>

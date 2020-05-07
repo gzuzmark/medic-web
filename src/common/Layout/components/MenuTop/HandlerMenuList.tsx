@@ -24,28 +24,30 @@ const UseHandlerMenuList = (warningProfile: boolean) => {
         const listAdmin: IMenuListItem[] = [{
             icon: 'book',
             id: 'mentor',
-            name: 'Mentores',
-            url: '/admin/mentores'
+            name: 'Doctores',
+            url: '/admin/doctores'
         }, {
             icon: 'report',
             id: 'report',
             name: 'Reportes',
             url: '/admin/reportes'
-        }, {
-            children: [{
-                id: 'room',
-                name: 'Aulas',
-                url: '/admin/aulas'
-            }],
-            icon: 'order',
-            id: 'admin',
-            name: 'Administración'
-        }];
+        },
+        // {
+        //     children: [{
+        //         id: 'room',
+        //         name: 'Aulas',
+        //         url: '/admin/aulas'
+        //     }],
+        //     icon: 'order',
+        //     id: 'admin',
+        //     name: 'Administración'
+        // }
+        ];
         const listMentor = [{
             icon: 'users',
             id: 'users',
-            name: 'Alumnos',
-            url: '/mentor/alumnos'
+            name: 'Pacientes',
+            url: '/doctor/pacientes'
         }, {
             icon: 'user',
             id: 'profile_mentor',
@@ -53,7 +55,7 @@ const UseHandlerMenuList = (warningProfile: boolean) => {
                 <Subhead1 weight={LIGHT_TEXT}>Mi perfil</Subhead1>
                 <Icon style={{fill: colors.TEXT_COLORS.font_error, marginLeft: 3}} name={"alert"}/>
             </ItemContainer> : 'Mi perfil',
-            url: '/mentor/perfil'
+            url: '/doctor/perfil'
         }];
         menuList = UserRepository.getUser().rol === ROL_ADMIN ? listAdmin : listMentor;
         menuList.push({

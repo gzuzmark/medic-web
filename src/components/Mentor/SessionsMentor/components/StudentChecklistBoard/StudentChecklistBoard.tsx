@@ -187,11 +187,11 @@ class StudentChecklistBoard extends  React.Component<IPropsStudentChecklistBoard
         const searchError = this.props.board.studentList.length === 0 &&
                             this.state.activeSearch &&
                             this.props.searchValue !== '' ?
-                            'No se encontró ningún alumno con ese código' : '';
+                            'No se encontró ningún paciente con ese código' : '';
         const addError = !this.state.activeSearch &&
                          this.props.searchValue !== '' &&
                          this.props.board.noResultsAdd ?
-                         'No se ha encontrado a ningún alumno con ese código':'';
+                         'No se ha encontrado a ningún paciente con ese código':'';
         const { onClickAddIcon, ...addSearchAttr } = addSearch;
         return (
             <div className={`StudentChecklistBoard`}>
@@ -204,7 +204,7 @@ class StudentChecklistBoard extends  React.Component<IPropsStudentChecklistBoard
                         style={{minWidth: `${this.state.activeSearch?'498px': '0px'}`, justifyContent: 'flex-start'}}
                         animation={{
                             enable: true,
-                            text: "Buscar alumno"
+                            text: "Buscar paciente"
                         }}/>
                     <MentorInput
                         active={!this.state.activeSearch}
@@ -216,7 +216,7 @@ class StudentChecklistBoard extends  React.Component<IPropsStudentChecklistBoard
                         style={{minWidth: `${!this.state.activeSearch?'498px': '0px'}`, justifyContent: 'flex-end'}}
                         animation={{
                             enable: true,
-                            text: "Agregar alumnos"
+                            text: "Agregar pacientes"
                         }}/>
                 </div>
                 <div className={"StudentChecklistBoard_students-container"}>
@@ -325,7 +325,7 @@ class StudentChecklistBoard extends  React.Component<IPropsStudentChecklistBoard
             onClick: onClickAdd,
             onClickAddIcon,
             onKeyPress: onSubmitAdd,
-            placeholder: "Ingresa el código del alumno",
+            placeholder: "Ingresa el código del paciente",
             value: this.props.searchValue
         }
     }

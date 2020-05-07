@@ -46,9 +46,9 @@ describe('Step Test',() => {
         const stepTextTree = component.find(StepText);
         const stepCircleTextTree = component.find(StepCircleText);
         expect(stepCircleTree).toHaveStyleRule('background', colors.BACKGROUND_COLORS.background_white);
-        expect(stepCircleTree).toHaveStyleRule('border', `3px solid ${colors.BACKGROUND_COLORS.background_purple}`);
+        expect(stepCircleTree).toHaveStyleRule('border', `3px solid ${colors.BACKGROUND_COLORS.background_green}`);
         expect(stepTextTree).toHaveStyleRule('color', colors.MISC_COLORS.background_blue);
-        expect(stepCircleTextTree).toHaveStyleRule('color', colors.BACKGROUND_COLORS.background_purple);
+        expect(stepCircleTextTree).toHaveStyleRule('color', colors.BACKGROUND_COLORS.background_green);
     });
 
     it("render: Show complete step", () => {
@@ -57,8 +57,8 @@ describe('Step Test',() => {
         const stepCircleTree = component.find(StepCircle);
         const stepTextTree = component.find(StepText);
         const stepCircleTextTree = component.find(StepCircleText);
-        expect(stepCircleTree).toHaveStyleRule('background', colors.BACKGROUND_COLORS.background_purple);
-        expect(stepCircleTree).toHaveStyleRule('border', `3px solid ${colors.BACKGROUND_COLORS.background_purple}`);
+        expect(stepCircleTree).toHaveStyleRule('background', colors.BACKGROUND_COLORS.background_green);
+        expect(stepCircleTree).toHaveStyleRule('border', `3px solid ${colors.BACKGROUND_COLORS.background_green}`);
         expect(stepTextTree).toHaveStyleRule('color', colors.MISC_COLORS.background_blue);
         expect(stepCircleTextTree).toHaveStyleRule('color', colors.BACKGROUND_COLORS.background_white);
     });
@@ -70,9 +70,9 @@ describe('Step Test',() => {
         const stepTextTree = component.find(StepText);
         const stepCircleTextTree = component.find(StepCircleText);
         expect(stepCircleTree).toHaveStyleRule('background', colors.BACKGROUND_COLORS.background_white);
-        expect(stepCircleTree).toHaveStyleRule('border', `3px solid ${colors.BACKGROUND_COLORS.background_purple}`);
+        expect(stepCircleTree).toHaveStyleRule('border', `3px solid ${colors.BACKGROUND_COLORS.background_green}`);
         expect(stepTextTree).toHaveStyleRule('color', colors.MISC_COLORS.background_blue);
-        expect(stepCircleTextTree).toHaveStyleRule('color', colors.BACKGROUND_COLORS.background_purple);
+        expect(stepCircleTextTree).toHaveStyleRule('color', colors.BACKGROUND_COLORS.background_green);
     });
 
 

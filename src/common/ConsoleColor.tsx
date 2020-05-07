@@ -5,6 +5,7 @@
 
 const NAMED_COLORS = {
     blueMetal: 'rgb(74, 144, 226)',
+    green: '#1ECD96',
     grey: 'rgb(111, 131, 158)',
     greyDark: 'rgb(112, 112, 112)',
     greyLight: 'rgb(193, 193, 193)',

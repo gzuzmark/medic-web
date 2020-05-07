@@ -127,7 +127,7 @@ class FormPersonalDataCore extends React.Component <IPropsFormPersonalDataCore, 
                                 </FormColumn>,
                                 <FormColumn width={2} key={`FormColumn-PersonalData_${++counter}`}>
                                     <MentorDropDown
-                                        label={"CURSOS"}
+                                        label={"ESPECIALIDADES"}
                                         name={"skills"}
                                         isMulti={true}
                                         error={skillsError}

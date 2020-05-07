@@ -81,7 +81,7 @@ const RoomEdit: React.FC<IRoomEditProps> = (props) => {
             {loadingFullScreen && <LoaderFullScreen text={'Cargando...'} modal={true}/>}
             <RoomModalEditSuccess show={statusRequest === IS_REQUEST_SUCCESS}/>
             <RoomModalEditFail show={statusRequest === IS_REQUEST_FAIL}/>
-            <Heading2 color={FONTS.purple}>Editar aula</Heading2>
+            <Heading2 color={FONTS.green}>Editar aula</Heading2>
             <Subhead1 weight={LIGHT_TEXT}>Ingresa los datos del aula que deseas editar</Subhead1>
             {loading ? <LoaderFullScreen styleLoaderContainer={{marginTop: 150}}/> :
             <Formik

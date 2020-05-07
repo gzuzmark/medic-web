@@ -33,7 +33,7 @@ const ModalConfirmDelete: React.FC<IPropsModalConfirmDelete> = (props) => {
                     {props.booked &&
                     <Small1 className='ModalConfirmDelete_error' color={FONTS.error} style={{margin: '7px 0'}}>
                         <Icon name={'alert'}/>
-                        Algunas de las sesiones tienen alumnos inscritos. Se les notificará de la cancelación de la sesión.
+                        Algunas de las sesiones tienen pacientes inscritos. Se les notificará de la cancelación de la sesión.
                     </Small1>}
                 </div>
                 <div className='ModalConfirmDelete_buttons'>

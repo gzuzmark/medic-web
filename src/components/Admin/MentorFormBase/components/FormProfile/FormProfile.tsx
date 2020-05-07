@@ -26,13 +26,13 @@ const FormProfile: React.FC<IPropsFormProfile> = (props) => {
                     <MentorTextArea
                         limit={limitDescription}
                         disabled={!!props.forceDisable}
-                        label={user.rol === ROL_MENTOR ? "Descripción" : "Descripción del mentor"}
+                        label={user.rol === ROL_MENTOR ? "Descripción" : "Descripción del doctor"}
                         info={"Este mensaje debe ser corto, <br> inspirador y conciso."}
                         attrs={{
                             name: "description",
                             onBlur: handleBlur,
                             onChange: handleChange,
-                            placeholder: "Ingresa una descripción para el mentor. Por ejemplo: ¡Hola! Soy Fabbian y mi objetivo es ser tu mejor compañero de estudios fuera de clase, conmigo podrás resolver tus dudas acerca de los cursos de química.",
+                            placeholder: "Ingresa una descripción para el doctor. Por ejemplo: ¡Hola! Soy Fabbian y mi objetivo es ser tu mejor compañero de estudios fuera de clase, conmigo podrás resolver tus dudas acerca de los cursos de química.",
                             style: {height: 112, borderColor: getBorderColor(values.description, isEdit)},
                             value: values.description
                         }} />
@@ -55,7 +55,7 @@ const FormProfile: React.FC<IPropsFormProfile> = (props) => {
                 </FormColumn>,
                 <FormColumn width={2} key={`FormColumn-PersonalData_${++counter}`}>
                     <MentorInput
-                        label={"EMPRESA ACTUAL"}
+                        label={"CENTRO LABORAL ACTUAL"}
                         error={touched.currentCompany && errors.currentCompany}
                         disabled={!!props.forceDisable}
                         attrs={{
@@ -63,7 +63,7 @@ const FormProfile: React.FC<IPropsFormProfile> = (props) => {
                             name: "currentCompany",
                             onBlur: handleBlur,
                             onChange: handleChange,
-                            placeholder: "Ingresa el nombre de la empresa",
+                            placeholder: "Ingresa el nombre del centro laboral",
                             style: {borderColor: getBorderColor(values.currentCompany, isEdit)},
                             value: values.currentCompany}}/>
                 </FormColumn>

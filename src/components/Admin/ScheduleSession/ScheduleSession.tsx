@@ -81,8 +81,8 @@ class ScheduleSession extends React.Component<IPropsScheduleSession, IStateSched
             `Crear sesiones para ${this.state.mentor.user.name} ${this.state.mentor.user.lastname}` : 'Crear sesiones';
         return (
             <MenuLeft
-                baseText={'Mentores'}
-                url={'/admin/mentores'}
+                baseText={'Doctores'}
+                url={'/admin/doctores'}
                 textNavigation={textNavigation} />
         )
     }

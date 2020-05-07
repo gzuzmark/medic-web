@@ -26,7 +26,7 @@ describe('EmptyCard Test',() => {
     it("render: render EmptyCard enable tue", () => {
         const component = getComponent();
         expect(component.find('.EmptyCard_item--text').text())
-            .toEqual('No tienes alumnos inscritos. Puedes agregar alumnos a esta sesión.');
+            .toEqual('No tienes pacientes inscritos. Puedes agregar pacientes a esta sesión.');
     });
 
     it("render: render EmptyCard enable false", () => {
@@ -35,6 +35,6 @@ describe('EmptyCard Test',() => {
         };
         const component = getComponent();
         expect(component.find('.EmptyCard_item--text').text())
-            .toEqual('No tienes alumnos inscritos.');
+            .toEqual('No tienes pacientes inscritos.');
     });
 });

@@ -38,7 +38,7 @@ describe('InputRadioReports Test',() => {
                 title: 'Reporte de sesiones',
                 value: REPORT_SESSIONS
             }, {
-                title: 'Reporte de alumnos',
+                title: 'Reporte de pacientes',
                 value: REPORT_STUDENTS
             }],
             name: 'demo',
@@ -58,7 +58,7 @@ describe('InputRadioReports Test',() => {
                 title: 'Reporte de sesiones',
                 value: REPORT_SESSIONS
             }, {
-                title: 'Reporte de alumnos',
+                title: 'Reporte de pacientes',
                 value: REPORT_STUDENTS
             }],
             name: 'demo',

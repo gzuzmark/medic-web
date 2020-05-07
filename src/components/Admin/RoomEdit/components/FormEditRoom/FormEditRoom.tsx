@@ -124,7 +124,7 @@ const FormEditRoom: React.FC<IFormEditRoomProps> = (props) => {
                         }}
                         label={"AULA"} />
                     <MentorInputNumber
-                        info={"La cap. min. del aula está sujeta<br/>a la cantidad máxima de<br/>alumnos inscritos en las otras<br/>sesiones de esta misma aula."}
+                        info={"La cap. min. del aula está sujeta<br/>a la cantidad máxima de<br/>pacientes inscritos en las otras<br/>sesiones de esta misma aula."}
                         styleContainer={{marginLeft: 22, width: '30%'}}
                         max={MAX_STUDENTS_ROOM}
                         min={props.minStudents}

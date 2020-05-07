@@ -75,7 +75,7 @@ class MentorSession extends React.Component<IPropsMentorSession, IStateMentorSes
         return (
             <Sticky height={120} top={80}>
                 <MenuAside icon={'book'}
-                           items={[{text: 'Mentores', url: '/admin/mentores'}, {text: textNavigation}]} />
+                           items={[{text: 'Doctores', url: '/admin/doctores'}, {text: textNavigation}]} />
             </Sticky>
         )
     }
@@ -94,10 +94,10 @@ class MentorSession extends React.Component<IPropsMentorSession, IStateMentorSes
                         <div className="MentorSession">
                             <LegendSessions legend={this.legendSession}/>
                             <div className={"MentorSession_options"}>
-                                <Link to={'/admin/mentores/' + this.idMentor + '/sesiones/eliminar'} className="u-Button MentorSession_button">
+                                <Link to={'/admin/doctores/' + this.idMentor + '/sesiones/eliminar'} className="u-Button MentorSession_button">
                                     Eliminar varias sesiones
                                 </Link>
-                                <Link to={'/admin/mentores/' + this.idMentor + '/sesiones/agendar'} className="u-Button MentorSession_button">
+                                <Link to={'/admin/doctores/' + this.idMentor + '/sesiones/agendar'} className="u-Button MentorSession_button">
                                     Crear varias sesiones
                                 </Link>
                             </div>

@@ -91,7 +91,7 @@ const FormEditManager: React.FC<IPropsFormEditManager> = (props) => {
             </MentorModalBase>
             <FormImageColumn id={"FormImageProfileEdit"} forceDisable={false} size={88} mentor={true}>
                 <BasicData>
-                    <Heading2 color={FONTS.purple} style={{margin: '40px 0 10px 0'}}>
+                    <Heading2 color={FONTS.green} style={{margin: '40px 0 10px 0'}}>
                         {context.values.firstName} {context.values.lastName}
                         </Heading2>
                     {props.rating && <MentorRating count={props.rating.count} average={props.rating.average}/>}

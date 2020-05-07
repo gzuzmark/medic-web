@@ -2,6 +2,7 @@ import {IArea} from "../../interfaces/Mentor.interface";
 import {ISkill} from "../Skill/Skill";
 import {IBaseUser} from "../User/AbstractUser";
 
+// TODO: Update variable names from mentor to Doctor
 export const MENTOR_STATUS = {
     DISABLED: 'NEW',
     INCOMPLETE: 'INCOMPLETED',
