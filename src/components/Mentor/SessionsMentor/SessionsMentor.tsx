@@ -54,8 +54,8 @@ interface IStateSessionsMentor {
     tags: ITags[];
 }
 
-const MESSAGE_ADD_STUDENT = "¿Estás seguro que deseas agregar a este alumno?";
-const MESSAGE_REPEAT_STUDENT = "Este alumno ya se encuentra inscrito en la sesión";
+const MESSAGE_ADD_STUDENT = "¿Estás seguro que deseas agregar a este paciente?";
+const MESSAGE_REPEAT_STUDENT = "Este paciente ya se encuentra inscrito en la sesión";
 
 class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSessionsMentor> {
     private sessionId: string;
@@ -163,13 +163,13 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
                         confirm={this.closeModalError}
                         image={<img src={noAttened} />}
                         button={"Entendido"}
-                        description={"Este alumno aún no ha descargado la aplicación. Podrás agregarlo una vez que esta sesión haya iniciado."}
-                        title={"Lo sentimos, no se pudo agregar al alumno."}/> : null}
+                        description={"Este paciente aún no ha descargado la aplicación. Podrás agregarlo una vez que esta sesión haya iniciado."}
+                        title={"Lo sentimos, no se pudo agregar al paciente."}/> : null}
             </MentorModalBase>
             <div className="SessionsMentor u-LayoutMentorMargin">
                 {this.sessionMentor &&
                 <div className={"SessionsMentor_navigation"}>
-                    <Link to={'/mentor'}><Text3>Tus sesiones >&nbsp;</Text3></Link>
+                    <Link to={'/doctor'}><Text3>Tus sesiones >&nbsp;</Text3></Link>
                     <Text3>
                         {navBarText.charAt(0).toUpperCase()}{navBarText.slice(1)} >&nbsp;</Text3>
                     <Text3>{`Sesión ${this.state.fullCardSession.type.toLowerCase()}`}</Text3>

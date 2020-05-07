@@ -84,7 +84,7 @@ export class SessionMentorBean extends SessionBean {
     }
 
     public getAvailability(): string {
-        let text = 'alumno inscrito';
+        let text = 'paciente inscrito';
         let count = 0;
         let limit = 0;
         if (this.session.availability) {
@@ -93,7 +93,7 @@ export class SessionMentorBean extends SessionBean {
         }
 
         if (limit > 1) {
-            text = 'alumnos inscritos'
+            text = 'pacientes inscritos'
         }
         return `${count} de ${limit} ${text}`;
     }

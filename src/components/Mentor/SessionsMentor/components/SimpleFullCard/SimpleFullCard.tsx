@@ -21,7 +21,7 @@ const SimpleFullCard: React.FC<IPropsSimpleFullCard> = (props) => {
                 <TextBold3>{props.card.subtitle}</TextBold3>
                 {props.card.isLink ?
                     <a className={"SimpleFullCard_description"} href={props.card.description} target="_blank">
-                        <Text3>{props.card.description}</Text3>
+                        <Text3 style={{ textDecoration: 'underline' }}>{props.card.description}</Text3>
                     </a> :
                     <span className={"SimpleFullCard_description"}>
                         <Text3>{props.card.description}</Text3>

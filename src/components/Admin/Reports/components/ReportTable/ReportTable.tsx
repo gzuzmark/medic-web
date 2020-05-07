@@ -52,11 +52,11 @@ const tableBase = [{
 }] as IRowConsoleTable[];
 
 const tableStudents = [...tableBase, {
-    name: 'Cod. de alumno',
+    name: 'Cod. de paciente',
     value: (row: any) => row.studentCode,
     width: 88.7
 }, {
-    name: 'N. de alumno',
+    name: 'N. de paciente',
     value: (row: any) => row.studentName,
     width: 161.3
 }, {

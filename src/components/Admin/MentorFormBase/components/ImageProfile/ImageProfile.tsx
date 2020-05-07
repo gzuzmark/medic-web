@@ -11,7 +11,7 @@ const ImageProfile = styled.img`
     border: ${(props: IPropsImageProfile) => {
     let border = 'none';
     if (props.filled) {
-        border = '2px solid ' + colors.BACKGROUND_COLORS.background_purple;
+        border = '2px solid ' + colors.BACKGROUND_COLORS.background_green;
     }
     return border;
 }}

@@ -145,7 +145,7 @@ class StudentCommentModal extends  React.Component<IPropsStudentCommentModal, IS
         return !!this.props.modal.student && (
             <div className={`StudentModalCard`}>
                 <div className={"StudentModalCard_body"}>
-                    <Body1>{isAddForm ? '¿En qué podría mejorar el alumno?' : 'En qué podría mejorar el alumno'}</Body1>
+                    <Body1>{isAddForm ? '¿En qué podría mejorar el paciente?' : 'En qué podría mejorar el paciente'}</Body1>
                     <ul className={"StudentModalCard_tags"}>
                         {this.props.modal.tags && this.props.modal.tags.map((tag: ITags, index: number) => {
                             return (

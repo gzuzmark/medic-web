@@ -12,14 +12,14 @@ interface IContainerRow {
     status: string;
 }
 const ContainerRow = styled.div`
-  align-items: center;        
+  align-items: center;
   display: flex;
   width: 100%;
   .icon-calendar, .icon-add-circle {
       fill: ${(props: IContainerRow) => {
           let fill = colors.BACKGROUND_COLORS.background_disabled_button;
           if (props.status === MENTOR_STATUS.PUBLISHED) {
-            fill = colors.BACKGROUND_COLORS.background_purple;
+            fill = colors.BACKGROUND_COLORS.background_green;
           }
           return fill;
       }};
@@ -27,7 +27,7 @@ const ContainerRow = styled.div`
         fill: ${(props: IContainerRow) => {
             let fill = colors.BACKGROUND_COLORS.background_disabled_button;
             if (props.status === MENTOR_STATUS.PUBLISHED) {
-                fill = colors.MISC_COLORS.light_purple;
+                fill = colors.BACKGROUND_COLORS.background_dark_green;
             }
             return fill;
         }};
@@ -36,7 +36,7 @@ const ContainerRow = styled.div`
         fill: ${(props: IContainerRow) => {
             let fill = colors.BACKGROUND_COLORS.background_disabled_button;
             if (props.status === MENTOR_STATUS.PUBLISHED) {
-                fill = colors.MISC_COLORS.dark_purple;
+                fill = colors.BACKGROUND_COLORS.background_dark_green;
             }
             return fill;
         }};
@@ -72,7 +72,7 @@ class ListMentorsBody extends React.Component <IPropsListMentorsBody, {}> {
                 </div>
                 <div className="ListMentors_column">
                     {status === MENTOR_STATUS.PUBLISHED ?
-                        <Link to={'/admin/mentores/' + id + '/sesiones'}>
+                        <Link to={'/admin/doctores/' + id + '/sesiones'}>
                             <Icon name="calendar"/>
                         </Link>:
                         <Icon name="calendar"/>
@@ -80,7 +80,7 @@ class ListMentorsBody extends React.Component <IPropsListMentorsBody, {}> {
                 </div>
                 <div className="ListMentors_column">
                     {status === MENTOR_STATUS.PUBLISHED ?
-                        <Link to={'/admin/mentores/' + id + '/sesiones/agendar'}>
+                        <Link to={'/admin/doctores/' + id + '/sesiones/agendar'}>
                             <Icon name="add-circle"/>
                         </Link>:
                         <Icon name="add-circle"/>

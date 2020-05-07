@@ -37,7 +37,7 @@ export const StepsBarContainer = styled.div`
         z-index: 1;
     }
     &:after {
-        background: ${colors.BACKGROUND_COLORS.background_purple};
+        background: ${colors.BACKGROUND_COLORS.background_green};
         transition: width 0.4s ease-in;
         width: ${(props: IStepsBarContainer) => `${100*props.progress}%`};
         z-index: 2

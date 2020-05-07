@@ -32,7 +32,7 @@ const ItemMenu = styled.li`
       background: #eef2f6;
     }
     &:focus, &:active {
-      background: ${colors.BACKGROUND_COLORS.background_purple};
+      background: ${colors.BACKGROUND_COLORS.background_green};
       ${Subhead1}, span {
         color: ${colors.TEXT_COLORS.font_light};
       }

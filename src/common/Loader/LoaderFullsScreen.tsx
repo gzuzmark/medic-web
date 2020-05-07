@@ -38,8 +38,8 @@ interface IPropsLoaderFullScreen {
 }
 
 const LoaderFullScreen: React.FC<IPropsLoaderFullScreen> = (props) => {
-    const color = !!props.modal ? colors.BACKGROUND_COLORS.background_white : colors.BACKGROUND_COLORS.background_purple;
-    const font = !!props.modal ? FONTS.light : FONTS.purple;
+    const color = !!props.modal ? colors.BACKGROUND_COLORS.background_white : colors.BACKGROUND_COLORS.background_green;
+    const font = !!props.modal ? FONTS.light : FONTS.green;
     return (
         <FullScreenContainer modal={!!props.modal}>
             <LoaderContainer modal={!!props.modal} style={{...props.styleLoaderContainer}}>

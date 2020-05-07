@@ -20,10 +20,10 @@ describe('MenuLeft Test',() => {
 
     beforeEach(() => {
         props = {
-            baseText:'Mentores',
+            baseText:'Doctores',
             icon: 'book',
             textNavigation: "Titulo Principal",
-            url:'/admin/mentores'
+            url:'/admin/doctores'
         };
         mountedReportTable = undefined;
     });

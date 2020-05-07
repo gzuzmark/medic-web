@@ -36,7 +36,7 @@ const CustomDropdown = styled.div`
 
 const DropdownIndicator = (error: boolean, disabled: boolean) => {
     return (props: any) => {
-        let color = colors.BACKGROUND_COLORS.background_purple;
+        let color = colors.BACKGROUND_COLORS.background_green;
         if (disabled) {
             color = colors.BACKGROUND_COLORS.background_disabled;
         } else if (error){

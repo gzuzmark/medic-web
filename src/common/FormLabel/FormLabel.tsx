@@ -36,7 +36,7 @@ const FormLabel: React.FC<IPropsFormLabel> = (props) => {
                       attr={{"data-tip": props.info, "data-for": "FormLabelToolTip"}}
                       style={{
                           cursor: 'pointer',
-                          fill: colors.BACKGROUND_COLORS.background_purple,
+                          fill: colors.BACKGROUND_COLORS.background_green,
                           height: 24,
                           width: 24
                       }}/>

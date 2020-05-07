@@ -34,7 +34,7 @@ export interface IPropsFormImage {
 
 const TextInput = styled(Body1)`
     color: ${(props: {disabled: boolean}) => {
-        return props.disabled ? colors.TEXT_COLORS.font_disabled : colors.BACKGROUND_COLORS.background_purple;
+        return props.disabled ? colors.TEXT_COLORS.font_disabled : colors.BACKGROUND_COLORS.background_dark_green;
     }};
 `;
 
@@ -127,7 +127,7 @@ class FormImage extends React.Component <IPropsFormImage, IStateFormImage> {
                                                   title="Perfil de mentor" filled={!!context.selectedImage}/>
                                     <div className={"FormImage_text"}>
                                         <Icon name={"upload"} style={{
-                                            fill: this.props.forceDisable ? colors.TEXT_COLORS.font_disabled : colors.BACKGROUND_COLORS.background_purple,
+                                            fill: this.props.forceDisable ? colors.TEXT_COLORS.font_disabled : colors.BACKGROUND_COLORS.background_green,
                                             marginRight: 4
                                         }}/>
                                         <TextInput disabled={!!this.props.forceDisable}>

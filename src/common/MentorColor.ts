@@ -4,7 +4,10 @@
 ============================================================================= */
 
 const PRIMARY_COLORS = {
+    dark_green: '#6BA368',
+    green: '#1ECD96',
     indigo_purple: '#561cac',
+    light_green: '#A7D49B',
     red: '#d0516a'
 };
 
@@ -46,6 +49,7 @@ const TEXT_COLORS = {
     font_dark: SECONDARY_COLORS.dark_gray,
     font_disabled: MISC.light_grey_1,
     font_error: MISC.red_soft,
+    font_green: PRIMARY_COLORS.green,
     font_grey: MISC_COLORS.background_grey_1,
     font_highlight: MISC.blue,
     font_light: SECONDARY_COLORS.white,
@@ -55,8 +59,11 @@ const TEXT_COLORS = {
 
 const BACKGROUND_COLORS = {
     background_blue: MISC.light_grey_6,
+    background_dark_green: PRIMARY_COLORS.dark_green,
     background_disabled: MISC.light_grey_2,
     background_disabled_button: MISC.light_grey_1,
+    background_green: PRIMARY_COLORS.green,
+    background_light_green: PRIMARY_COLORS.light_green,
     background_purple: PRIMARY_COLORS.indigo_purple,
     background_red: PRIMARY_COLORS.red,
     background_white: SECONDARY_COLORS.white,
@@ -66,8 +73,11 @@ const BACKGROUND_COLORS = {
 ============================================================================= */
 interface IMentorColor {
     BACKGROUND_COLORS: {
+        background_dark_green: string;
         background_disabled: string;
         background_disabled_button: string;
+        background_green: string;
+        background_light_green: string;
         background_purple: string;
         background_blue: string;
         background_red: string;
@@ -88,6 +98,7 @@ interface IMentorColor {
         font_blue_grey: string;
         font_dark: string;
         font_disabled: string;
+        font_green: string;
         font_highlight: string;
         font_error: string;
         font_light: string;
@@ -109,11 +120,12 @@ export const FONTS = {
     dark: 'font_dark',
     disabled: 'font_disabled',
     error: 'font_error',
+    green: 'font_green',
     grey: 'font_grey',
     highlight: 'font_highlight',
     light: 'font_light',
     medium: 'font_medium',
-    purple: 'font_purple'
+    purple: 'font_purple',
 };
 
 export default colors;
