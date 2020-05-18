@@ -41,7 +41,7 @@ class Login extends React.Component <{}, IStateLoginForm> {
             if (UserRepository.getUser().rol === ROL_ADMIN) {
                 window.location.assign('/admin');
             } else {
-                window.location.assign('/mentor');
+                window.location.assign('/doctor');
             }
         } else {
             this.setState({isLogin: false});
@@ -71,7 +71,7 @@ class Login extends React.Component <{}, IStateLoginForm> {
         }
         this.setState({buttonAttr: {loading: "true"}, error: ''});
         const checkbox: HTMLInputElement = document.querySelector(".LoginForm_rol input[type=radio]:checked") as HTMLInputElement;
-        const redirection = checkbox.value === ROL_ADMIN ? '/admin' : '/mentor';
+        const redirection = checkbox.value === ROL_ADMIN ? '/admin' : '/doctor';
         this.userService.login(values, checkbox.value )
             .then((response) => {
                 if (response) {

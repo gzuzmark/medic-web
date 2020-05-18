@@ -75,7 +75,7 @@ class ScheduleSessionForm extends React.Component<IPropsScheduleSessionForm, {}>
                             <div className={"ScheduleSessionForm--loading"}><Loader style={{left: -80, marginTop: 200}}/></div>}
                             {!!this.props.mentor && currentArea &&
                             <React.Fragment>
-                                <HighlightText color="purpleDark" style={{marginBottom: 35}}>Ingresa los datos de la sesión que te gustaría crear</HighlightText>
+                                <HighlightText color="green" style={{marginBottom: 35}}>Ingresa los datos de la sesión que te gustaría crear</HighlightText>
                                 <FormSection>
                                     <div style={{width: '80%'}}>
                                         <FormRow columns={[

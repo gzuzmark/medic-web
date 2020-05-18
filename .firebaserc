@@ -1,6 +1,17 @@
 {
   "projects": {
     "test": "ugo-consola-qa",
-    "production": "ugo-consola"
+    "production": "ugo-consola",
+    "default": "freelos-baratitos-com",
+    "prod": "alivia-admin"
+  },
+  "targets": {
+    "alivia-admin": {
+      "hosting": {
+        "prod": [
+          "alivia-admin"
+        ]
+      }
+    }
   }
 }

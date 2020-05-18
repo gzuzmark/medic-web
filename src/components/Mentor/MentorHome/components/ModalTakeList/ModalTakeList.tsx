@@ -101,7 +101,7 @@ const ModalTakeList: React.FC<IPropsModalTakeList> = (props) => {
                         <ButtonNormal
                             link={true}
                             attrs={{
-                                href: `/mentor/sesion/${item.session.id}`
+                                href: `/doctor/sesion/${item.session.id}`
                             }}
                             text={"Tomar asistencia"} />
                     </ContainerButton>

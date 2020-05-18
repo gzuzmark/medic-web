@@ -45,7 +45,7 @@ describe('StudentCommentModal Test',() => {
     it("render: tag text as addForm", () => {
         const component = getComponent();
         expect(component.find(".StudentModalCard_body span").at(0).text())
-            .toEqual("¿En qué podría mejorar el alumno?")
+            .toEqual("¿En qué podría mejorar el paciente?")
     });
 
     it("render: comment text as addForm", () => {
@@ -62,7 +62,7 @@ describe('StudentCommentModal Test',() => {
         props.modal.tags = [{id: "", name: "Volcano"}];
         const component = getComponent();
         expect(component.find(".StudentModalCard_body span").at(0).text())
-            .toEqual("En qué podría mejorar el alumno")
+            .toEqual("En qué podría mejorar el paciente")
     });
 
     it("render: comment text readOnly", () => {

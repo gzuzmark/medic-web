@@ -122,12 +122,12 @@ class SessionDeleteMultiple extends React.Component<IPropsSessionDeleteMultiple,
         const textNavigation = this.state.mentor ?
             `Eliminar sesiones de ${this.state.mentor.user.name} ${this.state.mentor.user.lastname}` : 'Eliminar sesiones';
         return (
-            <MenuLeft baseText={'Mentores'} url={'/admin/mentores'} textNavigation={textNavigation} />
+            <MenuLeft baseText={'Doctores'} url={'/admin/doctores'} textNavigation={textNavigation} />
         )
     }
 
     public render() {
-        const selectedColor = this.state.selection.length > 0? 'purpleLighter' : 'greyDark';
+        const selectedColor = this.state.selection.length > 0? 'greyDark' : 'greyDark';
         const isBooked = this.state.sessions.filter(
             (s) => s.bookedStudents > 0 && this.state.selection.indexOf(s.id) !== -1).length > 0;
         return(
@@ -160,7 +160,7 @@ class SessionDeleteMultiple extends React.Component<IPropsSessionDeleteMultiple,
                 <div className="u-LayoutMargin">
                     { (this.state.currentSession && !!this.state.mentor) ?
                     <div className="SessionDelete">
-                        <Title3 color={"actionColor"}>Selecciona las características de las sesiones  por eliminar:</Title3>
+                        <Title3 color={"green"}>Selecciona las características de las sesiones por eliminar:</Title3>
                         <FormRemoveMultiple
                             onSearch={this._onSearch} onFilter={this._onFilter}
                             lists={{
@@ -327,7 +327,7 @@ class SessionDeleteMultiple extends React.Component<IPropsSessionDeleteMultiple,
         newStateStatus.savingData = true;
         this.setState({status: {...newStateStatus}});
         this.sessionService.deleteSessions(this.state.selection).then(() => {
-            window.location.assign(`/admin/mentores/${this.mentorId}/sesiones/`);
+            window.location.assign(`/admin/doctores/${this.mentorId}/sesiones/`);
         }, () => {
             newStateStatus.savingData = false;
             newStateModals.confirmModal = false;

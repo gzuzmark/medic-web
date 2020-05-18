@@ -29,14 +29,14 @@ export const StepCircle = styled.div`
     background: ${(props: IStepCircle) => {
         let color = colors.BACKGROUND_COLORS.background_white;
         if (props.complete && !props.active) {
-            color = colors.BACKGROUND_COLORS.background_purple;
+            color = colors.BACKGROUND_COLORS.background_green;
         }
         return color;
     }}; 
     border: 3px solid ${(props: IStepCircle) => {
         let color = colors.MISC_COLORS.background_grey_2;
         if (props.active || props.complete) {
-            color = colors.BACKGROUND_COLORS.background_purple;
+            color = colors.BACKGROUND_COLORS.background_green;
         }
         return color;
     }};
@@ -84,7 +84,7 @@ export const StepCircleText = styled(Subhead1)`
     color:  ${(props: IStepCircle) => {
         let color = colors.MISC_COLORS.background_grey_2;
         if (props.active) {
-            color = colors.BACKGROUND_COLORS.background_purple;
+            color = colors.BACKGROUND_COLORS.background_green;
         } else if (props.complete) {
             color = colors.TEXT_COLORS.font_light;
         }

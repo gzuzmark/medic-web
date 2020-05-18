@@ -87,7 +87,7 @@ export class ReportRequestBean implements IReportRequestBean {
     public getName(): string {
         let type = '';
         if (this.type === REPORT_STUDENTS) {
-            type = 'alumnos';
+            type = 'pacientes';
         } else if (this.type === REPORT_SESSIONS) {
             type = 'sesiones';
         }

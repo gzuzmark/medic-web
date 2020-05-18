@@ -69,7 +69,7 @@ const SliderNext = styled(SliderNav)`
 `;
 
 const NavigationBefore = styled(Icon)`
-    fill: ${colors.BACKGROUND_COLORS.background_purple};
+    fill: ${colors.BACKGROUND_COLORS.background_green};
     height: 48px;
     transform: rotate(180deg);
     width: 48px; 
@@ -77,7 +77,7 @@ const NavigationBefore = styled(Icon)`
 
 
 const NavigationNext = styled(Icon)`
-    fill: ${colors.BACKGROUND_COLORS.background_purple};
+    fill: ${colors.BACKGROUND_COLORS.background_green};
     height: 48px;
     width: 48px; 
 `;

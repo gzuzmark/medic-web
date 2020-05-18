@@ -48,7 +48,7 @@ class  SessionsMentorDetail extends React.Component<IPropsSessionsMentorDetail, 
         return this.props.sessionDetail.sessions && !isEmpty ? (
             <div className={"SessionsMentorDetail"}>
                 <div className={"SessionsMentorDetail_title"}>
-                    <Headline1 color={FONTS.highlight}>
+                    <Headline1 color={FONTS.green}>
                         Sesiones de {day}{title}</Headline1>
                 </div>
                 {!!this.props.sessionDetail.sessions.pending_sessions.length && <div className={"SessionsMentorDetail_session-container"}>
@@ -101,7 +101,7 @@ class  SessionsMentorDetail extends React.Component<IPropsSessionsMentorDetail, 
     }
 
     private toSessionDetail(item: SessionMentorBean) {
-        return `/mentor/sesion/${item.session.id}`;
+        return `/doctor/sesion/${item.session.id}`;
     }
 
 }

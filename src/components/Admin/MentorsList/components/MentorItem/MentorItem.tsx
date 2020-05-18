@@ -20,7 +20,7 @@ export interface IPropsMentorSession {
 
 const EditOption = styled.div`
     align-items: center;
-    background: ${colors.BACKGROUND_COLORS.background_purple};
+    background: ${colors.BACKGROUND_COLORS.background_green};
     border-radius: 50%;
     bottom: 12px;
     cursor: pointer;
@@ -32,7 +32,7 @@ const EditOption = styled.div`
     transition: background 0.3s ease-in-out;
     width: 24px;
     &:hover {
-        background: ${colors.MISC_COLORS.light_purple};
+        background: ${colors.BACKGROUND_COLORS.background_dark_green};
     }
     svg.icon.icon-pencil {
         fill: ${colors.BACKGROUND_COLORS.background_white}!important;

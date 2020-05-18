@@ -88,7 +88,7 @@ class ProfileMentorCore extends React.Component<IPropsProfileMentorCore, IStateP
                                   filled={!!selectedImage || this.state.loadingData}/>
                     {!this.state.loadingData &&
                         <React.Fragment>
-                            <Heading2 color={FONTS.purple} style={{margin: '40px 0 10px 0'}}>{`${mentor.firstName} ${mentor.lastName}`}</Heading2>
+                            <Heading2 color={FONTS.green} style={{margin: '40px 0 10px 0'}}>{`${mentor.firstName} ${mentor.lastName}`}</Heading2>
                             <Subhead1 color={!mentor.currentPosition ? FONTS.error : FONTS.dark} style={{margin: '3px 0'}}>
                                 {!mentor.currentPosition ? 'Cargo Actual (Pendiente)' : mentor.currentPosition}
                             </Subhead1>
@@ -133,9 +133,9 @@ class ProfileMentorCore extends React.Component<IPropsProfileMentorCore, IStateP
 
                 <Separator />
                 <ButtonNormal text={"Editar información"} link={true} attrs={{
-                    href: '/mentor/editar-perfil',
+                    href: '/doctor/editar-perfil',
                     style: {margin: '0 0 0 auto', width: 150}
-                }}/>
+                }} />
             </FormProfileContainer>
         )
     }

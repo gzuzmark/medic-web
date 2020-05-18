@@ -62,7 +62,7 @@ const FormMail: React.FC<IPropsFormMail> = (props) => {
                             name: "email",
                             onBlur: email.handleBlur,
                             onChange: email.onChange,
-                            placeholder: "Ingresa el correo UTP del mentor",
+                            placeholder: "Ingresa el correo del doctor",
                             value: email.value
                         }}
                         styleContainer={{padding: '30px 0'}}/>

@@ -15,8 +15,8 @@ const EmptyCard: React.FC<IPropsEmptyCard> = (props) => {
             </div>
             <div className={"EmptyCard_item EmptyCard_item--text"}>
                 {props.addEnabled ?
-                    <SubTitle2>No tienes alumnos inscritos. Puedes agregar alumnos a esta sesión.</SubTitle2> :
-                    <SubTitle2>No tienes alumnos inscritos.</SubTitle2>}
+                    <SubTitle2>No tienes pacientes inscritos. Puedes agregar pacientes a esta sesión.</SubTitle2> :
+                    <SubTitle2>No tienes pacientes inscritos.</SubTitle2>}
             </div>
         </div>
     );

@@ -66,7 +66,7 @@ const baseStyle = (error: boolean, disabled: boolean, empty?: boolean)  => {
                 backgroundColor = colors.MISC_COLORS.background_grey_1;
             }
             const color = colors.TEXT_COLORS.font_blue_grey;
-            const backgroundColorActive = colors.BACKGROUND_COLORS.background_purple;
+            const backgroundColorActive = colors.BACKGROUND_COLORS.background_green;
             const colorActive = colors.BACKGROUND_COLORS.background_white;
             const cursor = "pointer";
             const fontFamily = DEFAULT_WEIGHT;

@@ -42,7 +42,7 @@ const StudentFullCard: React.FC<IPropsStudentFullCard> = (props) => {
         <div className={`StudentFullCard ${props.student.new ? 'StudentFullCard--new': ''}`} style={{...props.styles}}>
             <ReactTooltip effect={"solid"} place={"left"} id={"StudentFullCardToolTip"}/>
             <div className={"StudentFullCard_left"}>
-                <Link to={`/mentor/alumno/${props.student.studentId}`}>
+                <Link to={`/doctor/paciente/${props.student.studentId}`}>
                     <div className={"StudentFullCard_image-container u-ImageContainer"}>
                         <img src={props.student.photo}
                              title={"Estudiante"}
@@ -52,7 +52,7 @@ const StudentFullCard: React.FC<IPropsStudentFullCard> = (props) => {
                 </Link>
             </div>
             <div className={"StudentFullCard_right"}>
-                <Link to={`/mentor/alumno/${props.student.studentId}`}>
+                <Link to={`/doctor/paciente/${props.student.studentId}`}>
                     <Subhead1 color={FONTS.medium}>{props.student.name}</Subhead1>
                     <Body1 color={FONTS.medium} weight={LIGHT_TEXT} >{props.student.code}</Body1>
                 </Link>
@@ -66,7 +66,7 @@ const StudentFullCard: React.FC<IPropsStudentFullCard> = (props) => {
                           attr={{"data-tip": iconTooltip, "data-for": "StudentFullCardToolTip"}}
                           style={{
                               cursor: 'pointer',
-                              fill: colors.BACKGROUND_COLORS.background_purple,
+                              fill: colors.BACKGROUND_COLORS.background_green,
                               height: 24,
                               width: 24
                             }}/>:

@@ -124,7 +124,7 @@ class MentorFormEditCore  extends React.Component <IPropsMentorEditCore, IStateM
                     {!this.state.mentor &&
                         <Loader style={{marginTop: 100}}/>}
                     {!!this.state.mentor &&
-                        <Heading2 color={FONTS.purple}>{this.state.mentor.firstName} {this.state.mentor.lastName}</Heading2>}
+                        <Heading2 color={FONTS.green}>{this.state.mentor.firstName} {this.state.mentor.lastName}</Heading2>}
                     {!!this.state.mentor && this.state.listSkills &&
                     <Formik
                         initialValues={this.state.mentor}

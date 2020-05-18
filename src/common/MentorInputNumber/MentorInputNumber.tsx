@@ -50,7 +50,7 @@ const FieldContainer = styled.div`
                 background: ${colors.BACKGROUND_COLORS.background_white}!important;
             }
             i {
-                border: solid ${colors.BACKGROUND_COLORS.background_purple}!important;
+                border: solid ${colors.BACKGROUND_COLORS.background_green}!important;
                 border-width: 0 1px 1px 0!important;
                 display: inline-block!important;
                 padding: 3px!important;
@@ -59,7 +59,7 @@ const FieldContainer = styled.div`
                 bottom: 1px!important;
                 i {
                     border-color: ${(props: IFieldContainer) => {
-                        let color = colors.BACKGROUND_COLORS.background_purple;
+                        let color = colors.BACKGROUND_COLORS.background_green;
                         if (props.min === props.value) {
                             color = colors.MISC_COLORS.background_grey_2;
                         }
@@ -73,7 +73,7 @@ const FieldContainer = styled.div`
                 top: 1px!important;
                 i {
                     border-color: ${(props: IFieldContainer) => {
-                        let color = colors.BACKGROUND_COLORS.background_purple;
+                        let color = colors.BACKGROUND_COLORS.background_green;
                         if (props.max === props.value) {
                             color = colors.MISC_COLORS.background_grey_2;
                         }

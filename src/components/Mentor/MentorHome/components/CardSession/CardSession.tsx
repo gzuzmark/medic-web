@@ -40,7 +40,7 @@ const CardSession: React.FC<IPropsCardSession> = (props) => {
                 <div className={"CardSession_body-bottom"}>
                     {props.item.isVirtual() ?
                         <a className={"CardSession_location"} href={props.item.getLocation()} target="_blank">
-                            <Text3>{props.item.getLocation()}</Text3>
+                            <Text3 style={{ textDecoration: 'underline' }}>{props.item.getLocation()}</Text3>
                         </a>:
                         <span className={"CardSession_location"}>
                             <Text3>{props.item.getLocation()}</Text3>
@@ -53,7 +53,7 @@ const CardSession: React.FC<IPropsCardSession> = (props) => {
                     props.item.getStatus() === SESSION_LIFE.PENDING &&
                     <a href={props.link} className={"CardSession_options-button"}>
                         <Icon name={"users"}/>
-                        <TextBold3>Ver alumnos</TextBold3>
+                        <TextBold3>Ver pacientes</TextBold3>
                     </a>
                 }
                 {

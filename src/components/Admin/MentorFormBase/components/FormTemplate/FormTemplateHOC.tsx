@@ -11,7 +11,7 @@ export interface IPropsFormTemplateHOC {
 }
 
 export const Title = styled(Heading2)`
-    color: ${colors.BACKGROUND_COLORS.background_purple}
+    color: ${colors.BACKGROUND_COLORS.background_green};
     text-align: center;
 `;
 

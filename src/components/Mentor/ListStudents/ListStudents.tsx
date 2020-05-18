@@ -57,7 +57,7 @@ const ListStudents: React.FC<IPropsStudent> = (props) => {
 
     const triggerChange = (name: string, selectedOption: IPropsMentorOptionsDropDown) => {
         setLoadingStudents(true);
-        window.location.assign(`/mentor/alumnos/${selectedOption.value}`);
+        window.location.assign(`/doctor/pacientes/${selectedOption.value}`);
     };
 
     const searchBySkill = (skill: IPropsMentorOptionsDropDown) => {
@@ -110,15 +110,15 @@ const ListStudents: React.FC<IPropsStudent> = (props) => {
                     triggerChange={triggerChange}
                     isSearchable={true}
                     value={skillSelected.value}
-                    placeholder={'Ejmpl. Introducción a la matemática para economía'}
-                    label={"Elige el curso que deseas buscar"}/>
+                    placeholder={'Ejmpl. Cardiología'}
+                    label={"Elige la especialidad que deseas buscar"}/>
                 <MentorInput
                     disabled={students.length === 0}
-                    label={"Buscar alumno"}
+                    label={"Buscar paciente"}
                     icon={"search"}
                     attrs={{
                         onInput: onChangeText,
-                        placeholder: 'Ingresa el código o nombre del alumno',
+                        placeholder: 'Ingresa el código o nombre del paciente',
                         value: search}}/>
             </ToolBar>
             <StickyContainer style={{marginBottom: 70}} >
@@ -126,7 +126,7 @@ const ListStudents: React.FC<IPropsStudent> = (props) => {
                     {({style}) => {
                         return (
                             <TableContainer style={{...style, 'top': LAYOUT_HEIGHT}}>
-                                <TableHeader><Small1 color={FONTS.highlight}>Nombre del alumno</Small1></TableHeader>
+                                <TableHeader><Small1 color={FONTS.highlight}>Nombre del paciente</Small1></TableHeader>
                                 <TableHeader center={true}><Small1 color={FONTS.highlight}>Sesiones agendadas</Small1></TableHeader>
                                 <TableHeader center={true}><Small1 color={FONTS.highlight}>Asistencia a asesiones</Small1></TableHeader>
                                 <TableHeader center={true} onClick={updateOrderRatio}><Small1 color={FONTS.highlight}>Porcentaje de asistencias a UGO</Small1></TableHeader>
@@ -142,7 +142,7 @@ const ListStudents: React.FC<IPropsStudent> = (props) => {
                                   fill: colors.BACKGROUND_COLORS.background_disabled_button,
                                   height: 40,
                                   width: 40}}/>
-                        <Body1 color={FONTS.disabled}>¡Uy! No encontramos alumnos en este curso</Body1>
+                        <Body1 color={FONTS.disabled}>¡Uy! No encontramos pacientes en este curso</Body1>
                     </TableFull>}
                     {filteredStudents.length === 0 && !!search && !loadingStudents &&
                     <TableFull message={true}>
@@ -151,7 +151,7 @@ const ListStudents: React.FC<IPropsStudent> = (props) => {
                                   fill: colors.BACKGROUND_COLORS.background_disabled_button,
                                   height: 40,
                                   width: 40}}/>
-                        <Body1 color={FONTS.disabled}>¡Uy! No encontramos alumnos con este nombre o código</Body1>
+                        <Body1 color={FONTS.disabled}>¡Uy! No encontramos pacientes con este nombre o código</Body1>
                     </TableFull>}
                     {loadingStudents && <TableFull><Loader/></TableFull>}
                 </TableContainer>
@@ -160,7 +160,7 @@ const ListStudents: React.FC<IPropsStudent> = (props) => {
                         return (
                             <div key={`students_list-${i}`}>
                                 <TableBody>
-                                    <Link to={`/mentor/alumno/${s.id}`}>
+                                    <Link to={`/doctor/paciente/${s.id}`}>
                                         <StudentCard>
                                             <img
                                                 width="56"

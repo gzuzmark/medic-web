@@ -12,7 +12,7 @@ const Background = (props: any) =>
     </div>;
 
 const SectionRight = styled(Background)`
-  background: ${colors.BACKGROUND_COLORS.background_purple}  
+  background: ${colors.BACKGROUND_COLORS.background_green}  
 `;
 
 class LoginPresentation extends React.Component<{}, {}> {

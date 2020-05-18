@@ -44,7 +44,7 @@ const getScreenData = (screen: string): IStudentCheckModalScreen => {
         image = <img src={noAttened} />;
         title = 'Nadie se presentó';
         description = <Body1 weight={LIGHT_TEXT} style={{margin: '0 auto'}}>
-            Al parecer los alumnos no se presentaron, por favor presiona confirmar para <br/> cerrar la lista.</Body1>;
+            Al parecer el/los paciente(s) no se presentaron, por favor presiona confirmar para <br/> cerrar la lista.</Body1>;
         button = ' Confirmar';
     } else if (screen === StudentCheckModalScreens.SUCCESS) {
         image = <Icon name={'check-circle'} style={{marginTop: 20}}/>;

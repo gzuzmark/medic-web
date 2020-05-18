@@ -67,7 +67,7 @@ describe('CardSession Test',() => {
         props.item = new SessionMentorBean(session);
         const component = getComponent();
         expect(component.find('.CardSession_options-button').length).toEqual(1);
-        expect(component.find('.CardSession_options-button').text()).toEqual('Ver alumnos');
+        expect(component.find('.CardSession_options-button').text()).toEqual('Ver pacientes');
     });
 
     it("render: render CardSession RESOLVE is not Active", () => {const session = {...sessionMentorDummy};

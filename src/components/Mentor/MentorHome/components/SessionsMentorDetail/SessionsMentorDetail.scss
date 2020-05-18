@@ -2,6 +2,8 @@
   background: #f9fbff;
   padding: 40px 60px;
   width: 100%;
+  border: 1px solid #e2e2e2;
+
   &_empty-state {
     display: block;
     margin: 48px auto 0 auto;
@@ -25,18 +27,18 @@
       transform: rotate(90deg) translate(-2px, 4px);
       transition: transform 0.2s ease-in;
       width: 20px;
-      fill: #561cac;
+      fill: #1ecd96;
     }
     span {
-      color: #561cac!important;
+      color: #1ecd96!important;
     }
   }
   &_title {
     h2 {
-      color: #81a8d2!important;
+      color: #1ECD96!important;
     }
     span {
-      color: #81a8d2!important;
+      color: #1ECD96!important;
       display: block;
       margin-top: 5px;
       text-align: center;

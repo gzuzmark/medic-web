@@ -30,10 +30,10 @@ const UpdateStatus: React.FC<IPropsUpdateStatus> = (props) => {
     const warningContent = {
         button: "Aceptar",
         description: isPublished?
-            "No le podrás crear sesiones a los mentores deshabilitados." :
+            "No le podrás crear sesiones a los doctores deshabilitados." :
             "Sus datos e información de perfil serán visibles.",
         image: <Icon name={'alert'} />,
-        title: `¿Estás seguro que deseas ${nexStatus.toLowerCase()} a este mentor?`
+        title: `¿Estás seguro que deseas ${nexStatus.toLowerCase()} a este doctor?`
     };
 
     React.useEffect(() => {

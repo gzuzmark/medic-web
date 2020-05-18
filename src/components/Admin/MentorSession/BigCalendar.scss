@@ -550,7 +550,7 @@ button {
   border-bottom: 1px solid $color_silver_approx;
   display: flex;
   flex-flow: column nowrap;
-  min-height: 40px;
+  min-height: 70px;
 }
 .rbc-time-gutter {
   flex: none;
@@ -576,7 +576,7 @@ button {
   }
   .rbc-event {
     align-items: flex-start;
-    border: 1px solid $color_blumine_approx;
+    border: 1px solid $color_blumine_approx !important;
     display: flex;
     flex-flow: column wrap;
     max-height: 100%;

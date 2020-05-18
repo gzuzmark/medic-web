@@ -37,10 +37,10 @@ export const OptionsHandler = styled.div`
         border: 0;
         display: flex;
         ${Body1} {
-            color: ${colors.BACKGROUND_COLORS.background_purple};   
+            color: ${colors.BACKGROUND_COLORS.background_green }
         }
         svg {
-            fill: ${colors.BACKGROUND_COLORS.background_purple};
+            fill: ${colors.BACKGROUND_COLORS.background_green};
         }
         &:not([disabled]) {
             cursor: pointer;
@@ -55,18 +55,18 @@ export const OptionsHandler = styled.div`
         }
         &:hover {
             ${Body1} {
-                color: ${colors.MISC_COLORS.light_purple};
+                color: ${colors.BACKGROUND_COLORS.background_dark_green};
             }
             svg {
-                fill: ${colors.MISC_COLORS.light_purple};
+                fill: ${colors.BACKGROUND_COLORS.background_dark_green};
             }
         }
         &:active {
             ${Body1} {
-                color: ${colors.MISC_COLORS.dark_purple};
+                color: ${colors.BACKGROUND_COLORS.background_dark_green};
             }
             svg {
-                fill: ${colors.MISC_COLORS.dark_purple};
+                fill: ${colors.BACKGROUND_COLORS.background_dark_green};
             }
         }
     }
@@ -149,7 +149,7 @@ class FormExperience extends React.Component <IPropsFormExperience, {}> {
                             </FormColumn>,
                             <FormColumn width={2} key={`FormColumn-PersonalData_${++counter}`}>
                                 <MentorInput
-                                    label={"EMPRESA"}
+                                    label={"CENTRO LABORAL"}
                                     error={hasError(index, "company")}
                                     disabled={!!this.props.forceDisable}
                                     attrs={{
@@ -157,7 +157,7 @@ class FormExperience extends React.Component <IPropsFormExperience, {}> {
                                         name: `experiences[${index}].company`,
                                         onBlur: ctxt.handleBlur,
                                         onChange: ctxt.handleChange,
-                                        placeholder: "Ingresa el nombre de la empresa",
+                                        placeholder: "Ingresa el nombre del centro laboral",
                                         style: {borderColor: getBorderColor(companyEmpty, isEdit)},
                                         value: value.company}}/>
                             </FormColumn>

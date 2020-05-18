@@ -53,7 +53,7 @@ export const errorDefaultNotification  = {
     show: true,
     text: <span>
         {baseErrorNotification}
-        <Link to={"/mentor/perfil"}> <Body1 color={FONTS.light}>Ir al perfil</Body1></Link>
+        <Link to={"/doctor/perfil"}> <Body1 color={FONTS.light}>Ir al perfil</Body1></Link>
     </span>,
     type: "ERROR" as TypeHeaderNotification
 };
@@ -85,7 +85,7 @@ const Layout: React.FC<IPropsLayout> = props => {
     return (
         <LayoutContext.Provider value={{user, notification, setNotification, setUser: updateUser}}>
             <Sticky height={80} top={80} style={{'zIndex': 6}}>
-                <div className="Header" style={{background: colors.BACKGROUND_COLORS.background_purple}}>
+                <div className="Header" style={{background: colors.BACKGROUND_COLORS.background_green}}>
                     <div className="Header_wrapper u-LayoutMargin">
                         <div className="Header_section">
                             <Link to={'/'}>
@@ -93,7 +93,7 @@ const Layout: React.FC<IPropsLayout> = props => {
                                     <img className="Header_image" src={logo_header} height='18'/>
                                 </div>
                                 <Subhead1 color="font_light" weight={LIGHT_TEXT} style={{padding: '0 14px'}}>
-                                    {user.rol === ROL_ADMIN ? 'Administrador' : 'Mentores'}
+                                    {user.rol === ROL_ADMIN ? 'Administrador' : 'Doctores'}
                                 </Subhead1>
                             </Link>
                         </div>
@@ -119,7 +119,7 @@ const Layout: React.FC<IPropsLayout> = props => {
             <div className="Footer" style={{background: colors.MISC_COLORS.background_grey_1}}>
                 <div className="Footer-wrapper u-LayoutMargin">
                     <div className="Footer-section">
-                        <Body1 className="Footer-text" weight={LIGHT_TEXT}>UGO {user.rol === ROL_ADMIN ? 'Administrador' : 'Mentores'} {date.getFullYear()}. Todos los derechos reservados</Body1>
+                        <Body1 className="Footer-text" weight={LIGHT_TEXT}>UGO {user.rol === ROL_ADMIN ? 'Administrador' : 'Doctores'} {date.getFullYear()}. Todos los derechos reservados</Body1>
                     </div>
                     <div className="Footer-section">
                         <a className="Footer-link" href="mailto:ugoadministrador@ugo.com.pe"><Body1 className="Footer-text" weight={LIGHT_TEXT}>soporteugo@lacafetalab.pe</Body1></a>

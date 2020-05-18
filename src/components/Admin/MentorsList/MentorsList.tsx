@@ -76,7 +76,7 @@ class MentorsList extends React.Component <{}, IStateListMentor> {
         return (
             <Sticky height={244} top={80} style={{background: 'white'}}>
                 <MenuAside  icon={'book'}
-                            items={[{text: 'Mentores', url: '/admin/mentores'}]} />
+                            items={[{text: 'Doctores', url: '/admin/doctores'}]} />
                 <div className='u-LayoutMargin u-ListMentors_padding ListMentors_sticky'>
                     <MentorDropDown
                         options={this.state.skills}
@@ -87,11 +87,12 @@ class MentorsList extends React.Component <{}, IStateListMentor> {
                         disabled={this.state.initialLoad}
                         style={{width: 500}}
                         placeholder={"Filtrar por curso"}/>
-                    <ButtonNormal text={"Agregar mentor"}
-                                  attrs={{onClick: this.goToCreateMentors}}/>
+                    <ButtonNormal text={"Agregar doctor"}
+                                  attrs={{onClick: this.goToCreateMentors}}
+                                  />
                 </div>
                 <ListMentorsHeader header={[
-                    'NOMBRE DE MENTOR',
+                    'NOMBRE DE DOCTOR',
                     'HORAS SEMANALES',
                     'VER SESIONES',
                     'CREAR SESIONES',
@@ -127,6 +128,7 @@ class MentorsList extends React.Component <{}, IStateListMentor> {
 
     private listMentors() {
         const noResults = !this.state.initialLoad && this.state.mentors.length === 0;
+
         return (
             <div className="ListMentors_body u-LayoutMargin">
                 {!this.state.loading && noResults && (
@@ -189,7 +191,7 @@ class MentorsList extends React.Component <{}, IStateListMentor> {
                 this.setState({
                     hasMore,
                     loading: false,
-                    mentors: response.items
+                    mentors: response.items || []
                 })
             });
         });

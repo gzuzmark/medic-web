@@ -32,7 +32,7 @@ const LoaderContainer = styled.div`
             return !!props.size ? `0 ${props.size/2}px` : '0 7.5px';
         }};
         background: ${(props: ILoaderContainer) => {
-            return props.color || colors.BACKGROUND_COLORS.background_purple;
+            return props.color || colors.BACKGROUND_COLORS.background_green;
         }};
         border-radius: 50%;
         transform: translateY(0);

@@ -26,7 +26,7 @@ const CardStyles = styled.div`
     border: ${(props: IPropsCardStyles) => {
         let style = '#d4dce0 1px solid';
         if (props.status === CARD_STATUS.ACTIVE) {
-            style = '#81a8d2 2px solid';
+            style = '#A7D49B 2px solid';
         }
         return style;
     }};
@@ -42,7 +42,7 @@ const CardStyles = styled.div`
     width: 132px;
     &:before {
         background: ${(props: IPropsCardStyles) => {
-            let color = '#9e61f9';
+            let color = '#1ECD96';
             if (props.status === CARD_STATUS.DISABLED) {
                 color = '#d4dce0';
             }
@@ -73,7 +73,7 @@ const CardStyles = styled.div`
         ${(props: IPropsCardStyles) => {
             let styles =  `
                 background: white;
-                border: #561cac 2px solid;
+                border: #1ecd96 2px solid;
                 box-shadow: 4px 4px 16px -2px rgba(74, 74, 74, 0.32);
             `;
             if(props.status === CARD_STATUS.DISABLED) {
@@ -86,7 +86,7 @@ const CardStyles = styled.div`
         ${(props: IPropsCardStyles) => {
             let styles =  `
                 background: #f9fbff;
-                border: #561cac 2px solid;
+                border: #1ecd96 2px solid;
                 box-shadow: 0 0 0 0;
             `;
             if(props.status === CARD_STATUS.DISABLED) {
