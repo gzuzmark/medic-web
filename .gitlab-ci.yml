@@ -60,7 +60,7 @@ build_stage_prod:
   only:
     - master
 
-deploy_stage_dev:
+deploy_stage_prod:
   stage: deploy
   only:
     - master
