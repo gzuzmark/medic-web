@@ -11,7 +11,6 @@ import {ISessionMentor, SessionMentorBean} from "../../../domain/Session/Session
 import UserRepository from "../../../repository/UserRepository";
 import SessionService from "../../../services/Session/Session.service";
 import DayHandlerBar, {IDayHandlerBar} from "./components/DayHandlerBar/DayHandlerBar";
-import ModalTakeList from "./components/ModalTakeList/ModalTakeList";
 import SessionsMentorDetail, {ISessionMentorDetail} from "./components/SessionsMentorDetail/SessionsMentorDetail";
 import './MentorHome.scss';
 
