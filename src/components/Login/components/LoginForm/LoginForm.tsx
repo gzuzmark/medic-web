@@ -53,7 +53,7 @@ class LoginForm extends React.Component<IPropsForm, {}> {
                         (this.props.errors.username || this.props.errors.password) : ''}
                     touched={!!this.props.touched.password || !!this.props.touched.username}/>
                 <div className="LoginForm_rol">
-                    <ConsoleInputRadio title='Mentor' attrs={{name:'rol', value: ROL_MENTOR, defaultChecked: true}}/>
+                    <ConsoleInputRadio title='Doctor' attrs={{name:'rol', value: ROL_MENTOR, defaultChecked: true}}/>
                     <ConsoleInputRadio title='Administrador' attrs={{name:'rol', value: ROL_ADMIN}}/>
                 </div>
                 <InputError
