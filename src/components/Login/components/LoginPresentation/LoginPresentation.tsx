@@ -1,6 +1,5 @@
 import * as React from 'react';
 import styled from "styled-components";
-import logo from '../../../../assets/images/logo.png';
 import Icon from "../../../../common/Icon/Icon";
 import colors from "../../../../common/MentorColor";
 import {Display2, LIGHT_TEXT, Small2, Subhead1} from '../../../../common/MentorText';
