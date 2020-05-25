@@ -122,8 +122,6 @@ export class MentorHomeCore extends React.Component<IPropsMentorHomeCore, IState
     }
     public render() {
         return <Layout title={"Tutores"}>
-            <ModalTakeList item={this.props.noAttendedSessions.session}
-                           loadNoAttendedSessions={this.props.noAttendedSessions.doRequest} />
             <div className="MentorHome u-LayoutMentorMargin">
                 <div className={"MentorHome_title"}>
                     <Icon name={"calendar"}/>
