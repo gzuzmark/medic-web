@@ -32,13 +32,10 @@ class LoginPresentation extends React.Component<{}, {}> {
                             <div style={{marginRight: 5}}><Icon name={'locker'}/></div>
                             <div>
                                 <Small2>¿Olvidaste tu contraseña? </Small2>
-                                <Small2 weight={LIGHT_TEXT}>Para recuperarla escríbenos a soporteugo@lacafetalab.pe</Small2>
+                                <Small2 weight={LIGHT_TEXT}>Para recuperarla escríbenos a nia@lavictoria.pe</Small2>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div className="Login_section Login_section--image-container">
-                    <img className="Login_image" src={logo} />
                 </div>
             </div>
         );
