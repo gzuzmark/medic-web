@@ -1,4 +1,17 @@
-import {ISessionBase, SESSION_STATUS, SessionBean} from "./SessionBean";
+import { IBaseUser } from "../User/AbstractUser";
+import { ISessionBase, SESSION_STATUS, SessionBean } from "./SessionBean";
+
+export interface ISessionStudentUser extends IBaseUser {
+    document: string;
+    documentType: string;
+    status: string;
+}
+
+export interface ISessionStudent {
+    id: string;
+    code: string;
+    user: ISessionStudentUser;
+}
 
 export interface ISessionAvailability {
     limit: number;
@@ -10,6 +23,7 @@ export interface ISessionMentor extends ISessionBase {
     isEnabledForAttendance?: boolean;
     isEnabledForComment?: boolean;
     status?: string;
+    student?: ISessionStudent;
 }
 export const minuteTime = 14000;
 
@@ -49,7 +63,7 @@ export class SessionMentorBean extends SessionBean {
         const current = new Date();
         const to = new Date(this.session.from);
         const sessionStart = to.getTime() - current.getTime() <= 0;
-        return this.isNoAttended ||  !sessionStart;
+        return this.isNoAttended || !sessionStart;
     }
 
     public setAsNoAttended() {
@@ -96,5 +110,14 @@ export class SessionMentorBean extends SessionBean {
             text = 'pacientes inscritos'
         }
         return `${count} de ${limit} ${text}`;
+    }
+
+    public getPatientSubInfo(): string {
+        const student = this.session.student;
+        if (student) {
+            const { name, lastname, email } = student.user;
+            return `${name} ${lastname} (${email})`;
+        }
+        return this.getAvailability();
     }
 }

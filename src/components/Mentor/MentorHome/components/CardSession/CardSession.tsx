@@ -35,7 +35,7 @@ const CardSession: React.FC<IPropsCardSession> = (props) => {
                     <Text1>{props.item.session.skill && props.item.session.skill.name}</Text1>
                 </div>
                 <div className={"CardSession_body-sub-main"}>
-                    <TextBold3>{props.item.getAvailability()}</TextBold3>
+                    <TextBold3>{props.item.getPatientSubInfo()}</TextBold3>
                 </div>
                 <div className={"CardSession_body-bottom"}>
                     {props.item.isVirtual() ?
