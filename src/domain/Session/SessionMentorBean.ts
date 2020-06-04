@@ -23,6 +23,7 @@ export interface ISessionMentor extends ISessionBase {
     isEnabledForAttendance?: boolean;
     isEnabledForComment?: boolean;
     status?: string;
+    status_new?: string;
     student?: ISessionStudent;
 }
 export const minuteTime = 14000;
@@ -64,6 +65,10 @@ export class SessionMentorBean extends SessionBean {
         const to = new Date(this.session.from);
         const sessionStart = to.getTime() - current.getTime() <= 0;
         return this.isNoAttended || !sessionStart;
+    }
+
+    public filterStatusSession(status: string) {
+        return this.session.status_new === status;
     }
 
     public setAsNoAttended() {
@@ -118,6 +123,6 @@ export class SessionMentorBean extends SessionBean {
             const { name, lastname, email } = student.user;
             return `${name} ${lastname} (${email})`;
         }
-        return this.getAvailability();
+        return '';
     }
 }
