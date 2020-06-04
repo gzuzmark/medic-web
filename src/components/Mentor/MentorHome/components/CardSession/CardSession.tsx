@@ -9,14 +9,16 @@ import './CardSession.scss';
 export interface IPropsCardSession {
     item: SessionMentorBean;
     link: string;
+    style?: React.CSSProperties;
+    available?: boolean;
 }
 
 
 const CardSession: React.FC<IPropsCardSession> = (props) => {
 
     return (
-        <div className={`CardSession CardSession--${props.item.getStatus()}`}>
-            <div className={"CardSession_aside"}>
+        <div className={`CardSession CardSession--${props.item.getStatus()}`} style={props.style}>
+            <div className={"CardSession_aside"} style={props.style}>
                 <div className={"CardSession_icon"}>
                     <Icon name={"calendar-check"}/>
                 </div>
@@ -34,9 +36,11 @@ const CardSession: React.FC<IPropsCardSession> = (props) => {
                 <div className={"CardSession_body-main"}>
                     <Text1>{props.item.session.skill && props.item.session.skill.name}</Text1>
                 </div>
-                <div className={"CardSession_body-sub-main"}>
-                    <TextBold3>{props.item.getPatientSubInfo()}</TextBold3>
-                </div>
+                {!props.available && (
+                    <div className={"CardSession_body-sub-main"}>
+                        <TextBold3>{props.item.getPatientSubInfo()}</TextBold3>
+                    </div>
+                )}
                 <div className={"CardSession_body-bottom"}>
                     {props.item.isVirtual() ?
                         <a className={"CardSession_location"} href={props.item.getLocation()} target="_blank">
