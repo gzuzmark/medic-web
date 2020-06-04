@@ -1,0 +1,18 @@
+.SessionItem {
+  display: flex;
+  flex-direction: row;
+  &_basicInformation {
+    margin-right: 10px;
+  }
+  &_tagWrapper {
+    margin-bottom: 12px;
+    margin-top: -7px;
+  }
+  &_tag {
+    border-radius: 3px;
+    display: inline-block;
+    margin-right: 10px;
+    margin-top: 7px;
+    padding: 2px 8px;
+  }
+}

@@ -1,4 +1,6 @@
 import {AbstractDateParser} from "../DateManager/AbstractDateParser";
+import { IUserStudent } from "../Student/UserStudentBean";
+import { IBaseUser } from "../User/AbstractUser";
 
 export const SESSION_STATUS = {
     ATTENDED: 'ATTENDED',
@@ -29,6 +31,17 @@ export interface ISessionLocation {
     sessionUrl?: string;
 }
 
+export interface ISessionPaginated {
+    pageSize: number;
+    totalItems: number;
+    currentPage: number;
+    items: ISessionBody[];
+}
+
+export interface ISessionBody extends ISessionBase {
+    doctor: IBaseUser;
+    patient: IUserStudent;
+}
 
 export interface ISessionBase {
     id?: string;
@@ -82,6 +95,14 @@ export class SessionBean {
 
     public getDate(dateFormatter: AbstractDateParser): string {
         return `${dateFormatter.parseDateToString(this.session.from, "dddd, DD [de] MMMM")}`;
+    }
+
+    public getShorterDay(dateFormatter: AbstractDateParser): string {
+        return `${dateFormatter.parseDateToString(this.session.from, "DD [de] MMMM")}`;
+    }
+
+    public getFromTime(dateFormatter: AbstractDateParser): string {
+        return `${dateFormatter.parseDateToString(this.session.from, "h:mm a")}`;
     }
 
     public isVirtual(): boolean {

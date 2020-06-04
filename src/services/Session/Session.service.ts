@@ -6,6 +6,45 @@ import BaseRequest from '../BaseRequest';
 class SessionService extends BaseRequest {
     private listMentorSessionsCancelToken: any = null;
 
+    public list(params: string = '') {
+        if (!!this.listMentorSessionsCancelToken) {
+            this.listMentorSessionsCancelToken.cancel();
+        }
+        this.listMentorSessionsCancelToken = this.generateCancelToken();
+        const instance = this.getCustomInstance(this.listMentorSessionsCancelToken);
+        return new Promise((resolve, reject) => {
+            instance.get(`ugo-admin/sessions?${params}`)
+                .then((response: any) => {
+                    if (response.status === 200 && response.data) {
+                        resolve(response.data);
+                    } else {
+                        reject(null);
+                    }
+                })
+                .catch((error: any) => {
+                    this.validSession();
+                    reject(error);
+                });
+        });
+    }
+
+    public cancelSession(sessionId: string) {
+        return new Promise((resolve, reject) => {
+            this.instance.post(`ugo-admin/sessions/${sessionId}/cancel`)
+                .then((response: any) => {
+                    if (response.status === 200 && response.data) {
+                        resolve(response.data);
+                    } else {
+                        reject(null);
+                    }
+                })
+                .catch((error: any) => {
+                    this.validSession();
+                    reject(error);
+                });
+        });
+    }
+
     public listReport(params: string): Promise<IReportForSession> {
         return new Promise((resolve, reject) => {
             this.instance.get(`ugo-admin/sessions/report?${params}`)

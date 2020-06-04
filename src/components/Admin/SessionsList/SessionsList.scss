@@ -1,0 +1,84 @@
+@import "../../../assets/styles/01-settings/settings";
+
+.ListSessions {
+  padding: 0 70px;
+  &_body {
+    display: flex;
+    flex-direction: column;
+  }
+  &_sticky {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+  }
+  &_header, &_row {
+    display: flex;
+    flex-direction: row;
+  }
+  &_header {
+    align-items: center;
+    margin-top: 10px;
+  }
+  &_row {
+    align-items: center;
+    &--center {
+      display: flex;
+      justify-content: center;
+      padding: 60px 0;
+    }
+  }
+  &_column {
+    &--mentor {
+      min-height: 70px;
+    }
+    &--date {
+      span {
+        color: #4a4a4a!important;
+      }
+    }
+    &:nth-child(1) {
+      text-align: center;
+      width: 10%;
+    }
+    &:nth-child(2) {
+      width: 20%;
+    }
+    &:nth-child(3) {
+      width: 20%;
+    }
+    &:nth-child(4) {
+      width: 10%;
+    }
+    &:nth-child(5) {
+      text-align: left;
+      width: 30%;
+      word-break: break-all;
+    }
+    &:nth-child(6) {
+      text-align: center;
+      width: 10%;
+    }
+  }
+  &_line {
+    background: $grey-light;
+    border: 0;
+    box-shadow: 0 1px 6px 0 darken($grey-light, 10%);
+    height: 1px;
+    margin: 2px 0;
+  }
+  &_separator {
+    align-items: center;
+    border-right: 1px solid rgb(193, 193, 193);
+    display: flex;
+    height: 45px;
+    padding-top: 2px;
+  }
+  &_bigtext {
+    font-size: 24px;
+    line-height: 48px;
+  }
+}
+
+.u-ListSessions_padding {
+  padding: 0 20px;
+}
