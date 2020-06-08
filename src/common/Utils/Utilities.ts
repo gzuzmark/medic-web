@@ -1,3 +1,4 @@
+import * as moment from 'moment';
 import defaultProfile from '../../assets/images/default.png';
 
 const donwloadLink = (link: string, filename: string, ext: string) => {
@@ -135,10 +136,13 @@ const deepEqual = (a: any,b: any) => {
     }
 };
 
+const getAgeByBirthDate = (bd: string) => bd ? moment().diff(bd, 'years', false) : '';
+
 const Utilities = {
     deepEqual,
     doClone,
     donwloadLink,
+    getAgeByBirthDate,
     getDateFormatted,
     getDocumentHeight,
     getMonday,

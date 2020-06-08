@@ -34,7 +34,7 @@ export const Display1 = styled.span`
   font-family: ${defaultFont};
   font-size: 48px;
   font-style: normal;
-  font-weight: ${(props: IMentorTextProps) => props.weight && LIGHT_TEXT || BLACK_WEIGHT};
+  font-weight: ${(props: IMentorTextProps) => props.weight || BLACK_WEIGHT};
   line-height: 64px;
 `;
 
@@ -46,7 +46,7 @@ export const Display2 = styled.span`
   font-family: ${defaultFont};
   font-size: 40px;
   font-style: normal;
-  font-weight: ${(props: IMentorTextProps) => props.weight && LIGHT_TEXT || BLACK_WEIGHT};
+  font-weight: ${(props: IMentorTextProps) => props.weight || BLACK_WEIGHT};
   line-height: 56px;
 `;
 
@@ -58,7 +58,7 @@ export const Headline1 = styled.h1`
   font-family: ${defaultFont};
   font-size: 24px;
   font-style: normal;
-  font-weight: ${(props: IMentorTextProps) => props.weight && LIGHT_TEXT || BLACK_WEIGHT};
+  font-weight: ${(props: IMentorTextProps) => props.weight || BLACK_WEIGHT};
   line-height: 32px;
 `;
 
@@ -70,7 +70,7 @@ export const Heading2 = styled.h2`
   font-family: ${defaultFont};
   font-size: 20px;
   font-style: normal;
-  font-weight: ${(props: IMentorTextProps) => props.weight && LIGHT_TEXT || BLACK_WEIGHT};
+  font-weight: ${(props: IMentorTextProps) => props.weight || BLACK_WEIGHT};
   line-height: 32px;
 `;
 
@@ -83,7 +83,7 @@ export const Heading3 = styled.h3`
   font-family: ${defaultFont};
   font-size: 18px;
   font-style: normal;
-  font-weight: ${(props: IMentorTextProps) => props.weight && LIGHT_TEXT || DEFAULT_WEIGHT};
+  font-weight: ${(props: IMentorTextProps) => props.weight || DEFAULT_WEIGHT};
   line-height: 28px;
 `;
 
@@ -95,7 +95,7 @@ export const Subhead1 = styled.h4`
   font-family: ${defaultFont};
   font-size: 16px;
   font-style: normal;
-  font-weight: ${(props: IMentorTextProps) => props.weight && LIGHT_TEXT || BLACK_WEIGHT};
+  font-weight: ${(props: IMentorTextProps) => props.weight || BLACK_WEIGHT};
   line-height: 24px;
 `;
 
@@ -107,7 +107,7 @@ export const Body1 = styled.span`
   font-family: ${defaultFont};
   font-size: 14px;
   font-style: normal;
-  font-weight: ${(props: IMentorTextProps) => props.weight && LIGHT_TEXT || DEFAULT_WEIGHT};
+  font-weight: ${(props: IMentorTextProps) => props.weight || DEFAULT_WEIGHT};
   line-height: 20px;
 `;
 
@@ -119,7 +119,7 @@ export const Small1 = styled.span`
   font-family: ${defaultFont};
   font-size: 11px;
   font-style: normal;
-  font-weight: ${(props: IMentorTextProps) => props.weight && LIGHT_TEXT || DEFAULT_WEIGHT};
+  font-weight: ${(props: IMentorTextProps) => props.weight || DEFAULT_WEIGHT};
   line-height: 16px;
 `;
 
@@ -131,7 +131,7 @@ export const Small2 = styled.span`
   font-family: ${defaultFont};
   font-size: 12px;
   font-style: normal;
-  font-weight: ${(props: IMentorTextProps) => props.weight && LIGHT_TEXT || DEFAULT_WEIGHT};
+  font-weight: ${(props: IMentorTextProps) => props.weight || DEFAULT_WEIGHT};
   line-height: 16px;
 `;
 
@@ -143,6 +143,6 @@ export const Small3 = styled.span`
   font-family: ${defaultFont};
   font-size: 10px;
   font-style: normal;
-  font-weight: ${(props: IMentorTextProps) => props.weight && LIGHT_TEXT || DEFAULT_WEIGHT};
+  font-weight: ${(props: IMentorTextProps) => props.weight || DEFAULT_WEIGHT};
   line-height: 14px;
 `;

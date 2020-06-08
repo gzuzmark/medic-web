@@ -123,14 +123,8 @@ class StudentChecklistBoard extends  React.Component<IPropsStudentChecklistBoard
         const addSearch = this.getInputAdd();
         const inputSearch = this.getInputSearch();
         let propsNoAttendedButton = {};
-        let propsAttendedButton = {};
         if (this.props.board.noAttendedButton || this.props.isEmpty) {
             propsNoAttendedButton = {
-                disabled: true
-            };
-        }
-        if (this.props.board.attendedButton || this.props.isEmpty) {
-            propsAttendedButton = {
                 disabled: true
             };
         }
@@ -173,13 +167,9 @@ class StudentChecklistBoard extends  React.Component<IPropsStudentChecklistBoard
                 }
                 <div className={'StudentChecklistBoard_buttons'}>
                     <button
-                        className={'u-Button u-Button--white StudentChecklistBoard_button StudentChecklistBoard_button--no-attended'}
+                        className={'u-Button StudentChecklistBoard_button StudentChecklistBoard_button--no-attended'}
                         {...propsNoAttendedButton}
-                        onClick={this.props.requestNoAttended}>Nadie se presentó</button>
-                    <button
-                        {...propsAttendedButton}
-                        className={'u-Button StudentChecklistBoard_button'}
-                        onClick={this.props.requestAttended}>Guardar</button>
+                        onClick={this.props.requestNoAttended}>Paciente no se presentó</button>
                 </div>
             </React.Fragment>
         )
