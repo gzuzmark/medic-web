@@ -27,6 +27,7 @@ interface IPropsMentorInput {
     };
     info?: string;
     attrs?: any;
+    lowercaseLabel?: boolean,
 }
 
 export const InputContainer = styled.div`
@@ -138,7 +139,7 @@ class MentorInput extends React.Component<IPropsMentorInput, IStateMentorInput> 
         }
         return (
             <div style={{...this.props.styleContainer}} onClick={this.onClick}>
-                {this.props.label && <FormLabel label={this.props.label} info={this.props.info} uppercase={true}/>}
+                {this.props.label && <FormLabel label={this.props.label} info={this.props.info} uppercase={!this.props.lowercaseLabel}/>}
                 <InputContainer
                     className={`MentorInput ${inputClass}`}
                     style={{...this.props.style}}>

@@ -1,0 +1,14 @@
+.PatientClinicHistory{
+  &_info {
+    margin-top: 3em;
+    &--title {
+      text-align: center;
+      border-bottom: 1px solid #ccd6dc;
+    }
+  }
+  &_background {
+    span:nth-child(2) {
+      font-style: italic;
+    }
+  }
+}

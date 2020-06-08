@@ -13,6 +13,21 @@ export interface ISessionStudent {
     user: ISessionStudentUser;
 }
 
+export interface ISessionPatient {
+    id?: string;
+    name: string;
+    lastName: string;
+    secondLastName: string;
+    email: string;
+    phone: string;
+    birthDate: string;
+    gender: number;
+    allergies: string;
+    meds: string;
+    extraInfo: string;
+    fullLastName: string;
+}
+
 export interface ISessionAvailability {
     limit: number;
     count: number;
@@ -25,6 +40,7 @@ export interface ISessionMentor extends ISessionBase {
     status?: string;
     status_new?: string;
     student?: ISessionStudent;
+    patient?: ISessionPatient;
 }
 export const minuteTime = 14000;
 

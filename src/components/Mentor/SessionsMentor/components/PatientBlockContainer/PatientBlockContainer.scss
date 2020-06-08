@@ -1,0 +1,13 @@
+.PatientBlockContainer {
+  h1 {
+    margin: 20px 0;
+  }
+  &_body {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    div {
+      display: inherit;
+      margin-bottom: 10px;
+    }
+  }
+}
