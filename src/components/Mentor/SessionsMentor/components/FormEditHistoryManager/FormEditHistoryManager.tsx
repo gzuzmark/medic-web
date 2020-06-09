@@ -20,12 +20,19 @@ export interface IPropsFormEditHistoryManager {
     onHandleSubmit: (e: any) => void;
 }
 
+const getGender = (value?: number): string => {
+  if (!value) {
+    return '';
+  }
+  return value === 0 ? 'Mujer' : 'Hombre';
+};
+
 const FormEditHistoryManager: React.FC<IPropsFormEditHistoryManager> = (props) => {
     const [modal, setModal] = React.useState(false);
     const openModal = () => setModal(true);
     const patient = props.session && props.session.patient;
-    const gender = patient && patient.gender;
-    const triage = props.session.triage || {} as ISessionTriage;
+    const gender = getGender(patient && patient.gender);
+    const triage = props.session && props.session.triage || {} as ISessionTriage;
 
     const buttonAttrBase: any = {
         onClick: openModal,
@@ -59,7 +66,7 @@ const FormEditHistoryManager: React.FC<IPropsFormEditHistoryManager> = (props) =
             <PatientBlockContainer title={'Identificación del paciente'} blocks={[
               { label: 'EDAD:', value: patient && Utilities.getAgeByBirthDate(patient.birthDate) || '' },
               { label: 'CELULAR:', value: patient && patient.phone || '' },
-              { label: 'GÉNERO:', value: patient && patient.gender === 0 ? 'Mujer' : 'Hombre' },
+              { label: 'GÉNERO:', value: gender },
               { label: 'CORREO:', value: patient && patient.email || '' },
             ]} />
           </div>
@@ -68,7 +75,7 @@ const FormEditHistoryManager: React.FC<IPropsFormEditHistoryManager> = (props) =
                   Antecedentes
               </Heading2>
               <Body1 weight="500">*Si este campo está vacío, quiere decir que el paciente no declarado alergias o medicamentos</Body1>
-              <PatientHistoryForm isWomanHistory={gender === 0} />
+              <PatientHistoryForm isWomanHistory={gender === 'Mujer'} />
           </div>
           <div className="PatientClinicHistory_sessions">
             <Headline1>

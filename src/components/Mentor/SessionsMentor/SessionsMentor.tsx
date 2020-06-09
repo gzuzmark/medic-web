@@ -162,7 +162,8 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
                 })
             }, () => {
                 this.setState({
-                    loading: false
+                    isEmpty: true,
+                    loading: false,
                 })
             });
         });
@@ -253,7 +254,7 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
     }
 
     private updateHistory() {
-        const sessionId = this.sessionMentor.session.id;
+        const sessionId = this.sessionId;
         const historyUpdatedParams = this.patientHistoryData.historyUpdateParams;
         const caseUpdatedParams = this.patientHistoryData.caseUpdateParams;
         if (sessionId) {
