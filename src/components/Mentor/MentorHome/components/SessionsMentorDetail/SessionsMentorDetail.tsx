@@ -112,7 +112,7 @@ class  SessionsMentorDetail extends React.Component<IPropsSessionsMentorDetail, 
                         </div>
                     }/>
                 </div>}
-                {allFinished && allFinished.length && <div className={"SessionsMentorDetail_session-container"}>
+                {allFinished && !!allFinished.length && <div className={"SessionsMentorDetail_session-container"}>
                     <Accordion
                         iconStyle={{ fill: SESSION_STATUS_COLORS.grayColor }}
                         title={
