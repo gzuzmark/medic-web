@@ -35,9 +35,13 @@ class ListSessionsBody extends React.Component <IPropsListSessionsBody, {}> {
   }
 
   public render() {
-    const { doctor, patient, id = '' } = this.props.session;
+    const { doctor = { name: '', last_name: ''}, patient, id = '' } = this.props.session;
     const sessionBean = new SessionBean(this.props.session);
     const sessionURL = patient && patient.link || '';
+
+    const patientId = patient && patient.id || '';
+    const patientName = patient && patient.name || '';
+    const patientLN = patient && patient.last_name || '';
     const handleClick = () => {
       this.props.selectSession(id);
       this.props.showCancelModal(true);
@@ -57,16 +61,16 @@ class ListSessionsBody extends React.Component <IPropsListSessionsBody, {}> {
         </div>
         <div className="ListSessions_column ListSessions_column--mentor">
           <SessionItem
-            id={patient.id}
-            name={`${patient.name} ${patient.last_name}`}
-            email={patient.email}
+            id={patientId}
+            name={`${patientName} ${patientLN}`}
+            email={patient && patient.email}
           />
         </div>
         <div className="ListSessions_column">
-          {!!patient.phone && (
+          {patient && !!patient.phone && (
             <Subhead1
               color={FONTS.dark}>
-              {patient.phone}
+              {patient && patient.phone}
             </Subhead1>
           )}
         </div>

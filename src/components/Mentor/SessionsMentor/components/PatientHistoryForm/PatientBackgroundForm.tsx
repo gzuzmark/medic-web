@@ -28,10 +28,10 @@ const PatientBackground: React.FC<IPropsPatientBackground> = ({ isWomanHistory, 
             disabled={!!forceDisable}
             attrs={{
               maxLength: DEFAULT_MAX_LEGTH,
-              name: 'allergies',
+              name: 'history.allergies',
               onBlur: handleBlur,
               onChange: handleChange,
-              value: values.allergies}}/>
+              value: values.history.allergies}}/>
         </FormColumn>,
         isWomanHistory ? 
           <FormColumn width={DEFAULT_COLUMN_WIDTH} key={'fur'}>
@@ -41,10 +41,10 @@ const PatientBackground: React.FC<IPropsPatientBackground> = ({ isWomanHistory, 
               disabled={!!forceDisable}
               attrs={{
                 maxLength: DEFAULT_MAX_LEGTH,
-                name: 'fur',
+                name: 'history.fur',
                 onBlur: handleBlur,
                 onChange: handleChange,
-                value: values.fur}}/>
+                value: values.history.fur}}/>
           </FormColumn> :
           <React.Fragment key={'empty_1'} />
     ]}/>
@@ -56,10 +56,10 @@ const PatientBackground: React.FC<IPropsPatientBackground> = ({ isWomanHistory, 
           disabled={!!forceDisable}
           attrs={{
             maxLength: DEFAULT_MAX_LEGTH,
-            name: 'meds',
+            name: 'history.meds',
             onBlur: handleBlur,
             onChange: handleChange,
-            value: values.meds}}/>
+            value: values.history.meds}}/>
       </FormColumn>,
       isWomanHistory ? 
         <FormColumn width={2} key={'last_pregnancy'}>
@@ -69,10 +69,10 @@ const PatientBackground: React.FC<IPropsPatientBackground> = ({ isWomanHistory, 
             disabled={!!forceDisable}
             attrs={{
               maxLength: DEFAULT_MAX_LEGTH,
-              name: 'last_pregnancy',
+              name: 'history.last_pregnancy',
               onBlur: handleBlur,
               onChange: handleChange,
-              value: values.last_pregnancy}}/>
+              value: values.history.last_pregnancy}}/>
         </FormColumn> :
         <React.Fragment key={'empty_2'} />
   ]}/>
@@ -83,12 +83,12 @@ const PatientBackground: React.FC<IPropsPatientBackground> = ({ isWomanHistory, 
         label="Información adicional o condición pre-existente:"
         attrs={{
             maxLength: DEFAULT_MAX_LEGTH,
-            name: "extraInfo",
+            name: "history.extraInfo",
             onBlur: handleBlur,
             onChange: handleChange,
             rows: 4,
             style: {  height: 'auto' },
-            value: values.extraInfo,
+            value: values.history.extraInfo,
         }} />
     </FormColumn>,
     isWomanHistory ? 
@@ -98,12 +98,12 @@ const PatientBackground: React.FC<IPropsPatientBackground> = ({ isWomanHistory, 
           label="Información adicional o condición pre-existente:"
           attrs={{
               maxLength: DEFAULT_MAX_LEGTH,
-              name: "ob_issues",
+              name: "history.ob_issues",
               onBlur: handleBlur,
               onChange: handleChange,
               rows: 4,
               style: {  height: 'auto' },
-              value: values.ob_issues,
+              value: values.history.ob_issues,
           }} />
       </FormColumn> :
       <React.Fragment key={'empty_3'} />
