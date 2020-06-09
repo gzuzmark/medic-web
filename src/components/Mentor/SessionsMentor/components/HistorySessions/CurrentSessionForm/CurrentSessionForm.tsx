@@ -2,9 +2,10 @@ import * as React from 'react';
 
 import FormColumn from "../../../../../../common/FormRow/components/FormColumn/FormColumn";
 import FormRow from "../../../../../../common/FormRow/FormRow";
-import { Heading2 } from '../../../../../../common/MentorText';
+import { Heading2, Headline1 } from '../../../../../../common/MentorText';
 import MentorTextArea from '../../../../../../common/MentorTextArea/MentorTextArea';
 import PatientBackgroundFormContext from '../../PatientHistoryForm/PatientBackgroundForm.context';
+import HistoryTreatmentForm from '../HistoryTreatmentForm/HistoryTreatmentForm';
 
 interface IPropsCurrentSessionForm {
   forceDisable?: boolean;
@@ -53,6 +54,12 @@ const CurrentSessionForm: React.FC<IPropsCurrentSessionForm> = ({ forceDisable }
             }} />
         </FormColumn>
       ]}/>
+      <div style={{ marginTop: 20 }}>
+        <Headline1>
+          Tratamiento
+        </Headline1>
+        <HistoryTreatmentForm />
+      </div>
       <FormRow key={'row_3'} style={defaultRowStyle} columns={[
         <FormColumn width={DEFAULT_COLUMN_WIDTH} key={'recommendation'}>
           <MentorTextArea

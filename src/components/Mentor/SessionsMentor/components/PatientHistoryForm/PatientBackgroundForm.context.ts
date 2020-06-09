@@ -11,8 +11,10 @@ export interface IPatientBackgroundFormValidations {
 
 export interface IPatientTreatmentFormValidations {
   component: string;
+  consult_id?: string;
   extra_info: string;
   frequency: string;
+  id?: string;
   name: string;
   period: string;
 }
