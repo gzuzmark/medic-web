@@ -9,7 +9,7 @@ import Layout from "../../../common/Layout/Layout";
 import LoaderFullScreen from "../../../common/Loader/LoaderFullsScreen";
 import {MomentDateParser} from "../../../domain/DateManager/MomentDateParser";
 import {SESSION_LIFE} from "../../../domain/Session/SessionBean";
-import SessionEditPatientHistoryData, { ISessionHistoryForm } from '../../../domain/Session/SessionEditPatientHistory';
+import SessionEditPatientHistoryData, { ISessionPatientCaseForm, ISessionPatientHistoryForm } from '../../../domain/Session/SessionEditPatientHistory';
 import { ISessionPatient, SessionMentorBean } from "../../../domain/Session/SessionMentorBean";
 import {
     IStudentChecklist,
@@ -22,7 +22,7 @@ import SessionService from "../../../services/Session/Session.service";
 import StudentService from "../../../services/Student/Student.service";
 import TagService, {ITags} from "../../../services/Tag/Tag.service";
 import FormEditHistoryManager from './components/FormEditHistoryManager/FormEditHistoryManager';
-import PatientBackgroundFormContext, { IPatientBackgroundFormValidations } from './components/PatientHistoryForm/PatientBackgroundForm.context';
+import PatientBackgroundFormContext, { IPatientBackgroundFormValidations, IPatientCaseFormValidations, ISessionPatientHistoryFormValidations } from './components/PatientHistoryForm/PatientBackgroundForm.context';
 import {ISessionFullCard} from "./components/SessionFullCard/SessionFullCard";
 import SessionFullCard from "./components/SessionFullCard/SessionFullCard";
 import { default as SimpleFullCard, ISimpleFullCard} from "./components/SimpleFullCard/SimpleFullCard";
@@ -50,7 +50,7 @@ interface IStateSessionsMentor {
     fullCardSimple: ISimpleFullCard;
     isEmpty: boolean;
     loading: boolean;
-    patientHistory: IPatientBackgroundFormValidations;
+    patientHistory: ISessionPatientHistoryFormValidations;
     searchValue: string;
     modal: boolean;
     modalError: boolean;
@@ -75,7 +75,7 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
     private patientHistoryData: SessionEditPatientHistoryData;
     constructor(props: any) {
         super(props);
-        this.patientHistoryData = new SessionEditPatientHistoryData({} as ISessionHistoryForm);
+        this.patientHistoryData = new SessionEditPatientHistoryData({} as ISessionPatientHistoryForm);
         this.state = {
             board: {
                 addEnabled: false,
@@ -101,7 +101,7 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
             modalCheck: this.cleanCheckModal(''),
             modalError: true,
             modalSuccess: false,
-            patientHistory: {...this.patientHistoryData.getHistoryValues},
+            patientHistory: { history: this.patientHistoryData.getHistoryValues, case: this.patientHistoryData.getCaseValues },
             searchValue: '',
             tags: [],
         };
@@ -137,14 +137,23 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
                 this.studentChecklistCollector = new StudentChecklistCollector(values[1]);
                 const sessions = this.studentChecklistCollector.sessions;
                 const patient = this.sessionMentor.session.patient;
-                this.patientHistoryData = new SessionEditPatientHistoryData(patient);
+                const patCase = values[3] as ISessionPatientCaseForm;
+                const patientHistory = {
+                    case: patCase,
+                    history: patient,
+                } as ISessionPatientHistoryForm;
+                this.sessionMentor.setSessionPatientTriage(values[3]);
+                this.patientHistoryData = new SessionEditPatientHistoryData(patientHistory);
                 this.setState({tags: values[2]}, () => {
                     const newState = {
                         board: this.getBoard(sessions, patient),
                         fullCardSession: this.getFullCardSession(),
                         fullCardSimple: this.getFullCardSimple(),
                         isEmpty: sessions.length === 0 && !patient,
-                        patientHistory: this.patientHistoryData.getHistoryValues,
+                        patientHistory: {
+                            case: this.patientHistoryData.getCaseValues,
+                            history: this.patientHistoryData.getHistoryValues,
+                        },
                     };
                     this.setState({
                         loading: false,
@@ -160,6 +169,7 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
     }
 
     public render() {
+        const session = this.sessionMentor && this.sessionMentor.session;
         const navBarText = this.sessionMentor ?
             `${this.mdp.isDateToday(this.sessionMentor.session.from)? 'hoy ': ''}${this.sessionMentor.getDate(this.mdp)}` : '';
         return <Layout title={"Tutores"}>
@@ -223,13 +233,13 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
                                             value={{
                                                 handleBlur,
                                                 handleChange,
-                                                values: values as IPatientBackgroundFormValidations
+                                                values: values as ISessionPatientHistoryFormValidations,
                                             }}>
                                             <form onSubmit={handleSubmit}>
                                                 <FormEditHistoryManager
                                                     formData={{values}}
                                                     onHandleSubmit={this.onSubmit}
-                                                    session={this.sessionMentor && this.sessionMentor.session}
+                                                    session={session}
                                                 />
                                             </form>
                                         </PatientBackgroundFormContext.Provider>
@@ -244,27 +254,33 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
 
     private updateHistory() {
         const sessionId = this.sessionMentor.session.id;
-        const updatedParams = this.patientHistoryData.historyUpdateParams;
-        if (sessionId && updatedParams) {
+        const historyUpdatedParams = this.patientHistoryData.historyUpdateParams;
+        const caseUpdatedParams = this.patientHistoryData.caseUpdateParams;
+        if (sessionId) {
             this.setState({ loading: true, modalSuccess: false });
-            this.sessionService.updateHistoryBackground(sessionId, updatedParams)
-            .then((patientBackground: IPatientBackgroundFormValidations) => {
+            Promise.all([
+                this.sessionService.updateHistoryBackground(sessionId, historyUpdatedParams),
+                this.sessionService.updateSessionConsult(sessionId, caseUpdatedParams),
+            ]).then((responses) => {
+                const patHistory = responses[0] as IPatientBackgroundFormValidations;
+                const patCase = responses[1] as IPatientCaseFormValidations;
                 this.setState({
                     loading: false,
                     modalSuccess: true,
-                    patientHistory: patientBackground,
+                    patientHistory: { history: patHistory, case: patCase },
                 });
                 setTimeout(() => {
                     this.setState({ modalSuccess: false });
-                }, 1500);
+                },1500);
             }).catch(() => {
                 this.setState({ loading: false });
-            });
+            })
         }
     }
 
-    private onSubmit(values: IPatientBackgroundFormValidations) {
-        this.patientHistoryData.prepareData(values);
+    private onSubmit(values: ISessionPatientHistoryFormValidations) {
+        this.patientHistoryData.preparePatientHistoryData(values.history);
+        this.patientHistoryData.preparePatientCaseData(values.case);
         this.updateHistory();
     }
 

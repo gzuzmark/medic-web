@@ -28,6 +28,29 @@ export interface ISessionPatient {
     fullLastName: string;
 }
 
+export interface ITriageQuestion {
+    id: string;
+    question: string;
+    answer: string;
+}
+
+export interface ITriageUseCase {
+    id: string;
+    title: string;
+    description: string;
+}
+
+export interface ISessionTriage {
+    id: string;
+    questions: ITriageQuestion[];
+    useCase: ITriageUseCase;
+}
+
+export interface ISessionTriageResponse {
+    sessionId: string;
+    triage: ISessionTriage;
+}
+
 export interface ISessionAvailability {
     limit: number;
     count: number;
@@ -41,6 +64,7 @@ export interface ISessionMentor extends ISessionBase {
     status_new?: string;
     student?: ISessionStudent;
     patient?: ISessionPatient;
+    triage?: ISessionTriage;
 }
 export const minuteTime = 14000;
 
@@ -81,6 +105,10 @@ export class SessionMentorBean extends SessionBean {
         const to = new Date(this.session.from);
         const sessionStart = to.getTime() - current.getTime() <= 0;
         return this.isNoAttended || !sessionStart;
+    }
+
+    public setSessionPatientTriage(triage: ISessionTriageResponse) {
+        this.session.triage = triage.triage;
     }
 
     public filterStatusSession(status: string) {

@@ -3,9 +3,10 @@ import {ButtonNormal} from "../../../../../common/Buttons/Buttons";
 import ContentModal from "../../../../../common/ConsoleModal/ContentModal";
 import MentorModalBase from "../../../../../common/ConsoleModal/MentorModalBase";
 import Icon from "../../../../../common/Icon/Icon";
-import { Body1, Display1, Heading2 } from '../../../../../common/MentorText';
+import { Body1, Display1, Heading2, Headline1 } from '../../../../../common/MentorText';
 import Utilities from "../../../../../common/Utils/Utilities";
-import { ISessionMentor } from "../../../../../domain/Session/SessionMentorBean";
+import { ISessionMentor, ISessionTriage } from "../../../../../domain/Session/SessionMentorBean";
+import HistorySessions from "../HistorySessions/HistorySessions";
 import PatientBlockContainer from "../PatientBlockContainer/PatientBlockContainer";
 import PatientHistoryForm from '../PatientHistoryForm/PatientBackgroundForm';
 import { IPatientBackgroundFormValidations } from "../PatientHistoryForm/PatientBackgroundForm.context";
@@ -24,6 +25,7 @@ const FormEditHistoryManager: React.FC<IPropsFormEditHistoryManager> = (props) =
     const openModal = () => setModal(true);
     const patient = props.session && props.session.patient;
     const gender = patient && patient.gender;
+    const triage = props.session.triage || {} as ISessionTriage;
 
     const buttonAttrBase: any = {
         onClick: openModal,
@@ -67,6 +69,12 @@ const FormEditHistoryManager: React.FC<IPropsFormEditHistoryManager> = (props) =
               </Heading2>
               <Body1 weight="500">*Si este campo está vacío, quiere decir que el paciente no declarado alergias o medicamentos</Body1>
               <PatientHistoryForm isWomanHistory={gender === 0} />
+          </div>
+          <div className="PatientClinicHistory_sessions">
+            <Headline1>
+              Consultas médicas
+            </Headline1>
+            <HistorySessions triage={triage} />
           </div>
           <ButtonNormal
             text={"Guardar"}
