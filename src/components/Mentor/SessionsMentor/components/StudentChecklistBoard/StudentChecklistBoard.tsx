@@ -165,12 +165,14 @@ class StudentChecklistBoard extends  React.Component<IPropsStudentChecklistBoard
                         })}
                     </div>
                 }
-                <div className={'StudentChecklistBoard_buttons'}>
-                    <button
-                        className={'u-Button StudentChecklistBoard_button StudentChecklistBoard_button--no-attended'}
-                        {...propsNoAttendedButton}
-                        onClick={this.props.requestNoAttended}>Paciente no se presentó</button>
-                </div>
+                {!this.props.isEmpty &&
+                    <div className={'StudentChecklistBoard_buttons'}>
+                        <button
+                            className={'u-Button StudentChecklistBoard_button StudentChecklistBoard_button--no-attended'}
+                            {...propsNoAttendedButton}
+                            onClick={this.props.requestNoAttended}>Paciente no se presentó</button>
+                    </div>
+                }
             </React.Fragment>
         )
 
