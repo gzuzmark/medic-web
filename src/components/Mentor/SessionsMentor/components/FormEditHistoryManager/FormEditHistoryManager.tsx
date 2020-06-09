@@ -21,10 +21,7 @@ export interface IPropsFormEditHistoryManager {
 }
 
 const getGender = (value?: number): string => {
-  if (!value) {
-    return '';
-  }
-  return value === 0 ? 'Mujer' : 'Hombre';
+  return value === 0 ? 'Mujer' : value === 1 ? 'Hombre' : '';
 };
 
 const FormEditHistoryManager: React.FC<IPropsFormEditHistoryManager> = (props) => {
