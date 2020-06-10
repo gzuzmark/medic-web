@@ -168,6 +168,18 @@ const HistoryTreatmentForm: React.FC <IPropsHistoryTreatmentForm> = (props) => {
                   onChange: ctxt.handleChange,
                   value: value.extra_info}}/>
             </FormColumn>,
+            <FormColumn width={2} key={`FormColumn-MedicineData_${++counter}`}>
+              <MentorInput
+                label={"Cantidad"}
+                disabled={!!props.forceDisable}
+                lowercaseLabel={true}
+                attrs={{
+                  maxLength: DEFAULT_MAX_LENGTH,
+                  name: `case.treatments[${index}].quantity`,
+                  onBlur: ctxt.handleBlur,
+                  onChange: ctxt.handleChange,
+                  value: value.quantity}}/>
+            </FormColumn>,
           ]}/>
           <OptionsHandler>
               <button disabled={!!props.forceDisable} onClick={removeMedicine(index)} type={"button"}>

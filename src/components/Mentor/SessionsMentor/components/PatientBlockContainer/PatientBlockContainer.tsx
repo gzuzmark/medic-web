@@ -2,9 +2,8 @@ import * as React from 'react';
 import { Body1, Headline1 } from '../../../../../common/MentorText';
 import './PatientBlockContainer.scss';
 
-
 interface IPropsPatientBlockContainer {
-  title: string,
+  title?: string,
   blocks: object[],
 }
 
@@ -23,7 +22,7 @@ const PatientBlockInfo: React.FC<IPropsPatientBlockInfo> = ({ label, value }) =>
 const PatientBlockContainer: React.FC<IPropsPatientBlockContainer> = ({ title, blocks }) => {
   return (
     <div className="PatientBlockContainer">
-      <Headline1>{title}</Headline1>
+      {!!title && <Headline1>{title}</Headline1>}
       <div className="PatientBlockContainer_body">
         {blocks.map((block: IPropsPatientBlockInfo, i: number) => 
           <PatientBlockInfo

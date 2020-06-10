@@ -9,7 +9,7 @@ import Layout from "../../../common/Layout/Layout";
 import LoaderFullScreen from "../../../common/Loader/LoaderFullsScreen";
 import {MomentDateParser} from "../../../domain/DateManager/MomentDateParser";
 import {SESSION_LIFE} from "../../../domain/Session/SessionBean";
-import SessionEditPatientHistoryData, { ISessionPatientCaseForm, ISessionPatientHistoryForm } from '../../../domain/Session/SessionEditPatientHistory';
+import SessionEditPatientHistoryData, { ISessionPatientCaseForm, ISessionPatientHistoryForm, ISessionPatientPastCase } from '../../../domain/Session/SessionEditPatientHistory';
 import { ISessionPatient, SessionMentorBean } from "../../../domain/Session/SessionMentorBean";
 import {
     IStudentChecklist,
@@ -22,7 +22,11 @@ import SessionService from "../../../services/Session/Session.service";
 import StudentService from "../../../services/Student/Student.service";
 import TagService, {ITags} from "../../../services/Tag/Tag.service";
 import FormEditHistoryManager from './components/FormEditHistoryManager/FormEditHistoryManager';
-import PatientBackgroundFormContext, { IPatientBackgroundFormValidations, IPatientCaseFormValidations, ISessionPatientHistoryFormValidations } from './components/PatientHistoryForm/PatientBackgroundForm.context';
+import PatientBackgroundFormContext, {
+    IPatientBackgroundFormValidations,
+    IPatientCaseFormValidations,
+    ISessionPatientHistoryFormValidations,
+} from './components/PatientHistoryForm/PatientBackgroundForm.context';
 import {ISessionFullCard} from "./components/SessionFullCard/SessionFullCard";
 import SessionFullCard from "./components/SessionFullCard/SessionFullCard";
 import { default as SimpleFullCard, ISimpleFullCard} from "./components/SimpleFullCard/SimpleFullCard";
@@ -50,6 +54,7 @@ interface IStateSessionsMentor {
     fullCardSimple: ISimpleFullCard;
     isEmpty: boolean;
     loading: boolean;
+    pastCases: ISessionPatientPastCase[];
     patientHistory: ISessionPatientHistoryFormValidations;
     searchValue: string;
     modal: boolean;
@@ -101,6 +106,7 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
             modalCheck: this.cleanCheckModal(''),
             modalError: true,
             modalSuccess: false,
+            pastCases: [],
             patientHistory: { history: this.patientHistoryData.getHistoryValues, case: this.patientHistoryData.getCaseValues },
             searchValue: '',
             tags: [],
@@ -132,12 +138,14 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
                 this.studentsService.studentsFromSession(this.sessionId),
                 this.tagService.list(),
                 this.sessionService.getSessionConsult(this.sessionId),
+                this.sessionService.getPastSessionConsults(this.sessionId),
             ]).then((values: any[]) => {
                 this.sessionMentor = new SessionMentorBean(values[0]);
                 this.studentChecklistCollector = new StudentChecklistCollector(values[1]);
                 const sessions = this.studentChecklistCollector.sessions;
                 const patient = this.sessionMentor.session.patient;
                 const patCase = values[3] as ISessionPatientCaseForm;
+                const pastCases = values[4] as ISessionPatientPastCase[];
                 const patientHistory = {
                     case: patCase,
                     history: patient,
@@ -150,6 +158,7 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
                         fullCardSession: this.getFullCardSession(),
                         fullCardSimple: this.getFullCardSimple(),
                         isEmpty: sessions.length === 0 && !patient,
+                        pastCases,
                         patientHistory: {
                             case: this.patientHistoryData.getCaseValues,
                             history: this.patientHistoryData.getHistoryValues,
@@ -222,6 +231,8 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
                                 tags={this.state.tags}
                                 sessionId={this.sessionId}
                                 studentCommented={this.studentCommented}
+                                hideObservations={true}
+                                hideSearch={true}
                             />
                             <Formik
                                 initialValues={this.state.patientHistory}
@@ -241,6 +252,7 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
                                                     formData={{values}}
                                                     onHandleSubmit={this.onSubmit}
                                                     session={session}
+                                                    pastCases={this.state.pastCases}
                                                 />
                                             </form>
                                         </PatientBackgroundFormContext.Provider>

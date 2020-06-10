@@ -17,6 +17,7 @@ export interface IPatientTreatmentFormValidations {
   id?: string;
   name: string;
   period: string;
+  quantity: string;
 }
 
 export interface IPatientCaseFormValidations {

@@ -56,6 +56,15 @@ export interface ISessionAvailability {
     count: number;
 }
 
+export interface ISessionDoctor {
+    id: string;
+    cmp: string;
+    description: string;
+    name: string;
+    last_name: string;
+    speciality_name: string;
+}
+
 export interface ISessionMentor extends ISessionBase {
     availability?: ISessionAvailability;
     isEnabledForAttendance?: boolean;

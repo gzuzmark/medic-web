@@ -5,8 +5,12 @@ import MentorModalBase from "../../../../../common/ConsoleModal/MentorModalBase"
 import Icon from "../../../../../common/Icon/Icon";
 import { Body1, Display1, Heading2, Headline1 } from '../../../../../common/MentorText';
 import Utilities from "../../../../../common/Utils/Utilities";
+import { ISessionPatientPastCase } from "../../../../../domain/Session/SessionEditPatientHistory";
 import { ISessionMentor, ISessionTriage } from "../../../../../domain/Session/SessionMentorBean";
+import CurrentSession from "../HistorySessions/CurrentSession/CurrentSession";
+import CurrentSessionForm from "../HistorySessions/CurrentSessionForm/CurrentSessionForm";
 import HistorySessions from "../HistorySessions/HistorySessions";
+import PastSessions from '../HistorySessions/PastSessions/PastSessions';
 import PatientBlockContainer from "../PatientBlockContainer/PatientBlockContainer";
 import PatientHistoryForm from '../PatientHistoryForm/PatientBackgroundForm';
 import { IPatientBackgroundFormValidations } from "../PatientHistoryForm/PatientBackgroundForm.context";
@@ -17,6 +21,7 @@ export interface IPropsFormEditHistoryManager {
         values: IPatientBackgroundFormValidations | any;
     },
     session: ISessionMentor;
+    pastCases: ISessionPatientPastCase[];
     onHandleSubmit: (e: any) => void;
 }
 
@@ -49,6 +54,7 @@ const FormEditHistoryManager: React.FC<IPropsFormEditHistoryManager> = (props) =
     };
 
     const closeModal = () => setModal(false);
+
     return (
         <React.Fragment>
           <MentorModalBase show={modal} onCloseModal={closeModal}>
@@ -78,7 +84,21 @@ const FormEditHistoryManager: React.FC<IPropsFormEditHistoryManager> = (props) =
             <Headline1>
               Consultas médicas
             </Headline1>
-            <HistorySessions triage={triage} />
+            <HistorySessions tabs={[
+              {
+                component: (
+                  <React.Fragment>
+                    <CurrentSession useCase={triage.useCase} questions={triage.questions} />
+                    <CurrentSessionForm />
+                  </React.Fragment>
+                ),
+                title: 'VER CONSULTA ACTUAL',
+              },
+              {
+                component: <PastSessions pastCases={props.pastCases} />,
+                title: 'VER CONSULTAS PASADAS',
+              },
+            ]} />
           </div>
           <ButtonNormal
             text={"Guardar"}

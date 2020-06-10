@@ -32,6 +32,8 @@ interface IPropsStudentChecklistBoard {
     onSelect: fnSelect;
     searchValue: string;
     sessionId: string;
+    hideObservations?: boolean;
+    hideSearch?: boolean;
     studentCommented(request: ITagConfirm): void;
     requestAttended() :void;
     requestNoAttended() :void;
@@ -149,7 +151,7 @@ class StudentChecklistBoard extends  React.Component<IPropsStudentChecklistBoard
                 {this.props.isEmpty ?
                     <EmptyCard addEnabled={this.props.board.addEnabled} /> :
                     <div className={`StudentChecklistBoard_students ${this.props.board.studentList.length > 0 ? 'StudentChecklistBoard--border' : ''} `}>
-                        <StudentFullCardHeader />
+                        <StudentFullCardHeader hideObservations={this.props.hideObservations} />
                         {this.props.board.studentList.map((student: IStudentChecklistCard, index: number) => {
                             const order = student.new ? ++this.counter : 0;
                             const showTagModal = this.showTagModal(student);
@@ -160,7 +162,9 @@ class StudentChecklistBoard extends  React.Component<IPropsStudentChecklistBoard
                                     showTagModal={showTagModal}
                                     student={student}
                                     key={`${index}`}
-                                    styles={{'order': -1 * order}}/>
+                                    styles={{'order': -1 * order}}
+                                    hideObservations={this.props.hideObservations}
+                                />
                             )
                         })}
                     </div>
@@ -187,6 +191,7 @@ class StudentChecklistBoard extends  React.Component<IPropsStudentChecklistBoard
         const { onClickAddIcon, ...addSearchAttr } = addSearch;
         return (
             <div className={`StudentChecklistBoard`}>
+                {!this.props.hideSearch && (
                 <div className={"StudentChecklistBoard_inputs-container"}>
                     <MentorInput
                         active={this.state.activeSearch}
@@ -211,6 +216,7 @@ class StudentChecklistBoard extends  React.Component<IPropsStudentChecklistBoard
                             text: "Agregar pacientes"
                         }}/>
                 </div>
+                )}
                 <div className={"StudentChecklistBoard_students-container"}>
                     {students}
                 </div>

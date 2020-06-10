@@ -1,6 +1,15 @@
 import * as moment from 'moment';
 import defaultProfile from '../../assets/images/default.png';
 
+const ISSUE_LEVELS = {
+  moderate: 'Moderado',
+  slight: 'Leve',
+  strong: 'Grave',
+};
+
+const ISSUE_LEVEL_KEYWORDS = ['QUÉ', 'TAN', 'FUERTE', 'MALESTAR'];
+const FOR_WHOM_KEYWORDS = ['PARA', 'QUIÉN', 'CONSULTA'];
+
 const donwloadLink = (link: string, filename: string, ext: string) => {
     const tempLink = document.createElement('a');
     tempLink.style.display = 'none';
@@ -138,7 +147,30 @@ const deepEqual = (a: any,b: any) => {
 
 const getAgeByBirthDate = (bd: string) => bd ? moment().diff(bd, 'years', false) : '';
 
+const checkRightQuestion = (word: string, kws: string[]): boolean => kws.every(kw => word.includes(kw))
+
+const handleQuestionObject = (questionObj: any) => {
+  const label = questionObj.question.toUpperCase();
+  const isRightQuestion = checkRightQuestion(label, ISSUE_LEVEL_KEYWORDS);
+  const value = isRightQuestion ? ISSUE_LEVELS[questionObj.answer] : questionObj.answer;
+  return { label, value };
+};
+
+export const buildQuestionBlocks = (useCase: any, questions: any[]) => {
+  if (!useCase || !questions) {
+    return [];
+  }
+  const filteredQuestions = questions.filter(q => !checkRightQuestion(q.question.toUpperCase(), FOR_WHOM_KEYWORDS))
+  const questionBlocks = filteredQuestions.map(q => handleQuestionObject(q));
+  return [
+    { label: 'CASO:', value: useCase.title || '' },
+    { label: 'DESCRIPCIÓN DEL CASO:', value: useCase.description || '' },
+    ...questionBlocks,
+  ];
+};
+
 const Utilities = {
+    buildQuestionBlocks,
     deepEqual,
     doClone,
     donwloadLink,
@@ -149,7 +181,7 @@ const Utilities = {
     getValue,
     onErrorStudentImage,
     scrollToTop,
-    todayDate
+    todayDate,
 };
 
 export default Utilities;
