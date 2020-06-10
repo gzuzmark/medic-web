@@ -3,6 +3,7 @@ import {
   IPatientCaseFormValidations,
   IPatientTreatmentFormValidations,
 } from "../../components/Mentor/SessionsMentor/components/PatientHistoryForm/PatientBackgroundForm.context";
+import { ISessionDoctor, ISessionPatient, ISessionTriage } from "./SessionMentorBean";
 
 export interface ISessionHistoryForm {
   allergies: string;
@@ -19,6 +20,7 @@ export interface ISessionPatientTreatmentForm {
   frequency: string;
   name: string;
   period: string;
+  quantity: string;
 }
 
 export interface ISessionPatientCaseForm {
@@ -27,6 +29,16 @@ export interface ISessionPatientCaseForm {
   diagnostic: string,
   recommendation: string,
   treatments: ISessionPatientTreatmentForm[],
+  triage?: ISessionTriage,
+}
+
+export interface ISessionPatientPastCase {
+  id: string;
+  from: string;
+  to: string;
+  doctor: ISessionDoctor;
+  patient: ISessionPatient;
+  consult: ISessionPatientCaseForm;
 }
 
 export interface ISessionPatientHistoryForm {
@@ -41,19 +53,11 @@ class SessionEditPatientHistoryData {
       case: {} as ISessionPatientCaseForm,
       history: {} as ISessionHistoryForm,
     } as ISessionPatientHistoryForm;
-    const isValid = !!patient && (!!patient.history || !!patient.case);
-    this.patient = isValid && patient !== undefined ? patient : defaultPatient;
-    this.patient.history.allergies = patient && patient.history && patient.history.allergies || '';
-    this.patient.history.fur = patient && patient.history && patient.history.fur || '';
-    this.patient.history.meds = patient && patient.history && patient.history.meds || '';
-    this.patient.history.last_pregnancy = patient && patient.history && patient.history.last_pregnancy || '';
-    this.patient.history.extraInfo = patient && patient.history && patient.history.extraInfo || '';
-    this.patient.history.ob_issues = patient && patient.history && patient.history.ob_issues || '';
-    this.patient.case.id = patient && patient.case && patient.case.id || '';
-    this.patient.case.anamnesis = patient && patient.case && patient.case.anamnesis || '';
-    this.patient.case.diagnostic = patient && patient.case && patient.case.diagnostic || '';
-    this.patient.case.recommendation = patient && patient.case && patient.case.recommendation || '';
-    this.patient.case.treatments = patient && patient.case && patient.case.treatments || [];
+    this.patient = !!patient ? patient : defaultPatient;
+    this.patient.history = patient && patient.history || {} as ISessionHistoryForm;
+    this.patient.case = patient && patient.case || {} as ISessionPatientCaseForm;
+    this.setInitialHistory(patient && patient.history);
+    this.setInitialCase(patient && patient.case);
   }
 
   get historyUpdateParams(): ISessionHistoryForm {
@@ -138,6 +142,7 @@ class SessionEditPatientHistoryData {
           id: value.id,
           name: value.name,
           period: value.period,
+          quantity: value.quantity,
         };
       }
       return {
@@ -146,8 +151,26 @@ class SessionEditPatientHistoryData {
         frequency: value.frequency,
         name: value.name,
         period: value.period,
+        quantity: value.quantity,
       };
     });
+  }
+
+  private setInitialHistory(currentHistory?: ISessionHistoryForm) {
+    this.patient.history.allergies = currentHistory && currentHistory.allergies || '';
+    this.patient.history.fur = currentHistory && currentHistory.fur || '';
+    this.patient.history.meds = currentHistory && currentHistory.meds || '';
+    this.patient.history.last_pregnancy = currentHistory && currentHistory.last_pregnancy || '';
+    this.patient.history.extraInfo = currentHistory && currentHistory.extraInfo || '';
+    this.patient.history.ob_issues = currentHistory && currentHistory.ob_issues || '';
+  }
+
+  private setInitialCase(currentCase?: ISessionPatientCaseForm) {
+    this.patient.case.id = currentCase && currentCase.id || '';
+    this.patient.case.anamnesis = currentCase && currentCase.anamnesis || '';
+    this.patient.case.diagnostic = currentCase && currentCase.diagnostic || '';
+    this.patient.case.recommendation = currentCase && currentCase.recommendation || '';
+    this.patient.case.treatments = currentCase && currentCase.treatments || [];
   }
 }
 

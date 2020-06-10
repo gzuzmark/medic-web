@@ -25,6 +25,7 @@ export interface IStudentChecklistCard {
 export interface IPropsStudentFullCard {
     student: IStudentChecklistCard;
     styles: React.CSSProperties;
+    hideObservations?: boolean;
     showTagModal: () => void;
     updateSelection: () => void;
 }
@@ -57,26 +58,28 @@ const StudentFullCard: React.FC<IPropsStudentFullCard> = (props) => {
                     <Body1 color={FONTS.medium} weight={LIGHT_TEXT} >{props.student.code}</Body1>
                 </Link>
             </div>
-            <div className={`StudentFullCard_option
-                            StudentFullCard_option-comment
-                            ${props.student.isEnabledForComment && 'StudentFullCard_option-comment--active'}`}>
-                {props.student.isEnabledForComment ?
-                    <Icon name={iconId}
-                          click={props.showTagModal}
-                          attr={{"data-tip": iconTooltip, "data-for": "StudentFullCardToolTip"}}
-                          style={{
-                              cursor: 'pointer',
-                              fill: colors.BACKGROUND_COLORS.background_green,
-                              height: 24,
-                              width: 24
-                            }}/>:
-                    <Icon name={iconId} style={{
-                        fill: colors.MISC_COLORS.background_grey_2,
-                        height: 24,
-                        width: 24,
-                    }}/>
-                }
-            </div>
+            {!props.hideObservations && (
+                <div className={`StudentFullCard_option
+                                StudentFullCard_option-comment
+                                ${props.student.isEnabledForComment && 'StudentFullCard_option-comment--active'}`}>
+                    {props.student.isEnabledForComment ?
+                        <Icon name={iconId}
+                            click={props.showTagModal}
+                            attr={{"data-tip": iconTooltip, "data-for": "StudentFullCardToolTip"}}
+                            style={{
+                                cursor: 'pointer',
+                                fill: colors.BACKGROUND_COLORS.background_green,
+                                height: 24,
+                                width: 24
+                                }}/>:
+                        <Icon name={iconId} style={{
+                            fill: colors.MISC_COLORS.background_grey_2,
+                            height: 24,
+                            width: 24,
+                        }}/>
+                    }
+                </div>
+            )}
             <div className={"StudentFullCard_option StudentFullCard_option--checkbox"}>
                 <input
                     className={"StudentFullCard_input"}
@@ -94,13 +97,13 @@ const StudentFullCard: React.FC<IPropsStudentFullCard> = (props) => {
     );
 };
 
-export const StudentFullCardHeader: React.FC<any> = () => {
+export const StudentFullCardHeader: React.FC<any> = ({ hideObservations = false }) => {
     return (
         <div className="StudentFullCard_header" style={{background: colors.BACKGROUND_COLORS.background_blue}}>
             <div className="StudentFullCard_header-column-1">
                 <Small1 color={FONTS.blue}>Alumnos en la sesión</Small1></div>
             <div className="StudentFullCard_header-column-2">
-                <Small1 color={FONTS.blue}>Observaciones</Small1></div>
+                {!hideObservations && <Small1 color={FONTS.blue}>Observaciones</Small1>}</div>
             <div className="StudentFullCard_header-column-3">
                 <Small1 color={FONTS.blue}>Tomar asistencia</Small1></div>
         </div>
