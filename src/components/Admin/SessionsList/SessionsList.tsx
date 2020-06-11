@@ -4,6 +4,8 @@ import * as InfiniteScroll from 'react-infinite-scroller';
 import { SessionRequestBean } from 'src/beans/SessionRequest.bean';
 import Layout from 'src/common/Layout/Layout';
 import Loader from 'src/common/Loader/Loader';
+import ContentModal from "../../../common/ConsoleModal/ContentModal";
+import MentorModalBase from "../../../common/ConsoleModal/MentorModalBase";
 import { Text } from '../../../common/ConsoleText';
 import FormColumn from "../../../common/FormRow/components/FormColumn/FormColumn";
 import FormRow from "../../../common/FormRow/FormRow";
@@ -18,6 +20,7 @@ import FormSection from "../ScheduleSession/components/FormSection/FormSection";
 import CancelSessionModal from './components/CancelSessionModal/CancelSessionModal';
 import ListSessionsBody from './components/ListSessionBody/ListSessionBody';
 import ListSessionsHeader from './components/ListSessionHeader/ListSessionHeader';
+import RescheduleSessionModal from "./components/RescheduleSessionModal/RescheduleSessionModal";
 import './SessionsList.scss';
 
 interface IStateListSession {
@@ -27,8 +30,10 @@ interface IStateListSession {
   newSessions: ISessionBody[];
   initialLoad: boolean;
   showCancelModal: boolean;
+  showRescheduleModal: boolean;
   selectedSessionId: string;
   sessionRequest: SessionRequestBean;
+  modalSuccess: boolean;
 }
 
 const PAGE_SIZE = 30;
@@ -40,7 +45,8 @@ const TABLE_HEADER_TEXTS = [
   'NOMBRE DEL PACIENTE',
   'TELÉFONO',
   'URL DE LA CITA',
-  'CANCELAR CITA',
+  'CANCELAR',
+  'REAGENDAR',
 ];
 
 class SessionsList extends React.Component <{}, IStateListSession> {
@@ -55,11 +61,13 @@ class SessionsList extends React.Component <{}, IStateListSession> {
       hasMore: true,
       initialLoad: true,
       loading: false,
+      modalSuccess: false,
       newSessions: [],
       selectedSessionId: '',
       sessionRequest: new SessionRequestBean(),
       sessions: [],
       showCancelModal: false,
+      showRescheduleModal: false,
     };
     this.counter = 0;
     this.scroller = React.createRef();
@@ -72,6 +80,9 @@ class SessionsList extends React.Component <{}, IStateListSession> {
     this.updateFilterDate = this.updateFilterDate.bind(this);
     this.searchResults = this.searchResults.bind(this);
     this.isDayBlocked = this.isDayBlocked.bind(this);
+    this.showRescheduleModal = this.showRescheduleModal.bind(this);
+    this.rescheduleSession = this.rescheduleSession.bind(this);
+    this.toggleSuccessModal = this.toggleSuccessModal.bind(this);
   }
 
   public componentWillUnmount() {
@@ -166,6 +177,32 @@ class SessionsList extends React.Component <{}, IStateListSession> {
     this.setState({ selectedSessionId: sessionId });
   }
 
+  private showRescheduleModal(show: boolean) {
+    this.setState({ showRescheduleModal: show });
+    if (!show) {
+      this.setState({ selectedSessionId: '' });
+    }
+  }
+
+  private rescheduleSession(newSession: string) {
+    const oldSession = this.state.selectedSessionId;
+    if (oldSession) {
+      this.setState({ loading: true, showRescheduleModal: false });
+      this.sessionService.rescheduleSession(oldSession, newSession).then(() => {
+        const currentSessions = !this.state.sessions ? [] : this.state.sessions;
+        const newSessions = currentSessions.filter((session: ISessionBody) => session.id !== oldSession);
+        this.setState({
+          loading: false,
+          selectedSessionId: '',
+          sessions: newSessions,
+        });
+        this.toggleSuccessModal(true);
+      }).catch(() => {
+        this.setState({ loading: false, selectedSessionId: '' });
+      });
+    }
+  }
+
   private showCancelModal(show: boolean) {
     this.setState({ showCancelModal: show });
     if (!show) {
@@ -226,6 +263,7 @@ class SessionsList extends React.Component <{}, IStateListSession> {
                   session={item}
                   showCancelModal={this.showCancelModal}
                   selectSession={this.setCurrentSessionId}
+                  showRescheduleModal={this.showRescheduleModal}
                 />
               </div>);
           })}
@@ -234,8 +272,28 @@ class SessionsList extends React.Component <{}, IStateListSession> {
             toggleModal={this.showCancelModal}
             confirm={this.cancelSession}
           />
+          <MentorModalBase show={this.state.modalSuccess} onCloseModal={this.toggleSuccessModal} hideClose={true}>
+              <ContentModal.Success description={"Cita reasignada con éxito"} />
+          </MentorModalBase>
+          {!!this.state.selectedSessionId && (
+            <RescheduleSessionModal
+              show={this.state.showRescheduleModal}
+              toggleModal={this.showRescheduleModal}
+              confirm={this.rescheduleSession}
+              sessionId={this.state.selectedSessionId}
+            />
+          )}
       </div>
     );
+  }
+
+  private toggleSuccessModal(modalSuccess: boolean = false) {
+    this.setState({ modalSuccess });
+    if (modalSuccess) {
+      setTimeout(() => {
+        this.setState({ modalSuccess: false });
+      }, 1500);
+    }
   }
 
   private async loadNextPage(page: number) {    

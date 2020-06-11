@@ -51,10 +51,15 @@
     }
     &:nth-child(5) {
       text-align: left;
-      width: 30%;
+      width: 20%;
       word-break: break-all;
+      margin-right: 5px;
     }
     &:nth-child(6) {
+      text-align: center;
+      width: 10%;
+    }
+    &:nth-child(7) {
       text-align: center;
       width: 10%;
     }

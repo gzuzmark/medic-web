@@ -27,6 +27,7 @@ interface IPropsListSessionsBody {
   session: ISessionBody;
   showCancelModal: (shouldShow: boolean) => void;
   selectSession: (sessionId: string) => void;
+  showRescheduleModal: (shouldShow: boolean) => void;
 }
 
 class ListSessionsBody extends React.Component <IPropsListSessionsBody, {}> {
@@ -42,9 +43,13 @@ class ListSessionsBody extends React.Component <IPropsListSessionsBody, {}> {
     const patientId = patient && patient.id || '';
     const patientName = patient && patient.name || '';
     const patientLN = patient && patient.last_name || '';
-    const handleClick = () => {
+    const handleCancelClick = () => {
       this.props.selectSession(id);
       this.props.showCancelModal(true);
+    };
+    const handleRescheduleClick = () => {
+      this.props.selectSession(id);
+      this.props.showRescheduleModal(true);
     };
     return (
       <ContainerRow>
@@ -84,9 +89,17 @@ class ListSessionsBody extends React.Component <IPropsListSessionsBody, {}> {
         <div className="ListSessions_column">
           <Icon
             name="exclamation"
-            click={handleClick}
-            attr={{"data-tip": "Cancelar cita"}}
+            click={handleCancelClick}
+            attr={{"data-tip": "Cancelar"}}
             style={{ cursor: 'pointer' }}
+          />
+        </div>
+        <div className="ListSessions_column">
+          <Icon
+            name="calendar-check"
+            click={handleRescheduleClick}
+            attr={{"data-tip": "Reagendar"}}
+            style={{ cursor: 'pointer', fill: '#1ECD96' }}
           />
         </div>
       </ContainerRow>

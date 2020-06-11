@@ -65,6 +65,12 @@ export interface ISessionDoctor {
     speciality_name: string;
 }
 
+export interface IReassignSession {
+    id: string;
+    from: string;
+    to: string;
+}
+
 export interface ISessionMentor extends ISessionBase {
     availability?: ISessionAvailability;
     isEnabledForAttendance?: boolean;
