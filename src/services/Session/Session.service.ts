@@ -29,6 +29,58 @@ class SessionService extends BaseRequest {
         });
     }
 
+    public rescheduleSession(oldSessionId: string, newSessionId: string) {
+        return new Promise((resolve, reject) => {
+            this.instance.post(`ugo-admin/session/${oldSessionId}/reassign?new_session=${newSessionId}`)
+                .then((response: any) => {
+                    if (response.status === 200 && response.data) {
+                        resolve(response.data);
+                    } else {
+                        reject(null);
+                    }
+                })
+                .catch((error: any) => {
+                    this.validSession();
+                    reject(error);
+                });
+        });
+    }
+
+    public getSessionsByDoctor(session: string, doctorId: string, limit?: number) {
+        return new Promise((resolve, reject) => {
+            const params = `?doctor=${doctorId}&limit=${limit || 10}`;
+            this.instance.get(`ugo-admin/session/${session}/sessions_to_reassign${params}`)
+                .then((response: any) => {
+                    if (response.status === 200 && response.data) {
+                        resolve(response.data.items);
+                    } else {
+                        reject([]);
+                    }
+                })
+                .catch((error: any) => {
+                    this.validSession();
+                    reject(error);
+                });
+        });
+    }
+
+    public getDoctorsBySession(session: string) {
+        return new Promise((resolve, reject) => {
+            this.instance.get(`ugo-admin/session/${session}/doctors_to_reassign`)
+                .then((response: any) => {
+                    if (response.status === 200 && response.data) {
+                        resolve(response.data.items);
+                    } else {
+                        reject([]);
+                    }
+                })
+                .catch((error: any) => {
+                    this.validSession();
+                    reject(error);
+                });
+        });
+    }
+
     public cancelSession(sessionId: string) {
         return new Promise((resolve, reject) => {
             this.instance.post(`ugo-admin/sessions/${sessionId}/cancel`)

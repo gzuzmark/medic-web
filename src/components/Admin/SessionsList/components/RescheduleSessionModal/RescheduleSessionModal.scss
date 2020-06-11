@@ -1,0 +1,21 @@
+.RescheduleSessionModal {
+	display: flex;
+	justify-content: space-around;
+	&_dropdownblock {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 100%;
+		margin: 0 20px;
+	}
+	&_buttons {
+		display: flex;
+		justify-content: space-around;
+		margin: 15px auto;
+		width: 60%;
+	}
+	&_loader {
+		text-align: center;
+		margin: 40px 0;
+	}
+}
