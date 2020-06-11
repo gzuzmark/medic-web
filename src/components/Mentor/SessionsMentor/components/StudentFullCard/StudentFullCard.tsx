@@ -80,19 +80,21 @@ const StudentFullCard: React.FC<IPropsStudentFullCard> = (props) => {
                     }
                 </div>
             )}
-            <div className={"StudentFullCard_option StudentFullCard_option--checkbox"}>
-                <input
-                    className={"StudentFullCard_input"}
-                    type={"checkbox"}
-                    value={props.student.id}
-                    id={`StudentFullCard${props.student.id}`}
-                    checked={props.student.checked}
-                    onChange={props.updateSelection}
-                    {...propsInput}/>
-                <label
-                    className="StudentFullCard_label"
-                    htmlFor={`StudentFullCard${props.student.id}`}>&nbsp;</label>
-            </div>
+            {!props.hideObservations && (
+                <div className={"StudentFullCard_option StudentFullCard_option--checkbox"}>
+                    <input
+                        className={"StudentFullCard_input"}
+                        type={"checkbox"}
+                        value={props.student.id}
+                        id={`StudentFullCard${props.student.id}`}
+                        checked={props.student.checked}
+                        onChange={props.updateSelection}
+                        {...propsInput}/>
+                    <label
+                        className="StudentFullCard_label"
+                        htmlFor={`StudentFullCard${props.student.id}`}>&nbsp;</label>
+                </div>
+            )}
         </div>
     );
 };
@@ -101,11 +103,11 @@ export const StudentFullCardHeader: React.FC<any> = ({ hideObservations = false 
     return (
         <div className="StudentFullCard_header" style={{background: colors.BACKGROUND_COLORS.background_blue}}>
             <div className="StudentFullCard_header-column-1">
-                <Small1 color={FONTS.blue}>Alumnos en la sesión</Small1></div>
+                <Small1 color={FONTS.blue}>Paciente en la sesión</Small1></div>
             <div className="StudentFullCard_header-column-2">
                 {!hideObservations && <Small1 color={FONTS.blue}>Observaciones</Small1>}</div>
             <div className="StudentFullCard_header-column-3">
-                <Small1 color={FONTS.blue}>Tomar asistencia</Small1></div>
+                {!hideObservations && <Small1 color={FONTS.blue}>Tomar asistencia</Small1>}</div>
         </div>
     )
 }
