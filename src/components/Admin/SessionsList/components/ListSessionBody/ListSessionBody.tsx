@@ -36,9 +36,10 @@ class ListSessionsBody extends React.Component <IPropsListSessionsBody, {}> {
   }
 
   public render() {
-    const { doctor = { name: '', last_name: ''}, patient, id = '' } = this.props.session;
+    const { doctor = { id: '', name: '', last_name: ''}, patient, id = '' } = this.props.session;
     const sessionBean = new SessionBean(this.props.session);
     const sessionURL = patient && patient.link || '';
+    const patientURL = sessionURL && id && `${sessionURL}/${id}`;
 
     const patientId = patient && patient.id || '';
     const patientName = patient && patient.name || '';
@@ -82,7 +83,12 @@ class ListSessionsBody extends React.Component <IPropsListSessionsBody, {}> {
         <div className="ListSessions_column ListSessions_separator" style={{ borderColor: colors.MISC_COLORS.background_grey_2 }}>
           {!!sessionURL && (
             <a href={sessionURL} target="blank">
-              {sessionURL}
+              Link Paciente
+            </a>
+          )}
+          {!!patientURL && (
+            <a href={patientURL} target="blank">
+              Link Doctor
             </a>
           )}
         </div>
