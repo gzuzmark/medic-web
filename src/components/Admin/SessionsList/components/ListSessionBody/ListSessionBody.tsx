@@ -55,10 +55,10 @@ class ListSessionsBody extends React.Component <IPropsListSessionsBody, {}> {
     const patientId = patient && patient.id || '';
     const patientName = patient && patient.name || '';
     const patientLN = patient && patient.last_name || '';
-    const handleCancelClick = () => {
-      this.props.selectSession(id);
-      this.props.showCancelModal(true);
-    };
+    // const handleCancelClick = () => {
+    //   this.props.selectSession(id);
+    //   this.props.showCancelModal(true);
+    // };
     const handleRescheduleClick = () => {
       this.props.selectSession(id);
       this.props.showRescheduleModal(true);
