@@ -9,7 +9,7 @@ import Layout from "../../../common/Layout/Layout";
 import LoaderFullScreen from "../../../common/Loader/LoaderFullsScreen";
 import {MomentDateParser} from "../../../domain/DateManager/MomentDateParser";
 import {SESSION_LIFE} from "../../../domain/Session/SessionBean";
-import SessionEditPatientHistoryData, { ISessionPatientCaseForm, ISessionPatientHistoryForm, ISessionPatientPastCase } from '../../../domain/Session/SessionEditPatientHistory';
+import SessionEditPatientHistoryData, { ISessionPatientHistoryForm, ISessionPatientPastCase } from '../../../domain/Session/SessionEditPatientHistory';
 import { ISessionPatient, SessionMentorBean } from "../../../domain/Session/SessionMentorBean";
 import {
     IStudentChecklist,
@@ -20,7 +20,6 @@ import {StudentChecklistCollector} from "../../../domain/StudentChecklist/Studen
 import {IMatchParam} from "../../../interfaces/MatchParam.interface";
 import SessionService from "../../../services/Session/Session.service";
 import StudentService from "../../../services/Student/Student.service";
-import TagService, {ITags} from "../../../services/Tag/Tag.service";
 import FormEditHistoryManager from './components/FormEditHistoryManager/FormEditHistoryManager';
 import PatientBackgroundFormContext, {
     IPatientBackgroundFormValidations,
@@ -40,7 +39,6 @@ import {
     IStudentCheckModal,
     StudentCheckModalScreens
 } from "./components/StudentCheckModal/StudentCheckModal";
-import {ITagConfirm} from "./components/StudentCommentModal/StudentCommentModal";
 import {IStudentChecklistCard} from "./components/StudentFullCard/StudentFullCard";
 import './SessionsMentor.scss';
 
@@ -62,7 +60,6 @@ interface IStateSessionsMentor {
     modalSuccess: boolean;
     modalAdd: IStudentModal;
     modalCheck: IStudentCheckModal;
-    tags: ITags[];
 }
 
 const MESSAGE_ADD_STUDENT = "¿Estás seguro que deseas agregar a este paciente?";
@@ -73,7 +70,6 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
     private mentorId: string;
     private sessionService = new SessionService();
     private studentsService = new StudentService();
-    private tagService = new TagService();
     private sessionMentor: SessionMentorBean;
     private studentChecklistCollector: StudentChecklistCollector;
     private mdp = new MomentDateParser();
@@ -109,7 +105,6 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
             pastCases: [],
             patientHistory: { history: this.patientHistoryData.getHistoryValues, case: this.patientHistoryData.getCaseValues },
             searchValue: '',
-            tags: [],
         };
         this.sessionId = this.props.match.params.session || '';
         this.onSearch = this.onSearch.bind(this);
@@ -123,7 +118,6 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
         this.closeModalError = this.closeModalError.bind(this);
         this.showModalNoAttended = this.showModalNoAttended.bind(this);
         this.showModalAttended = this.showModalAttended.bind(this);
-        this.studentCommented = this.studentCommented.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
         this.updateHistory = this.updateHistory.bind(this);
         this.closeConfirmModal = this.closeConfirmModal.bind(this);
@@ -136,7 +130,6 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
             Promise.all([
                 this.sessionService.getSessionMentor(this.sessionId),
                 this.studentsService.studentsFromSession(this.sessionId),
-                this.tagService.list(),
                 this.sessionService.getSessionConsult(this.sessionId),
                 this.sessionService.getPastSessionConsults(this.sessionId),
             ]).then((values: any[]) => {
@@ -144,31 +137,29 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
                 this.studentChecklistCollector = new StudentChecklistCollector(values[1]);
                 const sessions = this.studentChecklistCollector.sessions;
                 const patient = this.sessionMentor.session.patient;
-                const patCase = values[3] as ISessionPatientCaseForm;
-                const pastCases = values[4] as ISessionPatientPastCase[];
+                const patCase = values[2];
+                const pastCases = values[3] as ISessionPatientPastCase[];
                 const patientHistory = {
                     case: patCase,
                     history: patient,
                 } as ISessionPatientHistoryForm;
-                this.sessionMentor.setSessionPatientTriage(values[3]);
+                this.sessionMentor.setSessionPatientTriage(patCase);
                 this.patientHistoryData = new SessionEditPatientHistoryData(patientHistory);
-                this.setState({tags: values[2]}, () => {
-                    const newState = {
-                        board: this.getBoard(sessions, patient),
-                        fullCardSession: this.getFullCardSession(),
-                        fullCardSimple: this.getFullCardSimple(),
-                        isEmpty: sessions.length === 0 && !patient,
-                        pastCases,
-                        patientHistory: {
-                            case: this.patientHistoryData.getCaseValues,
-                            history: this.patientHistoryData.getHistoryValues,
-                        },
-                    };
-                    this.setState({
-                        loading: false,
-                        ...newState
-                    });
-                })
+                const newState = {
+                    board: this.getBoard(sessions, patient),
+                    fullCardSession: this.getFullCardSession(),
+                    fullCardSimple: this.getFullCardSimple(),
+                    isEmpty: sessions.length === 0 && !patient,
+                    pastCases,
+                    patientHistory: {
+                        case: this.patientHistoryData.getCaseValues,
+                        history: this.patientHistoryData.getHistoryValues,
+                    },
+                };
+                this.setState({
+                    loading: false,
+                    ...newState
+                });
             }, () => {
                 this.setState({
                     isEmpty: true,
@@ -228,7 +219,7 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
                                 requestNoAttended={this.showModalNoAttended}
                                 searchValue={this.state.searchValue}
                                 isEmpty={this.state.isEmpty}
-                                tags={this.state.tags}
+                                tags={[]}
                                 sessionId={this.sessionId}
                                 studentCommented={this.studentCommented}
                                 hideObservations={true}
@@ -344,6 +335,10 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
         } else if (screen === StudentCheckModalScreens.NO_ATTENDED) {
             this.requestNoAttended()
         }
+    }
+
+    private studentCommented () {
+        return '';
     }
 
     private requestAttended() {
@@ -522,7 +517,7 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
         if (!sessions) {
             sessions = this.studentChecklistCollector.sessions;
         }
-        const studentList = [...this.getStudentList(sessions)];
+        const studentList = [];
         if (patient) {
             studentList.push(this.buildStudentItemFromPatient(patient));
         }
@@ -554,38 +549,14 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
             disabled: this.sessionMentor.isDisabled,
             id: patient.id || '',
             isEnabledForComment: false,
-            lastname: patient.lastName,
+            lastname: patient.last_name,
             mentorComment: '',
-            name: `${patient.name} ${patient.fullLastName}`,
+            name: `${patient.name} ${patient.full_last_name}`,
             new: true,
             photo: '',
             studentId: patient.id || '',
             tags: [],
         } as IStudentChecklistCard;
-    }
-
-    private getStudentList(sessions: StudentChecklistBean[]): IStudentChecklistCard[] {
-        return sessions.map((checklist: StudentChecklistBean) => {
-            const sessionIsEnabledForComment = !!this.sessionMentor.session.isEnabledForComment &&
-                this.state.tags.length > 0 && !checklist.item.commented;
-            const tags = checklist.item.tags || [];
-            return {
-                checked: checklist.isChecked,
-                code: checklist.student.user.code,
-                commented: !!checklist.item.commented,
-                disabled: checklist.isDisabled || this.sessionMentor.isDisabled,
-                id: checklist.id,
-                isEnabledForComment: sessionIsEnabledForComment || (!!checklist.item.commented && tags.length > 0),
-                lastname: checklist.student.user.lastname,
-                mentorComment: checklist.item.mentorComment || '',
-                name: `${checklist.student.user.name} ${checklist.student.user.lastname}`,
-                new: checklist.new,
-                photo: checklist.student.user.photo,
-                studentId: checklist.student.id,
-                tags
-            }
-
-        });
     }
 
     private cleanAddModal() {
@@ -602,19 +573,6 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
             loading: false,
             screen
         }
-    }
-
-    private studentCommented(commented: ITagConfirm, ) {
-        const {id, comment, tags} = commented;
-        const selectedTags = tags.map((tagId) => {
-            const selectedTag = this.state.tags.find((tag) => tag.id === tagId );
-            return selectedTag ? selectedTag.name : '';
-        });
-        this.studentChecklistCollector.addStudentComment(id, selectedTags, comment);
-        const sessions  = this.studentChecklistCollector.filterStudents(this.state.searchValue);
-        this.setState({
-            board: this.getBoard(sessions)
-        })
     }
 }
 

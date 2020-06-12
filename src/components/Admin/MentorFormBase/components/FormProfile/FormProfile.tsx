@@ -26,7 +26,7 @@ const FormProfile: React.FC<IPropsFormProfile> = (props) => {
                     <MentorTextArea
                         limit={limitDescription}
                         disabled={!!props.forceDisable}
-                        label={user.rol === ROL_MENTOR ? "Descripción" : "Descripción del doctor"}
+                        label={user.rol === ROL_MENTOR ? "CMP" : "CMP del doctor"}
                         info={"Este mensaje debe ser corto, <br> inspirador y conciso."}
                         attrs={{
                             name: "description",

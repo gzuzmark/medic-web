@@ -1,6 +1,6 @@
 import {AbstractDateParser} from "../DateManager/AbstractDateParser";
-import { IUserStudent } from "../Student/UserStudentBean";
 import { IBaseUser } from "../User/AbstractUser";
+import { ISessionPatient } from "./SessionMentorBean";
 
 export const SESSION_STATUS = {
     ATTENDED: 'ATTENDED',
@@ -40,7 +40,8 @@ export interface ISessionPaginated {
 
 export interface ISessionBody extends ISessionBase {
     doctor: IBaseUser;
-    patient: IUserStudent;
+    patient: ISessionPatient;
+    patient_link: string;
 }
 
 export interface ISessionBase {

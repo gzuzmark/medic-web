@@ -101,7 +101,7 @@ class ProfileMentorCore extends React.Component<IPropsProfileMentorCore, IStateP
                 <Separator />
                 <FormReviewHeader>
                     <Wrapper>
-                        <Subhead1>Descripción</Subhead1>
+                        <Subhead1>CMP</Subhead1>
                         {!this.state.loadingData && mentor.description.trim().length === 0 &&
                             <Subhead1 color={FONTS.error}>(Pendiente)</Subhead1>}
                     </Wrapper>

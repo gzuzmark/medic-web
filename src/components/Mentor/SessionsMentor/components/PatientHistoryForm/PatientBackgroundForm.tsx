@@ -9,15 +9,22 @@ import PatientBackgroundFormContext from './PatientBackgroundForm.context';
 interface IPropsPatientBackground {
   isWomanHistory?: boolean;
   forceDisable?: boolean;
+  notGender?: boolean
 }
 
 const DEFAULT_MAX_LEGTH = 150;
 const DEFAULT_COLUMN_WIDTH = 2;
 const defaultRowStyle = { padding: '15px 0 0 0', margin: 0 };
+const noGenderMessage = ' (Solo sexo Femenino)';
+const noGenderElement = (flag: boolean): string => flag ? noGenderMessage : '';
 
-const PatientBackground: React.FC<IPropsPatientBackground> = ({ isWomanHistory, forceDisable }) => {
+const PatientBackground: React.FC<IPropsPatientBackground> = ({
+  isWomanHistory,
+  forceDisable,
+  notGender = false,
+}) => {
   const { values, handleBlur, handleChange } = React.useContext(PatientBackgroundFormContext);
-
+  const noGenderText = noGenderElement(notGender);
   return (
     <React.Fragment>
       <FormRow key={'row_1'} style={defaultRowStyle} columns={[
@@ -33,10 +40,10 @@ const PatientBackground: React.FC<IPropsPatientBackground> = ({ isWomanHistory, 
               onChange: handleChange,
               value: values.history.allergies}}/>
         </FormColumn>,
-        isWomanHistory ? 
+        isWomanHistory || notGender ?
           <FormColumn width={DEFAULT_COLUMN_WIDTH} key={'fur'}>
             <MentorInput
-              label={"FUR:"}
+              label={`FUR:${noGenderText}`}
               lowercaseLabel={true}
               disabled={!!forceDisable}
               attrs={{
@@ -61,10 +68,10 @@ const PatientBackground: React.FC<IPropsPatientBackground> = ({ isWomanHistory, 
             onChange: handleChange,
             value: values.history.meds}}/>
       </FormColumn>,
-      isWomanHistory ? 
+      isWomanHistory || notGender ?
         <FormColumn width={2} key={'last_pregnancy'}>
           <MentorInput
-            label={"Fin de última gestación:"}
+            label={`Fin de última gestación:${noGenderText}`}
             lowercaseLabel={true}
             disabled={!!forceDisable}
             attrs={{
@@ -77,25 +84,25 @@ const PatientBackground: React.FC<IPropsPatientBackground> = ({ isWomanHistory, 
         <React.Fragment key={'empty_2'} />
   ]}/>
   <FormRow key={'row_3'} style={defaultRowStyle} columns={[
-    <FormColumn width={2} key={'extraInfo'}>
+    <FormColumn width={2} key={'extra_info'}>
       <MentorTextArea
         disabled={!!forceDisable}
         label="Información adicional o condición pre-existente:"
         attrs={{
             maxLength: DEFAULT_MAX_LEGTH,
-            name: "history.extraInfo",
+            name: "history.extra_info",
             onBlur: handleBlur,
             onChange: handleChange,
             rows: 4,
             style: {  height: 'auto' },
-            value: values.history.extraInfo,
+            value: values.history.extra_info,
         }} />
     </FormColumn>,
-    isWomanHistory ? 
+    isWomanHistory || notGender ?
       <FormColumn width={2} key={'ob_issues'}>
         <MentorTextArea
           disabled={!!forceDisable}
-          label="Información adicional o condición pre-existente:"
+          label={`Antecedentes Obstétricos:${noGenderText}`}
           attrs={{
               maxLength: DEFAULT_MAX_LEGTH,
               name: "history.ob_issues",

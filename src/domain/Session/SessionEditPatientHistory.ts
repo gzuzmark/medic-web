@@ -10,7 +10,7 @@ export interface ISessionHistoryForm {
   fur?: string;
   meds: string;
   last_pregnancy?: string;
-  extraInfo: string;
+  extra_info: string;
   ob_issues?: string;
 }
 
@@ -63,7 +63,7 @@ class SessionEditPatientHistoryData {
   get historyUpdateParams(): ISessionHistoryForm {
     return {
       allergies: this.patient.history.allergies || '',
-      extraInfo: this.patient.history.extraInfo || '',
+      extra_info: this.patient.history.extra_info || '',
       fur: this.patient.history.fur || '',
       last_pregnancy: this.patient.history.last_pregnancy || '',
       meds: this.patient.history.meds || '',
@@ -85,7 +85,7 @@ class SessionEditPatientHistoryData {
     const p = {...this.patient.history};
     const formValues = {
       allergies: p.allergies || '',
-      extraInfo: p.extraInfo || '',
+      extra_info: p.extra_info || '',
       fur: p.fur || '',
       last_pregnancy: p.last_pregnancy || '',
       meds: p.meds || '',
@@ -120,7 +120,7 @@ class SessionEditPatientHistoryData {
     this.patient.history.fur = values.fur.trim();
     this.patient.history.meds = values.meds.trim();
     this.patient.history.last_pregnancy = values.last_pregnancy.trim();
-    this.patient.history.extraInfo = values.extraInfo.trim();
+    this.patient.history.extra_info = values.extra_info.trim();
     this.patient.history.ob_issues = values.ob_issues.trim();
   }
 
@@ -161,7 +161,7 @@ class SessionEditPatientHistoryData {
     this.patient.history.fur = currentHistory && currentHistory.fur || '';
     this.patient.history.meds = currentHistory && currentHistory.meds || '';
     this.patient.history.last_pregnancy = currentHistory && currentHistory.last_pregnancy || '';
-    this.patient.history.extraInfo = currentHistory && currentHistory.extraInfo || '';
+    this.patient.history.extra_info = currentHistory && currentHistory.extra_info || '';
     this.patient.history.ob_issues = currentHistory && currentHistory.ob_issues || '';
   }
 

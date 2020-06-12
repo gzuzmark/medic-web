@@ -36,32 +36,46 @@
         color: #4a4a4a!important;
       }
     }
+    //date
     &:nth-child(1) {
       text-align: center;
       width: 10%;
     }
+    //doctor info
     &:nth-child(2) {
       width: 20%;
     }
+    //patient info
     &:nth-child(3) {
       width: 20%;
     }
+    //patient document
     &:nth-child(4) {
-      width: 10%;
+      width: 13%;
     }
+    //patient phone
     &:nth-child(5) {
-      text-align: left;
-      width: 20%;
-      word-break: break-all;
-      margin-right: 5px;
-    }
-    &:nth-child(6) {
-      text-align: center;
       width: 10%;
     }
+    //session url
+    &:nth-child(6) {
+      text-align: left;
+      width: 13%;
+      padding-right: 5px;
+      margin-right: 5px;
+      a:visited {
+        color: #0000EE;
+      }
+    }
+    //cancel session
     &:nth-child(7) {
       text-align: center;
-      width: 10%;
+      width: 7%;
+    }
+    //reschedule session
+    &:nth-child(8) {
+      text-align: center;
+      width: 7%;
     }
   }
   &_line {
@@ -81,6 +95,12 @@
   &_bigtext {
     font-size: 24px;
     line-height: 48px;
+  }
+  &_linkseparator {
+    border-right: 1px solid rgb(193, 193, 193);
+    height: 50%;
+    width: 0;
+    margin: 0 5px;
   }
 }
 
