@@ -8,12 +8,13 @@ interface IPropsCurrentSession {
   useCase: ITriageUseCase,
 }
 
-const CurrentSession: React.FC<IPropsCurrentSession> = (props) => {
+const CurrentSession: React.FC<IPropsCurrentSession> = ({ useCase, questions }) => {
+  const title = !!useCase && !!questions && questions.length > 0 && 'Caso del paciente' || '';
   return (
     <div className="PatientClinicHistory_info">
       <PatientBlockContainer
-        title={'Caso del paciente'}
-        blocks={buildQuestionBlocks(props.useCase, props.questions)}
+        title={title}
+        blocks={buildQuestionBlocks(useCase, questions)}
       />
     </div>
   );

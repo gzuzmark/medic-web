@@ -4,7 +4,7 @@ import ContentModal from "../../../../../common/ConsoleModal/ContentModal";
 import MentorModalBase from "../../../../../common/ConsoleModal/MentorModalBase";
 import Icon from "../../../../../common/Icon/Icon";
 import { Body1, Display1, Heading2, Headline1 } from '../../../../../common/MentorText';
-import Utilities from "../../../../../common/Utils/Utilities";
+import { getAgeByBirthDate } from "../../../../../common/Utils/Utilities";
 import { ISessionPatientPastCase } from "../../../../../domain/Session/SessionEditPatientHistory";
 import { ISessionMentor, ISessionTriage } from "../../../../../domain/Session/SessionMentorBean";
 import CurrentSession from "../HistorySessions/CurrentSession/CurrentSession";
@@ -26,7 +26,19 @@ export interface IPropsFormEditHistoryManager {
 }
 
 const getGender = (value?: number): string => {
-  return value === 0 ? 'Mujer' : value === 1 ? 'Hombre' : '';
+  return value === 0 ? 'Femenino' : value === 1 ? 'Masculino' : '';
+};
+
+const buildPatientInfoBlocks = (patient: any) => {
+  const {
+    birthdate = null,
+    email = null,
+    phone = null,
+  } = patient || {};
+  const patientAgeBlock = birthdate && { label: 'EDAD:', value: getAgeByBirthDate(patient.birthdate) };
+  const patientPhoneBlock = phone && { label: 'CELULAR:', value: phone };
+  const patientEmailBlock = email && { label: 'CORREO:', value: email };
+  return [patientAgeBlock, patientPhoneBlock, patientEmailBlock].filter(e => !!e);
 };
 
 const FormEditHistoryManager: React.FC<IPropsFormEditHistoryManager> = (props) => {
@@ -55,6 +67,7 @@ const FormEditHistoryManager: React.FC<IPropsFormEditHistoryManager> = (props) =
 
     const closeModal = () => setModal(false);
 
+    const patientInfoBlocks = buildPatientInfoBlocks(patient);
     return (
         <React.Fragment>
           <MentorModalBase show={modal} onCloseModal={closeModal}>
@@ -66,19 +79,19 @@ const FormEditHistoryManager: React.FC<IPropsFormEditHistoryManager> = (props) =
                 Historia Clínica
               </Display1>
             </div>
-            <PatientBlockContainer title={'Identificación del paciente'} blocks={[
-              { label: 'EDAD:', value: patient && Utilities.getAgeByBirthDate(patient.birthDate) || '' },
-              { label: 'CELULAR:', value: patient && patient.phone || '' },
-              { label: 'GÉNERO:', value: gender },
-              { label: 'CORREO:', value: patient && patient.email || '' },
-            ]} />
+            {patientInfoBlocks.length > 0 && (
+              <PatientBlockContainer
+                title={'Identificación del paciente'}
+                blocks={patientInfoBlocks}
+              />
+            )}
           </div>
           <div className="PatientClinicHistory_background">
               <Heading2>
                   Antecedentes
               </Heading2>
               <Body1 weight="500">*Si este campo está vacío, quiere decir que el paciente no declarado alergias o medicamentos</Body1>
-              <PatientHistoryForm isWomanHistory={gender === 'Mujer'} />
+              <PatientHistoryForm isWomanHistory={gender === 'Femenino'} notGender={!gender} />
           </div>
           <div className="PatientClinicHistory_sessions">
             <Headline1>
@@ -88,7 +101,7 @@ const FormEditHistoryManager: React.FC<IPropsFormEditHistoryManager> = (props) =
               {
                 component: (
                   <React.Fragment>
-                    <CurrentSession useCase={triage.useCase} questions={triage.questions} />
+                    <CurrentSession useCase={triage.use_case} questions={triage.questions} />
                     <CurrentSessionForm />
                   </React.Fragment>
                 ),

@@ -36,10 +36,21 @@ class ListSessionsBody extends React.Component <IPropsListSessionsBody, {}> {
   }
 
   public render() {
-    const { doctor = { id: '', name: '', last_name: ''}, patient, id = '' } = this.props.session;
+    const {
+      doctor,
+      patient,
+      id = '',
+      patient_link = '',
+    } = this.props.session;
     const sessionBean = new SessionBean(this.props.session);
-    const sessionURL = patient && patient.link || '';
-    const patientURL = sessionURL && id && `${sessionURL}/${id}`;
+
+    const doctorId = doctor && doctor.id || '';
+    const doctorName = doctor && doctor.name || '';
+    const doctorLN = doctor && doctor.last_name || '';
+
+    const sessionURL = patient_link;
+    const patientURL = sessionURL && id && `${sessionURL}/${doctorId}`;
+    const patientDoc = patient && patient.document_number;
 
     const patientId = patient && patient.id || '';
     const patientName = patient && patient.name || '';
@@ -63,7 +74,7 @@ class ListSessionsBody extends React.Component <IPropsListSessionsBody, {}> {
           <TextBold1>{sessionBean.getFromTime(new MomentDateParser())}</TextBold1>
         </div>
         <div className="ListSessions_column ListSessions_column--mentor">
-          <SessionItem name={`${doctor.name} ${doctor.last_name}`} />
+          <SessionItem name={`${doctorName} ${doctorLN}`} />
         </div>
         <div className="ListSessions_column ListSessions_column--mentor">
           <SessionItem
@@ -71,6 +82,14 @@ class ListSessionsBody extends React.Component <IPropsListSessionsBody, {}> {
             name={`${patientName} ${patientLN}`}
             email={patient && patient.email}
           />
+        </div>
+        <div className="ListSessions_column">
+          {patientDoc && (
+            <Subhead1
+              color={FONTS.dark}>
+              {patientDoc}
+            </Subhead1>
+          )}
         </div>
         <div className="ListSessions_column">
           {patient && !!patient.phone && (
@@ -83,12 +102,15 @@ class ListSessionsBody extends React.Component <IPropsListSessionsBody, {}> {
         <div className="ListSessions_column ListSessions_separator" style={{ borderColor: colors.MISC_COLORS.background_grey_2 }}>
           {!!sessionURL && (
             <a href={sessionURL} target="blank">
-              Link Paciente
+              Paciente
             </a>
+          )}
+          {!!sessionURL && !!patientURL && (
+            <div className="ListSessions_linkseparator" />
           )}
           {!!patientURL && (
             <a href={patientURL} target="blank">
-              Link Doctor
+              Doctor
             </a>
           )}
         </div>

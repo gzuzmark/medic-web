@@ -5,7 +5,7 @@ export interface IPatientBackgroundFormValidations {
   fur: string,
   meds: string,
   last_pregnancy: string,
-  extraInfo: string,
+  extra_info: string,
   ob_issues: string,
 }
 

@@ -16,16 +16,17 @@ export interface ISessionStudent {
 export interface ISessionPatient {
     id?: string;
     name: string;
-    lastName: string;
-    secondLastName: string;
+    last_name: string;
+    second_last_name: string;
     email: string;
     phone: string;
-    birthDate: string;
+    birthdate: string;
     gender: number;
     allergies: string;
     meds: string;
-    extraInfo: string;
-    fullLastName: string;
+    extra_info: string;
+    full_last_name: string;
+    document_number: string;
 }
 
 export interface ITriageQuestion {
@@ -43,7 +44,7 @@ export interface ITriageUseCase {
 export interface ISessionTriage {
     id: string;
     questions: ITriageQuestion[];
-    useCase: ITriageUseCase;
+    use_case: ITriageUseCase;
 }
 
 export interface ISessionTriageResponse {
@@ -122,8 +123,8 @@ export class SessionMentorBean extends SessionBean {
         return this.isNoAttended || !sessionStart;
     }
 
-    public setSessionPatientTriage(triage: ISessionTriageResponse) {
-        this.session.triage = triage.triage;
+    public setSessionPatientTriage(patientCase?: ISessionTriageResponse) {
+        this.session.triage = patientCase && patientCase.triage;
     }
 
     public filterStatusSession(status: string) {

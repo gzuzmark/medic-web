@@ -145,7 +145,7 @@ const deepEqual = (a: any,b: any) => {
     }
 };
 
-const getAgeByBirthDate = (bd: string) => bd ? moment().diff(bd, 'years', false) : '';
+export const getAgeByBirthDate = (bd: string) => bd ? moment().diff(bd, 'years', false) : '';
 
 const checkRightQuestion = (word: string, kws: string[]): boolean => kws.every(kw => word.includes(kw))
 
@@ -157,16 +157,20 @@ const handleQuestionObject = (questionObj: any) => {
 };
 
 export const buildQuestionBlocks = (useCase: any, questions: any[]) => {
-  if (!useCase || !questions) {
-    return [];
+  let blocks: any[] = [];
+  if (!!useCase) {
+    blocks = [
+      ...blocks,
+      { label: 'CASO:', value: useCase.title || '' },
+      { label: 'DESCRIPCIÓN DEL CASO:', value: useCase.description || '' },
+    ];
   }
-  const filteredQuestions = questions.filter(q => !checkRightQuestion(q.question.toUpperCase(), FOR_WHOM_KEYWORDS))
-  const questionBlocks = filteredQuestions.map(q => handleQuestionObject(q));
-  return [
-    { label: 'CASO:', value: useCase.title || '' },
-    { label: 'DESCRIPCIÓN DEL CASO:', value: useCase.description || '' },
-    ...questionBlocks,
-  ];
+  if (!!questions ) {
+    const filteredQuestions = questions.filter(q => !checkRightQuestion(q.question.toUpperCase(), FOR_WHOM_KEYWORDS))
+    const questionBlocks = filteredQuestions.map(q => handleQuestionObject(q));
+    blocks = [...blocks, ...questionBlocks];
+  }
+  return blocks;
 };
 
 const Utilities = {

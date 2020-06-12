@@ -35,8 +35,8 @@ interface IPropsMedicineBlock {
 
 const getPatientFullname = (patient: ISessionPatient): string => {
 	const name = (patient && patient.name) || '';
-	const lastName = (patient && patient.lastName) || '';
-	const secondLastName = (patient && patient.secondLastName) || '';
+	const lastName = (patient && patient.last_name) || '';
+	const secondLastName = (patient && patient.second_last_name) || '';
 	return `${name} ${lastName} ${secondLastName}`;
 };
 
@@ -71,7 +71,7 @@ const MedicineBlock: React.FC<IPropsMedicineBlock> = ({
 
 const PastSessions: React.FC<IPropsPastSessions> = ({ pastCases }) => {
 	const renderPatientCase = (triage: ISessionTriage = {} as ISessionTriage) => {
-		const useCase = triage && triage.useCase;
+		const useCase = triage && triage.use_case;
 		const questions = (triage && triage.questions) || [];
 		return (
 			<div className='PastSessions_section'>
