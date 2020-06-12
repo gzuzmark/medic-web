@@ -114,8 +114,7 @@ class ListSessionsBody extends React.Component <IPropsListSessionsBody, {}> {
             </a>
           )}
         </div>
-        <div className="ListSessions_column">
-        </div>
+        <div className="ListSessions_column"/>
         <div className="ListSessions_column">
           <Icon
             name="calendar-check"
