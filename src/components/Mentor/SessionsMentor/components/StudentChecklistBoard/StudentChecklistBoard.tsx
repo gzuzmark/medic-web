@@ -32,6 +32,8 @@ interface IPropsStudentChecklistBoard {
     onSelect: fnSelect;
     searchValue: string;
     sessionId: string;
+    hideObservations?: boolean;
+    hideSearch?: boolean;
     studentCommented(request: ITagConfirm): void;
     requestAttended() :void;
     requestNoAttended() :void;
@@ -123,14 +125,8 @@ class StudentChecklistBoard extends  React.Component<IPropsStudentChecklistBoard
         const addSearch = this.getInputAdd();
         const inputSearch = this.getInputSearch();
         let propsNoAttendedButton = {};
-        let propsAttendedButton = {};
         if (this.props.board.noAttendedButton || this.props.isEmpty) {
             propsNoAttendedButton = {
-                disabled: true
-            };
-        }
-        if (this.props.board.attendedButton || this.props.isEmpty) {
-            propsAttendedButton = {
                 disabled: true
             };
         }
@@ -155,7 +151,7 @@ class StudentChecklistBoard extends  React.Component<IPropsStudentChecklistBoard
                 {this.props.isEmpty ?
                     <EmptyCard addEnabled={this.props.board.addEnabled} /> :
                     <div className={`StudentChecklistBoard_students ${this.props.board.studentList.length > 0 ? 'StudentChecklistBoard--border' : ''} `}>
-                        <StudentFullCardHeader />
+                        <StudentFullCardHeader hideObservations={this.props.hideObservations} />
                         {this.props.board.studentList.map((student: IStudentChecklistCard, index: number) => {
                             const order = student.new ? ++this.counter : 0;
                             const showTagModal = this.showTagModal(student);
@@ -166,21 +162,21 @@ class StudentChecklistBoard extends  React.Component<IPropsStudentChecklistBoard
                                     showTagModal={showTagModal}
                                     student={student}
                                     key={`${index}`}
-                                    styles={{'order': -1 * order}}/>
+                                    styles={{'order': -1 * order}}
+                                    hideObservations={this.props.hideObservations}
+                                />
                             )
                         })}
                     </div>
                 }
-                <div className={'StudentChecklistBoard_buttons'}>
-                    <button
-                        className={'u-Button u-Button--white StudentChecklistBoard_button StudentChecklistBoard_button--no-attended'}
-                        {...propsNoAttendedButton}
-                        onClick={this.props.requestNoAttended}>Nadie se presentó</button>
-                    <button
-                        {...propsAttendedButton}
-                        className={'u-Button StudentChecklistBoard_button'}
-                        onClick={this.props.requestAttended}>Guardar</button>
-                </div>
+                {!this.props.isEmpty &&
+                    <div className={'StudentChecklistBoard_buttons'}>
+                        <button
+                            className={'u-Button StudentChecklistBoard_button StudentChecklistBoard_button--no-attended'}
+                            {...propsNoAttendedButton}
+                            onClick={this.props.requestNoAttended}>Paciente no se presentó</button>
+                    </div>
+                }
             </React.Fragment>
         )
 
@@ -195,6 +191,7 @@ class StudentChecklistBoard extends  React.Component<IPropsStudentChecklistBoard
         const { onClickAddIcon, ...addSearchAttr } = addSearch;
         return (
             <div className={`StudentChecklistBoard`}>
+                {!this.props.hideSearch && (
                 <div className={"StudentChecklistBoard_inputs-container"}>
                     <MentorInput
                         active={this.state.activeSearch}
@@ -219,6 +216,7 @@ class StudentChecklistBoard extends  React.Component<IPropsStudentChecklistBoard
                             text: "Agregar pacientes"
                         }}/>
                 </div>
+                )}
                 <div className={"StudentChecklistBoard_students-container"}>
                     {students}
                 </div>

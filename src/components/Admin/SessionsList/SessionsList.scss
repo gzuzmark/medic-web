@@ -1,0 +1,109 @@
+@import "../../../assets/styles/01-settings/settings";
+
+.ListSessions {
+  padding: 0 70px;
+  &_body {
+    display: flex;
+    flex-direction: column;
+  }
+  &_sticky {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+  }
+  &_header, &_row {
+    display: flex;
+    flex-direction: row;
+  }
+  &_header {
+    align-items: center;
+    margin-top: 10px;
+  }
+  &_row {
+    align-items: center;
+    &--center {
+      display: flex;
+      justify-content: center;
+      padding: 60px 0;
+    }
+  }
+  &_column {
+    &--mentor {
+      min-height: 70px;
+    }
+    &--date {
+      span {
+        color: #4a4a4a!important;
+      }
+    }
+    //date
+    &:nth-child(1) {
+      text-align: center;
+      width: 10%;
+    }
+    //doctor info
+    &:nth-child(2) {
+      width: 20%;
+    }
+    //patient info
+    &:nth-child(3) {
+      width: 20%;
+    }
+    //patient document
+    &:nth-child(4) {
+      width: 13%;
+    }
+    //patient phone
+    &:nth-child(5) {
+      width: 10%;
+    }
+    //session url
+    &:nth-child(6) {
+      text-align: left;
+      width: 13%;
+      padding-right: 5px;
+      margin-right: 5px;
+      a:visited {
+        color: #0000EE;
+      }
+    }
+    //cancel session
+    &:nth-child(7) {
+      text-align: center;
+      width: 7%;
+    }
+    //reschedule session
+    &:nth-child(8) {
+      text-align: center;
+      width: 7%;
+    }
+  }
+  &_line {
+    background: $grey-light;
+    border: 0;
+    box-shadow: 0 1px 6px 0 darken($grey-light, 10%);
+    height: 1px;
+    margin: 2px 0;
+  }
+  &_separator {
+    align-items: center;
+    border-right: 1px solid rgb(193, 193, 193);
+    display: flex;
+    height: 45px;
+    padding-top: 2px;
+  }
+  &_bigtext {
+    font-size: 24px;
+    line-height: 48px;
+  }
+  &_linkseparator {
+    border-right: 1px solid rgb(193, 193, 193);
+    height: 50%;
+    width: 0;
+    margin: 0 5px;
+  }
+}
+
+.u-ListSessions_padding {
+  padding: 0 20px;
+}

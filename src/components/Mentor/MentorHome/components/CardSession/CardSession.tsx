@@ -9,14 +9,16 @@ import './CardSession.scss';
 export interface IPropsCardSession {
     item: SessionMentorBean;
     link: string;
+    style?: React.CSSProperties;
+    available?: boolean;
 }
 
 
 const CardSession: React.FC<IPropsCardSession> = (props) => {
 
     return (
-        <div className={`CardSession CardSession--${props.item.getStatus()}`}>
-            <div className={"CardSession_aside"}>
+        <div className={`CardSession CardSession--${props.item.getStatus()}`} style={props.style}>
+            <div className={"CardSession_aside"} style={props.style}>
                 <div className={"CardSession_icon"}>
                     <Icon name={"calendar-check"}/>
                 </div>
@@ -34,13 +36,15 @@ const CardSession: React.FC<IPropsCardSession> = (props) => {
                 <div className={"CardSession_body-main"}>
                     <Text1>{props.item.session.skill && props.item.session.skill.name}</Text1>
                 </div>
-                <div className={"CardSession_body-sub-main"}>
-                    <TextBold3>{props.item.getAvailability()}</TextBold3>
-                </div>
+                {!props.available && (
+                    <div className={"CardSession_body-sub-main"}>
+                        <TextBold3>{props.item.getPatientSubInfo()}</TextBold3>
+                    </div>
+                )}
                 <div className={"CardSession_body-bottom"}>
                     {props.item.isVirtual() ?
                         <a className={"CardSession_location"} href={props.item.getLocation()} target="_blank">
-                            <Text3 style={{ textDecoration: 'underline' }}>{props.item.getLocation()}</Text3>
+                            <Text3 style={{ textDecoration: 'underline' }}>Ir a videollamada</Text3>
                         </a>:
                         <span className={"CardSession_location"}>
                             <Text3>{props.item.getLocation()}</Text3>
@@ -53,7 +57,7 @@ const CardSession: React.FC<IPropsCardSession> = (props) => {
                     props.item.getStatus() === SESSION_LIFE.PENDING &&
                     <a href={props.link} className={"CardSession_options-button"}>
                         <Icon name={"users"}/>
-                        <TextBold3>Ver pacientes</TextBold3>
+                        <TextBold3>Ver detalle</TextBold3>
                     </a>
                 }
                 {
@@ -67,7 +71,7 @@ const CardSession: React.FC<IPropsCardSession> = (props) => {
                     props.item.getStatus() === SESSION_LIFE.RESOLVE &&
                     <a href={props.link} className={"CardSession_options-button"}>
                         <Icon name={"paper-pencil"}/>
-                        <TextBold3>Editar asistencia</TextBold3>
+                        <TextBold3>Ver detalle</TextBold3>
                     </a>
                 }
             </div>

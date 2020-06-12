@@ -1,8 +1,75 @@
-import {ISessionBase, SESSION_STATUS, SessionBean} from "./SessionBean";
+import { IBaseUser } from "../User/AbstractUser";
+import { ISessionBase, SESSION_STATUS, SessionBean } from "./SessionBean";
+
+export interface ISessionStudentUser extends IBaseUser {
+    document: string;
+    documentType: string;
+    status: string;
+}
+
+export interface ISessionStudent {
+    id: string;
+    code: string;
+    user: ISessionStudentUser;
+}
+
+export interface ISessionPatient {
+    id?: string;
+    name: string;
+    last_name: string;
+    second_last_name: string;
+    email: string;
+    phone: string;
+    birthdate: string;
+    gender: number;
+    allergies: string;
+    meds: string;
+    extra_info: string;
+    full_last_name: string;
+    document_number: string;
+}
+
+export interface ITriageQuestion {
+    id: string;
+    question: string;
+    answer: string;
+}
+
+export interface ITriageUseCase {
+    id: string;
+    title: string;
+    description: string;
+}
+
+export interface ISessionTriage {
+    id: string;
+    questions: ITriageQuestion[];
+    use_case: ITriageUseCase;
+}
+
+export interface ISessionTriageResponse {
+    sessionId: string;
+    triage: ISessionTriage;
+}
 
 export interface ISessionAvailability {
     limit: number;
     count: number;
+}
+
+export interface ISessionDoctor {
+    id: string;
+    cmp: string;
+    description: string;
+    name: string;
+    last_name: string;
+    speciality_name: string;
+}
+
+export interface IReassignSession {
+    id: string;
+    from: string;
+    to: string;
 }
 
 export interface ISessionMentor extends ISessionBase {
@@ -10,6 +77,10 @@ export interface ISessionMentor extends ISessionBase {
     isEnabledForAttendance?: boolean;
     isEnabledForComment?: boolean;
     status?: string;
+    status_new?: string;
+    student?: ISessionStudent;
+    patient?: ISessionPatient;
+    triage?: ISessionTriage;
 }
 export const minuteTime = 14000;
 
@@ -49,7 +120,15 @@ export class SessionMentorBean extends SessionBean {
         const current = new Date();
         const to = new Date(this.session.from);
         const sessionStart = to.getTime() - current.getTime() <= 0;
-        return this.isNoAttended ||  !sessionStart;
+        return this.isNoAttended || !sessionStart;
+    }
+
+    public setSessionPatientTriage(patientCase?: ISessionTriageResponse) {
+        this.session.triage = patientCase && patientCase.triage;
+    }
+
+    public filterStatusSession(status: string) {
+        return this.session.status_new === status;
     }
 
     public setAsNoAttended() {
@@ -96,5 +175,14 @@ export class SessionMentorBean extends SessionBean {
             text = 'pacientes inscritos'
         }
         return `${count} de ${limit} ${text}`;
+    }
+
+    public getPatientSubInfo(): string {
+        const student = this.session.student;
+        if (student) {
+            const { name, lastname, email } = student.user;
+            return `${name} ${lastname} (${email})`;
+        }
+        return '';
     }
 }

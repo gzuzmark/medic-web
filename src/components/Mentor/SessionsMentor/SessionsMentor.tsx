@@ -1,3 +1,4 @@
+import { Formik } from 'formik';
 import * as React from 'react';
 import {Link} from "react-router-dom";
 import noAttened from '../../../assets/images/student_check_modal/no_attended.png';
@@ -8,7 +9,8 @@ import Layout from "../../../common/Layout/Layout";
 import LoaderFullScreen from "../../../common/Loader/LoaderFullsScreen";
 import {MomentDateParser} from "../../../domain/DateManager/MomentDateParser";
 import {SESSION_LIFE} from "../../../domain/Session/SessionBean";
-import {SessionMentorBean} from "../../../domain/Session/SessionMentorBean";
+import SessionEditPatientHistoryData, { ISessionPatientHistoryForm, ISessionPatientPastCase } from '../../../domain/Session/SessionEditPatientHistory';
+import { ISessionPatient, SessionMentorBean } from "../../../domain/Session/SessionMentorBean";
 import {
     IStudentChecklist,
     STUDENT_STATUS,
@@ -18,7 +20,12 @@ import {StudentChecklistCollector} from "../../../domain/StudentChecklist/Studen
 import {IMatchParam} from "../../../interfaces/MatchParam.interface";
 import SessionService from "../../../services/Session/Session.service";
 import StudentService from "../../../services/Student/Student.service";
-import TagService, {ITags} from "../../../services/Tag/Tag.service";
+import FormEditHistoryManager from './components/FormEditHistoryManager/FormEditHistoryManager';
+import PatientBackgroundFormContext, {
+    IPatientBackgroundFormValidations,
+    IPatientCaseFormValidations,
+    ISessionPatientHistoryFormValidations,
+} from './components/PatientHistoryForm/PatientBackgroundForm.context';
 import {ISessionFullCard} from "./components/SessionFullCard/SessionFullCard";
 import SessionFullCard from "./components/SessionFullCard/SessionFullCard";
 import { default as SimpleFullCard, ISimpleFullCard} from "./components/SimpleFullCard/SimpleFullCard";
@@ -32,7 +39,6 @@ import {
     IStudentCheckModal,
     StudentCheckModalScreens
 } from "./components/StudentCheckModal/StudentCheckModal";
-import {ITagConfirm} from "./components/StudentCommentModal/StudentCommentModal";
 import {IStudentChecklistCard} from "./components/StudentFullCard/StudentFullCard";
 import './SessionsMentor.scss';
 
@@ -46,12 +52,14 @@ interface IStateSessionsMentor {
     fullCardSimple: ISimpleFullCard;
     isEmpty: boolean;
     loading: boolean;
+    pastCases: ISessionPatientPastCase[];
+    patientHistory: ISessionPatientHistoryFormValidations;
     searchValue: string;
     modal: boolean;
     modalError: boolean;
+    modalSuccess: boolean;
     modalAdd: IStudentModal;
     modalCheck: IStudentCheckModal;
-    tags: ITags[];
 }
 
 const MESSAGE_ADD_STUDENT = "¿Estás seguro que deseas agregar a este paciente?";
@@ -62,12 +70,13 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
     private mentorId: string;
     private sessionService = new SessionService();
     private studentsService = new StudentService();
-    private tagService = new TagService();
     private sessionMentor: SessionMentorBean;
     private studentChecklistCollector: StudentChecklistCollector;
     private mdp = new MomentDateParser();
+    private patientHistoryData: SessionEditPatientHistoryData;
     constructor(props: any) {
         super(props);
+        this.patientHistoryData = new SessionEditPatientHistoryData({} as ISessionPatientHistoryForm);
         this.state = {
             board: {
                 addEnabled: false,
@@ -92,8 +101,10 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
             modalAdd: this.cleanAddModal(),
             modalCheck: this.cleanCheckModal(''),
             modalError: true,
+            modalSuccess: false,
+            pastCases: [],
+            patientHistory: { history: this.patientHistoryData.getHistoryValues, case: this.patientHistoryData.getCaseValues },
             searchValue: '',
-            tags: [],
         };
         this.sessionId = this.props.match.params.session || '';
         this.onSearch = this.onSearch.bind(this);
@@ -107,7 +118,9 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
         this.closeModalError = this.closeModalError.bind(this);
         this.showModalNoAttended = this.showModalNoAttended.bind(this);
         this.showModalAttended = this.showModalAttended.bind(this);
-        this.studentCommented = this.studentCommented.bind(this);
+        this.onSubmit = this.onSubmit.bind(this);
+        this.updateHistory = this.updateHistory.bind(this);
+        this.closeConfirmModal = this.closeConfirmModal.bind(this);
     }
 
     public componentDidMount() {
@@ -117,35 +130,53 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
             Promise.all([
                 this.sessionService.getSessionMentor(this.sessionId),
                 this.studentsService.studentsFromSession(this.sessionId),
-                this.tagService.list(),
+                this.sessionService.getSessionConsult(this.sessionId),
+                this.sessionService.getPastSessionConsults(this.sessionId),
             ]).then((values: any[]) => {
                 this.sessionMentor = new SessionMentorBean(values[0]);
                 this.studentChecklistCollector = new StudentChecklistCollector(values[1]);
                 const sessions = this.studentChecklistCollector.sessions;
-                this.setState({tags: values[2]}, () => {
-                    const newState = {
-                        board: this.getBoard(sessions),
-                        fullCardSession: this.getFullCardSession(),
-                        fullCardSimple: this.getFullCardSimple(),
-                        isEmpty: sessions.length === 0
-                    };
-                    this.setState({
-                        loading: false,
-                        ...newState
-                    });
-                })
+                const patient = this.sessionMentor.session.patient;
+                const patCase = values[2];
+                const pastCases = values[3] as ISessionPatientPastCase[];
+                const patientHistory = {
+                    case: patCase,
+                    history: patient,
+                } as ISessionPatientHistoryForm;
+                this.sessionMentor.setSessionPatientTriage(patCase);
+                this.patientHistoryData = new SessionEditPatientHistoryData(patientHistory);
+                const newState = {
+                    board: this.getBoard(sessions, patient),
+                    fullCardSession: this.getFullCardSession(),
+                    fullCardSimple: this.getFullCardSimple(),
+                    isEmpty: sessions.length === 0 && !patient,
+                    pastCases,
+                    patientHistory: {
+                        case: this.patientHistoryData.getCaseValues,
+                        history: this.patientHistoryData.getHistoryValues,
+                    },
+                };
+                this.setState({
+                    loading: false,
+                    ...newState
+                });
             }, () => {
                 this.setState({
-                    loading: false
+                    isEmpty: true,
+                    loading: false,
                 })
             });
         });
     }
 
     public render() {
+        const session = this.sessionMentor && this.sessionMentor.session;
         const navBarText = this.sessionMentor ?
             `${this.mdp.isDateToday(this.sessionMentor.session.from)? 'hoy ': ''}${this.sessionMentor.getDate(this.mdp)}` : '';
         return <Layout title={"Tutores"}>
+            <MentorModalBase show={this.state.modalSuccess} onCloseModal={this.closeConfirmModal} hideClose={true}>
+                <ContentModal.Success description={"Cambios guardados con éxito"} />
+            </MentorModalBase>
             <MentorModalBase
                 show={this.state.modal}
                 onCloseModal={this.closeModal}
@@ -188,14 +219,77 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
                                 requestNoAttended={this.showModalNoAttended}
                                 searchValue={this.state.searchValue}
                                 isEmpty={this.state.isEmpty}
-                                tags={this.state.tags}
+                                tags={[]}
                                 sessionId={this.sessionId}
                                 studentCommented={this.studentCommented}
+                                hideObservations={true}
+                                hideSearch={true}
                             />
+                            <Formik
+                                initialValues={this.state.patientHistory}
+                                enableReinitialize={true}
+                                isInitialValid={false}
+                                onSubmit={this.onSubmit}>
+                                {({ values, handleBlur, handleChange, handleSubmit}) => {
+                                    return (
+                                        <PatientBackgroundFormContext.Provider
+                                            value={{
+                                                handleBlur,
+                                                handleChange,
+                                                values: values as ISessionPatientHistoryFormValidations,
+                                            }}>
+                                            <form onSubmit={handleSubmit}>
+                                                <FormEditHistoryManager
+                                                    formData={{values}}
+                                                    onHandleSubmit={this.onSubmit}
+                                                    session={session}
+                                                    pastCases={this.state.pastCases}
+                                                />
+                                            </form>
+                                        </PatientBackgroundFormContext.Provider>
+                                    )
+                                }}
+                            </Formik>
                         </SimpleFullCard>
                     </React.Fragment>}
             </div>
         </Layout>
+    }
+
+    private updateHistory() {
+        const sessionId = this.sessionId;
+        const historyUpdatedParams = this.patientHistoryData.historyUpdateParams;
+        const caseUpdatedParams = this.patientHistoryData.caseUpdateParams;
+        if (sessionId) {
+            this.setState({ loading: true, modalSuccess: false });
+            Promise.all([
+                this.sessionService.updateHistoryBackground(sessionId, historyUpdatedParams),
+                this.sessionService.updateSessionConsult(sessionId, caseUpdatedParams),
+            ]).then((responses) => {
+                const patHistory = responses[0] as IPatientBackgroundFormValidations;
+                const patCase = responses[1] as IPatientCaseFormValidations;
+                this.setState({
+                    loading: false,
+                    modalSuccess: true,
+                    patientHistory: { history: patHistory, case: patCase },
+                });
+                setTimeout(() => {
+                    this.setState({ modalSuccess: false });
+                },1500);
+            }).catch(() => {
+                this.setState({ loading: false });
+            })
+        }
+    }
+
+    private onSubmit(values: ISessionPatientHistoryFormValidations) {
+        this.patientHistoryData.preparePatientHistoryData(values.history);
+        this.patientHistoryData.preparePatientCaseData(values.case);
+        this.updateHistory();
+    }
+
+    private closeConfirmModal() {
+        this.setState({ modalSuccess: false });
     }
 
     private closeModal(force?: boolean) {
@@ -241,6 +335,10 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
         } else if (screen === StudentCheckModalScreens.NO_ATTENDED) {
             this.requestNoAttended()
         }
+    }
+
+    private studentCommented () {
+        return '';
     }
 
     private requestAttended() {
@@ -415,17 +513,23 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
         };
     }
 
-    private getBoard(sessions?: StudentChecklistBean[]): IStudentChecklistBoard {
+    private getBoard(sessions?: StudentChecklistBean[], patient?: ISessionPatient): IStudentChecklistBoard {
         if (!sessions) {
             sessions = this.studentChecklistCollector.sessions;
         }
-        return {
-            addEnabled: !this.sessionMentor.isNoAttended && !this.sessionMentor.isUndefined(),
-            attendedButton: this.studentChecklistCollector.isAllStudentsAttended || this.sessionMentor.isDisableAttended,
-            noAttendedButton:this.studentChecklistCollector.atLeastOneAttended || this.sessionMentor.isDisableNoAttended,
-            noResultsAdd: false,
-            studentList: this.getStudentList(sessions)
+        const studentList = [];
+        if (patient) {
+            studentList.push(this.buildStudentItemFromPatient(patient));
         }
+        return {
+            addEnabled: !this.sessionMentor.isNoAttended && !this.sessionMentor.isUndefined() && !patient,
+            attendedButton: this.studentChecklistCollector.isAllStudentsAttended || this.sessionMentor.isDisableAttended,
+            noAttendedButton: (this.studentChecklistCollector.atLeastOneAttended ||
+                               this.sessionMentor.isDisableNoAttended) &&
+                               !patient,
+            noResultsAdd: false,
+            studentList,
+        };
     }
 
     private getFullCardSimple(): ISimpleFullCard {
@@ -437,28 +541,22 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
         };
     }
 
-    private getStudentList(sessions: StudentChecklistBean[]): IStudentChecklistCard[] {
-        return sessions.map((checklist: StudentChecklistBean) => {
-            const sessionIsEnabledForComment = !!this.sessionMentor.session.isEnabledForComment &&
-                this.state.tags.length > 0 && !checklist.item.commented;
-            const tags = checklist.item.tags || [];
-            return {
-                checked: checklist.isChecked,
-                code: checklist.student.user.code,
-                commented: !!checklist.item.commented,
-                disabled: checklist.isDisabled || this.sessionMentor.isDisabled,
-                id: checklist.id,
-                isEnabledForComment: sessionIsEnabledForComment || (!!checklist.item.commented && tags.length > 0),
-                lastname: checklist.student.user.lastname,
-                mentorComment: checklist.item.mentorComment || '',
-                name: `${checklist.student.user.name} ${checklist.student.user.lastname}`,
-                new: checklist.new,
-                photo: checklist.student.user.photo,
-                studentId: checklist.student.id,
-                tags
-            }
-
-        });
+    private buildStudentItemFromPatient(patient: ISessionPatient): IStudentChecklistCard {
+        return {
+            checked: false,
+            code: patient.id || '',
+            commented: false,
+            disabled: this.sessionMentor.isDisabled,
+            id: patient.id || '',
+            isEnabledForComment: false,
+            lastname: patient.last_name,
+            mentorComment: '',
+            name: `${patient.name} ${patient.full_last_name}`,
+            new: true,
+            photo: '',
+            studentId: patient.id || '',
+            tags: [],
+        } as IStudentChecklistCard;
     }
 
     private cleanAddModal() {
@@ -475,19 +573,6 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
             loading: false,
             screen
         }
-    }
-
-    private studentCommented(commented: ITagConfirm, ) {
-        const {id, comment, tags} = commented;
-        const selectedTags = tags.map((tagId) => {
-            const selectedTag = this.state.tags.find((tag) => tag.id === tagId );
-            return selectedTag ? selectedTag.name : '';
-        });
-        this.studentChecklistCollector.addStudentComment(id, selectedTags, comment);
-        const sessions  = this.studentChecklistCollector.filterStudents(this.state.searchValue);
-        this.setState({
-            board: this.getBoard(sessions)
-        })
     }
 }
 
