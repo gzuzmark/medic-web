@@ -115,6 +115,11 @@ class ListSessionsBody extends React.Component <IPropsListSessionsBody, {}> {
           )}
         </div>
         <div className="ListSessions_column">
+          <Icon
+            name="exclamation"
+            attr={{"data-tip": "Cancelar"}}
+            style={{ cursor: 'pointer' }}
+          />
         </div>
         <div className="ListSessions_column">
           <Icon
