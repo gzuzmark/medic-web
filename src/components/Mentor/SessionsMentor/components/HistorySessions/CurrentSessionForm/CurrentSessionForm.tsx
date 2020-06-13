@@ -27,7 +27,6 @@ const CurrentSessionForm: React.FC<IPropsCurrentSessionForm> = ({ forceDisable }
             disabled={!!forceDisable}
             label="Escribe la anamnesis del paciente:"
             attrs={{
-                maxLength: DEFAULT_MAX_LEGTH,
                 name: "case.anamnesis",
                 onBlur: handleBlur,
                 onChange: handleChange,
@@ -44,7 +43,6 @@ const CurrentSessionForm: React.FC<IPropsCurrentSessionForm> = ({ forceDisable }
             disabled={!!forceDisable}
             label="Escribe el diagnóstico del paciente:"
             attrs={{
-                maxLength: DEFAULT_MAX_LEGTH,
                 name: "case.diagnostic",
                 onBlur: handleBlur,
                 onChange: handleChange,
