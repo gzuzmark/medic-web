@@ -22,6 +22,31 @@ interface IPropsRescheduleSessionModal {
 	confirm(newSession: string): void;
 }
 
+const getDateTime = (from: string, to: string) => {
+  const date = moment(from).format('dddd DD [de] MMMM');
+  const fromHour = moment(from).format('h:mm a');
+  const toHour = moment(to).format('h:mm a');
+  return `${fromHour} - ${toHour}, ${date}`;
+};
+
+const mapDoctorsToDropdown = (doctors: ISessionDoctor[]) => {
+  return doctors.map((doctor) => {
+		const doctorFullname = `${doctor.name || ''} ${doctor.last_name || ''}`;
+		const cmp = (doctor.cmp && `CMP: ${doctor.cmp}`) || '';
+		return {
+			label: `${doctorFullname} ${cmp}`,
+			value: doctor.id,
+		};
+	});
+};
+
+const mapSessionsToDropdown = (sessions: IReassignSession[]) => {
+  return sessions.map((session) => ({
+    label: getDateTime(session.from, session.to),
+    value: session.id,
+  }));
+};
+
 const RescheduleSessionModal: React.FC<IPropsRescheduleSessionModal> = ({
 	show,
 	toggleModal,
@@ -92,26 +117,9 @@ const RescheduleSessionModal: React.FC<IPropsRescheduleSessionModal> = ({
 		}
 	}, [sessionId, selectedDoctor]);
 
-	const dropdownDoctors = doctors.map((doctor) => {
-		const doctorFullname = `${doctor.name || ''} ${doctor.last_name || ''}`;
-		const cmp = (doctor.cmp && `CMP: ${doctor.cmp}`) || '';
-		return {
-			label: `${doctorFullname} ${cmp}`,
-			value: doctor.id,
-		};
-	});
+	const dropdownDoctors = React.useMemo(() => mapDoctorsToDropdown(doctors), [doctors]);
 
-	const getDateTime = (from: string, to: string) => {
-		const date = moment(from).format('dddd DD [de] MMMM');
-		const fromHour = moment(from).format('h:mm a');
-		const toHour = moment(to).format('h:mm a');
-		return `${fromHour} - ${toHour}, ${date}`;
-	};
-
-	const dropdownSessions = sessions.map((session) => ({
-		label: getDateTime(session.from, session.to),
-		value: session.id,
-	}));
+  const dropdownSessions = React.useMemo(() => mapSessionsToDropdown(sessions), [sessions]);
 
 	return (
 		<ConsoleModal
