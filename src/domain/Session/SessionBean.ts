@@ -51,6 +51,8 @@ export interface ISessionBase {
     location?: ISessionLocation;
     skill?: ISessionItemBase;
     isActive?: boolean;
+    reservation_date?: string;
+    consult?: object;
 }
 export const SESSION_VIRTUAL = "VIRTUAL";
 export const SESSION_UNDEFINED = "UNDEFINED";
@@ -88,6 +90,27 @@ export class SessionBean {
         const to = new Date(this.session.to);
         const now = new Date();
         return to.getTime() > now.getTime()
+    }
+
+    public getAssistance() {
+      const now = new Date();
+      const date = new Date(this.session.from);
+      const isConsult = !!this.session.consult && Object.keys(this.session.consult).length > 0;
+      if (date.getTime() < now.getTime() && !isConsult) {
+        return '';
+      } else if (date.getTime() <= now.getTime() && isConsult) {
+        return 'Confirmada';
+      } else if (date.getTime() > now.getTime()) {
+        return 'Por Confirmar';
+      }
+      return '';
+    }
+
+    public getReservationDate(dateFormatter: AbstractDateParser): string {
+      if (!this.session.reservation_date) {
+        return '';
+      }
+      return `${dateFormatter.parseDateToString(this.session.reservation_date, "DD/MM/YYYY")}`;
     }
 
     public getTime(dateFormatter: AbstractDateParser): string {

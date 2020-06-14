@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { TextBold1 } from '../../../../../common/ConsoleText';
 import Icon from "../../../../../common/Icon/Icon";
 import colors, { FONTS } from "../../../../../common/MentorColor";
-import { Heading3, LIGHT_TEXT, Subhead1 } from '../../../../../common/MentorText';
+import { Body1, Heading3, LIGHT_TEXT, Subhead1 } from '../../../../../common/MentorText';
 import {MomentDateParser} from "../../../../../domain/DateManager/MomentDateParser";
 import {ISessionBody, SessionBean} from "../../../../../domain/Session/SessionBean";
 import SessionItem from '../SessionItem/SessionItem';
@@ -63,6 +63,7 @@ class ListSessionsBody extends React.Component <IPropsListSessionsBody, {}> {
       this.props.selectSession(id);
       this.props.showRescheduleModal(true);
     };
+    const assistance = sessionBean.getAssistance();
     return (
       <ContainerRow>
         <div className="ListSessions_column ListSessions_column--date">
@@ -72,6 +73,28 @@ class ListSessionsBody extends React.Component <IPropsListSessionsBody, {}> {
             {sessionBean.getShorterDay(new MomentDateParser())}
           </Heading3>
           <TextBold1>{sessionBean.getFromTime(new MomentDateParser())}</TextBold1>
+        </div>
+        <div className="ListSessions_column">
+          {!!assistance && (
+            <Body1
+              className='SessionItem_tag'
+              weight={LIGHT_TEXT}
+              color={FONTS.dark}
+              style={{ background: colors.BACKGROUND_COLORS.background_white,
+                      border: `1px solid ${colors.BACKGROUND_COLORS.background_disabled}`,
+                      fontSize: '12px' }}>
+              {assistance}
+            </Body1>
+          )}
+        </div>
+        <div className="ListSessions_column ListSessions_column--date">
+          <Heading3
+            weight={LIGHT_TEXT}
+            color={FONTS.dark}
+            style={{ fontSize: 14 }}
+          >
+            {sessionBean.getReservationDate(new MomentDateParser())}
+          </Heading3>
         </div>
         <div className="ListSessions_column ListSessions_column--mentor">
           <SessionItem name={`${doctorName} ${doctorLN}`} />
@@ -83,7 +106,7 @@ class ListSessionsBody extends React.Component <IPropsListSessionsBody, {}> {
             email={patient && patient.email}
           />
         </div>
-        <div className="ListSessions_column">
+        <div className="ListSessions_column ListSessions_numbers">
           {patientDoc && (
             <Subhead1
               color={FONTS.dark}>
@@ -91,7 +114,7 @@ class ListSessionsBody extends React.Component <IPropsListSessionsBody, {}> {
             </Subhead1>
           )}
         </div>
-        <div className="ListSessions_column">
+        <div className="ListSessions_column ListSessions_numbers">
           {patient && !!patient.phone && (
             <Subhead1
               color={FONTS.dark}>
