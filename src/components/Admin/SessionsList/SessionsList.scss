@@ -36,6 +36,12 @@
       margin-left: 5px;
     }
   }
+  &_numbers {
+    h4 {
+      font-size: 14px;
+      font-weight: 400;
+    }
+  }
   &_column {
     &--mentor {
       min-height: 70px;
@@ -50,24 +56,34 @@
       text-align: center;
       width: 10%;
     }
-    //doctor info
+    //assistance
     &:nth-child(2) {
-      width: 20%;
+      text-align: center;
+      width: 6%;
+    }
+    //reservation date
+    &:nth-child(3) {
+      text-align: center;
+      width: 9%;
+    }
+    //doctor info
+    &:nth-child(4) {
+      width: 16%;
     }
     //patient info
-    &:nth-child(3) {
-      width: 20%;
+    &:nth-child(5) {
+      width: 16%;
     }
     //patient document
-    &:nth-child(4) {
-      width: 13%;
+    &:nth-child(6) {
+      width: 8%;
     }
     //patient phone
-    &:nth-child(5) {
-      width: 10%;
+    &:nth-child(7) {
+      width: 8%;
     }
     //session url
-    &:nth-child(6) {
+    &:nth-child(8) {
       text-align: left;
       width: 13%;
       padding-right: 5px;
@@ -77,14 +93,14 @@
       }
     }
     //cancel session
-    &:nth-child(7) {
+    &:nth-child(9) {
       text-align: center;
-      width: 7%;
+      width: 6%;
     }
     //reschedule session
-    &:nth-child(8) {
+    &:nth-child(10) {
       text-align: center;
-      width: 7%;
+      width: 6%;
     }
   }
   &_line {
