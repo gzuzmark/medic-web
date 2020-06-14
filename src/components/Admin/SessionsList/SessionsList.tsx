@@ -4,6 +4,7 @@ import * as InfiniteScroll from 'react-infinite-scroller';
 import { SessionRequestBean } from 'src/beans/SessionRequest.bean';
 import Layout from 'src/common/Layout/Layout';
 import Loader from 'src/common/Loader/Loader';
+import { ButtonNormal } from "../../../common/Buttons/Buttons";
 import ContentModal from "../../../common/ConsoleModal/ContentModal";
 import MentorModalBase from "../../../common/ConsoleModal/MentorModalBase";
 import { Text } from '../../../common/ConsoleText';
@@ -12,12 +13,15 @@ import FormRow from "../../../common/FormRow/FormRow";
 import MenuAside from "../../../common/Layout/components/MenuAside/MenuAside";
 import ListHeader from "../../../common/List/ListHeader";
 import {default as colors, FONTS} from "../../../common/MentorColor";
+import MentorDropDown, { IPropsMentorOptionsDropDown } from "../../../common/MentorDropDown/MentorDropDown";
+import MentorInput from "../../../common/MentorInput/MentorInput";
 import { Headline1 } from '../../../common/MentorText';
 import Sticky from '../../../common/Sticky/Sticky';
 import { ISessionBody, ISessionPaginated } from '../../../domain/Session/SessionBean';
+import { ISessionDoctor } from "../../../domain/Session/SessionMentorBean";
+import MentorService from "../../../services/Mentor/Mentor.service";
 import SessionService from '../../../services/Session/Session.service';
 import InputDatePicker from "../Reports/components/InputDatePicker/InputDatePicker";
-import FormSection from "../ScheduleSession/components/FormSection/FormSection";
 import CancelSessionModal from './components/CancelSessionModal/CancelSessionModal';
 import ListSessionsBody from './components/ListSessionBody/ListSessionBody';
 import RescheduleSessionModal from "./components/RescheduleSessionModal/RescheduleSessionModal";
@@ -34,6 +38,7 @@ interface IStateListSession {
   selectedSessionId: string;
   sessionRequest: SessionRequestBean;
   modalSuccess: boolean;
+  doctors: IPropsMentorOptionsDropDown[];
 }
 
 const PAGE_SIZE = 30;
@@ -50,15 +55,30 @@ const TABLE_HEADER_TEXTS = [
   'REAGENDAR',
 ];
 
+const compareDropdownObject = (obj1: IPropsMentorOptionsDropDown, obj2: IPropsMentorOptionsDropDown) => {
+  const str1 = obj1.label.toUpperCase();
+  const str2 = obj2.label.toUpperCase();
+
+  if (str1 > str2) {
+    return 1;
+  } else if (str1 < str2) {
+    return -1;
+  }
+  return 0;
+};
+
 class SessionsList extends React.Component <{}, IStateListSession> {
   public state: IStateListSession;
   private sessionService: SessionService;
+  private mentorService: MentorService;
   private counter: number;
   private scroller: any;
   constructor(props: any) {
     super(props);
     this.sessionService = new SessionService();
+    this.mentorService = new MentorService();
     this.state = {
+      doctors: [],
       hasMore: true,
       initialLoad: true,
       loading: false,
@@ -84,10 +104,31 @@ class SessionsList extends React.Component <{}, IStateListSession> {
     this.showRescheduleModal = this.showRescheduleModal.bind(this);
     this.rescheduleSession = this.rescheduleSession.bind(this);
     this.toggleSuccessModal = this.toggleSuccessModal.bind(this);
+    this.handleDoctorChange = this.handleDoctorChange.bind(this);
+    this.handleDocumentChange = this.handleDocumentChange.bind(this);
+    this.searchSessionsByPatientDocument = this.searchSessionsByPatientDocument.bind(this);
   }
 
   public componentWillUnmount() {
       window.scrollTo(0, 0);
+  }
+
+  public componentDidMount() {
+    this.mentorService.doctors().then((items: ISessionDoctor[]) => {
+      const doctors = items.map(item => {
+        const { id, cmp = '', last_name = '', name = '' } = item;
+        const label = `${name} ${last_name} ${cmp ? `CMP: ${cmp}` : ''}`;
+        return {
+          label,
+          value: id,
+        };
+      }).sort(compareDropdownObject);
+      doctors.unshift({
+        label: 'Todos',
+        value: '',
+      });
+      this.setState({ doctors });
+    });
   }
 
   public renderTopMenu() {
@@ -98,26 +139,50 @@ class SessionsList extends React.Component <{}, IStateListSession> {
           items={[{text: 'Citas', url: '/sessions'}]}
         />
         <div className='u-LayoutMargin u-ListSessions_padding ListSessions_sticky'>
-          <FormSection style={{display: 'block'}} itemStyle={{width: 650}}>
-            <FormRow columns={[
-              <FormColumn key="startDate" width={2}>
-                <Text style={{paddingLeft: 12, paddingBottom: 6}}>Desde el:</Text>
-                <InputDatePicker
-                  id={'startDate'}
-                  date={this.state.sessionRequest.startDate}
-                  updateState={this.updateFilterDate}
-                  configDate={{"isOutsideRange": () => false}}/>
-              </FormColumn>,
-              <FormColumn key="endDate" width={2}>
-                <Text style={{paddingLeft: 12, paddingBottom: 6}}>Hasta el:</Text>
-                <InputDatePicker
-                  id={'endDate'}
-                  date={this.state.sessionRequest.endDate}
-                  updateState={this.updateFilterDate}
-                  configDate={{"isDayBlocked": this.isDayBlocked, "isOutsideRange": () => false}}/>
-              </FormColumn>
-            ]}/>
-          </FormSection>
+          <FormRow style={{ width: '100%' }} columns={[
+            <FormColumn key="startDate" width={4}>
+              <Text style={{paddingLeft: 12, paddingBottom: 6}}>Desde el:</Text>
+              <InputDatePicker
+                id={'startDate'}
+                date={this.state.sessionRequest.startDate}
+                updateState={this.updateFilterDate}
+                configDate={{"isOutsideRange": () => false}}/>
+            </FormColumn>,
+            <FormColumn key="endDate" width={4}>
+              <Text style={{paddingLeft: 12, paddingBottom: 6}}>Hasta el:</Text>
+              <InputDatePicker
+                id={'endDate'}
+                date={this.state.sessionRequest.endDate}
+                updateState={this.updateFilterDate}
+                configDate={{"isDayBlocked": this.isDayBlocked, "isOutsideRange": () => false}}/>
+            </FormColumn>,
+            <FormColumn key="doctors" width={4}>
+              <Text>Doctor:</Text>
+              <MentorDropDown
+                value={this.state.sessionRequest.doctorId}
+                name="doctorId"
+                triggerChange={this.handleDoctorChange}
+                placeholder="Seleccione un doctor"
+                options={this.state.doctors}
+              />
+            </FormColumn>,
+            <FormColumn key="documentNumber" width={4}>
+              <Text>DNI o CE del Paciente:</Text>
+              <div className="ListSessions_inputFilter">
+                <MentorInput
+                  attrs={{
+                    maxLength: 11,
+                    name: "documentNumber",
+                    onChange: this.handleDocumentChange,
+                    placeholder: "Ingrese el DNI o CE",
+                    value: this.state.sessionRequest.documentNumber}}/>
+                <ButtonNormal
+                  text="Buscar"
+                  attrs={{onClick: this.searchSessionsByPatientDocument}}
+                />
+              </div>
+            </FormColumn>
+          ]}/>
         </div>
         <ListHeader header={TABLE_HEADER_TEXTS} baseClass="ListSessions" />
       </Sticky>
@@ -153,6 +218,30 @@ class SessionsList extends React.Component <{}, IStateListSession> {
               this.searchResults(this.state.sessionRequest);
           }
       });
+  }
+
+  private handleDoctorChange(name: any, option: any) {
+    const value = option.value;
+    const sessionRequest = {...this.state.sessionRequest};
+    const newSessionRequest = Object.assign(sessionRequest, { [name]: value });
+    if (value !== this.state.sessionRequest.doctorId) {
+      this.setState({sessionRequest:  new SessionRequestBean(newSessionRequest)});
+      if (this.state.sessionRequest.isValid()) {
+        this.searchResults(this.state.sessionRequest);
+      }
+    }
+  }
+
+  private handleDocumentChange(e: any) {
+    const sessionRequest = {...this.state.sessionRequest};
+    const newSessionRequest = Object.assign(sessionRequest, { [e.target.name]: e.target.value });
+    this.setState({sessionRequest:  new SessionRequestBean(newSessionRequest)});
+  }
+
+  private searchSessionsByPatientDocument() {
+    if (this.state.sessionRequest.isValid()) {
+      this.searchResults(this.state.sessionRequest);
+    }
   }
 
   private async searchResults(session: SessionRequestBean) {

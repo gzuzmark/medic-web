@@ -30,6 +30,23 @@ class MentorService extends BaseRequest {
         });
     }
 
+    public doctors() {
+      return new Promise((resolve, reject) => {
+        this.instance.get('ugo-admin/doctors')
+          .then((response: any) => {
+            if (response.status === 200 && response.data) {
+              resolve(response.data.items);
+            } else {
+              reject(null);
+            }
+          })
+          .catch((error: any) => {
+            this.validSession();
+            reject(error);
+          });
+      });
+    }
+
     public mentor(idMentor: string): Promise<IMentorBase> {
         return new Promise((resolve, reject) => {
             this.instance.get('ugo-admin/mentors/' + idMentor)
