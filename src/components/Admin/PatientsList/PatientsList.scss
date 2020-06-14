@@ -1,0 +1,93 @@
+@import '../../../assets/styles/01-settings/settings';
+
+.ListPatients {
+	padding: 0 70px;
+	&_body {
+		display: flex;
+		flex-direction: column;
+	}
+	&_sticky {
+		align-items: center;
+		display: flex;
+		justify-content: space-between;
+	}
+	&_header,
+	&_row {
+		display: flex;
+		flex-direction: row;
+	}
+	&_header {
+		align-items: center;
+		margin-top: 10px;
+	}
+	&_row {
+		align-items: center;
+		&--center {
+			display: flex;
+			justify-content: center;
+			padding: 60px 0;
+		}
+	}
+	&_column {
+		&--cell {
+			min-height: 70px;
+			display: flex;
+			*:nth-child(1) {
+				align-self: center;
+			}
+		}
+		&--date {
+			span {
+				color: #4a4a4a !important;
+			}
+		}
+		//dni or ce
+		&:nth-child(1) {
+			width: 20%;
+		}
+		//patient name
+		&:nth-child(2) {
+			width: 20%;
+		}
+		//patient lastname
+		&:nth-child(3) {
+			width: 20%;
+		}
+		//patient phone
+		&:nth-child(4) {
+			width: 20%;
+		}
+		//patient email
+		&:nth-child(5) {
+			width: 20%;
+		}
+	}
+	&_line {
+		background: $grey-light;
+		border: 0;
+		box-shadow: 0 1px 6px 0 darken($grey-light, 10%);
+		height: 1px;
+		margin: 2px 0;
+	}
+	&_separator {
+		align-items: center;
+		border-right: 1px solid rgb(193, 193, 193);
+		display: flex;
+		height: 45px;
+		padding-top: 2px;
+	}
+	&_bigtext {
+		font-size: 24px;
+		line-height: 48px;
+	}
+	&_linkseparator {
+		border-right: 1px solid rgb(193, 193, 193);
+		height: 50%;
+		width: 0;
+		margin: 0 5px;
+	}
+}
+
+.u-ListPatients_padding {
+	padding: 0 20px;
+}

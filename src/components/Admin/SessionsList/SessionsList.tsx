@@ -10,6 +10,7 @@ import { Text } from '../../../common/ConsoleText';
 import FormColumn from "../../../common/FormRow/components/FormColumn/FormColumn";
 import FormRow from "../../../common/FormRow/FormRow";
 import MenuAside from "../../../common/Layout/components/MenuAside/MenuAside";
+import ListHeader from "../../../common/List/ListHeader";
 import {default as colors, FONTS} from "../../../common/MentorColor";
 import { Headline1 } from '../../../common/MentorText';
 import Sticky from '../../../common/Sticky/Sticky';
@@ -19,7 +20,6 @@ import InputDatePicker from "../Reports/components/InputDatePicker/InputDatePick
 import FormSection from "../ScheduleSession/components/FormSection/FormSection";
 import CancelSessionModal from './components/CancelSessionModal/CancelSessionModal';
 import ListSessionsBody from './components/ListSessionBody/ListSessionBody';
-import ListSessionsHeader from './components/ListSessionHeader/ListSessionHeader';
 import RescheduleSessionModal from "./components/RescheduleSessionModal/RescheduleSessionModal";
 import './SessionsList.scss';
 
@@ -119,7 +119,7 @@ class SessionsList extends React.Component <{}, IStateListSession> {
             ]}/>
           </FormSection>
         </div>
-        <ListSessionsHeader header={TABLE_HEADER_TEXTS}/>
+        <ListHeader header={TABLE_HEADER_TEXTS} baseClass="ListSessions" />
       </Sticky>
     )
   }
