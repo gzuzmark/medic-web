@@ -27,6 +27,15 @@
       padding: 60px 0;
     }
   }
+  &_inputFilter {
+    display: flex;
+    input {
+      padding-right: 8px;
+    }
+    button {
+      margin-left: 5px;
+    }
+  }
   &_column {
     &--mentor {
       min-height: 70px;
