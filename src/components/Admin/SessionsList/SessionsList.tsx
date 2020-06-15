@@ -23,6 +23,7 @@ import MentorService from "../../../services/Mentor/Mentor.service";
 import SessionService from '../../../services/Session/Session.service';
 import InputDatePicker from "../Reports/components/InputDatePicker/InputDatePicker";
 import CancelSessionModal from './components/CancelSessionModal/CancelSessionModal';
+import FollowupSessionModal from "./components/FollowupSessionModal/FollowupSessionModal";
 import ListSessionsBody from './components/ListSessionBody/ListSessionBody';
 import RescheduleSessionModal from "./components/RescheduleSessionModal/RescheduleSessionModal";
 import './SessionsList.scss';
@@ -30,15 +31,18 @@ import './SessionsList.scss';
 interface IStateListSession {
   sessions: ISessionBody[];
   loading: boolean;
+  loadingDoctors: boolean;
   hasMore: boolean;
   newSessions: ISessionBody[];
   initialLoad: boolean;
   showCancelModal: boolean;
   showRescheduleModal: boolean;
+  showFollowupModal: boolean;
   selectedSessionId: string;
   sessionRequest: SessionRequestBean;
   modalSuccess: boolean;
   doctors: IPropsMentorOptionsDropDown[];
+  selectedDoctorId: string;
 }
 
 const PAGE_SIZE = 30;
@@ -53,8 +57,9 @@ const TABLE_HEADER_TEXTS = [
   'DNI O CE',
   'TELÉFONO',
   'URL DE LA CITA',
-  'CANCELAR',
-  'REAGENDAR',
+  '',
+  'ACCIONES',
+  '',
 ];
 
 const compareDropdownObject = (obj1: IPropsMentorOptionsDropDown, obj2: IPropsMentorOptionsDropDown) => {
@@ -84,12 +89,15 @@ class SessionsList extends React.Component <{}, IStateListSession> {
       hasMore: true,
       initialLoad: true,
       loading: false,
+      loadingDoctors: false,
       modalSuccess: false,
       newSessions: [],
+      selectedDoctorId: '',
       selectedSessionId: '',
       sessionRequest: new SessionRequestBean(),
       sessions: [],
       showCancelModal: false,
+      showFollowupModal: false,
       showRescheduleModal: false,
     };
     this.counter = 0;
@@ -109,6 +117,9 @@ class SessionsList extends React.Component <{}, IStateListSession> {
     this.handleDoctorChange = this.handleDoctorChange.bind(this);
     this.handleDocumentChange = this.handleDocumentChange.bind(this);
     this.searchSessionsByPatientDocument = this.searchSessionsByPatientDocument.bind(this);
+    this.setCurrentDoctorId = this.setCurrentDoctorId.bind(this);
+    this.showFollowupModal = this.showFollowupModal.bind(this);
+    this.followupSession = this.followupSession.bind(this);
   }
 
   public componentWillUnmount() {
@@ -116,6 +127,7 @@ class SessionsList extends React.Component <{}, IStateListSession> {
   }
 
   public componentDidMount() {
+    this.setState({ loadingDoctors: true });
     this.mentorService.doctors().then((items: ISessionDoctor[]) => {
       const doctors = items.map(item => {
         const { id, cmp = '', last_name = '', name = '' } = item;
@@ -129,7 +141,9 @@ class SessionsList extends React.Component <{}, IStateListSession> {
         label: 'Todos',
         value: '',
       });
-      this.setState({ doctors });
+      this.setState({ doctors, loadingDoctors: false });
+    }).catch(() => {
+      this.setState({ loadingDoctors: false });
     });
   }
 
@@ -160,13 +174,20 @@ class SessionsList extends React.Component <{}, IStateListSession> {
             </FormColumn>,
             <FormColumn key="doctors" width={4}>
               <Text>Doctor:</Text>
-              <MentorDropDown
-                value={this.state.sessionRequest.doctorId}
-                name="doctorId"
-                triggerChange={this.handleDoctorChange}
-                placeholder="Seleccione un doctor"
-                options={this.state.doctors}
-              />
+              {this.state.loadingDoctors && (
+                <div>
+                  <Loader />
+                </div>
+              )}
+              {!this.state.loadingDoctors && (
+                <MentorDropDown
+                  value={this.state.sessionRequest.doctorId}
+                  name="doctorId"
+                  triggerChange={this.handleDoctorChange}
+                  placeholder="Seleccione un doctor"
+                  options={this.state.doctors}
+                />
+              )}
             </FormColumn>,
             <FormColumn key="documentNumber" width={4}>
               <Text>DNI o CE del Paciente:</Text>
@@ -263,16 +284,27 @@ class SessionsList extends React.Component <{}, IStateListSession> {
     } catch (e) {
       this.setState({loading: false});
     }
-}
+  }
 
   private setCurrentSessionId(sessionId: string) {
     this.setState({ selectedSessionId: sessionId });
+  }
+
+  private setCurrentDoctorId(doctorId: string) {
+    this.setState({ selectedDoctorId: doctorId });
   }
 
   private showRescheduleModal(show: boolean) {
     this.setState({ showRescheduleModal: show });
     if (!show) {
       this.setState({ selectedSessionId: '' });
+    }
+  }
+
+  private showFollowupModal(show: boolean) {
+    this.setState({ showFollowupModal: show });
+    if (!show) {
+      this.setState({ selectedSessionId: '', selectedDoctorId: '' });
     }
   }
 
@@ -287,10 +319,38 @@ class SessionsList extends React.Component <{}, IStateListSession> {
           loading: false,
           selectedSessionId: '',
           sessions: newSessions,
+          showRescheduleModal: false,
         });
         this.toggleSuccessModal(true);
       }).catch(() => {
-        this.setState({ loading: false, selectedSessionId: '' });
+        this.setState({
+          loading: false,
+          selectedSessionId: '',
+          showRescheduleModal: false,
+        });
+      });
+    }
+  }
+
+  private followupSession(newSession: string) {
+    const oldSession = this.state.selectedSessionId;
+    if (oldSession) {
+      this.setState({ loading: true, showRescheduleModal: false });
+      this.sessionService.followupSession(oldSession, newSession).then(() => {
+        this.setState({
+          loading: false,
+          selectedDoctorId: '',
+          selectedSessionId: '',
+          showFollowupModal: false,
+        });
+        this.toggleSuccessModal(true);
+      }).catch(() => {
+        this.setState({
+          loading: false,
+          selectedDoctorId: '',
+          selectedSessionId: '',
+          showFollowupModal: false
+        });
       });
     }
   }
@@ -355,7 +415,9 @@ class SessionsList extends React.Component <{}, IStateListSession> {
                   session={item}
                   showCancelModal={this.showCancelModal}
                   selectSession={this.setCurrentSessionId}
+                  selectDoctor={this.setCurrentDoctorId}
                   showRescheduleModal={this.showRescheduleModal}
+                  showFollowupModal={this.showFollowupModal}
                 />
               </div>);
           })}
@@ -373,6 +435,15 @@ class SessionsList extends React.Component <{}, IStateListSession> {
               toggleModal={this.showRescheduleModal}
               confirm={this.rescheduleSession}
               sessionId={this.state.selectedSessionId}
+            />
+          )}
+          {!!this.state.selectedSessionId && !!this.state.selectedDoctorId && (
+            <FollowupSessionModal
+              show={this.state.showFollowupModal}
+              toggleModal={this.showFollowupModal}
+              confirm={this.followupSession}
+              sessionId={this.state.selectedSessionId}
+              doctorId={this.state.selectedDoctorId}
             />
           )}
       </div>

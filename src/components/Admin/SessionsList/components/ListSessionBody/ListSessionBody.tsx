@@ -26,8 +26,10 @@ const ContainerRow = styled.div`
 interface IPropsListSessionsBody {
   session: ISessionBody;
   showCancelModal: (shouldShow: boolean) => void;
+  selectDoctor: (doctorId: string) => void;
   selectSession: (sessionId: string) => void;
   showRescheduleModal: (shouldShow: boolean) => void;
+  showFollowupModal: (shouldShow: boolean) => void;
 }
 
 class ListSessionsBody extends React.Component <IPropsListSessionsBody, {}> {
@@ -62,6 +64,11 @@ class ListSessionsBody extends React.Component <IPropsListSessionsBody, {}> {
     const handleRescheduleClick = () => {
       this.props.selectSession(id);
       this.props.showRescheduleModal(true);
+    };
+    const handleFollowupClick = () => {
+      this.props.selectSession(id);
+      this.props.selectDoctor(doctorId);
+      this.props.showFollowupModal(true);
     };
     const assistance = sessionBean.getAssistance();
     return (
@@ -137,7 +144,7 @@ class ListSessionsBody extends React.Component <IPropsListSessionsBody, {}> {
             </a>
           )}
         </div>
-        <div className="ListSessions_column">
+        <div title="Cancelar" className="ListSessions_column">
           <Icon
             name="exclamation"
             click={handleCancelClick}
@@ -145,11 +152,19 @@ class ListSessionsBody extends React.Component <IPropsListSessionsBody, {}> {
             style={{ cursor: 'pointer' }}
           />
         </div>
-        <div className="ListSessions_column">
+        <div title="Reagendar" className="ListSessions_column">
           <Icon
             name="calendar-check"
             click={handleRescheduleClick}
             attr={{"data-tip": "Reagendar"}}
+            style={{ cursor: 'pointer', fill: '#1ECD96' }}
+          />
+        </div>
+        <div title="Agendar" className="ListSessions_column">
+          <Icon
+            name="calendar"
+            click={handleFollowupClick}
+            attr={{"data-tip": "Agendar"}}
             style={{ cursor: 'pointer', fill: '#1ECD96' }}
           />
         </div>

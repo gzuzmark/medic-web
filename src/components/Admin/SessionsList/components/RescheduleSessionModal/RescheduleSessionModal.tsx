@@ -4,9 +4,11 @@ import ConsoleColor from '../../../../../common/ConsoleColor';
 import ConsoleModal from '../../../../../common/ConsoleModal/ConsoleModal';
 import { Title2 } from '../../../../../common/ConsoleText';
 import Loader from '../../../../../common/Loader/Loader';
+import { FONTS } from '../../../../../common/MentorColor';
 import MentorDropDown, {
 	IPropsMentorOptionsDropDown,
 } from '../../../../../common/MentorDropDown/MentorDropDown';
+import { Headline1 } from '../../../../../common/MentorText';
 import {
 	IReassignSession,
 	ISessionDoctor,
@@ -92,7 +94,7 @@ const RescheduleSessionModal: React.FC<IPropsRescheduleSessionModal> = ({
 	};
 
 	React.useEffect(() => {
-		if (sessionId) {
+		if (show && sessionId) {
 			setLoadingDoctors(true);
 			sessionService
 				.getDoctorsBySession(sessionId)
@@ -139,6 +141,11 @@ const RescheduleSessionModal: React.FC<IPropsRescheduleSessionModal> = ({
 						<Loader />
 					</div>
 				)}
+        {!loadingDoctors && !doctors.length && (
+          <div className="RescheduleSessionModal_empty">
+            <Headline1 color={FONTS.medium}>No hay doctores disponibles</Headline1>
+          </div>
+        )}
 				{!loadingDoctors && !!doctors.length && (
 					<React.Fragment>
 						<div className='RescheduleSessionModal_dropdownblock'>
@@ -159,6 +166,11 @@ const RescheduleSessionModal: React.FC<IPropsRescheduleSessionModal> = ({
 									<Loader />
 								</div>
 							)}
+              {!loadingSessions && selectedDoctor && !sessions.length && (
+                <div className="RescheduleSessionModal_empty">
+                  <Headline1 color={FONTS.medium}>No hay horarios disponibles</Headline1>
+                </div>
+              )}
 							{!loadingSessions && !!sessions.length && (
 								<MentorDropDown
 									label={'Sesiones disponibles:'}
