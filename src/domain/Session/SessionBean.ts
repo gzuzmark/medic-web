@@ -97,7 +97,7 @@ export class SessionBean {
       const date = new Date(this.session.from);
       const isConsult = !!this.session.consult && Object.keys(this.session.consult).length > 0;
       if (date.getTime() < now.getTime() && !isConsult) {
-        return '';
+        return 'No Asistió';
       } else if (date.getTime() <= now.getTime() && isConsult) {
         return 'Confirmada';
       } else if (date.getTime() > now.getTime()) {

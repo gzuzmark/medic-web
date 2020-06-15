@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { TextBold1 } from '../../../../../common/ConsoleText';
 import Icon from "../../../../../common/Icon/Icon";
 import colors, { FONTS } from "../../../../../common/MentorColor";
-import { Body1, Heading3, LIGHT_TEXT, Subhead1 } from '../../../../../common/MentorText';
+import { Heading3, LIGHT_TEXT, Subhead1 } from '../../../../../common/MentorText';
 import {MomentDateParser} from "../../../../../domain/DateManager/MomentDateParser";
 import {ISessionBody, SessionBean} from "../../../../../domain/Session/SessionBean";
 import SessionItem from '../SessionItem/SessionItem';
@@ -70,7 +70,18 @@ class ListSessionsBody extends React.Component <IPropsListSessionsBody, {}> {
       this.props.selectDoctor(doctorId);
       this.props.showFollowupModal(true);
     };
-    const assistance = sessionBean.getAssistance();
+    const renderAssistance = () => {
+      const assistance = sessionBean.getAssistance();
+      if (!assistance) {
+        return null;
+      }
+      const colorClass = assistance === 'Confirmada' ? 'green' : assistance === "No Asistió" ? 'red' : 'default';
+      return (
+        <span className={`ListSessions_badge ListSessions_badge-${colorClass}`}>
+          {assistance}
+        </span>
+      );
+    }
     return (
       <ContainerRow>
         <div className="ListSessions_column ListSessions_column--date">
@@ -82,17 +93,7 @@ class ListSessionsBody extends React.Component <IPropsListSessionsBody, {}> {
           <TextBold1>{sessionBean.getFromTime(new MomentDateParser())}</TextBold1>
         </div>
         <div className="ListSessions_column">
-          {!!assistance && (
-            <Body1
-              className='SessionItem_tag'
-              weight={LIGHT_TEXT}
-              color={FONTS.dark}
-              style={{ background: colors.BACKGROUND_COLORS.background_white,
-                      border: `1px solid ${colors.BACKGROUND_COLORS.background_disabled}`,
-                      fontSize: '12px' }}>
-              {assistance}
-            </Body1>
-          )}
+          {renderAssistance()}
         </div>
         <div className="ListSessions_column ListSessions_column--date">
           <Heading3
