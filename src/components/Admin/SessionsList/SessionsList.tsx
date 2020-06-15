@@ -248,9 +248,10 @@ class SessionsList extends React.Component <{}, IStateListSession> {
     const sessionRequest = {...this.state.sessionRequest};
     const newSessionRequest = Object.assign(sessionRequest, { [name]: value });
     if (value !== this.state.sessionRequest.doctorId) {
-      this.setState({sessionRequest:  new SessionRequestBean(newSessionRequest)});
+      const sessionRequestInstance = new SessionRequestBean(newSessionRequest);
+      this.setState({sessionRequest: sessionRequestInstance });
       if (this.state.sessionRequest.isValid()) {
-        this.searchResults(this.state.sessionRequest);
+        this.searchResults(sessionRequestInstance);
       }
     }
   }
