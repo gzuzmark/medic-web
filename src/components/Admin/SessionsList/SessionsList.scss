@@ -68,11 +68,11 @@
     }
     //doctor info
     &:nth-child(4) {
-      width: 16%;
+      width: 15%;
     }
     //patient info
     &:nth-child(5) {
-      width: 16%;
+      width: 15%;
     }
     //patient document
     &:nth-child(6) {
@@ -85,7 +85,7 @@
     //session url
     &:nth-child(8) {
       text-align: left;
-      width: 13%;
+      width: 12%;
       padding-right: 5px;
       margin-right: 5px;
       a:visited {
@@ -95,12 +95,17 @@
     //cancel session
     &:nth-child(9) {
       text-align: center;
-      width: 6%;
+      width: 5%;
     }
     //reschedule session
     &:nth-child(10) {
       text-align: center;
-      width: 6%;
+      width: 5%;
+    }
+    //schedule session
+    &:nth-child(11) {
+      text-align: center;
+      width: 5%;
     }
   }
   &_line {
