@@ -30,7 +30,7 @@
   &_inputFilter {
     display: flex;
     input {
-      padding-right: 8px;
+      padding-right: 8px !important;
     }
     button {
       margin-left: 5px;
@@ -131,6 +131,31 @@
     height: 50%;
     width: 0;
     margin: 0 5px;
+  }
+  &_badge {
+    display: inline;
+    padding: .2em .6em .3em;
+    font-size: 75%;
+    font-weight: 700;
+    line-height: 1;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: .25em;
+    &-green {
+      color: #fff;
+      background-color: #5cb85c;
+    }
+    &-red {
+      color: #fff;
+      background-color: #d9534f;
+    }
+    &-default {
+      color: #4a4a4a;
+      background-color: #fff;
+      border: 1px solid rgb(230, 237, 242);
+      font-weight: 300 !important;
+    }
   }
 }
 
