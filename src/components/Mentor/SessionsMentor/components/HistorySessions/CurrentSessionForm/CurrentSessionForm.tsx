@@ -11,7 +11,6 @@ interface IPropsCurrentSessionForm {
   forceDisable?: boolean;
 }
 
-const DEFAULT_MAX_LEGTH = 150;
 const DEFAULT_COLUMN_WIDTH = 1;
 const defaultRowStyle = { padding: '15px 0 0 0', margin: 0 };
 
@@ -64,7 +63,6 @@ const CurrentSessionForm: React.FC<IPropsCurrentSessionForm> = ({ forceDisable }
             disabled={!!forceDisable}
             label="Recomendaciones del tratamiento:"
             attrs={{
-                maxLength: DEFAULT_MAX_LEGTH,
                 name: "case.recommendation",
                 onBlur: handleBlur,
                 onChange: handleChange,
