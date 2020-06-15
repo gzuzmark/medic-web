@@ -27,6 +27,21 @@
       padding: 60px 0;
     }
   }
+  &_inputFilter {
+    display: flex;
+    input {
+      padding-right: 8px !important;
+    }
+    button {
+      margin-left: 5px;
+    }
+  }
+  &_numbers {
+    h4 {
+      font-size: 14px;
+      font-weight: 400;
+    }
+  }
   &_column {
     &--mentor {
       min-height: 70px;
@@ -41,26 +56,36 @@
       text-align: center;
       width: 10%;
     }
-    //doctor info
+    //assistance
     &:nth-child(2) {
-      width: 20%;
+      text-align: center;
+      width: 6%;
+    }
+    //reservation date
+    &:nth-child(3) {
+      text-align: center;
+      width: 9%;
+    }
+    //doctor info
+    &:nth-child(4) {
+      width: 15%;
     }
     //patient info
-    &:nth-child(3) {
-      width: 20%;
+    &:nth-child(5) {
+      width: 15%;
     }
     //patient document
-    &:nth-child(4) {
-      width: 13%;
+    &:nth-child(6) {
+      width: 8%;
     }
     //patient phone
-    &:nth-child(5) {
-      width: 10%;
+    &:nth-child(7) {
+      width: 8%;
     }
     //session url
-    &:nth-child(6) {
+    &:nth-child(8) {
       text-align: left;
-      width: 13%;
+      width: 12%;
       padding-right: 5px;
       margin-right: 5px;
       a:visited {
@@ -68,14 +93,19 @@
       }
     }
     //cancel session
-    &:nth-child(7) {
+    &:nth-child(9) {
       text-align: center;
-      width: 7%;
+      width: 5%;
     }
     //reschedule session
-    &:nth-child(8) {
+    &:nth-child(10) {
       text-align: center;
-      width: 7%;
+      width: 5%;
+    }
+    //schedule session
+    &:nth-child(11) {
+      text-align: center;
+      width: 5%;
     }
   }
   &_line {
@@ -101,6 +131,31 @@
     height: 50%;
     width: 0;
     margin: 0 5px;
+  }
+  &_badge {
+    display: inline;
+    padding: .2em .6em .3em;
+    font-size: 75%;
+    font-weight: 700;
+    line-height: 1;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: .25em;
+    &-green {
+      color: #fff;
+      background-color: #5cb85c;
+    }
+    &-red {
+      color: #fff;
+      background-color: #d9534f;
+    }
+    &-default {
+      color: #4a4a4a;
+      background-color: #fff;
+      border: 1px solid rgb(230, 237, 242);
+      font-weight: 300 !important;
+    }
   }
 }
 

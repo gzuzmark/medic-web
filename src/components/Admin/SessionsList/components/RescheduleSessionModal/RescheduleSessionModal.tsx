@@ -4,9 +4,11 @@ import ConsoleColor from '../../../../../common/ConsoleColor';
 import ConsoleModal from '../../../../../common/ConsoleModal/ConsoleModal';
 import { Title2 } from '../../../../../common/ConsoleText';
 import Loader from '../../../../../common/Loader/Loader';
+import { FONTS } from '../../../../../common/MentorColor';
 import MentorDropDown, {
 	IPropsMentorOptionsDropDown,
 } from '../../../../../common/MentorDropDown/MentorDropDown';
+import { Headline1 } from '../../../../../common/MentorText';
 import {
 	IReassignSession,
 	ISessionDoctor,
@@ -21,6 +23,31 @@ interface IPropsRescheduleSessionModal {
 	toggleModal(show: boolean): void;
 	confirm(newSession: string): void;
 }
+
+const getDateTime = (from: string, to: string) => {
+  const date = moment(from).format('dddd DD [de] MMMM');
+  const fromHour = moment(from).format('h:mm a');
+  const toHour = moment(to).format('h:mm a');
+  return `${fromHour} - ${toHour}, ${date}`;
+};
+
+const mapDoctorsToDropdown = (doctors: ISessionDoctor[]) => {
+  return doctors.map((doctor) => {
+		const doctorFullname = `${doctor.name || ''} ${doctor.last_name || ''}`;
+		const cmp = (doctor.cmp && `CMP: ${doctor.cmp}`) || '';
+		return {
+			label: `${doctorFullname} ${cmp}`,
+			value: doctor.id,
+		};
+	});
+};
+
+const mapSessionsToDropdown = (sessions: IReassignSession[]) => {
+  return sessions.map((session) => ({
+    label: getDateTime(session.from, session.to),
+    value: session.id,
+  }));
+};
 
 const RescheduleSessionModal: React.FC<IPropsRescheduleSessionModal> = ({
 	show,
@@ -67,7 +94,7 @@ const RescheduleSessionModal: React.FC<IPropsRescheduleSessionModal> = ({
 	};
 
 	React.useEffect(() => {
-		if (sessionId) {
+		if (show && sessionId) {
 			setLoadingDoctors(true);
 			sessionService
 				.getDoctorsBySession(sessionId)
@@ -92,26 +119,9 @@ const RescheduleSessionModal: React.FC<IPropsRescheduleSessionModal> = ({
 		}
 	}, [sessionId, selectedDoctor]);
 
-	const dropdownDoctors = doctors.map((doctor) => {
-		const doctorFullname = `${doctor.name || ''} ${doctor.last_name || ''}`;
-		const cmp = (doctor.cmp && `CMP: ${doctor.cmp}`) || '';
-		return {
-			label: `${doctorFullname} ${cmp}`,
-			value: doctor.id,
-		};
-	});
+	const dropdownDoctors = React.useMemo(() => mapDoctorsToDropdown(doctors), [doctors]);
 
-	const getDateTime = (from: string, to: string) => {
-		const date = moment(from).format('dddd DD [de] MMMM');
-		const fromHour = moment(from).format('h:mm a');
-		const toHour = moment(to).format('h:mm a');
-		return `${fromHour} - ${toHour}, ${date}`;
-	};
-
-	const dropdownSessions = sessions.map((session) => ({
-		label: getDateTime(session.from, session.to),
-		value: session.id,
-	}));
+  const dropdownSessions = React.useMemo(() => mapSessionsToDropdown(sessions), [sessions]);
 
 	return (
 		<ConsoleModal
@@ -131,6 +141,11 @@ const RescheduleSessionModal: React.FC<IPropsRescheduleSessionModal> = ({
 						<Loader />
 					</div>
 				)}
+        {!loadingDoctors && !doctors.length && (
+          <div className="RescheduleSessionModal_empty">
+            <Headline1 color={FONTS.medium}>No hay doctores disponibles</Headline1>
+          </div>
+        )}
 				{!loadingDoctors && !!doctors.length && (
 					<React.Fragment>
 						<div className='RescheduleSessionModal_dropdownblock'>
@@ -151,6 +166,11 @@ const RescheduleSessionModal: React.FC<IPropsRescheduleSessionModal> = ({
 									<Loader />
 								</div>
 							)}
+              {!loadingSessions && selectedDoctor && !sessions.length && (
+                <div className="RescheduleSessionModal_empty">
+                  <Headline1 color={FONTS.medium}>No hay horarios disponibles</Headline1>
+                </div>
+              )}
 							{!loadingSessions && !!sessions.length && (
 								<MentorDropDown
 									label={'Sesiones disponibles:'}

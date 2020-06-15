@@ -26,8 +26,10 @@ const ContainerRow = styled.div`
 interface IPropsListSessionsBody {
   session: ISessionBody;
   showCancelModal: (shouldShow: boolean) => void;
+  selectDoctor: (doctorId: string) => void;
   selectSession: (sessionId: string) => void;
   showRescheduleModal: (shouldShow: boolean) => void;
+  showFollowupModal: (shouldShow: boolean) => void;
 }
 
 class ListSessionsBody extends React.Component <IPropsListSessionsBody, {}> {
@@ -55,14 +57,31 @@ class ListSessionsBody extends React.Component <IPropsListSessionsBody, {}> {
     const patientId = patient && patient.id || '';
     const patientName = patient && patient.name || '';
     const patientLN = patient && patient.last_name || '';
-    // const handleCancelClick = () => {
-    //   this.props.selectSession(id);
-    //   this.props.showCancelModal(true);
-    // };
+    const handleCancelClick = () => {
+      this.props.selectSession(id);
+      this.props.showCancelModal(true);
+    };
     const handleRescheduleClick = () => {
       this.props.selectSession(id);
       this.props.showRescheduleModal(true);
     };
+    const handleFollowupClick = () => {
+      this.props.selectSession(id);
+      this.props.selectDoctor(doctorId);
+      this.props.showFollowupModal(true);
+    };
+    const renderAssistance = () => {
+      const assistance = sessionBean.getAssistance();
+      if (!assistance) {
+        return null;
+      }
+      const colorClass = assistance === 'Confirmada' ? 'green' : assistance === "No Asistió" ? 'red' : 'default';
+      return (
+        <span className={`ListSessions_badge ListSessions_badge-${colorClass}`}>
+          {assistance}
+        </span>
+      );
+    }
     return (
       <ContainerRow>
         <div className="ListSessions_column ListSessions_column--date">
@@ -72,6 +91,18 @@ class ListSessionsBody extends React.Component <IPropsListSessionsBody, {}> {
             {sessionBean.getShorterDay(new MomentDateParser())}
           </Heading3>
           <TextBold1>{sessionBean.getFromTime(new MomentDateParser())}</TextBold1>
+        </div>
+        <div className="ListSessions_column">
+          {renderAssistance()}
+        </div>
+        <div className="ListSessions_column ListSessions_column--date">
+          <Heading3
+            weight={LIGHT_TEXT}
+            color={FONTS.dark}
+            style={{ fontSize: 14 }}
+          >
+            {sessionBean.getReservationDate(new MomentDateParser())}
+          </Heading3>
         </div>
         <div className="ListSessions_column ListSessions_column--mentor">
           <SessionItem name={`${doctorName} ${doctorLN}`} />
@@ -83,7 +114,7 @@ class ListSessionsBody extends React.Component <IPropsListSessionsBody, {}> {
             email={patient && patient.email}
           />
         </div>
-        <div className="ListSessions_column">
+        <div className="ListSessions_column ListSessions_numbers">
           {patientDoc && (
             <Subhead1
               color={FONTS.dark}>
@@ -91,7 +122,7 @@ class ListSessionsBody extends React.Component <IPropsListSessionsBody, {}> {
             </Subhead1>
           )}
         </div>
-        <div className="ListSessions_column">
+        <div className="ListSessions_column ListSessions_numbers">
           {patient && !!patient.phone && (
             <Subhead1
               color={FONTS.dark}>
@@ -114,12 +145,27 @@ class ListSessionsBody extends React.Component <IPropsListSessionsBody, {}> {
             </a>
           )}
         </div>
-        <div className="ListSessions_column"/>
-        <div className="ListSessions_column">
+        <div title="Cancelar" className="ListSessions_column">
+          <Icon
+            name="exclamation"
+            click={handleCancelClick}
+            attr={{"data-tip": "Cancelar"}}
+            style={{ cursor: 'pointer' }}
+          />
+        </div>
+        <div title="Reagendar" className="ListSessions_column">
           <Icon
             name="calendar-check"
             click={handleRescheduleClick}
             attr={{"data-tip": "Reagendar"}}
+            style={{ cursor: 'pointer', fill: '#1ECD96' }}
+          />
+        </div>
+        <div title="Agendar" className="ListSessions_column">
+          <Icon
+            name="calendar"
+            click={handleFollowupClick}
+            attr={{"data-tip": "Agendar"}}
             style={{ cursor: 'pointer', fill: '#1ECD96' }}
           />
         </div>

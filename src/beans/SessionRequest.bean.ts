@@ -1,6 +1,8 @@
 export interface ISessionRequestBean {
     startDate: Date;
     endDate: Date;
+    doctorId: string;
+    documentNumber: string
 }
 const day = 86400000;
 const initYear = 1970;
@@ -8,6 +10,8 @@ const DEFAULT_DATE_STEP = 6;
 export class SessionRequestBean implements ISessionRequestBean {
     public startDate = new Date();
     public endDate = new Date();
+    public doctorId = '';
+    public documentNumber = '';
 
     constructor(sessionRequest?: ISessionRequestBean) {
         if (sessionRequest) {
@@ -29,6 +33,8 @@ export class SessionRequestBean implements ISessionRequestBean {
             }
             this.startDate = new Date(b.startDate);
             this.endDate = new Date(b.endDate);
+            this.doctorId = sessionRequest.doctorId;
+            this.documentNumber = sessionRequest.documentNumber;
         } else {
             const startDate = new Date();
             const endDate = new Date();
@@ -37,6 +43,8 @@ export class SessionRequestBean implements ISessionRequestBean {
             startDate.setHours(0, 0, 0, 0);
             this.startDate = startDate;
             this.endDate = endDate;
+            this.doctorId = '';
+            this.documentNumber = '';
         }
     }
 
@@ -51,11 +59,16 @@ export class SessionRequestBean implements ISessionRequestBean {
         to.setDate(to.getDate() + 1);
         to.setHours(0,0,0,0);
         const params = {
-            from: from.toISOString(),
-            to: to.toISOString()
+          doctor_id: this.doctorId,
+          from: from.toISOString(),
+          patient_document_number: this.documentNumber,
+          to: to.toISOString(),
         };
         return Object.keys(params).map((key) => {
-            return key + '=' + encodeURIComponent(params[key]);
-        }).join('&');
+            if (params[key]) {
+              return key + '=' + encodeURIComponent(params[key]);
+            }
+            return null;
+        }).filter(p => !!p).join('&');
     }
 }
