@@ -45,6 +45,7 @@ interface IStateListSession {
   selectedDoctorId: string;
 }
 
+export const MAX_RETRIEVED_SESSIONS = 50;
 const PAGE_SIZE = 30;
 const DEFAULT_STICKY_HEIGHT = 244;
 const DEFAULT_STICKY_TOP = 80;
