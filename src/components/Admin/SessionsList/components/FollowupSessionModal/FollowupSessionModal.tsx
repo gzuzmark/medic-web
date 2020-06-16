@@ -13,6 +13,7 @@ import {
 	IReassignSession,
 } from '../../../../../domain/Session/SessionMentorBean';
 import SessionService from '../../../../../services/Session/Session.service';
+import { MAX_RETRIEVED_SESSIONS } from '../../SessionsList';
 import './FollowupSessionModal.scss';
 
 interface IPropsFollowupSessionModal {
@@ -72,7 +73,7 @@ const FollowupSessionModal: React.FC<IPropsFollowupSessionModal> = ({
 		if (show && sessionId && doctorId) {
 			setLoading(true);
 			sessionService
-				.getSessionsByDoctor(sessionId, doctorId)
+				.getSessionsByDoctor(sessionId, doctorId, MAX_RETRIEVED_SESSIONS)
 				.then((response: IReassignSession[]) => {
 					setSessions(response);
 					setLoading(false);

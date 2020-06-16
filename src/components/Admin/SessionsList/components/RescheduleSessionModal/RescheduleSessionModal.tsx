@@ -14,6 +14,7 @@ import {
 	ISessionDoctor,
 } from '../../../../../domain/Session/SessionMentorBean';
 import SessionService from '../../../../../services/Session/Session.service';
+import { MAX_RETRIEVED_SESSIONS } from '../../SessionsList';
 import './RescheduleSessionModal.scss';
 
 interface IPropsRescheduleSessionModal {
@@ -111,7 +112,7 @@ const RescheduleSessionModal: React.FC<IPropsRescheduleSessionModal> = ({
 	React.useEffect(() => {
 		if (selectedDoctor) {
 			sessionService
-				.getSessionsByDoctor(sessionId, selectedDoctor)
+				.getSessionsByDoctor(sessionId, selectedDoctor, MAX_RETRIEVED_SESSIONS)
 				.then((response: IReassignSession[]) => {
 					setSessions(response);
 					setLoadingSessions(false);
