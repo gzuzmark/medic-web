@@ -1,0 +1,26 @@
+.UpdateCouponModal {
+	display: flex;
+	justify-content: space-around;
+	form {
+		width: 100%;
+	}
+	&_inputblock {
+		align-items: center;
+		justify-content: center;
+		margin: 0 20px 20px 20px;
+	}
+	&_buttons {
+		display: flex;
+		justify-content: space-around;
+		margin: 15px auto;
+		width: 60%;
+	}
+	&_loader,
+	&_empty {
+		text-align: center;
+		margin: 40px 0;
+	}
+	input {
+		padding-right: 16px;
+	}
+}

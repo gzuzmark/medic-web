@@ -7,6 +7,7 @@ import './assets/fonts/fontsMentor.scss';
 import './assets/styles/styles.scss';
 import HOCLayout from "./common/Layout/HOCLayout";
 import LoaderFullScreen from "./common/Loader/LoaderFullsScreen";
+import CouponsList from './components/Admin/CouponsList/CouponsList';
 import MentorSession from './components/Admin/MentorSession/MentorSession';
 import MentorsList from './components/Admin/MentorsList/MentorsList';
 import PatientsList from './components/Admin/PatientsList/PatientsList';
@@ -134,6 +135,7 @@ export const initRouter = () => {
             <React.Suspense fallback={<LoaderFullScreen text={"Cargando..."} styleLoaderContainer={{marginTop: 300}} />}>
                 <Route exact={true} path="/" component={Login} />
                 <Route exact={true} path="/logout" component={Logout} />
+                <Route exact={true} path="/coupons" render={GuardComponent(CouponsList, ROL_ADMIN)} />
                 <Route exact={true} path="/patients" render={GuardComponent(PatientsList, ROL_ADMIN)} />
                 <Route exact={true} path="/sessions" render={GuardComponent(SessionsList, ROL_ADMIN)} />
                 <Route exact={true} path="/admin" render={GuardComponent(MentorsList, ROL_ADMIN)} />
