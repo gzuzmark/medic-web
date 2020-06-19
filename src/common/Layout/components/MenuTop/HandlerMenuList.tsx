@@ -22,6 +22,11 @@ const UseHandlerMenuList = (warningProfile: boolean) => {
     let menuList: IMenuListItem[] = [];
     const updateMenuList = () => {
         const listAdmin: IMenuListItem[] = [{
+            icon: 'paper-pencil',
+            id: 'coupons',
+            name: 'Cupones',
+            url: '/coupons'
+        },{
             icon: 'calendar',
             id: 'session',
             name: 'Citas',

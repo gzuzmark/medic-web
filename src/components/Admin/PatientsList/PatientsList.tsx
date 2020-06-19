@@ -86,7 +86,7 @@ const PatientsList: React.FC<{}> = () => {
 		>
 			<MenuAside
 				icon={'user'}
-				items={[{ text: 'Pacientes', url: '/pateints' }]}
+				items={[{ text: 'Pacientes', url: '/patients' }]}
 			/>
 			<div className="u-LayoutMargin u-ListPatients_padding ListPatients_sticky">
 				<FormSection style={{ display: 'block' }} itemStyle={{ width: 650 }}>
