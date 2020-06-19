@@ -49,25 +49,30 @@
 		}
 		//name
 		&:nth-child(2) {
-			width: 50%;
+			width: 40%;
 		}
 		//percentage
 		&:nth-child(3) {
 			text-align: center;
 			width: 10%;
 		}
-		//remaining
+		//used
 		&:nth-child(4) {
 			text-align: center;
 			width: 10%;
 		}
-		//edit
+		//limit
 		&:nth-child(5) {
 			text-align: center;
 			width: 10%;
 		}
-		//delete
+		//edit
 		&:nth-child(6) {
+			text-align: center;
+			width: 10%;
+		}
+		//delete
+		&:nth-child(7) {
 			text-align: center;
 			width: 10%;
 		}

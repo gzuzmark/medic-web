@@ -31,7 +31,8 @@ const ListCouponsBody: React.FC<IPropsListCouponsBody> = ({
 	deleteCoupon,
 	updateCoupon,
 }) => {
-	const { name = '', code = '', percentage = 0, limit = '' } = coupon || {};
+	const { name = '', code = '', percentage = 0, limit = '', used = '' } =
+		coupon || {};
 	const handleEdit = () => updateCoupon(coupon);
 	const handleDelete = () => deleteCoupon(coupon);
 	return (
@@ -44,6 +45,9 @@ const ListCouponsBody: React.FC<IPropsListCouponsBody> = ({
 			</div>
 			<div className='ListCoupons_column ListCoupons_column--cell'>
 				{percentage && <Subhead1 color={FONTS.dark}>{percentage}%</Subhead1>}
+			</div>
+			<div className='ListCoupons_column ListCoupons_column--cell'>
+				{used && <Subhead1 color={FONTS.dark}>{used}</Subhead1>}
 			</div>
 			<div className='ListCoupons_column ListCoupons_column--cell'>
 				{limit && <Subhead1 color={FONTS.dark}>{limit}</Subhead1>}
