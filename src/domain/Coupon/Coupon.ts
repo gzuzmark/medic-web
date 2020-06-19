@@ -4,6 +4,7 @@ export interface ICoupon {
 	code: string;
 	percentage: number;
 	limit: string;
+	used: string;
 }
 
 export interface ICouponForm {
