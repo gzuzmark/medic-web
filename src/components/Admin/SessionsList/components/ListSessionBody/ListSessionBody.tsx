@@ -98,11 +98,10 @@ class ListSessionsBody extends React.Component <IPropsListSessionsBody, {}> {
         <div className="ListSessions_column ListSessions_column--date">
           <Heading3
             weight={LIGHT_TEXT}
-            color={FONTS.dark}
-            style={{ fontSize: 14 }}
-          >
+            color={FONTS.dark}>
             {sessionBean.getReservationDate(new MomentDateParser())}
           </Heading3>
+          <TextBold1>{sessionBean.getReservationTime(new MomentDateParser())}</TextBold1>
         </div>
         <div className="ListSessions_column ListSessions_column--mentor">
           <SessionItem name={`${doctorName} ${doctorLN}`} />
