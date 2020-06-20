@@ -110,7 +110,14 @@ export class SessionBean {
       if (!this.session.reservation_date) {
         return '';
       }
-      return `${dateFormatter.parseDateToString(this.session.reservation_date, "DD/MM/YYYY")}`;
+      return `${dateFormatter.parseDateToString(this.session.reservation_date, "DD [de] MMMM")}`;
+    }
+
+    public getReservationTime(dateFormatter: AbstractDateParser): string {
+      if (!this.session.reservation_date) {
+        return '';
+      }
+      return `${dateFormatter.parseDateToString(this.session.reservation_date, "h:mm a")}`;
     }
 
     public getTime(dateFormatter: AbstractDateParser): string {
