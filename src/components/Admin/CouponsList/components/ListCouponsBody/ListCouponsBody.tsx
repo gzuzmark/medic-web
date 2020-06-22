@@ -40,7 +40,7 @@ const ListCouponsBody: React.FC<IPropsListCouponsBody> = ({
 			<div className='ListCoupons_column ListCoupons_column--cell'>
 				{code && <Subhead1 color={FONTS.dark}>{code}</Subhead1>}
 			</div>
-			<div className='ListCoupons_column'>
+			<div className='ListCoupons_column ListCoupons_column--cell'>
 				{name && <Subhead1 color={FONTS.dark}>{name}</Subhead1>}
 			</div>
 			<div className='ListCoupons_column ListCoupons_column--cell'>
