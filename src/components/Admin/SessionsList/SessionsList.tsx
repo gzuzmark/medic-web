@@ -153,7 +153,7 @@ class SessionsList extends React.Component <{}, IStateListSession> {
       <Sticky height={DEFAULT_STICKY_HEIGHT} top={DEFAULT_STICKY_TOP} style={{background: 'white'}}>
         <MenuAside
           icon={'calendar'}
-          items={[{text: 'Citas (Total: ' + String(this.state.sessions ? this.state.sessions.length : 0), url: '/sessions'}]}
+          items={[{text: 'Citas (Total: ' + String(this.state.sessions ? this.state.sessions.length : 0) + ')', url: '/sessions'}]}
         />
         <div className='u-LayoutMargin u-ListSessions_padding ListSessions_sticky'>
           <FormRow style={{ width: '100%' }} columns={[
