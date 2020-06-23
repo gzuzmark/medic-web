@@ -208,6 +208,9 @@ class SessionsList extends React.Component <{}, IStateListSession> {
             </FormColumn>
           ]}/>
         </div>
+        <div>
+          <p>Resultados: {this.state.sessions ? this.state.sessions.length : 0}</p>
+        </div>
         <ListHeader header={TABLE_HEADER_TEXTS} baseClass="ListSessions" />
       </Sticky>
     )
