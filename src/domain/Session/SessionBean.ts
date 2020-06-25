@@ -42,6 +42,7 @@ export interface ISessionBody extends ISessionBase {
     doctor: IBaseUser;
     patient: ISessionPatient;
     patient_link: string;
+    paid: string;
 }
 
 export interface ISessionBase {

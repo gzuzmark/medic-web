@@ -1,9 +1,12 @@
 import * as React from 'react';
 import styled from "styled-components";
 import { TextBold1 } from '../../../../../common/ConsoleText';
+import DropdownItem from '../../../../../common/DropdownItem/DropdownItem';
+import DropdownMenu from '../../../../../common/DropdownMenu/DropdownMenu';
 import Icon from "../../../../../common/Icon/Icon";
 import colors, { FONTS } from "../../../../../common/MentorColor";
 import { Heading3, LIGHT_TEXT, Subhead1 } from '../../../../../common/MentorText';
+import { formatStrNumber } from '../../../../../common/Utils/Utilities';
 import {MomentDateParser} from "../../../../../domain/DateManager/MomentDateParser";
 import {ISessionBody, SessionBean} from "../../../../../domain/Session/SessionBean";
 import SessionItem from '../SessionItem/SessionItem';
@@ -32,9 +35,17 @@ interface IPropsListSessionsBody {
   showFollowupModal: (shouldShow: boolean) => void;
 }
 
-class ListSessionsBody extends React.Component <IPropsListSessionsBody, {}> {
+interface IStateListSessionsBody {
+  openMenu: boolean;
+}
+
+class ListSessionsBody extends React.Component <IPropsListSessionsBody, IStateListSessionsBody> {
   constructor(props: IPropsListSessionsBody) {
     super(props);
+    this.state = {
+      openMenu: false,
+    }
+    this.toggleOpenMenu = this.toggleOpenMenu.bind(this);
   }
 
   public render() {
@@ -43,6 +54,7 @@ class ListSessionsBody extends React.Component <IPropsListSessionsBody, {}> {
       patient,
       id = '',
       patient_link = '',
+      paid = '',
     } = this.props.session;
     const sessionBean = new SessionBean(this.props.session);
 
@@ -57,18 +69,24 @@ class ListSessionsBody extends React.Component <IPropsListSessionsBody, {}> {
     const patientId = patient && patient.id || '';
     const patientName = patient && patient.name || '';
     const patientLN = patient && patient.last_name || '';
+    
+    const patientPaid = formatStrNumber(paid);
+  
     const handleCancelClick = () => {
       this.props.selectSession(id);
       this.props.showCancelModal(true);
+      this.toggleOpenMenu();
     };
     const handleRescheduleClick = () => {
       this.props.selectSession(id);
       this.props.showRescheduleModal(true);
+      this.toggleOpenMenu();
     };
     const handleFollowupClick = () => {
       this.props.selectSession(id);
       this.props.selectDoctor(doctorId);
       this.props.showFollowupModal(true);
+      this.toggleOpenMenu();
     };
     const renderAssistance = () => {
       const assistance = sessionBean.getAssistance();
@@ -114,6 +132,14 @@ class ListSessionsBody extends React.Component <IPropsListSessionsBody, {}> {
           />
         </div>
         <div className="ListSessions_column ListSessions_numbers">
+          {patientPaid && (
+            <Subhead1
+              color={FONTS.dark}>
+              S/. {patientPaid}
+            </Subhead1>
+          )}
+        </div>
+        <div className="ListSessions_column ListSessions_numbers">
           {patientDoc && (
             <Subhead1
               color={FONTS.dark}>
@@ -144,32 +170,26 @@ class ListSessionsBody extends React.Component <IPropsListSessionsBody, {}> {
             </a>
           )}
         </div>
-        <div title="Cancelar" className="ListSessions_column">
-          <Icon
-            name="exclamation"
-            click={handleCancelClick}
-            attr={{"data-tip": "Cancelar"}}
-            style={{ cursor: 'pointer' }}
-          />
-        </div>
-        <div title="Reagendar" className="ListSessions_column">
+        <div title="Acciones" className="ListSessions_column ListSessions_dropdownContainer">
           <Icon
             name="calendar-check"
-            click={handleRescheduleClick}
-            attr={{"data-tip": "Reagendar"}}
+            click={this.toggleOpenMenu}
+            attr={{"data-tip": "Acciones" }}
             style={{ cursor: 'pointer', fill: '#1ECD96' }}
+            
           />
-        </div>
-        <div title="Agendar" className="ListSessions_column">
-          <Icon
-            name="calendar"
-            click={handleFollowupClick}
-            attr={{"data-tip": "Agendar"}}
-            style={{ cursor: 'pointer', fill: '#1ECD96' }}
-          />
+          <DropdownMenu open={this.state.openMenu}>
+            <DropdownItem onClick={handleCancelClick}>Cancelar Cita</DropdownItem>
+            <DropdownItem onClick={handleRescheduleClick}>Reagendar Cita</DropdownItem>
+            <DropdownItem onClick={handleFollowupClick}>Agendar Cita</DropdownItem>
+          </DropdownMenu>
         </div>
       </ContainerRow>
     );
+  }
+
+  private toggleOpenMenu() {
+    this.setState(prevState => ({openMenu: !prevState.openMenu }));
   }
 }
 

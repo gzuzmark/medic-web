@@ -55,12 +55,11 @@ const TABLE_HEADER_TEXTS = [
   'RESERVA',
   'NOMBRE DEL DOCTOR',
   'NOMBRE DEL PACIENTE',
+  'PAGADO',
   'DNI O CE',
   'TELÉFONO',
   'URL DE LA CITA',
-  '',
   'ACCIONES',
-  '',
 ];
 
 const compareDropdownObject = (obj1: IPropsMentorOptionsDropDown, obj2: IPropsMentorOptionsDropDown) => {
