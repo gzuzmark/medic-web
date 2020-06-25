@@ -3,13 +3,19 @@ import './DropdownMenu.scss';
 
 interface IPropsDropdownMenu {
 	open: boolean;
+	position?: string;
 }
 
 const DropdownMenu: React.FC<IPropsDropdownMenu> = (props) => {
 	if (!props.open) {
 		return null;
 	}
-	return <div className='DropdownMenu'>{props.children}</div>;
+	const position = props.position || 'left';
+	return (
+		<div className={`DropdownMenu DropdownMenu-${position}`}>
+			{props.children}
+		</div>
+	);
 };
 
 export default DropdownMenu;
