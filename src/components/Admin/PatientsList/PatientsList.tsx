@@ -19,6 +19,7 @@ import './PatientsList.scss';
 const DEFAULT_STICKY_HEIGHT = 220;
 const DEFAULT_STICKY_TOP = 80;
 const TABLE_HEADER_TEXTS = [
+	'TIENE CUENTA',
 	'DNI O CE',
 	'NOMBRE',
 	'APELLIDO',

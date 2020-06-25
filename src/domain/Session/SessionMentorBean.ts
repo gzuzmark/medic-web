@@ -27,6 +27,7 @@ export interface ISessionPatient {
     extra_info: string;
     full_last_name: string;
     document_number: string;
+    has_account: boolean;
 }
 
 export interface ITriageQuestion {
