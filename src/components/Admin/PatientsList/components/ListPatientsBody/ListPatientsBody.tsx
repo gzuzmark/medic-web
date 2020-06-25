@@ -1,5 +1,6 @@
 import * as React from 'react';
 import styled from 'styled-components';
+import BadgeLabel from '../../../../../common/Badge/BadgeLabel';
 import colors, { FONTS } from '../../../../../common/MentorColor';
 import { Subhead1 } from '../../../../../common/MentorText';
 import { ISessionPatient } from '../../../../../domain/Session/SessionMentorBean';
@@ -23,6 +24,15 @@ interface IPropsListPatientsBody {
 	patient: ISessionPatient;
 }
 
+const renderHasAccount = (hasAccount: boolean) => {
+	const color = hasAccount ? 'green' : 'red';
+	return (
+		<BadgeLabel color={color}>
+			{hasAccount ? 'Si' : 'No'}
+		</BadgeLabel>
+	);
+};
+
 const ListPatientsBody: React.FC<IPropsListPatientsBody> = ({ patient }) => {
 	const {
 		document_number = '',
@@ -30,13 +40,16 @@ const ListPatientsBody: React.FC<IPropsListPatientsBody> = ({ patient }) => {
 		full_last_name = '',
 		phone = '',
 		email = '',
+		has_account = false,
 	} = patient || {};
 	return (
 		<ContainerRow>
+			<div className="ListPatients_column">
+				{renderHasAccount(has_account)}
+			</div>
 			<div className="ListPatients_column ListPatients_column--cell">
 				<Subhead1>{document_number || ''}</Subhead1>
 			</div>
-
 			<div className="ListPatients_column ListPatients_column--cell">
 				{name && <Subhead1 color={FONTS.dark}>{name}</Subhead1>}
 			</div>

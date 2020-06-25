@@ -41,24 +41,29 @@
 				color: #4a4a4a !important;
 			}
 		}
-		//dni or ce
+		//patient has account
 		&:nth-child(1) {
-			width: 20%;
+			text-align: center;
+			width: 10%;
+		}
+		//dni or ce
+		&:nth-child(2) {
+			width: 15%;
 		}
 		//patient name
-		&:nth-child(2) {
-			width: 20%;
-		}
-		//patient lastname
 		&:nth-child(3) {
 			width: 20%;
 		}
-		//patient phone
+		//patient lastname
 		&:nth-child(4) {
 			width: 20%;
 		}
-		//patient email
+		//patient phone
 		&:nth-child(5) {
+			width: 15%;
+		}
+		//patient email
+		&:nth-child(6) {
 			width: 20%;
 		}
 	}
