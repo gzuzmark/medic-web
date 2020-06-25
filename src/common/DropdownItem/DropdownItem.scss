@@ -1,0 +1,11 @@
+.DropdownItem {
+	height: 30px;
+	display: flex;
+	align-items: center;
+	padding: 0.5rem;
+	color: #4a4a4a;
+	cursor: pointer;
+	&:hover {
+		background-color: #eaeaea;
+	}
+}
