@@ -232,7 +232,7 @@ class FormExperience extends React.Component <IPropsFormExperience, {}> {
                                 <Icon name={"trash"}/><Body1>Eliminar</Body1>
                             </button>
                             {experiences.length === index + 1 &&
-                            <button  disabled={experiences.length >= 3 || !!this.props.forceDisable} onClick={addNewExperience} type={"button"}>
+                            <button  disabled={!!this.props.forceDisable} onClick={addNewExperience} type={"button"}>
                                 <Icon name={"add-circle"}/><Body1>Agregar experiencia laboral</Body1>
                             </button>}
                         </OptionsHandler>
