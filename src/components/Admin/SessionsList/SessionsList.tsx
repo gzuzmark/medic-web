@@ -156,7 +156,7 @@ class SessionsList extends React.Component <{}, IStateListSession> {
     }).length;
     const noShow = (noShowLength / total) * 100;
     const totalMoney = sessions && sessions.reduce((acc, session) => acc + (+session.paid), 0);
-    const statusText = total > 0 ? `, Por Confirmar: ${noShow.toFixed(0)}%, Dinero Recaudado: S/. ${totalMoney.toFixed(2)}` : '';
+    const statusText = total > 0 ? `, No Shows: ${noShow.toFixed(0)}%, Dinero Recaudado: S/. ${totalMoney.toFixed(2)}` : '';
     return (
       <Sticky height={DEFAULT_STICKY_HEIGHT} top={DEFAULT_STICKY_TOP} style={{background: 'white'}}>
         <MenuAside
