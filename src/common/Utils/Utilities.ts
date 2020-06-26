@@ -173,11 +173,16 @@ export const buildQuestionBlocks = (useCase: any, questions: any[]) => {
   return blocks;
 };
 
+export const formatStrNumber = (num: string) => {
+    return num ? (+num).toFixed(2) : '0.00';
+};
+
 const Utilities = {
     buildQuestionBlocks,
     deepEqual,
     doClone,
     donwloadLink,
+    formatStrNumber,
     getAgeByBirthDate,
     getDateFormatted,
     getDocumentHeight,

@@ -17,7 +17,7 @@ import MentorDropDown, { IPropsMentorOptionsDropDown } from "../../../common/Men
 import MentorInput from "../../../common/MentorInput/MentorInput";
 import { Headline1 } from '../../../common/MentorText';
 import Sticky from '../../../common/Sticky/Sticky';
-import { ISessionBody, ISessionPaginated } from '../../../domain/Session/SessionBean';
+import { ISessionBody, ISessionPaginated, SessionBean } from '../../../domain/Session/SessionBean';
 import { ISessionDoctor } from "../../../domain/Session/SessionMentorBean";
 import MentorService from "../../../services/Mentor/Mentor.service";
 import SessionService from '../../../services/Session/Session.service';
@@ -55,12 +55,11 @@ const TABLE_HEADER_TEXTS = [
   'RESERVA',
   'NOMBRE DEL DOCTOR',
   'NOMBRE DEL PACIENTE',
+  'PAGADO',
   'DNI O CE',
   'TELÉFONO',
   'URL DE LA CITA',
-  '',
   'ACCIONES',
-  '',
 ];
 
 const compareDropdownObject = (obj1: IPropsMentorOptionsDropDown, obj2: IPropsMentorOptionsDropDown) => {
@@ -149,11 +148,20 @@ class SessionsList extends React.Component <{}, IStateListSession> {
   }
 
   public renderTopMenu() {
+    const sessions = this.state.sessions
+    const total = sessions ? sessions.length : 0;
+    const noShowLength = sessions && sessions.filter(session => {
+      const sb = new SessionBean(session);
+      return sb.getAssistance() === 'No Asistió';
+    }).length;
+    const noShow = (noShowLength / total) * 100;
+    const totalMoney = sessions && sessions.reduce((acc, session) => acc + (+session.paid), 0);
+    const statusText = total > 0 ? `, Por Confirmar: ${noShow.toFixed(0)}%, Dinero Recaudado: S/. ${totalMoney.toFixed(2)}` : '';
     return (
       <Sticky height={DEFAULT_STICKY_HEIGHT} top={DEFAULT_STICKY_TOP} style={{background: 'white'}}>
         <MenuAside
           icon={'calendar'}
-          items={[{text: 'Citas (Total: ' + String(this.state.sessions ? this.state.sessions.length : 0) + ')', url: '/sessions'}]}
+          items={[{text: `Citas (Total: ${total}${statusText})`, url: '/sessions'}]}
         />
         <div className='u-LayoutMargin u-ListSessions_padding ListSessions_sticky'>
           <FormRow style={{ width: '100%' }} columns={[

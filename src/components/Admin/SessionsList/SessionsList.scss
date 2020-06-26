@@ -74,38 +74,32 @@
     &:nth-child(5) {
       width: 15%;
     }
-    //patient document
+    //patient paid
     &:nth-child(6) {
       width: 8%;
     }
-    //patient phone
+    //patient document
     &:nth-child(7) {
       width: 8%;
     }
-    //session url
+    //patient phone
     &:nth-child(8) {
+      width: 8%;
+    }
+    //session url
+    &:nth-child(9) {
       text-align: left;
-      width: 12%;
+      width: 10%;
       padding-right: 5px;
       margin-right: 5px;
       a:visited {
         color: #0000EE;
       }
     }
-    //cancel session
-    &:nth-child(9) {
-      text-align: center;
-      width: 5%;
-    }
-    //reschedule session
+    //actions1
     &:nth-child(10) {
       text-align: center;
-      width: 5%;
-    }
-    //schedule session
-    &:nth-child(11) {
-      text-align: center;
-      width: 5%;
+      width: 10%;
     }
   }
   &_line {
@@ -156,6 +150,10 @@
       border: 1px solid rgb(230, 237, 242);
       font-weight: 300 !important;
     }
+  }
+  &_dropdownContainer {
+    position: relative;
+    display: inline-block;
   }
 }
 
