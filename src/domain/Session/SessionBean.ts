@@ -11,6 +11,10 @@ export const SESSION_STATUS = {
     SCHEDULED: 'SCHEDULED',
 };
 
+export interface ISessionConsult {
+    has_treatments: boolean;
+}
+
 export interface ISessionItemBase {
     id: string;
     name: string;
@@ -53,7 +57,7 @@ export interface ISessionBase {
     skill?: ISessionItemBase;
     isActive?: boolean;
     reservation_date?: string;
-    consult?: object;
+    consult?: ISessionConsult;
 }
 export const SESSION_VIRTUAL = "VIRTUAL";
 export const SESSION_UNDEFINED = "UNDEFINED";
@@ -96,7 +100,7 @@ export class SessionBean {
     public getAssistance() {
       const now = new Date();
       const date = new Date(this.session.from);
-      const isConsult = !!this.session.consult && Object.keys(this.session.consult).length > 0;
+      const isConsult = !!this.session.consult && this.session.consult.has_treatments;
       if (date.getTime() < now.getTime() && !isConsult) {
         return 'No Asistió';
       } else if (date.getTime() <= now.getTime() && isConsult) {
