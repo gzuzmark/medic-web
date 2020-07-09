@@ -21,6 +21,14 @@ export interface ISessionPatientTreatmentForm {
   name: string;
   period: string;
   quantity: string;
+
+  brand: string,
+  concentration: string,
+  routeofAdministration: string,
+  pharmaceuticalForm: string,
+  salesUnit: string,
+  activePrinciples: string,
+  sapcode?: number,
 }
 
 export interface ISessionPatientCaseForm {
@@ -135,23 +143,35 @@ class SessionEditPatientHistoryData {
     this.patient.case.treatments = values.map((value: IPatientTreatmentFormValidations) => {
       if (value.consult_id && value.id) {
         return {
+          activePrinciples: value.activePrinciples,
+          brand: value.brand,
           component: value.component,
+          concentration: value.concentration,
           consult_id: value.consult_id,
           extra_info: value.extra_info,
           frequency: value.frequency,
           id: value.id,
           name: value.name,
           period: value.period,
+          pharmaceuticalForm: value.pharmaceuticalForm,
           quantity: value.quantity,
+          routeofAdministration: value.routeofAdministration,
+          salesUnit: value.salesUnit,
         };
       }
       return {
+        activePrinciples: value.activePrinciples,
+        brand: value.brand,
         component: value.component,
+        concentration: value.concentration,
         extra_info: value.extra_info,
         frequency: value.frequency,
         name: value.name,
         period: value.period,
+        pharmaceuticalForm: value.pharmaceuticalForm,
         quantity: value.quantity,
+        routeofAdministration: value.routeofAdministration,
+        salesUnit: value.salesUnit,
       };
     });
   }

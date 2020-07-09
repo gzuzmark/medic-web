@@ -18,6 +18,14 @@ export interface IPatientTreatmentFormValidations {
   name: string;
   period: string;
   quantity: string;
+  
+  brand: string,
+  concentration: string,
+  routeofAdministration: string,
+  pharmaceuticalForm: string,
+  salesUnit: string,
+  activePrinciples: string,
+  sapcode?: number,
 }
 
 export interface IPatientCaseFormValidations {
@@ -36,12 +44,14 @@ export interface ISessionPatientHistoryFormValidations {
 export interface IPatientBackgroundFormContext {
   handleBlur: any;
   handleChange: any;
+  setFieldValue: any;
   values: ISessionPatientHistoryFormValidations;
 }
 
 const defaultValue: IPatientBackgroundFormContext = {
   handleBlur: (event: any) => void(0),
   handleChange: (event: any) => void(0),
+  setFieldValue: (field: string, value: string) => void(0),
   values: {} as ISessionPatientHistoryFormValidations,
 };
 
