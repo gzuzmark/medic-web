@@ -1,8 +1,12 @@
+import Axios from "axios";
 import {IMentorBase, IMentorPaginated} from "../../domain/Mentor/MentorBase";
 import {IMentorBaseForm} from "../../domain/Mentor/MentorBaseForm";
 import {IMentorEditParams} from "../../domain/Mentor/MentorEditProfile";
 import {IMentorSession} from '../../interfaces/Mentor.interface';
 import BaseRequest from '../BaseRequest';
+
+const GET_ACTIVE_PRINCIPLES_ENDPOINT = 'http://masterproductreci02.backend.cindibyinkafarma.com/activePrinciples';
+const GET_PRODUCT_INFO_ENDPOINT = 'http://masterproductreci02.backend.cindibyinkafarma.com/product';
 
 class MentorService extends BaseRequest {
     private verifyMenorCancelToken: any = null;
@@ -27,6 +31,48 @@ class MentorService extends BaseRequest {
                     this.validSession();
                     reject(error);
                 });
+        });
+    }
+
+    public getActivePrinciples(component: string = '') {
+        if (!!this.listMenorCancelToken) {
+            this.listMenorCancelToken.cancel();
+        }
+        this.listMenorCancelToken = this.generateCancelToken();
+        const instance = this.getCustomInstance(this.listMenorCancelToken);
+        return new Promise((resolve, reject) => {
+          instance.get(`${GET_ACTIVE_PRINCIPLES_ENDPOINT}/${component}`)
+            .then((response: any) => {
+              if (response.status === 200 && response.data) {
+                resolve(response.data as string[]);
+              } else {
+                reject(null);
+              }
+            })
+            .catch((error: any) => {
+                if (Axios.isCancel(error)) {
+                    return;
+                }
+              this.validSession();
+              reject(error);
+            });
+        });
+    }
+
+    public getPrincipleInformation(activePrinciple: string) {
+        return new Promise((resolve, reject) => {
+          this.instance.get(`${GET_PRODUCT_INFO_ENDPOINT}/${activePrinciple}`)
+            .then((response: any) => {
+              if (response.status === 200 && response.data) {
+                resolve(response.data);
+              } else {
+                reject(null);
+              }
+            })
+            .catch((error: any) => {
+              this.validSession();
+              reject(error);
+            });
         });
     }
 
