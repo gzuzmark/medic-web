@@ -120,6 +120,7 @@ class SessionsList extends React.Component <{}, IStateListSession> {
     this.setCurrentDoctorId = this.setCurrentDoctorId.bind(this);
     this.showFollowupModal = this.showFollowupModal.bind(this);
     this.followupSession = this.followupSession.bind(this);
+    this.getSessionPDF = this.getSessionPDF.bind(this);
   }
 
   public componentWillUnmount() {
@@ -276,6 +277,12 @@ class SessionsList extends React.Component <{}, IStateListSession> {
     }
   }
 
+  private async getSessionPDF(session: string) {
+    const response = await this.sessionService.getSessionPDF(session) as any;
+    const base64 = response && response.base64 || '';
+    return base64;
+  }
+
   private async searchResults(session: SessionRequestBean) {
     const params = session.toParams();
     this.setState({loading: true, initialLoad: true, hasMore: true });
@@ -427,6 +434,7 @@ class SessionsList extends React.Component <{}, IStateListSession> {
                   selectDoctor={this.setCurrentDoctorId}
                   showRescheduleModal={this.showRescheduleModal}
                   showFollowupModal={this.showFollowupModal}
+                  getSessionPDF={this.getSessionPDF}
                 />
               </div>);
           })}

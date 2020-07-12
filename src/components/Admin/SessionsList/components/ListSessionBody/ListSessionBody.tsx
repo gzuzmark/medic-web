@@ -54,9 +54,22 @@ interface IPropsListSessionsBody {
 	selectSession: (sessionId: string) => void;
 	showRescheduleModal: (shouldShow: boolean) => void;
 	showFollowupModal: (shouldShow: boolean) => void;
+	getSessionPDF: (sessionId: string) => Promise<any>;
 }
 
+const downloadPDF = (name: string, base64: string) => {
+	const linkSource = `data:application/pdf;base64,${base64}`;
+	const downloadLink = document.createElement('a');
+	const fileName = `${name}.pdf`;
+
+	downloadLink.name = 'downloadPDFLink';
+	downloadLink.href = linkSource;
+	downloadLink.download = fileName;
+	downloadLink.click();
+};
+
 const ListSessionsBody: React.FC<IPropsListSessionsBody> = (props) => {
+	const [loadingMenu, setLoadingMenu] = React.useState<boolean>(false);
 	const [openMenu, setOpenMenu] = React.useState<boolean>(false);
 	const toggleOpenMenu = () => setOpenMenu((prev) => !prev);
 	const wrapperRef = React.useRef(null);
@@ -99,6 +112,19 @@ const ListSessionsBody: React.FC<IPropsListSessionsBody> = (props) => {
 		toggleOpenMenu();
 	};
 
+	const handleDownloadPDF = () => {
+		setLoadingMenu(true);
+		props
+			.getSessionPDF(id)
+			.then((base64: string) => {
+				downloadPDF(patientDoc, base64);
+			})
+			.finally(() => {
+				setLoadingMenu(false);
+				toggleOpenMenu();
+			});
+	};
+
 	const assistanceComponent = React.useMemo(
 		() => renderAssistance(sessionBean.getAssistance()),
 		[props.session],
@@ -106,7 +132,11 @@ const ListSessionsBody: React.FC<IPropsListSessionsBody> = (props) => {
 
 	const handleClickOutside = (e: any) => {
 		const current = wrapperRef && (wrapperRef.current as Element | null);
-		if (current && !current.contains(e.target)) {
+		if (
+			current &&
+			!current.contains(e.target) &&
+			e.target.className !== 'DropdownItem'
+		) {
 			setOpenMenu(false);
 		}
 	};
@@ -184,7 +214,7 @@ const ListSessionsBody: React.FC<IPropsListSessionsBody> = (props) => {
 						attr={{ 'data-tip': 'Acciones' }}
 						style={{ cursor: 'pointer', fill: '#1ECD96' }}
 					/>
-					<DropdownMenu open={openMenu} position='left'>
+					<DropdownMenu open={openMenu} position='left' loading={loadingMenu}>
 						<DropdownItem onClick={handleCancelClick}>
 							Cancelar Cita
 						</DropdownItem>
@@ -193,6 +223,9 @@ const ListSessionsBody: React.FC<IPropsListSessionsBody> = (props) => {
 						</DropdownItem>
 						<DropdownItem onClick={handleFollowupClick}>
 							Agendar Cita
+						</DropdownItem>
+						<DropdownItem onClick={handleDownloadPDF}>
+							Descargar Cita
 						</DropdownItem>
 					</DropdownMenu>
 				</div>

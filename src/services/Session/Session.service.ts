@@ -46,6 +46,23 @@ class SessionService extends BaseRequest {
         });
     }
 
+    public getSessionPDF(session: string) {
+        return new Promise((resolve, reject) => {
+            this.instance.post(`ugo-admin/session/${session}/consult_pdf`)
+                .then((response: any) => {
+                    if (response.status === 200 && response.data) {
+                        resolve(response.data);
+                    } else {
+                        reject([]);
+                    }
+                })
+                .catch((error: any) => {
+                    this.validSession();
+                    reject(error);
+                });
+        });
+    }
+
     public followupSession(oldSessionId: string, newSessionId: string) {
       return new Promise((resolve, reject) => {
         this.instance.post(`ugo-admin/session/${oldSessionId}/follow_up?new_session=${newSessionId}`)
