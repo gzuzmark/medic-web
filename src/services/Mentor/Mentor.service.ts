@@ -5,8 +5,8 @@ import {IMentorEditParams} from "../../domain/Mentor/MentorEditProfile";
 import {IMentorSession} from '../../interfaces/Mentor.interface';
 import BaseRequest from '../BaseRequest';
 
-const GET_ACTIVE_PRINCIPLES_ENDPOINT = 'https://masterproductreci02.backend.cindibyinkafarma.com/activePrinciples';
-const GET_PRODUCT_INFO_ENDPOINT = 'https://masterproductreci02.backend.cindibyinkafarma.com/product';
+const GET_ACTIVE_PRINCIPLES_ENDPOINT = 'https://masterproductre-ci02.cindibyinkafarma.com/activePrinciples';
+const GET_PRODUCT_INFO_ENDPOINT = 'https://masterproductre-ci02.cindibyinkafarma.com/product';
 
 class MentorService extends BaseRequest {
     private verifyMenorCancelToken: any = null;
