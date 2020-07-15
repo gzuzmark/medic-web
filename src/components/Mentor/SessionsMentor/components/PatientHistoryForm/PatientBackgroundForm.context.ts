@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { ISessionNutritionistFormValidations, } from '../NutritionistForm/NutritionistForm.context';
 
 export interface IPatientBackgroundFormValidations {
   allergies: string,
@@ -39,6 +40,7 @@ export interface IPatientCaseFormValidations {
 export interface ISessionPatientHistoryFormValidations {
   history: IPatientBackgroundFormValidations;
   case: IPatientCaseFormValidations;
+  nutritionist?: ISessionNutritionistFormValidations;
 }
 
 export interface IPatientBackgroundFormContext {

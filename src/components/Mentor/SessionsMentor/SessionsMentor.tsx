@@ -21,6 +21,7 @@ import {IMatchParam} from "../../../interfaces/MatchParam.interface";
 import SessionService from "../../../services/Session/Session.service";
 import StudentService from "../../../services/Student/Student.service";
 import FormEditHistoryManager from './components/FormEditHistoryManager/FormEditHistoryManager';
+import { ISessionNutritionistFormValidations, nutritionistDefaultValues } from './components/NutritionistForm/NutritionistForm.context';
 import PatientBackgroundFormContext, {
     IPatientBackgroundFormValidations,
     IPatientCaseFormValidations,
@@ -51,6 +52,7 @@ interface IStateSessionsMentor {
     fullCardSession: ISessionFullCard;
     fullCardSimple: ISimpleFullCard;
     isEmpty: boolean;
+    isNutrition: boolean;
     loading: boolean;
     pastCases: ISessionPatientPastCase[];
     patientHistory: ISessionPatientHistoryFormValidations;
@@ -96,6 +98,7 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
                 title: ''
             },
             isEmpty: false,
+            isNutrition: false,
             loading: true,
             modal: false,
             modalAdd: this.cleanAddModal(),
@@ -103,7 +106,11 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
             modalError: true,
             modalSuccess: false,
             pastCases: [],
-            patientHistory: { history: this.patientHistoryData.getHistoryValues, case: this.patientHistoryData.getCaseValues },
+            patientHistory: {
+                case: this.patientHistoryData.getCaseValues,
+                history: this.patientHistoryData.getHistoryValues,
+                nutritionist: this.patientHistoryData.getNutritionValues
+            },
             searchValue: '',
         };
         this.sessionId = this.props.match.params.session || '';
@@ -133,15 +140,19 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
                 this.sessionService.getSessionConsult(this.sessionId),
                 this.sessionService.getPastSessionConsults(this.sessionId),
             ]).then((values: any[]) => {
-                this.sessionMentor = new SessionMentorBean(values[0]);
+                const sessionResponse = values[0];
+                const isNutrition = sessionResponse.skill.is_nutrition;
+                this.sessionMentor = new SessionMentorBean(sessionResponse);
                 this.studentChecklistCollector = new StudentChecklistCollector(values[1]);
                 const sessions = this.studentChecklistCollector.sessions;
                 const patient = this.sessionMentor.session.patient;
-                const patCase = values[2];
+                const patCase = !isNutrition ? values[2] : {};
+                const patNutrition = isNutrition ? values[2] : nutritionistDefaultValues;
                 const pastCases = values[3] as ISessionPatientPastCase[];
                 const patientHistory = {
                     case: patCase,
                     history: patient,
+                    nutritionist: patNutrition,
                 } as ISessionPatientHistoryForm;
                 this.sessionMentor.setSessionPatientTriage(patCase);
                 this.patientHistoryData = new SessionEditPatientHistoryData(patientHistory);
@@ -150,10 +161,12 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
                     fullCardSession: this.getFullCardSession(),
                     fullCardSimple: this.getFullCardSimple(),
                     isEmpty: sessions.length === 0 && !patient,
+                    isNutrition,
                     pastCases,
                     patientHistory: {
                         case: this.patientHistoryData.getCaseValues,
                         history: this.patientHistoryData.getHistoryValues,
+                        nutritionist: this.patientHistoryData.getNutritionValues,
                     },
                 };
                 this.setState({
@@ -245,6 +258,7 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
                                                     onHandleSubmit={this.onSubmit}
                                                     session={session}
                                                     pastCases={this.state.pastCases}
+                                                    isNutrition={this.state.isNutrition}
                                                 />
                                             </form>
                                         </PatientBackgroundFormContext.Provider>
@@ -259,20 +273,24 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
 
     private updateHistory() {
         const sessionId = this.sessionId;
+        const isNutrition = this.state.isNutrition;
         const historyUpdatedParams = this.patientHistoryData.historyUpdateParams;
         const caseUpdatedParams = this.patientHistoryData.caseUpdateParams;
+        const nutritionistUpdateParams = this.patientHistoryData.getNutritionValues;
+        const patientForm = isNutrition ? nutritionistUpdateParams : caseUpdatedParams;
         if (sessionId) {
             this.setState({ loading: true, modalSuccess: false });
             Promise.all([
                 this.sessionService.updateHistoryBackground(sessionId, historyUpdatedParams),
-                this.sessionService.updateSessionConsult(sessionId, caseUpdatedParams),
+                this.sessionService.updateSessionConsult(sessionId, patientForm),
             ]).then((responses) => {
                 const patHistory = responses[0] as IPatientBackgroundFormValidations;
-                const patCase = responses[1] as IPatientCaseFormValidations;
+                const patCase = (!isNutrition ? responses[1] : {}) as IPatientCaseFormValidations;
+                const patNutrition = (isNutrition ? responses[1] : nutritionistDefaultValues) as ISessionNutritionistFormValidations;
                 this.setState({
                     loading: false,
                     modalSuccess: true,
-                    patientHistory: { history: patHistory, case: patCase },
+                    patientHistory: { history: patHistory, case: patCase, nutritionist: patNutrition },
                 });
                 setTimeout(() => {
                     this.setState({ modalSuccess: false });
@@ -285,7 +303,13 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
 
     private onSubmit(values: ISessionPatientHistoryFormValidations) {
         this.patientHistoryData.preparePatientHistoryData(values.history);
-        this.patientHistoryData.preparePatientCaseData(values.case);
+        if (this.state.isNutrition) {
+            if (values.nutritionist) {
+                this.patientHistoryData.prepareNutritionData(values.nutritionist);
+            }
+        } else {
+            this.patientHistoryData.preparePatientCaseData(values.case);
+        }
         this.updateHistory();
     }
 
