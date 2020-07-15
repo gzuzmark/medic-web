@@ -1,3 +1,4 @@
+import { ISessionNutritionistFormValidations } from '../../components/Mentor/SessionsMentor/components/NutritionistForm/NutritionistForm.context';
 import {ISessionsToDelete} from '../../domain/FormSession/FormSessionDeleteBean';
 import { ISessionHistoryForm, ISessionPatientCaseForm } from '../../domain/Session/SessionEditPatientHistory';
 import {ISessionMentor} from '../../domain/Session/SessionMentorBean';
@@ -311,7 +312,7 @@ class SessionService extends BaseRequest {
         });
     }
 
-    public updateSessionConsult(session: string, patientCase: ISessionPatientCaseForm) {
+    public updateSessionConsult(session: string, patientCase: ISessionPatientCaseForm | ISessionNutritionistFormValidations) {
         return new Promise((resolve, reject) => {
             this.instance.post(`ugo/mentors-api/me/sessions/${session}/consult`, patientCase)
                 .then((response: any) => {

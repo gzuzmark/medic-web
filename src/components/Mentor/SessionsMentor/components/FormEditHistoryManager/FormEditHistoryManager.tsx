@@ -11,6 +11,7 @@ import CurrentSession from "../HistorySessions/CurrentSession/CurrentSession";
 import CurrentSessionForm from "../HistorySessions/CurrentSessionForm/CurrentSessionForm";
 import HistorySessions from "../HistorySessions/HistorySessions";
 import PastSessions from '../HistorySessions/PastSessions/PastSessions';
+import NutritionistForm from "../NutritionistForm/NutritionistForm";
 import PatientBlockContainer from "../PatientBlockContainer/PatientBlockContainer";
 import PatientHistoryForm from '../PatientHistoryForm/PatientBackgroundForm';
 import { IPatientBackgroundFormValidations } from "../PatientHistoryForm/PatientBackgroundForm.context";
@@ -22,6 +23,7 @@ export interface IPropsFormEditHistoryManager {
     },
     session: ISessionMentor;
     pastCases: ISessionPatientPastCase[];
+    isNutrition: boolean;
     onHandleSubmit: (e: any) => void;
 }
 
@@ -67,7 +69,8 @@ const FormEditHistoryManager: React.FC<IPropsFormEditHistoryManager> = (props) =
 
     const closeModal = () => setModal(false);
 
-    const patientInfoBlocks = buildPatientInfoBlocks(patient);
+    const patientInfoBlocks = React.useMemo(() => buildPatientInfoBlocks(patient), [patient]);
+    const sessionFormTitle = !!triage.use_case && !!triage.questions && triage.questions.length > 0 && 'Caso del paciente' || '';
     return (
         <React.Fragment>
           <MentorModalBase show={modal} onCloseModal={closeModal}>
@@ -99,9 +102,19 @@ const FormEditHistoryManager: React.FC<IPropsFormEditHistoryManager> = (props) =
             </Headline1>
             <HistorySessions tabs={[
               {
-                component: (
+                component: props.isNutrition ? (
+                  <NutritionistForm
+                    title={sessionFormTitle}
+                    useCase={triage.use_case}
+                    questions={triage.questions}
+                  />
+                ) : (
                   <React.Fragment>
-                    <CurrentSession useCase={triage.use_case} questions={triage.questions} />
+                    <CurrentSession
+                      title={sessionFormTitle}
+                      useCase={triage.use_case}
+                      questions={triage.questions}
+                    />
                     <CurrentSessionForm />
                   </React.Fragment>
                 ),
