@@ -28,7 +28,7 @@ export interface ISessionPatientTreatmentForm {
   pharmaceuticalForm: string,
   salesUnit: string,
   activePrinciples: string,
-  sapcode?: number,
+  skuSap?: number,
 }
 
 export interface ISessionPatientCaseForm {

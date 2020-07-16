@@ -129,15 +129,15 @@ const HistoryTreatmentForm: React.FC <IPropsHistoryTreatmentForm> = (props) => {
   const [currentUnit, setCurrentUnit] = React.useState<string>('');
   const mentorService = new MentorService();
 
-  const getIndexFromName = React.useCallback((name: string, sapCode: string) => {
+  const getIndexFromName = React.useCallback((name: string, skuSap: string) => {
     if (name.includes('concentration')) {
-      return productInfo.concentrations.findIndex(c => c.value[0] === sapCode);
+      return productInfo.concentrations.findIndex(c => c.value.split('_')[0] === skuSap);
     } else if (name.includes('routeofAdministration')) {
-      return productInfo.administrationRoutes.findIndex(c => c.value[0] === sapCode);
+      return productInfo.administrationRoutes.findIndex(c => c.value.split('_')[0] === skuSap);
     } else if (name.includes('pharmaceuticalForm')) {
-      return productInfo.pharmaceuticalForms.findIndex(c => c.value[0] === sapCode);
+      return productInfo.pharmaceuticalForms.findIndex(c => c.value.split('_')[0] === skuSap);
     } else {
-      return productInfo.brands.findIndex(c => c.value[0] === sapCode);
+      return productInfo.brands.findIndex(c => c.id === skuSap);
     }
   }, [productInfo]);
 
@@ -184,11 +184,11 @@ const HistoryTreatmentForm: React.FC <IPropsHistoryTreatmentForm> = (props) => {
 
       const handlePrincipleChange = (index: number) => (name: string, selectedOption: IPropsMentorOptionsDropDown) => {
         mentorService.getPrincipleInformation(selectedOption.value).then((response: any[]) => {
-          const newConcentrations = response.map(r => mapCurrentObject(r.concentration, r.sapcode))
-          const newAdministrationRoutes = response.map(r => mapCurrentObject(r.routeofAdministration, r.sapcode));
-          const newPharmaceuticalForms = response.map(r => mapCurrentObject(r.pharmaceuticalForm, r.sapcode));
-          const newBrands = response.map(r => ({ id: r.sapcode, value: r.brand}));
-          const newSalesUnit = response.map(r => ({ id: r.sapcode, value: r.salesUnit}));
+          const newConcentrations = response.map(r => mapCurrentObject(r.concentration, r.skuSap))
+          const newAdministrationRoutes = response.map(r => mapCurrentObject(r.routeofAdministration, r.skuSap));
+          const newPharmaceuticalForms = response.map(r => mapCurrentObject(r.pharmaceuticalForm, r.skuSap));
+          const newBrands = response.map(r => ({ id: r.skuSap, value: r.brand}));
+          const newSalesUnit = response.map(r => ({ id: r.skuSap, value: r.salesUnit}));
           setProductInfo({
             administrationRoutes: newAdministrationRoutes,
             brands: newBrands,
@@ -206,8 +206,8 @@ const HistoryTreatmentForm: React.FC <IPropsHistoryTreatmentForm> = (props) => {
       };
 
       const handleDependencyFields = (index: number) => (name: string, selectedOption: IPropsMentorOptionsDropDown) => {
-        const sapCode = selectedOption.value[0];
-        const i = getIndexFromName(name, sapCode);
+        const skuSap = selectedOption.value.split('_')[0];
+        const i = getIndexFromName(name, skuSap);
         const {
           concentrations,
           administrationRoutes,
@@ -292,7 +292,7 @@ const HistoryTreatmentForm: React.FC <IPropsHistoryTreatmentForm> = (props) => {
             <FormColumn width={4} key={`FormColumn-MedicineData_${++counter}`}>
               <UnitWrapper>
                 <MentorInput
-                  label="Cantidad total:"
+                  label="Cantidad:"
                   disabled={!!props.forceDisable}
                   lowercaseLabel={true}
                   attrs={{
