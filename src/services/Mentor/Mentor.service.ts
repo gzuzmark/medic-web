@@ -5,9 +5,6 @@ import {IMentorEditParams} from "../../domain/Mentor/MentorEditProfile";
 import {IMentorSession} from '../../interfaces/Mentor.interface';
 import BaseRequest from '../BaseRequest';
 
-const GET_ACTIVE_PRINCIPLES_ENDPOINT = 'https://masterproductre-ci02.cindibyinkafarma.com/activePrinciples';
-const GET_PRODUCT_INFO_ENDPOINT = 'https://masterproductre-ci02.cindibyinkafarma.com/product';
-
 class MentorService extends BaseRequest {
     private verifyMenorCancelToken: any = null;
     private listMenorCancelToken: any = null;
@@ -41,7 +38,7 @@ class MentorService extends BaseRequest {
         this.listMenorCancelToken = this.generateCancelToken();
         const instance = this.getCustomInstance(this.listMenorCancelToken);
         return new Promise((resolve, reject) => {
-          instance.get(`${GET_ACTIVE_PRINCIPLES_ENDPOINT}/${component}`)
+          instance.get(`ugo/mentors-api/inkafarma/active_principles/${component}`)
             .then((response: any) => {
               if (response.status === 200 && response.data) {
                 resolve(response.data as string[]);
@@ -61,7 +58,7 @@ class MentorService extends BaseRequest {
 
     public getPrincipleInformation(activePrinciple: string) {
         return new Promise((resolve, reject) => {
-          this.instance.get(`${GET_PRODUCT_INFO_ENDPOINT}/${activePrinciple}`)
+          this.instance.get(`ugo/mentors-api/inkafarma/products/${activePrinciple}`)
             .then((response: any) => {
               if (response.status === 200 && response.data) {
                 resolve(response.data);
