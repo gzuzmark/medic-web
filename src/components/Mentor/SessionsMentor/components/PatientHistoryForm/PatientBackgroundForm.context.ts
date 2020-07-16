@@ -25,7 +25,7 @@ export interface IPatientTreatmentFormValidations {
   pharmaceuticalForm: string,
   salesUnit: string,
   activePrinciples: string,
-  sapcode?: number,
+  skuSap?: number,
 }
 
 export interface IPatientCaseFormValidations {
