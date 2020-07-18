@@ -5,6 +5,8 @@ import {
 } from "../../components/Mentor/SessionsMentor/components/PatientHistoryForm/PatientBackgroundForm.context";
 import { ISessionDoctor, ISessionPatient, ISessionTriage } from "./SessionMentorBean";
 
+export const SAPCODE_SEPARATOR = '_';
+
 export interface ISessionHistoryForm {
   allergies: string;
   fur?: string;
@@ -144,33 +146,33 @@ class SessionEditPatientHistoryData {
       if (value.consult_id && value.id) {
         return {
           activePrinciples: value.activePrinciples,
-          brand: value.brand,
+          brand: this.getValueWithoutSKU(value.brand),
           component: value.component,
-          concentration: value.concentration,
+          concentration: this.getValueWithoutSKU(value.concentration),
           consult_id: value.consult_id,
           extra_info: value.extra_info,
           frequency: value.frequency,
           id: value.id,
           name: value.name,
           period: value.period,
-          pharmaceuticalForm: value.pharmaceuticalForm,
+          pharmaceuticalForm: this.getValueWithoutSKU(value.pharmaceuticalForm),
           quantity: value.quantity,
-          routeofAdministration: value.routeofAdministration,
+          routeofAdministration: this.getValueWithoutSKU(value.routeofAdministration),
           salesUnit: value.salesUnit,
         };
       }
       return {
         activePrinciples: value.activePrinciples,
-        brand: value.brand,
+        brand: this.getValueWithoutSKU(value.brand),
         component: value.component,
-        concentration: value.concentration,
+        concentration: this.getValueWithoutSKU(value.concentration),
         extra_info: value.extra_info,
         frequency: value.frequency,
         name: value.name,
         period: value.period,
-        pharmaceuticalForm: value.pharmaceuticalForm,
+        pharmaceuticalForm: this.getValueWithoutSKU(value.pharmaceuticalForm),
         quantity: value.quantity,
-        routeofAdministration: value.routeofAdministration,
+        routeofAdministration: this.getValueWithoutSKU(value.routeofAdministration),
         salesUnit: value.salesUnit,
       };
     });
@@ -191,6 +193,12 @@ class SessionEditPatientHistoryData {
     this.patient.case.diagnostic = currentCase && currentCase.diagnostic || '';
     this.patient.case.recommendation = currentCase && currentCase.recommendation || '';
     this.patient.case.treatments = currentCase && currentCase.treatments || [];
+  }
+
+  private getValueWithoutSKU(value: string) {
+    const skuList = value.split(SAPCODE_SEPARATOR);
+    const lastIndex = skuList.length - 1;
+    return !!skuList.length && skuList[lastIndex] || '';
   }
 }
 
