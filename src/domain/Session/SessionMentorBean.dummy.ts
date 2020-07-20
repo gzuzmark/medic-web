@@ -13,6 +13,10 @@ export const sessionMentorDummy: ISessionMentor = {
         type: "VIRTUAL",
         typeLabel: "Virtual"
     },
+    payment: {
+        paid: '10.00',
+        pending: false,
+    },
     skill: {
         id: "a4f80320-10df-4e40-bee0-b85930ebd7c6",
         name: "Visual Designer II"

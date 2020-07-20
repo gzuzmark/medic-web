@@ -47,6 +47,12 @@ const renderAssistance = (assistance: string) => {
 	return <BadgeLabel color={colorClass}>{assistance}</BadgeLabel>;
 };
 
+const renderPaymentState = (isPending: boolean) => {
+	const colorClass = isPending ? 'yellow' : 'green';
+	const label = isPending ? 'Pendiente' : 'Confirmado';
+	return <BadgeLabel color={colorClass}>{label}</BadgeLabel>;
+};
+
 interface IPropsListSessionsBody {
 	session: ISessionBody;
 	showCancelModal: (shouldShow: boolean) => void;
@@ -55,6 +61,8 @@ interface IPropsListSessionsBody {
 	showRescheduleModal: (shouldShow: boolean) => void;
 	showFollowupModal: (shouldShow: boolean) => void;
 	getSessionPDF: (sessionId: string) => Promise<any>;
+	showConfirmationModal: (shouldShow: boolean) => void;
+	confirmSessionPayment: (sessionId: string) => Promise<any>;
 }
 
 const downloadPDF = (name: string, base64: string) => {
@@ -79,6 +87,7 @@ const ListSessionsBody: React.FC<IPropsListSessionsBody> = (props) => {
 		id = '',
 		patient_link: sessionURL = '',
 		paid = '',
+		payment,
 	} = props.session;
 	const sessionBean = new SessionBean(props.session);
 
@@ -94,6 +103,8 @@ const ListSessionsBody: React.FC<IPropsListSessionsBody> = (props) => {
 	const patientLN = (patient && patient.last_name) || '';
 
 	const patientPaid = formatStrNumber(paid);
+
+	const isPending =  payment && payment.pending as boolean;
 
 	const handleCancelClick = () => {
 		props.selectSession(id);
@@ -123,6 +134,12 @@ const ListSessionsBody: React.FC<IPropsListSessionsBody> = (props) => {
 				setLoadingMenu(false);
 				toggleOpenMenu();
 			});
+	};
+
+	const handleConfirmPayment = () => {
+		props.selectSession(id);
+		props.showConfirmationModal(true);
+		toggleOpenMenu();
 	};
 
 	const assistanceComponent = React.useMemo(
@@ -180,6 +197,7 @@ const ListSessionsBody: React.FC<IPropsListSessionsBody> = (props) => {
 					<Subhead1 color={FONTS.dark}>S/. {patientPaid}</Subhead1>
 				)}
 			</div>
+			<div className='ListSessions_column'>{renderPaymentState(isPending)}</div>
 			<div className='ListSessions_column ListSessions_numbers'>
 				{patientDoc && <Subhead1 color={FONTS.dark}>{patientDoc}</Subhead1>}
 			</div>
@@ -227,6 +245,11 @@ const ListSessionsBody: React.FC<IPropsListSessionsBody> = (props) => {
 						<DropdownItem onClick={handleDownloadPDF}>
 							Descargar Cita
 						</DropdownItem>
+						{isPending && (
+							<DropdownItem onClick={handleConfirmPayment}>
+								Confirmar Cita
+							</DropdownItem>
+						)}
 					</DropdownMenu>
 				</div>
 			</div>

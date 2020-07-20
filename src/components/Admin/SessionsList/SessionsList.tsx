@@ -22,7 +22,7 @@ import { ISessionDoctor } from "../../../domain/Session/SessionMentorBean";
 import MentorService from "../../../services/Mentor/Mentor.service";
 import SessionService from '../../../services/Session/Session.service';
 import InputDatePicker from "../Reports/components/InputDatePicker/InputDatePicker";
-import CancelSessionModal from './components/CancelSessionModal/CancelSessionModal';
+import ConfirmationSessionModal from './components/CancelSessionModal/ConfirmationSessionModal';
 import FollowupSessionModal from "./components/FollowupSessionModal/FollowupSessionModal";
 import ListSessionsBody from './components/ListSessionBody/ListSessionBody';
 import RescheduleSessionModal from "./components/RescheduleSessionModal/RescheduleSessionModal";
@@ -36,6 +36,7 @@ interface IStateListSession {
   newSessions: ISessionBody[];
   initialLoad: boolean;
   showCancelModal: boolean;
+  showConfirmationModal: boolean;
   showRescheduleModal: boolean;
   showFollowupModal: boolean;
   selectedSessionId: string;
@@ -56,6 +57,7 @@ const TABLE_HEADER_TEXTS = [
   'NOMBRE DEL DOCTOR',
   'NOMBRE DEL PACIENTE',
   'PAGADO',
+  'ESTADO',
   'DNI O CE',
   'TELÉFONO',
   'URL DE LA CITA',
@@ -97,6 +99,7 @@ class SessionsList extends React.Component <{}, IStateListSession> {
       sessionRequest: new SessionRequestBean(),
       sessions: [],
       showCancelModal: false,
+      showConfirmationModal: false,
       showFollowupModal: false,
       showRescheduleModal: false,
     };
@@ -106,6 +109,7 @@ class SessionsList extends React.Component <{}, IStateListSession> {
     this.listSessions = this.listSessions.bind(this);
     this.getNewSessions = this.getNewSessions.bind(this);
     this.showCancelModal = this.showCancelModal.bind(this);
+    this.showConfirmationModal = this.showConfirmationModal.bind(this);
     this.cancelSession = this.cancelSession.bind(this);
     this.setCurrentSessionId = this.setCurrentSessionId.bind(this);
     this.updateFilterDate = this.updateFilterDate.bind(this);
@@ -121,6 +125,7 @@ class SessionsList extends React.Component <{}, IStateListSession> {
     this.showFollowupModal = this.showFollowupModal.bind(this);
     this.followupSession = this.followupSession.bind(this);
     this.getSessionPDF = this.getSessionPDF.bind(this);
+    this.confirmSessionPayment = this.confirmSessionPayment.bind(this);
   }
 
   public componentWillUnmount() {
@@ -399,6 +404,30 @@ class SessionsList extends React.Component <{}, IStateListSession> {
     }
   }
 
+  private showConfirmationModal(show: boolean) {
+    this.setState({ showConfirmationModal: show });
+    if (!show) {
+      this.setState({ selectedSessionId: '' });
+    }
+  }
+
+  private async confirmSessionPayment() {
+    const sessionId = this.state.selectedSessionId;
+    this.setState({ loading: true, showConfirmationModal: false }, () => {
+      this.sessionService.confirmSessionPayment(sessionId).then(() =>{
+        const newSessions = !this.state.sessions ? [] : [...this.state.sessions];
+        const sessionIndex = newSessions.findIndex((session: ISessionBody) => session.id === sessionId);
+        newSessions[sessionIndex].payment.pending = false;
+        
+        this.setState({
+          loading: false,
+          selectedSessionId: '',
+          sessions: newSessions,
+        });
+      });
+    })
+  }
+
   private getNewSessions() {
     return this.state.newSessions.map(m => m.id);
   }
@@ -431,18 +460,27 @@ class SessionsList extends React.Component <{}, IStateListSession> {
                 <ListSessionsBody
                   session={item}
                   showCancelModal={this.showCancelModal}
+                  showConfirmationModal={this.showConfirmationModal}
                   selectSession={this.setCurrentSessionId}
                   selectDoctor={this.setCurrentDoctorId}
                   showRescheduleModal={this.showRescheduleModal}
                   showFollowupModal={this.showFollowupModal}
                   getSessionPDF={this.getSessionPDF}
+                  confirmSessionPayment={this.confirmSessionPayment}
                 />
               </div>);
           })}
-          <CancelSessionModal
+          <ConfirmationSessionModal
+            title='¿Estás seguro que desea cancelar la cita?'
             show={this.state.showCancelModal}
             toggleModal={this.showCancelModal}
             confirm={this.cancelSession}
+          />
+          <ConfirmationSessionModal
+            title='¿Estás seguro que desea confirmar el pago de la cita?'
+            show={this.state.showConfirmationModal}
+            toggleModal={this.showConfirmationModal}
+            confirm={this.confirmSessionPayment}
           />
           <MentorModalBase show={this.state.modalSuccess} onCloseModal={this.toggleSuccessModal} hideClose={true}>
               <ContentModal.Success description={"Cita reasignada con éxito"} />
