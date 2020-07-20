@@ -26,7 +26,7 @@ export interface IPropsFormEditHistoryManager {
 }
 
 const getGender = (value?: number): string => {
-  return value === 0 ? 'Femenino' : value === 1 ? 'Masculino' : '';
+  return value === 1 ? 'Femenino' : value === 0 ? 'Masculino' : '';
 };
 
 const buildPatientInfoBlocks = (patient: any) => {
@@ -90,7 +90,7 @@ const FormEditHistoryManager: React.FC<IPropsFormEditHistoryManager> = (props) =
               <Heading2>
                   Antecedentes
               </Heading2>
-              <Body1 weight="500">*Si este campo está vacío, quiere decir que el paciente no declarado alergias o medicamentos</Body1>
+              <Body1 weight="500">*Si este campo está vacío, quiere decir que el paciente no ha declarado alergias o medicamentos</Body1>
               <PatientHistoryForm isWomanHistory={gender === 'Femenino'} notGender={!gender} />
           </div>
           <div className="PatientClinicHistory_sessions">
