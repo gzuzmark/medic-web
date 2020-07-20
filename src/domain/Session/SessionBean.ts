@@ -49,6 +49,11 @@ export interface ISessionBody extends ISessionBase {
     paid: string;
 }
 
+export interface ISessionPayment {
+    paid: string;
+    pending: boolean;
+}
+
 export interface ISessionBase {
     id?: string;
     from: string;
@@ -58,6 +63,7 @@ export interface ISessionBase {
     isActive?: boolean;
     reservation_date?: string;
     consult?: ISessionConsult;
+    payment: ISessionPayment;
 }
 export const SESSION_VIRTUAL = "VIRTUAL";
 export const SESSION_UNDEFINED = "UNDEFINED";
