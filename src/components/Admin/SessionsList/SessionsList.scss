@@ -76,18 +76,22 @@
     }
     //patient paid
     &:nth-child(6) {
-      width: 8%;
+      width: 5%;
     }
-    //patient document
+    //patient paid
     &:nth-child(7) {
       width: 8%;
     }
-    //patient phone
+    //patient document
     &:nth-child(8) {
       width: 8%;
     }
-    //session url
+    //patient phone
     &:nth-child(9) {
+      width: 8%;
+    }
+    //session url
+    &:nth-child(10) {
       text-align: left;
       width: 10%;
       padding-right: 5px;
@@ -97,9 +101,9 @@
       }
     }
     //actions1
-    &:nth-child(10) {
+    &:nth-child(11) {
       text-align: center;
-      width: 10%;
+      width: 5%;
     }
   }
   &_line {
