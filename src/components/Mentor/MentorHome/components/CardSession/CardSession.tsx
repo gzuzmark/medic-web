@@ -15,7 +15,7 @@ export interface IPropsCardSession {
 
 
 const CardSession: React.FC<IPropsCardSession> = (props) => {
-
+    const pendingText = props.item.session.payment && props.item.session.payment.pending && '[Por Confirmar]' || '';
     return (
         <div className={`CardSession CardSession--${props.item.getStatus()}`} style={props.style}>
             <div className={"CardSession_aside"} style={props.style}>
@@ -34,6 +34,7 @@ const CardSession: React.FC<IPropsCardSession> = (props) => {
                     <Text2>Sesión en curso</Text2>
                 </div>
                 <div className={"CardSession_body-main"}>
+                    <TextBold1>{pendingText}</TextBold1>{' '}
                     <Text1>{props.item.session.skill && props.item.session.skill.name}</Text1>
                 </div>
                 {!props.available && (
