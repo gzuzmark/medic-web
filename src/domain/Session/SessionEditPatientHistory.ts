@@ -132,28 +132,32 @@ class SessionEditPatientHistoryData {
   }
 
   public preparePatientCaseTreatmentData(values: IPatientTreatmentFormValidations[]) {
-    this.patient.case.treatments = values.map((value: IPatientTreatmentFormValidations) => {
-      if (value.consult_id && value.id) {
+    if (!values) {
+      this.patient.case.treatments = [];
+    } else {
+      this.patient.case.treatments = values.map((value: IPatientTreatmentFormValidations) => {
+        if (value.consult_id && value.id) {
+          return {
+            component: value.component,
+            consult_id: value.consult_id,
+            extra_info: value.extra_info,
+            frequency: value.frequency,
+            id: value.id,
+            name: value.name,
+            period: value.period,
+            quantity: value.quantity,
+          };
+        }
         return {
           component: value.component,
-          consult_id: value.consult_id,
           extra_info: value.extra_info,
           frequency: value.frequency,
-          id: value.id,
           name: value.name,
           period: value.period,
           quantity: value.quantity,
         };
-      }
-      return {
-        component: value.component,
-        extra_info: value.extra_info,
-        frequency: value.frequency,
-        name: value.name,
-        period: value.period,
-        quantity: value.quantity,
-      };
-    });
+      });
+    }
   }
 
   private setInitialHistory(currentHistory?: ISessionHistoryForm) {
