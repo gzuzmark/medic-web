@@ -142,17 +142,35 @@ class SessionEditPatientHistoryData {
   }
 
   public preparePatientCaseTreatmentData(values: IPatientTreatmentFormValidations[]) {
-    this.patient.case.treatments = values.map((value: IPatientTreatmentFormValidations) => {
-      if (value.consult_id && value.id) {
+    if (!values) {
+      this.patient.case.treatments = []
+    } else {
+      this.patient.case.treatments = values.map((value: IPatientTreatmentFormValidations) => {
+        if (value.consult_id && value.id) {
+          return {
+            activePrinciples: value.activePrinciples,
+            brand: this.getValueWithoutSKU(value.brand),
+            component: value.component,
+            concentration: this.getValueWithoutSKU(value.concentration),
+            consult_id: value.consult_id,
+            extra_info: value.extra_info,
+            frequency: value.frequency,
+            id: value.id,
+            name: value.name,
+            period: value.period,
+            pharmaceuticalForm: this.getValueWithoutSKU(value.pharmaceuticalForm),
+            quantity: value.quantity,
+            routeofAdministration: this.getValueWithoutSKU(value.routeofAdministration),
+            salesUnit: value.salesUnit,
+          };
+        }
         return {
           activePrinciples: value.activePrinciples,
           brand: this.getValueWithoutSKU(value.brand),
           component: value.component,
           concentration: this.getValueWithoutSKU(value.concentration),
-          consult_id: value.consult_id,
           extra_info: value.extra_info,
           frequency: value.frequency,
-          id: value.id,
           name: value.name,
           period: value.period,
           pharmaceuticalForm: this.getValueWithoutSKU(value.pharmaceuticalForm),
@@ -160,22 +178,8 @@ class SessionEditPatientHistoryData {
           routeofAdministration: this.getValueWithoutSKU(value.routeofAdministration),
           salesUnit: value.salesUnit,
         };
-      }
-      return {
-        activePrinciples: value.activePrinciples,
-        brand: this.getValueWithoutSKU(value.brand),
-        component: value.component,
-        concentration: this.getValueWithoutSKU(value.concentration),
-        extra_info: value.extra_info,
-        frequency: value.frequency,
-        name: value.name,
-        period: value.period,
-        pharmaceuticalForm: this.getValueWithoutSKU(value.pharmaceuticalForm),
-        quantity: value.quantity,
-        routeofAdministration: this.getValueWithoutSKU(value.routeofAdministration),
-        salesUnit: value.salesUnit,
-      };
-    });
+      });
+    }
   }
 
   private setInitialHistory(currentHistory?: ISessionHistoryForm) {
