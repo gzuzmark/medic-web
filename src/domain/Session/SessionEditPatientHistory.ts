@@ -235,12 +235,12 @@ class SessionEditPatientHistoryData {
     this.patient.nutritionist.alcoholConsumption = currentNutrition && currentNutrition.alcoholConsumption || '';
     this.patient.nutritionist.stomachIssues = currentNutrition && currentNutrition.stomachIssues || '';
     this.patient.nutritionist.diagnostic = currentNutrition && currentNutrition.diagnostic || '';
-    this.patient.nutritionist.breakfast = currentNutrition && currentNutrition.breakfast || '';
-    this.patient.nutritionist.midMorning = currentNutrition && currentNutrition.midMorning || '';
-    this.patient.nutritionist.lunch = currentNutrition && currentNutrition.lunch || '';
-    this.patient.nutritionist.midAfternoon = currentNutrition && currentNutrition.midAfternoon || '';
-    this.patient.nutritionist.dinner = currentNutrition && currentNutrition.dinner || '';
-    this.patient.nutritionist.snacks = currentNutrition && currentNutrition.snacks || '';
+    this.patient.nutritionist.breakfast = currentNutrition && currentNutrition.breakfast || (nutritionistDefaultValues.breakfast || '').trim();
+    this.patient.nutritionist.midMorning = currentNutrition && currentNutrition.midMorning || (nutritionistDefaultValues.midMorning || '').trim();
+    this.patient.nutritionist.lunch = currentNutrition && currentNutrition.lunch || (nutritionistDefaultValues.lunch || '').trim();
+    this.patient.nutritionist.midAfternoon = currentNutrition && currentNutrition.midAfternoon || (nutritionistDefaultValues.midAfternoon || '').trim();
+    this.patient.nutritionist.dinner = currentNutrition && currentNutrition.dinner || (nutritionistDefaultValues.dinner || '').trim();
+    this.patient.nutritionist.snacks = currentNutrition && currentNutrition.snacks || (nutritionistDefaultValues.snacks || '').trim();
     this.patient.nutritionist.recommendation = currentNutrition && currentNutrition.recommendation || '';
     this.patient.nutritionist.diagnosisDate = currentNutrition && currentNutrition.diagnosisDate || new Date();
   };
