@@ -253,7 +253,7 @@ const NutritionistForm: React.FC<IPropsNutritionistForm> = ({
 								name: 'nutritionist.breakfast',
 								onBlur: handleBlur,
 								onChange: handleChange,
-								rows: 4,
+								rows: 12,
 								style: { height: 'auto' },
 								value: nutritionist.breakfast,
 							}}
@@ -274,7 +274,7 @@ const NutritionistForm: React.FC<IPropsNutritionistForm> = ({
 								name: 'nutritionist.midMorning',
 								onBlur: handleBlur,
 								onChange: handleChange,
-								rows: 4,
+								rows: 8,
 								style: { height: 'auto' },
 								value: nutritionist.midMorning,
 							}}
@@ -295,7 +295,7 @@ const NutritionistForm: React.FC<IPropsNutritionistForm> = ({
 								name: 'nutritionist.lunch',
 								onBlur: handleBlur,
 								onChange: handleChange,
-								rows: 4,
+								rows: 12,
 								style: { height: 'auto' },
 								value: nutritionist.lunch,
 							}}
@@ -316,7 +316,7 @@ const NutritionistForm: React.FC<IPropsNutritionistForm> = ({
 								name: 'nutritionist.midAfternoon',
 								onBlur: handleBlur,
 								onChange: handleChange,
-								rows: 4,
+								rows: 8,
 								style: { height: 'auto' },
 								value: nutritionist.midAfternoon,
 							}}
@@ -337,7 +337,7 @@ const NutritionistForm: React.FC<IPropsNutritionistForm> = ({
 								name: 'nutritionist.dinner',
 								onBlur: handleBlur,
 								onChange: handleChange,
-								rows: 4,
+								rows: 12,
 								style: { height: 'auto' },
 								value: nutritionist.dinner,
 							}}
@@ -358,7 +358,7 @@ const NutritionistForm: React.FC<IPropsNutritionistForm> = ({
 								name: 'nutritionist.snacks',
 								onBlur: handleBlur,
 								onChange: handleChange,
-								rows: 4,
+								rows: 8,
 								style: { height: 'auto' },
 								value: nutritionist.snacks,
 							}}
