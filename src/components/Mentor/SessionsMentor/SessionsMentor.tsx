@@ -243,12 +243,13 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
                                 enableReinitialize={true}
                                 isInitialValid={false}
                                 onSubmit={this.onSubmit}>
-                                {({ values, handleBlur, handleChange, handleSubmit}) => {
+                                {({ setFieldValue, values, handleBlur, handleChange, handleSubmit}) => {
                                     return (
                                         <PatientBackgroundFormContext.Provider
                                             value={{
                                                 handleBlur,
                                                 handleChange,
+                                                setFieldValue,
                                                 values: values as ISessionPatientHistoryFormValidations,
                                             }}>
                                             <form onSubmit={handleSubmit}>
