@@ -1,3 +1,4 @@
+import { ISessionNutritionistFormValidations, nutritionistDefaultValues } from "../../components/Mentor/SessionsMentor/components/NutritionistForm/NutritionistForm.context";
 import {
   IPatientBackgroundFormValidations,
   IPatientCaseFormValidations,
@@ -44,6 +45,7 @@ export interface ISessionPatientPastCase {
 export interface ISessionPatientHistoryForm {
   history: ISessionHistoryForm;
   case: ISessionPatientCaseForm
+  nutritionist: ISessionNutritionistFormValidations;
 }
 
 class SessionEditPatientHistoryData {
@@ -52,12 +54,15 @@ class SessionEditPatientHistoryData {
     const defaultPatient = {
       case: {} as ISessionPatientCaseForm,
       history: {} as ISessionHistoryForm,
+      nutritionist: nutritionistDefaultValues,
     } as ISessionPatientHistoryForm;
     this.patient = !!patient ? patient : defaultPatient;
     this.patient.history = patient && patient.history || {} as ISessionHistoryForm;
     this.patient.case = patient && patient.case || {} as ISessionPatientCaseForm;
+    this.patient.nutritionist = patient && patient.nutritionist || nutritionistDefaultValues;
     this.setInitialHistory(patient && patient.history);
     this.setInitialCase(patient && patient.case);
+    this.setInitialNutritionist(patient && patient.nutritionist);
   }
 
   get historyUpdateParams(): ISessionHistoryForm {
@@ -78,6 +83,29 @@ class SessionEditPatientHistoryData {
       id: this.patient.case.id || '',
       recommendation: this.patient.case.recommendation || '',
       treatments: this.patient.case.treatments || [],
+    };
+  }
+
+  get getNutritionValues(): ISessionNutritionistFormValidations {
+    const n = {...this.patient.nutritionist};
+    return {
+      alcoholConsumption: n.alcoholConsumption,
+      breakfast: n.breakfast,
+      diagnosisDate: n.diagnosisDate,
+      diagnostic: n.diagnostic,
+      dinner: n.dinner,
+      feedingHabits: n.feedingHabits,
+      height: `${n.height}`,
+      imc: `${n.imc}`,
+      lunch: n.lunch,
+      midAfternoon: n.midAfternoon,
+      midMorning: n.midMorning,
+      physicalActivity: n.physicalActivity,
+      recommendation: n.recommendation,
+      snacks: n.snacks,
+      stomachIssues: n.stomachIssues,
+      waterConsumption: n.waterConsumption,
+      weight: `${n.weight}`,
     };
   }
 
@@ -122,6 +150,26 @@ class SessionEditPatientHistoryData {
     this.patient.history.last_pregnancy = values.last_pregnancy.trim();
     this.patient.history.extra_info = values.extra_info.trim();
     this.patient.history.ob_issues = values.ob_issues.trim();
+  }
+
+  public prepareNutritionData(values: ISessionNutritionistFormValidations) {
+    this.patient.nutritionist.weight = (`${values.weight}` || '').trim();
+    this.patient.nutritionist.height = (`${values.height}` || '').trim();
+    this.patient.nutritionist.imc = (values.imc || '').trim();
+    this.patient.nutritionist.physicalActivity = (values.physicalActivity || '').trim();
+    this.patient.nutritionist.waterConsumption = (values.waterConsumption || '').trim();
+    this.patient.nutritionist.feedingHabits = (values.feedingHabits || '').trim();
+    this.patient.nutritionist.alcoholConsumption = (values.alcoholConsumption || '').trim();
+    this.patient.nutritionist.stomachIssues = (values.stomachIssues || '').trim();
+    this.patient.nutritionist.diagnostic = (values.diagnostic || '').trim();
+    this.patient.nutritionist.breakfast = (values.breakfast || '').trim();
+    this.patient.nutritionist.midMorning = (values.midMorning || '').trim();
+    this.patient.nutritionist.lunch = (values.lunch || '').trim();
+    this.patient.nutritionist.midAfternoon = (values.midAfternoon || '').trim();
+    this.patient.nutritionist.dinner = (values.dinner || '').trim();
+    this.patient.nutritionist.snacks = (values.snacks || '').trim();
+    this.patient.nutritionist.recommendation = (values.recommendation || '').trim();
+    this.patient.nutritionist.diagnosisDate = values.diagnosisDate;
   }
 
   public preparePatientCaseData(values: IPatientCaseFormValidations) {
@@ -176,6 +224,26 @@ class SessionEditPatientHistoryData {
     this.patient.case.recommendation = currentCase && currentCase.recommendation || '';
     this.patient.case.treatments = currentCase && currentCase.treatments || [];
   }
+
+  private setInitialNutritionist(currentNutrition?: ISessionNutritionistFormValidations) {
+    this.patient.nutritionist.weight = currentNutrition && currentNutrition.weight || '';
+    this.patient.nutritionist.height = currentNutrition && currentNutrition.height || '';
+    this.patient.nutritionist.imc = currentNutrition && currentNutrition.imc || '';
+    this.patient.nutritionist.physicalActivity = currentNutrition && currentNutrition.physicalActivity || '';
+    this.patient.nutritionist.waterConsumption = currentNutrition && currentNutrition.waterConsumption || '';
+    this.patient.nutritionist.feedingHabits = currentNutrition && currentNutrition.feedingHabits || '';
+    this.patient.nutritionist.alcoholConsumption = currentNutrition && currentNutrition.alcoholConsumption || '';
+    this.patient.nutritionist.stomachIssues = currentNutrition && currentNutrition.stomachIssues || '';
+    this.patient.nutritionist.diagnostic = currentNutrition && currentNutrition.diagnostic || '';
+    this.patient.nutritionist.breakfast = currentNutrition && currentNutrition.breakfast || (nutritionistDefaultValues.breakfast || '').trim();
+    this.patient.nutritionist.midMorning = currentNutrition && currentNutrition.midMorning || (nutritionistDefaultValues.midMorning || '').trim();
+    this.patient.nutritionist.lunch = currentNutrition && currentNutrition.lunch || (nutritionistDefaultValues.lunch || '').trim();
+    this.patient.nutritionist.midAfternoon = currentNutrition && currentNutrition.midAfternoon || (nutritionistDefaultValues.midAfternoon || '').trim();
+    this.patient.nutritionist.dinner = currentNutrition && currentNutrition.dinner || (nutritionistDefaultValues.dinner || '').trim();
+    this.patient.nutritionist.snacks = currentNutrition && currentNutrition.snacks || (nutritionistDefaultValues.snacks || '').trim();
+    this.patient.nutritionist.recommendation = currentNutrition && currentNutrition.recommendation || '';
+    this.patient.nutritionist.diagnosisDate = currentNutrition && currentNutrition.diagnosisDate || new Date();
+  };
 }
 
 export default SessionEditPatientHistoryData;

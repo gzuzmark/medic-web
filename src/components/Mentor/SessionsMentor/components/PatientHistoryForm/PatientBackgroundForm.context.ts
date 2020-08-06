@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { ISessionNutritionistFormValidations, } from '../NutritionistForm/NutritionistForm.context';
 
 export interface IPatientBackgroundFormValidations {
   allergies: string,
@@ -31,17 +32,20 @@ export interface IPatientCaseFormValidations {
 export interface ISessionPatientHistoryFormValidations {
   history: IPatientBackgroundFormValidations;
   case: IPatientCaseFormValidations;
+  nutritionist?: ISessionNutritionistFormValidations;
 }
 
 export interface IPatientBackgroundFormContext {
   handleBlur: any;
   handleChange: any;
+  setFieldValue: any;
   values: ISessionPatientHistoryFormValidations;
 }
 
 const defaultValue: IPatientBackgroundFormContext = {
   handleBlur: (event: any) => void(0),
   handleChange: (event: any) => void(0),
+  setFieldValue: (field: string, value: string) => void(0),
   values: {} as ISessionPatientHistoryFormValidations,
 };
 
