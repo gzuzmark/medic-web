@@ -31,6 +31,9 @@ export const UnitWrapper = styled.div`
     div {
       margin-right: 10px;
     }
+    span {
+      white-space: nowrap;
+    }
 `;
 
 export const Unit = styled.span`
@@ -101,6 +104,8 @@ interface IOptionTypes {
   dropdown: IOptionBuilder,
   input: IOptionBuilder,
 }
+
+const arrayIntersection = (a1: string[], a2: string[]) => a1.filter(v => a2.includes(v));
 
 const FIELD_BUILDER_TYPES: IOptionTypes = {
 	dropdown: {
@@ -232,8 +237,9 @@ const HistoryTreatmentForm: React.FC <IPropsHistoryTreatmentForm> = (props) => {
         name: '',
         period: '',
         pharmaceuticalForm: '',
+        quantity: '',
         routeofAdministration: '',
-        salesUnit: '',
+        salesUnit: '',        
       });
       const removeMedicine = (index: number) => {
         return () => {
@@ -259,63 +265,138 @@ const HistoryTreatmentForm: React.FC <IPropsHistoryTreatmentForm> = (props) => {
         });
       });
 
-      const handleBrandChange = (name: string, selectedOption: IPropsMentorOptionsDropDown) => {
+      const handleBrandChange = (i: number, value: ISessionPatientTreatmentForm) => (name: string, selectedOption: IPropsMentorOptionsDropDown) => {
         const currentValue = selectedOption && selectedOption.value || '';
+        // tslint:disable:no-console
+        console.log({ value, selectedOption });
         if (currentValue) {
           const skuList = getSKUList(currentValue);
-          const info = getInfoFromSKUList(skuList, productInfo);
-
-          setDropdownValues({
-            ...dropdownValues,
-            ...info,
-          });
           ctxt.setFieldValue(name, selectedOption.value);
-          setCurrentUnit(info.salesUnit[0].value);
+          if (skuList.length > 0) {
+            const info = getInfoFromSKUList(skuList, productInfo);
+  
+            setDropdownValues({
+              ...dropdownValues,
+              ...info,
+            });
+            setCurrentUnit(info.salesUnit[0].value);
+            if (!value.concentration) {
+              ctxt.setFieldValue(`case.treatments[${i}].concentration`, info.concentrations[0].value);
+            }
+            if (!value.routeofAdministration) {
+              ctxt.setFieldValue(`case.treatments[${i}].routeofAdministration`, info.administrationRoutes[0].value);
+            }
+            if (!value.pharmaceuticalForm) {
+              ctxt.setFieldValue(`case.treatments[${i}].pharmaceuticalForm`, info.pharmaceuticalForms[0].value);
+            }
+          }
         } else {
           setDropdownValues({
             ...productInfo
           });
-          ctxt.setFieldValue(name, []);
+          ctxt.setFieldValue(name, '');
+          ctxt.setFieldValue(`case.treatments[${i}].concentration`, '');
+          ctxt.setFieldValue(`case.treatments[${i}].routeofAdministration`, '');
+          ctxt.setFieldValue(`case.treatments[${i}].pharmaceuticalForm`, '');
         }
       };
 
-      const handlePrincipleChange = (index: number) => (name: string, selectedOption: IPropsMentorOptionsDropDown) => {
-        mentorService.getPrincipleInformation(selectedOption.value).then((response: any[]) => {
-          if (response.length > 0) {
-            const newConcentrations = buildDropdownOptions(response, 'concentration', FIELD_BUILDER_TYPES.dropdown) as IPropsMentorOptionsDropDown[];
-            const newAdministrationRoutes = buildDropdownOptions(response, 'routeofAdministration', FIELD_BUILDER_TYPES.dropdown) as IPropsMentorOptionsDropDown[];
-            const newPharmaceuticalForms = buildDropdownOptions(response, 'pharmaceuticalForm', FIELD_BUILDER_TYPES.dropdown) as IPropsMentorOptionsDropDown[];
-            const newBrands = buildDropdownOptions(response, 'brand', FIELD_BUILDER_TYPES.dropdown) as IPropsMentorOptionsDropDown[];
-            const newSalesUnit = buildDropdownOptions(response, 'salesUnit', FIELD_BUILDER_TYPES.input) as IMappedText[];
-
-            const info = {
-              administrationRoutes: newAdministrationRoutes,
-              brands: newBrands,
-              concentrations: newConcentrations,
-              pharmaceuticalForms: newPharmaceuticalForms,
-              salesUnit: newSalesUnit,
-            } as IProductInfo;
-
-            setProductInfo(info);
-            setDropdownValues(info);
-            const curTreatment = `case.treatments[${index}]`;
-            ctxt.setFieldValue(name, selectedOption.value);
-            ctxt.setFieldValue(`${curTreatment}.concentration`, newConcentrations[0].value);
-            ctxt.setFieldValue(`${curTreatment}.routeofAdministration`, newAdministrationRoutes[0].value);
-            ctxt.setFieldValue(`${curTreatment}.pharmaceuticalForm`, newPharmaceuticalForms[0].value);
-            setCurrentUnit(newSalesUnit[0].value);
-          } else {
-            setProductInfo(productInfoInitialValues);
-            setDropdownValues(productInfoInitialValues);
-          }
-        });
+      const handlePrincipleChange = (i: number) => (name: string, selectedOption: IPropsMentorOptionsDropDown) => {
+        if (selectedOption) {
+          mentorService.getPrincipleInformation(selectedOption.value).then((response: any[]) => {
+            if (response.length > 0) {
+              const newConcentrations = buildDropdownOptions(response, 'concentration', FIELD_BUILDER_TYPES.dropdown) as IPropsMentorOptionsDropDown[];
+              const newAdministrationRoutes = buildDropdownOptions(response, 'routeofAdministration', FIELD_BUILDER_TYPES.dropdown) as IPropsMentorOptionsDropDown[];
+              const newPharmaceuticalForms = buildDropdownOptions(response, 'pharmaceuticalForm', FIELD_BUILDER_TYPES.dropdown) as IPropsMentorOptionsDropDown[];
+              const newBrands = buildDropdownOptions(response, 'brand', FIELD_BUILDER_TYPES.dropdown) as IPropsMentorOptionsDropDown[];
+              const newSalesUnit = buildDropdownOptions(response, 'salesUnit', FIELD_BUILDER_TYPES.input) as IMappedText[];
+  
+              const info = {
+                administrationRoutes: newAdministrationRoutes,
+                brands: newBrands,
+                concentrations: newConcentrations,
+                pharmaceuticalForms: newPharmaceuticalForms,
+                salesUnit: newSalesUnit,
+              } as IProductInfo;
+  
+              setProductInfo(info);
+              setDropdownValues(info);
+              ctxt.setFieldValue(name, selectedOption.value);
+              setCurrentUnit(newSalesUnit[0].value);
+            } else {
+              setProductInfo(productInfoInitialValues);
+              setDropdownValues(productInfoInitialValues);
+            }
+          });
+        } else {
+          setDropdownValues(productInfoInitialValues);
+          ctxt.setFieldValue(`case.treatments[${i}].concentration`, '');
+          ctxt.setFieldValue(`case.treatments[${i}].routeofAdministration`, '');
+          ctxt.setFieldValue(`case.treatments[${i}].pharmaceuticalForm`, '');
+          ctxt.setFieldValue(`case.treatments[${i}].brand`, '');
+        }
       };
 
-      const handleDependencyFields = (name: string, selectedOption: IPropsMentorOptionsDropDown) => {
-        const skuList = getSKUList(selectedOption.value);
-        const { salesUnit } = getInfoFromSKUList(skuList, productInfo);
-        ctxt.setFieldValue(name, selectedOption.value);
-        setCurrentUnit(salesUnit[0].value);
+      const handleDependencyFields = (values: ISessionPatientTreatmentForm, i: number) => (name: string, selectedOption: IPropsMentorOptionsDropDown) => {
+        if (selectedOption) {
+          let skuList = getSKUList(selectedOption.value);
+          if (name.includes('concentration')) {
+            if (values.routeofAdministration) {
+              const skuListROA = getSKUList(values.routeofAdministration);
+              skuList = arrayIntersection(skuList, skuListROA);
+            }
+            if (values.pharmaceuticalForm) {
+              const skuListPHF = getSKUList(values.pharmaceuticalForm);
+              skuList = arrayIntersection(skuList, skuListPHF);
+            }
+          } else if (name.includes('routeofAdministration')) {
+            if (values.concentration) {
+              const skuListCON = getSKUList(values.concentration);
+              skuList = arrayIntersection(skuList, skuListCON);
+            }
+            if (values.pharmaceuticalForm) {
+              const skuListPHF = getSKUList(values.pharmaceuticalForm);
+              skuList = arrayIntersection(skuList, skuListPHF);
+            }
+          } else if (name.includes('pharmaceuticalForm')) {
+            if (values.routeofAdministration) {
+              const skuListROA = getSKUList(values.routeofAdministration);
+              skuList = arrayIntersection(skuList, skuListROA);
+            }
+            if (values.concentration) {
+              const skuListCON = getSKUList(values.concentration);
+              skuList = arrayIntersection(skuList, skuListCON);
+            }
+          }
+          const {
+            concentrations,
+            administrationRoutes,
+            pharmaceuticalForms,
+            brandsOptions,
+            salesUnit,
+          } = getInfoFromSKUList(skuList, productInfo);
+          ctxt.setFieldValue(name, selectedOption.value);
+          // tslint:disable:no-console
+          console.log({ name, values, skuList, salesUnit, selectedOption });
+          
+          if (name.includes('concentration')) {
+            setDropdownValues(val => ({ ...val, administrationRoutes, pharmaceuticalForms, brands: brandsOptions }));
+          } else if (name.includes('routeofAdministration')) {
+            setDropdownValues(val => ({ ...val, concentrations, pharmaceuticalForms, brands: brandsOptions }));
+          } else if (name.includes('pharmaceuticalForm')) {
+            setDropdownValues(val => ({ ...val, administrationRoutes, concentrations, brands: brandsOptions }));
+          }
+          setCurrentUnit(salesUnit[0].value);
+        } else {
+          setDropdownValues({
+            ...productInfo
+          });
+          ctxt.setFieldValue(name, '');
+          ctxt.setFieldValue(`case.treatments[${i}].concentration`, '');
+          ctxt.setFieldValue(`case.treatments[${i}].routeofAdministration`, '');
+          ctxt.setFieldValue(`case.treatments[${i}].pharmaceuticalForm`, '');
+          ctxt.setFieldValue(`case.treatments[${i}].brand`, '');
+        }
       };
 
       return treatments.map((value: ISessionPatientTreatmentForm, index: number) => (
@@ -327,6 +408,7 @@ const HistoryTreatmentForm: React.FC <IPropsHistoryTreatmentForm> = (props) => {
             <FormColumn width={3.33} key={`FormColumn-MedicineData_${++counter}`}>
               <MentorTypeAhead
                   label="Componente activo"
+                  lowercaseLabel={true}
                   name={`case.treatments[${index}].component`}
                   disabled={!!props.forceDisable}
                   value={value.component}
@@ -336,61 +418,70 @@ const HistoryTreatmentForm: React.FC <IPropsHistoryTreatmentForm> = (props) => {
             <FormColumn width={5} key={`FormColumn-MedicineData_${++counter}`}>
             <MentorDropDown
                 label="Concentración"
+                lowercaseLabel={true}
                 name={`case.treatments[${index}].concentration`}
                 disabled={!!props.forceDisable}
                 value={value.concentration}
-                triggerChange={handleDependencyFields}
+                isClearable={true}
+                triggerChange={handleDependencyFields(value, index)}
                 options={dropdownValues.concentrations} />
             </FormColumn>,
             <FormColumn width={4} key={`FormColumn-MedicineData_${++counter}`}>
             <MentorDropDown
                 label="Vía de administración"
+                lowercaseLabel={true}
                 name={`case.treatments[${index}].routeofAdministration`}
                 disabled={!!props.forceDisable}
                 value={value.routeofAdministration}
-                triggerChange={handleDependencyFields}
+                isClearable={true}
+                triggerChange={handleDependencyFields(value, index)}
                 options={dropdownValues.administrationRoutes} />
             </FormColumn>,
             <FormColumn width={4} key={`FormColumn-MedicineData_${++counter}`}>
             <MentorDropDown
                 label="Forma farmacéutica"
+                lowercaseLabel={true}
                 name={`case.treatments[${index}].pharmaceuticalForm`}
                 disabled={!!props.forceDisable}
                 value={value.pharmaceuticalForm}
-                triggerChange={handleDependencyFields}
+                isClearable={true}
+                triggerChange={handleDependencyFields(value, index)}
                 options={dropdownValues.pharmaceuticalForms} />
             </FormColumn>
           ]}/>
           <FormRow key={"formRow_2"} style={defaultRowStyle} columns={[
             <FormColumn width={2} key={`FormColumn-MedicineData_${++counter}`}>
-              <MentorDropDown
-                label="Marca del medicamento (opcional)"
+              <MentorTypeAhead
+                creatable={true}
+                isClearable={true}
+                label="Producto sugerido (opcional)"
+                lowercaseLabel={true}
                 name={`case.treatments[${index}].brand`}
                 disabled={!!props.forceDisable}
-                value={value.brand}
-                isSearchable={true}
-                isClearable={true}
-                triggerChange={handleBrandChange}
-                options={dropdownValues.brands}/>
-            </FormColumn>,
-            <FormColumn width={4} key={`FormColumn-MedicineData_${++counter}`}>
-              <MentorInput
-                label="Duración tratamiento:"
-                disabled={!!props.forceDisable}
-                lowercaseLabel={true}
-                attrs={{
-                  maxLength: DEFAULT_MAX_LENGTH,
-                  name: `case.treatments[${index}].period`,
-                  onBlur: ctxt.handleBlur,
-                  onChange: ctxt.handleChange,
-                  value: value.period}}/>
+                triggerChange={handleBrandChange(index, value)}
+                options={dropdownValues.brands} />
             </FormColumn>,
             <FormColumn width={4} key={`FormColumn-MedicineData_${++counter}`}>
               <UnitWrapper>
                 <MentorInput
-                  label="Cantidad:"
-                  disabled={!!props.forceDisable}
+                  label="Duración tratamiento:"
                   lowercaseLabel={true}
+                  disabled={!!props.forceDisable}
+                  attrs={{
+                    maxLength: DEFAULT_MAX_LENGTH,
+                    name: `case.treatments[${index}].period`,
+                    onBlur: ctxt.handleBlur,
+                    onChange: ctxt.handleChange,
+                    value: value.period}}/>
+                  <Unit>Días</Unit>
+              </UnitWrapper>
+            </FormColumn>,
+            <FormColumn width={4} key={`FormColumn-MedicineData_${++counter}`}>
+              <UnitWrapper>
+                <MentorInput
+                  label="Cantidad Total:"
+                  lowercaseLabel={true}
+                  disabled={!!props.forceDisable}
                   attrs={{
                     maxLength: DEFAULT_MAX_LENGTH,
                     name: `case.treatments[${index}].quantity`,

@@ -27,6 +27,7 @@ export interface IPropsMentorDropDown {
     info?: string;
     isMulti?: boolean;
     style?: React.CSSProperties;
+    lowercaseLabel?: boolean;
     onBlur?: (e: any) => {};
     triggerChange(name: string, option: IPropsMentorOptionsDropDown | IPropsMentorOptionsDropDown[]):void;
 }
@@ -81,7 +82,7 @@ class MentorDropDown extends React.Component<IPropsMentorDropDown, {}> {
         });
         return (
             <CustomDropdown style={{...this.props.style}}>
-                {this.props.label && <FormLabel label={this.props.label} info={this.props.info} uppercase={true}/>}
+                {this.props.label && <FormLabel label={this.props.label} info={this.props.info} uppercase={!this.props.lowercaseLabel}/>}
                 <Select
                     isDisabled={!!this.props.disabled}
                     isSearchable={!!this.props.isSearchable}
