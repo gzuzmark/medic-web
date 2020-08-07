@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { components, Creatable } from 'react-select';
 import AsyncSelect from 'react-select/lib/Async';
-import { InputActionMeta } from 'react-select/lib/types';
+import { InputActionMeta, OptionsType } from 'react-select/lib/types';
 import styled from 'styled-components';
 import FormLabel from '../FormLabel/FormLabel';
 import Icon from '../Icon/Icon';
@@ -30,6 +30,8 @@ export interface IPropsMentorTypeAhead {
 	lowercaseLabel?: boolean;
 	creatable?: boolean;
 	isClearable?: boolean;
+	defaultOptions?: boolean | OptionsType<IPropsMentorOptionsDropDown> | undefined;
+	inputValue?: string | undefined;
 	onBlur?: (e: any) => {};
 	loadOptions?: (value: string) => Promise<any>;
 	handleInputChange?: (newValue: string, actionMeta: InputActionMeta) => void;
@@ -125,6 +127,7 @@ class MentorTypeAhead extends React.Component<IPropsMentorTypeAhead, {}> {
 						isMulti={!!this.props.isMulti}
 						noOptionsMessage={this.noOptions}
 						loadingMessage={this.loading}
+						defaultInputValue={this.props.inputValue}						
 						components={{
 							DropdownIndicator: DropdownIndicator(
 								!!this.props.error,
@@ -151,6 +154,7 @@ class MentorTypeAhead extends React.Component<IPropsMentorTypeAhead, {}> {
 						isMulti={!!this.props.isMulti}
 						noOptionsMessage={this.noOptions}
 						loadingMessage={this.loading}
+						defaultOptions={this.props.defaultOptions}
 						components={{
 							DropdownIndicator: DropdownIndicator(
 								!!this.props.error,
@@ -160,6 +164,7 @@ class MentorTypeAhead extends React.Component<IPropsMentorTypeAhead, {}> {
 						}}
 						loadOptions={this.props.loadOptions}
 						value={value}
+						defaultInputValue={this.props.inputValue}
 					/>
 				)}
 				{!!this.props.error && (

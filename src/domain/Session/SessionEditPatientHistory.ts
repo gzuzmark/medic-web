@@ -25,9 +25,8 @@ export interface ISessionPatientTreatmentForm {
   period: string;
   quantity: string;
 
-  brand: string,
-  concentration: string,
-  routeofAdministration: string,
+  concentrations: string,
+  administrationRoute: string,
   pharmaceuticalForm: string,
   salesUnit: string,
   activePrinciples: string,
@@ -197,33 +196,31 @@ class SessionEditPatientHistoryData {
         if (value.consult_id && value.id) {
           return {
             activePrinciples: value.activePrinciples,
-            brand: this.getValueWithoutSKU(value.brand),
+            administrationRoute: this.getValueWithoutSKU(value.administrationRoute),
             component: value.component,
-            concentration: this.getValueWithoutSKU(value.concentration),
+            concentrations: this.getValueWithoutSKU(value.concentrations),
             consult_id: value.consult_id,
             extra_info: value.extra_info,
             frequency: value.frequency,
             id: value.id,
-            name: value.name,
+            name: this.getValueWithoutSKU(value.name),
             period: value.period,
             pharmaceuticalForm: this.getValueWithoutSKU(value.pharmaceuticalForm),
             quantity: value.quantity,
-            routeofAdministration: this.getValueWithoutSKU(value.routeofAdministration),
             salesUnit: value.salesUnit,
           };
         }
         return {
           activePrinciples: value.activePrinciples,
-          brand: this.getValueWithoutSKU(value.brand),
+          administrationRoute: this.getValueWithoutSKU(value.administrationRoute),
           component: value.component,
-          concentration: this.getValueWithoutSKU(value.concentration),
+          concentrations: this.getValueWithoutSKU(value.concentrations),
           extra_info: value.extra_info,
           frequency: value.frequency,
-          name: value.name,
+          name: this.getValueWithoutSKU(value.name),
           period: value.period,
           pharmaceuticalForm: this.getValueWithoutSKU(value.pharmaceuticalForm),
           quantity: value.quantity,
-          routeofAdministration: this.getValueWithoutSKU(value.routeofAdministration),
           salesUnit: value.salesUnit,
         };
       });
@@ -248,6 +245,9 @@ class SessionEditPatientHistoryData {
   }
 
   private getValueWithoutSKU(value: string) {
+    if (!value) {
+      return '';
+    }
     const skuList = value.split(SAPCODE_SEPARATOR);
     const lastIndex = skuList.length - 1;
     return !!skuList.length && skuList[lastIndex] || '';

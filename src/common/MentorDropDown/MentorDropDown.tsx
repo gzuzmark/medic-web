@@ -76,7 +76,7 @@ class MentorDropDown extends React.Component<IPropsMentorDropDown, {}> {
             if (Array.isArray(this.props.value)) {
                 isSelected = this.props.value.indexOf(option.value) !== -1;
             } else {
-                isSelected = option.value === this.props.value;
+                isSelected = !!this.props.value && option.value.includes(this.props.value);
             }
             return isSelected;
         });
