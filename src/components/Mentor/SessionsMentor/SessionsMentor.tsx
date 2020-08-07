@@ -154,7 +154,7 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
                     history: patient,
                     nutritionist: patNutrition,
                 } as ISessionPatientHistoryForm;
-                this.sessionMentor.setSessionPatientTriage(patCase);
+                this.sessionMentor.setSessionPatientTriage(isNutrition ? patNutrition : patCase);
                 this.patientHistoryData = new SessionEditPatientHistoryData(patientHistory);
                 const newState = {
                     board: this.getBoard(sessions, patient),
