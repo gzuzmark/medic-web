@@ -30,7 +30,10 @@ export interface IPropsMentorTypeAhead {
 	lowercaseLabel?: boolean;
 	creatable?: boolean;
 	isClearable?: boolean;
-	defaultOptions?: boolean | OptionsType<IPropsMentorOptionsDropDown> | undefined;
+	defaultOptions?:
+		| boolean
+		| OptionsType<IPropsMentorOptionsDropDown>
+		| undefined;
 	inputValue?: string | undefined;
 	onBlur?: (e: any) => {};
 	loadOptions?: (value: string) => Promise<any>;
@@ -100,6 +103,7 @@ class MentorTypeAhead extends React.Component<IPropsMentorTypeAhead, {}> {
 				}
 				return isSelected;
 			});
+		const creatableValue = value || ({} as IPropsMentorOptionsDropDown);
 		return (
 			<CustomDropdown style={{ ...this.props.style }}>
 				{this.props.label && (
@@ -127,7 +131,7 @@ class MentorTypeAhead extends React.Component<IPropsMentorTypeAhead, {}> {
 						isMulti={!!this.props.isMulti}
 						noOptionsMessage={this.noOptions}
 						loadingMessage={this.loading}
-						defaultInputValue={this.props.inputValue}						
+						defaultInputValue={this.props.inputValue}
 						components={{
 							DropdownIndicator: DropdownIndicator(
 								!!this.props.error,
@@ -135,6 +139,7 @@ class MentorTypeAhead extends React.Component<IPropsMentorTypeAhead, {}> {
 							),
 							MultiValueRemove,
 						}}
+						value={creatableValue}
 					/>
 				)}
 				{!this.props.creatable && (
