@@ -108,16 +108,32 @@ const productInfoInitialValues = {
 	salesUnit: [],
 };
 
+const renderError = (
+	{ touched, errors }: IPatientBackgroundFormContext,
+	i: number,
+	name: string,
+) => {
+	if (Object.keys(touched).length > 0 && Object.keys(errors).length > 0) {
+		const treatTouched = touched.case.treatments;
+		const treatError = errors.case.treatments;
+		const isTouched =
+			treatTouched.length > 0 && treatTouched[i] && !!treatTouched[i][name];
+		if (isTouched) {
+			return (
+				(treatError.length > 0 && treatError[i] && treatError[i][name]) || ''
+			);
+		}
+	}
+	return '';
+};
+
 interface IPropsTreatmentFields {
 	ctxt: IPatientBackgroundFormContext;
 	index: number;
 	treatmentLen: number;
 	ctxtValue: ISessionPatientTreatmentForm;
 	service: MentorService;
-	removeMedicine: (
-		index: number,
-		callback: () => void | undefined,
-	) => () => void;
+	removeMedicine: (index: number) => () => void;
 	addNewMedicine: () => void;
 }
 
@@ -140,13 +156,6 @@ const TreatmentFields: React.FC<IPropsTreatmentFields> = ({
 		IPropsMentorOptionsDropDown[]
 	>([]);
 	const [currentUnit, setCurrentUnit] = React.useState<string>('');
-
-	const remove = () => {
-		removeMedicine(index, () => {
-			setProductInfo(productInfoInitialValues);
-			setCurrentUnit('');
-		});
-	};
 
 	React.useEffect(() => {
 		async function retrieveComponents() {
@@ -497,6 +506,7 @@ const TreatmentFields: React.FC<IPropsTreatmentFields> = ({
 							<MentorInput
 								label='Duración tratamiento'
 								lowercaseLabel={true}
+								error={renderError(ctxt, index, 'period')}
 								attrs={{
 									maxLength: DEFAULT_MAX_LENGTH,
 									name: `case.treatments[${index}].period`,
@@ -513,6 +523,7 @@ const TreatmentFields: React.FC<IPropsTreatmentFields> = ({
 							<MentorInput
 								label='Cantidad Total'
 								lowercaseLabel={true}
+								error={renderError(ctxt, index, 'quantity')}
 								attrs={{
 									maxLength: DEFAULT_MAX_LENGTH,
 									name: `case.treatments[${index}].quantity`,
@@ -533,6 +544,7 @@ const TreatmentFields: React.FC<IPropsTreatmentFields> = ({
 					<FormColumn width={2} key={`FormColumn-MedicineData_Period`}>
 						<MentorTextArea
 							label='Posología'
+							error={renderError(ctxt, index, 'frequency')}
 							attrs={{
 								name: `case.treatments[${index}].frequency`,
 								onBlur: ctxt.handleBlur,
@@ -559,7 +571,7 @@ const TreatmentFields: React.FC<IPropsTreatmentFields> = ({
 				]}
 			/>
 			<OptionsHandler>
-				<button onClick={remove} type={'button'}>
+				<button onClick={removeMedicine(index)} type={'button'}>
 					<Icon name={'trash'} />
 					<Body1>Eliminar</Body1>
 				</button>

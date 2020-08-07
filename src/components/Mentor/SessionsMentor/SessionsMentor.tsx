@@ -11,6 +11,7 @@ import {MomentDateParser} from "../../../domain/DateManager/MomentDateParser";
 import {SESSION_LIFE} from "../../../domain/Session/SessionBean";
 import SessionEditPatientHistoryData, { ISessionPatientHistoryForm, ISessionPatientPastCase } from '../../../domain/Session/SessionEditPatientHistory';
 import { ISessionPatient, SessionMentorBean } from "../../../domain/Session/SessionMentorBean";
+import sessionFormValidationSchema from '../../../domain/Session/SessionTreatmentValidation';
 import {
     IStudentChecklist,
     STUDENT_STATUS,
@@ -239,23 +240,26 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
                                 hideSearch={true}
                             />
                             <Formik
+                                validationSchema={sessionFormValidationSchema}
                                 initialValues={this.state.patientHistory}
                                 enableReinitialize={true}
                                 isInitialValid={false}
                                 onSubmit={this.onSubmit}>
-                                {({ values, setFieldValue, handleBlur, handleChange, handleSubmit}) => {
+                                {({ errors, touched, values, setFieldValue, handleBlur, handleChange, handleSubmit}) => {
                                     return (
                                         <PatientBackgroundFormContext.Provider
                                             value={{
+                                                errors,
                                                 handleBlur,
                                                 handleChange,
                                                 setFieldValue,
+                                                touched,
                                                 values: values as ISessionPatientHistoryFormValidations,
                                             }}>
                                             <form onSubmit={handleSubmit}>
                                                 <FormEditHistoryManager
                                                     formData={{values}}
-                                                    onHandleSubmit={this.onSubmit}
+                                                    onHandleSubmit={handleSubmit}
                                                     session={session}
                                                     pastCases={this.state.pastCases}
                                                     isNutrition={this.state.isNutrition}
