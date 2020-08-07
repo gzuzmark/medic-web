@@ -112,17 +112,7 @@ const HistoryTreatmentForm: React.FC<IPropsHistoryTreatmentForm> = (props) => {
 					routeofAdministration: '',
 					salesUnit: '',
 				});
-			const removeMedicine = (
-				index: number,
-				callback: () => void | undefined,
-			) => {
-				return () => {
-					arrayHelpers.remove(index);
-					if (callback && typeof callback === 'function') {
-						callback();
-					}
-				};
-			};
+			const removeMedicine = (i: number) => () => arrayHelpers.remove(i);
 			if (treatments.length === 0) {
 				return (
 					<OptionsHandler>
