@@ -65,7 +65,16 @@ export const areSKUsOnValue = (
 	return new Set(skuList.filter((s: string) => currentSKUSet.has(s))).size > 0;
 };
 
-export const getInfoFromSKUList = (skuList: string[], info: IProductInfo) => {
+export const getInfoFromSKUList = (
+	skuList: string[] | null,
+	info: IProductInfo,
+) => {
+	if (!skuList) {
+		return {
+			...info,
+			brandsOptions: info.brands,
+		};
+	}
 	const concentrations = info.concentrations.filter(areSKUsOnValue(skuList));
 	const administrationRoutes = info.administrationRoutes.filter(
 		areSKUsOnValue(skuList),
@@ -136,5 +145,12 @@ export const getSKUList = (value: string): string[] => {
 		.filter((_: string, i: number, src: any[]) => i !== src.length - 1);
 };
 
-export const arrayIntersection = (a1: string[], a2: string[]) =>
-	a1.filter((v) => a2.includes(v));
+export const arrayIntersection = (a1: string[] | null, a2: string[] | null) => {
+	if (!a1 && !!a2) {
+		return a2;
+	}
+	if (!a2 && !!a1) {
+		return a1;
+	}
+	return (a1 || []).filter((v) => (a2 || []).includes(v));
+};

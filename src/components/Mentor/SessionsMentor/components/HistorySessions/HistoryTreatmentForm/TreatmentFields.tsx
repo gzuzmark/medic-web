@@ -273,9 +273,6 @@ const TreatmentFields: React.FC<IPropsTreatmentFields> = ({
 				...productInfo,
 			});
 			ctxt.setFieldValue(name, '');
-			ctxt.setFieldValue(`case.treatments[${i}].concentration`, '');
-			ctxt.setFieldValue(`case.treatments[${i}].routeofAdministration`, '');
-			ctxt.setFieldValue(`case.treatments[${i}].pharmaceuticalForm`, '');
 		}
 	};
 
@@ -351,29 +348,35 @@ const TreatmentFields: React.FC<IPropsTreatmentFields> = ({
 			if (name.includes('concentrations')) {
 				if (values.administrationRoute) {
 					const skuListROA = getSKUList(values.administrationRoute);
-					skuList = arrayIntersection(skuList, skuListROA);
+					const intersection = arrayIntersection(skuList, skuListROA);
+					skuList = intersection.length > 0 ? intersection : skuList;
 				}
 				if (values.pharmaceuticalForm) {
 					const skuListPHF = getSKUList(values.pharmaceuticalForm);
-					skuList = arrayIntersection(skuList, skuListPHF);
+					const intersection = arrayIntersection(skuList, skuListPHF);
+					skuList = intersection.length > 0 ? intersection : skuList;
 				}
 			} else if (name.includes('administrationRoute')) {
 				if (values.concentrations) {
 					const skuListCON = getSKUList(values.concentrations);
-					skuList = arrayIntersection(skuList, skuListCON);
+					const intersection = arrayIntersection(skuList, skuListCON);
+					skuList = intersection.length > 0 ? intersection : skuList;
 				}
 				if (values.pharmaceuticalForm) {
 					const skuListPHF = getSKUList(values.pharmaceuticalForm);
-					skuList = arrayIntersection(skuList, skuListPHF);
+					const intersection = arrayIntersection(skuList, skuListPHF);
+					skuList = intersection.length > 0 ? intersection : skuList;
 				}
 			} else if (name.includes('pharmaceuticalForm')) {
 				if (values.administrationRoute) {
 					const skuListROA = getSKUList(values.administrationRoute);
-					skuList = arrayIntersection(skuList, skuListROA);
+					const intersection = arrayIntersection(skuList, skuListROA);
+					skuList = intersection.length > 0 ? intersection : skuList;
 				}
 				if (values.concentrations) {
 					const skuListCON = getSKUList(values.concentrations);
-					skuList = arrayIntersection(skuList, skuListCON);
+					const intersection = arrayIntersection(skuList, skuListCON);
+					skuList = intersection.length > 0 ? intersection : skuList;
 				}
 			}
 			const {
@@ -414,10 +417,6 @@ const TreatmentFields: React.FC<IPropsTreatmentFields> = ({
 				...productInfo,
 			});
 			ctxt.setFieldValue(name, '');
-			ctxt.setFieldValue(`case.treatments[${i}].concentration`, '');
-			ctxt.setFieldValue(`case.treatments[${i}].routeofAdministration`, '');
-			ctxt.setFieldValue(`case.treatments[${i}].pharmaceuticalForm`, '');
-			ctxt.setFieldValue(`case.treatments[${i}].name`, '');
 		}
 	};
 
@@ -490,6 +489,7 @@ const TreatmentFields: React.FC<IPropsTreatmentFields> = ({
 							triggerChange={handleBrandChange(index, ctxtValue)}
 							options={dropdownValues.brands}
 							inputValue={ctxtValue.name}
+							value={ctxtValue.name}
 						/>
 					</FormColumn>,
 					<FormColumn width={4} key={`FormColumn-MedicineData_Duration`}>
