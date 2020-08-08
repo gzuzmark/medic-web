@@ -103,7 +103,17 @@ class MentorTypeAhead extends React.Component<IPropsMentorTypeAhead, {}> {
 				}
 				return isSelected;
 			});
-		const creatableValue = value || ({} as IPropsMentorOptionsDropDown);
+		const propsValue = this.props.value || '';
+		let creatableValue = '' as string | any;
+		if (propsValue) {
+			creatableValue =
+				value && value.length > 0
+					? value
+					: ({
+							label: propsValue,
+							value: propsValue,
+					  } as IPropsMentorOptionsDropDown);
+		}
 		return (
 			<CustomDropdown style={{ ...this.props.style }}>
 				{this.props.label && (
@@ -160,6 +170,7 @@ class MentorTypeAhead extends React.Component<IPropsMentorTypeAhead, {}> {
 						noOptionsMessage={this.noOptions}
 						loadingMessage={this.loading}
 						defaultOptions={this.props.defaultOptions}
+						maxMenuHeight={250}
 						components={{
 							DropdownIndicator: DropdownIndicator(
 								!!this.props.error,
