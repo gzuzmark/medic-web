@@ -245,6 +245,9 @@ const TreatmentFields: React.FC<IPropsTreatmentFields> = ({
 		value: ISessionPatientTreatmentForm,
 	) => (name: string, selectedOption: IPropsMentorOptionsDropDown) => {
 		const currentValue = (selectedOption && selectedOption.value) || '';
+		// tslint:disable:no-console
+		console.log({ value, selectedOption });
+
 		if (currentValue) {
 			const skuList = getSKUList(currentValue);
 			ctxt.setFieldValue(name, selectedOption.value);
@@ -331,9 +334,6 @@ const TreatmentFields: React.FC<IPropsTreatmentFields> = ({
 						setProductInfo(info);
 						setDropdownValues(info);
 						ctxt.setFieldValue(name, selectedOption.value);
-						if (newSalesUnit.length > 0) {
-							setCurrentUnit(newSalesUnit[0].value);
-						}
 					} else {
 						setProductInfo(productInfoInitialValues);
 						setDropdownValues(productInfoInitialValues);
@@ -417,9 +417,9 @@ const TreatmentFields: React.FC<IPropsTreatmentFields> = ({
 					brands: brandsOptions,
 					concentrations,
 				}));
-			}
-			if (salesUnit.length > 0) {
-				setCurrentUnit(salesUnit[0].value);
+				if (salesUnit.length > 0) {
+					setCurrentUnit(salesUnit[0].value);
+				}
 			}
 		} else {
 			setDropdownValues({
@@ -457,6 +457,7 @@ const TreatmentFields: React.FC<IPropsTreatmentFields> = ({
 							value={ctxtValue.concentrations}
 							isClearable={true}
 							triggerChange={handleDependencyFields(ctxtValue, index)}
+							maxMenuHeight={250}
 							options={dropdownValues.concentrations}
 						/>
 					</FormColumn>,
@@ -468,6 +469,7 @@ const TreatmentFields: React.FC<IPropsTreatmentFields> = ({
 							value={ctxtValue.administrationRoute}
 							isClearable={true}
 							triggerChange={handleDependencyFields(ctxtValue, index)}
+							maxMenuHeight={250}
 							options={dropdownValues.administrationRoutes}
 						/>
 					</FormColumn>,
@@ -479,6 +481,7 @@ const TreatmentFields: React.FC<IPropsTreatmentFields> = ({
 							value={ctxtValue.pharmaceuticalForm}
 							isClearable={true}
 							triggerChange={handleDependencyFields(ctxtValue, index)}
+							maxMenuHeight={250}
 							options={dropdownValues.pharmaceuticalForms}
 						/>
 					</FormColumn>,

@@ -28,6 +28,7 @@ export interface IPropsMentorDropDown {
     isMulti?: boolean;
     style?: React.CSSProperties;
     lowercaseLabel?: boolean;
+    maxMenuHeight?: number | undefined;
     onBlur?: (e: any) => {};
     triggerChange(name: string, option: IPropsMentorOptionsDropDown | IPropsMentorOptionsDropDown[]):void;
 }
@@ -98,6 +99,7 @@ class MentorDropDown extends React.Component<IPropsMentorDropDown, {}> {
                         { DropdownIndicator: DropdownIndicator(!!this.props.error, !!this.props.disabled),
                           MultiValueRemove}}
                     options={options}
+                    maxMenuHeight={this.props.maxMenuHeight}
                     value={value}/>
                 {!!this.props.error &&
                     <Small1 weight={LIGHT_TEXT} color={FONTS.error} style={{
