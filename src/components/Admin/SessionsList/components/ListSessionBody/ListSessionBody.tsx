@@ -136,12 +136,6 @@ const ListSessionsBody: React.FC<IPropsListSessionsBody> = (props) => {
 			});
 	};
 
-	const handleConfirmPayment = () => {
-		props.selectSession(id);
-		props.showConfirmationModal(true);
-		toggleOpenMenu();
-	};
-
 	const assistanceComponent = React.useMemo(
 		() => renderAssistance(sessionBean.getAssistance()),
 		[props.session],
