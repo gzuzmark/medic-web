@@ -245,11 +245,6 @@ const ListSessionsBody: React.FC<IPropsListSessionsBody> = (props) => {
 						<DropdownItem onClick={handleDownloadPDF}>
 							Descargar Cita
 						</DropdownItem>
-						{isPending && (
-							<DropdownItem onClick={handleConfirmPayment}>
-								Confirmar Cita
-							</DropdownItem>
-						)}
 					</DropdownMenu>
 				</div>
 			</div>
