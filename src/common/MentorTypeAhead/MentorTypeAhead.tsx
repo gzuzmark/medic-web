@@ -1,6 +1,7 @@
 import * as React from 'react';
-import { components } from 'react-select';
+import { components, Creatable } from 'react-select';
 import AsyncSelect from 'react-select/lib/Async';
+import { InputActionMeta, OptionsType } from 'react-select/lib/types';
 import styled from 'styled-components';
 import FormLabel from '../FormLabel/FormLabel';
 import Icon from '../Icon/Icon';
@@ -26,8 +27,17 @@ export interface IPropsMentorTypeAhead {
 	info?: string;
 	isMulti?: boolean;
 	style?: React.CSSProperties;
+	lowercaseLabel?: boolean;
+	creatable?: boolean;
+	isClearable?: boolean;
+	defaultOptions?:
+		| boolean
+		| OptionsType<IPropsMentorOptionsDropDown>
+		| undefined;
+	inputValue?: string | undefined;
 	onBlur?: (e: any) => {};
-	loadOptions: (value: string) => Promise<any>;
+	loadOptions?: (value: string) => Promise<any>;
+	handleInputChange?: (newValue: string, actionMeta: InputActionMeta) => void;
 	triggerChange(
 		name: string,
 		option: IPropsMentorOptionsDropDown | IPropsMentorOptionsDropDown[],
@@ -93,41 +103,86 @@ class MentorTypeAhead extends React.Component<IPropsMentorTypeAhead, {}> {
 				}
 				return isSelected;
 			});
+		const propsValue = this.props.value || '';
+		let creatableValue = '' as string | any;
+		if (propsValue) {
+			creatableValue =
+				value && value.length > 0
+					? value
+					: ({
+							label: propsValue,
+							value: propsValue,
+					  } as IPropsMentorOptionsDropDown);
+		}
 		return (
 			<CustomDropdown style={{ ...this.props.style }}>
 				{this.props.label && (
 					<FormLabel
 						label={this.props.label}
 						info={this.props.info}
-						uppercase={true}
+						uppercase={!this.props.lowercaseLabel}
 					/>
 				)}
-				<AsyncSelect
-					cacheOptions={true}
-					isDisabled={!!this.props.disabled}
-					isClearable={false}
-					styles={MentorTypeAheadTheme.baseStyle(
-						!!this.props.error,
-						!!this.props.disabled,
-						!!this.props.empty,
-					)}
-					placeholder={this.props.placeholder || ''}
-					name={name}
-					onBlur={this.props.onBlur}
-					onChange={this.handleChange}
-					isMulti={!!this.props.isMulti}
-					noOptionsMessage={this.noOptions}
-					loadingMessage={this.loading}
-					components={{
-						DropdownIndicator: DropdownIndicator(
+				{!!this.props.creatable && (
+					<Creatable
+						isDisabled={!!this.props.disabled}
+						isClearable={!!this.props.isClearable}
+						styles={MentorTypeAheadTheme.baseStyle(
 							!!this.props.error,
 							!!this.props.disabled,
-						),
-						MultiValueRemove,
-					}}
-					loadOptions={this.props.loadOptions}
-					value={value}
-				/>
+							!!this.props.empty,
+						)}
+						placeholder={this.props.placeholder || ''}
+						name={name}
+						onBlur={this.props.onBlur}
+						onChange={this.handleChange}
+						onInputChange={this.props.handleInputChange}
+						options={this.props.options}
+						isMulti={!!this.props.isMulti}
+						noOptionsMessage={this.noOptions}
+						loadingMessage={this.loading}
+						defaultInputValue={this.props.inputValue}
+						components={{
+							DropdownIndicator: DropdownIndicator(
+								!!this.props.error,
+								!!this.props.disabled,
+							),
+							MultiValueRemove,
+						}}
+						value={creatableValue}
+					/>
+				)}
+				{!this.props.creatable && (
+					<AsyncSelect
+						cacheOptions={true}
+						isDisabled={!!this.props.disabled}
+						isClearable={!!this.props.isClearable}
+						styles={MentorTypeAheadTheme.baseStyle(
+							!!this.props.error,
+							!!this.props.disabled,
+							!!this.props.empty,
+						)}
+						placeholder={this.props.placeholder || ''}
+						name={name}
+						onBlur={this.props.onBlur}
+						onChange={this.handleChange}
+						isMulti={!!this.props.isMulti}
+						noOptionsMessage={this.noOptions}
+						loadingMessage={this.loading}
+						defaultOptions={this.props.defaultOptions}
+						maxMenuHeight={250}
+						components={{
+							DropdownIndicator: DropdownIndicator(
+								!!this.props.error,
+								!!this.props.disabled,
+							),
+							MultiValueRemove,
+						}}
+						loadOptions={this.props.loadOptions}
+						value={value}
+						defaultInputValue={this.props.inputValue}
+					/>
+				)}
 				{!!this.props.error && (
 					<Small1
 						weight={LIGHT_TEXT}
