@@ -380,8 +380,8 @@ class SessionsMentor extends React.Component<
 						loading: false,
 						modalSuccess: true,
 						patientHistory: {
-							history: patHistory,
 							case: patCase,
+							history: patHistory,
 							nutritionist: patNutrition,
 						},
 					});
