@@ -348,6 +348,7 @@ const TreatmentFields: React.FC<IPropsTreatmentFields> = ({
 			ctxt.setFieldValue(`case.treatments[${i}].pharmaceuticalForm`, '');
 			ctxt.setFieldValue(`case.treatments[${i}].name`, '');
 			ctxt.setFieldValue(`case.treatments[${i}].salesUnit`, '');
+			setCurrentUnit('');
 		}
 	};
 
@@ -423,8 +424,8 @@ const TreatmentFields: React.FC<IPropsTreatmentFields> = ({
 					concentrations,
 					salesUnit,
 				}));
-				if (dropdownValues.salesUnit.length > 0) {
-					const salesUnitVal = dropdownValues.salesUnit[0].value;
+				if (salesUnit.length > 0) {
+					const salesUnitVal = salesUnit[0].value;
 					setCurrentUnit(salesUnitVal || '');
 					ctxt.setFieldValue(
 						`case.treatments[${i}].salesUnit`,
