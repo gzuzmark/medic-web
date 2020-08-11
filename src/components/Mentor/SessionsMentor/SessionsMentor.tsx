@@ -332,7 +332,7 @@ class SessionsMentor extends React.Component<
 												<form onSubmit={handleSubmit}>
 													<FormEditHistoryManager
 														formData={{ values }}
-														onHandleSubmit={handleSubmit}
+														onHandleSubmit={this.onSubmit}
 														session={session}
 														pastCases={this.state.pastCases}
 														isNutrition={this.state.isNutrition}
