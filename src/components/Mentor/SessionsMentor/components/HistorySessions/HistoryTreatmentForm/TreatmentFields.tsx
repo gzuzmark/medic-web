@@ -263,9 +263,6 @@ const TreatmentFields: React.FC<IPropsTreatmentFields> = ({
 					...dropdownValues,
 					...info,
 				});
-				if (info.salesUnit.length > 0) {
-					setCurrentUnit(info.salesUnit[0].value);
-				}
 				if (!value.concentrations) {
 					ctxt.setFieldValue(
 						`case.treatments[${i}].concentrations`,
