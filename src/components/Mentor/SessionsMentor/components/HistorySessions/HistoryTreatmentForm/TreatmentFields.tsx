@@ -25,6 +25,7 @@ import {
 	IMappedText,
 	IProductInfo,
 } from './Utils';
+import { isArray } from 'util';
 
 export const TreatmentItem = styled.div`
 	padding: 30px 0;
@@ -161,55 +162,58 @@ const TreatmentFields: React.FC<IPropsTreatmentFields> = ({
 		async function retrieveComponents() {
 			const data = (await service.getActivePrinciples(
 				ctxtValue.component,
+				false,
 			)) as string[];
-			const mappedData = mapResponse(data) as IPropsMentorOptionsDropDown[];
-			setComponentOptions(mappedData);
-			const response = (await service.getPrincipleInformation(
-				ctxtValue.component,
-			)) as any[];
-			if (response.length > 0) {
-				const newConcentrations = buildDropdownOptions(
-					response,
-					'concentration',
-					FIELD_BUILDER_TYPES.dropdown,
-				) as IPropsMentorOptionsDropDown[];
-				const newAdministrationRoutes = buildDropdownOptions(
-					response,
-					'routeofAdministration',
-					FIELD_BUILDER_TYPES.dropdown,
-				) as IPropsMentorOptionsDropDown[];
-				const newPharmaceuticalForms = buildDropdownOptions(
-					response,
-					'pharmaceuticalForm',
-					FIELD_BUILDER_TYPES.dropdown,
-				) as IPropsMentorOptionsDropDown[];
-				const newBrands = buildDropdownOptions(
-					response,
-					'brand',
-					FIELD_BUILDER_TYPES.dropdown,
-				) as IPropsMentorOptionsDropDown[];
-				const newSalesUnit = buildDropdownOptions(
-					response,
-					'salesUnit',
-					FIELD_BUILDER_TYPES.input,
-				) as IMappedText[];
+			if (isArray(data)) {
+				const mappedData = mapResponse(data) as IPropsMentorOptionsDropDown[];
+				setComponentOptions(mappedData);
+				const response = (await service.getPrincipleInformation(
+					ctxtValue.component,
+				)) as any[];
+				if (response.length > 0) {
+					const newConcentrations = buildDropdownOptions(
+						response,
+						'concentration',
+						FIELD_BUILDER_TYPES.dropdown,
+					) as IPropsMentorOptionsDropDown[];
+					const newAdministrationRoutes = buildDropdownOptions(
+						response,
+						'routeofAdministration',
+						FIELD_BUILDER_TYPES.dropdown,
+					) as IPropsMentorOptionsDropDown[];
+					const newPharmaceuticalForms = buildDropdownOptions(
+						response,
+						'pharmaceuticalForm',
+						FIELD_BUILDER_TYPES.dropdown,
+					) as IPropsMentorOptionsDropDown[];
+					const newBrands = buildDropdownOptions(
+						response,
+						'brand',
+						FIELD_BUILDER_TYPES.dropdown,
+					) as IPropsMentorOptionsDropDown[];
+					const newSalesUnit = buildDropdownOptions(
+						response,
+						'salesUnit',
+						FIELD_BUILDER_TYPES.input,
+					) as IMappedText[];
 
-				const info = {
-					administrationRoutes: newAdministrationRoutes,
-					brands: newBrands,
-					concentrations: newConcentrations,
-					pharmaceuticalForms: newPharmaceuticalForms,
-					salesUnit: newSalesUnit,
-				} as IProductInfo;
+					const info = {
+						administrationRoutes: newAdministrationRoutes,
+						brands: newBrands,
+						concentrations: newConcentrations,
+						pharmaceuticalForms: newPharmaceuticalForms,
+						salesUnit: newSalesUnit,
+					} as IProductInfo;
 
-				setProductInfo(info);
-				setDropdownValues(info);
-				if (newSalesUnit.length > 0) {
-					setCurrentUnit(newSalesUnit[0].value);
+					setProductInfo(info);
+					setDropdownValues(info);
+					if (newSalesUnit.length > 0) {
+						setCurrentUnit(newSalesUnit[0].value);
+					}
+				} else {
+					setProductInfo(productInfoInitialValues);
+					setDropdownValues(productInfoInitialValues);
 				}
-			} else {
-				setProductInfo(productInfoInitialValues);
-				setDropdownValues(productInfoInitialValues);
 			}
 		}
 		retrieveComponents();
@@ -233,9 +237,13 @@ const TreatmentFields: React.FC<IPropsTreatmentFields> = ({
 			const param = query || value;
 			if (param) {
 				service.getActivePrinciples(param).then((data: string[]) => {
-					const mappedData = mapResponse(data) as IPropsMentorOptionsDropDown[];
-					setComponentOptions(mappedData);
-					resolve(mappedData);
+					if (isArray(data)) {
+						const mappedData = mapResponse(
+							data,
+						) as IPropsMentorOptionsDropDown[];
+						setComponentOptions(mappedData);
+						resolve(mappedData);
+					}
 				});
 			}
 		});
@@ -245,9 +253,6 @@ const TreatmentFields: React.FC<IPropsTreatmentFields> = ({
 		value: ISessionPatientTreatmentForm,
 	) => (name: string, selectedOption: IPropsMentorOptionsDropDown) => {
 		const currentValue = (selectedOption && selectedOption.value) || '';
-		// tslint:disable:no-console
-		console.log({ value, selectedOption });
-
 		if (currentValue) {
 			const skuList = getSKUList(currentValue);
 			ctxt.setFieldValue(name, selectedOption.value);
@@ -345,6 +350,7 @@ const TreatmentFields: React.FC<IPropsTreatmentFields> = ({
 			ctxt.setFieldValue(`case.treatments[${i}].routeofAdministration`, '');
 			ctxt.setFieldValue(`case.treatments[${i}].pharmaceuticalForm`, '');
 			ctxt.setFieldValue(`case.treatments[${i}].name`, '');
+			ctxt.setFieldValue(`case.treatments[${i}].salesUnit`, '');
 		}
 	};
 
@@ -402,6 +408,7 @@ const TreatmentFields: React.FC<IPropsTreatmentFields> = ({
 					administrationRoutes,
 					brands: brandsOptions,
 					pharmaceuticalForms,
+					salesUnit,
 				}));
 			} else if (name.includes('routeofAdministration')) {
 				setDropdownValues((val) => ({
@@ -409,6 +416,7 @@ const TreatmentFields: React.FC<IPropsTreatmentFields> = ({
 					brands: brandsOptions,
 					concentrations,
 					pharmaceuticalForms,
+					salesUnit,
 				}));
 			} else if (name.includes('pharmaceuticalForm')) {
 				setDropdownValues((val) => ({
@@ -416,9 +424,15 @@ const TreatmentFields: React.FC<IPropsTreatmentFields> = ({
 					administrationRoutes,
 					brands: brandsOptions,
 					concentrations,
+					salesUnit,
 				}));
-				if (salesUnit.length > 0) {
-					setCurrentUnit(salesUnit[0].value);
+				if (dropdownValues.salesUnit.length > 0) {
+					const salesUnitVal = dropdownValues.salesUnit[0].value;
+					setCurrentUnit(salesUnitVal || '');
+					ctxt.setFieldValue(
+						`case.treatments[${i}].salesUnit`,
+						salesUnitVal || '',
+					);
 				}
 			}
 		} else {
