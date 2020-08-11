@@ -104,7 +104,7 @@ const ListSessionsBody: React.FC<IPropsListSessionsBody> = (props) => {
 
 	const patientPaid = formatStrNumber(paid);
 
-	const isPending =  payment && payment.pending as boolean;
+	const isPending = payment && (payment.pending as boolean);
 
 	const handleCancelClick = () => {
 		props.selectSession(id);
@@ -134,12 +134,6 @@ const ListSessionsBody: React.FC<IPropsListSessionsBody> = (props) => {
 				setLoadingMenu(false);
 				toggleOpenMenu();
 			});
-	};
-
-	const handleConfirmPayment = () => {
-		props.selectSession(id);
-		props.showConfirmationModal(true);
-		toggleOpenMenu();
 	};
 
 	const assistanceComponent = React.useMemo(
