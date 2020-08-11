@@ -21,11 +21,14 @@ export interface IPropsMentorDropDown {
     error?: string;
     placeholder?: string;
     isSearchable?: boolean;
+    isClearable?: boolean;
     value?: string | string[];
     name: string;
     info?: string;
     isMulti?: boolean;
     style?: React.CSSProperties;
+    lowercaseLabel?: boolean;
+    maxMenuHeight?: number | undefined;
     onBlur?: (e: any) => {};
     triggerChange(name: string, option: IPropsMentorOptionsDropDown | IPropsMentorOptionsDropDown[]):void;
 }
@@ -74,17 +77,17 @@ class MentorDropDown extends React.Component<IPropsMentorDropDown, {}> {
             if (Array.isArray(this.props.value)) {
                 isSelected = this.props.value.indexOf(option.value) !== -1;
             } else {
-                isSelected = option.value === this.props.value;
+                isSelected = !!this.props.value && option.value.includes(this.props.value);
             }
             return isSelected;
         });
         return (
             <CustomDropdown style={{...this.props.style}}>
-                {this.props.label && <FormLabel label={this.props.label} info={this.props.info} uppercase={true}/>}
+                {this.props.label && <FormLabel label={this.props.label} info={this.props.info} uppercase={!this.props.lowercaseLabel}/>}
                 <Select
                     isDisabled={!!this.props.disabled}
                     isSearchable={!!this.props.isSearchable}
-                    isClearable={false}
+                    isClearable={!!this.props.isClearable}
                     styles={MentorDropDownTheme.baseStyle(!!this.props.error, !!this.props.disabled, !!this.props.empty)}
                     placeholder={this.props.placeholder || ''}
                     name={name}
@@ -96,6 +99,7 @@ class MentorDropDown extends React.Component<IPropsMentorDropDown, {}> {
                         { DropdownIndicator: DropdownIndicator(!!this.props.error, !!this.props.disabled),
                           MultiValueRemove}}
                     options={options}
+                    maxMenuHeight={this.props.maxMenuHeight}
                     value={value}/>
                 {!!this.props.error &&
                     <Small1 weight={LIGHT_TEXT} color={FONTS.error} style={{

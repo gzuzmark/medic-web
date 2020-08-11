@@ -104,7 +104,7 @@ const ListSessionsBody: React.FC<IPropsListSessionsBody> = (props) => {
 
 	const patientPaid = formatStrNumber(paid);
 
-	const isPending =  payment && payment.pending as boolean;
+	const isPending = payment && (payment.pending as boolean);
 
 	const handleCancelClick = () => {
 		props.selectSession(id);

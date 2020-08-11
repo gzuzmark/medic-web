@@ -2,7 +2,7 @@ import * as React from 'react';
 import styled from "styled-components";
 import FormLabel from "../FormLabel/FormLabel";
 import colors, {FONTS} from "../MentorColor";
-import {Body1, defaultFont, LIGHT_TEXT } from "../MentorText";
+import {Body1, defaultFont, LIGHT_TEXT, Small1 } from "../MentorText";
 
 export interface IPropsMentorTextArea {
     label?: string;
@@ -10,6 +10,7 @@ export interface IPropsMentorTextArea {
     limit?: number;
     disabled?: boolean;
     attrs?: any;
+    error?: string;
 }
 
 const TextArea: React.SFC<any> = props =>
@@ -70,7 +71,7 @@ class MentorTextArea extends React.Component<IPropsMentorTextArea, {}> {
     public render() {
         const value = this.props.attrs && this.props.attrs.value || "";
         let attrs = this.props.attrs;
-        const hasError = this.props.limit && value.length > this.props.limit;
+        const hasError = this.props.limit && value.length > this.props.limit || !!this.props.error;
         let color = hasError ? FONTS.error : '';
         if (!!this.props.disabled) {
             attrs = {...attrs, disabled: true};
@@ -80,6 +81,8 @@ class MentorTextArea extends React.Component<IPropsMentorTextArea, {}> {
             <div>
                 {this.props.label && <FormLabel label={this.props.label} info={this.props.info} />}
                 <TextAreaComponent error={hasError} attrs={{...attrs}} />
+                {!!this.props.error &&
+                <div className={'MentorTextArea_message'}><Small1 weight={LIGHT_TEXT} color='font_error'>{this.props.error}</Small1></div>}
                 {!!this.props.limit &&
                 <div className={"MentorTextArea_limit"} style={{textAlign: 'right'}}>
                     <Body1 weight={LIGHT_TEXT} color={color}>

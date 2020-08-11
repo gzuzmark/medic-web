@@ -1,3 +1,4 @@
+import Axios from "axios";
 import {IMentorBase, IMentorPaginated} from "../../domain/Mentor/MentorBase";
 import {IMentorBaseForm} from "../../domain/Mentor/MentorBaseForm";
 import {IMentorEditParams} from "../../domain/Mentor/MentorEditProfile";
@@ -27,6 +28,48 @@ class MentorService extends BaseRequest {
                     this.validSession();
                     reject(error);
                 });
+        });
+    }
+
+    public getActivePrinciples(component: string = '', isCancel = true) {
+        if (!!this.listMenorCancelToken) {
+            this.listMenorCancelToken.cancel();
+        }
+        this.listMenorCancelToken = this.generateCancelToken();
+        const instance = isCancel ? this.getCustomInstance(this.listMenorCancelToken) : this.instance;
+        return new Promise((resolve, reject) => {
+          instance.get(`ugo/mentors-api/inkafarma/active_principles/${component}`)
+            .then((response: any) => {
+              if (response.status === 200 && response.data) {
+                resolve(response.data as string[]);
+              } else {
+                reject(null);
+              }
+            })
+            .catch((error: any) => {
+                if (Axios.isCancel(error)) {
+                    return;
+                }
+              this.validSession();
+              reject(error);
+            });
+        });
+    }
+
+    public getPrincipleInformation(activePrinciple: string) {
+        return new Promise((resolve, reject) => {
+          this.instance.get(`ugo/mentors-api/inkafarma/products/${activePrinciple}`)
+            .then((response: any) => {
+              if (response.status === 200 && response.data) {
+                resolve(response.data);
+              } else {
+                reject(null);
+              }
+            })
+            .catch((error: any) => {
+              this.validSession();
+              reject(error);
+            });
         });
     }
 
