@@ -117,6 +117,9 @@ const renderError = (
 	if (Object.keys(touched).length > 0 && Object.keys(errors).length > 0) {
 		const treatTouched = touched.case.treatments;
 		const treatError = errors.case.treatments;
+		if (!treatTouched || !treatError) {
+			return '';
+		}
 		const isTouched =
 			treatTouched.length > 0 && treatTouched[i] && !!treatTouched[i][name];
 		if (isTouched) {
