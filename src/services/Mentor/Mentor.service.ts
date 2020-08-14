@@ -38,7 +38,9 @@ class MentorService extends BaseRequest {
         this.listMenorCancelToken = this.generateCancelToken();
         const instance = isCancel ? this.getCustomInstance(this.listMenorCancelToken) : this.instance;
         return new Promise((resolve, reject) => {
-          instance.get(`ugo/mentors-api/inkafarma/active_principles/${component}`)
+          instance.post(`ugo/mentors-api/inkafarma/active_principles/`, {
+              name: component
+          })
             .then((response: any) => {
               if (response.status === 200 && response.data) {
                 resolve(response.data as string[]);
@@ -58,7 +60,9 @@ class MentorService extends BaseRequest {
 
     public getPrincipleInformation(activePrinciple: string) {
         return new Promise((resolve, reject) => {
-          this.instance.get(`ugo/mentors-api/inkafarma/products/${activePrinciple}`)
+          this.instance.post(`ugo/mentors-api/inkafarma/products/`, {
+              name: activePrinciple
+          })
             .then((response: any) => {
               if (response.status === 200 && response.data) {
                 resolve(response.data);
