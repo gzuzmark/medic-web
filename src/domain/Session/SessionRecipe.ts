@@ -1,8 +1,3 @@
-interface ICompany {
-	ipressName: string;
-	ipressAddress: string;
-}
-
 interface IPatientRecipe {
 	patientDni: string;
 	patientFirstName: string;
@@ -37,9 +32,10 @@ interface IMedicineRecipe {
 
 export interface IRecipe {
 	issueDate: Date;
-	ipress: ICompany;
+	ipress: string;
 	patient: IPatientRecipe;
 	doctor: IDoctorRecipe;
 	medicines: IMedicineRecipe[];
+	diagnostic: string;
 	additionalRecomendations: string;
 }
