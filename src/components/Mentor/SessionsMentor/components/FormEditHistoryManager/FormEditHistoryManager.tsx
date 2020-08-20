@@ -24,7 +24,15 @@ export interface IPropsFormEditHistoryManager {
     session: ISessionMentor;
     pastCases: ISessionPatientPastCase[];
     isNutrition: boolean;
+    showSaveSession: boolean;
+    showSendRecipe: boolean;
+    folioNumber: string;
+    prescriptionURL: string;
+    toggleSaveSession: (flag: boolean) => void;
+    toggleSendRecipe: (flag: boolean) => void;
     onHandleSubmit: (e: any) => void;
+    onSendRecipe: (e: any) => void;
+    onUploadRecipe: (data: FormData) => void;
 }
 
 const getGender = (value?: number): string => {
@@ -65,6 +73,11 @@ const FormEditHistoryManager: React.FC<IPropsFormEditHistoryManager> = (props) =
     const onHandleSubmit = () => {
         closeModal();
         props.onHandleSubmit(props.formData.values)
+    };
+
+    const onHandleSendRecipe = () => {
+        closeModal();
+        props.onSendRecipe(props.formData.values)
     };
 
     const closeModal = () => setModal(false);
@@ -115,7 +128,12 @@ const FormEditHistoryManager: React.FC<IPropsFormEditHistoryManager> = (props) =
                       useCase={triage.use_case}
                       questions={triage.questions}
                     />
-                    <CurrentSessionForm />
+                    <CurrentSessionForm
+                      showSeeRecipeButton={props.showSaveSession}
+                      folioNumber={props.folioNumber}
+                      prescriptionURL={props.prescriptionURL}
+                      onUploadRecipe={props.onUploadRecipe}
+                    />
                   </React.Fragment>
                 ),
                 title: 'VER CONSULTA ACTUAL',
@@ -126,10 +144,22 @@ const FormEditHistoryManager: React.FC<IPropsFormEditHistoryManager> = (props) =
               },
             ]} />
           </div>
-          <ButtonNormal
-            text={"Guardar"}
-            attrs={...buttonAttrUpdate}
-          />
+          {props.showSaveSession && (
+            <ButtonNormal
+              text={"Guardar"}
+              attrs={...buttonAttrUpdate}
+            />
+          )}
+          {props.showSendRecipe && (
+            <ButtonNormal
+              text={"Enviar Receta"}
+              attrs={{
+                onClick: onHandleSendRecipe,
+                style: {margin : '40px 0 0 auto'},
+                type: "button",
+              }}
+            />
+          )}
       </React.Fragment>
     )
 }

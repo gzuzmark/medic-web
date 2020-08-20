@@ -93,6 +93,10 @@ export class SessionMentorBean extends SessionBean {
         this.session = session;
     }
 
+    get issueDate(): string {
+        return this.session.from;
+    }
+
     get isDisabled(): boolean {
         return !(
             this.session.status === SESSION_STATUS.RATED ||

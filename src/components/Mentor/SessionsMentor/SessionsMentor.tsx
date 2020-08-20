@@ -28,6 +28,7 @@ import PatientBackgroundFormContext, {
     IPatientCaseFormValidations,
     ISessionPatientHistoryFormValidations,
 } from './components/PatientHistoryForm/PatientBackgroundForm.context';
+import RecipePreviewModal from './components/RecipePreviewModal/RecipePreviewModal';
 import {ISessionFullCard} from "./components/SessionFullCard/SessionFullCard";
 import SessionFullCard from "./components/SessionFullCard/SessionFullCard";
 import { default as SimpleFullCard, ISimpleFullCard} from "./components/SimpleFullCard/SimpleFullCard";
@@ -52,17 +53,25 @@ interface IStateSessionsMentor {
     board: IStudentChecklistBoard;
     fullCardSession: ISessionFullCard;
     fullCardSimple: ISimpleFullCard;
+    hasTreatments: boolean;
     isEmpty: boolean;
     isNutrition: boolean;
     loading: boolean;
     pastCases: ISessionPatientPastCase[];
     patientHistory: ISessionPatientHistoryFormValidations;
+    currentPatient: Record<string, string> | null;
+    currentDoctor: Record<string, string> | null;
+    prescriptionPath: string;
+    folioNumber: string;
     searchValue: string;
     modal: boolean;
     modalError: boolean;
     modalSuccess: boolean;
     modalAdd: IStudentModal;
     modalCheck: IStudentCheckModal;
+    showPreviewModal: boolean;
+    showSaveSession: boolean;
+    showSendRecipe: boolean;
 }
 
 const MESSAGE_ADD_STUDENT = "¿Estás seguro que deseas agregar a este paciente?";
@@ -88,6 +97,9 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
                 noResultsAdd: false,
                 studentList: []
             },
+            currentDoctor: null,
+            currentPatient: null,
+            folioNumber: '',
             fullCardSession: {
                 title: '',
                 type: ''
@@ -98,6 +110,7 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
                 subtitle: '',
                 title: ''
             },
+            hasTreatments: false,
             isEmpty: false,
             isNutrition: false,
             loading: true,
@@ -112,7 +125,11 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
                 history: this.patientHistoryData.getHistoryValues,
                 nutritionist: this.patientHistoryData.getNutritionValues
             },
+            prescriptionPath: '',
             searchValue: '',
+            showPreviewModal: false,
+            showSaveSession: true,
+            showSendRecipe: true,
         };
         this.sessionId = this.props.match.params.session || '';
         this.onSearch = this.onSearch.bind(this);
@@ -129,6 +146,14 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
         this.onSubmit = this.onSubmit.bind(this);
         this.updateHistory = this.updateHistory.bind(this);
         this.closeConfirmModal = this.closeConfirmModal.bind(this);
+        this.toggleSaveSession = this.toggleSaveSession.bind(this);
+        this.toggleSendRecipe = this.toggleSendRecipe.bind(this);
+        this.togglePreviewModal = this.togglePreviewModal.bind(this);
+        this.onClosePreviewModal = this.onClosePreviewModal.bind(this);
+        this.onDownloadRecipe = this.onDownloadRecipe.bind(this);
+        this.onUploadRecipe = this.onUploadRecipe.bind(this);
+        this.onSendRecipe = this.onSendRecipe.bind(this);
+        this.updateSendRecipe = this.updateSendRecipe.bind(this);
     }
 
     public componentDidMount() {
@@ -159,8 +184,12 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
                 this.patientHistoryData = new SessionEditPatientHistoryData(patientHistory);
                 const newState = {
                     board: this.getBoard(sessions, patient),
+                    currentDoctor: values[0].doctor,
+                    currentPatient: values[0].patient,
+                    folioNumber: patCase.folioNumber,
                     fullCardSession: this.getFullCardSession(),
                     fullCardSimple: this.getFullCardSimple(),
+                    hasTreatments: patCase.has_treatments,
                     isEmpty: sessions.length === 0 && !patient,
                     isNutrition,
                     pastCases,
@@ -169,6 +198,9 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
                         history: this.patientHistoryData.getHistoryValues,
                         nutritionist: this.patientHistoryData.getNutritionValues,
                     },
+                    prescriptionPath: patCase.prescriptionPath,
+                    showSaveSession: !!patCase.prescriptionPath,
+                    showSendRecipe: !patCase.prescriptionPath,
                 };
                 this.setState({
                     loading: false,
@@ -256,6 +288,13 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
                                                 touched,
                                                 values: values as ISessionPatientHistoryFormValidations,
                                             }}>
+                                            <RecipePreviewModal
+                                                show={this.state.showPreviewModal}
+                                                onClose={this.onClosePreviewModal}
+                                                recipeURL={this.state.prescriptionPath}
+                                                onDownloadRecipe={this.onDownloadRecipe}
+                                                onUploadRecipe={this.onUploadRecipe}
+                                            />
                                             <form onSubmit={handleSubmit}>
                                                 <FormEditHistoryManager
                                                     formData={{values}}
@@ -263,6 +302,14 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
                                                     session={session}
                                                     pastCases={this.state.pastCases}
                                                     isNutrition={this.state.isNutrition}
+                                                    showSaveSession={this.state.showSaveSession}
+                                                    showSendRecipe={this.state.showSendRecipe}
+                                                    toggleSaveSession={this.toggleSaveSession}
+                                                    toggleSendRecipe={this.toggleSendRecipe}
+                                                    onSendRecipe={this.onSendRecipe}
+                                                    folioNumber={this.state.folioNumber}
+                                                    prescriptionURL={this.state.prescriptionPath}
+                                                    onUploadRecipe={this.onUploadRecipe}
                                                 />
                                             </form>
                                         </PatientBackgroundFormContext.Provider>
@@ -279,7 +326,11 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
         const sessionId = this.sessionId;
         const isNutrition = this.state.isNutrition;
         const historyUpdatedParams = this.patientHistoryData.historyUpdateParams;
-        const caseUpdatedParams = this.patientHistoryData.caseUpdateParams;
+        const caseUpdatedParams = {
+            ...this.patientHistoryData.caseUpdateParams,
+            folioNumber: this.state.folioNumber,
+            prescriptionPath: this.state.prescriptionPath
+        };
         const nutritionistUpdateParams = this.patientHistoryData.getNutritionValues;
         const patientForm = isNutrition ? nutritionistUpdateParams : caseUpdatedParams;
         if (sessionId) {
@@ -315,6 +366,59 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
             this.patientHistoryData.preparePatientCaseData(values.case);
         }
         this.updateHistory();
+    }
+    private toggleSaveSession(showSaveSession: boolean) {
+        this.setState({ showSaveSession });
+    }
+    private toggleSendRecipe(showSendRecipe: boolean) {
+        this.setState({ showSendRecipe });
+    }
+    private onClosePreviewModal() {
+        this.setState({ showPreviewModal: false });
+    }
+    private onDownloadRecipe() {
+        const recipeParams = this.patientHistoryData.getRecipeData(this.state.currentPatient, this.state.currentDoctor, this.sessionMentor.issueDate, this.state.pastCases.length) as any;
+        this.sessionService.createPrescription(recipeParams).then((response: any) => {
+            const { folioNumber, prescriptionUrl } = response.prescriptionResponse;
+            this.setState({ folioNumber, prescriptionPath: prescriptionUrl });
+            const link = document.createElement("a");
+            link.download = folioNumber;
+            link.target = "_blank";
+            link.href = prescriptionUrl;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }).catch(() => {
+            this.setState({ loading: false });
+        })
+    }
+    private onUploadRecipe(data: FormData) {
+        this.sessionService.uploadPrescription(data).then((response: any) => {
+            this.setState({
+                showPreviewModal: false,
+                showSaveSession: true,
+                showSendRecipe: false,
+            });
+        });
+    }
+    private togglePreviewModal(showPreviewModal: boolean) {
+        this.setState({ showPreviewModal });
+    }
+    private onSendRecipe(values: ISessionPatientHistoryFormValidations) {
+        this.patientHistoryData.preparePatientCaseData(values.case);
+        this.updateSendRecipe();
+    }
+    private updateSendRecipe() {
+        const recipeParams = this.patientHistoryData.getRecipeData(this.state.currentPatient, this.state.currentDoctor, this.sessionMentor.issueDate, this.state.pastCases.length) as any;
+        this.sessionService.sendTreatmentsRecipe(recipeParams).then((response: any) => {
+            this.setState({
+                hasTreatments: true,
+                prescriptionPath: response.previewResponse.link,
+                showPreviewModal: true,
+            });
+        }).catch(() => {
+            this.setState({ loading: false });
+        })
     }
 
     private closeConfirmModal() {
