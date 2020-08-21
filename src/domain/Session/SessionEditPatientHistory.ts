@@ -246,7 +246,7 @@ class SessionEditPatientHistoryData {
         doctor: {
           doctorFirstName: doctor.name,
           doctorLastName: doctor.last_name,
-          doctorSpecialty: doctor.specialty_name || 'general',
+          doctorSpecialty: doctor.specialty_name,
           doctorCmp: doctor.cmp.slice(0, 6),
         },
         ipressCode: SESSION_IPRESS,

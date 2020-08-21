@@ -384,9 +384,8 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
         const recipeParams = this.patientHistoryData.getRecipeData(this.state.currentPatient, this.state.currentDoctor, this.sessionMentor.issueDate, this.state.pastCases.length) as any;
         this.sessionService.createPrescription(recipeParams).then((response: any) => {
             const { folioNumber, prescriptionUrl, uploadFileUrl } = response.prescriptionResponse;
-            this.setState({ folioNumber, prescriptionPath: prescriptionUrl, uploadURL: uploadFileUrl });
+            this.setState({ folioNumber, uploadURL: uploadFileUrl });
             const link = document.createElement("a");
-            link.download = folioNumber;
             link.target = "_blank";
             link.href = prescriptionUrl;
             document.body.appendChild(link);

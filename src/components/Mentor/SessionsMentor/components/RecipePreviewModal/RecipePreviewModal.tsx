@@ -49,7 +49,9 @@ const RecipePreviewModal: React.FC<IPropsRecipePreviewModal> = ({
 			show={show}
 			styles={{
 				backgroundColor: ConsoleColor.TEXT_COLORS.white,
+				maxWidth: '100%',
 				position: 'relative',
+				width: '1400px',
 			}}
 			onCloseModal={close}
 		>
