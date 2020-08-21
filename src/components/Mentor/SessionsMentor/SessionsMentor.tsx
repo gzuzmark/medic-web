@@ -72,6 +72,7 @@ interface IStateSessionsMentor {
     showPreviewModal: boolean;
     showSaveSession: boolean;
     showSendRecipe: boolean;
+    uploadURL: string;
 }
 
 const MESSAGE_ADD_STUDENT = "¿Estás seguro que deseas agregar a este paciente?";
@@ -130,6 +131,7 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
             showPreviewModal: false,
             showSaveSession: true,
             showSendRecipe: true,
+            uploadURL: '',
         };
         this.sessionId = this.props.match.params.session || '';
         this.onSearch = this.onSearch.bind(this);
@@ -154,6 +156,7 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
         this.onUploadRecipe = this.onUploadRecipe.bind(this);
         this.onSendRecipe = this.onSendRecipe.bind(this);
         this.updateSendRecipe = this.updateSendRecipe.bind(this);
+        this.getPrescriptionURL = this.getPrescriptionURL.bind(this);
     }
 
     public componentDidMount() {
@@ -292,6 +295,7 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
                                                 show={this.state.showPreviewModal}
                                                 onClose={this.onClosePreviewModal}
                                                 recipeURL={this.state.prescriptionPath}
+                                                uploadURL={this.state.uploadURL}
                                                 onDownloadRecipe={this.onDownloadRecipe}
                                                 onUploadRecipe={this.onUploadRecipe}
                                             />
@@ -309,7 +313,7 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
                                                     onSendRecipe={this.onSendRecipe}
                                                     folioNumber={this.state.folioNumber}
                                                     prescriptionURL={this.state.prescriptionPath}
-                                                    onUploadRecipe={this.onUploadRecipe}
+                                                    getPrescriptionURL={this.getPrescriptionURL}
                                                 />
                                             </form>
                                         </PatientBackgroundFormContext.Provider>
@@ -379,8 +383,8 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
     private onDownloadRecipe() {
         const recipeParams = this.patientHistoryData.getRecipeData(this.state.currentPatient, this.state.currentDoctor, this.sessionMentor.issueDate, this.state.pastCases.length) as any;
         this.sessionService.createPrescription(recipeParams).then((response: any) => {
-            const { folioNumber, prescriptionUrl } = response.prescriptionResponse;
-            this.setState({ folioNumber, prescriptionPath: prescriptionUrl });
+            const { folioNumber, prescriptionUrl, uploadFileUrl } = response.prescriptionResponse;
+            this.setState({ folioNumber, prescriptionPath: prescriptionUrl, uploadURL: uploadFileUrl });
             const link = document.createElement("a");
             link.download = folioNumber;
             link.target = "_blank";
@@ -392,13 +396,22 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
             this.setState({ loading: false });
         })
     }
-    private onUploadRecipe(data: FormData) {
-        this.sessionService.uploadPrescription(data).then((response: any) => {
-            this.setState({
-                showPreviewModal: false,
-                showSaveSession: true,
-                showSendRecipe: false,
-            });
+    private onUploadRecipe() {
+        this.setState({
+            showPreviewModal: false,
+            showSaveSession: true,
+            showSendRecipe: false,
+        });
+    }
+    private getPrescriptionURL() {
+        this.sessionService.getFileURL(this.state.folioNumber).then((response: any) => {
+            const url = response.url;
+            const link = document.createElement("a");
+            link.target = "_blank";
+            link.href = url;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
         });
     }
     private togglePreviewModal(showPreviewModal: boolean) {

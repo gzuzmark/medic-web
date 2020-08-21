@@ -3,7 +3,6 @@ import * as React from 'react';
 import styled from "styled-components";
 import FormColumn from "../../../../../../common/FormRow/components/FormColumn/FormColumn";
 import FormRow from "../../../../../../common/FormRow/FormRow";
-import Icon from '../../../../../../common/Icon/Icon';
 import { Heading2, Headline1 } from '../../../../../../common/MentorText';
 import MentorTextArea from '../../../../../../common/MentorTextArea/MentorTextArea';
 import PatientBackgroundFormContext from '../../PatientHistoryForm/PatientBackgroundForm.context';
@@ -13,8 +12,7 @@ interface IPropsCurrentSessionForm {
   forceDisable?: boolean;
   showSeeRecipeButton: boolean;
   folioNumber: string;
-  prescriptionURL: string;
-  onUploadRecipe(data: FormData): void;
+  getPrescriptionURL: () => void;
 }
 
 const DEFAULT_MAX_LEGTH = 150;
@@ -34,29 +32,11 @@ const PrescriptionTextContainer = styled.div`
     margin-right: 30px;
 `;
 
-const CurrentSessionForm: React.FC<IPropsCurrentSessionForm> = ({ forceDisable, showSeeRecipeButton, folioNumber, prescriptionURL, onUploadRecipe }) => {
+const CurrentSessionForm: React.FC<IPropsCurrentSessionForm> = ({ forceDisable, showSeeRecipeButton, folioNumber, getPrescriptionURL }) => {
   const { values, handleBlur, handleChange } = React.useContext(PatientBackgroundFormContext);
-  const hiddenFileInput = React.useRef(null);
-
-  const handleOnFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const selectedFile =
-      (e.target.files && e.target.files.length > 0 && e.target.files[0]) ||
-      null;
-    if (selectedFile) {
-      const formData = new FormData();
-      formData.append('file', selectedFile);
-      onUploadRecipe(formData);
-    }
-  };
-  
-  const onFileUpload = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+  const handleOpenRecipe = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
-    if (hiddenFileInput) {
-      const current = hiddenFileInput.current as any;
-      if (current) {
-        current.click();
-      }
-    }
+    getPrescriptionURL();
   };
   return (
     <React.Fragment>
@@ -103,26 +83,8 @@ const CurrentSessionForm: React.FC<IPropsCurrentSessionForm> = ({ forceDisable, 
               <div>Receta Emitida: N° {folioNumber || '32453241234-001'}</div>
             </PrescriptionTextContainer>
             <div style={{ display: 'flex' }}>
-              <a href={prescriptionURL} className='u-Button' target='_blank'>
+              <button onClick={handleOpenRecipe} className='u-Button'>
                 Ver Receta
-              </a> 
-              <input
-                ref={hiddenFileInput}
-                type='file'
-                style={{display:'none'}}
-                onChange={handleOnFileChange}
-              />
-              <button
-                type='button'
-                onClick={onFileUpload}
-                className='u-Button'
-                style={{ marginLeft: '10px' }}
-              >
-                <Icon
-                  style={{ height: '80px', width: '50px', fill: '#fff' }}
-                  name={'upload'}
-                />{' '}
-                Reemplazar receta
               </button>
             </div>
           </div>

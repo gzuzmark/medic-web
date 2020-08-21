@@ -351,6 +351,7 @@ const TreatmentFields: React.FC<IPropsTreatmentFields> = ({
 			ctxt.setFieldValue(`case.treatments[${i}].pharmaceuticalForm`, '');
 			ctxt.setFieldValue(`case.treatments[${i}].name`, '');
 			ctxt.setFieldValue(`case.treatments[${i}].salesUnit`, '');
+			ctxt.setFieldValue(`case.treatments[${i}].skuSap`, '');
 			setCurrentUnit('');
 		}
 	};
@@ -433,6 +434,13 @@ const TreatmentFields: React.FC<IPropsTreatmentFields> = ({
 					ctxt.setFieldValue(
 						`case.treatments[${i}].salesUnit`,
 						salesUnitVal || '',
+					);
+				}
+				if (skuList.length > 0) {
+					const skuSapValue = skuList[0];
+					ctxt.setFieldValue(
+						`case.treatments[${i}].skuSap`,
+						skuSapValue || '',
 					);
 				}
 			}
