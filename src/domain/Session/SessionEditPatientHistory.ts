@@ -1,4 +1,4 @@
-// import * as moment from "moment";
+import * as moment from "moment";
 import { ISessionNutritionistFormValidations, nutritionistDefaultValues } from "../../components/Mentor/SessionsMentor/components/NutritionistForm/NutritionistForm.context";
 import {
   IPatientBackgroundFormValidations,
@@ -8,7 +8,7 @@ import {
 import { ISessionDoctor, ISessionPatient, ISessionTriage } from "./SessionMentorBean";
 
 export const SAPCODE_SEPARATOR = '_';
-// const SESSION_IPRESS = '1111';
+const SESSION_IPRESS = '1111';
 
 export interface ISessionHistoryForm {
   allergies: string;
@@ -32,7 +32,7 @@ export interface ISessionPatientTreatmentForm {
   pharmaceuticalForm: string,
   salesUnit: string,
   activePrinciples: string,
-  skuSap?: number,
+  skuSap?: string,
 }
 
 export interface ISessionPatientCaseForm {
@@ -216,6 +216,7 @@ class SessionEditPatientHistoryData {
             pharmaceuticalForm: this.getValueWithoutSKU(value.pharmaceuticalForm),
             quantity: value.quantity,
             salesUnit: value.salesUnit,
+            skuSap: value.skuSap,
           };
         }
         return {
@@ -230,6 +231,7 @@ class SessionEditPatientHistoryData {
           pharmaceuticalForm: this.getValueWithoutSKU(value.pharmaceuticalForm),
           quantity: value.quantity,
           salesUnit: value.salesUnit,
+          skuSap: value.skuSap,
         };
       });
     }
@@ -239,14 +241,12 @@ class SessionEditPatientHistoryData {
     if (patient && doctor) {
       // tslint:disable:object-literal-sort-keys
       const recipe = {
-        /*
-        // TODO: Use Correct Request Body
         additionalRecomendations: this.patient.case.recommendation,
         diagnostic: this.patient.case.diagnostic,
         doctor: {
           doctorFirstName: doctor.name,
           doctorLastName: doctor.last_name,
-          doctorSpecialty: 'general',
+          doctorSpecialty: doctor.specialty_name || 'general',
           doctorCmp: doctor.cmp.slice(0, 6),
         },
         ipressCode: SESSION_IPRESS,
@@ -255,59 +255,25 @@ class SessionEditPatientHistoryData {
           activePrinciples: t.component,
           skuSAP: t.skuSap,
           concentrations: t.concentrations,
-          quantity: 1.0,
+          quantity: +t.quantity,
           pharmaceuticalForm: t.pharmaceuticalForm,
           productName: t.name,
           administrationRoute: t.administrationRoute,
-          dose: 1.0,
-          timeBetweenDosesInHours: 5.0,
+          // dose: 1.0,
+          // timeBetweenDosesInHours: 5.0,
           totalPrescriptionTimeInDays: +t.period,
           prescriptionRequirements: t.extra_info,
+          posology: t.frequency,
         })),
         patient: {
           patientAge: moment().diff(patient.birthdate, 'years') || 25,
           patientAddress: 'address',
           patientDni: patient.document_number,
-          patientFirstName: 'Ricardo',
-          patientLastName: 'Bejar',
+          patientFirstName: patient.name,
+          patientLastName: patient.last_name,
           patientPhone: patient.phone,
           patientClinicHistory: `${patient.document_number}${pastConsultsLength}`,
         },
-        */
-       "issueDate": "2020-08-23T12:00:00.000Z",
-        "ipressCode":"1111",
-        "patient": {
-            "patientDni": "12345658",
-            "patientFirstName": "Ricardo Pedrin",
-            "patientLastName": "Bejar",
-            "patientAge": 50.0,
-            "patientPhone": "123456789",
-            "patientAddress": "aa",
-            "patientClinicHistory": "231"
-        },
-        "doctor": {
-            "doctorFirstName": "Ricardo",
-            "doctorLastName": "Bejar",
-            "doctorSpecialty": "general",
-            "doctorCmp": "123456"
-        },
-        "medicines": [
-            {
-                "skuSAP": "126326",
-                "activePrinciples": "Clorofernamina",
-                "concentrations": "100mg",
-                "quantity": 1.0,
-                "pharmaceuticalForm": "tableta",
-                "productName": "Medical Forte",
-                "administrationRoute": "ORAL S",
-                "dose": 1.0,
-                "timeBetweenDosesInHours": 5.0,
-                "totalPrescriptionTimeInDays": 29.0,
-                "prescriptionRequirements": "Tomar En ayunas"
-            }
-        ],
-        "diagnostic":"diagnostico",
-        "additionalRecomendations":"Recomendaciones adicionales"
       };
       return recipe;
     }

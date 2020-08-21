@@ -32,7 +32,7 @@ export interface IPropsFormEditHistoryManager {
     toggleSendRecipe: (flag: boolean) => void;
     onHandleSubmit: (e: any) => void;
     onSendRecipe: (e: any) => void;
-    onUploadRecipe: (data: FormData) => void;
+    getPrescriptionURL: () => void;
 }
 
 const getGender = (value?: number): string => {
@@ -131,8 +131,7 @@ const FormEditHistoryManager: React.FC<IPropsFormEditHistoryManager> = (props) =
                     <CurrentSessionForm
                       showSeeRecipeButton={props.showSaveSession}
                       folioNumber={props.folioNumber}
-                      prescriptionURL={props.prescriptionURL}
-                      onUploadRecipe={props.onUploadRecipe}
+                      getPrescriptionURL={props.getPrescriptionURL}
                     />
                   </React.Fragment>
                 ),

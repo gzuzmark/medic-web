@@ -10,9 +10,10 @@ interface IPropsRecipePreviewModal {
 	show: boolean;
 	style?: React.CSSProperties;
 	recipeURL: string;
+	uploadURL: string;
 	onClose(): void;
 	onDownloadRecipe(): void;
-	onUploadRecipe(data: FormData): void;
+	onUploadRecipe(): void;
 }
 
 const DEFAULT_IFRAME_WIDTH = '100%';
@@ -30,29 +31,18 @@ const RecipePreviewModal: React.FC<IPropsRecipePreviewModal> = ({
 	show,
 	onClose,
 	recipeURL,
+	uploadURL,
 	onDownloadRecipe,
 	onUploadRecipe,
 }) => {
-	const hiddenFileInput = React.useRef(null);
-
-	const handleOnFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		const selectedFile =
-			(e.target.files && e.target.files.length > 0 && e.target.files[0]) ||
-			null;
-		if (selectedFile) {
-			const formData = new FormData();
-			formData.append('file', selectedFile);
-			onUploadRecipe(formData);
-		}
-	};
-
-	const onFileUpload = () => {
-		if (hiddenFileInput) {
-			const current = hiddenFileInput.current as any;
-			if (current) {
-				current.click()
-			}
-		}
+	const onUploadPrescription = () => {
+		const link = document.createElement('a');
+		link.target = '_blank';
+		link.href = uploadURL;
+		document.body.appendChild(link);
+		link.click();
+		document.body.removeChild(link);
+		onUploadRecipe();
 	};
 	return (
 		<ConsoleModal
@@ -97,21 +87,16 @@ const RecipePreviewModal: React.FC<IPropsRecipePreviewModal> = ({
 						<Icon style={{ height: '40px', width: '50px' }} name={'download'} />{' '}
 						Confirma y descarga para firmar
 					</button>
-					<input
-						ref={hiddenFileInput}
-						type='file'
-						style={{display:'none'}}
-						onChange={handleOnFileChange}
-					/>
 					<button
-						onClick={onFileUpload}
+						onClick={onUploadPrescription}
 						className='u-Button'
+						disabled={!uploadURL}
 						style={buttonStyle}
 					>
 						<Icon
 							style={{ height: '80px', width: '50px', fill: '#fff' }}
 							name={'upload'}
-						/>{' '}
+						/>
 						Sube la receta firmada
 					</button>
 				</div>
