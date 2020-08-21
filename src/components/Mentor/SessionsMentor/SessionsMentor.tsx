@@ -43,6 +43,7 @@ import {
     StudentCheckModalScreens
 } from "./components/StudentCheckModal/StudentCheckModal";
 import {IStudentChecklistCard} from "./components/StudentFullCard/StudentFullCard";
+import UploadPrescriptionModal from './components/UploadPrescriptionModal/UploadPrescriptionModal';
 import './SessionsMentor.scss';
 
 interface IPropsSessionsMentor {
@@ -72,6 +73,7 @@ interface IStateSessionsMentor {
     showPreviewModal: boolean;
     showSaveSession: boolean;
     showSendRecipe: boolean;
+    showUploadModal: boolean;
     uploadURL: string;
 }
 
@@ -131,6 +133,7 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
             showPreviewModal: false,
             showSaveSession: true,
             showSendRecipe: true,
+            showUploadModal: false,
             uploadURL: '',
         };
         this.sessionId = this.props.match.params.session || '';
@@ -157,6 +160,7 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
         this.onSendRecipe = this.onSendRecipe.bind(this);
         this.updateSendRecipe = this.updateSendRecipe.bind(this);
         this.getPrescriptionURL = this.getPrescriptionURL.bind(this);
+        this.onCloseUploadModal = this.onCloseUploadModal.bind(this);
     }
 
     public componentDidMount() {
@@ -299,6 +303,11 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
                                                 onDownloadRecipe={this.onDownloadRecipe}
                                                 onUploadRecipe={this.onUploadRecipe}
                                             />
+                                            <UploadPrescriptionModal
+                                                show={this.state.showUploadModal}
+                                                onClose={this.onCloseUploadModal}
+                                                uploadURL={this.state.uploadURL}
+                                            />
                                             <form onSubmit={handleSubmit}>
                                                 <FormEditHistoryManager
                                                     formData={{values}}
@@ -380,8 +389,11 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
     private onClosePreviewModal() {
         this.setState({ showPreviewModal: false });
     }
+    private onCloseUploadModal() {
+        this.setState({ showUploadModal: false });
+    }
     private onDownloadRecipe() {
-        const recipeParams = this.patientHistoryData.getRecipeData(this.state.currentPatient, this.state.currentDoctor, this.sessionMentor.issueDate, this.state.pastCases.length) as any;
+        const recipeParams = this.patientHistoryData.getRecipeData(this.state.currentPatient, this.state.currentDoctor, this.sessionMentor.issueDate, this.state.pastCases.length) as any;        
         this.sessionService.createPrescription(recipeParams).then((response: any) => {
             const { folioNumber, prescriptionUrl, uploadFileUrl } = response.prescriptionResponse;
             this.setState({ folioNumber, uploadURL: uploadFileUrl });
@@ -400,6 +412,7 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
             showPreviewModal: false,
             showSaveSession: true,
             showSendRecipe: false,
+            showUploadModal: true,
         });
     }
     private getPrescriptionURL() {

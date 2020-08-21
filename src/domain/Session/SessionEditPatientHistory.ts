@@ -268,11 +268,12 @@ class SessionEditPatientHistoryData {
         patient: {
           patientAge: moment().diff(patient.birthdate, 'years') || 25,
           patientAddress: 'address',
-          patientDni: patient.document_number,
+          patientDni: '61646618',
           patientFirstName: patient.name,
           patientLastName: patient.last_name,
           patientPhone: patient.phone,
           patientClinicHistory: `${patient.document_number}${pastConsultsLength}`,
+          patientDateOfBirth: patient.birthdate,
         },
       };
       return recipe;
