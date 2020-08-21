@@ -35,15 +35,6 @@ const RecipePreviewModal: React.FC<IPropsRecipePreviewModal> = ({
 	onDownloadRecipe,
 	onUploadRecipe,
 }) => {
-	const onUploadPrescription = () => {
-		const link = document.createElement('a');
-		link.target = '_blank';
-		link.href = uploadURL;
-		document.body.appendChild(link);
-		link.click();
-		document.body.removeChild(link);
-		onUploadRecipe();
-	};
 	return (
 		<ConsoleModal
 			show={show}
@@ -90,7 +81,7 @@ const RecipePreviewModal: React.FC<IPropsRecipePreviewModal> = ({
 						Confirma y descarga para firmar
 					</button>
 					<button
-						onClick={onUploadPrescription}
+						onClick={onUploadRecipe}
 						className='u-Button'
 						disabled={!uploadURL}
 						style={buttonStyle}
