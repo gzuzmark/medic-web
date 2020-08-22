@@ -54,6 +54,7 @@ interface IStateSessionsMentor {
     board: IStudentChecklistBoard;
     fullCardSession: ISessionFullCard;
     fullCardSimple: ISimpleFullCard;
+    hasToken: boolean;
     hasTreatments: boolean;
     isEmpty: boolean;
     isNutrition: boolean;
@@ -113,6 +114,7 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
                 subtitle: '',
                 title: ''
             },
+            hasToken: false,
             hasTreatments: false,
             isEmpty: false,
             isNutrition: false,
@@ -189,6 +191,7 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
                 } as ISessionPatientHistoryForm;
                 this.sessionMentor.setSessionPatientTriage(isNutrition ? patNutrition : patCase);
                 this.patientHistoryData = new SessionEditPatientHistoryData(patientHistory);
+                const hasToken = sessionResponse.doctor && !!sessionResponse.doctor.has_token;
                 const newState = {
                     board: this.getBoard(sessions, patient),
                     currentDoctor: values[0].doctor,
@@ -196,6 +199,7 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
                     folioNumber: patCase.folioNumber,
                     fullCardSession: this.getFullCardSession(),
                     fullCardSimple: this.getFullCardSimple(),
+                    hasToken,
                     hasTreatments: patCase.has_treatments,
                     isEmpty: sessions.length === 0 && !patient,
                     isNutrition,
@@ -206,8 +210,8 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
                         nutritionist: this.patientHistoryData.getNutritionValues,
                     },
                     prescriptionPath: patCase.prescriptionPath,
-                    showSaveSession: !!patCase.prescriptionPath,
-                    showSendRecipe: !patCase.prescriptionPath,
+                    showSaveSession: !hasToken && !!patCase.prescriptionPath,
+                    showSendRecipe: hasToken && !patCase.prescriptionPath,
                 };
                 this.setState({
                     loading: false,
