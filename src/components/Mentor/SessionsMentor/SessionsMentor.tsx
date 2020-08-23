@@ -210,7 +210,7 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
                         nutritionist: this.patientHistoryData.getNutritionValues,
                     },
                     prescriptionPath: patCase.prescriptionPath,
-                    showSaveSession: !hasToken && !!patCase.prescriptionPath,
+                    showSaveSession: !hasToken || !!patCase.prescriptionPath,
                     showSendRecipe: hasToken && !patCase.prescriptionPath,
                 };
                 this.setState({

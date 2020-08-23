@@ -129,7 +129,7 @@ const FormEditHistoryManager: React.FC<IPropsFormEditHistoryManager> = (props) =
                       questions={triage.questions}
                     />
                     <CurrentSessionForm
-                      showSeeRecipeButton={props.showSaveSession}
+                      showSeeRecipeButton={!!props.folioNumber && !!props.getPrescriptionURL}
                       folioNumber={props.folioNumber}
                       getPrescriptionURL={props.getPrescriptionURL}
                     />
