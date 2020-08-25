@@ -141,9 +141,10 @@ class SessionEditPatientHistoryData {
 
   get getCaseValues(): IPatientCaseFormValidations {
     const p = {...this.patient.case};
+    const diagnostic = p.diagnostic && p.diagnostic.split(' - ')[0] || '';
     const formValues = {
       anamnesis: p.anamnesis || '',
-      diagnostic: p.diagnostic || '',
+      diagnostic,
       recommendation: p.recommendation || '',
       treatments: p.treatments || [],
     };
@@ -191,7 +192,7 @@ class SessionEditPatientHistoryData {
 
   public preparePatientCaseData(values: IPatientCaseFormValidations) {
     this.patient.case.anamnesis = values.anamnesis.trim();
-    this.patient.case.diagnostic = values.diagnostic.trim();
+    this.patient.case.diagnostic = `${values.diagnostic.trim()} - ${values.diagnosticDesc || ''}`;
     this.patient.case.recommendation = values.recommendation.trim();
     this.preparePatientCaseTreatmentData(values.treatments);
   }
@@ -291,9 +292,10 @@ class SessionEditPatientHistoryData {
   }
 
   private setInitialCase(currentCase?: ISessionPatientCaseForm) {
+    const diagnostic = currentCase && currentCase.diagnostic && currentCase.diagnostic.split(' - ')[0] || '';
     this.patient.case.id = currentCase && currentCase.id || '';
     this.patient.case.anamnesis = currentCase && currentCase.anamnesis || '';
-    this.patient.case.diagnostic = currentCase && currentCase.diagnostic || '';
+    this.patient.case.diagnostic = diagnostic;
     this.patient.case.recommendation = currentCase && currentCase.recommendation || '';
     this.patient.case.treatments = currentCase && currentCase.treatments || [];
   }
