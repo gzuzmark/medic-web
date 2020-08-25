@@ -3,10 +3,14 @@ import * as React from 'react';
 import styled from "styled-components";
 import FormColumn from "../../../../../../common/FormRow/components/FormColumn/FormColumn";
 import FormRow from "../../../../../../common/FormRow/FormRow";
+import { IPropsMentorOptionsDropDown } from '../../../../../../common/MentorDropDown/MentorDropDown';
 import { Heading2, Headline1 } from '../../../../../../common/MentorText';
 import MentorTextArea from '../../../../../../common/MentorTextArea/MentorTextArea';
+import MentorTypeAhead from '../../../../../../common/MentorTypeAhead/MentorTypeAhead';
+import MentorService from '../../../../../../services/Mentor/Mentor.service';
 import PatientBackgroundFormContext from '../../PatientHistoryForm/PatientBackgroundForm.context';
 import HistoryTreatmentForm from '../HistoryTreatmentForm/HistoryTreatmentForm';
+import { mapResponse } from '../HistoryTreatmentForm/Utils';
 
 interface IPropsCurrentSessionForm {
   forceDisable?: boolean;
@@ -33,11 +37,71 @@ const PrescriptionTextContainer = styled.div`
 `;
 
 const CurrentSessionForm: React.FC<IPropsCurrentSessionForm> = ({ forceDisable, showSeeRecipeButton, folioNumber, getPrescriptionURL }) => {
-  const { values, handleBlur, handleChange } = React.useContext(PatientBackgroundFormContext);
+  const { values, handleBlur, handleChange, setFieldValue } = React.useContext(PatientBackgroundFormContext);
+  const [diagnosticDescription, setDiagnosticDescription] = React.useState<string>('');
+  const [diagnosticOptions, setDiagnosticOptions] = React.useState<
+		IPropsMentorOptionsDropDown[]
+	>([]);
+  const service = new MentorService();
   const handleOpenRecipe = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
     getPrescriptionURL();
   };
+
+  React.useEffect(() => {
+    async function retrieveDiagnostic() {
+      const diagnostic = values.case.diagnostic;
+      const { items } = await service.getDiagnosticCodes(
+				diagnostic,
+				false,
+      ) as Record<string, string>;
+      if (Array.isArray(items)) {
+				const mappedData = mapResponse(items) as IPropsMentorOptionsDropDown[];
+        setDiagnosticOptions(mappedData);
+        const response = (await service.getDiagnosticDescription(
+					diagnostic,
+        )) as Record<string, string>;
+        const { description } = response;
+        setDiagnosticDescription(description);
+        setFieldValue('case.diagnostic', diagnostic);
+      }
+    }
+    retrieveDiagnostic();
+  }, []);
+
+
+  const handleTypeDiagnostic = (value: string) => (query: string) =>
+		new Promise((resolve) => {
+			const param = query || value;
+			if (param) {
+				service.getDiagnosticCodes(param).then((data: Record<string, string>) => {
+          const { items } = data;
+					if (Array.isArray(items)) {
+						const mappedData = mapResponse(
+							items,
+						) as IPropsMentorOptionsDropDown[];
+						setDiagnosticOptions(mappedData);
+						resolve(mappedData);
+					}
+				});
+			}
+    });
+  const handleDiagnosticChange = (
+    name: string,
+    selectedOption: IPropsMentorOptionsDropDown,
+  ) => {
+    if (selectedOption) {
+      service.getDiagnosticDescription(selectedOption.value).then((response: Record<string, string>) => {
+        const { description } = response;
+        setDiagnosticDescription(description);
+      });
+      setFieldValue(name, selectedOption.value);
+    } else {
+      setFieldValue(name, '');
+      setDiagnosticDescription('');
+    }
+  };
+  
   return (
     <React.Fragment>
       <FormRow key={'row_1'} style={defaultRowStyle} columns={[
@@ -57,20 +121,30 @@ const CurrentSessionForm: React.FC<IPropsCurrentSessionForm> = ({ forceDisable, 
         </FormColumn>
       ]}/>
       <FormRow key={'row_2'} style={defaultRowStyle} columns={[
-        <FormColumn width={DEFAULT_COLUMN_WIDTH} key={'diagnostic'}>
-        <Heading2>Diagnóstico</Heading2>
+        <FormColumn width={2} key={'diagnosticCode'}>
+          <Heading2>Diagnóstico</Heading2>
+          <MentorTypeAhead
+            label="Escribe el código de diagnóstico:"
+            isClearable={true}
+            lowercaseLabel={true}
+            name={`case.diagnostic`}
+            value={values.case.diagnostic}
+            triggerChange={handleDiagnosticChange}
+            loadOptions={handleTypeDiagnostic(values.case.diagnostic)}
+            defaultOptions={diagnosticOptions}
+            inputValue={values.case.diagnostic}
+          />
+        </FormColumn>,
+        <FormColumn width={2} key={'diagnosticDescription'} style={{ flexDirection: 'row', alignItems: 'flex-end' }}>
           <MentorTextArea
-            disabled={!!forceDisable}
-            label="Escribe el diagnóstico del paciente:"
+            disabled={true}
+            styleContainer={{ width: '100%' }}
             attrs={{
-                name: "case.diagnostic",
-                onBlur: handleBlur,
-                onChange: handleChange,
-                rows: 4,
+                rows: 2,
                 style: {  height: 'auto' },
-                value: values.case.diagnostic,
+                value: diagnosticDescription,
             }} />
-        </FormColumn>
+        </FormColumn>,
       ]}/>
       <div style={{ marginTop: 20 }}>
         <Headline1>

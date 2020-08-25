@@ -31,6 +31,48 @@ class MentorService extends BaseRequest {
         });
     }
 
+    public getDiagnosticCodes(code: string, isCancel = true) {
+        if (!!this.listMenorCancelToken) {
+            this.listMenorCancelToken.cancel();
+        }
+        this.listMenorCancelToken = this.generateCancelToken();
+        const instance = isCancel ? this.getCustomInstance(this.listMenorCancelToken) : this.instance;
+        return new Promise((resolve, reject) => {
+          instance.get(`ugo/mentors-api/diagnostics?code=${code}`)
+            .then((response: any) => {
+              if (response.status === 200 && response.data) {
+                resolve(response.data as string[]);
+              } else {
+                reject(null);
+              }
+            })
+            .catch((error: any) => {
+                if (Axios.isCancel(error)) {
+                    return;
+                }
+              this.validSession();
+              reject(error);
+            });
+        });
+    }
+
+    public getDiagnosticDescription(code: string) {
+        return new Promise((resolve, reject) => {
+            this.instance.get(`ugo/mentors-api/diagnostics/${code}`)
+              .then((response: any) => {
+                if (response.status === 200 && response.data) {
+                  resolve(response.data);
+                } else {
+                  reject(null);
+                }
+              })
+              .catch((error: any) => {
+                this.validSession();
+                reject(error);
+              });
+          });
+    }
+
     public getActivePrinciples(component: string = '', isCancel = true) {
         if (!!this.listMenorCancelToken) {
             this.listMenorCancelToken.cancel();
