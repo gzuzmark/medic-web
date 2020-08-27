@@ -11,6 +11,7 @@ export interface IPropsMentorTextArea {
     disabled?: boolean;
     attrs?: any;
     error?: string;
+    styleContainer?: React.CSSProperties;
 }
 
 const TextArea: React.SFC<any> = props =>
@@ -78,7 +79,7 @@ class MentorTextArea extends React.Component<IPropsMentorTextArea, {}> {
             color = FONTS.disabled;
         }
         return (
-            <div>
+            <div style={this.props.styleContainer}>
                 {this.props.label && <FormLabel label={this.props.label} info={this.props.info} />}
                 <TextAreaComponent error={hasError} attrs={{...attrs}} />
                 {!!this.props.error &&

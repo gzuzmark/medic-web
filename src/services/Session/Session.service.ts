@@ -2,6 +2,7 @@ import { ISessionNutritionistFormValidations } from '../../components/Mentor/Ses
 import {ISessionsToDelete} from '../../domain/FormSession/FormSessionDeleteBean';
 import { ISessionHistoryForm, ISessionPatientCaseForm } from '../../domain/Session/SessionEditPatientHistory';
 import {ISessionMentor} from '../../domain/Session/SessionMentorBean';
+import { IRecipe } from '../../domain/Session/SessionRecipe';
 import { IReportForSession } from '../../interfaces/Reports.interface';
 import BaseRequest from '../BaseRequest';
 
@@ -332,6 +333,74 @@ class SessionService extends BaseRequest {
     public updateHistoryBackground(session: string, patientBackground: ISessionHistoryForm) {
         return new Promise((resolve, reject) => {
             this.instance.put(`ugo/mentors-api/me/sessions/${session}/clinic_history`, patientBackground)
+                .then((response: any) => {
+                    if (response.status === 200 && response.data) {
+                        resolve(response.data);
+                    } else {
+                        reject(null);
+                    }
+                })
+                .catch((error: any) => {
+                    this.validSession();
+                    reject(error);
+                });
+        });
+    }
+
+    public sendTreatmentsRecipe(recipeForm: IRecipe) {
+        return new Promise((resolve, reject) => {
+            this.instance.post(`ugo/mentors-api/inkafarma/preview-prescription`, recipeForm)
+                .then((response: any) => {
+                    if (response.status === 200 && response.data) {
+                        resolve(response.data);
+                    } else {
+                        reject(null);
+                    }
+                })
+                .catch((error: any) => {
+                    this.validSession();
+                    reject(error);
+                });
+        });
+    }
+
+    public createPrescription(recipeForm: IRecipe) {
+        return new Promise((resolve, reject) => {
+            this.instance.post(`ugo/mentors-api/inkafarma/prescription`, recipeForm)
+                .then((response: any) => {
+                    if (response.status === 200 && response.data) {
+                        resolve(response.data);
+                    } else {
+                        reject(null);
+                    }
+                })
+                .catch((error: any) => {
+                    this.validSession();
+                    reject(error);
+                });
+        });
+    }
+
+    public uploadPrescription(form: FormData) {
+        return new Promise((resolve, reject) => {
+            this.instance.post(`ugo/mentors-api/upload_prescription`, form)
+                .then((response: any) => {
+                    if (response.status === 200 && response.data) {
+                        resolve(response.data);
+                    } else {
+                        reject(null);
+                    }
+                })
+                .catch((error: any) => {
+                    this.validSession();
+                    reject(error);
+                });
+        });
+    }
+
+    public getFileURL(folioNumber: string) {
+        return new Promise((resolve, reject) => {
+            this.instance.get(`ugo/mentors-api/inkafarma/prescription/${folioNumber}`)
                 .then((response: any) => {
                     if (response.status === 200 && response.data) {
                         resolve(response.data);

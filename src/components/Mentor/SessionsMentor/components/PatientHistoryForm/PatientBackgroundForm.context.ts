@@ -25,13 +25,14 @@ export interface IPatientTreatmentFormValidations {
 	pharmaceuticalForm: string;
 	salesUnit: string;
 	activePrinciples: string;
-	skuSap?: number;
+	skuSap?: string;
 }
 
 export interface IPatientCaseFormValidations {
 	id?: string;
 	anamnesis: string;
 	diagnostic: string;
+	diagnosticDesc?: string;
 	recommendation: string;
 	treatments: IPatientTreatmentFormValidations[];
 }
