@@ -33,24 +33,6 @@ export interface ISessionPatientTreatmentForm {
 	name: string;
 	period: string;
 	quantity: string;
-
-<<<<<<< HEAD
-	concentrations: string;
-	administrationRoute: string;
-	pharmaceuticalForm: string;
-	salesUnit: string;
-	activePrinciples: string;
-	skuSap?: number;
-}
-
-export interface ISessionPatientCaseForm {
-	id?: string;
-	anamnesis: string;
-	diagnostic: string;
-	recommendation: string;
-	treatments: ISessionPatientTreatmentForm[];
-	triage?: ISessionTriage;
-=======
   concentrations: string,
   administrationRoute: string,
   pharmaceuticalForm: string,
@@ -70,7 +52,6 @@ export interface ISessionPatientCaseForm {
   folioNumber?: string,
   prescriptionPath?: string,
   triage?: ISessionTriage,
->>>>>>> dev
 }
 
 export interface ISessionPatientPastCase {
@@ -119,17 +100,6 @@ class SessionEditPatientHistoryData {
 		};
 	}
 
-<<<<<<< HEAD
-	get caseUpdateParams(): ISessionPatientCaseForm {
-		return {
-			anamnesis: this.patient.case.anamnesis || '',
-			diagnostic: this.patient.case.diagnostic || '',
-			id: this.patient.case.id || '',
-			recommendation: this.patient.case.recommendation || '',
-			treatments: this.patient.case.treatments || [],
-		};
-	}
-=======
   get caseUpdateParams(): ISessionPatientCaseForm {
     return {
       anamnesis: this.patient.case.anamnesis || '',
@@ -140,7 +110,6 @@ class SessionEditPatientHistoryData {
       treatments: this.patient.case.treatments || [],
     };
   }
->>>>>>> dev
 
 	get getNutritionValues(): ISessionNutritionistFormValidations {
 		const n = { ...this.patient.nutritionist };
@@ -179,16 +148,6 @@ class SessionEditPatientHistoryData {
 		return formValues;
 	}
 
-<<<<<<< HEAD
-	get getCaseValues(): IPatientCaseFormValidations {
-		const p = { ...this.patient.case };
-		const formValues = {
-			anamnesis: p.anamnesis || '',
-			diagnostic: p.diagnostic || '',
-			recommendation: p.recommendation || '',
-			treatments: p.treatments || [],
-		};
-=======
   get getCaseValues(): IPatientCaseFormValidations {
     const p = {...this.patient.case};
     const diagnostic = p.diagnostic && p.diagnostic.split(' - ')[0] || '';
@@ -198,20 +157,10 @@ class SessionEditPatientHistoryData {
       recommendation: p.recommendation || '',
       treatments: p.treatments || [],
     };
->>>>>>> dev
 
 		return formValues;
 	}
 
-<<<<<<< HEAD
-	public setCurrentCase(currentCase: ISessionPatientCaseForm) {
-		this.patient.case.id = currentCase.id || '';
-		this.patient.case.anamnesis = currentCase.anamnesis || '';
-		this.patient.case.diagnostic = currentCase.diagnostic || '';
-		this.patient.case.recommendation = currentCase.recommendation || '';
-		this.patient.case.treatments = currentCase.treatments || [];
-	}
-=======
   public setCurrentCase(currentCase: ISessionPatientCaseForm) {
     this.patient.case.id = currentCase.id || '';
     this.patient.case.anamnesis = currentCase.anamnesis || '';
@@ -220,7 +169,6 @@ class SessionEditPatientHistoryData {
     this.patient.case.recommendation = currentCase.recommendation || '';
     this.patient.case.treatments = currentCase.treatments || [];
   }
->>>>>>> dev
 
 	public preparePatientHistoryData(values: IPatientBackgroundFormValidations) {
 		this.patient.history.allergies = values.allergies.trim();
@@ -263,89 +211,6 @@ class SessionEditPatientHistoryData {
 		this.patient.nutritionist.diagnosisDate = values.diagnosisDate;
 	}
 
-<<<<<<< HEAD
-	public preparePatientCaseData(values: IPatientCaseFormValidations) {
-		this.patient.case.anamnesis = values.anamnesis.trim();
-		this.patient.case.diagnostic = values.diagnostic.trim();
-		this.patient.case.recommendation = values.recommendation.trim();
-		this.preparePatientCaseTreatmentData(values.treatments);
-	}
-
-	public preparePatientCaseTreatmentData(
-		values: IPatientTreatmentFormValidations[],
-	) {
-		if (!values) {
-			this.patient.case.treatments = [];
-		} else {
-			this.patient.case.treatments = values.map(
-				(value: IPatientTreatmentFormValidations) => {
-					if (value.consult_id && value.id) {
-						return {
-							activePrinciples: value.activePrinciples,
-							administrationRoute: this.getValueWithoutSKU(
-								value.administrationRoute,
-							),
-							component: value.component,
-							concentrations: this.getValueWithoutSKU(value.concentrations),
-							consult_id: value.consult_id,
-							extra_info: value.extra_info,
-							frequency: value.frequency,
-							id: value.id,
-							name: this.getValueWithoutSKU(value.name),
-							period: value.period,
-							pharmaceuticalForm: this.getValueWithoutSKU(
-								value.pharmaceuticalForm,
-							),
-							quantity: value.quantity,
-							salesUnit: value.salesUnit,
-						};
-					}
-					return {
-						activePrinciples: value.activePrinciples,
-						administrationRoute: this.getValueWithoutSKU(
-							value.administrationRoute,
-						),
-						component: value.component,
-						concentrations: this.getValueWithoutSKU(value.concentrations),
-						extra_info: value.extra_info,
-						frequency: value.frequency,
-						name: this.getValueWithoutSKU(value.name),
-						period: value.period,
-						pharmaceuticalForm: this.getValueWithoutSKU(
-							value.pharmaceuticalForm,
-						),
-						quantity: value.quantity,
-						salesUnit: value.salesUnit,
-					};
-				},
-			);
-		}
-	}
-
-	private setInitialHistory(currentHistory?: ISessionHistoryForm) {
-		this.patient.history.allergies =
-			(currentHistory && currentHistory.allergies) || '';
-		this.patient.history.fur = (currentHistory && currentHistory.fur) || '';
-		this.patient.history.meds = (currentHistory && currentHistory.meds) || '';
-		this.patient.history.last_pregnancy =
-			(currentHistory && currentHistory.last_pregnancy) || '';
-		this.patient.history.extra_info =
-			(currentHistory && currentHistory.extra_info) || '';
-		this.patient.history.ob_issues =
-			(currentHistory && currentHistory.ob_issues) || '';
-	}
-
-	private setInitialCase(currentCase?: ISessionPatientCaseForm) {
-		this.patient.case.id = (currentCase && currentCase.id) || '';
-		this.patient.case.anamnesis = (currentCase && currentCase.anamnesis) || '';
-		this.patient.case.diagnostic =
-			(currentCase && currentCase.diagnostic) || '';
-		this.patient.case.recommendation =
-			(currentCase && currentCase.recommendation) || '';
-		this.patient.case.treatments =
-			(currentCase && currentCase.treatments) || [];
-	}
-=======
   public preparePatientCaseData(values: IPatientCaseFormValidations) {
     this.patient.case.anamnesis = values.anamnesis.trim();
     this.patient.case.diagnostic = `${values.diagnostic.trim()} - ${values.diagnosticDesc || ''}`;
@@ -455,7 +320,6 @@ class SessionEditPatientHistoryData {
     this.patient.case.recommendation = currentCase && currentCase.recommendation || '';
     this.patient.case.treatments = currentCase && currentCase.treatments || [];
   }
->>>>>>> dev
 
 	private getValueWithoutSKU(value: string) {
 		if (!value) {
