@@ -107,8 +107,6 @@ const CurrentSessionForm: React.FC<IPropsCurrentSessionForm> = ({ forceDisable, 
 
   const diag = values.case.diagnostic;
   const diagCode = diag && diag.includes(' - ') && diag.split(' - ')[0] || diag;
-  // tslint:disable:no-console
-  console.log({ diag, diagCode });
   
   return (
     <React.Fragment>
