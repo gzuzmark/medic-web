@@ -101,13 +101,17 @@ class SessionEditPatientHistoryData {
 	}
 
   get caseUpdateParams(): ISessionPatientCaseForm {
+		const newTreatments = this.patient.case.treatments.map(t => ({
+			...t,
+			presentationUnit: t.salesUnit,
+		}));
     return {
       anamnesis: this.patient.case.anamnesis || '',
       diagnostic: this.patient.case.diagnostic || '',
       from: this.patient.case.from || '',
       id: this.patient.case.id || '',
       recommendation: this.patient.case.recommendation || '',
-      treatments: this.patient.case.treatments || [],
+      treatments: newTreatments || [],
     };
   }
 
@@ -286,6 +290,7 @@ class SessionEditPatientHistoryData {
           totalPrescriptionTimeInDays: +t.period,
           prescriptionRequirements: t.extra_info,
           posology: t.frequency,
+					presentationUnit: t.salesUnit,
         })),
         patient: {
           patientAge: moment().diff(patient.birthdate, 'years') || 25,
