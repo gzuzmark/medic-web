@@ -101,13 +101,17 @@ class SessionEditPatientHistoryData {
 	}
 
   get caseUpdateParams(): ISessionPatientCaseForm {
+		const newTreatments = this.patient.case.treatments.map(t => ({
+			...t,
+			presentationUnit: t.salesUnit,
+		}));
     return {
       anamnesis: this.patient.case.anamnesis || '',
       diagnostic: this.patient.case.diagnostic || '',
       from: this.patient.case.from || '',
       id: this.patient.case.id || '',
       recommendation: this.patient.case.recommendation || '',
-      treatments: this.patient.case.treatments || [],
+      treatments: newTreatments || [],
     };
   }
 
@@ -150,7 +154,7 @@ class SessionEditPatientHistoryData {
 
   get getCaseValues(): IPatientCaseFormValidations {
     const p = {...this.patient.case};
-    const diagnostic = p.diagnostic && p.diagnostic.split(' - ')[0] || '';
+    const diagnostic = p.diagnostic || '';
     const formValues = {
       anamnesis: p.anamnesis || '',
       diagnostic,
@@ -213,7 +217,7 @@ class SessionEditPatientHistoryData {
 
   public preparePatientCaseData(values: IPatientCaseFormValidations) {
     this.patient.case.anamnesis = values.anamnesis.trim();
-    this.patient.case.diagnostic = `${values.diagnostic.trim()} - ${values.diagnosticDesc || ''}`;
+    this.patient.case.diagnostic = values.diagnostic.trim();
     this.patient.case.recommendation = values.recommendation.trim();
     this.preparePatientCaseTreatmentData(values.treatments);
   }
@@ -286,6 +290,7 @@ class SessionEditPatientHistoryData {
           totalPrescriptionTimeInDays: +t.period,
           prescriptionRequirements: t.extra_info,
           posology: t.frequency,
+					presentationUnit: t.salesUnit,
         })),
         patient: {
           patientAge: moment().diff(patient.birthdate, 'years') || 25,
@@ -313,7 +318,7 @@ class SessionEditPatientHistoryData {
   }
 
   private setInitialCase(currentCase?: ISessionPatientCaseForm) {
-    const diagnostic = currentCase && currentCase.diagnostic && currentCase.diagnostic.split(' - ')[0] || '';
+    const diagnostic = currentCase && currentCase.diagnostic || '';
     this.patient.case.id = currentCase && currentCase.id || '';
     this.patient.case.anamnesis = currentCase && currentCase.anamnesis || '';
     this.patient.case.diagnostic = diagnostic;

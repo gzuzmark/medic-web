@@ -37,7 +37,6 @@ const PrescriptionTextContainer = styled.div`
 
 const CurrentSessionForm: React.FC<IPropsCurrentSessionForm> = ({ forceDisable, showSeeRecipeButton, folioNumber, getPrescriptionURL }) => {
   const { values, handleBlur, handleChange, setFieldValue } = React.useContext(PatientBackgroundFormContext);
-  const [diagnosticDescription, setDiagnosticDescription] = React.useState<string>('');
   const [diagnosticOptions, setDiagnosticOptions] = React.useState<
 		IPropsMentorOptionsDropDown[]
 	>([]);
@@ -50,21 +49,14 @@ const CurrentSessionForm: React.FC<IPropsCurrentSessionForm> = ({ forceDisable, 
   React.useEffect(() => {
     async function retrieveDiagnostic() {
       const diagnostic = values.case.diagnostic;
-      const diagnosticCode = diagnostic && diagnostic.includes(' - ') && diagnostic.split(' - ')[0] || diagnostic;
       const { items } = await service.getDiagnosticCodes(
-				diagnosticCode,
+				diagnostic,
 				false,
       ) as Record<string, string>;
       if (Array.isArray(items)) {
 				const mappedData = mapResponse(items) as IPropsMentorOptionsDropDown[];
         setDiagnosticOptions(mappedData);
-        const response = (await service.getDiagnosticDescription(
-					diagnosticCode,
-        )) as Record<string, string>;
-        const { description } = response;
-        setDiagnosticDescription(description);
-        setFieldValue('case.diagnostic', diagnosticCode);
-        setFieldValue('case.diagnosticDesc', description);
+        setFieldValue('case.diagnostic', diagnostic);
       }
     }
     retrieveDiagnostic();
@@ -94,21 +86,16 @@ const CurrentSessionForm: React.FC<IPropsCurrentSessionForm> = ({ forceDisable, 
     if (selectedOption) {
       service.getDiagnosticDescription(selectedOption.value).then((response: Record<string, string>) => {
         const { description } = response;
-        setDiagnosticDescription(description);
         setFieldValue('case.diagnosticDesc', description);
       });
       setFieldValue(name, selectedOption.value);
     } else {      
       setFieldValue(name, '');
-      setDiagnosticDescription('');
       setFieldValue('case.diagnosticDesc', '');
     }
   };
 
   const diag = values.case.diagnostic;
-  const diagCode = diag && diag.includes(' - ') && diag.split(' - ')[0] || diag;
-  // tslint:disable:no-console
-  console.log({ diag, diagCode });
   
   return (
     <React.Fragment>
@@ -136,23 +123,12 @@ const CurrentSessionForm: React.FC<IPropsCurrentSessionForm> = ({ forceDisable, 
             isClearable={true}
             lowercaseLabel={true}
             name={`case.diagnostic`}
-            value={diagCode}
+            value={diag}
             triggerChange={handleDiagnosticChange}
-            loadOptions={handleTypeDiagnostic(diagCode)}
+            loadOptions={handleTypeDiagnostic(diag)}
             defaultOptions={diagnosticOptions}
-            inputValue={diagCode}
+            inputValue={diag}
           />
-        </FormColumn>,
-      ]}/>
-      <FormRow key={'row_new'} style={defaultRowStyle} columns={[
-        <FormColumn width={DEFAULT_COLUMN_WIDTH} key={'diagnosticDescription'}>
-          <MentorTextArea
-            disabled={true}
-            attrs={{
-                rows: 2,
-                style: {  height: 'auto' },
-                value: diagnosticDescription,
-            }} />
         </FormColumn>,
       ]}/>
       <div style={{ marginTop: 20 }}>
