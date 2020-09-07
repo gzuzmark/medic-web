@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as ReactTooltip from 'react-tooltip';
 import styled from "styled-components";
 import {default as colors, FONTS} from "../../../../../common/MentorColor";
-import {Body1, LIGHT_TEXT, Subhead1, Small1} from '../../../../../common/MentorText';
+import {Body1, LIGHT_TEXT, Small1, Subhead1} from '../../../../../common/MentorText';
 
 import './SessionItem.scss';
 
