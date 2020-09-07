@@ -103,6 +103,7 @@ const ListSessionsBody: React.FC<IPropsListSessionsBody> = (props) => {
 	const patientLN = (patient && patient.last_name) || '';
 	const patientAddress = ( patient && patient.address ) || '';
 	const patientUbigeo = ( patient && patient.ubigeo ) || '';
+
 	const patientPaid = formatStrNumber(paid);
 
 	const isPending = payment && (payment.pending as boolean);
@@ -185,10 +186,9 @@ const ListSessionsBody: React.FC<IPropsListSessionsBody> = (props) => {
 					id={patientId}
 					name={`${patientName} ${patientLN}`}
 					email={patient && patient.email}
+					address={patientAddress}
+					ubigeo={patientUbigeo}
 				/>
-			</div>
-			<div className='ListSessions_column ListSessions_column--mentor'>
-				<SessionItem name={`${patientAddress} ${patientUbigeo}`} />
 			</div>
 			<div className='ListSessions_column ListSessions_numbers'>
 				{patientPaid && (

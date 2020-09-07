@@ -7,6 +7,8 @@ import {Body1, LIGHT_TEXT, Subhead1} from '../../../../../common/MentorText';
 import './SessionItem.scss';
 
 export interface IPropsSessionItem {
+    address: string;
+    ubigeo: string;
     name: string;
     id?: string;
     email?: string;
@@ -29,6 +31,12 @@ class SessionItem extends React.Component<IPropsSessionItem, {}> {
               <div className='SessionItem_basicInformation'>
                   <NameSessionContainer>
                       <Subhead1 color={FONTS.dark}>{this.props.name}</Subhead1>
+                  </NameSessionContainer>
+                  <NameSessionContainer>
+                      <Subhead1 color={FONTS.dark}>{this.props.address}</Subhead1>
+                  </NameSessionContainer>
+                  <NameSessionContainer>
+                      <Subhead1 color={FONTS.dark}>{this.props.ubigeo}</Subhead1>
                   </NameSessionContainer>
                   {!!email && (
                     <div className='SessionItem_tagWrapper'>
