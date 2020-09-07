@@ -28,6 +28,8 @@ export interface ISessionPatient {
     full_last_name: string;
     document_number: string;
     has_account: boolean;
+    address: string;
+    ubigeo: string;
 }
 
 export interface ITriageQuestion {
