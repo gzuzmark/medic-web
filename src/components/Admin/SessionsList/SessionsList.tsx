@@ -330,11 +330,11 @@ class SessionsList extends React.Component <{}, IStateListSession> {
     }
   }
 
-  private rescheduleSession(newSession: string) {
+  private rescheduleSession(newSession: string, notes: string) {
     const oldSession = this.state.selectedSessionId;
     if (oldSession) {
       this.setState({ loading: true, showRescheduleModal: false });
-      this.sessionService.rescheduleSession(oldSession, newSession).then(() => {
+      this.sessionService.rescheduleSession(oldSession, newSession, { notes }).then(() => {
         const currentSessions = !this.state.sessions ? [] : this.state.sessions;
         const newSessions = currentSessions.filter((session: ISessionBody) => session.id !== oldSession);
         this.setState({
@@ -384,11 +384,11 @@ class SessionsList extends React.Component <{}, IStateListSession> {
     }
   }
 
-  private cancelSession() {
+  private cancelSession(notes: string) {
     const sessionId = this.state.selectedSessionId;
     if (sessionId) {
-      this.setState({ loading: true, showCancelModal: false }, () => {
-        this.sessionService.cancelSession(sessionId)
+      this.setState({ loading: true, showCancelModal: false }, () => {        
+        this.sessionService.cancelSession(sessionId, { notes })
         .then(() => {
           const currentSessions = !this.state.sessions ? [] : this.state.sessions;
           const newSessions = currentSessions.filter((session: ISessionBody) => session.id !== sessionId);
