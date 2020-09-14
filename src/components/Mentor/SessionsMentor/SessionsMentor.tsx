@@ -29,14 +29,15 @@ import SessionService from '../../../services/Session/Session.service';
 import StudentService from '../../../services/Student/Student.service';
 import FormEditHistoryManager from './components/FormEditHistoryManager/FormEditHistoryManager';
 import {
-	ISessionNutritionistFormValidations,
+    ISessionNutritionistFormValidations,
 	nutritionistDefaultValues,
 } from './components/NutritionistForm/NutritionistForm.context';
 import PatientBackgroundFormContext, {
-	IPatientBackgroundFormValidations,
+    IPatientBackgroundFormValidations,
 	IPatientCaseFormValidations,
 	ISessionPatientHistoryFormValidations,
 } from './components/PatientHistoryForm/PatientBackgroundForm.context';
+import PatientPhotosModal from './components/PatientPhotosModal/PatientPhotosModal';
 import RecipePreviewModal from './components/RecipePreviewModal/RecipePreviewModal';
 import {ISessionFullCard} from "./components/SessionFullCard/SessionFullCard";
 import SessionFullCard from "./components/SessionFullCard/SessionFullCard";
@@ -80,6 +81,7 @@ interface IStateSessionsMentor {
     modalSuccess: boolean;
     modalAdd: IStudentModal;
     modalCheck: IStudentCheckModal;
+    showPhotosModal: boolean;
     showPreviewModal: boolean;
     showSaveSession: boolean;
     showSendRecipe: boolean;
@@ -142,6 +144,7 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
             },
             prescriptionPath: '',
             searchValue: '',
+            showPhotosModal: false,
             showPreviewModal: false,
             showSaveSession: true,
             showSendRecipe: true,
@@ -173,6 +176,8 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
         this.updateSendRecipe = this.updateSendRecipe.bind(this);
         this.getPrescriptionURL = this.getPrescriptionURL.bind(this);
         this.onCloseUploadModal = this.onCloseUploadModal.bind(this);
+        this.togglePhotosModal = this.togglePhotosModal.bind(this);
+        this.onClosePhotosModal = this.onClosePhotosModal.bind(this);
     }
 
     public componentDidMount() {
@@ -240,6 +245,7 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
         const session = this.sessionMentor && this.sessionMentor.session;
         const navBarText = this.sessionMentor ?
             `${this.mdp.isDateToday(this.sessionMentor.session.from)? 'hoy ': ''}${this.sessionMentor.getDate(this.mdp)}` : '';
+        const patientPhotos = this.sessionMentor && this.sessionMentor.getPatientPhotos();
         return <Layout title={"Tutores"}>
             <MentorModalBase show={this.state.modalSuccess} onCloseModal={this.closeConfirmModal} hideClose={true}>
                 <ContentModal.Success description={"Cambios guardados con éxito"} />
@@ -274,6 +280,7 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
                 </div>}
                 {this.state.loading && !this.state.isEmpty &&
                     <LoaderFullScreen text={"Cargando..."} styleLoaderContainer={{marginTop: 300}} />}
+                <PatientPhotosModal show={this.state.showPhotosModal} photos={patientPhotos && patientPhotos.map(p => p.url) || null} onClose={this.onClosePhotosModal} />
                 {!this.state.loading &&
                     <React.Fragment>
                         <SessionFullCard session={this.state.fullCardSession}/>
@@ -337,6 +344,7 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
                                                     folioNumber={this.state.folioNumber}
                                                     prescriptionURL={this.state.prescriptionPath}
                                                     getPrescriptionURL={this.getPrescriptionURL}
+                                                    handleOpenPatientPhotos={this.togglePhotosModal}
                                                 />
                                             </form>
                                         </PatientBackgroundFormContext.Provider>
@@ -394,11 +402,17 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
         }
         this.updateHistory();
     }
+    private togglePhotosModal(showPhotosModal: boolean) {
+        this.setState({ showPhotosModal });
+    }
     private toggleSaveSession(showSaveSession: boolean) {
         this.setState({ showSaveSession });
     }
     private toggleSendRecipe(showSendRecipe: boolean) {
         this.setState({ showSendRecipe });
+    }
+    private onClosePhotosModal() {        
+        this.setState({ showPhotosModal: false });
     }
     private onClosePreviewModal() {
         this.setState({ showPreviewModal: false });
