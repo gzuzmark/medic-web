@@ -1,12 +1,17 @@
 .RescheduleSessionModal {
 	display: flex;
+	flex-wrap: wrap;
 	justify-content: space-around;
 	&_dropdownblock {
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		width: 100%;
+		width: 40%;
 		margin: 0 20px;
+	}
+	&_notesblock {
+		width: 90%;
+		margin-top: 15px;
 	}
 	&_buttons {
 		display: flex;
@@ -14,8 +19,8 @@
 		margin: 15px auto;
 		width: 60%;
 	}
-  &_loader,
-  &_empty {
+	&_loader,
+	&_empty {
 		text-align: center;
 		margin: 40px 0;
 	}

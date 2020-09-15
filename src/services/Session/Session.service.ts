@@ -31,9 +31,9 @@ class SessionService extends BaseRequest {
         });
     }
 
-    public rescheduleSession(oldSessionId: string, newSessionId: string) {
+    public rescheduleSession(oldSessionId: string, newSessionId: string, body: Record <string, string>) {
         return new Promise((resolve, reject) => {
-            this.instance.post(`ugo-admin/session/${oldSessionId}/reassign?new_session=${newSessionId}`)
+            this.instance.post(`ugo-admin/session/${oldSessionId}/reassign?new_session=${newSessionId}`, body)
                 .then((response: any) => {
                     if (response.status === 200 && response.data) {
                         resolve(response.data);
@@ -134,9 +134,9 @@ class SessionService extends BaseRequest {
         });
     }
 
-    public cancelSession(sessionId: string) {
+    public cancelSession(sessionId: string, body: Record<string, string>) {
         return new Promise((resolve, reject) => {
-            this.instance.post(`ugo-admin/sessions/${sessionId}/cancel`)
+            this.instance.post(`ugo-admin/sessions/${sessionId}/cancel`, body)
                 .then((response: any) => {
                     if (response.status === 200 && response.data) {
                         resolve(response.data);

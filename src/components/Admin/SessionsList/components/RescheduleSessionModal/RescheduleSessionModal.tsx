@@ -9,6 +9,7 @@ import MentorDropDown, {
 	IPropsMentorOptionsDropDown,
 } from '../../../../../common/MentorDropDown/MentorDropDown';
 import { Headline1 } from '../../../../../common/MentorText';
+import MentorTextArea from '../../../../../common/MentorTextArea/MentorTextArea';
 import {
 	IReassignSession,
 	ISessionDoctor,
@@ -22,18 +23,18 @@ interface IPropsRescheduleSessionModal {
 	style?: React.CSSProperties;
 	sessionId: string;
 	toggleModal(show: boolean): void;
-	confirm(newSession: string): void;
+	confirm(newSession: string, notes: string): void;
 }
 
 const getDateTime = (from: string, to: string) => {
-  const date = moment(from).format('dddd DD [de] MMMM');
-  const fromHour = moment(from).format('h:mm a');
-  const toHour = moment(to).format('h:mm a');
-  return `${fromHour} - ${toHour}, ${date}`;
+	const date = moment(from).format('dddd DD [de] MMMM');
+	const fromHour = moment(from).format('h:mm a');
+	const toHour = moment(to).format('h:mm a');
+	return `${fromHour} - ${toHour}, ${date}`;
 };
 
 const mapDoctorsToDropdown = (doctors: ISessionDoctor[]) => {
-  return doctors.map((doctor) => {
+	return doctors.map((doctor) => {
 		const doctorFullname = `${doctor.name || ''} ${doctor.last_name || ''}`;
 		const cmp = (doctor.cmp && `CMP: ${doctor.cmp}`) || '';
 		return {
@@ -44,10 +45,10 @@ const mapDoctorsToDropdown = (doctors: ISessionDoctor[]) => {
 };
 
 const mapSessionsToDropdown = (sessions: IReassignSession[]) => {
-  return sessions.map((session) => ({
-    label: getDateTime(session.from, session.to),
-    value: session.id,
-  }));
+	return sessions.map((session) => ({
+		label: getDateTime(session.from, session.to),
+		value: session.id,
+	}));
 };
 
 const RescheduleSessionModal: React.FC<IPropsRescheduleSessionModal> = ({
@@ -63,14 +64,19 @@ const RescheduleSessionModal: React.FC<IPropsRescheduleSessionModal> = ({
 	const [selectedSession, setSelectedSession] = React.useState('');
 	const [doctors, setDoctors] = React.useState<ISessionDoctor[]>([]);
 	const [sessions, setSessions] = React.useState<IReassignSession[]>([]);
+	const [notes, setNotes] = React.useState<string>('');
 	const close = () => {
 		toggleModal(false);
 		setSelectedDoctor('');
 		setSelectedSession('');
+		setNotes('');
 		setSessions([]);
 	};
 
-	const handleConfirm = () => confirm(selectedSession);
+	const handleConfirm = () => {
+		confirm(selectedSession, notes);
+		setNotes('');
+	};
 	const handleDoctorChange = (
 		_: string,
 		selectedOption: IPropsMentorOptionsDropDown | IPropsMentorOptionsDropDown[],
@@ -93,6 +99,9 @@ const RescheduleSessionModal: React.FC<IPropsRescheduleSessionModal> = ({
 			}
 		}
 	};
+
+	const handleNotesChange = (e: React.ChangeEvent<HTMLTextAreaElement>) =>
+		setNotes(e.target.value);
 
 	React.useEffect(() => {
 		if (show && sessionId) {
@@ -120,9 +129,14 @@ const RescheduleSessionModal: React.FC<IPropsRescheduleSessionModal> = ({
 		}
 	}, [sessionId, selectedDoctor]);
 
-	const dropdownDoctors = React.useMemo(() => mapDoctorsToDropdown(doctors), [doctors]);
+	const dropdownDoctors = React.useMemo(() => mapDoctorsToDropdown(doctors), [
+		doctors,
+	]);
 
-  const dropdownSessions = React.useMemo(() => mapSessionsToDropdown(sessions), [sessions]);
+	const dropdownSessions = React.useMemo(
+		() => mapSessionsToDropdown(sessions),
+		[sessions],
+	);
 
 	return (
 		<ConsoleModal
@@ -142,11 +156,13 @@ const RescheduleSessionModal: React.FC<IPropsRescheduleSessionModal> = ({
 						<Loader />
 					</div>
 				)}
-        {!loadingDoctors && !doctors.length && (
-          <div className="RescheduleSessionModal_empty">
-            <Headline1 color={FONTS.medium}>No hay doctores disponibles</Headline1>
-          </div>
-        )}
+				{!loadingDoctors && !doctors.length && (
+					<div className='RescheduleSessionModal_empty'>
+						<Headline1 color={FONTS.medium}>
+							No hay doctores disponibles
+						</Headline1>
+					</div>
+				)}
 				{!loadingDoctors && !!doctors.length && (
 					<React.Fragment>
 						<div className='RescheduleSessionModal_dropdownblock'>
@@ -167,11 +183,13 @@ const RescheduleSessionModal: React.FC<IPropsRescheduleSessionModal> = ({
 									<Loader />
 								</div>
 							)}
-              {!loadingSessions && selectedDoctor && !sessions.length && (
-                <div className="RescheduleSessionModal_empty">
-                  <Headline1 color={FONTS.medium}>No hay horarios disponibles</Headline1>
-                </div>
-              )}
+							{!loadingSessions && selectedDoctor && !sessions.length && (
+								<div className='RescheduleSessionModal_empty'>
+									<Headline1 color={FONTS.medium}>
+										No hay horarios disponibles
+									</Headline1>
+								</div>
+							)}
 							{!loadingSessions && !!sessions.length && (
 								<MentorDropDown
 									label={'Sesiones disponibles:'}
@@ -184,6 +202,17 @@ const RescheduleSessionModal: React.FC<IPropsRescheduleSessionModal> = ({
 									style={{ width: '100%' }}
 								/>
 							)}
+						</div>
+						<div className='RescheduleSessionModal_notesblock'>
+							<MentorTextArea
+								label='Motivo:'
+								attrs={{
+									onChange: handleNotesChange,
+									rows: 5,
+									style: { height: 'auto' },
+									value: notes,
+								}}
+							/>
 						</div>
 					</React.Fragment>
 				)}
