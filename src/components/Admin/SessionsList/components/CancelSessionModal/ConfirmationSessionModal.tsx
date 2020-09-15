@@ -7,9 +7,9 @@ interface IConfirmationCancelSessionModal {
 	title: string;
 	show: boolean;
 	style?: React.CSSProperties;
+	haveReason?: boolean;
 	toggleModal(show: boolean): void;
 	confirm(notes: string): void;
-	haveReason?: boolean;
 }
 
 const ConfirmationSessionModal: React.FC<IConfirmationCancelSessionModal> = (

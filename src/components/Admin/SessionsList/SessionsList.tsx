@@ -475,6 +475,7 @@ class SessionsList extends React.Component <{}, IStateListSession> {
             show={this.state.showCancelModal}
             toggleModal={this.showCancelModal}
             confirm={this.cancelSession}
+            haveReason={true}
           />
           <ConfirmationSessionModal
             title='¿Estás seguro que desea confirmar el pago de la cita?'
