@@ -47,6 +47,7 @@ const PatientPhotosModal: React.FC<IPropsPatientPhotosModal> = ({
 							<div className='PatientPhotosModal_image' key={`photo_${i}`}>
 								<a className='PatientPhotosModal_src' href={p} target='_blank'>
 									<img src={p} alt='' />
+									<small>Ver imagen/archivo</small>
 								</a>
 							</div>
 						))}
