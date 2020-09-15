@@ -9,14 +9,21 @@ interface IConfirmationCancelSessionModal {
 	style?: React.CSSProperties;
 	toggleModal(show: boolean): void;
 	confirm(notes: string): void;
+	haveReason?: boolean;
 }
 
 const ConfirmationSessionModal: React.FC<IConfirmationCancelSessionModal> = (
 	props,
 ) => {
 	const [notes, setNotes] = React.useState<string>('');
-	const cancel = () => props.toggleModal(false);
-	const handleConfirm = () => props.confirm(notes);
+	const cancel = () => {
+		setNotes('');
+		props.toggleModal(false);
+	};
+	const handleConfirm = () => {
+		props.confirm(notes);
+		setNotes('');
+	};
 	const handleNotesChange = (e: React.ChangeEvent<HTMLTextAreaElement>) =>
 		setNotes(e.target.value);
 	return (
@@ -26,17 +33,19 @@ const ConfirmationSessionModal: React.FC<IConfirmationCancelSessionModal> = (
 			title={props.title}
 		>
 			<div>
-				<div className='ConfirmationSessionModal_notesblock'>
-					<MentorTextArea
-						label='Motivo:'
-						attrs={{
-							onChange: handleNotesChange,
-							rows: 5,
-							style: { height: 'auto' },
-							value: notes,
-						}}
-					/>
-				</div>
+				{!!props.haveReason && (
+					<div className='ConfirmationSessionModal_notesblock'>
+						<MentorTextArea
+							label='Motivo:'
+							attrs={{
+								onChange: handleNotesChange,
+								rows: 5,
+								style: { height: 'auto' },
+								value: notes,
+							}}
+						/>
+					</div>
+				)}
 				<div className='ConfirmationSessionModal_buttons'>
 					<button className='u-Button u-Button--white' onClick={cancel}>
 						Cancelar

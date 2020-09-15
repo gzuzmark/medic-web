@@ -69,10 +69,14 @@ const RescheduleSessionModal: React.FC<IPropsRescheduleSessionModal> = ({
 		toggleModal(false);
 		setSelectedDoctor('');
 		setSelectedSession('');
+		setNotes('');
 		setSessions([]);
 	};
 
-	const handleConfirm = () => confirm(selectedSession, notes);
+	const handleConfirm = () => {
+		confirm(selectedSession, notes);
+		setNotes('');
+	};
 	const handleDoctorChange = (
 		_: string,
 		selectedOption: IPropsMentorOptionsDropDown | IPropsMentorOptionsDropDown[],
