@@ -44,10 +44,17 @@ export interface ITriageUseCase {
     description: string;
 }
 
+export interface ITriageMedia {
+    id: string;
+    triage_id: string;
+    url: string;
+}
+
 export interface ISessionTriage {
     id: string;
     questions: ITriageQuestion[];
     use_case: ITriageUseCase;
+    triage_media: ITriageMedia[];
 }
 
 export interface ISessionTriageResponse {
@@ -132,6 +139,11 @@ export class SessionMentorBean extends SessionBean {
 
     public setSessionPatientTriage(patientCase?: ISessionTriageResponse) {
         this.session.triage = patientCase && patientCase.triage;
+    }
+
+    public getPatientPhotos() {
+        const triage = this.session.triage || null;
+        return triage && triage.triage_media || null;
     }
 
     public filterStatusSession(status: string) {

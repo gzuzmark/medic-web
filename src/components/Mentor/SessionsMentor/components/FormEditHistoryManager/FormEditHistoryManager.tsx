@@ -33,6 +33,7 @@ export interface IPropsFormEditHistoryManager {
     onHandleSubmit: (e: any) => void;
     onSendRecipe: (e: any) => void;
     getPrescriptionURL: () => void;
+    handleOpenPatientPhotos: (flag: boolean) => void;
 }
 
 const getGender = (value?: number): string => {
@@ -80,6 +81,8 @@ const FormEditHistoryManager: React.FC<IPropsFormEditHistoryManager> = (props) =
         props.onSendRecipe(props.formData.values)
     };
 
+    const onOpenPhotos = () => props.handleOpenPatientPhotos(true);
+
     const closeModal = () => setModal(false);
 
     const patientInfoBlocks = React.useMemo(() => buildPatientInfoBlocks(patient), [patient]);
@@ -101,6 +104,15 @@ const FormEditHistoryManager: React.FC<IPropsFormEditHistoryManager> = (props) =
                 blocks={patientInfoBlocks}
               />
             )}
+          </div>
+          <div className="PatientClinicHistory_background">
+            <ButtonNormal
+              text='Ver fotos/documentos del paciente'
+              attrs={{
+                onClick: onOpenPhotos,
+                type: 'button',
+              }}
+            />
           </div>
           <div className="PatientClinicHistory_background">
               <Heading2>

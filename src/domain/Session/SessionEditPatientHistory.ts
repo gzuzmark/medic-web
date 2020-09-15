@@ -294,7 +294,7 @@ class SessionEditPatientHistoryData {
         })),
         patient: {
           patientAge: moment().diff(patient.birthdate, 'years') || 25,
-          patientAddress: 'address',
+          patientAddress: patient.address,
           patientDni: patient.document_number,
           patientFirstName: patient.name,
           patientLastName: patient.last_name,

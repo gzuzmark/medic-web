@@ -1,4 +1,7 @@
 .ConfirmationSessionModal {
+	&_notesblock {
+		margin-bottom: 15px;
+	}
 	&_buttons {
 		display: flex;
 		justify-content: space-around;
