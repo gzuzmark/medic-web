@@ -113,8 +113,10 @@ class SessionsList extends React.Component <{}, IStateListSession> {
     this.cancelSession = this.cancelSession.bind(this);
     this.setCurrentSessionId = this.setCurrentSessionId.bind(this);
     this.updateFilterDate = this.updateFilterDate.bind(this);
+    this.updateFilterReservationDate = this.updateFilterReservationDate.bind(this);
     this.searchResults = this.searchResults.bind(this);
     this.isDayBlocked = this.isDayBlocked.bind(this);
+    this.isReservationDayBlocked = this.isReservationDayBlocked.bind(this);
     this.showRescheduleModal = this.showRescheduleModal.bind(this);
     this.rescheduleSession = this.rescheduleSession.bind(this);
     this.toggleSuccessModal = this.toggleSuccessModal.bind(this);
@@ -171,7 +173,7 @@ class SessionsList extends React.Component <{}, IStateListSession> {
         />
         <div className='u-LayoutMargin u-ListSessions_padding ListSessions_sticky'>
           <FormRow style={{ width: '100%' }} columns={[
-            <FormColumn key="startDate" width={4}>
+            <FormColumn key="startDate" width={8}>
               <Text style={{paddingLeft: 12, paddingBottom: 6}}>Desde el:</Text>
               <InputDatePicker
                 id={'startDate'}
@@ -179,13 +181,29 @@ class SessionsList extends React.Component <{}, IStateListSession> {
                 updateState={this.updateFilterDate}
                 configDate={{"isOutsideRange": () => false}}/>
             </FormColumn>,
-            <FormColumn key="endDate" width={4}>
+            <FormColumn key="endDate" width={8}>
               <Text style={{paddingLeft: 12, paddingBottom: 6}}>Hasta el:</Text>
               <InputDatePicker
                 id={'endDate'}
                 date={this.state.sessionRequest.endDate}
                 updateState={this.updateFilterDate}
                 configDate={{"isDayBlocked": this.isDayBlocked, "isOutsideRange": () => false}}/>
+            </FormColumn>,
+            <FormColumn key="reservationStartDate" width={8}>
+              <Text style={{paddingLeft: 12, paddingBottom: 6}}>Reserva desde:</Text>
+              <InputDatePicker
+                id={'reservationStartDate'}
+                date={this.state.sessionRequest.reservationStartDate}
+                updateState={this.updateFilterReservationDate}
+                configDate={{"isOutsideRange": () => false}}/>
+            </FormColumn>,
+            <FormColumn key="reservationEndDate" width={8}>
+              <Text style={{paddingLeft: 12, paddingBottom: 6}}>Reserva hasta:</Text>
+              <InputDatePicker
+                id={'reservationEndDate'}
+                date={this.state.sessionRequest.reservationEndDate}
+                updateState={this.updateFilterReservationDate}
+                configDate={{"isDayBlocked": this.isReservationDayBlocked, "isOutsideRange": () => false}}/>
             </FormColumn>,
             <FormColumn key="doctors" width={4}>
               <Text>Doctor:</Text>
@@ -252,6 +270,16 @@ class SessionsList extends React.Component <{}, IStateListSession> {
       const sessionRequest = {...this.state.sessionRequest};
       const newSessionRequest = Object.assign(sessionRequest, params);
       this.setState({sessionRequest:  new SessionRequestBean(newSessionRequest)}, () => {
+          if (this.state.sessionRequest.isValid()) {
+              this.searchResults(this.state.sessionRequest);
+          }
+      });
+  }
+
+  private updateFilterReservationDate(params: object) {
+      const sessionRequest = {...this.state.sessionRequest};
+      const newSessionRequest = Object.assign(sessionRequest, params);
+      this.setState({sessionRequest:  new SessionRequestBean(newSessionRequest, true)}, () => {
           if (this.state.sessionRequest.isValid()) {
               this.searchResults(this.state.sessionRequest);
           }
@@ -542,7 +570,12 @@ class SessionsList extends React.Component <{}, IStateListSession> {
   private isDayBlocked(day: moment.Moment) {
     const startDate = new Date(this.state.sessionRequest.startDate);
     return day < moment(startDate) || moment(startDate).add(1, 'year') < day;
-}
+  }
+
+  private isReservationDayBlocked(day: moment.Moment) {
+    const startDate = new Date(this.state.sessionRequest.reservationStartDate);
+    return day < moment(startDate) || moment(startDate).add(1, 'year') < day;
+  }
 }
 
 export default SessionsList;
