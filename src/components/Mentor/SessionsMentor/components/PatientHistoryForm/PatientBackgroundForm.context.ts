@@ -31,6 +31,8 @@ export interface IPatientTreatmentFormValidations {
 export interface IPatientCaseFormValidations {
 	id?: string;
 	anamnesis: string;
+	external_exams: string;
+	exams: string;
 	diagnostic: string;
 	diagnosticDesc?: string;
 	recommendation: string;

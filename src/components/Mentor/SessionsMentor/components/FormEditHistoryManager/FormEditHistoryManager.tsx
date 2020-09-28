@@ -28,6 +28,7 @@ export interface IPropsFormEditHistoryManager {
     showSendRecipe: boolean;
     folioNumber: string;
     prescriptionURL: string;
+    hasTreatments: boolean;
     toggleSaveSession: (flag: boolean) => void;
     toggleSendRecipe: (flag: boolean) => void;
     onHandleSubmit: (e: any) => void;
@@ -87,6 +88,8 @@ const FormEditHistoryManager: React.FC<IPropsFormEditHistoryManager> = (props) =
 
     const patientInfoBlocks = React.useMemo(() => buildPatientInfoBlocks(patient), [patient]);
     const sessionFormTitle = !!triage.use_case && !!triage.questions && triage.questions.length > 0 && 'Caso del paciente' || '';
+    const caseTreatments = props.formData.values.case.treatments || [];
+    const hasTreatments = props.hasTreatments || caseTreatments.length > 0;
     return (
         <React.Fragment>
           <MentorModalBase show={modal} onCloseModal={closeModal}>
@@ -155,13 +158,13 @@ const FormEditHistoryManager: React.FC<IPropsFormEditHistoryManager> = (props) =
               },
             ]} />
           </div>
-          {props.showSaveSession && (
+          {(props.showSaveSession || !hasTreatments) && (
             <ButtonNormal
               text={"Guardar"}
               attrs={...buttonAttrUpdate}
             />
           )}
-          {props.showSendRecipe && (
+          {(props.showSendRecipe && hasTreatments) && (
             <ButtonNormal
               text={"Enviar Receta"}
               attrs={{

@@ -45,6 +45,8 @@ export interface ISessionPatientCaseForm {
   id?: string,
   anamnesis: string,
   diagnostic: string,
+	external_exams: string;
+	exams: string;
   recommendation: string,
   from: string;
   treatments: ISessionPatientTreatmentForm[],
@@ -107,7 +109,9 @@ class SessionEditPatientHistoryData {
 		}));
     return {
       anamnesis: this.patient.case.anamnesis || '',
-      diagnostic: this.patient.case.diagnostic || '',
+			diagnostic: this.patient.case.diagnostic || '',
+			exams: this.patient.case.exams || '',
+			external_exams: this.patient.case.external_exams || '',
       from: this.patient.case.from || '',
       id: this.patient.case.id || '',
       recommendation: this.patient.case.recommendation || '',
@@ -158,6 +162,8 @@ class SessionEditPatientHistoryData {
     const formValues = {
       anamnesis: p.anamnesis || '',
       diagnostic,
+			exams: this.patient.case.exams || '',
+			external_exams: this.patient.case.external_exams || '',
       recommendation: p.recommendation || '',
       treatments: p.treatments || [],
     };
@@ -171,6 +177,8 @@ class SessionEditPatientHistoryData {
     this.patient.case.from = currentCase.from || '';
     this.patient.case.diagnostic = currentCase.diagnostic || '';
     this.patient.case.recommendation = currentCase.recommendation || '';
+    this.patient.case.exams = currentCase.exams || '';
+    this.patient.case.external_exams = currentCase.external_exams || '';
     this.patient.case.treatments = currentCase.treatments || [];
   }
 
@@ -218,6 +226,8 @@ class SessionEditPatientHistoryData {
   public preparePatientCaseData(values: IPatientCaseFormValidations) {
     this.patient.case.anamnesis = values.anamnesis.trim();
     this.patient.case.diagnostic = values.diagnostic.trim();
+    this.patient.case.exams = values.exams.trim();
+    this.patient.case.external_exams = values.external_exams.trim();
     this.patient.case.recommendation = values.recommendation.trim();
     this.preparePatientCaseTreatmentData(values.treatments);
   }
@@ -321,6 +331,8 @@ class SessionEditPatientHistoryData {
     const diagnostic = currentCase && currentCase.diagnostic || '';
     this.patient.case.id = currentCase && currentCase.id || '';
     this.patient.case.anamnesis = currentCase && currentCase.anamnesis || '';
+    this.patient.case.exams = currentCase && currentCase.exams || '';
+    this.patient.case.external_exams = currentCase && currentCase.external_exams || '';
     this.patient.case.diagnostic = diagnostic;
     this.patient.case.recommendation = currentCase && currentCase.recommendation || '';
     this.patient.case.treatments = currentCase && currentCase.treatments || [];

@@ -345,6 +345,7 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
                                                     prescriptionURL={this.state.prescriptionPath}
                                                     getPrescriptionURL={this.getPrescriptionURL}
                                                     handleOpenPatientPhotos={this.togglePhotosModal}
+                                                    hasTreatments={this.state.hasTreatments}
                                                 />
                                             </form>
                                         </PatientBackgroundFormContext.Provider>
