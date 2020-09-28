@@ -88,7 +88,8 @@ const FormEditHistoryManager: React.FC<IPropsFormEditHistoryManager> = (props) =
 
     const patientInfoBlocks = React.useMemo(() => buildPatientInfoBlocks(patient), [patient]);
     const sessionFormTitle = !!triage.use_case && !!triage.questions && triage.questions.length > 0 && 'Caso del paciente' || '';
-    const hasTreatments = props.hasTreatments || props.formData.values.case.treatments.length > 0;
+    const caseTreatments = props.formData.values.case.treatments || [];
+    const hasTreatments = props.hasTreatments || caseTreatments.length > 0;
     return (
         <React.Fragment>
           <MentorModalBase show={modal} onCloseModal={closeModal}>
