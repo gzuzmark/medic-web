@@ -99,38 +99,6 @@ const CurrentSessionForm: React.FC<IPropsCurrentSessionForm> = ({ forceDisable, 
   
   return (
     <React.Fragment>
-      <FormRow key={'row_1'} style={defaultRowStyle} columns={[
-        <FormColumn width={DEFAULT_COLUMN_WIDTH} key={'external_exams'}>
-        <Heading2>Exámenes de laboratorio</Heading2>
-          <MentorTextArea
-            disabled={!!forceDisable}
-            label=""
-            attrs={{
-                name: "case.external_exams",
-                onBlur: handleBlur,
-                onChange: handleChange,
-                rows: 4,
-                style: {  height: 'auto' },
-                value: values.case.external_exams,
-            }} />
-        </FormColumn>
-      ]}/>
-      <FormRow key={'row_2'} style={defaultRowStyle} columns={[
-        <FormColumn width={DEFAULT_COLUMN_WIDTH} key={'exams'}>
-        <Heading2>Exámenes o procedimientos auxiliares</Heading2>
-          <MentorTextArea
-            disabled={!!forceDisable}
-            label=""
-            attrs={{
-                name: "case.exams",
-                onBlur: handleBlur,
-                onChange: handleChange,
-                rows: 4,
-                style: {  height: 'auto' },
-                value: values.case.exams,
-            }} />
-        </FormColumn>
-      ]}/>
       <FormRow key={'row_3'} style={defaultRowStyle} columns={[
         <FormColumn width={DEFAULT_COLUMN_WIDTH} key={'anamnesis'}>
         <Heading2>Anamnesis</Heading2>
@@ -182,6 +150,38 @@ const CurrentSessionForm: React.FC<IPropsCurrentSessionForm> = ({ forceDisable, 
         )}
         {!showSeeRecipeButton &&  <HistoryTreatmentForm />}
       </div>
+      <FormRow key={'row_1'} style={defaultRowStyle} columns={[
+        <FormColumn width={DEFAULT_COLUMN_WIDTH} key={'external_exams'}>
+        <Heading2>Exámenes de laboratorio</Heading2>
+          <MentorTextArea
+            disabled={!!forceDisable}
+            label=""
+            attrs={{
+                name: "case.external_exams",
+                onBlur: handleBlur,
+                onChange: handleChange,
+                rows: 4,
+                style: {  height: 'auto' },
+                value: values.case.external_exams,
+            }} />
+        </FormColumn>
+      ]}/>
+      <FormRow key={'row_2'} style={defaultRowStyle} columns={[
+        <FormColumn width={DEFAULT_COLUMN_WIDTH} key={'exams'}>
+        <Heading2>Exámenes o procedimientos auxiliares</Heading2>
+          <MentorTextArea
+            disabled={!!forceDisable}
+            label=""
+            attrs={{
+                name: "case.exams",
+                onBlur: handleBlur,
+                onChange: handleChange,
+                rows: 4,
+                style: {  height: 'auto' },
+                value: values.case.exams,
+            }} />
+        </FormColumn>
+      ]}/>
       <FormRow key={'row_5'} style={defaultRowStyle} columns={[
         <FormColumn width={DEFAULT_COLUMN_WIDTH} key={'recommendation'}>
           <MentorTextArea
