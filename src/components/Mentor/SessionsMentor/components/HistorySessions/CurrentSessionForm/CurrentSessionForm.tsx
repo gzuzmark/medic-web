@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { ITriageMedia } from 'src/domain/Session/SessionMentorBean';
 
 import styled from "styled-components";
 import FormColumn from "../../../../../../common/FormRow/components/FormColumn/FormColumn";
@@ -12,10 +13,14 @@ import PatientBackgroundFormContext from '../../PatientHistoryForm/PatientBackgr
 import HistoryTreatmentForm from '../HistoryTreatmentForm/HistoryTreatmentForm';
 import { mapResponse } from '../HistoryTreatmentForm/Utils';
 
+import './CurrentSessionForm.scss';
+import PatientPhotoModal from './PatientPhotoModal/PatientPhotoModal';
+
 interface IPropsCurrentSessionForm {
   forceDisable?: boolean;
   showSeeRecipeButton: boolean;
   folioNumber: string;
+  photos: ITriageMedia[] | null;
   getPrescriptionURL: () => void;
 }
 
@@ -35,8 +40,10 @@ const PrescriptionTextContainer = styled.div`
     margin-right: 30px;
 `;
 
-const CurrentSessionForm: React.FC<IPropsCurrentSessionForm> = ({ forceDisable, showSeeRecipeButton, folioNumber, getPrescriptionURL }) => {
+const CurrentSessionForm: React.FC<IPropsCurrentSessionForm> = ({ forceDisable, showSeeRecipeButton, folioNumber, photos, getPrescriptionURL }) => {
   const { values, handleBlur, handleChange, setFieldValue } = React.useContext(PatientBackgroundFormContext);
+  const [selectedPhoto, setSelectedPhoto] = React.useState('');
+  const [showPhoto, setShowPhoto] = React.useState(false);
   const [diagnosticOptions, setDiagnosticOptions] = React.useState<
 		IPropsMentorOptionsDropDown[]
 	>([]);
@@ -45,6 +52,12 @@ const CurrentSessionForm: React.FC<IPropsCurrentSessionForm> = ({ forceDisable, 
     e.preventDefault();
     getPrescriptionURL();
   };
+
+  const onOpenPhoto = (url: string) => () => {
+    setSelectedPhoto(url);
+    setShowPhoto(true);
+  };
+  const onCloseModal = () => setShowPhoto(false);
 
   React.useEffect(() => {
     async function retrieveDiagnostic() {
@@ -115,6 +128,18 @@ const CurrentSessionForm: React.FC<IPropsCurrentSessionForm> = ({ forceDisable, 
             }} />
         </FormColumn>
       ]}/>
+      <div className='CurrentSessionForm'>
+        <Heading2>Archivos adjuntos</Heading2>
+        <div>Exámenes, fotos que ha subido el paciente.</div>
+        <div className='CurrentSessionForm_photoContainer'>
+          {photos && photos.map((photo: ITriageMedia) => (
+            <div className='CurrentSessionForm_photoElement' onClick={onOpenPhoto(photo.url)}>
+              <img src={photo.url} alt=""/>
+            </div>
+          ))}
+        </div>
+      </div>
+      <PatientPhotoModal show={showPhoto} onClose={onCloseModal} photo={selectedPhoto} />
       <FormRow key={'row_4'} style={defaultRowStyle} columns={[
         <FormColumn width={DEFAULT_COLUMN_WIDTH} key={'diagnosticCode'}>
           <Heading2>Diagnóstico</Heading2>

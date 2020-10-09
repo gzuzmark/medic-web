@@ -1,0 +1,32 @@
+.PatientPhotoModal {
+	width: 100%;
+	text-align: center;
+	&_zoomed {
+		cursor: zoom-out;
+		transform: scale(1.5);
+	}
+	&_normal {
+		cursor: zoom-in;
+	}
+	img {
+		max-width: 100%;
+	}
+	&_header {
+		justify-content: flex-end;
+		align-items: flex-end;
+		padding: 5px 15px !important;
+	}
+	&_close {
+		width: 30px !important;
+		border-radius: 50% !important;
+		max-width: 30px !important;
+		min-width: 30px !important;
+		padding: 0 !important;
+		height: 30px !important;
+	}
+	&_buttons {
+		display: flex;
+		justify-content: flex-end;
+		margin: 15px 20px;
+	}
+}

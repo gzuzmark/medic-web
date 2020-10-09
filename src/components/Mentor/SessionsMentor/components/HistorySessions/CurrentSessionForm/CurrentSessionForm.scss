@@ -1,0 +1,16 @@
+.CurrentSessionForm {
+	&_photoContainer {
+		display: grid;
+		grid-template-columns: repeat(6, 1fr);
+		column-gap: 10px;
+		row-gap: 15px;
+		margin-top: 10px;
+	}
+	&_photoElement {
+		max-width: 400px;
+		cursor: zoom-in;
+		img {
+			max-width: 100%;
+		}
+	}
+}
