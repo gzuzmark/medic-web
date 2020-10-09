@@ -6,7 +6,7 @@ import Icon from "../../../../../common/Icon/Icon";
 import { Body1, Display1, Heading2, Headline1 } from '../../../../../common/MentorText';
 import { getAgeByBirthDate } from "../../../../../common/Utils/Utilities";
 import { ISessionPatientPastCase } from "../../../../../domain/Session/SessionEditPatientHistory";
-import { ISessionMentor, ISessionTriage } from "../../../../../domain/Session/SessionMentorBean";
+import { ISessionMentor, ISessionTriage, ITriageMedia } from "../../../../../domain/Session/SessionMentorBean";
 import CurrentSession from "../HistorySessions/CurrentSession/CurrentSession";
 import CurrentSessionForm from "../HistorySessions/CurrentSessionForm/CurrentSessionForm";
 import HistorySessions from "../HistorySessions/HistorySessions";
@@ -29,6 +29,7 @@ export interface IPropsFormEditHistoryManager {
     folioNumber: string;
     prescriptionURL: string;
     hasTreatments: boolean;
+    photos: ITriageMedia[] | null;
     toggleSaveSession: (flag: boolean) => void;
     toggleSendRecipe: (flag: boolean) => void;
     onHandleSubmit: (e: any) => void;
@@ -82,8 +83,6 @@ const FormEditHistoryManager: React.FC<IPropsFormEditHistoryManager> = (props) =
         props.onSendRecipe(props.formData.values)
     };
 
-    const onOpenPhotos = () => props.handleOpenPatientPhotos(true);
-
     const closeModal = () => setModal(false);
 
     const patientInfoBlocks = React.useMemo(() => buildPatientInfoBlocks(patient), [patient]);
@@ -107,15 +106,6 @@ const FormEditHistoryManager: React.FC<IPropsFormEditHistoryManager> = (props) =
                 blocks={patientInfoBlocks}
               />
             )}
-          </div>
-          <div className="PatientClinicHistory_background">
-            <ButtonNormal
-              text='Ver fotos/documentos del paciente'
-              attrs={{
-                onClick: onOpenPhotos,
-                type: 'button',
-              }}
-            />
           </div>
           <div className="PatientClinicHistory_background">
               <Heading2>
@@ -147,6 +137,7 @@ const FormEditHistoryManager: React.FC<IPropsFormEditHistoryManager> = (props) =
                       showSeeRecipeButton={!!props.folioNumber && !!props.getPrescriptionURL}
                       folioNumber={props.folioNumber}
                       getPrescriptionURL={props.getPrescriptionURL}
+                      photos={props.photos}
                     />
                   </React.Fragment>
                 ),
