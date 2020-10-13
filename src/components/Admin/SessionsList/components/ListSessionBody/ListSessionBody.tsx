@@ -118,6 +118,11 @@ const ListSessionsBody: React.FC<IPropsListSessionsBody> = (props) => {
 		props.showRescheduleModal(true);
 		toggleOpenMenu();
 	};
+	const handleConfirmationClick = () => {
+		props.selectSession(id);
+		props.showConfirmationModal(true);
+		toggleOpenMenu();
+	};
 	const handleFollowupClick = () => {
 		props.selectSession(id);
 		props.selectDoctor(doctorId);
@@ -236,6 +241,9 @@ const ListSessionsBody: React.FC<IPropsListSessionsBody> = (props) => {
 						</DropdownItem>
 						<DropdownItem onClick={handleRescheduleClick}>
 							Reagendar Cita
+						</DropdownItem>
+						<DropdownItem onClick={handleConfirmationClick}>
+							Confirmar Cita
 						</DropdownItem>
 						<DropdownItem onClick={handleFollowupClick}>
 							Agendar Cita
