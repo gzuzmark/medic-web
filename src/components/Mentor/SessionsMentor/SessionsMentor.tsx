@@ -413,7 +413,7 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
     private toggleSendRecipe(showSendRecipe: boolean) {
         this.setState({ showSendRecipe });
     }
-    private onClosePhotosModal() {        
+    private onClosePhotosModal() {
         this.setState({ showPhotosModal: false });
     }
     private onClosePreviewModal() {

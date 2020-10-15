@@ -102,14 +102,14 @@ const CurrentSessionForm: React.FC<IPropsCurrentSessionForm> = ({ forceDisable, 
         setFieldValue('case.diagnosticDesc', description);
       });
       setFieldValue(name, selectedOption.value);
-    } else {      
+    } else {
       setFieldValue(name, '');
       setFieldValue('case.diagnosticDesc', '');
     }
   };
 
   const diag = values.case.diagnostic;
-  
+
   return (
     <React.Fragment>
       <FormRow key={'row_3'} style={defaultRowStyle} columns={[
