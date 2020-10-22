@@ -104,7 +104,7 @@ const ListSessionsBody: React.FC<IPropsListSessionsBody> = (props) => {
 	const patientSLName = (patient && patient.second_last_name) || '';
 	const patientAddress = ( patient && patient.address ) || '';
 	const patientUbigeo = ( patient && patient.ubigeo ) || '';
-	const patientGender = ( patient && patient.gender ) || 0;
+	const patientGender = ( patient && patient.gender ) || -1;
 
 	const patientPaid = formatStrNumber(paid);
 

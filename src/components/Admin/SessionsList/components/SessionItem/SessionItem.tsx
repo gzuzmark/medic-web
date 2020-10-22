@@ -31,7 +31,9 @@ class SessionItem extends React.Component<IPropsSessionItem, {}> {
               <ReactTooltip id="ListMentor_SessionItem" effect={"solid"} place={"bottom"} />
               <div className='SessionItem_basicInformation'>
                   <NameSessionContainer>
-                      <Subhead1 color={FONTS.dark}>{this.props.gender === 3 ? 'PEDIR INFORMACIÓN' : ''}</Subhead1>
+                      <Subhead1 color={FONTS.error}>{this.props.gender === 3 ? 'Pedir Información' : ''}</Subhead1>
+                  </NameSessionContainer>
+                  <NameSessionContainer>
                       <Subhead1 color={FONTS.dark}>{this.props.name}</Subhead1>
                   </NameSessionContainer>
                   <NameSessionContainer>
