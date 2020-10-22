@@ -97,7 +97,7 @@ const ListSessionsBody: React.FC<IPropsListSessionsBody> = (props) => {
 
 	const patientURL = sessionURL && id && `${sessionURL}/${doctorId}`;
 	const patientDoc = patient && patient.document_number;
-
+	const historyURL = `https://alivia-admin.web.app/doctor/sesion/${id}`;
 	const patientId = (patient && patient.id) || '';
 	const patientName = (patient && patient.name) || '';
 	const patientLN = (patient && patient.last_name) || '';
@@ -225,6 +225,14 @@ const ListSessionsBody: React.FC<IPropsListSessionsBody> = (props) => {
 				)}
 				{!!patientURL && (
 					<a href={patientURL} target='blank'>
+						Doctor
+					</a>
+				)}
+				{!!sessionURL && !!historyURL && (
+					<div className='ListSessions_linkseparator' />
+				)}
+				{!!historyURL && (
+					<a href={historyURL} target='blank'>
 						Doctor
 					</a>
 				)}
