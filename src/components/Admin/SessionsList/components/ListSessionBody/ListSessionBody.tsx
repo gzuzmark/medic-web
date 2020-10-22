@@ -217,7 +217,7 @@ const ListSessionsBody: React.FC<IPropsListSessionsBody> = (props) => {
 			>
 				{!!sessionURL && (
 					<a href={sessionURL} target='blank'>
-						Paciente
+						Pac
 					</a>
 				)}
 				{!!sessionURL && !!patientURL && (
@@ -225,7 +225,7 @@ const ListSessionsBody: React.FC<IPropsListSessionsBody> = (props) => {
 				)}
 				{!!patientURL && (
 					<a href={patientURL} target='blank'>
-						Doctor
+						Doc
 					</a>
 				)}
 				{!!sessionURL && !!historyURL && (
@@ -233,7 +233,7 @@ const ListSessionsBody: React.FC<IPropsListSessionsBody> = (props) => {
 				)}
 				{!!historyURL && (
 					<a href={historyURL} target='blank'>
-						Doctor
+						HC
 					</a>
 				)}
 			</div>
