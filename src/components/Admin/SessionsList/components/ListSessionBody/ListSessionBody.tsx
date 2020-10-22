@@ -101,7 +101,6 @@ const ListSessionsBody: React.FC<IPropsListSessionsBody> = (props) => {
 	const patientId = (patient && patient.id) || '';
 	const patientName = (patient && patient.name) || '';
 	const patientLN = (patient && patient.last_name) || '';
-	const patientSLName = (patient && patient.second_last_name) || '';
 	const patientAddress = ( patient && patient.address ) || '';
 	const patientUbigeo = ( patient && patient.ubigeo ) || '';
 	const patientGender = ( patient && patient.gender ) || -1;
@@ -191,7 +190,7 @@ const ListSessionsBody: React.FC<IPropsListSessionsBody> = (props) => {
 			<div className='ListSessions_column ListSessions_column--mentor'>
 				<SessionItem
 					id={patientId}
-					name={`${patientName} ${patientLN} ${patientSLName}`}
+					name={`${patientName} ${patientLN}`}
 					email={patient && patient.email}
 					address={patientAddress}
 					ubigeo={patientUbigeo}
