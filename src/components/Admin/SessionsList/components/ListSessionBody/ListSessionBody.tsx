@@ -101,6 +101,7 @@ const ListSessionsBody: React.FC<IPropsListSessionsBody> = (props) => {
 	const patientId = (patient && patient.id) || '';
 	const patientName = (patient && patient.name) || '';
 	const patientLN = (patient && patient.last_name) || '';
+	const patientSLastName = (doctor && patient.second_last_name) || '';
 	const patientAddress = ( patient && patient.address ) || '';
 	const patientUbigeo = ( patient && patient.ubigeo ) || '';
 	const patientGender = ( patient && patient.gender ) || -1;
@@ -195,6 +196,7 @@ const ListSessionsBody: React.FC<IPropsListSessionsBody> = (props) => {
 					address={patientAddress}
 					ubigeo={patientUbigeo}
 					gender={patientGender}
+					lastname={patientSLastName}
 				/>
 			</div>
 			<div className='ListSessions_column ListSessions_numbers'>
