@@ -97,12 +97,14 @@ const ListSessionsBody: React.FC<IPropsListSessionsBody> = (props) => {
 
 	const patientURL = sessionURL && id && `${sessionURL}/${doctorId}`;
 	const patientDoc = patient && patient.document_number;
-
+	const historyURL = `https://alivia-admin.web.app/doctor/sesion/${id}`;
 	const patientId = (patient && patient.id) || '';
 	const patientName = (patient && patient.name) || '';
 	const patientLN = (patient && patient.last_name) || '';
+	const patientSLastName = (doctor && patient.second_last_name) || '';
 	const patientAddress = ( patient && patient.address ) || '';
 	const patientUbigeo = ( patient && patient.ubigeo ) || '';
+	const patientGender = ( patient && patient.gender ) || -1;
 
 	const patientPaid = formatStrNumber(paid);
 
@@ -193,6 +195,8 @@ const ListSessionsBody: React.FC<IPropsListSessionsBody> = (props) => {
 					email={patient && patient.email}
 					address={patientAddress}
 					ubigeo={patientUbigeo}
+					gender={patientGender}
+					lastname={patientSLastName}
 				/>
 			</div>
 			<div className='ListSessions_column ListSessions_numbers'>
@@ -215,7 +219,7 @@ const ListSessionsBody: React.FC<IPropsListSessionsBody> = (props) => {
 			>
 				{!!sessionURL && (
 					<a href={sessionURL} target='blank'>
-						Paciente
+						Pac
 					</a>
 				)}
 				{!!sessionURL && !!patientURL && (
@@ -223,7 +227,15 @@ const ListSessionsBody: React.FC<IPropsListSessionsBody> = (props) => {
 				)}
 				{!!patientURL && (
 					<a href={patientURL} target='blank'>
-						Doctor
+						Doc
+					</a>
+				)}
+				{!!sessionURL && !!historyURL && (
+					<div className='ListSessions_linkseparator' />
+				)}
+				{!!historyURL && (
+					<a href={historyURL} target='blank'>
+						HC
 					</a>
 				)}
 			</div>
