@@ -102,9 +102,13 @@ const ListSessionsBody: React.FC<IPropsListSessionsBody> = (props) => {
 	const patientName = (patient && patient.name) || '';
 	const patientLN = (patient && patient.last_name) || '';
 	const patientSLastName = (doctor && patient.second_last_name) || '';
-	const patientAddress = ( patient && patient.address ) || '';
-	const patientUbigeo = ( patient && patient.ubigeo ) || '';
-	const patientGender = ( patient && patient.gender ) || -1;
+	const patientAddress = (patient && patient.address) || '';
+	const patientUbigeo = (patient && patient.ubigeo) || '';
+	const patientGender = (patient && patient.gender) || -1;
+
+	const newSessionURL = `${
+		process.env.REACT_APP_CONFERENCE_BASE_URL
+	}?room=${id}&passcode=${process.env.REACT_APP_CONFERENCE_CODE}`;
 
 	const patientPaid = formatStrNumber(paid);
 
@@ -217,16 +221,16 @@ const ListSessionsBody: React.FC<IPropsListSessionsBody> = (props) => {
 				className='ListSessions_column ListSessions_separator'
 				style={{ borderColor: colors.MISC_COLORS.background_grey_2 }}
 			>
-				{!!sessionURL && (
-					<a href={sessionURL} target='blank'>
+				{!!newSessionURL && (
+					<a href={newSessionURL} target='blank'>
 						Pac
 					</a>
 				)}
 				{!!sessionURL && !!patientURL && (
 					<div className='ListSessions_linkseparator' />
 				)}
-				{!!patientURL && (
-					<a href={patientURL} target='blank'>
+				{!!newSessionURL && (
+					<a href={newSessionURL} target='blank'>
 						Doc
 					</a>
 				)}

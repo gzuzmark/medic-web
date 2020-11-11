@@ -44,11 +44,11 @@ const CardSession: React.FC<IPropsCardSession> = (props) => {
                 )}
                 <div className={"CardSession_body-bottom"}>
                     {props.item.isVirtual() ?
-                        <a className={"CardSession_location"} href={props.item.getLocation()} target="_blank">
+                        <a className={"CardSession_location"} href={props.item.getLocationV2()} target="_blank">
                             <Text3 style={{ textDecoration: 'underline' }}>Ir a videollamada</Text3>
                         </a>:
                         <span className={"CardSession_location"}>
-                            <Text3>{props.item.getLocation()}</Text3>
+                            <Text3>{props.item.getLocationV2()}</Text3>
                         </span>
                     }
                 </div>
