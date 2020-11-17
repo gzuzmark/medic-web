@@ -41,7 +41,8 @@ const PrescriptionTextContainer = styled.div`
 `;
 
 const CurrentSessionForm: React.FC<IPropsCurrentSessionForm> = ({ forceDisable, showSeeRecipeButton, folioNumber, photos, getPrescriptionURL }) => {
-  const { values, handleBlur, handleChange, setFieldValue } = React.useContext(PatientBackgroundFormContext);
+  const { values, handleBlur, handleChange, setFieldValue, errors } = React.useContext(PatientBackgroundFormContext);
+
   const [selectedPhoto, setSelectedPhoto] = React.useState('');
   const [showPhoto, setShowPhoto] = React.useState(false);
   const [diagnosticOptions, setDiagnosticOptions] = React.useState<
@@ -118,6 +119,7 @@ const CurrentSessionForm: React.FC<IPropsCurrentSessionForm> = ({ forceDisable, 
           <MentorTextArea
             disabled={!!forceDisable}
             label="Escribe la anamnesis del paciente:"
+            error={errors.case && errors.case.anamnesis}
             attrs={{
                 name: "case.anamnesis",
                 onBlur: handleBlur,
@@ -149,10 +151,12 @@ const CurrentSessionForm: React.FC<IPropsCurrentSessionForm> = ({ forceDisable, 
             lowercaseLabel={true}
             name={`case.diagnostic`}
             value={diag}
+            onBlur={handleBlur}
             triggerChange={handleDiagnosticChange}
             loadOptions={handleTypeDiagnostic(diag)}
             defaultOptions={diagnosticOptions}
             inputValue={diag}
+            error={errors.case && errors.case.diagnostic}
           />
         </FormColumn>,
       ]}/>
