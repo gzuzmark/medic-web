@@ -5,6 +5,8 @@ yup.setLocale(yupLocaleObject);
 
 const sessionFormValidationSchema = yup.object().shape({
 	case: yup.object().shape({
+		anamnesis: yup.string().required(),
+		diagnostic: yup.string().required(),
 		treatments: yup.array().of(
 			yup.object().shape({
 				frequency: yup.string().required(),

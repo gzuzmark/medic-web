@@ -303,17 +303,18 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
                                 validationSchema={sessionFormValidationSchema}
                                 initialValues={this.state.patientHistory}
                                 enableReinitialize={true}
-                                isInitialValid={false}
                                 onSubmit={this.onSubmit}>
-                                {({ errors, touched, values, setFieldValue, handleBlur, handleChange, handleSubmit}) => {
+                                {({ errors, touched, values, setFieldValue, handleBlur, handleChange, handleSubmit, validateForm, isValid}) => {
                                     return (
                                         <PatientBackgroundFormContext.Provider
                                             value={{
                                                 errors,
                                                 handleBlur,
                                                 handleChange,
+                                                isValid,
                                                 setFieldValue,
                                                 touched,
+                                                validateForm,
                                                 values: values as ISessionPatientHistoryFormValidations,
                                             }}>
                                             <RecipePreviewModal
@@ -413,7 +414,7 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
     private toggleSendRecipe(showSendRecipe: boolean) {
         this.setState({ showSendRecipe });
     }
-    private onClosePhotosModal() {
+    private onClosePhotosModal() {        
         this.setState({ showPhotosModal: false });
     }
     private onClosePreviewModal() {

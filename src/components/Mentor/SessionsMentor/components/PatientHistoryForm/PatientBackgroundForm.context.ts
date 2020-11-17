@@ -50,7 +50,9 @@ export interface IPatientBackgroundFormContext {
 	errors: any;
 	handleBlur: any;
 	handleChange: any;
+	isValid: boolean;
 	setFieldValue: any;
+	validateForm: (values?: any) => void;
 	values: ISessionPatientHistoryFormValidations;
 }
 
@@ -58,8 +60,10 @@ const defaultValue: IPatientBackgroundFormContext = {
 	errors: {},
 	handleBlur: (event: any) => void 0,
 	handleChange: (event: any) => void 0,
+	isValid: false,
 	setFieldValue: (field: string, value: string) => void 0,
 	touched: {},
+	validateForm: (values?: any) => void 0,
 	values: {} as ISessionPatientHistoryFormValidations,
 };
 
