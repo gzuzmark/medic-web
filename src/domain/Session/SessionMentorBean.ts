@@ -73,7 +73,7 @@ export interface ISessionDoctor {
     description: string;
     name: string;
     last_name: string;
-    speciality_name: string;
+    specialty_name: string;
 }
 
 export interface IReassignSession {
