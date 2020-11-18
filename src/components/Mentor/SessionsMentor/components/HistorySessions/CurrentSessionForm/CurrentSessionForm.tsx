@@ -135,6 +135,7 @@ const CurrentSessionForm: React.FC<IPropsCurrentSessionForm> = ({ forceDisable, 
           {photos && photos.map((photo: ITriageMedia) => (
             <div className='CurrentSessionForm_photoElement' onClick={onOpenPhoto(photo.url)}>
               <img src={photo.url} alt=""/>
+              <p><a href="{photo.url}" target="_blank" />Abrir</p>
             </div>
           ))}
         </div>
