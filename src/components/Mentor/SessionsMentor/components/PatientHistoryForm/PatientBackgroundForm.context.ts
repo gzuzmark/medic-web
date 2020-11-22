@@ -64,7 +64,25 @@ const defaultValue: IPatientBackgroundFormContext = {
 	setFieldValue: (field: string, value: string) => void 0,
 	touched: {},
 	validateForm: (values?: any) => void 0,
-	values: {} as ISessionPatientHistoryFormValidations,
+	values: {
+		nutritionist: {
+			alcoholConsumption: '-',
+			breakfast: '-',
+			diagnostic: '-',
+			dinner: '-',
+			feedingHabits: '-',
+			height: '0',
+			lunch: '-',
+			midAfternoon: '-',
+			midMorning: '-',
+			physicalActivity: '-',
+			recommendation: '-',
+			snacks: '-',
+			stomachIssues: '-',
+			waterConsumption: '-',
+			weight: '0',
+		},
+	} as ISessionPatientHistoryFormValidations,
 };
 
 const PatientBackgroundFormContext = React.createContext(defaultValue);
