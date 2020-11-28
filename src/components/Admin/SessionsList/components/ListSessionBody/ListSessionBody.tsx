@@ -230,7 +230,7 @@ const ListSessionsBody: React.FC<IPropsListSessionsBody> = (props) => {
 					<div className='ListSessions_linkseparator' />
 				)}
 				{!!newSessionURL && (
-					<a href={newSessionURL} target='blank'>
+					<a href={`${newSessionURL}&doctor=1`} target='blank'>
 						Doc
 					</a>
 				)}
