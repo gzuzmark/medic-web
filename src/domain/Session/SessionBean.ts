@@ -173,7 +173,7 @@ export class SessionBean {
     public getLocationV2(): string {
         const sessionId = this.session.id;
         if (sessionId) {
-            return `${process.env.REACT_APP_CONFERENCE_BASE_URL}?room=${sessionId}&passcode=${process.env.REACT_APP_CONFERENCE_CODE}`;
+            return `${process.env.REACT_APP_CONFERENCE_BASE_URL}?room=${sessionId}&passcode=${process.env.REACT_APP_CONFERENCE_CODE}&doctor=1`;
         }
         return '';
     }
