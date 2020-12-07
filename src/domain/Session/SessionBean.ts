@@ -52,6 +52,7 @@ export interface ISessionBody extends ISessionBase {
 export interface ISessionPayment {
     paid: string;
     pending: boolean;
+    cipUrl: string;
 }
 
 export interface ISessionBase {
