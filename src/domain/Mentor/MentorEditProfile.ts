@@ -17,6 +17,8 @@ export interface IMentorEditParams {
     experiences: IMentorExperience[];
     photoPath: string;
     title: string;
+    about_me: string;
+    formation: string;
 }
 
 export interface IMentorProfileFormValidations extends IMentorFormValidations{
@@ -42,9 +44,11 @@ class MentorEditProfileData extends MentorAdminEditData {
 
     get mentorUpdateParams(): IMentorEditParams {
         return {
+            about_me: this.mentor.about_me || '',
             company: this.mentor.company || '',
             description: this.mentor.description || '',
             experiences: this.mentor.experiences || [] as IMentorExperience[],
+            formation: this.mentor.formation || '',
             photoPath: this.mentor.photoPath || '',
             title: this.mentor.title || ''
         }
