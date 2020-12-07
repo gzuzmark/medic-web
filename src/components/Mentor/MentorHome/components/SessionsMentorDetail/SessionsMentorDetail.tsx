@@ -16,6 +16,10 @@ interface IPropsSessionsMentorDetail {
     sessionDetail: ISessionMentorDetail
 }
 
+interface IStateSessionsMentorDetail {
+    showAvailable: boolean;
+}
+
 export interface ISessionMentorDetail {
     sessions:  ISessionCollector<SessionMentorBean> | null;
     scrollTop: boolean;
@@ -33,11 +37,14 @@ const SESSION_STATUS_COLORS = {
     greenColor: colors.MISC_COLORS.green,
 };
 
-class  SessionsMentorDetail extends React.Component<IPropsSessionsMentorDetail, {}> {
+class  SessionsMentorDetail extends React.Component<IPropsSessionsMentorDetail, IStateSessionsMentorDetail> {
     private selectedDate: Date;
 
     constructor(props: any) {
         super(props);
+        this.state = {
+            showAvailable: false,
+        };
     }
 
     public render() {
@@ -90,7 +97,7 @@ class  SessionsMentorDetail extends React.Component<IPropsSessionsMentorDetail, 
                         </div>
                     }/>
                 </div>}
-                {available && !!available.length && <div className={"SessionsMentorDetail_session-container"}>
+                {this.state.showAvailable && available && !!available.length && <div className={"SessionsMentorDetail_session-container"}>
                     <Accordion
                         iconStyle={{ fill: SESSION_STATUS_COLORS.blueColor }}
                         title={
