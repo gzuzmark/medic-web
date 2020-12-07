@@ -42,6 +42,8 @@ export interface IMentorFormValidations {
     currentCompany: string;
     status: string;
     utp: boolean;
+    about_me: string;
+    formation: string;
 }
 
 export interface IMentorExperience {
@@ -66,6 +68,8 @@ export interface IMentorBaseForm  extends IBaseUser {
     utp?: boolean;
     shortDescription?: string;
     status?: string;
+    formation?: string;
+    about_me?: string;
 }
 
 abstract class MentorBaseForm {
@@ -89,6 +93,8 @@ abstract class MentorBaseForm {
         this.mentor.timeZone = mentor.timeZone || 'America/Lima';
         this.mentor.utp = !!mentor.utp;
         this.mentor.shortDescription = mentor.shortDescription || '';
+        this.mentor.about_me = mentor.about_me || '';
+        this.mentor.formation = mentor.formation || '';
     }
 
     set setMentor(mentor: IMentorBaseForm) {
@@ -99,6 +105,7 @@ abstract class MentorBaseForm {
         const m = {...this.mentor};
         m.experiences = m.experiences || [] as IMentorExperience[];
         const formValues = {
+            about_me: m.about_me || '',
             contactNumber: m.contactNumber || '',
             currentCompany: m.company || '',
             currentPosition: m.title || '',
@@ -108,6 +115,7 @@ abstract class MentorBaseForm {
             email: m.email || '',
             experiences: [] as IMentorFormExperience[],
             firstName: m.name || '',
+            formation: m.formation || '',
             lastName: m.lastname || '',
             location: {} as IFormItemBase,
             picture: m.photoPath || '',
@@ -134,6 +142,8 @@ abstract class MentorBaseForm {
     }
 
     public prepareData(values: IMentorFormValidations) {
+        this.mentor.about_me = values.about_me.trim();
+        this.mentor.formation = values.formation.trim();
         this.mentor.email = values.email.trim();
         this.mentor.name = values.firstName.trim();
         this.mentor.lastname = values.lastName.trim();
