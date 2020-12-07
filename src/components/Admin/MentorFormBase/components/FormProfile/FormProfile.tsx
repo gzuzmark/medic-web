@@ -21,23 +21,59 @@ const FormProfile: React.FC<IPropsFormProfile> = (props) => {
     let counter = 0;
     return (
         <React.Fragment>
+        {user.rol === ROL_MENTOR && (
             <FormRow style={{padding: '30px 0 40px 0', margin: 0}} columns={[
                 <FormColumn width={1} key={`FormColumn-PersonalData_${++counter}`}>
                     <MentorTextArea
-                        limit={limitDescription}
                         disabled={!!props.forceDisable}
-                        label={user.rol === ROL_MENTOR ? "CMP" : "CMP del doctor"}
-                        info={"Este mensaje debe ser corto, <br> inspirador y conciso."}
+                        label='Acerca de mi'
+                        info='Breve descripción propia.'
                         attrs={{
-                            name: "description",
+                            name: 'about_me',
                             onBlur: handleBlur,
                             onChange: handleChange,
-                            placeholder: "Ingresa una descripción para el doctor. Por ejemplo: ¡Hola! Soy Fabbian y mi objetivo es ser tu mejor compañero de estudios fuera de clase, conmigo podrás resolver tus dudas acerca de los cursos de química.",
-                            style: {height: 112, borderColor: getBorderColor(values.description, isEdit)},
-                            value: values.description
+                            placeholder: 'Ingrese una breve descripción propia',
+                            style: {height: 112, borderColor: getBorderColor(values.about_me, isEdit)},
+                            value: values.about_me
                         }} />
                 </FormColumn>
             ]}/>
+        )}
+        {user.rol === ROL_MENTOR && (
+            <FormRow style={{padding: '30px 0 40px 0', margin: 0}} columns={[
+                <FormColumn width={1} key={`FormColumn-PersonalData_${++counter}`}>
+                    <MentorTextArea
+                        disabled={!!props.forceDisable}
+                        label='Formación'
+                        info='Información sobre formación.'
+                        attrs={{
+                            name: 'formation',
+                            onBlur: handleBlur,
+                            onChange: handleChange,
+                            placeholder: 'Ingrese información sobre su formación académica',
+                            style: {height: 112, borderColor: getBorderColor(values.formation, isEdit)},
+                            value: values.formation
+                        }} />
+                </FormColumn>
+            ]}/>
+        )}
+        <FormRow style={{padding: '30px 0 40px 0', margin: 0}} columns={[
+            <FormColumn width={1} key={`FormColumn-PersonalData_${++counter}`}>
+                <MentorTextArea
+                    limit={limitDescription}
+                    disabled={!!props.forceDisable}
+                    label={user.rol === ROL_MENTOR ? "CMP" : "CMP del doctor"}
+                    info={"Este mensaje debe ser corto, <br> inspirador y conciso."}
+                    attrs={{
+                        name: "description",
+                        onBlur: handleBlur,
+                        onChange: handleChange,
+                        placeholder: "Ingresa una descripción para el doctor. Por ejemplo: ¡Hola! Soy Fabbian y mi objetivo es ser tu mejor compañero de estudios fuera de clase, conmigo podrás resolver tus dudas acerca de los cursos de química.",
+                        style: {height: 112, borderColor: getBorderColor(values.description, isEdit)},
+                        value: values.description
+                    }} />
+            </FormColumn>
+        ]}/>
             <FormRow style={{padding: '30px 0 40px 0', margin: 0}} columns={[
                 <FormColumn width={2} key={`FormColumn-PersonalData_${++counter}`}>
                     <MentorInput
