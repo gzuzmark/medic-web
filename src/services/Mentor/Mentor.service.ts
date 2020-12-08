@@ -336,6 +336,23 @@ class MentorService extends BaseRequest {
         });
     }
 
+    public getRates(): Promise<any> {
+        return new Promise((resolve, reject) => {
+            this.instance.get(`ugo/mentors-api/me/ratings`)
+                .then((response: any) => {
+                    if (response.status === 200 && response.data) {
+                        resolve(response.data);
+                    } else {
+                        reject(null);
+                    }
+                })
+                .catch((error: any) => {
+                    this.validSession();
+                    reject(error);
+                });
+        });
+    }
+
     public updateProfile(mentor: IMentorEditParams): Promise<any> {
         return new Promise((resolve, reject) => {
             this.instance.put(`ugo/mentors-api/me/full`, mentor)

@@ -63,6 +63,11 @@ const UseHandlerMenuList = (warningProfile: boolean) => {
             id: 'users',
             name: 'Pacientes',
             url: '/doctor/pacientes'
+        },{
+            icon: 'star',
+            id: 'Rates',
+            name: 'Calificaciones',
+            url: '/doctor/calificaciones'
         }, {
             icon: 'user',
             id: 'profile_mentor',
