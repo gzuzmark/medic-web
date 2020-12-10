@@ -60,8 +60,9 @@ const TABLE_HEADER_TEXTS = [
   'ESTADO',
   'DNI O CE',
   'TELÉFONO',
-  'URL DE LA CITA',
-  'PAGO EFECTIVO',
+  'URL CITA',
+  'LINK PAGO',
+  'RATING',
   'ACCIONES',
 ];
 

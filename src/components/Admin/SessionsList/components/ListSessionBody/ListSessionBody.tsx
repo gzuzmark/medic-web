@@ -98,6 +98,7 @@ const ListSessionsBody: React.FC<IPropsListSessionsBody> = (props) => {
 	const patientURL = sessionURL && id && `${sessionURL}/${doctorId}`;
 	const patientDoc = patient && patient.document_number;
 	const historyURL = `https://alivia-admin.web.app/doctor/sesion/${id}`;
+	const ratingURL = `https://alivia-conference.web.app/rate/${id}`;
 	const paymentURL = payment && payment.cipUrl;
 	const patientId = (patient && patient.id) || '';
 	const patientName = (patient && patient.name) || '';
@@ -251,6 +252,16 @@ const ListSessionsBody: React.FC<IPropsListSessionsBody> = (props) => {
 				{!!paymentURL && (
 					<a href={paymentURL} target='blank'>
 						Pago
+					</a>
+				)}
+			</div>
+			<div
+				className='ListSessions_column ListSessions_separator'
+				style={{ borderColor: colors.MISC_COLORS.background_grey_2 }}
+			>
+				{!!ratingURL && (
+					<a href={ratingURL} target='blank'>
+						Link
 					</a>
 				)}
 			</div>
