@@ -135,8 +135,13 @@ const CurrentSessionForm: React.FC<IPropsCurrentSessionForm> = ({ forceDisable, 
         <div>Exámenes, fotos que ha subido el paciente.</div>
         <div className='CurrentSessionForm_photoContainer'>
           {photos && photos.map((photo: ITriageMedia) => (
-            <div className='CurrentSessionForm_photoElement' onClick={onOpenPhoto(photo.url)}>
-              <img src={photo.url} alt=""/>
+            <div>
+              <div className='CurrentSessionForm_photoElement' onClick={onOpenPhoto(photo.url)}>
+                <img src={photo.url} alt=""/>
+              </div>
+              <div>
+                <a href={photo.url} target="_blank">Abrir archivo</a>
+              </div>
             </div>
           ))}
         </div>

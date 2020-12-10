@@ -60,8 +60,9 @@ const TABLE_HEADER_TEXTS = [
   'ESTADO',
   'DNI O CE',
   'TELÉFONO',
-  'URL DE LA CITA',
-  'PAGO EFECTIVO',
+  'URL CITA',
+  'LINK PAGO',
+  'RATING',
   'ACCIONES',
 ];
 
@@ -416,7 +417,7 @@ class SessionsList extends React.Component <{}, IStateListSession> {
   private cancelSession(notes: string) {
     const sessionId = this.state.selectedSessionId;
     if (sessionId) {
-      this.setState({ loading: true, showCancelModal: false }, () => {        
+      this.setState({ loading: true, showCancelModal: false }, () => {
         this.sessionService.cancelSession(sessionId, { notes })
         .then(() => {
           const currentSessions = !this.state.sessions ? [] : this.state.sessions;
@@ -424,7 +425,7 @@ class SessionsList extends React.Component <{}, IStateListSession> {
           this.setState({
             loading: false,
             selectedSessionId: '',
-            sessions: newSessions,            
+            sessions: newSessions,
           })
         }).catch(() => {
           this.setState({ loading: false, selectedSessionId: '' });
@@ -447,7 +448,7 @@ class SessionsList extends React.Component <{}, IStateListSession> {
         const newSessions = !this.state.sessions ? [] : [...this.state.sessions];
         const sessionIndex = newSessions.findIndex((session: ISessionBody) => session.id === sessionId);
         newSessions[sessionIndex].payment.pending = false;
-        
+
         this.setState({
           loading: false,
           selectedSessionId: '',
@@ -545,7 +546,7 @@ class SessionsList extends React.Component <{}, IStateListSession> {
     }
   }
 
-  private async loadNextPage(page: number) {    
+  private async loadNextPage(page: number) {
     if (!this.state.loading) {
       this.setState({ loading: true });
       const params = this.state.sessionRequest.toParams();
