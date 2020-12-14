@@ -516,7 +516,6 @@ const TreatmentFields: React.FC<IPropsTreatmentFields> = ({
 				columns={[
 					<FormColumn width={2} key={`FormColumn-MedicineData_Brand`}>
 						<MentorTypeAhead
-							creatable={true}
 							isClearable={true}
 							label='Producto sugerido (opcional)'
 							lowercaseLabel={true}
