@@ -108,6 +108,16 @@ const PageMyRates = (props: any) => {
                              {...props}/>;
 };
 
+const PageScheduler = (props: any) => {
+    const Scheduler = React.lazy(() => import('./components/Mentor/Scheduler/Scheduler'));
+    const LayoutScheduler = HOCLayout(Scheduler);
+    return <LayoutScheduler icon={'star'}
+                             items={[
+                                 {url: '/doctor', text: 'Inicio'},
+                                 {url: '/doctor/calendario', text: 'Calendario de Citas'}]}
+                             {...props}/>;
+};
+
 // const PageRoomCreate = (props: any) => {
 //     const RoomCreate = React.lazy(() => import('./components/Admin/RoomCreate/RoomCreate'));
 //     const LayoutListRooms = HOCLayout(RoomCreate);
@@ -165,6 +175,7 @@ export const initRouter = () => {
                 <Route exact={true} path="/doctor/pacientes" render={GuardComponent(PageListStudents, ROL_MENTOR)} />
                 <Route exact={true} path="/doctor/pacientes/:skill" render={GuardComponent(PageListStudents, ROL_MENTOR)} />
                 <Route exact={true} path="/doctor/calificaciones" render={GuardComponent(PageMyRates, ROL_MENTOR)} />
+                <Route exact={true} path="/doctor/calendario" render={GuardComponent(PageScheduler, ROL_MENTOR)} />
                 <Route exact={true} path="/doctor/editar-perfil" render={GuardComponent(PageEditProfileMentor, ROL_MENTOR)} />
                 <Route exact={true} path="/doctor/sesion/:session/" render={GuardComponent(SessionsMentor, ROL_MENTOR)} />
                 <Route exact={true} path="/doctor/paciente/:id/" render={GuardComponent(PageStudent, ROL_MENTOR)} />
