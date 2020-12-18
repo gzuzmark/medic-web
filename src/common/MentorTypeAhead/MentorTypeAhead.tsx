@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { components, Creatable } from 'react-select';
+import Select, { components, Creatable } from 'react-select';
 import AsyncSelect from 'react-select/lib/Async';
 import { InputActionMeta, OptionsType } from 'react-select/lib/types';
 import styled from 'styled-components';
@@ -29,6 +29,7 @@ export interface IPropsMentorTypeAhead {
 	style?: React.CSSProperties;
 	lowercaseLabel?: boolean;
 	creatable?: boolean;
+	simple?: boolean;
 	isClearable?: boolean;
 	defaultOptions?:
 		| boolean
@@ -114,6 +115,9 @@ class MentorTypeAhead extends React.Component<IPropsMentorTypeAhead, {}> {
 							value: propsValue,
 					  } as IPropsMentorOptionsDropDown);
 		}
+		const isCreatable = !this.props.simple && !!this.props.creatable;
+		const isAsync = !this.props.simple && !this.props.creatable;
+		const isSimple = !!this.props.simple && !this.props.creatable;
 		return (
 			<CustomDropdown style={{ ...this.props.style }}>
 				{this.props.label && (
@@ -123,7 +127,7 @@ class MentorTypeAhead extends React.Component<IPropsMentorTypeAhead, {}> {
 						uppercase={!this.props.lowercaseLabel}
 					/>
 				)}
-				{!!this.props.creatable && (
+				{isCreatable && (
 					<Creatable
 						isDisabled={!!this.props.disabled}
 						isClearable={!!this.props.isClearable}
@@ -152,7 +156,7 @@ class MentorTypeAhead extends React.Component<IPropsMentorTypeAhead, {}> {
 						value={creatableValue}
 					/>
 				)}
-				{!this.props.creatable && (
+				{isAsync && (
 					<AsyncSelect
 						cacheOptions={true}
 						isDisabled={!!this.props.disabled}
@@ -181,6 +185,25 @@ class MentorTypeAhead extends React.Component<IPropsMentorTypeAhead, {}> {
 						loadOptions={this.props.loadOptions}
 						value={value}
 						defaultInputValue={this.props.inputValue}
+					/>
+				)}
+				{isSimple && (
+					<Select
+						isDisabled={!!this.props.disabled}
+						isClearable={!!this.props.isClearable}
+						styles={MentorTypeAheadTheme.baseStyle(
+							!!this.props.error,
+							!!this.props.disabled,
+							!!this.props.empty,
+						)}
+						placeholder={this.props.placeholder || ''}
+						name={name}
+						onBlur={this.props.onBlur}
+						onChange={this.handleChange}
+						isMulti={!!this.props.isMulti}
+						noOptionsMessage={this.noOptions}
+						options={this.props.options}
+						maxMenuHeight={250}
 					/>
 				)}
 				{!!this.props.error && (
