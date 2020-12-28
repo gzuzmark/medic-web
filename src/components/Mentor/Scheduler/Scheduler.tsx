@@ -38,6 +38,10 @@ L10n.load({
 			addTitle: 'Agregar Título',
 			save: 'Crear',
 			moreDetails: 'Más Detalles',
+			title: 'Título',
+			start: 'Inicio',
+			end: 'Fin',
+			description: 'Descripción',
 		},
 	},
 });
