@@ -1,0 +1,32 @@
+.e-appointment.e-read-only {
+	height: 37px !important;
+}
+.e-appointment,
+.e-popup-header {
+	background: #1ecd96 !important;
+}
+.e-header-cells.e-current-day,
+.e-current-time {
+	color: #1ecd96 !important;
+}
+
+.e-toolbar-item.e-views.e-active-view {
+	button {
+		span.e-tbar-btn-text {
+			color: #1ecd96 !important;
+		}
+	}
+}
+
+.e-current-timeline {
+	border-top: 1px solid #1ecd96 !important;
+}
+.e-previous-timeline {
+	border-top: 1px dotted #1ecd96 !important;
+}
+
+td.e-work-cells.e-work-days.e-current-date {
+	div.e-date-header.e-navigate {
+		background-color: #1ecd96 !important;
+	}
+}
