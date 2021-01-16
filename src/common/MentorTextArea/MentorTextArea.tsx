@@ -15,14 +15,14 @@ export interface IPropsMentorTextArea {
 }
 
 const TextArea: React.SFC<any> = props =>
-    <textarea className={props.className} maxLength={2000} {...props.attrs}>{props.children}</textarea>;
+    <textarea className={props.className} maxLength={350} {...props.attrs}>{props.children}</textarea>;
 
 export const TextAreaComponent = styled(TextArea)`
    border: 1px solid ${(props: any) => {
        let border = colors.MISC_COLORS.background_grey_2;
        if(props.error) {
            border = colors.TEXT_COLORS.font_error;
-       } 
+       }
        return border;
     }};
    border-radius: 4px;
