@@ -73,6 +73,11 @@ const UseHandlerMenuList = (warningProfile: boolean) => {
             id: 'Calendar',
             name: 'Calendario de Citas',
             url: '/doctor/calendario'
+        },{
+            icon: 'calendar',
+            id: 'Earnings',
+            name: 'Gestión de Citas',
+            url: '/doctor/citas'
         }, {
             icon: 'user',
             id: 'profile_mentor',
