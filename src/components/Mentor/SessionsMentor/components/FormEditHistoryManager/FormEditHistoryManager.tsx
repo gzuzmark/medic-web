@@ -110,7 +110,7 @@ const FormEditHistoryManager: React.FC<IPropsFormEditHistoryManager> = (props) =
       <div className={'PatientClinicHistory_info'}>
         <div className="PatientClinicHistory_info--title">
           <Display1 weight="300">
-            Formato de Atención Clínico
+            Formato de Atención Clínica
               </Display1>
         </div>
         {patientInfoBlocks.length > 0 && (
