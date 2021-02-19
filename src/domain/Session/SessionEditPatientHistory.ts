@@ -311,6 +311,9 @@ class SessionEditPatientHistoryData {
           patientPhone: patient.phone,
           patientClinicHistory: `${patient.document_number}${pastConsultsLength}`,
           patientDateOfBirth: patient.birthdate,
+		  patientEmail: patient.email,
+		  motherLastName: patient.second_last_name,
+		  documentType: patient.document_number.length === 8 ? 'DNI' : 'CE'
         },
       };
       return recipe;
