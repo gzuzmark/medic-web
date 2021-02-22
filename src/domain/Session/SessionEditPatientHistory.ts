@@ -17,6 +17,11 @@ import {
 export const SAPCODE_SEPARATOR = '_';
 const SESSION_IPRESS = '1112';
 
+enum DocumentTypeEnum {
+	DNI ='1',
+	CE='2'
+}
+
 export interface ISessionHistoryForm {
 	allergies: string;
 	fur?: string;
@@ -313,7 +318,7 @@ class SessionEditPatientHistoryData {
           patientDateOfBirth: patient.birthdate,
 		  patientEmail: patient.email,
 		  motherLastName: patient.second_last_name,
-		  documentType: patient.document_number.length === 8 ? 'DNI' : 'CE'
+		  documentType: patient.document_type || DocumentTypeEnum.DNI
         },
       };
       return recipe;
