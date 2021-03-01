@@ -34,6 +34,15 @@ const ContainerRow = styled.div`
 	}
 `;
 
+const getFormattedAddress = (address: string) => {
+	try {
+		const parsedAddress = JSON.parse(address);
+		return parsedAddress ? `${parsedAddress.street} ${parsedAddress.number}` : address;
+	} catch (e) {
+		return address;
+	}
+}
+
 const renderAssistance = (assistance: string) => {
 	if (!assistance) {
 		return null;
@@ -42,8 +51,8 @@ const renderAssistance = (assistance: string) => {
 		assistance === 'Confirmada'
 			? 'green'
 			: assistance === 'No Asistió'
-			? 'red'
-			: 'default';
+				? 'red'
+				: 'default';
 	return <BadgeLabel color={colorClass}>{assistance}</BadgeLabel>;
 };
 
@@ -104,13 +113,12 @@ const ListSessionsBody: React.FC<IPropsListSessionsBody> = (props) => {
 	const patientName = (patient && patient.name) || '';
 	const patientLN = (patient && patient.last_name) || '';
 	const patientSLastName = (doctor && patient.second_last_name) || '';
-	const patientAddress = (patient && patient.address) || '';
+	const patientAddress = (patient && patient.address && getFormattedAddress(patient.address)) || '';
 	const patientUbigeo = (patient && patient.ubigeo) || '';
 	const patientGender = (patient && patient.gender) || -1;
 
-	const newSessionURL = `${
-		process.env.REACT_APP_CONFERENCE_BASE_URL
-	}?room=${id}&passcode=${process.env.REACT_APP_CONFERENCE_CODE}`;
+	const newSessionURL = `${process.env.REACT_APP_CONFERENCE_BASE_URL
+		}?room=${id}&passcode=${process.env.REACT_APP_CONFERENCE_CODE}`;
 
 	const patientPaid = formatStrNumber(paid);
 
