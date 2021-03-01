@@ -35,12 +35,11 @@ const ContainerRow = styled.div`
 `;
 
 const getFormattedAddress = (address: string) => {
-	console.log('=>', address);
 	try {
 		const parsedAddress = JSON.parse(address);
 		return parsedAddress ? `${parsedAddress.street} ${parsedAddress.number}` : address;
 	} catch (e) {
-		return "";
+		return address;
 	}
 }
 
