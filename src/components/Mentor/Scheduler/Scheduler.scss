@@ -1,10 +1,12 @@
 .e-appointment.e-read-only {
 	height: 37px !important;
 }
+
 .e-appointment,
 .e-popup-header {
 	background: #1ecd96 !important;
 }
+
 .e-header-cells.e-current-day,
 .e-current-time {
 	color: #1ecd96 !important;
@@ -30,3 +32,50 @@ td.e-work-cells.e-work-days.e-current-date {
 		background-color: #1ecd96 !important;
 	}
 }
+
+
+
+.event-template.e-schedule .template-wrap {
+  height: 100%;
+  white-space: normal;
+}
+
+
+.event-template.e-schedule .e-timeline-view .e-appointment .e-appointment-details {
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  display: block;
+}
+
+.event-template.e-schedule .e-timeline-view .template-wrap {
+  width: 100%;
+}
+
+.event-template.e-schedule .e-timeline-view .template-wrap .subject {
+  font-size: 16px;
+  height: 36px;
+  text-align: center;
+}
+
+
+.quick-info-template .event-content {
+	height: 90px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+  }
+  
+  .quick-info-template .meeting-type-wrap,
+  .quick-info-template .meeting-subject-wrap,
+  .quick-info-template .notes-wrap {
+	display: flex;
+	font-size: 14px;
+	color: #666;
+	letter-spacing: 0.33px;
+	height: 24px;
+  }
+
+  
+  
+  
