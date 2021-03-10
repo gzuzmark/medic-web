@@ -85,6 +85,7 @@ interface IStateSessionsMentor {
     showPreviewModal: boolean;
     showSaveSession: boolean;
     showSendRecipe: boolean;
+    fromScheduler: boolean;
     showUploadModal: boolean;
     uploadURL: string;
 }
@@ -102,9 +103,12 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
     private studentChecklistCollector: StudentChecklistCollector;
     private mdp = new MomentDateParser();
     private patientHistoryData: SessionEditPatientHistoryData;
+    private fromScheduler: boolean;
     constructor(props: any) {
         super(props);
-        this.patientHistoryData = new SessionEditPatientHistoryData({} as ISessionPatientHistoryForm);
+        this.patientHistoryData = new SessionEditPatientHistoryData({} as ISessionPatientHistoryForm);        
+        const { state } = props.location;
+        this.fromScheduler = state ? state.fromScheduler : false
         this.state = {
             board: {
                 addEnabled: false,
@@ -116,6 +120,7 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
             currentDoctor: null,
             currentPatient: null,
             folioNumber: '',
+            fromScheduler: false,
             fullCardSession: {
                 title: '',
                 type: ''
@@ -148,7 +153,7 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
             showPreviewModal: false,
             showSaveSession: true,
             showSendRecipe: true,
-            showUploadModal: false,
+            showUploadModal: false,            
             uploadURL: '',
         };
         this.sessionId = this.props.match.params.session || '';
@@ -181,6 +186,7 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
     }
 
     public componentDidMount() {
+        const that = this;
         this.setState({
             loading: true
         }, async () => {
@@ -232,8 +238,8 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
                         nutritionist: this.patientHistoryData.getNutritionValues,
                     },
                     prescriptionPath: patCase.prescriptionPath,
-                    showSaveSession: !hasToken || !!patCase.prescriptionPath,
-                    showSendRecipe: hasToken && !patCase.prescriptionPath,
+                    showSaveSession: (!that.fromScheduler || !patCase.folioNumber) && (!hasToken || !!patCase.prescriptionPath),
+                    showSendRecipe: (!that.fromScheduler || !patCase.folioNumber) && (hasToken && !patCase.prescriptionPath),
                 };
                 this.setState({
                     loading: false,
@@ -339,6 +345,7 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
                                             <form onSubmit={handleSubmit}>
                                                 <FormEditHistoryManager
                                                     formData={{ values }}
+                                                    fromScheduler={this.state.fromScheduler}
                                                     onHandleSubmit={this.onSubmit}
                                                     session={session}
                                                     pastCases={this.state.pastCases}
