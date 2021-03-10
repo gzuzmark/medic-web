@@ -102,20 +102,12 @@ const Scheduler = () => {
                                 item.patient_name &&
                                 user.id === item.user_id &&
                                 item.patient_name
-                                    ? `${
-                                          item.doctor_name
-                                      } ${
-                                          item.doctor_last_name
-                                      } - Paciente: ${
+                                    ? `Paciente: ${
                                           item.patient_name
                                       } ${
                                           item.patient_last_name
                                       } `
-                                    : `${
-                                          item.doctor_name
-                                      } ${
-                                          item.doctor_last_name
-                                      }`,
+                                    : 'Sin paciente asignado',
                             StartTime: new Date(item.from),
                             EndTime: new Date(item.to),
                             IsReadonly:
@@ -243,6 +235,8 @@ const Scheduler = () => {
                                             {" "}
                                         </div>
                                         <div className="e-date-time-details e-text-ellipsis">
+                                            {props.StartTime.toDateString()}
+                                            {"("}
                                             {getTimeString(
                                                 props.StartTime
                                             )}{" "}
@@ -250,6 +244,7 @@ const Scheduler = () => {
                                             {getTimeString(
                                                 props.EndTime
                                             )}
+                                            {")"}
                                         </div>
                                     </div>
                                 </div>
@@ -257,51 +252,51 @@ const Scheduler = () => {
                         </div>
                     ) : (
                         <div className="event-content">
-                            
-                                {props.Subject !== undefined ? (
-                                    <div className="meeting-type-wrap">
-                                        {props.Subsubject}
+                            {props.Subject !== undefined ? (
+                                <div className="meeting-type-wrap">
+                                    {props.Subsubject}
+                                </div>
+                            ) : (
+                                ""
+                            )}
+                            {props.StartTime !== undefined &&
+                            props.EndTime !== undefined ? (
+                                <div className="meeting-subject-wrap">
+                                    <div className="e-date-time-icon e-icons">
+                                        {" "}
                                     </div>
-                                ) : (
-                                    ""
-                                )}
-                                {props.StartTime !== undefined && props.EndTime !== undefined ? (
-                                    
-                                        <div className="meeting-subject-wrap">
-                                            <div className="e-date-time-icon e-icons">
-                                                {" "}
-                                            </div>
-                                            <div className="e-date-time-details e-text-ellipsis">
-                                                {getTimeString(
-                                                    props.StartTime
-                                                )}{" "}
-                                                -{" "}
-                                                {getTimeString(
-                                                    props.EndTime
-                                                )}
-                                            </div>
-                                        </div>
-                                    
-                                ) : (
-                                    ""
-                                )}
-                                {props.HasPatient ? (
-                                    <Link
-                                        to={{
-                                            pathname: `/doctor/sesion/${
-                                                props.SessionId
-                                            }`,
-                                            state: {
-                                                fromScheduler: true
-                                            }
-                                        }}
-                                    >
-                                        Ver formato clínico
-                                    </Link>
-                                ) : (
-                                    ""
-                                )}
-                            
+                                    <div className="e-date-time-details e-text-ellipsis">
+                                        {props.StartTime.toDateString()}
+                                        {"("}
+                                        {getTimeString(
+                                            props.StartTime
+                                        )}{" "}
+                                        -{" "}
+                                        {getTimeString(
+                                            props.EndTime
+                                        )}
+										{")"}
+                                    </div>
+                                </div>
+                            ) : (
+                                ""
+                            )}
+                            {props.HasPatient ? (
+                                <Link
+                                    to={{
+                                        pathname: `/doctor/sesion/${
+                                            props.SessionId
+                                        }`,
+                                        state: {
+                                            fromScheduler: true
+                                        }
+                                    }}
+                                >
+                                    Ver formato clínico
+                                </Link>
+                            ) : (
+                                ""
+                            )}
                         </div>
                     )}
                 </div>

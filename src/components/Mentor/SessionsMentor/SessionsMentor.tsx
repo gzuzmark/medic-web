@@ -103,10 +103,12 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
     private studentChecklistCollector: StudentChecklistCollector;
     private mdp = new MomentDateParser();
     private patientHistoryData: SessionEditPatientHistoryData;
+    private fromScheduler: boolean;
     constructor(props: any) {
         super(props);
         this.patientHistoryData = new SessionEditPatientHistoryData({} as ISessionPatientHistoryForm);        
         const { state } = props.location;
+        this.fromScheduler = state ? state.fromScheduler : false
         this.state = {
             board: {
                 addEnabled: false,
@@ -118,7 +120,7 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
             currentDoctor: null,
             currentPatient: null,
             folioNumber: '',
-            fromScheduler: state ? state.fromScheduler : false,
+            fromScheduler: false,
             fullCardSession: {
                 title: '',
                 type: ''
@@ -184,6 +186,7 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
     }
 
     public componentDidMount() {
+        const that = this;
         this.setState({
             loading: true
         }, async () => {
@@ -235,8 +238,8 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
                         nutritionist: this.patientHistoryData.getNutritionValues,
                     },
                     prescriptionPath: patCase.prescriptionPath,
-                    showSaveSession: !this.state.fromScheduler && (!hasToken || !!patCase.prescriptionPath),
-                    showSendRecipe: !this.state.fromScheduler && (hasToken && !patCase.prescriptionPath),
+                    showSaveSession: (!that.fromScheduler || !patCase.folioNumber) && (!hasToken || !!patCase.prescriptionPath),
+                    showSendRecipe: (!that.fromScheduler || !patCase.folioNumber) && (hasToken && !patCase.prescriptionPath),
                 };
                 this.setState({
                     loading: false,
