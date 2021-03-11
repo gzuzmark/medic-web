@@ -122,7 +122,7 @@ const Scheduler = () => {
 				credits: 0,
 				interestAreaId: '49024bf6-c767-44ea-b4a5-983d008e0613',
 				isWorkshop: false,
-				maxStudents: 43210,
+				maxStudents: 1,
 				room: 1,
 				sessions: [
 					{
