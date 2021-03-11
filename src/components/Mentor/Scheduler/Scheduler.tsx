@@ -131,7 +131,7 @@ const Scheduler = () => {
 					},
 				],
 				skillId: skills[0].id,
-				type: 'PHYSICAL',
+				type: 'VIRTUAL',
 			};
 			mentorService.createSessionBulk(bulk).then((response) => {
 				return;
