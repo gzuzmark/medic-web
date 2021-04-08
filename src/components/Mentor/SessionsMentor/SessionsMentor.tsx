@@ -69,6 +69,7 @@ interface IStateSessionsMentor {
     isEmpty: boolean;
     isNutrition: boolean;
     loading: boolean;
+    sendReceipeLoading: boolean;
     pastCases: ISessionPatientPastCase[];
     patientHistory: ISessionPatientHistoryFormValidations;
     currentPatient: Record<string, string> | null;
@@ -135,7 +136,7 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
             hasTreatments: false,
             isEmpty: false,
             isNutrition: false,
-            loading: true,
+            loading: true,            
             modal: false,
             modalAdd: this.cleanAddModal(),
             modalCheck: this.cleanCheckModal(''),
@@ -147,8 +148,9 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
                 history: this.patientHistoryData.getHistoryValues,
                 nutritionist: this.patientHistoryData.getNutritionValues
             },
-            prescriptionPath: '',
+            prescriptionPath: '',            
             searchValue: '',
+            sendReceipeLoading: false,
             showPhotosModal: false,
             showPreviewModal: false,
             showSaveSession: true,
@@ -346,6 +348,7 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
                                                 <FormEditHistoryManager
                                                     formData={{ values }}
                                                     fromScheduler={this.state.fromScheduler}
+                                                    loading={this.state.sendReceipeLoading}
                                                     onHandleSubmit={this.onSubmit}
                                                     session={session}
                                                     pastCases={this.state.pastCases}
@@ -479,14 +482,21 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
     }
     private updateSendRecipe() {
         const recipeParams = this.patientHistoryData.getRecipeData(this.state.currentPatient, this.state.currentDoctor, this.sessionMentor.issueDate, this.state.pastCases.length) as any;
+        this.setState({ sendReceipeLoading: true });
         this.sessionService.sendTreatmentsRecipe(recipeParams).then((response: any) => {
+            if(response && response.error !== 'none') {
+                console.log('ERROR:' + response.error);
+                alert('No se pudo cargar la receta. Contactar al administrador');
+            }
             this.setState({
-                hasTreatments: true,
+                hasTreatments: true,                
                 prescriptionPath: response.previewResponse.link,
+                sendReceipeLoading: false,
                 showPreviewModal: true,
+                           
             });
         }).catch(() => {
-            this.setState({ loading: false });
+            this.setState({ loading: false, sendReceipeLoading: false });
         })
     }
 

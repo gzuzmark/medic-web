@@ -22,6 +22,7 @@ export interface IPropsFormEditHistoryManager {
     values: IPatientBackgroundFormValidations | any;
   },
   fromScheduler: boolean;
+  loading: boolean;
   session: ISessionMentor;
   pastCases: ISessionPatientPastCase[];
   isNutrition: boolean;
@@ -161,11 +162,12 @@ const FormEditHistoryManager: React.FC<IPropsFormEditHistoryManager> = (props) =
       )}
       {(props.showSendRecipe && hasTreatments) && (
         <ButtonNormal
-          text={"Enviar Receta"}
+          text={props.loading? "Cargando receta..." : "Enviar Receta"}
           attrs={{
+            disabled: props.loading,
             onClick: onHandleSendRecipe,
             style: { margin: '40px 0 0 auto' },
-            type: "button",
+            type: "button",            
           }}
         />
       )}
