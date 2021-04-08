@@ -235,6 +235,19 @@ const TreatmentFields: React.FC<IPropsTreatmentFields> = ({
 		}
 	};
 
+	const handleQuantityChange = (e: any) => {
+		const val = e.target.value as string;
+		if (val.match(/^\d+$/)) {
+			const numVal = +val;
+			if (numVal > 0) {
+				ctxt.setFieldValue(e.target.name, val);
+			}
+		}
+		if (!val) {
+			ctxt.setFieldValue(e.target.name, '');
+		}
+	};
+
 	const handleTypePrinciple = (value: string) => (query: string) =>
 		new Promise((resolve) => {
 			const param = query || value;
@@ -479,13 +492,13 @@ const TreatmentFields: React.FC<IPropsTreatmentFields> = ({
 							name={`case.treatments[${index}].concentrations`}
 							value={ctxtValue.concentrations}
 							isClearable={true}
-							triggerChange={handleDependencyFields(ctxtValue, index)}
+							triggerChange={handleDependencyFields(ctxtValue, index)}							
 							maxMenuHeight={250}
 							options={dropdownValues.concentrations}
 						/>
 					</FormColumn>,
 					<FormColumn width={4} key={`FormColumn-MedicineData_Route`}>
-						<MentorDropDown
+						<MentorDropDown													
 							label='Vía de administración'
 							lowercaseLabel={true}
 							name={`case.treatments[${index}].administrationRoute`}
@@ -554,7 +567,7 @@ const TreatmentFields: React.FC<IPropsTreatmentFields> = ({
 									maxLength: DEFAULT_MAX_LENGTH,
 									name: `case.treatments[${index}].quantity`,
 									onBlur: ctxt.handleBlur,
-									onChange: ctxt.handleChange,
+									onChange: handleQuantityChange,
 									value: ctxtValue.quantity,
 								}}
 							/>
