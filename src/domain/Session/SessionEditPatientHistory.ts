@@ -360,7 +360,14 @@ class SessionEditPatientHistoryData {
     };
 
     private getAddress(address: string) {
-        const addressObject = JSON.parse(address);
+		address ='Sin direccion';
+		let addressObject = {}
+		try {
+			addressObject = JSON.parse(address) 
+		} catch (error) {
+			addressObject={}
+		}
+        
         if (Object.entries(addressObject).length === 0) {
             return address;
         }
