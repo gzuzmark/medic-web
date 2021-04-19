@@ -129,6 +129,7 @@ const PastSessions: React.FC<IPropsPastSessions> = ({ pastCases }) => {
 					const diagnostic = consult && consult.diagnostic;
 					const treatments = consult && consult.treatments;
 					const recommendation = consult && consult.recommendation;
+					const anamnesis = consult && consult.anamnesis
 					return (
 						<React.Fragment key={`pastCase_${i}`}>
 							<div className='PastSessions_title'>
@@ -156,6 +157,12 @@ const PastSessions: React.FC<IPropsPastSessions> = ({ pastCases }) => {
 								<div className='PastSessions_section'>
 									<Heading3>Diagnóstico</Heading3>
 									<Body1 weight='400'>{diagnostic}</Body1>
+								</div>
+							)}
+							{!!anamnesis && (
+								<div className='PastSessions_section'>
+									<Heading3>Anamnesis</Heading3>
+									<Body1 weight='400'>{anamnesis}</Body1>
 								</div>
 							)}
 							{!!treatments && (
