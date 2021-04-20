@@ -92,7 +92,7 @@ const PastSessions: React.FC<IPropsPastSessions> = ({ pastCases }) => {
 					key={`${medicine.component}_${i}`}
 					icon='medicine'
 					amount={medicine.quantity}
-					name={medicine.name}
+					name={`${medicine.name} ${medicine.component} ${medicine.concentrations}`}
 					period={medicine.period}
 					time={medicine.frequency}
 				/>
