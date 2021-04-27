@@ -226,7 +226,7 @@ const TreatmentFields: React.FC<IPropsTreatmentFields> = ({
 		const val = e.target.value as string;
 		if (val.match(/^\d+$/)) {
 			const numVal = +val;
-			if (numVal > 0 && numVal <= 30) {
+			if (numVal > 0 && numVal <= 120) {
 				ctxt.setFieldValue(e.target.name, val);
 			}
 		}
