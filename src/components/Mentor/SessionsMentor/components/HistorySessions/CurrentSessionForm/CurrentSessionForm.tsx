@@ -150,7 +150,8 @@ const CurrentSessionForm: React.FC<IPropsCurrentSessionForm> = ({ forceDisable, 
       <FormRow key={'row_4'} style={defaultRowStyle} columns={[
         <FormColumn width={DEFAULT_COLUMN_WIDTH} key={'diagnosticCode'}>
           <Heading2>Diagnóstico</Heading2>
-          <MentorTypeAhead
+          <MentorTypeAhead     
+            disabled={!!forceDisable}       
             label="Escribe el código de diagnóstico:"
             isClearable={true}
             lowercaseLabel={true}
@@ -204,7 +205,7 @@ const CurrentSessionForm: React.FC<IPropsCurrentSessionForm> = ({ forceDisable, 
         <FormColumn width={DEFAULT_COLUMN_WIDTH} key={'exams'}>
         <Heading2>Exámenes o procedimientos auxiliares</Heading2>
           <MentorTextArea
-            disabled={!!forceDisable}
+            disabled={forceDisable}
             label=""
             attrs={{
                 name: "case.exams",

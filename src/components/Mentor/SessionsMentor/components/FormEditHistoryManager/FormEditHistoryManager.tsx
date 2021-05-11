@@ -21,6 +21,8 @@ export interface IPropsFormEditHistoryManager {
   formData: {
     values: IPatientBackgroundFormValidations | any;
   },
+  fromScheduler: boolean;
+  loading: boolean;
   session: ISessionMentor;
   pastCases: ISessionPatientPastCase[];
   isNutrition: boolean;
@@ -135,6 +137,7 @@ const FormEditHistoryManager: React.FC<IPropsFormEditHistoryManager> = (props) =
           {
             component: props.isNutrition ? (
               <NutritionistForm
+                forceDisable={props.fromScheduler && !!props.folioNumber} 
                 title={sessionFormTitle}
                 useCase={triage.use_case}
                 questions={triage.questions}
@@ -146,7 +149,8 @@ const FormEditHistoryManager: React.FC<IPropsFormEditHistoryManager> = (props) =
                     useCase={triage.use_case}
                     questions={triage.questions}
                   />
-                  <CurrentSessionForm
+                  <CurrentSessionForm         
+                    forceDisable={props.fromScheduler && !!props.folioNumber}           
                     showSeeRecipeButton={!!props.folioNumber && !!props.getPrescriptionURL}
                     folioNumber={props.folioNumber}
                     getPrescriptionURL={props.getPrescriptionURL}
@@ -170,11 +174,12 @@ const FormEditHistoryManager: React.FC<IPropsFormEditHistoryManager> = (props) =
       )}
       {(props.showSendRecipe && hasTreatments) && (
         <ButtonNormal
-          text={"Enviar Receta"}
+          text={props.loading? "Cargando receta..." : "Enviar Receta"}
           attrs={{
+            disabled: props.loading,
             onClick: onHandleSendRecipe,
             style: { margin: '40px 0 0 auto' },
-            type: "button",
+            type: "button",            
           }}
         />
       )}

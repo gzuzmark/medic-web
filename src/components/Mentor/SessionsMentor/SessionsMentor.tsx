@@ -69,6 +69,7 @@ interface IStateSessionsMentor {
     isEmpty: boolean;
     isNutrition: boolean;
     loading: boolean;
+    sendReceipeLoading: boolean;
     pastCases: ISessionPatientPastCase[];
     patientHistory: ISessionPatientHistoryFormValidations;
     currentPatient: Record<string, string> | null;
@@ -85,6 +86,7 @@ interface IStateSessionsMentor {
     showPreviewModal: boolean;
     showSaveSession: boolean;
     showSendRecipe: boolean;
+    fromScheduler: boolean;
     showUploadModal: boolean;
     uploadURL: string;
 }
@@ -102,9 +104,12 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
     private studentChecklistCollector: StudentChecklistCollector;
     private mdp = new MomentDateParser();
     private patientHistoryData: SessionEditPatientHistoryData;
+    private fromScheduler: boolean;
     constructor(props: any) {
         super(props);
-        this.patientHistoryData = new SessionEditPatientHistoryData({} as ISessionPatientHistoryForm);
+        this.patientHistoryData = new SessionEditPatientHistoryData({} as ISessionPatientHistoryForm);        
+        const { state } = props.location;
+        this.fromScheduler = state ? state.fromScheduler : false
         this.state = {
             board: {
                 addEnabled: false,
@@ -116,6 +121,7 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
             currentDoctor: null,
             currentPatient: null,
             folioNumber: '',
+            fromScheduler: false,
             fullCardSession: {
                 title: '',
                 type: ''
@@ -130,7 +136,7 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
             hasTreatments: false,
             isEmpty: false,
             isNutrition: false,
-            loading: true,
+            loading: true,            
             modal: false,
             modalAdd: this.cleanAddModal(),
             modalCheck: this.cleanCheckModal(''),
@@ -142,13 +148,14 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
                 history: this.patientHistoryData.getHistoryValues,
                 nutritionist: this.patientHistoryData.getNutritionValues
             },
-            prescriptionPath: '',
+            prescriptionPath: '',            
             searchValue: '',
+            sendReceipeLoading: false,
             showPhotosModal: false,
             showPreviewModal: false,
             showSaveSession: true,
             showSendRecipe: true,
-            showUploadModal: false,
+            showUploadModal: false,            
             uploadURL: '',
         };
         this.sessionId = this.props.match.params.session || '';
@@ -181,6 +188,7 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
     }
 
     public componentDidMount() {
+        const that = this;
         this.setState({
             loading: true
         }, async () => {
@@ -232,8 +240,8 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
                         nutritionist: this.patientHistoryData.getNutritionValues,
                     },
                     prescriptionPath: patCase.prescriptionPath,
-                    showSaveSession: !hasToken || !!patCase.prescriptionPath,
-                    showSendRecipe: hasToken && !patCase.prescriptionPath,
+                    showSaveSession: (!that.fromScheduler || !patCase.folioNumber) && (!hasToken || !!patCase.prescriptionPath),
+                    showSendRecipe: (!that.fromScheduler || !patCase.folioNumber) && (hasToken && !patCase.prescriptionPath),
                 };
                 this.setState({
                     loading: false,
@@ -280,9 +288,9 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
             <div className="SessionsMentor u-LayoutMentorMargin">
                 {this.sessionMentor &&
                     <div className={"SessionsMentor_navigation"}>
-                        <Link to={'/doctor'}><Text3>Tus sesiones >&nbsp;</Text3></Link>
+                        <Link to={'/doctor'}><Text3>Tus sesiones&nbsp;</Text3></Link>
                         <Text3>
-                            {navBarText.charAt(0).toUpperCase()}{navBarText.slice(1)} >&nbsp;</Text3>
+                            {navBarText.charAt(0).toUpperCase()}{navBarText.slice(1)}&nbsp;</Text3>
                         <Text3>{`Sesión ${this.state.fullCardSession.type.toLowerCase()}`}</Text3>
                     </div>}
                 {this.state.loading && !this.state.isEmpty &&
@@ -325,6 +333,7 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
                                                 values: values as ISessionPatientHistoryFormValidations,
                                             }}>
                                             <RecipePreviewModal
+                                                loading={this.state.sendReceipeLoading}
                                                 show={this.state.showPreviewModal}
                                                 onClose={this.onClosePreviewModal}
                                                 recipeURL={this.state.prescriptionPath}
@@ -340,6 +349,8 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
                                             <form onSubmit={handleSubmit}>
                                                 <FormEditHistoryManager
                                                     formData={{ values }}
+                                                    fromScheduler={this.state.fromScheduler}
+                                                    loading={this.state.sendReceipeLoading}
                                                     onHandleSubmit={this.onSubmit}
                                                     session={session}
                                                     pastCases={this.state.pastCases}
@@ -432,9 +443,10 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
     }
     private onDownloadRecipe() {
         const recipeParams = this.patientHistoryData.getRecipeData(this.state.currentPatient, this.state.currentDoctor, this.sessionMentor.issueDate, this.state.pastCases.length) as any;
+        this.setState({ sendReceipeLoading: true });
         this.sessionService.createPrescription(recipeParams).then((response: any) => {
             const { folioNumber, prescriptionUrl, uploadFileUrl } = response.prescriptionResponse;
-            this.setState({ folioNumber, uploadURL: uploadFileUrl });
+            this.setState({ folioNumber, uploadURL: uploadFileUrl, sendReceipeLoading: false });
             const link = document.createElement("a");
             link.target = "_blank";
             link.href = prescriptionUrl;
@@ -442,7 +454,7 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
             link.click();
             document.body.removeChild(link);
         }).catch(() => {
-            this.setState({ loading: false });
+            this.setState({ loading: false, sendReceipeLoading: false });
         })
     }
     private onUploadRecipe() {
@@ -473,14 +485,21 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
     }
     private updateSendRecipe() {
         const recipeParams = this.patientHistoryData.getRecipeData(this.state.currentPatient, this.state.currentDoctor, this.sessionMentor.issueDate, this.state.pastCases.length) as any;
+        this.setState({ sendReceipeLoading: true });
         this.sessionService.sendTreatmentsRecipe(recipeParams).then((response: any) => {
+            if(response && response.error !== 'none') {
+                console.log('ERROR:' + response.error);
+                alert('No se pudo cargar la receta. Contactar al administrador');
+            }
             this.setState({
-                hasTreatments: true,
+                hasTreatments: true,                
                 prescriptionPath: response.previewResponse.link,
+                sendReceipeLoading: false,
                 showPreviewModal: true,
+                           
             });
         }).catch(() => {
-            this.setState({ loading: false });
+            this.setState({ loading: false, sendReceipeLoading: false });
         })
     }
 
