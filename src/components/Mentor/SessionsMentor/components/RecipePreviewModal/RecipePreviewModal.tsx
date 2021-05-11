@@ -7,6 +7,7 @@ import Icon from '../../../../../common/Icon/Icon';
 import './RecipePreviewModal.scss';
 
 interface IPropsRecipePreviewModal {
+	loading: boolean;
 	show: boolean;
 	style?: React.CSSProperties;
 	recipeURL: string;
@@ -28,6 +29,7 @@ const buttonStyle = {
 };
 
 const RecipePreviewModal: React.FC<IPropsRecipePreviewModal> = ({
+	loading,
 	show,
 	onClose,
 	recipeURL,
@@ -73,12 +75,13 @@ const RecipePreviewModal: React.FC<IPropsRecipePreviewModal> = ({
 						Editar Tratamiento
 					</button>
 					<button
+						disabled={loading}
 						onClick={onDownloadRecipe}
 						className='u-Button'
 						style={buttonStyle}
 					>
 						<Icon style={{ height: '40px', width: '50px' }} name={'download'} />{' '}
-						Confirma y descarga para firmar
+						{loading ? 'Descargando Receta ' : 'Confirma y descarga para firmar '}
 					</button>
 					<button
 						onClick={onUploadRecipe}
