@@ -61,16 +61,31 @@ const Scheduler = () => {
 				'.e-control.e-recurrenceeditor.e-lib',
 			];
 			elements.forEach((sel) => {
-				args.element.querySelector(sel).style.display = 'none';
+				const querySelector = args.element.querySelector(sel);
+				if (querySelector) {
+					querySelector.style.display = 'none';
+				}
 			});
 		} else if (args.type === 'QuickInfo') {
 			// removing unnecessary fields
 			const elements = ['.e-event-details'];
 			elements.forEach((sel) => {
-				args.element.querySelector(sel).style.display = 'none';
+				const querySelector = args.element.querySelector(sel);
+				if (querySelector) {
+					querySelector.style.display = 'none'
+				};
 			});
-		}
-	};
+		} else if (args.type === 'EditEventInfo') {
+			// removing unnecessary fields
+			const elements = ['.e-delete.e-icons.e-control'];
+			elements.forEach((sel) => {
+				const querySelector = args.element.querySelector(sel);
+				if (querySelector) {
+					querySelector.style.display = 'none'
+				};
+			});
+		};
+	}
 
 	React.useEffect(() => {
 		setLoading(true);
@@ -95,7 +110,8 @@ const Scheduler = () => {
 						EndTime: new Date(item.to),
 						IsReadonly:
 							item.doctor_id !== user.rolId ||
-							!isDateValid(new Date(item.from)),
+							!isDateValid(new Date(item.from))
+							|| true,
 					}));
 					setAppointments(schedules);
 					setLoading(false);
@@ -107,6 +123,7 @@ const Scheduler = () => {
 		const { startTime, endTime } = args;
 		const isValid = isDateValid(args.startTime);
 		const isSlot = scheduleObj.isSlotAvailable(startTime, endTime);
+		// const cancel = !isValid || !isSlot;
 		args.cancel = !isValid || !isSlot;
 	};
 
@@ -173,6 +190,7 @@ const Scheduler = () => {
 						cellDoubleClick={onCellDoubleClick}
 						actionBegin={onActionBegin}
 						actionComplete={onComplete}
+						allowDragAndDrop={false}
 					>
 						<ViewsDirective>
 							<ViewDirective option='Month' displayName='Vista mensual' />
