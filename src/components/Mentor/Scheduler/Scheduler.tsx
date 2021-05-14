@@ -1,21 +1,21 @@
-import * as React from 'react';
+// tslint:disable:ordered-imports
+import { L10n } from '@syncfusion/ej2-base';
 // tslint:disable:ordered-imports
 import {
 	Day,
 	Inject,
 	Month,
 	ScheduleComponent,
-	Week,
-	ViewsDirective,
-	ViewDirective,
+	ViewDirective, ViewsDirective, Week
 } from '@syncfusion/ej2-react-schedule';
-import { localeTranslations } from './locale';
-// tslint:disable:ordered-imports
-import { L10n } from '@syncfusion/ej2-base';
+import * as React from 'react';
+import * as ReactDOM from 'react-dom';
 import LayoutContext from '../../../common/Layout/Layout.context';
 import Loader from '../../../common/Loader/Loader';
 import { Headline1 } from '../../../common/MentorText';
 import MentorService from '../../../services/Mentor/Mentor.service';
+import MessageService from './components/MessageServices/MessageService';
+import { localeTranslations } from './locale';
 import './Scheduler.scss';
 
 const headerStyle = {
@@ -51,9 +51,10 @@ const Scheduler = () => {
 	let scheduleObj: any = React.useRef();
 	const mentorService = new MentorService();
 	const [loading, setLoading] = React.useState(false);
-	// const [isServiceExecute, setIsServiceExecute] = React.useState(false);
 	const [appointments, setAppointments] = React.useState<IAppointments[]>([]);
 	const [skills, setSkills] = React.useState<any[]>([]);
+	const [executeService, setExecuteService] = React.useState(false);
+
 	const onPopUpOpen = (args: any) => {
 		if (args.type === 'Editor') {
 			// removing unnecessary fields
@@ -77,9 +78,22 @@ const Scheduler = () => {
 					querySelector.style.display = 'none'
 				};
 			});
+			const selector = args.element.querySelector('.e-schedule-form.e-lib.e-formvalidator');
+			if (selector) {
+				const father = selector.parentElement;
+				const html = (
+					<div className="calendar-create-container">
+						<h4 className="calendar-create-title">Registrar en calendario</h4>
+						<p>Recuerde que esta opción es irreversible</p>
+						<p>Después de crear no podrá eliminar ni editar</p>
+						<p>Verifique que la fecha y hora sean las correctas</p>
+					</div>
+				);
+				ReactDOM.render(html, father);
+			}
 		} else if (args.type === 'EditEventInfo') {
-			// removing unnecessary fields
-			const elements = ['.e-delete.e-icons.e-control'];
+			// removing close button and edit button
+			const elements = ['.e-delete.e-icons.e-control', '.e-edit.e-icons.e-control'];
 			elements.forEach((sel) => {
 				const querySelector = args.element.querySelector(sel);
 				if (querySelector) {
@@ -89,29 +103,31 @@ const Scheduler = () => {
 		};
 	}
 
-	const fillSessionsInCalendar = () => {
-		if (skills && skills.length > 0) {
-			const skillId = skills[0].id;
-			const date = new Date();
-			const firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
-			const lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0, 23);
-			mentorService
-				.getSchedules(skillId, firstDay.toISOString(), lastDay.toISOString())
-				.then((response) => {
-					const schedules = response.items.map((item: any) => ({
-						Id: item.id,
-						DoctorId: item.doctor_id,
-						Subject: `${item.doctor_name} ${item.doctor_last_name}`,
-						StartTime: new Date(item.from),
-						EndTime: new Date(item.to),
-						IsReadonly:
-							item.doctor_id !== user.rolId ||
-							!isDateValid(new Date(item.from))
-					}));
-					setAppointments(schedules);
-					setLoading(false);
-				});
-		}
+	const fillSessionsInCalendar = (): Promise<void> => {
+		return new Promise((resolve: any) => {
+			if (skills && skills.length > 0) {
+				const skillId = skills[0].id;
+				const date = new Date();
+				const firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
+				const lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0, 23);
+				mentorService
+					.getSchedules(skillId, firstDay.toISOString(), lastDay.toISOString())
+					.then((response) => {
+						const schedules = response.items.map((item: any) => ({
+							Id: item.id,
+							DoctorId: item.doctor_id,
+							Subject: `${item.doctor_name} ${item.doctor_last_name}`,
+							StartTime: new Date(item.from),
+							EndTime: new Date(item.to),
+							IsReadonly:
+								item.doctor_id !== user.rolId ||
+								!isDateValid(new Date(item.from))
+						}));
+						setAppointments(schedules);
+						resolve();
+					});
+			}
+		});
 	}
 
 	React.useEffect(() => {
@@ -122,7 +138,8 @@ const Scheduler = () => {
 	}, []);
 
 	React.useEffect(() => {
-		fillSessionsInCalendar();
+		fillSessionsInCalendar()
+			.then(() => setLoading(false));
 	}, [skills]);
 
 	const onCellClick = (args: any) => {
@@ -149,6 +166,7 @@ const Scheduler = () => {
 
 	const onComplete = (args: any) => {
 		if (args.requestType === 'eventCreated') {
+			setExecuteService(true)
 			const { data } = args;
 			const created = (data && data.length > 0 && data[0]) || {};
 			const startTime: Date = created && (created.StartTime as Date);
@@ -169,6 +187,8 @@ const Scheduler = () => {
 				type: 'PHYSICAL',
 			};
 			mentorService.createSessionBulk(bulk).then((response) => {
+				fillSessionsInCalendar()
+					.then(() => setExecuteService(false))
 				return;
 			});
 		} else if (args.requestType === 'eventRemoved') {
@@ -229,6 +249,7 @@ const Scheduler = () => {
 					</ScheduleComponent>
 				)}
 			</div>
+			<MessageService show={executeService} />
 		</div>
 	);
 };
