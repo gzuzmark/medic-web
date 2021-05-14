@@ -80,7 +80,7 @@ const Scheduler = () => {
 					querySelector.style.display = 'none'
 				};
 			});
-			const selector = args.element.querySelector('.e-schedule-form.e-lib.e-formvalidator');
+			const selector = args.element.querySelector('.content-area');
 			if (selector) {
 				const father = selector.parentElement;
 				const html = (
