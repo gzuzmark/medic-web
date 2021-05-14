@@ -40,6 +40,7 @@ L10n.load({
 
 interface IAppointments {
 	Id: number;
+	Doctor: string;
 	Subject: string;
 	StartTime: Date;
 	EndTime: Date;
@@ -52,6 +53,7 @@ const Scheduler = () => {
 	let scheduleObj: any = React.useRef();
 	const mentorService = new MentorService();
 	const [loading, setLoading] = React.useState(false);
+	// const [isServiceExecute, setIsServiceExecute] = React.useState(false);
 	const [appointments, setAppointments] = React.useState<IAppointments[]>([]);
 	const [skills, setSkills] = React.useState<any[]>([]);
 	const onPopUpOpen = (args: any) => {
@@ -89,14 +91,7 @@ const Scheduler = () => {
 		};
 	}
 
-	React.useEffect(() => {
-		setLoading(true);
-		mentorService.getSkills().then((response: any) => {
-			setSkills(response.items);
-		});
-	}, []);
-
-	React.useEffect(() => {
+	const fillSessionsInCalendar = () => {
 		if (skills && skills.length > 0) {
 			const skillId = skills[0].id;
 			const date = new Date();
@@ -140,15 +135,38 @@ const Scheduler = () => {
 					setLoading(false);
 				});
 		}
+	}
+
+	React.useEffect(() => {
+		setLoading(true);
+		mentorService.getSkills().then((response: any) => {
+			setSkills(response.items);
+		});
+	}, []);
+
+	React.useEffect(() => {
+		fillSessionsInCalendar();
 	}, [skills]);
 
 	const onCellClick = (args: any) => {
 		const { startTime, endTime } = args;
-		const isValid = isDateValid(args.startTime);
+		const isValid = isDateValid(startTime);
 		const isSlot = scheduleObj.isSlotAvailable(startTime, endTime);
-		// const cancel = !isValid || !isSlot;
-		args.cancel = !isValid || !isSlot;
+		const isValidSlotDoctor = isValidSlotWhenOccupied(args);
+		const cancel = !isValid || (!isSlot && false) || !isValidSlotDoctor; // (!isSlot && false) is a hack
+		args.cancel = cancel;
 	};
+
+	const isValidSlotWhenOccupied = (args: any) => {
+		const { startTime, endTime } = args;
+		const totalSlots = appointments.filter((slot) => {
+			return String(slot.Doctor) === String(user.rolId) &&
+				((slot.StartTime >= startTime && slot.StartTime < endTime) ||
+					(slot.StartTime <= startTime && slot.EndTime >= endTime) ||
+					(slot.EndTime > startTime && slot.EndTime <= endTime))
+		});
+		return totalSlots.length === 0;
+	}
 
 	const onCellDoubleClick = (args: any) => (args.cancel = true);
 
