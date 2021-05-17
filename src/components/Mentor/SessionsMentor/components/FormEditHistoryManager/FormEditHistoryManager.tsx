@@ -14,13 +14,15 @@ import PastSessions from '../HistorySessions/PastSessions/PastSessions';
 import NutritionistForm from "../NutritionistForm/NutritionistForm";
 import PatientBlockContainer from "../PatientBlockContainer/PatientBlockContainer";
 import PatientHistoryForm from '../PatientHistoryForm/PatientBackgroundForm';
-import PatientBackgroundFormContext, { IPatientBackgroundFormValidations } from "../PatientHistoryForm/PatientBackgroundForm.context";
+import { IPatientBackgroundFormValidations } from "../PatientHistoryForm/PatientBackgroundForm.context";
 import './FormEditHistoryManager.scss';
 
 export interface IPropsFormEditHistoryManager {
   formData: {
     values: IPatientBackgroundFormValidations | any;
   },
+  fromScheduler: boolean;
+  loading: boolean;
   session: ISessionMentor;
   pastCases: ISessionPatientPastCase[];
   isNutrition: boolean;
@@ -55,14 +57,8 @@ const buildPatientInfoBlocks = (patient: any) => {
 };
 
 const FormEditHistoryManager: React.FC<IPropsFormEditHistoryManager> = (props) => {
-  const { validateForm, isValid } = React.useContext(PatientBackgroundFormContext);
   const [modal, setModal] = React.useState(false);
-  const openModal = () => {
-    validateForm(props.formData.values);
-    if (isValid) {
-      setModal(true)
-    }
-  };
+  const openModal = () => setModal(true);
   const patient = props.session && props.session.patient;
   const gender = getGender(patient && patient.gender);
   const triage = props.session && props.session.triage || {} as ISessionTriage;
@@ -82,18 +78,12 @@ const FormEditHistoryManager: React.FC<IPropsFormEditHistoryManager> = (props) =
 
   const onHandleSubmit = () => {
     closeModal();
-    validateForm(props.formData.values);
-    if (isValid) {
-      props.onHandleSubmit(props.formData.values)
-    }
+    props.onHandleSubmit(props.formData.values)
   };
 
   const onHandleSendRecipe = () => {
     closeModal();
-    validateForm(props.formData.values);
-    if (isValid) {
-      props.onSendRecipe(props.formData.values)
-    }
+    props.onSendRecipe(props.formData.values)
   };
 
   const closeModal = () => setModal(false);
@@ -135,25 +125,27 @@ const FormEditHistoryManager: React.FC<IPropsFormEditHistoryManager> = (props) =
           {
             component: props.isNutrition ? (
               <NutritionistForm
+                forceDisable={props.fromScheduler && !!props.folioNumber}
                 title={sessionFormTitle}
                 useCase={triage.use_case}
                 questions={triage.questions}
               />
             ) : (
-                <React.Fragment>
-                  <CurrentSession
-                    title={sessionFormTitle}
-                    useCase={triage.use_case}
-                    questions={triage.questions}
-                  />
-                  <CurrentSessionForm
-                    showSeeRecipeButton={!!props.folioNumber && !!props.getPrescriptionURL}
-                    folioNumber={props.folioNumber}
-                    getPrescriptionURL={props.getPrescriptionURL}
-                    photos={props.photos}
-                  />
-                </React.Fragment>
-              ),
+              <React.Fragment>
+                <CurrentSession
+                  title={sessionFormTitle}
+                  useCase={triage.use_case}
+                  questions={triage.questions}
+                />
+                <CurrentSessionForm
+                  forceDisable={props.fromScheduler && !!props.folioNumber}
+                  showSeeRecipeButton={!!props.folioNumber && !!props.getPrescriptionURL}
+                  folioNumber={props.folioNumber}
+                  getPrescriptionURL={props.getPrescriptionURL}
+                  photos={props.photos}
+                />
+              </React.Fragment>
+            ),
             title: 'VER CONSULTA ACTUAL',
           },
           {
@@ -170,8 +162,9 @@ const FormEditHistoryManager: React.FC<IPropsFormEditHistoryManager> = (props) =
       )}
       {(props.showSendRecipe && hasTreatments) && (
         <ButtonNormal
-          text={"Enviar Receta"}
+          text={props.loading ? "Cargando receta..." : "Enviar Receta"}
           attrs={{
+            disabled: props.loading,
             onClick: onHandleSendRecipe,
             style: { margin: '40px 0 0 auto' },
             type: "button",

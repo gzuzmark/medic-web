@@ -69,6 +69,7 @@ interface IStateSessionsMentor {
     isEmpty: boolean;
     isNutrition: boolean;
     loading: boolean;
+    sendReceipeLoading: boolean;
     pastCases: ISessionPatientPastCase[];
     patientHistory: ISessionPatientHistoryFormValidations;
     currentPatient: Record<string, string> | null;
@@ -85,6 +86,7 @@ interface IStateSessionsMentor {
     showPreviewModal: boolean;
     showSaveSession: boolean;
     showSendRecipe: boolean;
+    fromScheduler: boolean;
     showUploadModal: boolean;
     uploadURL: string;
 }
@@ -102,9 +104,12 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
     private studentChecklistCollector: StudentChecklistCollector;
     private mdp = new MomentDateParser();
     private patientHistoryData: SessionEditPatientHistoryData;
+    private fromScheduler: boolean;
     constructor(props: any) {
         super(props);
         this.patientHistoryData = new SessionEditPatientHistoryData({} as ISessionPatientHistoryForm);
+        const { state } = props.location;
+        this.fromScheduler = state ? state.fromScheduler : false
         this.state = {
             board: {
                 addEnabled: false,
@@ -116,6 +121,7 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
             currentDoctor: null,
             currentPatient: null,
             folioNumber: '',
+            fromScheduler: false,
             fullCardSession: {
                 title: '',
                 type: ''
@@ -144,6 +150,7 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
             },
             prescriptionPath: '',
             searchValue: '',
+            sendReceipeLoading: false,
             showPhotosModal: false,
             showPreviewModal: false,
             showSaveSession: true,
@@ -181,6 +188,7 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
     }
 
     public componentDidMount() {
+        const that = this;
         this.setState({
             loading: true
         }, async () => {
@@ -232,8 +240,8 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
                         nutritionist: this.patientHistoryData.getNutritionValues,
                     },
                     prescriptionPath: patCase.prescriptionPath,
-                    showSaveSession: !hasToken || !!patCase.prescriptionPath,
-                    showSendRecipe: hasToken && !patCase.prescriptionPath,
+                    showSaveSession: (!that.fromScheduler || !patCase.folioNumber) && (!hasToken || !!patCase.prescriptionPath),
+                    showSendRecipe: (!that.fromScheduler || !patCase.folioNumber) && (hasToken && !patCase.prescriptionPath),
                 };
                 this.setState({
                     loading: false,
@@ -340,6 +348,8 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
                                             <form onSubmit={handleSubmit}>
                                                 <FormEditHistoryManager
                                                     formData={{ values }}
+                                                    fromScheduler={this.state.fromScheduler}
+                                                    loading={this.state.sendReceipeLoading}
                                                     onHandleSubmit={this.onSubmit}
                                                     session={session}
                                                     pastCases={this.state.pastCases}
@@ -473,14 +483,21 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
     }
     private updateSendRecipe() {
         const recipeParams = this.patientHistoryData.getRecipeData(this.state.currentPatient, this.state.currentDoctor, this.sessionMentor.issueDate, this.state.pastCases.length) as any;
+        this.setState({ sendReceipeLoading: true });
         this.sessionService.sendTreatmentsRecipe(recipeParams).then((response: any) => {
+            if (response && response.error !== 'none') {
+                console.log('ERROR:' + response.error);
+                alert('No se pudo cargar la receta. Contactar al administrador');
+            }
             this.setState({
                 hasTreatments: true,
                 prescriptionPath: response.previewResponse.link,
+                sendReceipeLoading: false,
                 showPreviewModal: true,
+
             });
         }).catch(() => {
-            this.setState({ loading: false });
+            this.setState({ loading: false, sendReceipeLoading: false });
         })
     }
 

@@ -17,6 +17,7 @@ import MentorService from '../../../services/Mentor/Mentor.service';
 import MessageService from './components/MessageServices/MessageService';
 import { localeTranslations } from './locale';
 import './Scheduler.scss';
+import { Link } from 'react-router-dom';
 
 const headerStyle = {
 	display: 'flex',
@@ -38,7 +39,7 @@ L10n.load({
 
 interface IAppointments {
 	Id: number;
-	DoctorId: string;
+	Doctor: string;
 	Subject: string;
 	StartTime: Date;
 	EndTime: Date;
@@ -78,7 +79,7 @@ const Scheduler = () => {
 					querySelector.style.display = 'none'
 				};
 			});
-			const selector = args.element.querySelector('.e-schedule-form.e-lib.e-formvalidator');
+			const selector = args.element.querySelector('.content-area');
 			if (selector) {
 				const father = selector.parentElement;
 				const html = (
@@ -113,16 +114,37 @@ const Scheduler = () => {
 				mentorService
 					.getSchedules(skillId, firstDay.toISOString(), lastDay.toISOString())
 					.then((response) => {
-						const schedules = response.items.map((item: any) => ({
-							Id: item.id,
-							DoctorId: item.doctor_id,
-							Subject: `${item.doctor_name} ${item.doctor_last_name}`,
-							StartTime: new Date(item.from),
-							EndTime: new Date(item.to),
-							IsReadonly:
-								item.doctor_id !== user.rolId ||
-								!isDateValid(new Date(item.from))
-						}));
+						const schedules = response.items.map(
+							(item: any) => ({
+								Id: item.id,
+								Subject: `${item.doctor_name
+									} ${item.doctor_last_name
+									}`,
+								Subsubject:
+									item.patient_name &&
+										user.id === item.user_id &&
+										item.patient_name
+										? `Paciente: ${item.patient_name
+										} ${item.patient_last_name
+										} `
+										: 'Sin paciente asignado',
+								StartTime: new Date(item.from),
+								EndTime: new Date(item.to),
+								IsReadonly:
+									item.doctor_id !==
+									user.rolId ||
+									!isDateValid(
+										new Date(item.from)
+									),
+								HasPatient:
+									item.patient_name &&
+									user.id === item.user_id,
+								Doctor: item.doctor_id,
+								User: user.id,
+								SessionId: item.id,
+								Description: "fdsf"
+							})
+						);
 						setAppointments(schedules);
 						resolve();
 					});
@@ -154,7 +176,7 @@ const Scheduler = () => {
 	const isValidSlotWhenOccupied = (args: any) => {
 		const { startTime, endTime } = args;
 		const totalSlots = appointments.filter((slot) => {
-			return String(slot.DoctorId) === String(user.rolId) &&
+			return String(slot.Doctor) === String(user.rolId) &&
 				((slot.StartTime >= startTime && slot.StartTime < endTime) ||
 					(slot.StartTime <= startTime && slot.EndTime >= endTime) ||
 					(slot.EndTime > startTime && slot.EndTime <= endTime))
@@ -173,9 +195,9 @@ const Scheduler = () => {
 			const endTime: Date = created && (created.EndTime as Date);
 			const bulk = {
 				credits: 0,
-				interestAreaId: 'eedc0fef-ad70-4a93-9f55-55d55f2c818e',
+				interestAreaId: '49024bf6-c767-44ea-b4a5-983d008e0613',
 				isWorkshop: false,
-				maxStudents: 43210,
+				maxStudents: 1,
 				room: 1,
 				sessions: [
 					{
@@ -184,13 +206,13 @@ const Scheduler = () => {
 					},
 				],
 				skillId: skills[0].id,
-				type: 'PHYSICAL',
+				type: 'VIRTUAL',
 			};
-			mentorService.createSessionBulk(bulk).then((response) => {
-				fillSessionsInCalendar()
-					.then(() => setExecuteService(false))
-				return;
-			});
+			mentorService.createSessionBulk(bulk)
+				.finally(() => {
+					fillSessionsInCalendar()
+						.then(() => setExecuteService(false))
+				});
 		} else if (args.requestType === 'eventRemoved') {
 			const { data } = args;
 			const toRemove = (data && data.length > 0 && data[0]) || {};
@@ -209,6 +231,127 @@ const Scheduler = () => {
 		}
 	};
 
+	const getTimeString = (value: any) => {
+		const appointmentDate = new Date(value);
+		return appointmentDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+	}
+
+	const eventTemplate = (args: any) => {
+		return (
+			<>
+				<div
+					className="template-wrap"
+					style={{ background: !args.HasPatient ? args.SecondaryColor : '#adb7c4' }}
+				>
+					<div
+						className="subject"
+						style={{ background: !args.HasPatient ? args.PrimaryColor : '#adb7c4' }}
+					>
+						{args.Subject}
+					</div>
+					<div
+						className="time"
+						style={{ background: args.PrimaryColor }}
+					>
+						{getTimeString(args.StartTime)} -{" "}
+						{getTimeString(args.EndTime)}
+					</div>
+				</div>
+			</>
+		);
+	};
+
+	const contentTemplate = (props: any) => {
+
+		return (
+			<div>
+				{props.elementType === "cell" ? (
+					<div className="e-cell-content e-template">
+						<form className="e-schedule-form">
+							<div className="content-area">
+								<input
+									className="e-subject e-field e-input"
+									type="text"
+									name="Subject"
+									placeholder="Agregar Título"
+									aria-placeholder="Agregar Título"
+								/>
+							</div>
+
+							<div className="content-area">
+								<div className="e-date-time">
+									<div className="e-date-time-icon e-icons">
+										{" "}
+									</div>
+									<div className="e-date-time-details e-text-ellipsis">
+										{props.StartTime.toDateString()}
+										{"("}
+										{getTimeString(
+											props.StartTime
+										)}{" "}
+                                            -{" "}
+										{getTimeString(
+											props.EndTime
+										)}
+										{")"}
+									</div>
+								</div>
+							</div>
+						</form>
+					</div>
+				) : (
+					<div className="event-content">
+						{props.Subject !== undefined ? (
+							<div className="meeting-type-wrap">
+								{props.Subsubject}
+							</div>
+						) : (
+							""
+						)}
+						{props.StartTime !== undefined &&
+							props.EndTime !== undefined ? (
+							<div className="meeting-subject-wrap">
+								<div className="e-date-time-icon e-icons">
+									{" "}
+								</div>
+								<div className="e-date-time-details e-text-ellipsis">
+									{props.StartTime.toDateString()}
+									{"("}
+									{getTimeString(
+										props.StartTime
+									)}{" "}
+                                        -{" "}
+									{getTimeString(
+										props.EndTime
+									)}
+									{")"}
+								</div>
+							</div>
+						) : (
+							""
+						)}
+						{props.HasPatient ? (
+							<Link
+								to={{
+									pathname: `/doctor/sesion/${props.SessionId
+										}`,
+									state: {
+										fromScheduler: true
+									}
+								}}
+							>
+								Ver formato clínico
+							</Link>
+						) : (
+							""
+						)}
+					</div>
+				)}
+			</div>
+		);
+
+	}
+
 	return (
 		<div className='u-LayoutMargin' style={{ padding: '0 35px' }}>
 			<div style={headerStyle}>
@@ -220,8 +363,10 @@ const Scheduler = () => {
 				{loading && <Loader />}
 				{!loading && (
 					<ScheduleComponent
+						cssClass='event-template quick-info-template'
 						ref={(schedule) => (scheduleObj = schedule)}
-						eventSettings={{ dataSource: appointments }}
+						eventSettings={{ dataSource: appointments, template: eventTemplate }}
+						quickInfoTemplates={{ content: contentTemplate }}
 						popupOpen={onPopUpOpen}
 						timeScale={{ enable: true, interval: 60, slotCount: 3 }}
 						cellClick={onCellClick}
