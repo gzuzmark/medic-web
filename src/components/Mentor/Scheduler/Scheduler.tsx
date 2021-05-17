@@ -147,7 +147,7 @@ const Scheduler = () => {
 							})
 						);
 						setAppointments(schedules);
-						setLoading(false);
+						resolve();
 					});
 			}
 		});
@@ -209,11 +209,11 @@ const Scheduler = () => {
 				skillId: skills[0].id,
 				type: 'VIRTUAL',
 			};
-			mentorService.createSessionBulk(bulk).then((response) => {
-				fillSessionsInCalendar()
-					.then(() => setExecuteService(false))
-				return;
-			});
+			mentorService.createSessionBulk(bulk)
+				.finally(() => {
+					fillSessionsInCalendar()
+						.then(() => setExecuteService(false))
+				});
 		} else if (args.requestType === 'eventRemoved') {
 			const { data } = args;
 			const toRemove = (data && data.length > 0 && data[0]) || {};
