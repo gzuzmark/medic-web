@@ -14,7 +14,7 @@ import PastSessions from '../HistorySessions/PastSessions/PastSessions';
 import NutritionistForm from "../NutritionistForm/NutritionistForm";
 import PatientBlockContainer from "../PatientBlockContainer/PatientBlockContainer";
 import PatientHistoryForm from '../PatientHistoryForm/PatientBackgroundForm';
-import PatientBackgroundFormContext, { IPatientBackgroundFormValidations } from "../PatientHistoryForm/PatientBackgroundForm.context";
+import { IPatientBackgroundFormValidations } from "../PatientHistoryForm/PatientBackgroundForm.context";
 import './FormEditHistoryManager.scss';
 
 export interface IPropsFormEditHistoryManager {
@@ -137,27 +137,27 @@ const FormEditHistoryManager: React.FC<IPropsFormEditHistoryManager> = (props) =
           {
             component: props.isNutrition ? (
               <NutritionistForm
-                forceDisable={props.fromScheduler && !!props.folioNumber} 
+                forceDisable={props.fromScheduler && !!props.folioNumber}
                 title={sessionFormTitle}
                 useCase={triage.use_case}
                 questions={triage.questions}
               />
             ) : (
-                <React.Fragment>
-                  <CurrentSession
-                    title={sessionFormTitle}
-                    useCase={triage.use_case}
-                    questions={triage.questions}
-                  />
-                  <CurrentSessionForm         
-                    forceDisable={props.fromScheduler && !!props.folioNumber}           
-                    showSeeRecipeButton={!!props.folioNumber && !!props.getPrescriptionURL}
-                    folioNumber={props.folioNumber}
-                    getPrescriptionURL={props.getPrescriptionURL}
-                    photos={props.photos}
-                  />
-                </React.Fragment>
-              ),
+              <React.Fragment>
+                <CurrentSession
+                  title={sessionFormTitle}
+                  useCase={triage.use_case}
+                  questions={triage.questions}
+                />
+                <CurrentSessionForm
+                  forceDisable={props.fromScheduler && !!props.folioNumber}
+                  showSeeRecipeButton={!!props.folioNumber && !!props.getPrescriptionURL}
+                  folioNumber={props.folioNumber}
+                  getPrescriptionURL={props.getPrescriptionURL}
+                  photos={props.photos}
+                />
+              </React.Fragment>
+            ),
             title: 'VER CONSULTA ACTUAL',
           },
           {
@@ -174,12 +174,12 @@ const FormEditHistoryManager: React.FC<IPropsFormEditHistoryManager> = (props) =
       )}
       {(props.showSendRecipe && hasTreatments) && (
         <ButtonNormal
-          text={props.loading? "Cargando receta..." : "Enviar Receta"}
+          text={props.loading ? "Cargando receta..." : "Enviar Receta"}
           attrs={{
             disabled: props.loading,
             onClick: onHandleSendRecipe,
             style: { margin: '40px 0 0 auto' },
-            type: "button",            
+            type: "button",
           }}
         />
       )}

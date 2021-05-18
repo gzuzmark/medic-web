@@ -1,79 +1,79 @@
 import * as moment from "moment";
 import {
-	ISessionNutritionistFormValidations,
-	nutritionistDefaultValues,
+    ISessionNutritionistFormValidations,
+    nutritionistDefaultValues,
 } from '../../components/Mentor/SessionsMentor/components/NutritionistForm/NutritionistForm.context';
 import {
-	IPatientBackgroundFormValidations,
-	IPatientCaseFormValidations,
-	IPatientTreatmentFormValidations,
+    IPatientBackgroundFormValidations,
+    IPatientCaseFormValidations,
+    IPatientTreatmentFormValidations,
 } from '../../components/Mentor/SessionsMentor/components/PatientHistoryForm/PatientBackgroundForm.context';
 import {
-	ISessionDoctor,
-	ISessionPatient,
-	ISessionTriage,
+    ISessionDoctor,
+    ISessionPatient,
+    ISessionTriage,
 } from './SessionMentorBean';
 
 export const SAPCODE_SEPARATOR = '_';
 const SESSION_IPRESS = '1112';
 
-enum DocumentTypeEnum {
-	DNI ='1',
-	CE='2'
-}
+// enum DocumentTypeEnum {
+//     DNI = '1',
+//     CE = '2'
+// }
 
 export interface ISessionHistoryForm {
-	allergies: string;
-	fur?: string;
-	meds: string;
-	last_pregnancy?: string;
-	extra_info: string;
-	ob_issues?: string;
+    allergies: string;
+    fur?: string;
+    meds: string;
+    last_pregnancy?: string;
+    extra_info: string;
+    ob_issues?: string;
 }
 
 export interface ISessionPatientTreatmentForm {
-	component: string;
-	extra_info: string;
-	frequency: string;
-	name: string;
-	period: string;
-	quantity: string;
-  concentrations: string,
-  administrationRoute: string,
-  pharmaceuticalForm: string,
-  salesUnit: string,
-  activePrinciples: string,
-  skuSap?: string,
+    component: string;
+    extra_info: string;
+    frequency: string;
+    name: string;
+    period: string;
+    quantity: string;
+    concentrations: string,
+    administrationRoute: string,
+    pharmaceuticalForm: string,
+    salesUnit: string,
+    activePrinciples: string,
+    skuSap?: string,
 }
 
 export interface ISessionPatientCaseForm {
-  id?: string,
-  anamnesis: string,
-  diagnostic: string,
-	external_exams: string;
-	exams: string;
-  recommendation: string,
-  from: string;
-  treatments: ISessionPatientTreatmentForm[],
-  has_treatments?: boolean,
-  folioNumber?: string,
-  prescriptionPath?: string,
-  triage?: ISessionTriage,
+    id?: string,
+    anamnesis: string,
+    diagnostic: string,
+    external_exams: string;
+    exams: string;
+    recommendation: string,
+    from: string;
+    treatments: ISessionPatientTreatmentForm[],
+    has_treatments?: boolean,
+    folioNumber?: string,
+    prescriptionPath?: string,
+    triage?: ISessionTriage,
 }
 
 export interface ISessionPatientPastCase {
-	id: string;
-	from: string;
-	to: string;
-	doctor: ISessionDoctor;
-	patient: ISessionPatient;
-	consult: ISessionPatientCaseForm;
+    id: string;
+    from: string;
+    to: string;
+    doctor: ISessionDoctor;
+    patient: ISessionPatient;
+    consult: ISessionPatientCaseForm;
 }
 
 export interface ISessionPatientHistoryForm {
-	history: ISessionHistoryForm;
-	case: ISessionPatientCaseForm;
-	nutritionist: ISessionNutritionistFormValidations;
+    history: ISessionHistoryForm;
+    case: ISessionPatientCaseForm;
+    nutritionist: ISessionNutritionistFormValidations;
 }
 
 class SessionEditPatientHistoryData {
@@ -344,9 +344,8 @@ class SessionEditPatientHistoryData {
                     patientFirstName: patient.name,
                     patientLastName: patient.last_name,
                     patientPhone: patient.phone,
-                    patientClinicHistory: `${
-                        patient.document_number
-                    }${pastConsultsLength}`,
+                    patientClinicHistory: `${patient.document_number
+                        }${pastConsultsLength}`,
                     patientDateOfBirth: patient.birthdate,
                     patientEmail: patient.email,
                     motherLastName: patient.second_last_name,
@@ -357,25 +356,25 @@ class SessionEditPatientHistoryData {
         }
         return null;
     }
- 
+
     private isValidAddressObject = (address: any): boolean => {
         return Boolean(
             address.street &&
-                address.district &&
-                address.city &&
-                address.country
+            address.district &&
+            address.city &&
+            address.country
         );
     };
 
     private getAddress(address: string) {
-		address ='Sin direccion';
-		let addressObject = {}
-		try {
-			addressObject = JSON.parse(address) 
-		} catch (error) {
-			addressObject={}
-		}
-        
+        address = 'Sin direccion';
+        let addressObject = {}
+        try {
+            addressObject = JSON.parse(address)
+        } catch (error) {
+            addressObject = {}
+        }
+
         if (Object.entries(addressObject).length === 0) {
             return address;
         }

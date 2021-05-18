@@ -492,13 +492,13 @@ const TreatmentFields: React.FC<IPropsTreatmentFields> = ({
 							name={`case.treatments[${index}].concentrations`}
 							value={ctxtValue.concentrations}
 							isClearable={true}
-							triggerChange={handleDependencyFields(ctxtValue, index)}							
+							triggerChange={handleDependencyFields(ctxtValue, index)}
 							maxMenuHeight={250}
 							options={dropdownValues.concentrations}
 						/>
 					</FormColumn>,
 					<FormColumn width={4} key={`FormColumn-MedicineData_Route`}>
-						<MentorDropDown													
+						<MentorDropDown
 							label='Vía de administración'
 							lowercaseLabel={true}
 							name={`case.treatments[${index}].administrationRoute`}
