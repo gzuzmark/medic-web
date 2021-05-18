@@ -14,7 +14,7 @@ import PastSessions from '../HistorySessions/PastSessions/PastSessions';
 import NutritionistForm from "../NutritionistForm/NutritionistForm";
 import PatientBlockContainer from "../PatientBlockContainer/PatientBlockContainer";
 import PatientHistoryForm from '../PatientHistoryForm/PatientBackgroundForm';
-import { IPatientBackgroundFormValidations } from "../PatientHistoryForm/PatientBackgroundForm.context";
+import PatientBackgroundFormContext, { IPatientBackgroundFormValidations } from "../PatientHistoryForm/PatientBackgroundForm.context";
 import './FormEditHistoryManager.scss';
 
 export interface IPropsFormEditHistoryManager {
