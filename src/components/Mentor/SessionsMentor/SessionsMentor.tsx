@@ -288,9 +288,9 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
             <div className="SessionsMentor u-LayoutMentorMargin">
                 {this.sessionMentor &&
                     <div className={"SessionsMentor_navigation"}>
-                        <Link to={'/doctor'}><Text3>Tus sesiones >&nbsp;</Text3></Link>
+                        <Link to={'/doctor'}><Text3>Tus sesiones&nbsp;</Text3></Link>
                         <Text3>
-                            {navBarText.charAt(0).toUpperCase()}{navBarText.slice(1)} >&nbsp;</Text3>
+                            {navBarText.charAt(0).toUpperCase()}{navBarText.slice(1)}&nbsp;</Text3>
                         <Text3>{`Sesión ${this.state.fullCardSession.type.toLowerCase()}`}</Text3>
                     </div>}
                 {this.state.loading && !this.state.isEmpty &&
@@ -333,6 +333,7 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
                                                 values: values as ISessionPatientHistoryFormValidations,
                                             }}>
                                             <RecipePreviewModal
+                                                loading={this.state.sendReceipeLoading}
                                                 show={this.state.showPreviewModal}
                                                 onClose={this.onClosePreviewModal}
                                                 recipeURL={this.state.prescriptionPath}
@@ -442,9 +443,10 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
     }
     private onDownloadRecipe() {
         const recipeParams = this.patientHistoryData.getRecipeData(this.state.currentPatient, this.state.currentDoctor, this.sessionMentor.issueDate, this.state.pastCases.length) as any;
+        this.setState({ sendReceipeLoading: true });
         this.sessionService.createPrescription(recipeParams).then((response: any) => {
             const { folioNumber, prescriptionUrl, uploadFileUrl } = response.prescriptionResponse;
-            this.setState({ folioNumber, uploadURL: uploadFileUrl });
+            this.setState({ folioNumber, uploadURL: uploadFileUrl, sendReceipeLoading: false });
             const link = document.createElement("a");
             link.target = "_blank";
             link.href = prescriptionUrl;
@@ -452,7 +454,7 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
             link.click();
             document.body.removeChild(link);
         }).catch(() => {
-            this.setState({ loading: false });
+            this.setState({ loading: false, sendReceipeLoading: false });
         })
     }
     private onUploadRecipe() {
