@@ -107,7 +107,7 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
     private fromScheduler: boolean;
     constructor(props: any) {
         super(props);
-        this.patientHistoryData = new SessionEditPatientHistoryData({} as ISessionPatientHistoryForm);        
+        this.patientHistoryData = new SessionEditPatientHistoryData({} as ISessionPatientHistoryForm);
         const { state } = props.location;
         this.fromScheduler = state ? state.fromScheduler : false
         this.state = {
@@ -136,7 +136,7 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
             hasTreatments: false,
             isEmpty: false,
             isNutrition: false,
-            loading: true,            
+            loading: true,
             modal: false,
             modalAdd: this.cleanAddModal(),
             modalCheck: this.cleanCheckModal(''),
@@ -148,14 +148,14 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
                 history: this.patientHistoryData.getHistoryValues,
                 nutritionist: this.patientHistoryData.getNutritionValues
             },
-            prescriptionPath: '',            
+            prescriptionPath: '',
             searchValue: '',
             sendReceipeLoading: false,
             showPhotosModal: false,
             showPreviewModal: false,
             showSaveSession: true,
             showSendRecipe: true,
-            showUploadModal: false,            
+            showUploadModal: false,
             uploadURL: '',
         };
         this.sessionId = this.props.match.params.session || '';
@@ -487,16 +487,16 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
         const recipeParams = this.patientHistoryData.getRecipeData(this.state.currentPatient, this.state.currentDoctor, this.sessionMentor.issueDate, this.state.pastCases.length) as any;
         this.setState({ sendReceipeLoading: true });
         this.sessionService.sendTreatmentsRecipe(recipeParams).then((response: any) => {
-            if(response && response.error !== 'none') {
+            if (response && response.error !== 'none') {
                 console.log('ERROR:' + response.error);
                 alert('No se pudo cargar la receta. Contactar al administrador');
             }
             this.setState({
-                hasTreatments: true,                
+                hasTreatments: true,
                 prescriptionPath: response.previewResponse.link,
                 sendReceipeLoading: false,
                 showPreviewModal: true,
-                           
+
             });
         }).catch(() => {
             this.setState({ loading: false, sendReceipeLoading: false });

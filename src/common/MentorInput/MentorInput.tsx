@@ -1,7 +1,7 @@
 import * as React from 'react';
-import {CSSProperties} from "react";
+import { CSSProperties } from "react";
 import styled from "styled-components";
-import {Body1, LIGHT_TEXT, Small1} from '../../common/MentorText';
+import { Body1, LIGHT_TEXT, Small1 } from '../../common/MentorText';
 import FormLabel from "../FormLabel/FormLabel";
 import Icon from "../Icon/Icon";
 import Loader from "../Loader/Loader";
@@ -94,7 +94,7 @@ class MentorInput extends React.Component<IPropsMentorInput, IStateMentorInput> 
     };
     public state: IStateMentorInput;
     public input: React.RefObject<HTMLInputElement>;
-    public timer: any =  0;
+    public timer: any = 0;
     constructor(props: IPropsMentorInput) {
         super(props);
         this.state = {
@@ -131,28 +131,28 @@ class MentorInput extends React.Component<IPropsMentorInput, IStateMentorInput> 
         }
 
         if (!!this.props.disabled) {
-            attrs = {...attrs, disabled: true};
+            attrs = { ...attrs, disabled: true };
         }
-        const iconStyles = {...this.props.iconStyles};
+        const iconStyles: any = { ...this.props.iconStyles };
         if (this.props.disabled) {
-            iconStyles['fill'] = colors.BACKGROUND_COLORS.background_disabled;
+            iconStyles.fill = colors.BACKGROUND_COLORS.background_disabled;
         }
         return (
-            <div style={{...this.props.styleContainer}} onClick={this.onClick}>
-                {this.props.label && <FormLabel label={this.props.label} info={this.props.info} uppercase={!this.props.lowercaseLabel}/>}
+            <div style={{ ...this.props.styleContainer }} onClick={this.onClick}>
+                {this.props.label && <FormLabel label={this.props.label} info={this.props.info} uppercase={!this.props.lowercaseLabel} />}
                 <InputContainer
                     className={`MentorInput ${inputClass}`}
-                    style={{...this.props.style}}>
+                    style={{ ...this.props.style }}>
                     <input
                         ref={this.input}
                         className={`MentorInput_input`}
                         type={"text"}
-                        {...attrs}/>
-                        {this.props.loading && <LoaderInput color={colors.TEXT_COLORS.font_dark}/>}
-                        {!!icon && !this.props.loading &&
-                            <Icon name={icon} style={{...iconStyles}} click={this.onClickIcon}/>}
-                        {!!this.props.animation && <Body1>{this.props.animation.text}</Body1>}
-                        {!!this.props.error &&
+                        {...attrs} />
+                    {this.props.loading && <LoaderInput color={colors.TEXT_COLORS.font_dark} />}
+                    {!!icon && !this.props.loading &&
+                        <Icon name={icon} style={{ ...iconStyles }} click={this.onClickIcon} />}
+                    {!!this.props.animation && <Body1>{this.props.animation.text}</Body1>}
+                    {!!this.props.error &&
                         <div className={'MentorInput_message'}><Small1 weight={LIGHT_TEXT}>{this.props.error}</Small1></div>}
                 </InputContainer>
             </div>
@@ -162,10 +162,10 @@ class MentorInput extends React.Component<IPropsMentorInput, IStateMentorInput> 
     private onClickIcon() {
         if (!!this.input && !!this.input.current) {
             const event = new Event('input', { bubbles: true });
-            if(!!this.props.error) {
+            if (!!this.props.error) {
                 this.input.current.value = '';
                 this.input.current.dispatchEvent(event);
-            } else if(this.props.onClickIcon) {
+            } else if (this.props.onClickIcon) {
                 this.props.onClickIcon(this.input.current.value);
             }
         }
