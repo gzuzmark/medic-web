@@ -1,9 +1,9 @@
 import * as moment from 'moment';
 import * as React from 'react';
 import Icon from "../../../../../common/Icon/Icon";
-import {CARD_STATUS} from "../../../../../domain/Card";
-import {MomentDateParser} from "../../../../../domain/DateManager/MomentDateParser";
-import {IRangeDay} from "../../MentorHome";
+import { CARD_STATUS } from "../../../../../domain/Card";
+import { MomentDateParser } from "../../../../../domain/DateManager/MomentDateParser";
+import { IRangeDay } from "../../MentorHome";
 import CardDay from "../CardDay/CardDay";
 import './DayHandlerBar.scss';
 
@@ -22,8 +22,12 @@ export interface IDayHandlerBar {
 }
 
 class DayHandlerBar extends React.Component<IPropsDayHandlerBar, {}> {
+
     private weekDate: moment.Moment;
     private mdp: MomentDateParser;
+    private minDate: Date = new Date(2021, 2, 1); // 01.marzo.2021
+    private minCounter: number = -30;
+
     constructor(props: any) {
         super(props);
         this.beforeWeek = this.beforeWeek.bind(this);
@@ -35,22 +39,35 @@ class DayHandlerBar extends React.Component<IPropsDayHandlerBar, {}> {
     public render() {
         let buttonPrevOpts = {};
         let buttonNextOpts = {};
+        const { daysBar } = this.props;
+        const { rangeDays } = daysBar;
+        let rangeValidDays: IRangeDay[] = [];
+        if (rangeDays) {
+            rangeValidDays = [...rangeDays].filter((range, i) => {
+                const dateMoment = moment(range.date);
+                const minMoment = moment(this.minDate);
+                return dateMoment.add(-1, 'day') >= minMoment;
+            });
+            if (rangeValidDays.length < rangeDays.length) {
+                this.minCounter = this.props.daysBar.counter;
+            }
+        }
         if (this.props.daysBar.counter >= 1) {
             buttonNextOpts = {
                 disable: "true"
             }
-        } else if (this.props.daysBar.counter <= -1) {
+        } else if (this.props.daysBar.counter <= this.minCounter) {
             buttonPrevOpts = {
                 disable: "true"
             }
         }
         this.weekDate = moment(this.props.daysBar.weekDate);
-        const leftButton = this.props.daysBar.counter === -1 || this.props.loading ? 'DayHandlerBar_button--disabled' : '';
-        const rightButton =  this.props.daysBar.counter === 1 || this.props.loading? 'DayHandlerBar_button--disabled' : '';
-        return(
+        const leftButton = this.props.daysBar.counter === this.minCounter || this.props.loading ? 'DayHandlerBar_button--disabled' : '';
+        const rightButton = this.props.daysBar.counter === 1 || this.props.loading ? 'DayHandlerBar_button--disabled' : '';
+        return (
             <div className="DayHandlerBar">
                 <button className={`DayHandlerBar_button DayHandlerBar_button--left ${leftButton}`}
-                        onClick={this.beforeWeek} {...buttonPrevOpts}>
+                    onClick={this.beforeWeek} {...buttonPrevOpts}>
                     <Icon name="navigation-arrow" />
                 </button>
                 {this.props.daysBar.rangeDays.map((day: IRangeDay, index) => {
@@ -72,8 +89,8 @@ class DayHandlerBar extends React.Component<IPropsDayHandlerBar, {}> {
                     )
                 })}
                 <button className={`DayHandlerBar_button DayHandlerBar_button--right ${rightButton}`}
-                        onClick={this.nextWeek} {...buttonNextOpts}>
-                    <Icon name="navigation-arrow"/>
+                    onClick={this.nextWeek} {...buttonNextOpts}>
+                    <Icon name="navigation-arrow" />
                 </button>
             </div>
         )
@@ -88,7 +105,7 @@ class DayHandlerBar extends React.Component<IPropsDayHandlerBar, {}> {
     }
 
     private beforeWeek() {
-        if (this.props.daysBar.counter > -1 && !this.props.loading) {
+        if (this.props.daysBar.counter > this.minCounter && !this.props.loading) {
             const from = this.weekDate.subtract(1, 'weeks').toDate();
             this.props.onChangeWeek(from.toISOString(), -1)
         }
