@@ -87,9 +87,10 @@ export interface IPropsHistoryTreatmentForm {
 	forceDisable?: boolean;
 }
 
-const MAX_MEDICINE_AMOUNT = 500;
+// const MAX_MEDICINE_AMOUNT = 500;
+// const MAX_MEDICINE_AMOUNT = 5;
 
-const HistoryTreatmentForm: React.FC<IPropsHistoryTreatmentForm> = (props) => {
+const HistoryTreatmentForm: React.FC<IPropsHistoryTreatmentForm> = (props:any) => {
 	const mentorService = new MentorService();
 	const renderTreatment = (ctxt: IPatientBackgroundFormContext) => {
 		const treatments = !!ctxt.values.case.treatments
@@ -97,6 +98,19 @@ const HistoryTreatmentForm: React.FC<IPropsHistoryTreatmentForm> = (props) => {
 			: ([] as ISessionPatientTreatmentForm[]);
 
 		return (arrayHelpers: ArrayHelpers) => {
+
+			const redirectToRecetaMedica = () => {
+				const url = window.location.href;
+				const segment = url.substring(url.lastIndexOf('/') + 1);
+				window.location.assign(segment + "/prescription")
+				const a = {
+					description:"echo en peru",
+					man: props,
+					product: "Azucar",
+					
+				};
+				console.log("Hola recetas médicas---> " + a)
+			}
 			const addNewMedicine = () =>
 				arrayHelpers.push({
 					activePrinciples: '',
@@ -116,7 +130,7 @@ const HistoryTreatmentForm: React.FC<IPropsHistoryTreatmentForm> = (props) => {
 			if (treatments.length === 0) {
 				return (
 					<OptionsHandler>
-						<button
+						{/* <button
 							disabled={
 								treatments.length >= MAX_MEDICINE_AMOUNT
 							}
@@ -124,7 +138,16 @@ const HistoryTreatmentForm: React.FC<IPropsHistoryTreatmentForm> = (props) => {
 							type={'button'}
 						>
 							<Icon name={'add-circle'} />
-							<Body1>Agregar medicamento</Body1>
+							<Body1>Agregar medicamento-------</Body1>
+						</button> */}
+						
+						<button
+							
+							onClick={redirectToRecetaMedica}
+							type={'button'}
+						>
+							<Icon name={'add-circle'} />
+							<Body1>Agregar medicamento-------</Body1>
 						</button>
 					</OptionsHandler>
 				);
