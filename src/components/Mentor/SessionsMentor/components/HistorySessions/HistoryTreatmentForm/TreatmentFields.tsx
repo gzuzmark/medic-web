@@ -98,7 +98,7 @@ export const OptionsHandler = styled.div`
 	}
 `;
 const defaultRowStyle = { padding: '15px 0 0 0', margin: 0 };
-const MAX_MEDICINE_AMOUNT = 5;
+const MAX_MEDICINE_AMOUNT = 500;
 const DEFAULT_MAX_LENGTH = 250;
 
 const productInfoInitialValues = {

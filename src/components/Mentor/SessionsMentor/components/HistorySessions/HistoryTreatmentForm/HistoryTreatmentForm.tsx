@@ -87,7 +87,7 @@ export interface IPropsHistoryTreatmentForm {
 	forceDisable?: boolean;
 }
 
-const MAX_MEDICINE_AMOUNT = 5;
+const MAX_MEDICINE_AMOUNT = 500;
 
 const HistoryTreatmentForm: React.FC<IPropsHistoryTreatmentForm> = (props) => {
 	const mentorService = new MentorService();
@@ -118,7 +118,7 @@ const HistoryTreatmentForm: React.FC<IPropsHistoryTreatmentForm> = (props) => {
 					<OptionsHandler>
 						<button
 							disabled={
-								treatments.length >= MAX_MEDICINE_AMOUNT || !!props.forceDisable
+								treatments.length >= MAX_MEDICINE_AMOUNT
 							}
 							onClick={addNewMedicine}
 							type={'button'}
