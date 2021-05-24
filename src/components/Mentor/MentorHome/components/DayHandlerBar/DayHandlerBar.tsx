@@ -26,7 +26,7 @@ class DayHandlerBar extends React.Component<IPropsDayHandlerBar, {}> {
     private weekDate: moment.Moment;
     private mdp: MomentDateParser;
     private minDate: Date = new Date(2021, 2, 1); // 01.marzo.2021
-    private minCounter: number = -30;
+    private minCounter: number = -1;
 
     constructor(props: any) {
         super(props);
@@ -50,6 +50,8 @@ class DayHandlerBar extends React.Component<IPropsDayHandlerBar, {}> {
             });
             if (rangeValidDays.length < rangeDays.length) {
                 this.minCounter = this.props.daysBar.counter;
+            } else {
+                this.minCounter--;
             }
         }
         if (this.props.daysBar.counter >= 1) {
