@@ -1,3 +1,4 @@
+
 import { ArrayHelpers, FieldArray } from 'formik';
 import * as React from 'react';
 import styled from 'styled-components';
@@ -9,7 +10,10 @@ import MentorService from '../../../../../../services/Mentor/Mentor.service';
 import PatientBackgroundFormContext, {
 	IPatientBackgroundFormContext,
 } from '../../PatientHistoryForm/PatientBackgroundForm.context';
+
 import TreatmentFields from './TreatmentFields';
+
+
 
 export const TreatmentItem = styled.div`
 	padding: 30px 0;
@@ -92,17 +96,69 @@ export interface IPropsHistoryTreatmentForm {
 
 const HistoryTreatmentForm: React.FC<IPropsHistoryTreatmentForm> = (props:any) => {
 	const mentorService = new MentorService();
+	
 	const renderTreatment = (ctxt: IPatientBackgroundFormContext) => {
 		const treatments = !!ctxt.values.case.treatments
 			? ctxt.values.case.treatments
 			: ([] as ISessionPatientTreatmentForm[]);
 
 		return (arrayHelpers: ArrayHelpers) => {
-
-			const redirectToRecetaMedica = () => {
+			const redirectToRecetaMedica = async () => { 
 				const url = window.location.href;
-				const segment = url.substring(url.lastIndexOf('/') + 1);
-				window.location.assign(segment + "/prescription")
+				const sessionID = url.substring(url.lastIndexOf('/') + 1);
+				
+					await mentorService.getMentorAndPatientInSession(sessionID).then((data: any) => {
+						console.log(data)
+					
+							const mentorPatient = {
+								diagnostic: "XYZ",
+								doctor: {
+									doctorCmp: "088594",
+									doctorFirstName: "Franco",
+									doctorLastName: "Altmann Gamarra",
+									doctorSpecialty: "Medecina General",
+									hasDigitalCertificate: true
+								},
+								ipressCode: "1112",
+								medicalAppointmentId: "aliv001",
+								patient: {
+									documentType: "1",
+									motherLastName: "Lopez",
+									patientAddress: "Las camelias 123",
+									patientAge: 25,
+									patientClinicHistory: "",
+									patientDateOfBirth: "2020-03-06T01:34:41.200Z",
+									patientDni: "23569844",
+									patientEmail: "tenantz100@gmail.com",
+									patientFirstName: "Thalia",
+									patientLastName: "Abdel",
+									patientPhone: "956896457"
+								}
+			
+							}
+
+							mentorService.sendMentorAndPatientInfo(mentorPatient).then((response: any) => {
+								console.log(response)
+								window.location.assign(sessionID + '/prescription/' + response.draftResponse.draftNumber);
+								
+							}).catch((error: any) => {
+								console.log(error)
+							});
+					
+					}).catch((error: any) => {
+						alert("Error en la peticion-!!!")
+						console.log(error)
+						if (error.response && error.response.data) {
+						
+							const {code} = error.response.data;
+							if (code === 404) {
+								window.location.assign('/');
+							}
+						}
+					});
+			
+
+				
 				const a = {
 					description:"echo en peru",
 					man: props,
@@ -147,7 +203,7 @@ const HistoryTreatmentForm: React.FC<IPropsHistoryTreatmentForm> = (props:any) =
 							type={'button'}
 						>
 							<Icon name={'add-circle'} />
-							<Body1>Agregar medicamento-------</Body1>
+							<Body1>Agregar medicamento</Body1>
 						</button>
 					</OptionsHandler>
 				);

@@ -190,7 +190,7 @@ export const initRouter = () => {
                 <Route exact={true} path="/doctor/citas" render={GuardComponent(PageEarnings, ROL_MENTOR)} />
                 <Route exact={true} path="/doctor/editar-perfil" render={GuardComponent(PageEditProfileMentor, ROL_MENTOR)} />
                 <Route exact={true} path="/doctor/sesion/:session/" render={GuardComponent(SessionsMentor, ROL_MENTOR)} />
-                <Route exact={true} path="/doctor/sesion/:session/prescription/" render={GuardComponent(Prescription, ROL_MENTOR)} />
+                <Route exact={true} path="/doctor/sesion/:session/prescription/:draftnumber" render={GuardComponent(Prescription, ROL_MENTOR)} />
                 <Route exact={true} path="/doctor/paciente/:id/" render={GuardComponent(PageStudent, ROL_MENTOR)} />
             </React.Suspense>
         </Router>,

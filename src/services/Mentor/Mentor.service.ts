@@ -1,4 +1,5 @@
 import Axios from 'axios';
+// import { IMentorAndPatient } from "../../domain/Mentor/MentorAndPatients";
 import { IMentorBase, IMentorPaginated } from '../../domain/Mentor/MentorBase';
 import { IMentorBaseForm } from '../../domain/Mentor/MentorBaseForm';
 import { IMentorEditParams } from '../../domain/Mentor/MentorEditProfile';
@@ -504,6 +505,49 @@ class MentorService extends BaseRequest {
 				});
 		});
 	}
+
+	public getMentorAndPatientInSession(sessionID: string): Promise<any> {
+        return new Promise((resolve, reject) => {
+            this.instance.get(`ugo/mentors-api/me/sessions/${sessionID}`)
+                .then((response: any) => {
+                    if (response.status === 200 && response.data) {
+                        resolve(response.data);
+                    } else {
+                        reject(null);
+                    }
+                })
+                .catch((error: any) => {
+                    this.validSession();
+                    reject(error);
+                });
+        })
+    }
+
+	public sendMentorAndPatientInfo(mentorPatient: any):Promise<any> {
+		return new Promise((resolve, reject) => {
+
+			const requestOptions = {
+				// body: JSON.stringify(mentorPatient),
+				headers: { 'Content-Type': 'application/json' },
+				// method: 'POST',
+			
+			};
+			Axios.post(` https://us-recetas-electronica-ci05.cindibyinkafarma.com/create-prescription-draft`,JSON.stringify(mentorPatient), requestOptions)
+			.then((response: any) => {
+				if (response.status === 200 && response.data) {
+					resolve(response.data);
+				} else {
+					reject(null);
+				}
+			})
+			.catch((error: any) => {
+				this.validSession();
+				reject(error);
+			});
+		});
+	}
+
+	
 }
 
 export default MentorService;
