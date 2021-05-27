@@ -13,10 +13,8 @@
       text-overflow: ellipsis;
       white-space: pre-wrap;
       width: 400px;
-      /* autoprefixer: off */
       -webkit-box-orient: vertical;
       -webkit-line-clamp: 4;
-      /* autoprefixer: on */
     }
   }
   &_footer{
