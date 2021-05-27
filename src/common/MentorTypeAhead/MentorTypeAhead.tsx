@@ -204,6 +204,7 @@ class MentorTypeAhead extends React.Component<IPropsMentorTypeAhead, {}> {
 						noOptionsMessage={this.noOptions}
 						options={this.props.options}
 						maxMenuHeight={250}
+						defaultInputValue={this.props.inputValue}
 					/>
 				)}
 				{!!this.props.error && (
