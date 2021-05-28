@@ -138,7 +138,7 @@ const HistoryTreatmentForm: React.FC<IPropsHistoryTreatmentForm> = (props:any) =
 
 							mentorService.sendMentorAndPatientInfo(mentorPatient).then((response: any) => {
 								console.log(response)
-								window.location.assign(sessionID + '/prescription/' + response.draftResponse.draftNumber);
+								window.open(sessionID + '/prescription/' + response.draftResponse.draftNumber, '_blank');
 								
 							}).catch((error: any) => {
 								console.log(error)
