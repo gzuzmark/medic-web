@@ -1,16 +1,17 @@
 
 import { ArrayHelpers, FieldArray } from 'formik';
+import * as moment from 'moment';
 import * as React from 'react';
 import styled from 'styled-components';
 import Icon from '../../../../../../common/Icon/Icon';
 import colors from '../../../../../../common/MentorColor';
 import { Body1 } from '../../../../../../common/MentorText';
 import { ISessionPatientTreatmentForm } from '../../../../../../domain/Session/SessionEditPatientHistory';
+
 import MentorService from '../../../../../../services/Mentor/Mentor.service';
 import PatientBackgroundFormContext, {
 	IPatientBackgroundFormContext,
 } from '../../PatientHistoryForm/PatientBackgroundForm.context';
-
 import TreatmentFields from './TreatmentFields';
 
 
@@ -106,33 +107,31 @@ const HistoryTreatmentForm: React.FC<IPropsHistoryTreatmentForm> = (props:any) =
 			const redirectToRecetaMedica = async () => { 
 				const url = window.location.href;
 				const sessionID = url.substring(url.lastIndexOf('/') + 1);
-				
+				console.log(sessionID)
 					await mentorService.getMentorAndPatientInSession(sessionID).then((data: any) => {
-						console.log(data)
-					
 							const mentorPatient = {
 								diagnostic: "XYZ",
 								doctor: {
-									doctorCmp: "088594",
-									doctorFirstName: "Franco",
-									doctorLastName: "Altmann Gamarra",
-									doctorSpecialty: "Medecina General",
-									hasDigitalCertificate: true
+									doctorCmp: data.doctor.cmp,
+									doctorFirstName: data.doctor.name,
+									doctorLastName: data.doctor.last_name,
+									doctorSpecialty: data.doctor.title,
+									hasDigitalCertificate: data.doctor.digital_certificate,
 								},
 								ipressCode: "1112",
 								medicalAppointmentId: "aliv001",
 								patient: {
-									documentType: "1",
-									motherLastName: "Lopez",
-									patientAddress: "Las camelias 123",
-									patientAge: 25,
-									patientClinicHistory: "",
-									patientDateOfBirth: "2020-03-06T01:34:41.200Z",
-									patientDni: "23569844",
-									patientEmail: "tenantz100@gmail.com",
-									patientFirstName: "Thalia",
-									patientLastName: "Abdel",
-									patientPhone: "956896457"
+									documentType: (data.patient.document_type === "DNI") ? "1" : "0",
+									motherLastName: data.patient.second_last_name,
+									patientAddress: data.patient.address,
+									patientAge: moment().diff(data.patient.birthdate, 'years',false),
+									patientClinicHistory: data.patient.clinic_history,
+									patientDateOfBirth: data.patient.birthdate,
+									patientDni: data.patient.document_number,
+									patientEmail: data.patient.email,
+									patientFirstName: data.patient.name,
+									patientLastName: data.patient.last_name,
+									patientPhone: data.patient.phone
 								}
 			
 							}
@@ -182,6 +181,8 @@ const HistoryTreatmentForm: React.FC<IPropsHistoryTreatmentForm> = (props:any) =
 					routeofAdministration: '',
 					salesUnit: '',
 				});
+
+				
 			const removeMedicine = (i: number) => () => arrayHelpers.remove(i);
 			if (treatments.length === 0) {
 				return (
