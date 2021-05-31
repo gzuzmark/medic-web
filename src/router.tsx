@@ -18,6 +18,7 @@ import SessionsList from './components/Admin/SessionsList/SessionsList';
 import Login from './components/Login/Login';
 import Logout from './components/Logout/Logout';
 import MentorHome from "./components/Mentor/MentorHome/MentorHome";
+import Prescription from "./components/Mentor/Prescription/Prescription";
 import SessionsMentor from "./components/Mentor/SessionsMentor/SessionsMentor";
 import UserRepository, {ROL_ADMIN, ROL_MENTOR} from "./repository/UserRepository";
 
@@ -189,6 +190,7 @@ export const initRouter = () => {
                 <Route exact={true} path="/doctor/citas" render={GuardComponent(PageEarnings, ROL_MENTOR)} />
                 <Route exact={true} path="/doctor/editar-perfil" render={GuardComponent(PageEditProfileMentor, ROL_MENTOR)} />
                 <Route exact={true} path="/doctor/sesion/:session/" render={GuardComponent(SessionsMentor, ROL_MENTOR)} />
+                <Route exact={true} path="/doctor/sesion/:session/prescription/:draftnumber" render={GuardComponent(Prescription, ROL_MENTOR)} />
                 <Route exact={true} path="/doctor/paciente/:id/" render={GuardComponent(PageStudent, ROL_MENTOR)} />
             </React.Suspense>
         </Router>,
