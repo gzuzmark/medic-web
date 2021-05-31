@@ -107,7 +107,6 @@ const HistoryTreatmentForm: React.FC<IPropsHistoryTreatmentForm> = (props:any) =
 			const redirectToRecetaMedica = async () => { 
 				const url = window.location.href;
 				const sessionID = url.substring(url.lastIndexOf('/') + 1);
-				console.log(sessionID)
 					await mentorService.getMentorAndPatientInSession(sessionID).then((data: any) => {
 							const mentorPatient = {
 								diagnostic: "XYZ",
@@ -137,16 +136,13 @@ const HistoryTreatmentForm: React.FC<IPropsHistoryTreatmentForm> = (props:any) =
 							}
 
 							mentorService.sendMentorAndPatientInfo(mentorPatient).then((response: any) => {
-								console.log(response)
 								window.open(sessionID + '/prescription/' + response.draftResponse.draftNumber, '_blank');
 								
 							}).catch((error: any) => {
-								console.log(error)
 							});
 					
 					}).catch((error: any) => {
 						alert("Error en la peticion-!!!")
-						console.log(error)
 						if (error.response && error.response.data) {
 						
 							const {code} = error.response.data;
@@ -155,16 +151,6 @@ const HistoryTreatmentForm: React.FC<IPropsHistoryTreatmentForm> = (props:any) =
 							}
 						}
 					});
-			
-
-				
-				const a = {
-					description:"echo en peru",
-					man: props,
-					product: "Azucar",
-					
-				};
-				console.log("Hola recetas médicas---> " + a)
 			}
 			const addNewMedicine = () =>
 				arrayHelpers.push({
