@@ -120,7 +120,7 @@ const HistoryTreatmentForm: React.FC<IPropsHistoryTreatmentForm> = (props:any) =
 								ipressCode: "1112",
 								medicalAppointmentId: "aliv001",
 								patient: {
-									documentType: (data.patient.document_type === "DNI") ? "1" : "0",
+									documentType: (data.patient.document_type === "DNI") ? "1" : "1",
 									motherLastName: data.patient.second_last_name,
 									patientAddress: data.patient.address,
 									patientAge: moment().diff(data.patient.birthdate, 'years',false),
