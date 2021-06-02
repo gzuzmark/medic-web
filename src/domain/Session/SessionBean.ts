@@ -1,4 +1,4 @@
-import {AbstractDateParser} from "../DateManager/AbstractDateParser";
+import { AbstractDateParser } from "../DateManager/AbstractDateParser";
 import { IBaseUser } from "../User/AbstractUser";
 import { ISessionPatient } from "./SessionMentorBean";
 
@@ -105,31 +105,45 @@ export class SessionBean {
     }
 
     public getAssistance() {
-      const now = new Date();
-      const date = new Date(this.session.from);
-      const isConsult = !!this.session.consult && this.session.consult.has_treatments;
-      if (date.getTime() < now.getTime() && !isConsult) {
-        return 'No Asistió';
-      } else if (date.getTime() <= now.getTime() && isConsult) {
-        return 'Confirmada';
-      } else if (date.getTime() > now.getTime()) {
-        return 'Por Confirmar';
-      }
-      return '';
+        const now = new Date();
+        const date = new Date(this.session.from);
+        const isConsult = !!this.session.consult && this.session.consult.has_treatments;
+        if (date.getTime() < now.getTime() && !isConsult) {
+            return 'No Asistió';
+        } else if (date.getTime() <= now.getTime() && isConsult) {
+            return 'Confirmada';
+        } else if (date.getTime() > now.getTime()) {
+            return 'Por Confirmar';
+        }
+        return '';
+    }
+
+    public isAttended() {
+        const now = new Date();
+        const date = new Date(this.session.from);
+        const isConsult = !!this.session.consult && this.session.consult.has_treatments;
+        if (date.getTime() < now.getTime() && !isConsult) {
+            return false;
+        } else if (date.getTime() <= now.getTime() && isConsult) {
+            return true;
+        } else if (date.getTime() > now.getTime()) {
+            return false;
+        }
+        return false;
     }
 
     public getReservationDate(dateFormatter: AbstractDateParser): string {
-      if (!this.session.reservation_date) {
-        return '';
-      }
-      return `${dateFormatter.parseDateToString(this.session.reservation_date, "DD [de] MMMM")}`;
+        if (!this.session.reservation_date) {
+            return '';
+        }
+        return `${dateFormatter.parseDateToString(this.session.reservation_date, "DD [de] MMMM")}`;
     }
 
     public getReservationTime(dateFormatter: AbstractDateParser): string {
-      if (!this.session.reservation_date) {
-        return '';
-      }
-      return `${dateFormatter.parseDateToString(this.session.reservation_date, "h:mm a")}`;
+        if (!this.session.reservation_date) {
+            return '';
+        }
+        return `${dateFormatter.parseDateToString(this.session.reservation_date, "h:mm a")}`;
     }
 
     public getTime(dateFormatter: AbstractDateParser): string {
@@ -180,7 +194,7 @@ export class SessionBean {
     }
 
     public getSessionType(text?: string) {
-        const before = text ? text + ' ':'';
+        const before = text ? text + ' ' : '';
         let type = '';
         if (this.isVirtual()) {
             type = 'virtual';
