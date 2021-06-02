@@ -108,7 +108,7 @@ const ListSessionsBody: React.FC<IPropsListSessionsBody> = (props) => {
 	const patientDoc = patient && patient.document_number;
 	const historyURL = `${window.location.origin}/doctor/sesion/${id}`;
 	const ratingURL = `https://alivia-conference.web.app/rate/${id}`;
-	const prescriptionURL = `${process.env.REACT_APP_WEB_STUDENT_BASE_URL}/comprar_receta?sessionId=${id}`;
+	const prescriptionURL = `${process.env.REACT_APP_WEB_STUDENT_BASE_URL}/direccion_receta?sessionId=${id}`;
 	const paymentURL = payment && payment.cipUrl;
 	const patientId = (patient && patient.id) || '';
 	const patientName = (patient && patient.name) || '';
@@ -253,12 +253,12 @@ const ListSessionsBody: React.FC<IPropsListSessionsBody> = (props) => {
 						HC
 					</a>
 				)}
-				{!!sessionURL && sessionBean.isAttended() && (
+				{(!!prescriptionURL && sessionBean.isAttended()) && (
 					<div className='ListSessions_linkseparator' />
 				)}
 				{(!!prescriptionURL && sessionBean.isAttended()) && (
 					<a href={prescriptionURL} target='blank'>
-						Receta
+						RM
 					</a>
 				)}
 			</div>
