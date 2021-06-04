@@ -4,14 +4,14 @@ import Layout from "../../../common/Layout/Layout";
 import Loader from "../../../common/Loader/Loader";
 import { Headline1 } from '../../../common/MentorText';
 import Utilities from "../../../common/Utils/Utilities";
-import {MomentDateParser} from "../../../domain/DateManager/MomentDateParser";
-import {ListenerFirebase} from "../../../domain/Listener/ListenerFirebase";
-import {IBoxDayDescription, SessionCollector} from "../../../domain/Session/SessionCollector";
-import {ISessionMentor, SessionMentorBean} from "../../../domain/Session/SessionMentorBean";
+import { MomentDateParser } from "../../../domain/DateManager/MomentDateParser";
+import { ListenerFirebase } from "../../../domain/Listener/ListenerFirebase";
+import { IBoxDayDescription, SessionCollector } from "../../../domain/Session/SessionCollector";
+import { ISessionMentor, SessionMentorBean } from "../../../domain/Session/SessionMentorBean";
 import UserRepository from "../../../repository/UserRepository";
 import SessionService from "../../../services/Session/Session.service";
-import DayHandlerBar, {IDayHandlerBar} from "./components/DayHandlerBar/DayHandlerBar";
-import SessionsMentorDetail, {ISessionMentorDetail} from "./components/SessionsMentorDetail/SessionsMentorDetail";
+import DayHandlerBar, { IDayHandlerBar } from "./components/DayHandlerBar/DayHandlerBar";
+import SessionsMentorDetail, { ISessionMentorDetail } from "./components/SessionsMentorDetail/SessionsMentorDetail";
 import './MentorHome.scss';
 
 export interface IRangeDay {
@@ -55,7 +55,7 @@ const useHandlerNoAttendedSessions = (): IUseHandlerNoAttendedsessions => {
     React.useEffect(() => {
         doRequest();
     }, [0]);
-    return {loading, session, doRequest}
+    return { loading, session, doRequest }
 };
 
 export class MentorHomeCore extends React.Component<IPropsMentorHomeCore, IStateMentorHomeCore> {
@@ -123,7 +123,7 @@ export class MentorHomeCore extends React.Component<IPropsMentorHomeCore, IState
         return <Layout title={"Tutores"}>
             <div className="MentorHome u-LayoutMentorMargin">
                 <div className={"MentorHome_title"}>
-                    <Icon name={"calendar"}/>
+                    <Icon name={"calendar"} />
                     <Headline1>Tus sesiones</Headline1>
                 </div>
                 <DayHandlerBar
@@ -132,11 +132,11 @@ export class MentorHomeCore extends React.Component<IPropsMentorHomeCore, IState
                     selectedDate={this.state.selectedDate}
                     loading={this.state.loading}
                     daysBar={this.state.daysBar} />
-                {this.state.sessionDetail.sessions ?
-                <SessionsMentorDetail
-                    sessionDetail={this.state.sessionDetail}
-                    selectedDate={this.state.selectedDate} /> :
-                <Loader style={{marginTop: 150}}/>}
+                {this.state.sessionDetail.sessions && !this.state.loading ?
+                    <SessionsMentorDetail
+                        sessionDetail={this.state.sessionDetail}
+                        selectedDate={this.state.selectedDate} /> :
+                    <Loader style={{ marginTop: 150 }} />}
             </div>
         </Layout>
     }
@@ -194,6 +194,11 @@ export class MentorHomeCore extends React.Component<IPropsMentorHomeCore, IState
                     newState = {
                         selectedDate: selectedDate.toISOString(),
                         sessionDetail: this.updateSessionDetail(selectedDate, sessionCollector)
+                    }
+                } else {
+                    newState = {
+                        selectedDate: null,
+                        sessionDetail: {},
                     }
                 }
                 if (isSameWeek || !forceRefresh) {
@@ -263,7 +268,7 @@ export class MentorHomeCore extends React.Component<IPropsMentorHomeCore, IState
 
 const MentorHome: React.FC<{}> = () => {
     const firstMonday = Utilities.getMonday().toISOString();
-    const [sessionCollector, setSessionCollector] =  React.useState(
+    const [sessionCollector, setSessionCollector] = React.useState(
         new SessionCollector<SessionMentorBean>([], firstMonday, 1));
 
     const noAttendedSessions = useHandlerNoAttendedSessions();
