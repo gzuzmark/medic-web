@@ -1,4 +1,3 @@
-// tslint:disable:ordered-imports
 import { L10n } from '@syncfusion/ej2-base';
 // tslint:disable:ordered-imports
 import {
@@ -19,6 +18,7 @@ import MessageService from './components/MessageServices/MessageService';
 import { localeTranslations } from './locale';
 import './Scheduler.scss';
 import { Link } from 'react-router-dom';
+import * as moment from "moment";
 
 const headerStyle = {
 	display: 'flex',
@@ -51,11 +51,26 @@ const isDateValid = (from: Date) => new Date() < from;
 const Scheduler = () => {
 	const { user } = React.useContext(LayoutContext);
 	let scheduleObj: any = React.useRef();
-	const mentorService = new MentorService();
+  	const mentorService = new MentorService();
 	const [loading, setLoading] = React.useState(false);
 	const [appointments, setAppointments] = React.useState<IAppointments[]>([]);
 	const [skills, setSkills] = React.useState<any[]>([]);
 	const [executeService, setExecuteService] = React.useState(false);
+    const timeZoneLocal = Intl.DateTimeFormat().resolvedOptions().timeZone // get customer's local zone
+    // function that gets the time from the time zone
+    const getTimeNowByTimeZone = (tz: any):any => {
+        return new Date().toLocaleTimeString('ES',{
+            timeZone: tz,
+            hour: "2-digit",
+            minute: "2-digit"
+        })
+    }
+
+    const hourPeru = moment(`2016-05-06 ${getTimeNowByTimeZone("America/Lima")}`) // time from Lima
+    const houseLocalClient =  moment(`2016-05-06 ${getTimeNowByTimeZone(timeZoneLocal)}`) // time from customer
+    const diffHoursTimeZone =  hourPeru.diff(houseLocalClient, "hours"); // difference between both hours
+    const hourStartCalendar:number =  8 - (diffHoursTimeZone) // 8 = opening time in America/Lima
+    const hourEndCalendar = 22 - (diffHoursTimeZone) // 20 = closing time in America/Lima
 
 	const onPopUpOpen = (args: any) => {
 		if (args.type === 'Editor') {
@@ -375,21 +390,22 @@ const Scheduler = () => {
 						actionBegin={onActionBegin}
 						actionComplete={onComplete}
 						allowDragAndDrop={false}
+                        timezone={timeZoneLocal}
 					>
 						<ViewsDirective>
 							<ViewDirective option='Month' displayName='Vista mensual' />
 							<ViewDirective
 								option='Week'
 								displayName='Vista semanal'
-								startHour='08:00'
-								endHour='20:00'
+                                startHour={"0"+hourStartCalendar+":00"}
+                                endHour={hourEndCalendar+":00"}
 							/>
 							<ViewDirective
 								option='Day'
 								displayName='Vista diaria'
-								startHour='08:00'
-								endHour='20:00'
-							/>
+                                startHour={"0"+hourStartCalendar+":00"}
+                                endHour={hourEndCalendar+":00"}
+                            />
 						</ViewsDirective>
 						<Inject services={[Day, Week, Month]} />
 					</ScheduleComponent>
