@@ -118,7 +118,7 @@ const HistoryTreatmentForm: React.FC<IPropsHistoryTreatmentForm> = (props:any) =
 									hasDigitalCertificate: data.doctor.digital_certificate,
 								},
 								ipressCode: "1112",
-								medicalAppointmentId: "aliv001",
+								medicalAppointmentId: sessionID,
 								patient: {
 									documentType: (data.patient.document_type === "DNI") ? "1" : "1",
 									motherLastName: data.patient.second_last_name,
