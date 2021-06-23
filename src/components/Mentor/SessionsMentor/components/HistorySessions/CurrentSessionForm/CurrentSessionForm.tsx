@@ -70,7 +70,6 @@ const CurrentSessionForm: React.FC<IPropsCurrentSessionForm> = ({ forceDisable, 
   React.useEffect(() => {
     async function retrieveDiagnostic() {
       const diagnostic = values.case.diagnostic;
-      console.log(":::::DIAGNOSTICO::::" + diagnostic);
      
       const { items } = await service.getDiagnosticCodes(
 				diagnostic,
