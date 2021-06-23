@@ -16,6 +16,9 @@ import { mapResponse } from '../HistoryTreatmentForm/Utils';
 import './CurrentSessionForm.scss';
 import PatientPhotoModal from './PatientPhotoModal/PatientPhotoModal';
 
+import SessionService from '../../../../../../services/Session/Session.service';
+
+
 interface IPropsCurrentSessionForm {
   forceDisable?: boolean;
   showSeeRecipeButton: boolean;
@@ -41,14 +44,18 @@ const PrescriptionTextContainer = styled.div`
 `;
 
 const CurrentSessionForm: React.FC<IPropsCurrentSessionForm> = ({ forceDisable, showSeeRecipeButton, folioNumber, photos, getPrescriptionURL }) => {
-  const { values, handleBlur, handleChange, setFieldValue, errors } = React.useContext(PatientBackgroundFormContext);
+  const { values, handleBlur, handleChange, setFieldValue, errors} = React.useContext(PatientBackgroundFormContext);
 
   const [selectedPhoto, setSelectedPhoto] = React.useState('');
   const [showPhoto, setShowPhoto] = React.useState(false);
+  const [flag, setFlag] = React.useState(true);
   const [diagnosticOptions, setDiagnosticOptions] = React.useState<
 		IPropsMentorOptionsDropDown[]
 	>([]);
+  
   const service = new MentorService();
+  const sessionService = new SessionService();
+	
   const handleOpenRecipe = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
     getPrescriptionURL();
@@ -63,6 +70,8 @@ const CurrentSessionForm: React.FC<IPropsCurrentSessionForm> = ({ forceDisable, 
   React.useEffect(() => {
     async function retrieveDiagnostic() {
       const diagnostic = values.case.diagnostic;
+      console.log(":::::DIAGNOSTICO::::" + diagnostic);
+     
       const { items } = await service.getDiagnosticCodes(
 				diagnostic,
 				false,
@@ -74,6 +83,18 @@ const CurrentSessionForm: React.FC<IPropsCurrentSessionForm> = ({ forceDisable, 
       }
     }
     retrieveDiagnostic();
+
+   const validConsult = async() => {
+      const thePath = window.location.href;
+      const sessionID = thePath.substring(thePath.lastIndexOf('/') + 1)
+      await sessionService.getSessionConsult(sessionID).then((resp : any) =>{
+        if(resp.id === "" || resp.id === undefined) {
+          setFlag(false);
+        }
+      });
+    }
+
+    validConsult()
   }, []);
 
 
@@ -83,6 +104,7 @@ const CurrentSessionForm: React.FC<IPropsCurrentSessionForm> = ({ forceDisable, 
 			if (param) {
 				service.getDiagnosticCodes(param).then((data: Record<string, string>) => {
           const { items } = data;
+         
 					if (Array.isArray(items)) {
 						const mappedData = mapResponse(
 							items,
@@ -109,7 +131,10 @@ const CurrentSessionForm: React.FC<IPropsCurrentSessionForm> = ({ forceDisable, 
     }
   };
 
+
+
   const diag = values.case.diagnostic;
+  
 
   return (
     <React.Fragment>
@@ -149,7 +174,7 @@ const CurrentSessionForm: React.FC<IPropsCurrentSessionForm> = ({ forceDisable, 
       <PatientPhotoModal show={showPhoto} onClose={onCloseModal} photo={selectedPhoto} />
       <FormRow key={'row_4'} style={defaultRowStyle} columns={[
         <FormColumn width={DEFAULT_COLUMN_WIDTH} key={'diagnosticCode'}>
-          <Heading2>Diagnóstico</Heading2>
+          <Heading2>Diagnóstico 2222</Heading2>
           <MentorTypeAhead     
             disabled={!!forceDisable}       
             label="Escribe el código de diagnóstico:"
@@ -166,25 +191,7 @@ const CurrentSessionForm: React.FC<IPropsCurrentSessionForm> = ({ forceDisable, 
           />
         </FormColumn>,
       ]}/>
-      <div style={{ marginTop: 20 }}>
-        <Headline1>
-          Tratamiento
-        </Headline1>
-        {showSeeRecipeButton && (
-          <div style={prescriptionContainerStyle}>
-            <PrescriptionTextContainer>
-              <div><b>Receta Electrónica</b></div>
-              <div>Receta Emitida: N° {folioNumber || '32453241234-001'}</div>
-            </PrescriptionTextContainer>
-            <div style={{ display: 'flex' }}>
-              <button onClick={handleOpenRecipe} className='u-Button'>
-                Ver Receta
-              </button>
-            </div>
-          </div>
-        )}
-        {!showSeeRecipeButton &&  <HistoryTreatmentForm />}
-      </div>
+     
       <FormRow key={'row_1'} style={defaultRowStyle} columns={[
         <FormColumn width={DEFAULT_COLUMN_WIDTH} key={'external_exams'}>
         <Heading2>Exámenes de laboratorio</Heading2>
@@ -231,7 +238,31 @@ const CurrentSessionForm: React.FC<IPropsCurrentSessionForm> = ({ forceDisable, 
                 value: values.case.recommendation,
             }} />
         </FormColumn>
+        
       ]}/>
+    { flag && (
+      <div style={{ marginTop: 20 }}>
+        <Headline1>
+          Tratamiento 
+        </Headline1>
+        {showSeeRecipeButton && (
+          <div style={prescriptionContainerStyle}>
+            <PrescriptionTextContainer>
+              <div><b>Receta Electrónica</b></div>
+              <div>Receta Emitida: N° {folioNumber || '32453241234-001'}</div>
+            </PrescriptionTextContainer>
+            <div style={{ display: 'flex' }}>
+              <button onClick={handleOpenRecipe} className='u-Button'>
+                Ver Receta
+              </button>
+            </div>
+          </div>
+        )}
+        {!showSeeRecipeButton &&  <HistoryTreatmentForm />}
+      </div>
+
+    )}
+
     </React.Fragment>
   )
 };
