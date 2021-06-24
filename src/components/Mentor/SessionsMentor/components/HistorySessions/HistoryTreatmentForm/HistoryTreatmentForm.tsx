@@ -14,6 +14,8 @@ import PatientBackgroundFormContext, {
 } from '../../PatientHistoryForm/PatientBackgroundForm.context';
 import TreatmentFields from './TreatmentFields';
 
+import HistoryTreatmentsFormContext from '../HistoryTreatmentForm/HistoryTreatmentsFormContext';
+
 
 
 export const TreatmentItem = styled.div`
@@ -97,7 +99,8 @@ export interface IPropsHistoryTreatmentForm {
 
 const HistoryTreatmentForm: React.FC<IPropsHistoryTreatmentForm> = (props:any) => {
 	const mentorService = new MentorService();
-	
+
+	const diagnostic = React.useContext(HistoryTreatmentsFormContext);
 	const renderTreatment = (ctxt: IPatientBackgroundFormContext) => {
 		const treatments = !!ctxt.values.case.treatments
 			? ctxt.values.case.treatments
@@ -109,7 +112,7 @@ const HistoryTreatmentForm: React.FC<IPropsHistoryTreatmentForm> = (props:any) =
 				const sessionID = url.substring(url.lastIndexOf('/') + 1);
 					await mentorService.getMentorAndPatientInSession(sessionID).then((data: any) => {
 							const mentorPatient = {
-								diagnostic: "XYZ",
+								diagnostic: diagnostic.diagonostic,
 								doctor: {
 									doctorCmp: data.doctor.cmp,
 									doctorFirstName: data.doctor.name,
@@ -122,7 +125,7 @@ const HistoryTreatmentForm: React.FC<IPropsHistoryTreatmentForm> = (props:any) =
 								patient: {
 									documentType: (data.patient.document_type === "DNI") ? "1" : "1",
 									motherLastName: data.patient.second_last_name,
-									patientAddress: data.patient.address,
+									patientAddress: buildAddress(data.patient.address),
 									patientAge: moment().diff(data.patient.birthdate, 'years',false),
 									patientClinicHistory: data.patient.clinic_history,
 									patientDateOfBirth: data.patient.birthdate,
@@ -148,6 +151,15 @@ const HistoryTreatmentForm: React.FC<IPropsHistoryTreatmentForm> = (props:any) =
 							}
 						}
 					});
+			}
+
+			const buildAddress = (data: any) => {
+				if(data === null || data === undefined || data === "") {
+					return "Paciente sin dirección!!!"
+				}
+				const resp = JSON.parse(data);
+				const address = resp.street + " " + resp.number +  " - " + resp.name + ", " +  resp.district + ", " + resp.city + ", " + resp.country;
+				return address;
 			}
 			const addNewMedicine = () =>
 				arrayHelpers.push({

@@ -18,6 +18,8 @@ import PatientPhotoModal from './PatientPhotoModal/PatientPhotoModal';
 
 import SessionService from '../../../../../../services/Session/Session.service';
 
+import HistoryTreatmentsFormContext from '../HistoryTreatmentForm/HistoryTreatmentsFormContext';
+
 
 interface IPropsCurrentSessionForm {
   forceDisable?: boolean;
@@ -52,6 +54,7 @@ const CurrentSessionForm: React.FC<IPropsCurrentSessionForm> = ({ forceDisable, 
   const [diagnosticOptions, setDiagnosticOptions] = React.useState<
 		IPropsMentorOptionsDropDown[]
 	>([]);
+  const [ currentDiagnostic, setCurrentDiagnostic] = React.useState('');
   
   const service = new MentorService();
   const sessionService = new SessionService();
@@ -70,7 +73,7 @@ const CurrentSessionForm: React.FC<IPropsCurrentSessionForm> = ({ forceDisable, 
   React.useEffect(() => {
     async function retrieveDiagnostic() {
       const diagnostic = values.case.diagnostic;
-     
+     setCurrentDiagnostic(diagnostic);
       const { items } = await service.getDiagnosticCodes(
 				diagnostic,
 				false,
@@ -257,7 +260,7 @@ const CurrentSessionForm: React.FC<IPropsCurrentSessionForm> = ({ forceDisable, 
             </div>
           </div>
         )}
-        {!showSeeRecipeButton &&  <HistoryTreatmentForm />}
+        {!showSeeRecipeButton &&  <HistoryTreatmentsFormContext.Provider value={{diagonostic: currentDiagnostic}}><HistoryTreatmentForm /></HistoryTreatmentsFormContext.Provider>}
       </div>
 
     )}
