@@ -29,12 +29,12 @@ import SessionService from '../../../services/Session/Session.service';
 import StudentService from '../../../services/Student/Student.service';
 import FormEditHistoryManager from './components/FormEditHistoryManager/FormEditHistoryManager';
 import {
-    ISessionNutritionistFormValidations,
+//    ISessionNutritionistFormValidations,
     nutritionistDefaultValues,
 } from './components/NutritionistForm/NutritionistForm.context';
 import PatientBackgroundFormContext, {
-    IPatientBackgroundFormValidations,
-    IPatientCaseFormValidations,
+//    IPatientBackgroundFormValidations,
+//    IPatientCaseFormValidations,
     ISessionPatientHistoryFormValidations,
 } from './components/PatientHistoryForm/PatientBackgroundForm.context';
 import PatientPhotosModal from './components/PatientPhotosModal/PatientPhotosModal';
@@ -395,19 +395,21 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
                 this.sessionService.updateHistoryBackground(sessionId, historyUpdatedParams),
                 this.sessionService.updateSessionConsult(sessionId, patientForm),
             ]).then((responses) => {
-                const patHistory = responses[0] as IPatientBackgroundFormValidations;
-                const patCase = (!isNutrition ? responses[1] : {}) as IPatientCaseFormValidations;
-                const patNutrition = (isNutrition ? responses[1] : nutritionistDefaultValues) as ISessionNutritionistFormValidations;
-                this.setState({
-                    loading: false,
-                    modalSuccess: true,
-                    patientHistory: { history: patHistory, case: patCase, nutritionist: patNutrition },
-                });
-                setTimeout(() => {
-                    this.setState({ modalSuccess: false });
-                }, 1500);
+                location.reload();
+                // const patHistory = responses[0] as IPatientBackgroundFormValidations;
+                // const patCase = (!isNutrition ? responses[1] : {}) as IPatientCaseFormValidations;
+                // const patNutrition = (isNutrition ? responses[1] : nutritionistDefaultValues) as ISessionNutritionistFormValidations;
+                // this.setState({
+                //     loading: false,
+                //     modalSuccess: true,
+                //     patientHistory: { history: patHistory, case: patCase, nutritionist: patNutrition },
+                // });
+                // setTimeout(() => {
+                //     this.setState({ modalSuccess: false });
+                // }, 1500);
             }).catch(() => {
                 this.setState({ loading: false });
+                location.reload();
             })
         }
     }
