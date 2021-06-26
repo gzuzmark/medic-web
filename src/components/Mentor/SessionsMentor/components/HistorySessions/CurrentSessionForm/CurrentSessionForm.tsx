@@ -176,7 +176,7 @@ const CurrentSessionForm: React.FC<IPropsCurrentSessionForm> = ({ forceDisable, 
       <PatientPhotoModal show={showPhoto} onClose={onCloseModal} photo={selectedPhoto} />
       <FormRow key={'row_4'} style={defaultRowStyle} columns={[
         <FormColumn width={DEFAULT_COLUMN_WIDTH} key={'diagnosticCode'}>
-          <Heading2>Diagnóstico 2222</Heading2>
+          <Heading2>Diagnóstico</Heading2>
           <MentorTypeAhead     
             disabled={!!forceDisable}       
             label="Escribe el código de diagnóstico:"
@@ -255,7 +255,7 @@ const CurrentSessionForm: React.FC<IPropsCurrentSessionForm> = ({ forceDisable, 
             </PrescriptionTextContainer>
             <div style={{ display: 'flex' }}>
               <button onClick={handleOpenRecipe} className='u-Button'>
-                Ver Receta
+                Descargar Receta
               </button>
             </div>
           </div>

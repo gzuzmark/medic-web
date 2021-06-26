@@ -168,11 +168,12 @@ const FormEditHistoryManager: React.FC<IPropsFormEditHistoryManager> = (props) =
       </div>
       {(props.showSaveSession || !hasTreatments) && (
         <ButtonNormal
-          text={"Guardar"}
+          text={ hasTreatments? "Enviar receta": "Guardar"}
           attrs={...buttonAttrUpdate}
         />
       )}
-      {(props.showSendRecipe && hasTreatments) && (
+      {/* props.showSendRecipe && */}
+      {(false) && (
         <ButtonNormal
           text={props.loading ? "Cargando receta..." : "Enviar Receta"}
           attrs={{
