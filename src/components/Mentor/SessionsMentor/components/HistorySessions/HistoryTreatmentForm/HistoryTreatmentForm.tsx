@@ -7,16 +7,13 @@ import Icon from '../../../../../../common/Icon/Icon';
 import colors from '../../../../../../common/MentorColor';
 import { Body1 } from '../../../../../../common/MentorText';
 import { ISessionPatientTreatmentForm } from '../../../../../../domain/Session/SessionEditPatientHistory';
-
 import MentorService from '../../../../../../services/Mentor/Mentor.service';
 import PatientBackgroundFormContext, {
-	IPatientBackgroundFormContext,
+	IPatientBackgroundFormContext
 } from '../../PatientHistoryForm/PatientBackgroundForm.context';
-import TreatmentFields from './TreatmentFields';
-
+import { LOCAL_STORAGE_PRESCRIPTION_URL } from '../Constants';
 import HistoryTreatmentsFormContext from '../HistoryTreatmentForm/HistoryTreatmentsFormContext';
-
-
+import TreatmentFields from './TreatmentFields';
 
 export const TreatmentItem = styled.div`
 	padding: 30px 0;
@@ -139,10 +136,9 @@ const HistoryTreatmentForm: React.FC<IPropsHistoryTreatmentForm> = (props:any) =
 							}
 
 							mentorService.sendMentorAndPatientInfo(mentorPatient).then((response: any) => {
+								localStorage.setItem(LOCAL_STORAGE_PRESCRIPTION_URL, `${response.draftResponse.processUrl}`);
 								window.open(sessionID + '/prescription/' + response.draftResponse.draftNumber, '_blank');
-								
 							})
-					
 					}).catch((error: any) => {
 						if (error.response && error.response.data) {
 							const {code} = error.response.data;

@@ -532,7 +532,7 @@ class MentorService extends BaseRequest {
 				// method: 'POST',
 			
 			};
-			Axios.post(` https://us-recetas-electronica-ci05.cindibyinkafarma.com/create-prescription-draft`,JSON.stringify(mentorPatient), requestOptions)
+			Axios.post(`${process.env.REACT_APP_PRESCRIPTION_URL}/create-prescription-draft`,JSON.stringify(mentorPatient), requestOptions)
 			.then((response: any) => {
 				if (response.status === 200 && response.data) {
 					resolve(response.data);
