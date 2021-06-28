@@ -123,7 +123,7 @@ const PastSessions: React.FC<IPropsPastSessions> = ({ pastCases }) => {
 					const doctor = pastCase && pastCase.doctor;
 					const patientFullname = getPatientFullname(patient);
 					const doctorFullname = getDoctorFullname(doctor);
-					const doctorSpeciality = doctor && doctor.speciality_name;
+					const doctorSpeciality = doctor && doctor.specialty_name;
 					const doctorCMP = doctor && doctor.cmp;
 					const triage = consult && consult.triage;
 					const diagnostic = consult && consult.diagnostic;

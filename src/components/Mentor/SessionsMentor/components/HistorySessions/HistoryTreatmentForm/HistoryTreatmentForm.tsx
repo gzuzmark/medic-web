@@ -1,4 +1,6 @@
+
 import { ArrayHelpers, FieldArray } from 'formik';
+import * as moment from 'moment';
 import * as React from 'react';
 import styled from 'styled-components';
 import Icon from '../../../../../../common/Icon/Icon';
@@ -7,8 +9,10 @@ import { Body1 } from '../../../../../../common/MentorText';
 import { ISessionPatientTreatmentForm } from '../../../../../../domain/Session/SessionEditPatientHistory';
 import MentorService from '../../../../../../services/Mentor/Mentor.service';
 import PatientBackgroundFormContext, {
-	IPatientBackgroundFormContext,
+	IPatientBackgroundFormContext
 } from '../../PatientHistoryForm/PatientBackgroundForm.context';
+import { LOCAL_STORAGE_PRESCRIPTION_URL } from '../Constants';
+import HistoryTreatmentsFormContext from '../HistoryTreatmentForm/HistoryTreatmentsFormContext';
 import TreatmentFields from './TreatmentFields';
 
 export const TreatmentItem = styled.div`
@@ -87,16 +91,72 @@ export interface IPropsHistoryTreatmentForm {
 	forceDisable?: boolean;
 }
 
-const MAX_MEDICINE_AMOUNT = 500;
+// const MAX_MEDICINE_AMOUNT = 500;
+// const MAX_MEDICINE_AMOUNT = 5;
 
-const HistoryTreatmentForm: React.FC<IPropsHistoryTreatmentForm> = (props) => {
+const HistoryTreatmentForm: React.FC<IPropsHistoryTreatmentForm> = (props:any) => {
 	const mentorService = new MentorService();
+
+	const diagnostic = React.useContext(HistoryTreatmentsFormContext);
 	const renderTreatment = (ctxt: IPatientBackgroundFormContext) => {
 		const treatments = !!ctxt.values.case.treatments
 			? ctxt.values.case.treatments
 			: ([] as ISessionPatientTreatmentForm[]);
 
 		return (arrayHelpers: ArrayHelpers) => {
+			const redirectToRecetaMedica = async () => { 
+				const url = window.location.href;
+				const sessionID = url.substring(url.lastIndexOf('/') + 1);
+					await mentorService.getMentorAndPatientInSession(sessionID).then((data: any) => {
+							const mentorPatient = {
+								diagnostic: diagnostic.diagonostic,
+								doctor: {
+									doctorCmp: data.doctor.cmp,
+									doctorFirstName: data.doctor.name,
+									doctorLastName: data.doctor.last_name,
+									doctorSpecialty: data.doctor.title,
+									hasDigitalCertificate: data.doctor.digital_certificate,
+								},
+								ipressCode: "1112",
+								medicalAppointmentId: sessionID,
+								patient: {
+									documentType: (data.patient.document_type === "DNI") ? "1" : "1",
+									motherLastName: data.patient.second_last_name,
+									patientAddress: buildAddress(data.patient.address),
+									patientAge: moment().diff(data.patient.birthdate, 'years',false),
+									patientClinicHistory: data.patient.clinic_history,
+									patientDateOfBirth: data.patient.birthdate,
+									patientDni: data.patient.document_number,
+									patientEmail: data.patient.email,
+									patientFirstName: data.patient.name,
+									patientLastName: data.patient.last_name,
+									patientPhone: data.patient.phone
+								}
+			
+							}
+
+							mentorService.sendMentorAndPatientInfo(mentorPatient).then((response: any) => {
+								localStorage.setItem(LOCAL_STORAGE_PRESCRIPTION_URL, `${response.draftResponse.processUrl}`);
+								window.open(sessionID + '/prescription/' + response.draftResponse.draftNumber, '_blank');
+							})
+					}).catch((error: any) => {
+						if (error.response && error.response.data) {
+							const {code} = error.response.data;
+							if (code === 404) {
+								window.location.assign('/');
+							}
+						}
+					});
+			}
+
+			const buildAddress = (data: any) => {
+				if(data === null || data === undefined || data === "") {
+					return "Paciente sin dirección!!!"
+				}
+				const resp = JSON.parse(data);
+				const address = resp.street + " " + resp.number +  " - " + resp.name + ", " +  resp.district + ", " + resp.city + ", " + resp.country;
+				return address;
+			}
 			const addNewMedicine = () =>
 				arrayHelpers.push({
 					activePrinciples: '',
@@ -112,15 +172,26 @@ const HistoryTreatmentForm: React.FC<IPropsHistoryTreatmentForm> = (props) => {
 					routeofAdministration: '',
 					salesUnit: '',
 				});
+
+				
 			const removeMedicine = (i: number) => () => arrayHelpers.remove(i);
 			if (treatments.length === 0) {
 				return (
 					<OptionsHandler>
-						<button
+						{/* <button
 							disabled={
 								treatments.length >= MAX_MEDICINE_AMOUNT
 							}
 							onClick={addNewMedicine}
+							type={'button'}
+						>
+							<Icon name={'add-circle'} />
+							<Body1>Agregar medicamento-------</Body1>
+						</button> */}
+						
+						<button
+							
+							onClick={redirectToRecetaMedica}
 							type={'button'}
 						>
 							<Icon name={'add-circle'} />

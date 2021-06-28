@@ -29,12 +29,12 @@ import SessionService from '../../../services/Session/Session.service';
 import StudentService from '../../../services/Student/Student.service';
 import FormEditHistoryManager from './components/FormEditHistoryManager/FormEditHistoryManager';
 import {
-    ISessionNutritionistFormValidations,
+//    ISessionNutritionistFormValidations,
     nutritionistDefaultValues,
 } from './components/NutritionistForm/NutritionistForm.context';
 import PatientBackgroundFormContext, {
-    IPatientBackgroundFormValidations,
-    IPatientCaseFormValidations,
+//    IPatientBackgroundFormValidations,
+//    IPatientCaseFormValidations,
     ISessionPatientHistoryFormValidations,
 } from './components/PatientHistoryForm/PatientBackgroundForm.context';
 import PatientPhotosModal from './components/PatientPhotosModal/PatientPhotosModal';
@@ -107,7 +107,7 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
     private fromScheduler: boolean;
     constructor(props: any) {
         super(props);
-        this.patientHistoryData = new SessionEditPatientHistoryData({} as ISessionPatientHistoryForm);        
+        this.patientHistoryData = new SessionEditPatientHistoryData({} as ISessionPatientHistoryForm);
         const { state } = props.location;
         this.fromScheduler = state ? state.fromScheduler : false
         this.state = {
@@ -136,7 +136,7 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
             hasTreatments: false,
             isEmpty: false,
             isNutrition: false,
-            loading: true,            
+            loading: true,
             modal: false,
             modalAdd: this.cleanAddModal(),
             modalCheck: this.cleanCheckModal(''),
@@ -148,14 +148,14 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
                 history: this.patientHistoryData.getHistoryValues,
                 nutritionist: this.patientHistoryData.getNutritionValues
             },
-            prescriptionPath: '',            
+            prescriptionPath: '',
             searchValue: '',
             sendReceipeLoading: false,
             showPhotosModal: false,
             showPreviewModal: false,
             showSaveSession: true,
             showSendRecipe: true,
-            showUploadModal: false,            
+            showUploadModal: false,
             uploadURL: '',
         };
         this.sessionId = this.props.match.params.session || '';
@@ -288,9 +288,9 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
             <div className="SessionsMentor u-LayoutMentorMargin">
                 {this.sessionMentor &&
                     <div className={"SessionsMentor_navigation"}>
-                        <Link to={'/doctor'}><Text3>Tus sesiones >&nbsp;</Text3></Link>
+                        <Link to={'/doctor'}><Text3>Tus sesiones&nbsp;</Text3></Link>
                         <Text3>
-                            {navBarText.charAt(0).toUpperCase()}{navBarText.slice(1)} >&nbsp;</Text3>
+                            {navBarText.charAt(0).toUpperCase()}{navBarText.slice(1)}&nbsp;</Text3>
                         <Text3>{`Sesión ${this.state.fullCardSession.type.toLowerCase()}`}</Text3>
                     </div>}
                 {this.state.loading && !this.state.isEmpty &&
@@ -318,17 +318,18 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
                                 validationSchema={sessionFormValidationSchema}
                                 initialValues={this.state.patientHistory}
                                 enableReinitialize={true}
-                                isInitialValid={false}
                                 onSubmit={this.onSubmit}>
-                                {({ errors, touched, values, setFieldValue, handleBlur, handleChange, handleSubmit}) => {
+                                {({ errors, touched, values, setFieldValue, handleBlur, handleChange, handleSubmit, validateForm, isValid }) => {
                                     return (
                                         <PatientBackgroundFormContext.Provider
                                             value={{
                                                 errors,
                                                 handleBlur,
                                                 handleChange,
+                                                isValid,
                                                 setFieldValue,
                                                 touched,
+                                                validateForm,
                                                 values: values as ISessionPatientHistoryFormValidations,
                                             }}>
                                             <RecipePreviewModal
@@ -394,19 +395,21 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
                 this.sessionService.updateHistoryBackground(sessionId, historyUpdatedParams),
                 this.sessionService.updateSessionConsult(sessionId, patientForm),
             ]).then((responses) => {
-                const patHistory = responses[0] as IPatientBackgroundFormValidations;
-                const patCase = (!isNutrition ? responses[1] : {}) as IPatientCaseFormValidations;
-                const patNutrition = (isNutrition ? responses[1] : nutritionistDefaultValues) as ISessionNutritionistFormValidations;
-                this.setState({
-                    loading: false,
-                    modalSuccess: true,
-                    patientHistory: { history: patHistory, case: patCase, nutritionist: patNutrition },
-                });
-                setTimeout(() => {
-                    this.setState({ modalSuccess: false });
-                }, 1500);
+                location.reload();
+                // const patHistory = responses[0] as IPatientBackgroundFormValidations;
+                // const patCase = (!isNutrition ? responses[1] : {}) as IPatientCaseFormValidations;
+                // const patNutrition = (isNutrition ? responses[1] : nutritionistDefaultValues) as ISessionNutritionistFormValidations;
+                // this.setState({
+                //     loading: false,
+                //     modalSuccess: true,
+                //     patientHistory: { history: patHistory, case: patCase, nutritionist: patNutrition },
+                // });
+                // setTimeout(() => {
+                //     this.setState({ modalSuccess: false });
+                // }, 1500);
             }).catch(() => {
                 this.setState({ loading: false });
+                location.reload();
             })
         }
     }
@@ -486,16 +489,16 @@ class SessionsMentor extends React.Component<IPropsSessionsMentor, IStateSession
         const recipeParams = this.patientHistoryData.getRecipeData(this.state.currentPatient, this.state.currentDoctor, this.sessionMentor.issueDate, this.state.pastCases.length) as any;
         this.setState({ sendReceipeLoading: true });
         this.sessionService.sendTreatmentsRecipe(recipeParams).then((response: any) => {
-            if(response && response.error !== 'none') {
+            if (response && response.error !== 'none') {
                 console.log('ERROR:' + response.error);
                 alert('No se pudo cargar la receta. Contactar al administrador');
             }
             this.setState({
-                hasTreatments: true,                
+                hasTreatments: true,
                 prescriptionPath: response.previewResponse.link,
                 sendReceipeLoading: false,
                 showPreviewModal: true,
-                           
+
             });
         }).catch(() => {
             this.setState({ loading: false, sendReceipeLoading: false });

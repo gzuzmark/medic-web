@@ -10,7 +10,6 @@ import {
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import LayoutContext from '../../../common/Layout/Layout.context';
-
 import Loader from '../../../common/Loader/Loader';
 import { Headline1 } from '../../../common/MentorText';
 import MentorService from '../../../services/Mentor/Mentor.service';
@@ -120,7 +119,7 @@ const Scheduler = () => {
 		};
 	}
 
-	const fillSessionsInCalendar = () => {
+	const fillSessionsInCalendar = (): Promise<void> => {
 		return new Promise((resolve: any) => {
 			if (skills && skills.length > 0) {
 				const skillId = skills[0].id;

@@ -1,8 +1,8 @@
 import * as React from 'react';
 import styled from "styled-components";
 import FormLabel from "../FormLabel/FormLabel";
-import colors, {FONTS} from "../MentorColor";
-import {Body1, defaultFont, LIGHT_TEXT, Small1 } from "../MentorText";
+import colors, { FONTS } from "../MentorColor";
+import { Body1, defaultFont, LIGHT_TEXT, Small1 } from "../MentorText";
 
 export interface IPropsMentorTextArea {
     label?: string;
@@ -15,15 +15,15 @@ export interface IPropsMentorTextArea {
 }
 
 const TextArea: React.SFC<any> = props =>
-    <textarea className={props.className} maxLength={2000} {...props.attrs}>{props.children}</textarea>;
+    <textarea className={props.className} {...props.attrs}>{props.children}</textarea>;
 
 export const TextAreaComponent = styled(TextArea)`
    border: 1px solid ${(props: any) => {
-       let border = colors.MISC_COLORS.background_grey_2;
-       if(props.error) {
-           border = colors.TEXT_COLORS.font_error;
-       } 
-       return border;
+        let border = colors.MISC_COLORS.background_grey_2;
+        if (props.error) {
+            border = colors.TEXT_COLORS.font_error;
+        }
+        return border;
     }};
    border-radius: 4px;
    background: transparent;
@@ -49,7 +49,7 @@ export const TextAreaComponent = styled(TextArea)`
       background: ${colors.BACKGROUND_COLORS.background_white};
       border: 1px solid ${(props: any) => {
         let border = colors.MISC_COLORS.dark;
-        if(props.error) {
+        if (props.error) {
             border = colors.TEXT_COLORS.font_error;
         }
         return border;
@@ -75,21 +75,21 @@ class MentorTextArea extends React.Component<IPropsMentorTextArea, {}> {
         const hasError = this.props.limit && value.length > this.props.limit || !!this.props.error;
         let color = hasError ? FONTS.error : '';
         if (!!this.props.disabled) {
-            attrs = {...attrs, disabled: true};
+            attrs = { ...attrs, disabled: true };
             color = FONTS.disabled;
         }
         return (
             <div style={this.props.styleContainer}>
                 {this.props.label && <FormLabel label={this.props.label} info={this.props.info} />}
-                <TextAreaComponent error={hasError} attrs={{...attrs}} />
+                <TextAreaComponent error={hasError} attrs={{ ...attrs }} />
                 {!!this.props.error &&
-                <div className={'MentorTextArea_message'}><Small1 weight={LIGHT_TEXT} color='font_error'>{this.props.error}</Small1></div>}
+                    <div className={'MentorTextArea_message'}><Small1 weight={LIGHT_TEXT} color='font_error'>{this.props.error}</Small1></div>}
                 {!!this.props.limit &&
-                <div className={"MentorTextArea_limit"} style={{textAlign: 'right'}}>
-                    <Body1 weight={LIGHT_TEXT} color={color}>
-                        {`${value.length}/${this.props.limit}`}
-                    </Body1>
-                </div>}
+                    <div className={"MentorTextArea_limit"} style={{ textAlign: 'right' }}>
+                        <Body1 weight={LIGHT_TEXT} color={color}>
+                            {`${value.length}/${this.props.limit}`}
+                        </Body1>
+                    </div>}
             </div>
         );
     }

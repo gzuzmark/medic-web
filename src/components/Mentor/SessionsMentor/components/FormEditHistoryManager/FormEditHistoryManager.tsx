@@ -14,7 +14,7 @@ import PastSessions from '../HistorySessions/PastSessions/PastSessions';
 import NutritionistForm from "../NutritionistForm/NutritionistForm";
 import PatientBlockContainer from "../PatientBlockContainer/PatientBlockContainer";
 import PatientHistoryForm from '../PatientHistoryForm/PatientBackgroundForm';
-import { IPatientBackgroundFormValidations } from "../PatientHistoryForm/PatientBackgroundForm.context";
+import PatientBackgroundFormContext, { IPatientBackgroundFormValidations } from "../PatientHistoryForm/PatientBackgroundForm.context";
 import './FormEditHistoryManager.scss';
 
 export interface IPropsFormEditHistoryManager {
@@ -57,8 +57,14 @@ const buildPatientInfoBlocks = (patient: any) => {
 };
 
 const FormEditHistoryManager: React.FC<IPropsFormEditHistoryManager> = (props) => {
+  const { validateForm, isValid } = React.useContext(PatientBackgroundFormContext);
   const [modal, setModal] = React.useState(false);
-  const openModal = () => setModal(true);
+  const openModal = () => {
+    validateForm(props.formData.values);
+    if (isValid) {
+      setModal(true)
+    }
+  };
   const patient = props.session && props.session.patient;
   const gender = getGender(patient && patient.gender);
   const triage = props.session && props.session.triage || {} as ISessionTriage;
@@ -78,12 +84,18 @@ const FormEditHistoryManager: React.FC<IPropsFormEditHistoryManager> = (props) =
 
   const onHandleSubmit = () => {
     closeModal();
-    props.onHandleSubmit(props.formData.values)
+    validateForm(props.formData.values);
+    if (isValid) {
+      props.onHandleSubmit(props.formData.values)
+    }
   };
 
   const onHandleSendRecipe = () => {
     closeModal();
-    props.onSendRecipe(props.formData.values)
+    validateForm(props.formData.values);
+    if (isValid) {
+      props.onSendRecipe(props.formData.values)
+    }
   };
 
   const closeModal = () => setModal(false);
@@ -156,11 +168,12 @@ const FormEditHistoryManager: React.FC<IPropsFormEditHistoryManager> = (props) =
       </div>
       {(props.showSaveSession || !hasTreatments) && (
         <ButtonNormal
-          text={"Guardar"}
+          text={ hasTreatments? "Enviar receta": "Guardar"}
           attrs={...buttonAttrUpdate}
         />
       )}
-      {(props.showSendRecipe && hasTreatments) && (
+      {/* props.showSendRecipe && */}
+      {(false) && (
         <ButtonNormal
           text={props.loading ? "Cargando receta..." : "Enviar Receta"}
           attrs={{

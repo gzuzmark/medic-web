@@ -1,5 +1,6 @@
 import * as moment from 'moment';
 import * as React from 'react';
+import MentorService from 'src/services/Mentor/Mentor.service';
 import ConsoleColor from '../../../../../common/ConsoleColor';
 import ConsoleModal from '../../../../../common/ConsoleModal/ConsoleModal';
 import { Title2 } from '../../../../../common/ConsoleText';
@@ -36,9 +37,10 @@ const getDateTime = (from: string, to: string) => {
 const mapDoctorsToDropdown = (doctors: ISessionDoctor[]) => {
 	return doctors.map((doctor) => {
 		const doctorFullname = `${doctor.name || ''} ${doctor.last_name || ''}`;
-		const cmp = (doctor.cmp && `CMP: ${doctor.cmp}`) || '';
+		const specialty =
+			(doctor.specialty_name && `(${doctor.specialty_name})`) || '';
 		return {
-			label: `${doctorFullname} ${cmp}`,
+			label: `${doctorFullname} ${specialty}`,
 			value: doctor.id,
 		};
 	});
@@ -58,6 +60,7 @@ const RescheduleSessionModal: React.FC<IPropsRescheduleSessionModal> = ({
 	sessionId,
 }) => {
 	const sessionService = new SessionService();
+	const mentorService = new MentorService();
 	const [loadingSessions, setLoadingSessions] = React.useState(false);
 	const [loadingDoctors, setLoadingDoctors] = React.useState(false);
 	const [selectedDoctor, setSelectedDoctor] = React.useState('');
@@ -106,8 +109,8 @@ const RescheduleSessionModal: React.FC<IPropsRescheduleSessionModal> = ({
 	React.useEffect(() => {
 		if (show && sessionId) {
 			setLoadingDoctors(true);
-			sessionService
-				.getDoctorsBySession(sessionId)
+			mentorService
+				.doctors()
 				.then((response: ISessionDoctor[]) => {
 					setLoadingDoctors(false);
 					setDoctors(response);
