@@ -22,6 +22,7 @@ import Prescription from "./components/Mentor/Prescription/Prescription";
 import SessionsMentor from "./components/Mentor/SessionsMentor/SessionsMentor";
 import UserRepository, {ROL_ADMIN, ROL_MENTOR} from "./repository/UserRepository";
 
+
 const GuardComponent = <P extends object>(Component: React.ComponentType, rol: string) => {
     const user = UserRepository.getUser();
     return (props: any) => {
