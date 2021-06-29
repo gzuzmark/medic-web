@@ -149,13 +149,48 @@ const HistoryTreatmentForm: React.FC<IPropsHistoryTreatmentForm> = (props:any) =
 					});
 			}
 
-			const buildAddress = (data: any) => {
-				if(data === null || data === undefined || data === "") {
-					return "Paciente sin dirección!!!"
+			const  isValidAddressObject = (address: any): boolean => {
+				return Boolean(
+					address.street &&
+					address.district &&
+					address.city &&
+					address.country
+				);
+			};
+
+			const buildAddress = (data: any) => {				
+				let addressObject = {}
+				try {
+					addressObject = JSON.parse(data)
+				} catch (error) {
+					addressObject = {}
 				}
-				const resp = JSON.parse(data);
-				const address = resp.street + " " + resp.number +  " - " + resp.name + ", " +  resp.district + ", " + resp.city + ", " + resp.country;
-				return address;
+		
+				if (Object.entries(addressObject).length === 0) {
+					return 'Sin dirección';
+				}
+		
+				if (isValidAddressObject(addressObject)) {
+					const sortable = Object.entries(addressObject)
+						.sort(([, a]: any, [, b]: any) => a - b)
+						.reduce((r, [k, v]) => {
+							if (
+								[
+									"address",
+									"country",
+									"district",
+									"city",
+									"number"
+								].includes(k)
+							) {
+								return [...r, v];
+							}
+							return r;
+						}, []);
+		
+					return sortable.join(", ");
+				}
+				return "";
 			}
 			const addNewMedicine = () =>
 				arrayHelpers.push({
