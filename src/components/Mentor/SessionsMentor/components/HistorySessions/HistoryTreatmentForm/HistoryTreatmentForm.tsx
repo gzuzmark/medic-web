@@ -124,7 +124,7 @@ const HistoryTreatmentForm: React.FC<IPropsHistoryTreatmentForm> = (props:any) =
 									motherLastName: data.patient.second_last_name,
 									patientAddress: buildAddress(data.patient.address),
 									patientAge: moment().diff(data.patient.birthdate, 'years',false),
-									patientClinicHistory: data.patient.clinic_history,
+									patientClinicHistory: data.patient.clinic_history ?? '',
 									patientDateOfBirth: data.patient.birthdate,
 									patientDni: data.patient.document_number,
 									patientEmail: data.patient.email,
