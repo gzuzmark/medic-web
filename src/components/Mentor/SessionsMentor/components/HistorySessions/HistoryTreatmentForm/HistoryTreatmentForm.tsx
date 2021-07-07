@@ -98,6 +98,7 @@ const HistoryTreatmentForm: React.FC<IPropsHistoryTreatmentForm> = (props:any) =
 	const mentorService = new MentorService();
 
 	const diagnostic = React.useContext(HistoryTreatmentsFormContext);
+	const [show, setShow] = React.useState(true);
 	const renderTreatment = (ctxt: IPatientBackgroundFormContext) => {
 		const treatments = !!ctxt.values.case.treatments
 			? ctxt.values.case.treatments
@@ -105,6 +106,7 @@ const HistoryTreatmentForm: React.FC<IPropsHistoryTreatmentForm> = (props:any) =
 
 		return (arrayHelpers: ArrayHelpers) => {
 			const redirectToRecetaMedica = async () => { 
+				setShow(false)
 				const url = window.location.href;
 				const sessionID = url.substring(url.lastIndexOf('/') + 1);
 					await mentorService.getMentorAndPatientInSession(sessionID).then((data: any) => {
@@ -137,6 +139,7 @@ const HistoryTreatmentForm: React.FC<IPropsHistoryTreatmentForm> = (props:any) =
 
 							mentorService.sendMentorAndPatientInfo(mentorPatient).then((response: any) => {
 								localStorage.setItem(LOCAL_STORAGE_PRESCRIPTION_URL, `${response.draftResponse.processUrl}`);
+								setShow(true)
 								window.open(sessionID + '/prescription/' + response.draftResponse.draftNumber, '_blank');
 							})
 					}).catch((error: any) => {
@@ -223,15 +226,29 @@ const HistoryTreatmentForm: React.FC<IPropsHistoryTreatmentForm> = (props:any) =
 							<Icon name={'add-circle'} />
 							<Body1>Agregar medicamento-------</Body1>
 						</button> */}
-						
-						<button
+						{show &&(
+							<button
+								disabled={!show}
+								onClick={redirectToRecetaMedica}
+								type={'button'}
+							>  
+								
+									<Icon name={'add-circle'} />
+									<Body1>Agregar medicamento </Body1>
 							
-							onClick={redirectToRecetaMedica}
-							type={'button'}
-						>
-							<Icon name={'add-circle'} />
-							<Body1>Agregar medicamento</Body1>
-						</button>
+							</button>
+						)}
+						{!show &&(
+							<button
+								disabled={!show}
+								type={'button'}
+							>  
+								
+									<Body1>Procesando ... </Body1>
+							
+							</button>
+						)}
+					
 					</OptionsHandler>
 				);
 			}
