@@ -1,6 +1,6 @@
 
 import { ArrayHelpers, FieldArray } from 'formik';
-import * as moment from 'moment';
+// import * as moment from 'moment';
 import * as React from 'react';
 import styled from 'styled-components';
 import Icon from '../../../../../../common/Icon/Icon';
@@ -99,6 +99,7 @@ const HistoryTreatmentForm: React.FC<IPropsHistoryTreatmentForm> = (props:any) =
 
 	const diagnostic = React.useContext(HistoryTreatmentsFormContext);
 	const [show, setShow] = React.useState(true);
+	const [message, setMessage] = React.useState("");
 	const renderTreatment = (ctxt: IPatientBackgroundFormContext) => {
 		const treatments = !!ctxt.values.case.treatments
 			? ctxt.values.case.treatments
@@ -125,7 +126,6 @@ const HistoryTreatmentForm: React.FC<IPropsHistoryTreatmentForm> = (props:any) =
 									documentType: (data.patient.document_type === "DNI") ? "1" : "1",
 									motherLastName: data.patient.second_last_name,
 									patientAddress: buildAddress(data.patient.address),
-									patientAge: moment().diff(data.patient.birthdate, 'years',false),
 									patientClinicHistory: data.patient.clinic_history || '',
 									patientDateOfBirth: data.patient.birthdate,
 									patientDni: data.patient.document_number,
@@ -138,9 +138,13 @@ const HistoryTreatmentForm: React.FC<IPropsHistoryTreatmentForm> = (props:any) =
 							}
 
 							mentorService.sendMentorAndPatientInfo(mentorPatient).then((response: any) => {
-								localStorage.setItem(LOCAL_STORAGE_PRESCRIPTION_URL, `${response.draftResponse.processUrl}`);
-								setShow(true)
-								window.open(sessionID + '/prescription/' + response.draftResponse.draftNumber, '_blank');
+								if(response.draftResponse === null) {
+									setMessage(response.error)
+								} else { 
+									localStorage.setItem(LOCAL_STORAGE_PRESCRIPTION_URL, `${response.draftResponse.processUrl}`);
+									setShow(true)
+									window.open(sessionID + '/prescription/' + response.draftResponse.draftNumber, '_blank');
+								}
 							})
 					}).catch((error: any) => {
 						if (error.response && error.response.data) {
@@ -238,7 +242,8 @@ const HistoryTreatmentForm: React.FC<IPropsHistoryTreatmentForm> = (props:any) =
 							
 							</button>
 						)}
-						{!show &&(
+						{!show && message === '' &&(
+							
 							<button
 								disabled={!show}
 								type={'button'}
@@ -247,6 +252,12 @@ const HistoryTreatmentForm: React.FC<IPropsHistoryTreatmentForm> = (props:any) =
 									<Body1>Procesando ... </Body1>
 							
 							</button>
+							
+						)}
+
+						{ message !== '' &&(
+							<div><Body1 style={{color:'red'}}>Error!: {message}, comunicarse con su administrador.</Body1></div>
+
 						)}
 					
 					</OptionsHandler>
