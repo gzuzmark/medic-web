@@ -621,7 +621,7 @@ const TreatmentFields: React.FC<IPropsTreatmentFields> = ({
 						type={'button'}
 					>
 						<Icon name={'add-circle'} />
-						<Body1>Agregar medicamento ---- 444</Body1>
+						<Body1>Agregar medica</Body1>
 					</button>
 				)}
 			</OptionsHandler>
