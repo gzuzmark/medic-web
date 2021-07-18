@@ -3,6 +3,7 @@
     "test": "ugo-consola-qa",
     "production": "ugo-consola",
     "default": "freelos-baratitos-com",
+    "stage": "alivia-admin-stage"
     "prod": "alivia-admin"
   },
   "targets": {

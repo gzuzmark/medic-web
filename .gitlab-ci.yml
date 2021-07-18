@@ -77,7 +77,7 @@ deploy_stage_dev:
     - staging
   script:
     - yarn global add firebase-tools --cache-folder ./.cache_yarn
-    - firebase deploy -m "Pipeline $CI_PIPELINE_ID, build $CI_BUILD_ID" --non-interactive --token $FIREBASE_DEPLOY_KEY_STAGE -P default
+    - firebase deploy -m "Pipeline $CI_PIPELINE_ID, build $CI_BUILD_ID" --non-interactive --token $FIREBASE_DEPLOY_KEY_STAGE -P stage
 
 build_stage_prod:
   stage: build
