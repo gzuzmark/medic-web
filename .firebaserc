@@ -3,14 +3,21 @@
     "test": "ugo-consola-qa",
     "production": "ugo-consola",
     "default": "freelos-baratitos-com",
-    "stage": "alivia-admin-stage"
-    "prod": "alivia-admin"
+    "prod": "alivia-admin",
+    "admin-stage": "alivia-admin-stage"
   },
   "targets": {
     "alivia-admin": {
       "hosting": {
         "prod": [
           "alivia-admin"
+        ]
+      }
+    },
+    "alivia-admin-stage": {
+      "hosting": {
+        "admin-stage": [
+          "alivia-admin-stage"
         ]
       }
     }
