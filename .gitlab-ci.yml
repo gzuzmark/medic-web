@@ -71,7 +71,7 @@ build_staging:
   only:
     - staging
 
-deploy_stage_dev:
+deploy_stage:
   stage: deploy
   only:
     - staging
