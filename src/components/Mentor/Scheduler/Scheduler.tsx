@@ -210,7 +210,7 @@ const Scheduler = () => {
 			const endTime: Date = created && (created.EndTime as Date);
 			const bulk = {
 				credits: 0,
-				interestAreaId: '49024bf6-c767-44ea-b4a5-983d008e0613',
+				interestAreaId: `${process.env.REACT_APP_INTEREST_AREA_ID}`,
 				isWorkshop: false,
 				maxStudents: 1,
 				room: 1,
