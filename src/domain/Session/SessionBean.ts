@@ -13,6 +13,7 @@ export const SESSION_STATUS = {
 
 export interface ISessionConsult {
     has_treatments: boolean;
+    has_prescription: boolean;
 }
 
 export interface ISessionItemBase {
@@ -118,18 +119,9 @@ export class SessionBean {
         return '';
     }
 
-    public isAttended() {
-        const now = new Date();
-        const date = new Date(this.session.from);
-        const isConsult = !!this.session.consult && this.session.consult.has_treatments;
-        if (date.getTime() < now.getTime() && !isConsult) {
-            return false;
-        } else if (date.getTime() <= now.getTime() && isConsult) {
-            return true;
-        } else if (date.getTime() > now.getTime()) {
-            return false;
-        }
-        return false;
+    public isValidPrescription() {
+        const isConsult = !!this.session.consult && this.session.consult.has_prescription;
+        return isConsult;
     }
 
     public getReservationDate(dateFormatter: AbstractDateParser): string {
