@@ -97,6 +97,34 @@ export interface IPropsHistoryTreatmentForm {
 const HistoryTreatmentForm: React.FC<IPropsHistoryTreatmentForm> = (props:any) => {
 	const mentorService = new MentorService();
 
+	const handleMessage = (event: any) => {
+		// tslint:disable:no-console
+        console.log("A key was pressed", event.keyCode);
+		console.log({ event });
+		console.log(event.data);
+        if (event.origin.startsWith(window.location.origin) && event.data === 'messagereceipe') {
+            // The data was sent from your site.
+            // Data sent with postMessage is stored in event.data:
+            // tslint:disable:no-console
+            console.log(event.data);
+			location.reload();
+        } else {
+            // The data was NOT sent from your site!
+            // Be careful! Do not use it. This else branch is
+            // here just for clarity, you usually shouldn't need it.
+            return;
+        }
+    };
+
+    React.useEffect(() => {
+        window.addEventListener("message", handleMessage);
+
+        // cleanup this component
+        return () => {
+            window.removeEventListener("message", handleMessage);
+        };
+    }, []);
+
 	const diagnostic = React.useContext(HistoryTreatmentsFormContext);
 	const [show, setShow] = React.useState(true);
 	const [message, setMessage] = React.useState("");

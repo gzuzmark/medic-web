@@ -65,7 +65,7 @@ const CardSession: React.FC<IPropsCardSession> = (props) => {
                     props.item.getStatus() === SESSION_LIFE.ACTIVE &&
                     <a href={props.link} className={"CardSession_options-button"}>
                         <Icon name={"paper-pencil"}/>
-                        <TextBold3>Tomar asistencia</TextBold3>
+                        <TextBold3>Ir a historia clínica</TextBold3>
                     </a>
                 }
                 {

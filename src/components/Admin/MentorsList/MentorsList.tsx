@@ -4,12 +4,12 @@ import { ButtonNormal } from '../../../common/Buttons/Buttons';
 import MenuAside from "../../../common/Layout/components/MenuAside/MenuAside";
 import Layout from '../../../common/Layout/Layout';
 import Loader from '../../../common/Loader/Loader';
-import {default as colors, FONTS} from "../../../common/MentorColor";
-import MentorDropDown, {IPropsMentorOptionsDropDown} from "../../../common/MentorDropDown/MentorDropDown";
+import { default as colors, FONTS } from "../../../common/MentorColor";
+import MentorDropDown, { IPropsMentorOptionsDropDown } from "../../../common/MentorDropDown/MentorDropDown";
 import { Headline1 } from '../../../common/MentorText';
 import Sticky from '../../../common/Sticky/Sticky';
-import {IMentorBase, IMentorPaginated, MENTOR_STATUS} from "../../../domain/Mentor/MentorBase";
-import {ISkill} from "../../../domain/Skill/Skill";
+import { IMentorBase, IMentorPaginated, MENTOR_STATUS } from "../../../domain/Mentor/MentorBase";
+import { ISkill } from "../../../domain/Skill/Skill";
 import MentorRepository from "../../../repository/MentorsRepository";
 import MentorService from '../../../services/Mentor/Mentor.service';
 import SkillService from "../../../services/Skill/Skill.service";
@@ -29,7 +29,7 @@ interface IStateListMentor {
 
 const PAGE_SIZE = 30;
 
-class MentorsList extends React.Component <{}, IStateListMentor> {
+class MentorsList extends React.Component<{}, IStateListMentor> {
     public state: IStateListMentor;
     private mentorService: MentorService;
     private skillService: SkillService;
@@ -74,9 +74,9 @@ class MentorsList extends React.Component <{}, IStateListMentor> {
 
     public renderMenu() {
         return (
-            <Sticky height={244} top={80} style={{background: 'white'}}>
-                <MenuAside  icon={'book'}
-                            items={[{text: 'Doctores', url: '/admin/doctores'}]} />
+            <Sticky height={244} top={80} style={{ background: 'white' }}>
+                <MenuAside icon={'book'}
+                    items={[{ text: 'Doctores', url: '/admin/doctores' }]} />
                 <div className='u-LayoutMargin u-ListMentors_padding ListMentors_sticky'>
                     <MentorDropDown
                         options={this.state.skills}
@@ -85,18 +85,18 @@ class MentorsList extends React.Component <{}, IStateListMentor> {
                         triggerChange={this.changeSkill}
                         isSearchable={true}
                         disabled={this.state.initialLoad}
-                        style={{width: 500}}
-                        placeholder={"Filtrar por curso"}/>
+                        style={{ width: 500 }}
+                        placeholder={"Filtrar por curso"} />
                     <ButtonNormal text={"Agregar doctor"}
-                                  attrs={{onClick: this.goToCreateMentors}}
-                                  />
+                        attrs={{ onClick: this.goToCreateMentors }}
+                    />
                 </div>
                 <ListMentorsHeader header={[
                     'NOMBRE DE DOCTOR',
                     'HORAS SEMANALES',
                     'VER SESIONES',
                     'CREAR SESIONES',
-                ]}/>
+                ]} />
             </Sticky>
         )
     }
@@ -142,13 +142,13 @@ class MentorsList extends React.Component <{}, IStateListMentor> {
                     </div>
                 )}
                 {!this.state.initialLoad && this.state.mentors.map((item, index) => {
-                    const newMentorStyle =  this.getNewMentors().indexOf(item.id) !== -1 ? {order: --this.counter, background: colors.MISC_COLORS.background_grey_1} : {};
-                    const disableStyle =  item.status === MENTOR_STATUS.DISABLED ? {borderBottom: `1px solid ${colors.MISC_COLORS.background_grey_1}`} : {borderBottom: `1px solid ${colors.MISC_COLORS.background_grey_2}`};
+                    const newMentorStyle = this.getNewMentors().indexOf(item.id) !== -1 ? { order: --this.counter, background: colors.MISC_COLORS.background_grey_1 } : {};
+                    const disableStyle = item.status === MENTOR_STATUS.DISABLED ? { borderBottom: `1px solid ${colors.MISC_COLORS.background_grey_1}` } : { borderBottom: `1px solid ${colors.MISC_COLORS.background_grey_2}` };
                     return (
                         <div key={'list-mentor-row' + item.id}
-                             className={`ListMentors_row ListMentors_row--border u-ListMentors_padding`}
-                             style={{...newMentorStyle, ...disableStyle}}>
-                            <ListMentorsBody mentor={item}/>
+                            className={`ListMentors_row ListMentors_row--border u-ListMentors_padding`}
+                            style={{ ...newMentorStyle, ...disableStyle }}>
+                            <ListMentorsBody mentor={item} />
                         </div>);
                 })}
             </div>
@@ -158,14 +158,16 @@ class MentorsList extends React.Component <{}, IStateListMentor> {
     private loadNextPage(page: number) {
         if (!this.state.loading) {
             const ids = this.state.newMentors.map((m) => m.id);
-            this.setState({loading: true}, () => {
+            this.setState({ loading: true }, () => {
                 this.mentorService.list(this.state.selectedFilter, ids, page, PAGE_SIZE).then((response: IMentorPaginated) => {
                     const mentors = response.items;
-                    if(mentors) {
+                    if (mentors) {
                         const currentMentors = !this.state.mentors ? [] : this.state.mentors;
                         const newMentors = [...currentMentors, ...mentors];
-                        const hasMore =  page * PAGE_SIZE < response.totalItems;
-                        this.scroller.pageLoaded = page;
+                        const hasMore = page * PAGE_SIZE < response.totalItems;
+                        if (this.scroller) {
+                            this.scroller.pageLoaded = page;
+                        }
                         this.setState({
                             hasMore,
                             initialLoad: false,
@@ -173,7 +175,7 @@ class MentorsList extends React.Component <{}, IStateListMentor> {
                             mentors: newMentors.filter((item) => !!item),
                         })
                     } else {
-                        this.setState({hasMore: false})
+                        this.setState({ hasMore: false })
                     }
                 });
             })
@@ -184,10 +186,10 @@ class MentorsList extends React.Component <{}, IStateListMentor> {
     private changeSkill(name: string, option: IPropsMentorOptionsDropDown) {
         window.scrollTo(0, 0);
         const ids = this.state.newMentors.map((m) => m.id);
-        this.setState({loading: true, selectedFilter: option.value, hasMore: false, mentors: []}, () => {
-            this.mentorService.list(option.value, ids,1, PAGE_SIZE).then((response: IMentorPaginated) => {
+        this.setState({ loading: true, selectedFilter: option.value, hasMore: false, mentors: [] }, () => {
+            this.mentorService.list(option.value, ids, 1, PAGE_SIZE).then((response: IMentorPaginated) => {
                 this.scroller.pageLoaded = 1;
-                const hasMore =  this.scroller.pageLoaded * PAGE_SIZE < response.totalItems;
+                const hasMore = this.scroller.pageLoaded * PAGE_SIZE < response.totalItems;
                 this.setState({
                     hasMore,
                     loading: false,
@@ -199,8 +201,8 @@ class MentorsList extends React.Component <{}, IStateListMentor> {
 
     private loadSkills() {
         this.skillService.list().then((values: ISkill[]) => {
-            const skills = values.map((v) => ({label: v.name, value: v.id}));
-            skills.push({label: 'Todos', value: 'all'});
+            const skills = values.map((v) => ({ label: v.name, value: v.id }));
+            skills.push({ label: 'Todos', value: 'all' });
             this.setState({
                 skills
             })
