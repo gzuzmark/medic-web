@@ -254,10 +254,10 @@ const ListSessionsBody: React.FC<IPropsListSessionsBody> = (props) => {
 						HC
 					</a>
 				)}
-				{(!!prescriptionURL && sessionBean.isAttended()) && (
+				{(!!prescriptionURL && sessionBean.isValidPrescription()) && (
 					<div className='ListSessions_linkseparator' />
 				)}
-				{(!!prescriptionURL && sessionBean.isAttended()) && (
+				{(!!prescriptionURL && sessionBean.isValidPrescription()) && (
 					<a href={prescriptionURL} target='blank'>
 						RM
 					</a>
