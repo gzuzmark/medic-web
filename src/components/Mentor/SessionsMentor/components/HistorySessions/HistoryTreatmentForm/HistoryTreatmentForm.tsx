@@ -3,7 +3,7 @@ import { ArrayHelpers, FieldArray } from 'formik';
 // import * as moment from 'moment';
 import * as React from 'react';
 import styled from 'styled-components';
-import Icon from '../../../../../../common/Icon/Icon';
+// import Icon from '../../../../../../common/Icon/Icon';
 import colors from '../../../../../../common/MentorColor';
 import { Body1 } from '../../../../../../common/MentorText';
 import { ISessionPatientTreatmentForm } from '../../../../../../domain/Session/SessionEditPatientHistory';
@@ -11,8 +11,8 @@ import MentorService from '../../../../../../services/Mentor/Mentor.service';
 import PatientBackgroundFormContext, {
 	IPatientBackgroundFormContext
 } from '../../PatientHistoryForm/PatientBackgroundForm.context';
-import { LOCAL_STORAGE_PRESCRIPTION_URL } from '../Constants';
-import HistoryTreatmentsFormContext from '../HistoryTreatmentForm/HistoryTreatmentsFormContext';
+// import { LOCAL_STORAGE_PRESCRIPTION_URL } from '../Constants';
+// import HistoryTreatmentsFormContext from '../HistoryTreatmentForm/HistoryTreatmentsFormContext';
 import TreatmentFields from './TreatmentFields';
 
 export const TreatmentItem = styled.div`
@@ -96,7 +96,7 @@ export interface IPropsHistoryTreatmentForm {
 
 const HistoryTreatmentForm: React.FC<IPropsHistoryTreatmentForm> = (props:any) => {
 	const mentorService = new MentorService();
-
+	
 	const handleMessage = (event: any) => {
 		// tslint:disable:no-console
         console.log("A key was pressed", event.keyCode);
@@ -125,108 +125,114 @@ const HistoryTreatmentForm: React.FC<IPropsHistoryTreatmentForm> = (props:any) =
         };
     }, []);
 
-	const diagnostic = React.useContext(HistoryTreatmentsFormContext);
-	const [show, setShow] = React.useState(true);
-	const [message, setMessage] = React.useState("");
+	// const diagnostic = React.useContext(HistoryTreatmentsFormContext);
+	// const [show, setShow] = React.useState(true);
+	// const [message, setMessage] = React.useState("");
 	const renderTreatment = (ctxt: IPatientBackgroundFormContext) => {
 		const treatments = !!ctxt.values.case.treatments
 			? ctxt.values.case.treatments
 			: ([] as ISessionPatientTreatmentForm[]);
 
 		return (arrayHelpers: ArrayHelpers) => {
-			const redirectToRecetaMedica = async () => { 
-				setShow(false)
-				const url = window.location.href;
-				const sessionID = url.substring(url.lastIndexOf('/') + 1);
-					await mentorService.getMentorAndPatientInSession(sessionID).then((data: any) => {
-							const mentorPatient = {
-								diagnostic: diagnostic.diagonostic,
-								doctor: {
-									doctorCmp: data.doctor.cmp,
-									doctorFirstName: data.doctor.name,
-									doctorLastName: data.doctor.last_name,
-									doctorSpecialty: data.doctor.title,
-									hasDigitalCertificate: data.doctor.digital_certificate,
-								},
-								ipressCode: "1112",
-								medicalAppointmentId: sessionID,
-								patient: {
-									documentType: (data.patient.document_type === "DNI") ? "1" : "1",
-									motherLastName: data.patient.second_last_name,
-									patientAddress: buildAddress(data.patient.address),
-									patientClinicHistory: data.patient.clinic_history || '',
-									patientDateOfBirth: data.patient.birthdate,
-									patientDni: data.patient.document_number,
-									patientEmail: data.patient.email,
-									patientFirstName: data.patient.name,
-									patientLastName: data.patient.last_name,
-									patientPhone: data.patient.phone
-								}
+			// const redirectToRecetaMedica = async () => { 
+			// 	// setShow(false)
+			// 	const url = window.location.href;
+			// 	const sessionID = url.substring(url.lastIndexOf('/') + 1);
+			// 		await mentorService.getMentorAndPatientInSession(sessionID).then((data: any) => {
+			// 				const mentorPatient = {
+			// 					diagnostic: diagnostic.diagonostic,
+			// 					doctor: {
+			// 						doctorCmp: data.doctor.cmp,
+			// 						doctorFirstName: data.doctor.name,
+			// 						doctorLastName: data.doctor.last_name,
+			// 						doctorSpecialty: data.doctor.title,
+			// 						hasDigitalCertificate: data.doctor.digital_certificate,
+			// 					},
+			// 					ipressCode: "1112",
+			// 					medicalAppointmentId: sessionID,
+			// 					patient: {
+			// 						documentType: (data.patient.document_type === "DNI") ? "1" : "1",
+			// 						motherLastName: data.patient.second_last_name,
+			// 						patientAddress: buildAddress(data.patient.address),
+			// 						patientClinicHistory: data.patient.clinic_history || '',
+			// 						patientDateOfBirth: data.patient.birthdate,
+			// 						patientDni: data.patient.document_number,
+			// 						patientEmail: data.patient.email,
+			// 						patientFirstName: data.patient.name,
+			// 						patientLastName: data.patient.last_name,
+			// 						patientPhone: data.patient.phone
+			// 					}
 			
-							}
+			// 				}
 
-							mentorService.sendMentorAndPatientInfo(mentorPatient).then((response: any) => {
-								if(response.draftResponse === null) {
-									setMessage(response.error)
-								} else { 
-									localStorage.setItem(LOCAL_STORAGE_PRESCRIPTION_URL, `${response.draftResponse.processUrl}`);
-									setShow(true)
-									window.open(sessionID + '/prescription/' + response.draftResponse.draftNumber, '_blank');
-								}
-							})
-					}).catch((error: any) => {
-						if (error.response && error.response.data) {
-							const {code} = error.response.data;
-							if (code === 404) {
-								window.location.assign('/');
-							}
-						}
-					});
-			}
+			// 				mentorService.sendMentorAndPatientInfo(mentorPatient).then((response: any) => {
+			// 					if(response.draftResponse === null) {
+			// 						// setMessage(response.error)
+			// 					} else { 
+			// 						localStorage.setItem(LOCAL_STORAGE_PRESCRIPTION_URL, `${response.draftResponse.processUrl}`);
+			// 						// setShow(true)
+			// 						window.open(sessionID + '/prescription/' + response.draftResponse.draftNumber, '_blank');
+			// 					}
+			// 				})
+			// 		}).catch((error: any) => {
+			// 			if (error.response && error.response.data) {
+			// 				const {code} = error.response.data;
+			// 				if (code === 404) {
+			// 					window.location.assign('/');
+			// 				}
+			// 			}
+			// 		});
+			// }
 
-			const  isValidAddressObject = (address: any): boolean => {
-				return Boolean(
-					address.street &&
-					address.district &&
-					address.city &&
-					address.country
-				);
-			};
+			// const buttonAttrBase: any = {
+			// 	onClick: redirectToRecetaMedica,
+			// 	style: { margin: '40px 0 0 auto' },
+			// 	type: "button"
+			//   };
 
-			const buildAddress = (data: any) => {				
-				let addressObject = {}
-				try {
-					addressObject = JSON.parse(data)
-				} catch (error) {
-					addressObject = {}
-				}
+			// const  isValidAddressObject = (address: any): boolean => {
+			// 	return Boolean(
+			// 		address.street &&
+			// 		address.district &&
+			// 		address.city &&
+			// 		address.country
+			// 	);
+			// };
+
+			// const buildAddress = (data: any) => {				
+			// 	let addressObject = {}
+			// 	try {
+			// 		addressObject = JSON.parse(data)
+			// 	} catch (error) {
+			// 		addressObject = {}
+			// 	}
 		
-				if (Object.entries(addressObject).length === 0) {
-					return 'Sin dirección';
-				}
+			// 	if (Object.entries(addressObject).length === 0) {
+			// 		return 'Sin dirección';
+			// 	}
 		
-				if (isValidAddressObject(addressObject)) {
-					const sortable = Object.entries(addressObject)
-						.sort(([, a]: any, [, b]: any) => a - b)
-						.reduce((r, [k, v]) => {
-							if (
-								[
-									"address",
-									"country",
-									"district",
-									"city",
-									"number"
-								].includes(k)
-							) {
-								return [...r, v];
-							}
-							return r;
-						}, []);
+			// 	if (isValidAddressObject(addressObject)) {
+			// 		const sortable = Object.entries(addressObject)
+			// 			.sort(([, a]: any, [, b]: any) => a - b)
+			// 			.reduce((r, [k, v]) => {
+			// 				if (
+			// 					[
+			// 						"address",
+			// 						"country",
+			// 						"district",
+			// 						"city",
+			// 						"number"
+			// 					].includes(k)
+			// 				) {
+			// 					return [...r, v];
+			// 				}
+			// 				return r;
+			// 			}, []);
 		
-					return sortable.join(", ");
-				}
-				return "";
-			}
+			// 		return sortable.join(", ");
+			// 	}
+			// 	return "";
+			// }
 			const addNewMedicine = () =>
 				arrayHelpers.push({
 					activePrinciples: '',
@@ -247,48 +253,51 @@ const HistoryTreatmentForm: React.FC<IPropsHistoryTreatmentForm> = (props:any) =
 			const removeMedicine = (i: number) => () => arrayHelpers.remove(i);
 			if (treatments.length === 0) {
 				return (
-					<OptionsHandler>
-						{/* <button
-							disabled={
-								treatments.length >= MAX_MEDICINE_AMOUNT
-							}
-							onClick={addNewMedicine}
-							type={'button'}
-						>
-							<Icon name={'add-circle'} />
-							<Body1>Agregar medicamento-------</Body1>
-						</button> */}
-						{show &&(
-							<button
-								disabled={!show}
-								onClick={redirectToRecetaMedica}
-								type={'button'}
-							>  
+					<p>.</p>
+					// <OptionsHandler>
+					// 	{/* <button
+					// 		disabled={
+					// 			treatments.length >= MAX_MEDICINE_AMOUNT
+					// 		}
+					// 		onClick={addNewMedicine}
+					// 		type={'button'}
+					// 	>
+					// 		<Icon name={'add-circle'} />
+					// 		<Body1>Agregar medicamento-------</Body1>
+					// 	</button> */}
+					// 	{/* {show &&(
+					// 		<button
+					// 			disabled={!show}
+					// 			onClick={redirectToRecetaMedica}
+					// 			type={'button'}
+					// 		>  
 								
-									<Icon name={'add-circle'} />
-									<Body1>Agregar medicamento </Body1>
+					// 				<Icon name={'add-circle'} />
+					// 				<Body1>Agregar medicamento </Body1>
 							
-							</button>
-						)}
-						{!show && message === '' &&(
+					// 		</button>
+					// 	)}
+					// 	{!show && message === '' &&(
 							
-							<button
-								disabled={!show}
-								type={'button'}
-							>  
+					// 		<button
+					// 			disabled={!show}
+					// 			type={'button'}
+					// 		>  
 								
-									<Body1>Procesando ... </Body1>
+					// 				<Body1>Procesando ... </Body1>
 							
-							</button>
+					// 		</button>
 							
-						)}
+					// 	)}
 
-						{ message !== '' &&(
-							<div><Body1 style={{color:'red'}}>Error!: {message}, comunicarse con su administrador.</Body1></div>
+					// 	{ message !== '' &&(
+					// 		<div><Body1 style={{color:'red'}}>Error!: {message}, comunicarse con su administrador.</Body1></div>
 
-						)}
+					// 	)} */}
+
+						
 					
-					</OptionsHandler>
+					// </OptionsHandler>
 				);
 			}
 

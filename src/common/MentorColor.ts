@@ -23,6 +23,7 @@ const MISC = {
     blue: '#81a8d2',
     blue_grey: "#748e98",
     green: '#82d2ad',
+    light_blue: '#87b8fd',
     light_grey_1: '#adb7c4',
     light_grey_2: '#e6edf2',
     light_grey_3: '#eef2f6',
@@ -40,7 +41,8 @@ const MISC_COLORS = {
     dark: SECONDARY_COLORS.dark_gray,
     dark_purple: SECONDARY_COLORS.indigo_dark_purple,
     green: MISC.green,
-    light_purple: SECONDARY_COLORS.indigo_light_purple
+    light_blue: MISC.light_blue,
+    light_purple: SECONDARY_COLORS.indigo_light_purple,    
 };
 
 const TEXT_COLORS = {
@@ -63,6 +65,7 @@ const BACKGROUND_COLORS = {
     background_disabled: MISC.light_grey_2,
     background_disabled_button: MISC.light_grey_1,
     background_green: PRIMARY_COLORS.green,
+    background_light_blue: MISC.light_blue,
     background_light_green: PRIMARY_COLORS.light_green,
     background_purple: PRIMARY_COLORS.indigo_purple,
     background_red: PRIMARY_COLORS.red,
@@ -77,6 +80,7 @@ interface IMentorColor {
         background_disabled: string;
         background_disabled_button: string;
         background_green: string;
+        background_light_blue: string;
         background_light_green: string;
         background_purple: string;
         background_blue: string;
