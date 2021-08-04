@@ -571,7 +571,8 @@ class SessionsMentor extends React.Component<
                 ),
                 this.sessionService.updateSessionConsult(sessionId, patientForm)
             ])
-                .then(responses => {                    
+                .then(responses => {
+                    // location.reload();
                     const patHistory = responses[0] as IPatientBackgroundFormValidations;
                     const patCase = (!isNutrition
                         ? responses[1]
@@ -596,7 +597,8 @@ class SessionsMentor extends React.Component<
                     }                    
                 })
                 .catch(() => {
-                    this.setState({ loading: false });                    
+                    this.setState({ loading: false });
+                    // location.reload();
                 });
         }
     }
@@ -615,7 +617,7 @@ class SessionsMentor extends React.Component<
         mentorService
             .sendMentorAndPatientInfo(mentorPatient)
             .then((response: any) => {
-                if (!response.draftResponse) {                                    
+                if (response.draftResponse) {                 
                     localStorage.setItem(
                         LOCAL_STORAGE_PRESCRIPTION_URL,
                         `${response.draftResponse.processUrl}`
