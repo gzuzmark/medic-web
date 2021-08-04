@@ -5,7 +5,7 @@ import styled from "styled-components";
 import FormColumn from "../../../../../../common/FormRow/components/FormColumn/FormColumn";
 import FormRow from "../../../../../../common/FormRow/FormRow";
 import { IPropsMentorOptionsDropDown } from '../../../../../../common/MentorDropDown/MentorDropDown';
-import { Heading2, Headline1 } from '../../../../../../common/MentorText';
+import { Heading2 } from '../../../../../../common/MentorText';
 import MentorTextArea from '../../../../../../common/MentorTextArea/MentorTextArea';
 import MentorTypeAhead from '../../../../../../common/MentorTypeAhead/MentorTypeAhead';
 import MentorService from '../../../../../../services/Mentor/Mentor.service';
@@ -228,9 +228,10 @@ const CurrentSessionForm: React.FC<IPropsCurrentSessionForm> = ({ forceDisable, 
       ]}/>
       <FormRow key={'row_5'} style={defaultRowStyle} columns={[
         <FormColumn width={DEFAULT_COLUMN_WIDTH} key={'recommendation'}>
+          <Heading2>Tratamiento no-farmacológico:</Heading2>
           <MentorTextArea
             disabled={!!forceDisable}
-            label="Recomendaciones del tratamiento:"
+            label=""
             attrs={{
                 name: "case.recommendation",
                 onBlur: handleBlur,
@@ -243,10 +244,7 @@ const CurrentSessionForm: React.FC<IPropsCurrentSessionForm> = ({ forceDisable, 
         
       ]}/>
     { flag && (
-      <div style={{ marginTop: 20 }}>
-        <Headline1>
-          Tratamiento 
-        </Headline1>
+      <div style={{ marginTop: 20 }}>        
         {showSeeRecipeButton && (
           <div style={prescriptionContainerStyle}>
             <PrescriptionTextContainer>

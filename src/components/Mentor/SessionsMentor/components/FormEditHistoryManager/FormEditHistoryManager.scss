@@ -14,4 +14,16 @@
   &_sessions {
     margin-top: 20px;
   }
+  &_buttons {
+    display: flex;
+    justify-content: space-between;
+  }
 }
+
+.button-info {  
+  color: #adb7c4;
+  font-size: 12px;
+  margin-top: 0.75rem;
+  width: 19.5rem
+}
+
