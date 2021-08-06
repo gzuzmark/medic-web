@@ -48,8 +48,8 @@ export interface IPropsFormEditHistoryManager {
 const PrescriptionTextContainer = styled.div`
     display: flex;
     flex-direction: column;
-    line-height: 1.5;
-    margin-right: 30px;
+    line-height: 1.5;    
+    width: 17.5rem;
 `;
 
 const getGender = (value?: number): string => {
@@ -221,8 +221,8 @@ const FormEditHistoryManager: React.FC<IPropsFormEditHistoryManager> = (props) =
                             attrs={...buttonAttrUpdate}
                             icon={sendIcon}    
                         />
-                  <div className="button-info">Al guardar también estaras enviando el correo de resumen al paciente</div>
-                </PrescriptionTextContainer>
+                  <div className="button-info"><em>Al guardar también estarás enviando el correo de resumen al paciente</em></div>
+                  </PrescriptionTextContainer>
                    
                   </div>
               </div>
