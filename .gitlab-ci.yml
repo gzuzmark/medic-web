@@ -18,6 +18,7 @@ install_stage:
     - node_modules/
   only:
     - dev
+    - staging
     - master
 
 build_stage_dev:
@@ -48,6 +49,37 @@ deploy_stage_dev:
   script:
     - yarn global add firebase-tools --cache-folder ./.cache_yarn
     - firebase deploy -m "Pipeline $CI_PIPELINE_ID, build $CI_BUILD_ID" --non-interactive --token $FIREBASE_DEPLOY_KEY_DEV -P default
+
+    
+build_staging:
+  stage: build
+  variables:
+    REACT_APP_BASE_URL: "$API_BASE_URL_STAGE"
+    REACT_APP_FIREBASE_KEY: "$FIREBASE_DEPLOY_KEY_STAGE"
+    REACT_APP_FIREBASE_ID: "$FIREBASE_ID_STAGE"
+    REACT_APP_YANDEX_ID: "-1"
+    REACT_APP_CONFERENCE_BASE_URL: "$CONFERENCE_BASE_URL_DEV"
+    REACT_APP_CONFERENCE_CODE: "$CONFERENCE_CODE_DEV"
+    REACT_APP_WEB_STUDENT_BASE_URL: "$WEB_STUDENT_BASE_URL_DEV"
+    REACT_APP_PRESCRIPTION_URL: "$PRESCRIPTION_URL_STAGE"
+    REACT_APP_INTEREST_AREA_ID: "$INTEREST_AREA_ID_PROD"
+  script:
+    - REACT_ENV=development CI=false yarn build
+  dependencies:
+    - install_stage
+  artifacts:
+    paths:
+    - build/
+  only:
+    - staging
+
+deploy_stage:
+  stage: deploy
+  only:
+    - staging
+  script:
+    - yarn global add firebase-tools --cache-folder ./.cache_yarn
+    - firebase deploy -m "Pipeline $CI_PIPELINE_ID, build $CI_BUILD_ID" --non-interactive --token $FIREBASE_DEPLOY_KEY_STAGE -P admin-stage
 
 build_stage_prod:
   stage: build

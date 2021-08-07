@@ -1,5 +1,5 @@
 import * as React from "react";
-import { ButtonNormal } from "../../../../../common/Buttons/Buttons";
+import { ButtonNormal, ButtonSecondary } from "../../../../../common/Buttons/Buttons";
 import ContentModal from "../../../../../common/ConsoleModal/ContentModal";
 import MentorModalBase from "../../../../../common/ConsoleModal/MentorModalBase";
 import Icon from "../../../../../common/Icon/Icon";
@@ -16,6 +16,11 @@ import PatientBlockContainer from "../PatientBlockContainer/PatientBlockContaine
 import PatientHistoryForm from '../PatientHistoryForm/PatientBackgroundForm';
 import PatientBackgroundFormContext, { IPatientBackgroundFormValidations } from "../PatientHistoryForm/PatientBackgroundForm.context";
 import './FormEditHistoryManager.scss';
+// tslint:disable:ordered-imports
+import sendIcon from "../../../../../assets/images/send.png";
+import recetaMedicaIcon from "../../../../../assets/images/Rx.png";
+import styled from "styled-components";
+// tslint:disable:ordered-imports
 
 export interface IPropsFormEditHistoryManager {
   formData: {
@@ -40,6 +45,13 @@ export interface IPropsFormEditHistoryManager {
   handleOpenPatientPhotos: (flag: boolean) => void;
 }
 
+const PrescriptionTextContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    line-height: 1.5;    
+    width: 17.5rem;
+`;
+
 const getGender = (value?: number): string => {
   return value === 1 ? 'Femenino' : value === 0 ? 'Masculino' : '';
 };
@@ -57,11 +69,11 @@ const buildPatientInfoBlocks = (patient: any) => {
 };
 
 const FormEditHistoryManager: React.FC<IPropsFormEditHistoryManager> = (props) => {
-  const { validateForm, isValid } = React.useContext(PatientBackgroundFormContext);
+  const { validateForm, isValid, errors } = React.useContext(PatientBackgroundFormContext);
   const [modal, setModal] = React.useState(false);
   const openModal = () => {
     validateForm(props.formData.values);
-    if (isValid) {
+    if (Object.keys(errors).length === 0) {
       setModal(true)
     }
   };
@@ -74,6 +86,7 @@ const FormEditHistoryManager: React.FC<IPropsFormEditHistoryManager> = (props) =
     style: { margin: '40px 0 0 auto' },
     type: "button"
   };
+  
   const buttonAttrUpdate = buttonAttrBase;
   const warningContent = {
     button: "Aceptar",
@@ -85,7 +98,7 @@ const FormEditHistoryManager: React.FC<IPropsFormEditHistoryManager> = (props) =
   const onHandleSubmit = () => {
     closeModal();
     validateForm(props.formData.values);
-    if (isValid) {
+    if (Object.keys(errors).length === 0) {
       props.onHandleSubmit(props.formData.values)
     }
   };
@@ -98,6 +111,12 @@ const FormEditHistoryManager: React.FC<IPropsFormEditHistoryManager> = (props) =
     }
   };
 
+  const buttonAttrRecetaMedica: any = {
+    onClick: onHandleSubmit,
+    style: { margin: '40px 0 0 auto' },
+    type: "button"
+  };
+
   const closeModal = () => setModal(false);
 
   const patientInfoBlocks = React.useMemo(() => buildPatientInfoBlocks(patient), [patient]);
@@ -105,87 +124,123 @@ const FormEditHistoryManager: React.FC<IPropsFormEditHistoryManager> = (props) =
   const caseTreatments = props.formData.values.case.treatments || [];
   const hasTreatments = props.hasTreatments || caseTreatments.length > 0;
   return (
-    <React.Fragment>
-      <MentorModalBase show={modal} onCloseModal={closeModal}>
-        <ContentModal.Generic generic={warningContent} loading={false} confirm={onHandleSubmit} />
-      </MentorModalBase>
-      <div className={'PatientClinicHistory_info'}>
-        <div className="PatientClinicHistory_info--title">
-          <Display1 weight="300">
-            Formato de Atención Clínica
-              </Display1>
-        </div>
-        {patientInfoBlocks.length > 0 && (
-          <PatientBlockContainer
-            title={'Identificación del paciente'}
-            blocks={patientInfoBlocks}
-          />
-        )}
-      </div>
-      <div className="PatientClinicHistory_background">
-        <Heading2>
-          Antecedentes
-              </Heading2>
-        <Body1 weight="500">*Si este campo está vacío, quiere decir que el paciente no ha declarado alergias o medicamentos</Body1>
-        <PatientHistoryForm isWomanHistory={gender === 'Femenino'} notGender={!gender} />
-      </div>
-      <div className="PatientClinicHistory_sessions">
-        <Headline1>
-          Consultas médicas
-            </Headline1>
-        <HistorySessions tabs={[
-          {
-            component: props.isNutrition ? (
-              <NutritionistForm
-                forceDisable={props.fromScheduler && !!props.folioNumber}
-                title={sessionFormTitle}
-                useCase={triage.use_case}
-                questions={triage.questions}
+      <React.Fragment>
+          <MentorModalBase show={modal} onCloseModal={closeModal}>
+              <ContentModal.Generic
+                  generic={warningContent}
+                  loading={false}
+                  confirm={onHandleSubmit}
               />
-            ) : (
-              <React.Fragment>
-                <CurrentSession
-                  title={sessionFormTitle}
-                  useCase={triage.use_case}
-                  questions={triage.questions}
-                />
-                <CurrentSessionForm
-                  forceDisable={props.fromScheduler && !!props.folioNumber}
-                  showSeeRecipeButton={!!props.folioNumber && !!props.getPrescriptionURL}
-                  folioNumber={props.folioNumber}
-                  getPrescriptionURL={props.getPrescriptionURL}
-                  photos={props.photos}
-                />
-              </React.Fragment>
-            ),
-            title: 'VER CONSULTA ACTUAL',
-          },
-          {
-            component: <PastSessions pastCases={props.pastCases} />,
-            title: 'VER CONSULTAS PASADAS',
-          },
-        ]} />
-      </div>
-      {(props.showSaveSession || !hasTreatments) && (
-        <ButtonNormal
-          text={ hasTreatments? "Enviar receta": "Guardar"}
-          attrs={...buttonAttrUpdate}
-        />
-      )}
-      {/* props.showSendRecipe && */}
-      {(false) && (
-        <ButtonNormal
-          text={props.loading ? "Cargando receta..." : "Enviar Receta"}
-          attrs={{
-            disabled: props.loading,
-            onClick: onHandleSendRecipe,
-            style: { margin: '40px 0 0 auto' },
-            type: "button",
-          }}
-        />
-      )}
-    </React.Fragment>
-  )
+          </MentorModalBase>
+          <div className={"PatientClinicHistory_info"}>
+              <div className="PatientClinicHistory_info--title">
+                  <Display1 weight="300">Formato de Atención Clínica</Display1>
+              </div>
+              {patientInfoBlocks.length > 0 && (
+                  <PatientBlockContainer
+                      title={"Identificación del paciente"}
+                      blocks={patientInfoBlocks}
+                  />
+              )}
+          </div>
+          <div className="PatientClinicHistory_background">
+              <Heading2>Antecedentes</Heading2>
+              <Body1 weight="500">
+                  *Si este campo está vacío, quiere decir que el paciente no ha
+                  declarado alergias o medicamentos
+              </Body1>
+              <PatientHistoryForm
+                  isWomanHistory={gender === "Femenino"}
+                  notGender={!gender}
+              />
+          </div>
+          <div className="PatientClinicHistory_sessions">
+              <Headline1>Consultas médicas</Headline1>
+              <HistorySessions
+                  tabs={[
+                      {
+                          component: props.isNutrition ? (
+                              <NutritionistForm
+                                  forceDisable={
+                                      props.fromScheduler && !!props.folioNumber
+                                  }
+                                  title={sessionFormTitle}
+                                  useCase={triage.use_case}
+                                  questions={triage.questions}
+                              />
+                          ) : (
+                              <React.Fragment>
+                                  <CurrentSession
+                                      title={sessionFormTitle}
+                                      useCase={triage.use_case}
+                                      questions={triage.questions}
+                                  />
+                                  <CurrentSessionForm
+                                      forceDisable={
+                                          props.fromScheduler &&
+                                          !!props.folioNumber
+                                      }
+                                      showSeeRecipeButton={
+                                          !!props.folioNumber &&
+                                          !!props.getPrescriptionURL
+                                      }
+                                      folioNumber={props.folioNumber}
+                                      getPrescriptionURL={
+                                          props.getPrescriptionURL
+                                      }
+                                      photos={props.photos}
+                                  />
+                              </React.Fragment>
+                          ),
+                          title: "VER CONSULTA ACTUAL"
+                      },
+                      {
+                          component: (
+                              <PastSessions pastCases={props.pastCases} />
+                          ),
+                          title: "VER CONSULTAS PASADAS"
+                      }
+                  ]}
+              />
+          </div>
+          {(props.showSaveSession || !hasTreatments) && (
+              <div className="PatientClinicHistory_buttons">
+                <div>
+                  {!hasTreatments && (
+                      <ButtonSecondary
+                          text={"Ingresar una receta médica"}
+                          attrs={...buttonAttrRecetaMedica}    
+                          icon={recetaMedicaIcon}                      
+                      />
+                  )}
+                  </div>
+                  <div>
+                  <PrescriptionTextContainer>
+                    <ButtonNormal
+                            text={"Guardar y enviar"}
+                            attrs={...buttonAttrUpdate}
+                            icon={sendIcon}    
+                        />
+                  <div className="button-info"><em>Al guardar también estarás enviando el correo de resumen al paciente</em></div>
+                  </PrescriptionTextContainer>
+                   
+                  </div>
+              </div>
+          )}
+          {/* props.showSendRecipe && */}
+          {false && (
+              <ButtonNormal
+                  text={props.loading ? "Cargando receta..." : "Enviar Receta"}
+                  attrs={{
+                      disabled: props.loading,
+                      onClick: onHandleSendRecipe,
+                      style: { margin: "40px 0 0 auto" },
+                      type: "button"
+                  }}
+              />
+          )}
+      </React.Fragment>
+  );
 }
 
 export default FormEditHistoryManager;
