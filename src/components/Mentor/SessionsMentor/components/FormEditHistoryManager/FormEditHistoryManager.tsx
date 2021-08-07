@@ -14,7 +14,7 @@ import PastSessions from '../HistorySessions/PastSessions/PastSessions';
 import NutritionistForm from "../NutritionistForm/NutritionistForm";
 import PatientBlockContainer from "../PatientBlockContainer/PatientBlockContainer";
 import PatientHistoryForm from '../PatientHistoryForm/PatientBackgroundForm';
-import PatientBackgroundFormContext, { IPatientBackgroundFormValidations } from "../PatientHistoryForm/PatientBackgroundForm.context";
+import PatientBackgroundFormContext, { IPatientBackgroundFormValidations, ISessionPatientHistoryFormValidations } from "../PatientHistoryForm/PatientBackgroundForm.context";
 import './FormEditHistoryManager.scss';
 // tslint:disable:ordered-imports
 import sendIcon from "../../../../../assets/images/send.png";
@@ -97,9 +97,10 @@ const FormEditHistoryManager: React.FC<IPropsFormEditHistoryManager> = (props) =
 
   const onHandleSubmit = () => {
     closeModal();
+    const data: ISessionPatientHistoryFormValidations = props.formData.values;
     validateForm(props.formData.values);
-    if (Object.keys(errors).length === 0) {
-      props.onHandleSubmit(props.formData.values)
+    if (data.case && data.case.diagnostic && data.case.anamnesis) {
+       props.onHandleSubmit(props.formData.values)
     }
   };
 
