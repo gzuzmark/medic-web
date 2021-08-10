@@ -418,7 +418,7 @@ class SessionsMentor extends React.Component<
                                         handleChange,
                                         handleSubmit,
                                         validateForm,
-                                        isValid
+                                        isValid                                        
                                     }) => {
                                         return (
                                             <PatientBackgroundFormContext.Provider
@@ -427,10 +427,10 @@ class SessionsMentor extends React.Component<
                                                     handleBlur,
                                                     handleChange,
                                                     isValid,
-                                                    setFieldValue,
+                                                    setFieldValue,                                                    
                                                     touched,
                                                     validateForm,
-                                                    values: values as ISessionPatientHistoryFormValidations
+                                                    values: values as ISessionPatientHistoryFormValidations                                                    
                                                 }}
                                             >
                                                 <RecipePreviewModal
@@ -607,13 +607,15 @@ class SessionsMentor extends React.Component<
         const mentorService = new MentorService();
         const url = window.location.href;
         const sessionID = url.substring(url.lastIndexOf("/") + 1);
+        const urlAddressEcommerce = `${process.env.REACT_APP_WEB_STUDENT_BASE_URL}/direccion_receta?sessionId=${sessionID}`;
         const mentorPatient = this.patientHistoryData.getRecipeData(
             this.state.currentPatient,
             this.state.currentDoctor,
             this.sessionMentor.issueDate,
             this.state.pastCases.length
         ) as any;
-        mentorPatient.medicalAppointmentId = sessionID
+        mentorPatient.medicalAppointmentId = sessionID;
+        mentorPatient.ecommerceUrl = urlAddressEcommerce,
         mentorService
             .sendMentorAndPatientInfo(mentorPatient)
             .then((response: any) => {
