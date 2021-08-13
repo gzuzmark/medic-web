@@ -20,7 +20,7 @@ const FormProfile: React.FC<IPropsFormProfile> = (props) => {
     const { user } = React.useContext(LayoutContext);
     const isEdit = !!props.isEdit;
     let counter = 0;
-
+    
     return (
         <React.Fragment>
             {user.rol === ROL_MENTOR && (
@@ -64,7 +64,7 @@ const FormProfile: React.FC<IPropsFormProfile> = (props) => {
                     <MentorTextArea
                         limit={limitDescription}
                         disabled={!!props.forceDisable}
-                        label={user.rol === ROL_MENTOR ? "CMP" : "CMP del doctor"}
+                        label={user.rol === ROL_MENTOR ? "CMP" : "Datos adicionales del doctor"}
                         info={"Este mensaje debe ser corto, <br> inspirador y conciso."}
                         attrs={{
                             name: "description",
@@ -75,6 +75,22 @@ const FormProfile: React.FC<IPropsFormProfile> = (props) => {
                             value: values.description
                         }} />
                 </FormColumn>
+            ]} />
+            <FormRow style={{ padding: '0 0 40px 0', margin: 0 }} columns={[
+                <FormColumn width={2} key={`FormColumn-PersonalData_${++counter}`}>
+                <MentorInput
+                    label={"Número de colegiatura"}
+                    info={"El número de colegiatura debe ser de, <br> entre 4 y 8 digitos"}                                        
+                    disabled={!!props.forceDisable}     
+                    error={touched.medicCollegeNumber && errors.medicCollegeNumber}               
+                    attrs={{
+                        name: "medicCollegeNumber",
+                        onBlur: handleBlur,                            
+                        onChange: handleChange,
+                        placeholder: "Ejemplo: 088569, 4564",
+                        value: values.medicCollegeNumber
+                        }}/>
+            </FormColumn>
             ]} />
             <FormRow style={{ padding: '30px 0 40px 0', margin: 0 }} columns={[
                 <FormColumn width={2} key={`FormColumn-PersonalData_${++counter}`}>
