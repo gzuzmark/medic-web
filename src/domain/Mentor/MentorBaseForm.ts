@@ -31,9 +31,10 @@ export interface IMentorFormValidations {
     firstName: string;
     lastName: string;
     documentType: IFormItemBase;
-    document: string;
+    document: string;    
     contactNumber: string;
     location: IFormItemBase;
+    medicCollegeNumber: string
     skills: IFormItemBase[];
     picture: string;
     description: string;
@@ -56,6 +57,7 @@ export interface IMentorExperience {
 export interface IMentorBaseForm  extends IBaseUser {
     documentType?: string;
     document?: string;
+    medicCollegeNumber?: string
     contactNumber?: string;
     sitesId?: number[];
     skillsId?: string[];
@@ -81,6 +83,7 @@ abstract class MentorBaseForm {
         this.mentor.lastname = mentor.lastname || '';
         this.mentor.documentType = mentor.documentType || '';
         this.mentor.document = mentor.document || '';
+        this.mentor.medicCollegeNumber = mentor.medicCollegeNumber || '';        
         this.mentor.contactNumber = mentor.contactNumber || '';
         this.mentor.sitesId = mentor.sitesId || [] as number[];
         this.mentor.skillsId = mentor.skillsId || [] as string[];
@@ -110,7 +113,7 @@ abstract class MentorBaseForm {
             currentCompany: m.company || '',
             currentPosition: m.title || '',
             description: m.description || '',
-            document: m.document || '',
+            document: m.document || '',            
             documentType: {} as IFormItemBase,
             email: m.email || '',
             experiences: [] as IMentorFormExperience[],
@@ -118,6 +121,7 @@ abstract class MentorBaseForm {
             formation: m.formation || '',
             lastName: m.lastname || '',
             location: {} as IFormItemBase,
+            medicCollegeNumber: m.medicCollegeNumber || '',
             picture: m.photoPath || '',
             skills: [] as IFormItemBase[],
             status: m.status || '',
@@ -149,6 +153,7 @@ abstract class MentorBaseForm {
         this.mentor.lastname = values.lastName.trim();
         this.mentor.photoPath = values.picture.trim();
         this.mentor.document= values.document.trim();
+        this.mentor.medicCollegeNumber= values.medicCollegeNumber.trim();        
         this.mentor.documentType = values.documentType.value;
         this.mentor.skillsId = values.skills.map((v) => v.value);
         this.mentor.sitesId = !!values.location.value && [Number(values.location.value)] || [];

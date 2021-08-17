@@ -61,7 +61,7 @@ const mentorFormBaseSchema = Yup.object().shape({
                 }
             }
             return isValid;
-        }),
+        }),    
     documentType: Yup.object().required(errorRequired),
     experiences: Yup.array().min(1).max(3).of(
         Yup.object().shape({
@@ -110,6 +110,19 @@ const mentorFormBaseSchema = Yup.object().shape({
     lastName: Yup.string().required(errorRequired).trim()
         .matches(/^[a-zA-Z áéíóúñÁÉÍÓÚÑ]+$/, { message: errorLetter,  excludeEmptyString: true }),
     location: Yup.string().required(errorRequired),
+    medicCollegeNumber: Yup.string().required(errorRequired)
+    .test('medicCollegeNumber', 'El campo no es válido', (medicCollegeNumber: string) => {        
+        let isValid = false;
+        if (medicCollegeNumber) {            
+            isValid =
+                medicCollegeNumber.length >= 4 &&
+                medicCollegeNumber.length <= 8 &&
+                !medicCollegeNumber
+                    .split('')
+                    .some(v => isNaN(parseInt(v, 10)));
+        }
+        return isValid;
+    }),
     picture: Yup.string(),
     skills: Yup.array().required(errorRequired).min(1).of(Yup.string()),
     status: Yup.string(),
