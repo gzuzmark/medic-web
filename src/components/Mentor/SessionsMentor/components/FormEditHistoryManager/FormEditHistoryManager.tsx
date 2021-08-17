@@ -56,6 +56,11 @@ const getGender = (value?: number): string => {
   return value === 1 ? 'Femenino' : value === 0 ? 'Masculino' : '';
 };
 
+const isValidForm = (props: IPropsFormEditHistoryManager): boolean => {
+    const formData: ISessionPatientHistoryFormValidations = props.formData.values;
+    return props.isNutrition || !props.isNutrition && !!(formData.case && formData.case.diagnostic && formData.case.anamnesis)
+}
+
 const buildPatientInfoBlocks = (patient: any) => {
   const {
     birthdate = null,
@@ -69,11 +74,11 @@ const buildPatientInfoBlocks = (patient: any) => {
 };
 
 const FormEditHistoryManager: React.FC<IPropsFormEditHistoryManager> = (props) => {
-  const { validateForm, isValid, errors } = React.useContext(PatientBackgroundFormContext);
-  const [modal, setModal] = React.useState(false);
+  const { validateForm, isValid } = React.useContext(PatientBackgroundFormContext);
+  const [modal, setModal] = React.useState(false);  
   const openModal = () => {
     validateForm(props.formData.values);
-    if (Object.keys(errors).length === 0) {
+    if (isValidForm(props)) {
       setModal(true)
     }
   };
@@ -96,10 +101,13 @@ const FormEditHistoryManager: React.FC<IPropsFormEditHistoryManager> = (props) =
   };
 
   const onHandleSubmit = () => {
-    closeModal();
-    const data: ISessionPatientHistoryFormValidations = props.formData.values;
+    closeModal();    
+    // TODO: El problema con esta validación - metodo validateForm, ya que la version de formik que estamos utilizando tiene un bug https://github.com/formium/formik/issues/1605
+    // Deberiamos actualizar las herramientas que tenemos tanto formik como yup y a la vez el resto de librerias que utilizamos.
+    // Mienstras tanto la validacion se realiza manualmente y eso es posible porque ya no mostramos los treatments(tratamientos/medicamentos) y por lo tanto
+    // ya no validamos un form de ello
     validateForm(props.formData.values);
-    if (data.case && data.case.diagnostic && data.case.anamnesis) {
+    if (isValidForm(props)) {
        props.onHandleSubmit(props.formData.values)
     }
   };
@@ -124,6 +132,7 @@ const FormEditHistoryManager: React.FC<IPropsFormEditHistoryManager> = (props) =
   const sessionFormTitle = !!triage.use_case && !!triage.questions && triage.questions.length > 0 && 'Caso del paciente' || '';
   const caseTreatments = props.formData.values.case.treatments || [];
   const hasTreatments = props.hasTreatments || caseTreatments.length > 0;
+  const isNutrition = props.isNutrition;
   return (
       <React.Fragment>
           <MentorModalBase show={modal} onCloseModal={closeModal}>
@@ -207,7 +216,7 @@ const FormEditHistoryManager: React.FC<IPropsFormEditHistoryManager> = (props) =
           {(props.showSaveSession || !hasTreatments) && (
               <div className="PatientClinicHistory_buttons">
                 <div>
-                  {!hasTreatments && (
+                  {!hasTreatments && !isNutrition && (
                       <ButtonSecondary
                           text={"Ingresar una receta médica"}
                           attrs={...buttonAttrRecetaMedica}    

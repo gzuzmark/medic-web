@@ -46,7 +46,7 @@ export const getFullValues = ():IMentorFormBaseContext => (
             currentCompany: 'UTP',
             currentPosition: 'FrontEnd Developer',
             description: 'Esta es una descripcion',
-            document: '46942026',
+            document: '46942026',            
             documentType: {value: 'DNI', label: 'DNI'} as IFormItemBase,
             email: 'carlos.hs.92@gmail.com',
             experiences: [
@@ -71,6 +71,7 @@ export const getFullValues = ():IMentorFormBaseContext => (
             formation: 'Mi formación',
             lastName: 'Huamani',
             location: {} as IFormItemBase,
+            medicCollegeNumber: '',
             picture: '',
             skills: [] as IFormItemBase[],
             status: '',
