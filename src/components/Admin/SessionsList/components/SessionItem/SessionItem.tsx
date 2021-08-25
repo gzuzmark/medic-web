@@ -14,6 +14,7 @@ export interface IPropsSessionItem {
     email?: string;
     gender?: number;
     lastname?: string;
+    usedBenefit?: boolean;
 }
 
 const NameSessionContainer = styled.div`
@@ -31,6 +32,9 @@ class SessionItem extends React.Component<IPropsSessionItem, {}> {
           <div className="SessionItem">
               <ReactTooltip id="ListMentor_SessionItem" effect={"solid"} place={"bottom"} />
               <div className='SessionItem_basicInformation'>
+                  <NameSessionContainer>
+                      <Subhead1 color={FONTS.error}>{this.props.usedBenefit ? 'Colaborador' : '-'}</Subhead1>
+                  </NameSessionContainer>
                   <NameSessionContainer>
                       <Subhead1 color={FONTS.error}>{this.props.gender === 3 || this.props.lastname === 'ugito' ? 'Pedir Información' : ''}</Subhead1>
                   </NameSessionContainer>

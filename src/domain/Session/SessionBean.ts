@@ -54,6 +54,7 @@ export interface ISessionPayment {
     paid: string;
     pending: boolean;
     cipUrl: string;
+    benefit_id: string;
 }
 
 export interface ISessionBase {
