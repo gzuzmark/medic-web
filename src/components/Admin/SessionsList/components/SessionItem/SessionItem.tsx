@@ -14,7 +14,7 @@ export interface IPropsSessionItem {
     email?: string;
     gender?: number;
     lastname?: string;
-    usedBenefit?: boolean;
+    usedBenefit?: string;
 }
 
 const NameSessionContainer = styled.div`

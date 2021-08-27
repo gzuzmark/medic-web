@@ -111,7 +111,7 @@ const ListSessionsBody: React.FC<IPropsListSessionsBody> = (props) => {
 	const ratingURL = `https://alivia-conference.web.app/rate/${id}`;
 	const prescriptionURL = `${process.env.REACT_APP_WEB_STUDENT_BASE_URL}/direccion_receta?sessionId=${id}`;
 	const paymentURL = payment && payment.cipUrl;
-	const usedBenefit = (payment && payment.benefit_id);
+	const usedBenefit = (payment && payment.benefit_id) || '';
 	const patientId = (patient && patient.id) || '';
 	const patientName = (patient && patient.name) || '';
 	const patientLN = (patient && patient.last_name) || '';

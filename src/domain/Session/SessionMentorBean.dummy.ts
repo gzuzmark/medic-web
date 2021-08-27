@@ -14,6 +14,7 @@ export const sessionMentorDummy: ISessionMentor = {
         typeLabel: "Virtual"
     },
     payment: {
+        benefit_id: '78870e7d-d004-4a35-86b5-4a7948a59fc1',
         cipUrl: 'cipURL.com',
         paid: '10.00',
         pending: false,
