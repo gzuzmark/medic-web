@@ -15,6 +15,7 @@ export interface IPropsSessionItem {
     gender?: number;
     lastname?: string;
     usedBenefit?: string;
+    companyName?: string;
 }
 
 const NameSessionContainer = styled.div`
@@ -27,7 +28,7 @@ class SessionItem extends React.Component<IPropsSessionItem, {}> {
     }
 
     public render() {
-      const { email } = this.props;
+      const { email, companyName } = this.props;
       return (
           <div className="SessionItem">
               <ReactTooltip id="ListMentor_SessionItem" effect={"solid"} place={"bottom"} />
@@ -58,6 +59,15 @@ class SessionItem extends React.Component<IPropsSessionItem, {}> {
                       </Body1>
                     </div>
                   )}
+                  {!!companyName && (<div className='SessionItem_tagWrapper'>
+                      <Body1 key={'mentor-item-info'}
+                             className='SessionItem_tag'
+                             weight={LIGHT_TEXT}
+                             color={FONTS.dark}
+                             style={{'background': colors.BACKGROUND_COLORS.background_blue, border: `1px solid ${colors.BACKGROUND_COLORS.background_disabled}`}}>
+                          {companyName}
+                      </Body1>
+                  </div>)}
               </div>
           </div>
         );

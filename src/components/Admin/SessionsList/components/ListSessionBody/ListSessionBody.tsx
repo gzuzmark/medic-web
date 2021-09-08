@@ -108,6 +108,7 @@ const ListSessionsBody: React.FC<IPropsListSessionsBody> = (props) => {
 	const patientURL = sessionURL && id && `${sessionURL}/${doctorId}`;
 	const patientDoc = patient && patient.document_number;
 	const historyURL = `${window.location.origin}/doctor/sesion/${id}`;
+	const medialLeaveURL = sessionBean.session.consult && sessionBean.session.consult.medicalLeaveStartDate && `${window.location.origin}/patients/medical-leave/${id}`;
 	const ratingURL = `https://alivia-conference.web.app/rate/${id}`;
 	const prescriptionURL = `${process.env.REACT_APP_WEB_STUDENT_BASE_URL}/direccion_receta?sessionId=${id}`;
 	const paymentURL = payment && payment.cipUrl;
@@ -119,6 +120,7 @@ const ListSessionsBody: React.FC<IPropsListSessionsBody> = (props) => {
 	const patientAddress = (patient && patient.address && getFormattedAddress(patient.address)) || '';
 	const patientUbigeo = (patient && patient.ubigeo) || '';
 	const patientGender = (patient && patient.gender) || -1;
+	const companyName = (payment && payment.company_benefit_name) || '';
 
 	const newSessionURL = `${process.env.REACT_APP_CONFERENCE_BASE_URL
 		}?room=${id}&passcode=${process.env.REACT_APP_CONFERENCE_CODE}`;
@@ -215,6 +217,7 @@ const ListSessionsBody: React.FC<IPropsListSessionsBody> = (props) => {
 					ubigeo={patientUbigeo}
 					gender={patientGender}
 					lastname={patientSLastName}
+					companyName={companyName}
 				/>
 			</div>
 			<div className='ListSessions_column ListSessions_numbers'>
@@ -275,6 +278,11 @@ const ListSessionsBody: React.FC<IPropsListSessionsBody> = (props) => {
 					</a>
 				)}
 			</div>
+            <div className='ListSessions_column ListSessions_separator'>
+                {
+                    medialLeaveURL && (<a href={medialLeaveURL} style={{cursor: "pointer"}}>Con descanso médico</a>)
+                }
+            </div>
 			<div
 				className='ListSessions_column ListSessions_separator'
 				style={{ borderColor: colors.MISC_COLORS.background_grey_2 }}
