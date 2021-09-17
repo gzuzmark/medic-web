@@ -1,3 +1,10 @@
+/*.Layout {
+// 	max-height: calc(100vh - 208px - 56px) !important;
+}*/
+#root > div.Menu.u-LayoutMargin {
+	padding: 15px 10px 15px 35px !important;
+}
+
 .e-appointment.e-read-only {
 	height: 37px !important;
 }
@@ -87,4 +94,31 @@ td.e-work-cells.e-work-days.e-current-date {
 		margin-bottom: 2px;
 		margin-top: 3px;
 	}
+}
+
+/* HIDE COLUMN HOURS */
+
+/* div.e-table-container > div > table > tbody > tr:nth-child(1) > td.e-left-indent {
+// 	display: none;
+// }
+
+// div.e-table-container > div > table > tbody > tr:nth-child(2) > td:nth-child(1) {
+// 	display: none;
+// } */
+
+div.calendar-header-day-week {
+	font-family: Mulish;
+	font-style: normal;
+	font-weight: 600;
+	font-size: 12px;
+	line-height: 16px;
+}
+
+div.calendar-header-day {
+	font-family: Mulish;
+	font-style: normal;
+	font-weight: 700;
+	font-size: 14px;
+	line-height: 16px;
+	margin-top: 5px;
 }
