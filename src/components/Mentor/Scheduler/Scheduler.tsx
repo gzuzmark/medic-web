@@ -383,6 +383,20 @@ const Scheduler = () => {
 		);
 	}
 
+	const CellTemplate = (props: any) => {
+		console.log(props);
+		const { type } = props;
+		// const mdate = moment(date).locale('es');
+		
+		if (type === 'alldayCells') {
+			return <></>;
+		}
+
+		return (
+			<div>ola k ase</div>
+		);
+	}
+
 	return (
 		<div className='u-LayoutMargin' style={{ padding: '0 35px' }}>
 			<div style={headerStyle}>
@@ -395,7 +409,7 @@ const Scheduler = () => {
 				{!loading && (
 					<ScheduleComponent
 						cssClass='event-template quick-info-template'
-						height='550px'
+						height='1000px'
 						ref={(schedule) => (scheduleObj = schedule)}
 						eventSettings={{ dataSource: appointments, template: eventTemplate }}
 						quickInfoTemplates={{ content: contentTemplate }}
@@ -409,6 +423,7 @@ const Scheduler = () => {
                         timezone={timeZoneLocal}
 						showHeaderBar={true}
 						dateHeaderTemplate={DateHeaderTemplate}
+						renderCell={CellTemplate}
 					>
 						<ViewsDirective>
 							{/* <ViewDirective option='Month' displayName='Vista mensual' /> */}
