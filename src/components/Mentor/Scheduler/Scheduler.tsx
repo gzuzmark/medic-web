@@ -127,7 +127,7 @@ const Scheduler = () => {
 				const firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
 				const lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0, 23);
 				mentorService
-					.getSchedules(skillId, firstDay.toISOString(), lastDay.toISOString())
+					.getSchedulesByMedic(firstDay.toISOString(), lastDay.toISOString())
 					.then((response) => {
 						const schedules = response.items.map(
 							(item: any) => ({
