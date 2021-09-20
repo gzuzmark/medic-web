@@ -98,13 +98,13 @@ td.e-work-cells.e-work-days.e-current-date {
 
 /* HIDE COLUMN HOURS */
 
-/* div.e-table-container > div > table > tbody > tr:nth-child(1) > td.e-left-indent {
-// 	display: none;
-// }
+div.e-table-container > div > table > tbody > tr:nth-child(1) > td.e-left-indent {
+	display: none;
+}
 
-// div.e-table-container > div > table > tbody > tr:nth-child(2) > td:nth-child(1) {
-// 	display: none;
-// } */
+div.e-table-container > div > table > tbody > tr:nth-child(2) > td:nth-child(1) {
+	display: none;
+}
 
 div.calendar-header-day-week {
 	font-family: Mulish;
@@ -122,3 +122,19 @@ div.calendar-header-day {
 	line-height: 16px;
 	margin-top: 5px;
 }
+
+div.cell-template-hour {
+	text-align: left;
+	padding-left: 16px;
+	font-family: Mulish;
+	font-style: normal;
+	font-weight: normal;
+	font-size: 12px;
+	line-height: 16px;
+	color: #52575C;
+}
+
+/* CELLS READ ONLY */
+/*.e-schedule .e-read-only {
+    opacity: 1 !important;
+}*/

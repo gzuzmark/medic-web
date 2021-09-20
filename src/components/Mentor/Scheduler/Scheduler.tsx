@@ -44,9 +44,11 @@ interface IAppointments {
 	EndTime: Date;
 }
 
-interface IDateHeaderTemplateProps {
-	date: Date;
-}
+// interface IDateHeaderTemplateProps {
+// 	date: Date;
+// }
+
+const DEFAULT_INTERVAL_MINUTES = 30;
 
 const isDateValid = (from: Date) => new Date() < from;
 
@@ -58,7 +60,7 @@ const Scheduler = () => {
 	const [appointments, setAppointments] = React.useState<IAppointments[]>([]);
 	const [skills, setSkills] = React.useState<any[]>([]);
 	const [executeService, setExecuteService] = React.useState(false);
-	const [durationInterval, setDurationInterval] = React.useState<number>(20);
+	const [durationInterval, setDurationInterval] = React.useState<number>(DEFAULT_INTERVAL_MINUTES);
     const timeZoneLocal = Intl.DateTimeFormat().resolvedOptions().timeZone // get customer's local zone
     // function that gets the time from the time zone
     const getTimeNowByTimeZone = (tz: any):any => {
@@ -373,7 +375,9 @@ const Scheduler = () => {
 		);
 	}
 
-	const DateHeaderTemplate = ({ date }: IDateHeaderTemplateProps) => {
+	const DateHeaderTemplate = (props: any) => {
+		console.log('header', props);
+		const { date } = props;
 		const mdate = moment(date).locale('es');
 		return (
 			<>
@@ -384,16 +388,16 @@ const Scheduler = () => {
 	}
 
 	const CellTemplate = (props: any) => {
-		console.log(props);
-		const { type } = props;
-		// const mdate = moment(date).locale('es');
+		// console.log(props);
+		const { type, date } = props;
+		const mdate = moment(date).locale('es');
 		
 		if (type === 'alldayCells') {
 			return <></>;
 		}
 
 		return (
-			<div>ola k ase</div>
+			<div className="cell-template-hour">{mdate.format('hh:mm a')}</div>
 		);
 	}
 
@@ -409,7 +413,7 @@ const Scheduler = () => {
 				{!loading && (
 					<ScheduleComponent
 						cssClass='event-template quick-info-template'
-						height='1000px'
+						height='500px'
 						ref={(schedule) => (scheduleObj = schedule)}
 						eventSettings={{ dataSource: appointments, template: eventTemplate }}
 						quickInfoTemplates={{ content: contentTemplate }}
@@ -423,7 +427,7 @@ const Scheduler = () => {
                         timezone={timeZoneLocal}
 						showHeaderBar={true}
 						dateHeaderTemplate={DateHeaderTemplate}
-						renderCell={CellTemplate}
+						cellTemplate={CellTemplate}
 					>
 						<ViewsDirective>
 							{/* <ViewDirective option='Month' displayName='Vista mensual' /> */}
