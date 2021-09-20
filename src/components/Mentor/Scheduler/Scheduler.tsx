@@ -126,12 +126,12 @@ const Scheduler = () => {
 	const fillSessionsInCalendar = (): Promise<void> => {
 		return new Promise((resolve: any) => {
 			if (skills && skills.length > 0) {
-				const skillId = skills[0].id;
+				// const skillId = skills[0].id;
 				const date = new Date();
 				const firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
 				const lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0, 23);
 				mentorService
-					.getSchedules(skillId, firstDay.toISOString(), lastDay.toISOString())
+					.getSchedulesByMedic(firstDay.toISOString(), lastDay.toISOString())
 					.then((response) => {
 						const schedules = response.items.map(
 							(item: any) => ({
