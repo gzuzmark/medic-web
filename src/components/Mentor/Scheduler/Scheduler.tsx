@@ -1,9 +1,7 @@
 import { L10n } from '@syncfusion/ej2-base';
 // tslint:disable:ordered-imports
 import {
-	Day,
 	Inject,
-	Month,
 	ScheduleComponent,
 	ViewDirective, ViewsDirective, Week
 } from '@syncfusion/ej2-react-schedule';
@@ -18,6 +16,7 @@ import { localeTranslations } from './locale';
 import './Scheduler.scss';
 import { Link } from 'react-router-dom';
 import * as moment from "moment";
+import * as _ from 'lodash';
 
 const headerStyle = {
 	display: 'flex',
@@ -45,6 +44,12 @@ interface IAppointments {
 	EndTime: Date;
 }
 
+// interface IDateHeaderTemplateProps {
+// 	date: Date;
+// }
+
+const DEFAULT_INTERVAL_MINUTES = 20;
+
 const isDateValid = (from: Date) => new Date() < from;
 
 const Scheduler = () => {
@@ -55,6 +60,7 @@ const Scheduler = () => {
 	const [appointments, setAppointments] = React.useState<IAppointments[]>([]);
 	const [skills, setSkills] = React.useState<any[]>([]);
 	const [executeService, setExecuteService] = React.useState(false);
+	const [durationInterval, setDurationInterval] = React.useState<number>(DEFAULT_INTERVAL_MINUTES);
     const timeZoneLocal = Intl.DateTimeFormat().resolvedOptions().timeZone // get customer's local zone
     // function that gets the time from the time zone
     const getTimeNowByTimeZone = (tz: any):any => {
@@ -170,6 +176,9 @@ const Scheduler = () => {
 	React.useEffect(() => {
 		setLoading(true);
 		mentorService.getSkills().then((response: any) => {
+			if (response.duration) {
+				setDurationInterval(Number(response.duration));
+			}
 			setSkills(response.items);
 		});
 	}, []);
@@ -364,7 +373,32 @@ const Scheduler = () => {
 				)}
 			</div>
 		);
+	}
 
+	const DateHeaderTemplate = (props: any) => {
+		console.log('header', props);
+		const { date } = props;
+		const mdate = moment(date).locale('es');
+		return (
+			<>
+				<div className='calendar-header-day-week'>{_.upperFirst(mdate.format('dddd'))}</div>
+				<div className='calendar-header-day'>{mdate.format('DD')}</div>
+			</>
+		);
+	}
+
+	const CellTemplate = (props: any) => {
+		// console.log(props);
+		const { type, date } = props;
+		const mdate = moment(date).locale('es');
+		
+		if (type === 'alldayCells') {
+			return <></>;
+		}
+
+		return (
+			<div className="cell-template-hour">{mdate.format('hh:mm a')}</div>
+		);
 	}
 
 	return (
@@ -379,34 +413,38 @@ const Scheduler = () => {
 				{!loading && (
 					<ScheduleComponent
 						cssClass='event-template quick-info-template'
+						height='500px'
 						ref={(schedule) => (scheduleObj = schedule)}
 						eventSettings={{ dataSource: appointments, template: eventTemplate }}
 						quickInfoTemplates={{ content: contentTemplate }}
 						popupOpen={onPopUpOpen}
-						timeScale={{ enable: true, interval: 60, slotCount: 3 }}
+						timeScale={{ enable: true, interval: durationInterval, slotCount: 1 }}
 						cellClick={onCellClick}
 						cellDoubleClick={onCellDoubleClick}
 						actionBegin={onActionBegin}
 						actionComplete={onComplete}
 						allowDragAndDrop={false}
                         timezone={timeZoneLocal}
+						showHeaderBar={true}
+						dateHeaderTemplate={DateHeaderTemplate}
+						cellTemplate={CellTemplate}
 					>
 						<ViewsDirective>
-							<ViewDirective option='Month' displayName='Vista mensual' />
+							{/* <ViewDirective option='Month' displayName='Vista mensual' /> */}
 							<ViewDirective
-								option='Week'
+								option={'Week'}
 								displayName='Vista semanal'
                                 startHour={"0"+hourStartCalendar+":00"}
                                 endHour={hourEndCalendar+":00"}
 							/>
-							<ViewDirective
+							{/* <ViewDirective
 								option='Day'
 								displayName='Vista diaria'
                                 startHour={"0"+hourStartCalendar+":00"}
                                 endHour={hourEndCalendar+":00"}
-                            />
+                            /> */}
 						</ViewsDirective>
-						<Inject services={[Day, Week, Month]} />
+						<Inject services={[Week]} />
 					</ScheduleComponent>
 				)}
 			</div>

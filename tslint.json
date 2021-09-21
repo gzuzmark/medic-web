@@ -7,5 +7,6 @@
     ]
   },
   "rules": {
+    "no-console": false
   }
 }
