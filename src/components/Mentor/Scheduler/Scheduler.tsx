@@ -48,7 +48,7 @@ interface IAppointments {
 // 	date: Date;
 // }
 
-const DEFAULT_INTERVAL_MINUTES = 30;
+const DEFAULT_INTERVAL_MINUTES = 20;
 
 const isDateValid = (from: Date) => new Date() < from;
 
