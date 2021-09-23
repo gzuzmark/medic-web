@@ -138,3 +138,7 @@ div.cell-template-hour {
 /*.e-schedule .e-read-only {
     opacity: 1 !important;
 }*/
+
+div.Layout > div > div > div:nth-child(1) > div > h1 {
+	margin-bottom: 0px !important;
+}

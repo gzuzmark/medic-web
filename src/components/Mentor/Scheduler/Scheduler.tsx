@@ -17,6 +17,7 @@ import './Scheduler.scss';
 import { Link } from 'react-router-dom';
 import * as moment from "moment";
 import * as _ from 'lodash';
+import CaptionFilter from './components/CaptionFilter/CaptionFilter';
 
 const headerStyle = {
 	display: 'flex',
@@ -179,7 +180,7 @@ const Scheduler = () => {
 			if (response.duration) {
 				setDurationInterval(Number(response.duration));
 			}
-			setSkills(response.items);
+			setSkills(response.skills);
 		});
 	}, []);
 
@@ -376,7 +377,6 @@ const Scheduler = () => {
 	}
 
 	const DateHeaderTemplate = (props: any) => {
-		console.log('header', props);
 		const { date } = props;
 		const mdate = moment(date).locale('es');
 		return (
@@ -408,6 +408,7 @@ const Scheduler = () => {
 					<Headline1 style={titleStyle}>Calendario de Citas</Headline1>
 				</div>
 			</div>
+			<CaptionFilter duration={durationInterval} />
 			<div>
 				{loading && <Loader />}
 				{!loading && (
