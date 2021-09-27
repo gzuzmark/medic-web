@@ -397,6 +397,11 @@
   version "0.0.29"
   resolved "https://registry.yarnpkg.com/@types/json5/-/json5-0.0.29.tgz#ee28707ae94e11d2b827bcbe5270bcea7f3e71ee"
 
+"@types/lodash@^4.14.173":
+  version "4.14.173"
+  resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.173.tgz#9d3b674c67a26cf673756f6aca7b429f237f91ed"
+  integrity sha512-vv0CAYoaEjCw/mLy96GBTnRoZrSxkGE0BKzKimdR8P3OzrNYNvBgtW7p055A+E8C31vXNUhWKoFCbhq7gbyhFg==
+
 "@types/moxios@0.4.8":
   version "0.4.8"
   resolved "https://registry.yarnpkg.com/@types/moxios/-/moxios-0.4.8.tgz#b478ae7127779be2a8de55e71a5a11333273b06f"
@@ -5526,6 +5531,11 @@ lodash.uniq@^4.5.0:
 lodash@^4.17.15:
   version "4.17.20"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.20.tgz#b44a9b6297bcb698f1c51a3545a2b3b368d59c52"
+
+lodash@^4.17.21:
+  version "4.17.21"
+  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.21.tgz#679591c564c3bffaae8454cf0b3df370c3d6911c"
+  integrity sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==
 
 loglevel@^1.4.1:
   version "1.6.1"
