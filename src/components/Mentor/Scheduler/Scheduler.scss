@@ -1,6 +1,3 @@
-/*.Layout {
-// 	max-height: calc(100vh - 208px - 56px) !important;
-}*/
 #root > div.Menu.u-LayoutMargin {
 	padding: 15px 10px 15px 35px !important;
 }
@@ -132,6 +129,7 @@ div.cell-template-hour {
 	font-size: 12px;
 	line-height: 16px;
 	color: #52575C;
+	height: 100%;
 }
 
 /* CELLS READ ONLY */
@@ -141,4 +139,21 @@ div.cell-template-hour {
 
 div.Layout > div > div > div:nth-child(1) > div > h1 {
 	margin-bottom: 0px !important;
+}
+
+#root > div.Layout {
+	min-height: unset;
+	height: calc(100vh - 190px);
+}
+
+/*#root > div.Footer {
+	position: absolute;
+	bottom: 0px;
+}*/
+
+#root > div.Layout > div > div > div:nth-child(3) > div.loader-scheduler {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 150px;
 }

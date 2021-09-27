@@ -186,7 +186,7 @@ const Scheduler = () => {
 
 	React.useEffect(() => {
 		fillSessionsInCalendar()
-			.then(() => setLoading(false));
+			// .then(() => setLoading(false));
 	}, [skills]);
 
 	const onCellClick = (args: any) => {
@@ -396,13 +396,15 @@ const Scheduler = () => {
 			return <></>;
 		}
 
+
+
 		return (
 			<div className="cell-template-hour">{mdate.format('hh:mm a')}</div>
 		);
 	}
 
 	return (
-		<div className='u-LayoutMargin' style={{ padding: '0 35px' }}>
+		<div className='u-LayoutMargin'>
 			<div style={headerStyle}>
 				<div>
 					<Headline1 style={titleStyle}>Calendario de Citas</Headline1>
@@ -410,11 +412,11 @@ const Scheduler = () => {
 			</div>
 			<CaptionFilter duration={durationInterval} />
 			<div>
-				{loading && <Loader />}
+				{loading && <Loader className={'loader-scheduler'} />}
 				{!loading && (
 					<ScheduleComponent
 						cssClass='event-template quick-info-template'
-						height='500px'
+						height='calc(100vh - 320px)'
 						ref={(schedule) => (scheduleObj = schedule)}
 						eventSettings={{ dataSource: appointments, template: eventTemplate }}
 						quickInfoTemplates={{ content: contentTemplate }}
