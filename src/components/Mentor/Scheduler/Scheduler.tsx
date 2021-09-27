@@ -49,6 +49,7 @@ interface IAppointments {
 // }
 
 const DEFAULT_INTERVAL_MINUTES = 20;
+const WORKING_DAYS = [0,1,2,3,4,5,6]
 
 const isDateValid = (from: Date) => new Date() < from;
 
@@ -179,7 +180,7 @@ const Scheduler = () => {
 			if (response.duration) {
 				setDurationInterval(Number(response.duration));
 			}
-			setSkills(response.items);
+			setSkills(response.skills);
 		});
 	}, []);
 
@@ -402,55 +403,70 @@ const Scheduler = () => {
 	}
 
 	return (
-		<div className='u-LayoutMargin' style={{ padding: '0 35px' }}>
-			<div style={headerStyle}>
-				<div>
-					<Headline1 style={titleStyle}>Calendario de Citas</Headline1>
-				</div>
-			</div>
-			<div>
-				{loading && <Loader />}
-				{!loading && (
-					<ScheduleComponent
-						cssClass='event-template quick-info-template'
-						height='500px'
-						ref={(schedule) => (scheduleObj = schedule)}
-						eventSettings={{ dataSource: appointments, template: eventTemplate }}
-						quickInfoTemplates={{ content: contentTemplate }}
-						popupOpen={onPopUpOpen}
-						timeScale={{ enable: true, interval: durationInterval, slotCount: 1 }}
-						cellClick={onCellClick}
-						cellDoubleClick={onCellDoubleClick}
-						actionBegin={onActionBegin}
-						actionComplete={onComplete}
-						allowDragAndDrop={false}
+        <div className="u-LayoutMargin heightDiv" style={{ padding: "0 35px" }}>
+            <div style={headerStyle}>
+                <div>
+                    <Headline1 style={titleStyle}>
+                        Calendario de Citas
+                    </Headline1>
+                </div>
+            </div>
+            <div className="heightDiv">
+                {loading && <Loader />}
+                {!loading && (
+                    <ScheduleComponent
+                        cssClass="event-template quick-info-template"
+                        height="500px"
+                        ref={schedule => (scheduleObj = schedule)}
+                        eventSettings={{
+                            dataSource: appointments,
+                            template: eventTemplate
+                        }}
+                        quickInfoTemplates={{ content: contentTemplate }}
+                        popupOpen={onPopUpOpen}
+                        timeScale={{
+                            enable: true,
+                            interval: durationInterval,
+                            slotCount: 1
+                        }}
+                        cellClick={onCellClick}
+                        cellDoubleClick={onCellDoubleClick}
+                        actionBegin={onActionBegin}
+                        actionComplete={onComplete}
+                        allowDragAndDrop={false}
                         timezone={timeZoneLocal}
-						showHeaderBar={true}
-						dateHeaderTemplate={DateHeaderTemplate}
-						cellTemplate={CellTemplate}
-					>
-						<ViewsDirective>
-							{/* <ViewDirective option='Month' displayName='Vista mensual' /> */}
-							<ViewDirective
-								option={'Week'}
-								displayName='Vista semanal'
-                                startHour={"0"+hourStartCalendar+":00"}
-                                endHour={hourEndCalendar+":00"}
-							/>
-							{/* <ViewDirective
+                        showHeaderBar={true}
+                        dateHeaderTemplate={DateHeaderTemplate}
+                        cellTemplate={CellTemplate}
+                        workHours={{
+                            highlight: true,
+                            start: "0" + hourStartCalendar + ":00",
+                            end: hourEndCalendar + ":00"
+                        }}
+                        workDays={WORKING_DAYS}
+                    >
+                        <ViewsDirective>
+                            {/* <ViewDirective option='Month' displayName='Vista mensual' /> */}
+                            <ViewDirective
+                                option={"Week"}
+                                displayName="Vista semanal"
+                                startHour={"0" + hourStartCalendar + ":00"}
+                                endHour={hourEndCalendar + ":00"}
+                            />
+                            {/* <ViewDirective
 								option='Day'
 								displayName='Vista diaria'
                                 startHour={"0"+hourStartCalendar+":00"}
                                 endHour={hourEndCalendar+":00"}
                             /> */}
-						</ViewsDirective>
-						<Inject services={[Week]} />
-					</ScheduleComponent>
-				)}
-			</div>
-			<MessageService show={executeService} />
-		</div>
-	);
+                        </ViewsDirective>
+                        <Inject services={[Week]} />
+                    </ScheduleComponent>
+                )}
+            </div>
+            <MessageService show={executeService} />
+        </div>
+    );
 };
 
 export default Scheduler;
