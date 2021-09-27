@@ -132,6 +132,14 @@ div.cell-template-hour {
 	height: 100%;
 }
 
+.cell-template-hour-disabled {
+	background-color: #F9F9FA;
+	height: 36px !important;
+	box-sizing: border-box;
+	display: flex;
+	align-items: center;
+}
+
 /* CELLS READ ONLY */
 /*.e-schedule .e-read-only {
     opacity: 1 !important;

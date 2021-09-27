@@ -396,7 +396,10 @@ const Scheduler = () => {
 			return <></>;
 		}
 
-
+		const mNow = moment(new Date); // .add(1, 'hour');
+		if (mNow > mdate) {
+			return <div className="cell-template-hour cell-template-hour-disabled">{mdate.format('hh:mm a')}</div>
+		}
 
 		return (
 			<div className="cell-template-hour">{mdate.format('hh:mm a')}</div>
