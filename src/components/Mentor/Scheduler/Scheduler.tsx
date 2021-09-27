@@ -50,6 +50,7 @@ interface IAppointments {
 // }
 
 const DEFAULT_INTERVAL_MINUTES = 20;
+const WORKING_DAYS = [0,1,2,3,4,5,6]
 
 const isDateValid = (from: Date) => new Date() < from;
 
@@ -431,32 +432,38 @@ const Scheduler = () => {
 						actionComplete={onComplete}
 						allowDragAndDrop={false}
                         timezone={timeZoneLocal}
-						showHeaderBar={true}
-						dateHeaderTemplate={DateHeaderTemplate}
-						cellTemplate={CellTemplate}
-					>
-						<ViewsDirective>
-							{/* <ViewDirective option='Month' displayName='Vista mensual' /> */}
-							<ViewDirective
-								option={'Week'}
-								displayName='Vista semanal'
-                                startHour={"0"+hourStartCalendar+":00"}
-                                endHour={hourEndCalendar+":00"}
-							/>
-							{/* <ViewDirective
+                        showHeaderBar={true}
+                        dateHeaderTemplate={DateHeaderTemplate}
+                        cellTemplate={CellTemplate}
+                        workHours={{
+                            highlight: true,
+                            start: "0" + hourStartCalendar + ":00",
+                            end: hourEndCalendar + ":00"
+                        }}
+                        workDays={WORKING_DAYS}
+                    >
+                        <ViewsDirective>
+                            {/* <ViewDirective option='Month' displayName='Vista mensual' /> */}
+                            <ViewDirective
+                                option={"Week"}
+                                displayName="Vista semanal"
+                                startHour={"0" + hourStartCalendar + ":00"}
+                                endHour={hourEndCalendar + ":00"}
+                            />
+                            {/* <ViewDirective
 								option='Day'
 								displayName='Vista diaria'
                                 startHour={"0"+hourStartCalendar+":00"}
                                 endHour={hourEndCalendar+":00"}
                             /> */}
-						</ViewsDirective>
-						<Inject services={[Week]} />
-					</ScheduleComponent>
-				)}
-			</div>
-			<MessageService show={executeService} />
-		</div>
-	);
+                        </ViewsDirective>
+                        <Inject services={[Week]} />
+                    </ScheduleComponent>
+                )}
+            </div>
+            <MessageService show={executeService} />
+        </div>
+    );
 };
 
 export default Scheduler;
