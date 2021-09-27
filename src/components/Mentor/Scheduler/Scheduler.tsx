@@ -186,7 +186,7 @@ const Scheduler = () => {
 
 	React.useEffect(() => {
 		fillSessionsInCalendar()
-			// .then(() => setLoading(false));
+			.then(() => setLoading(false));
 	}, [skills]);
 
 	const onCellClick = (args: any) => {
