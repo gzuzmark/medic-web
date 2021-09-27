@@ -17,6 +17,7 @@ import './Scheduler.scss';
 import { Link } from 'react-router-dom';
 import * as moment from "moment";
 import * as _ from 'lodash';
+import CaptionFilter from './components/CaptionFilter/CaptionFilter';
 
 const headerStyle = {
 	display: 'flex',
@@ -179,7 +180,7 @@ const Scheduler = () => {
 			if (response.duration) {
 				setDurationInterval(Number(response.duration));
 			}
-			setSkills(response.items);
+			setSkills(response.skills);
 		});
 	}, []);
 
@@ -376,7 +377,6 @@ const Scheduler = () => {
 	}
 
 	const DateHeaderTemplate = (props: any) => {
-		console.log('header', props);
 		const { date } = props;
 		const mdate = moment(date).locale('es');
 		return (
@@ -396,24 +396,30 @@ const Scheduler = () => {
 			return <></>;
 		}
 
+		const mNow = moment(new Date); // .add(1, 'hour');
+		if (mNow > mdate) {
+			return <div className="cell-template-hour cell-template-hour-disabled">{mdate.format('hh:mm a')}</div>
+		}
+
 		return (
 			<div className="cell-template-hour">{mdate.format('hh:mm a')}</div>
 		);
 	}
 
 	return (
-		<div className='u-LayoutMargin' style={{ padding: '0 35px' }}>
+		<div className='u-LayoutMargin'>
 			<div style={headerStyle}>
 				<div>
 					<Headline1 style={titleStyle}>Calendario de Citas</Headline1>
 				</div>
 			</div>
+			<CaptionFilter duration={durationInterval} />
 			<div>
-				{loading && <Loader />}
+				{loading && <Loader className={'loader-scheduler'} />}
 				{!loading && (
 					<ScheduleComponent
 						cssClass='event-template quick-info-template'
-						height='500px'
+						height='calc(100vh - 320px)'
 						ref={(schedule) => (scheduleObj = schedule)}
 						eventSettings={{ dataSource: appointments, template: eventTemplate }}
 						quickInfoTemplates={{ content: contentTemplate }}
