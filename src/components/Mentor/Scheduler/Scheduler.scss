@@ -1,7 +1,3 @@
-#root > div.Menu.u-LayoutMargin {
-	padding: 15px 10px 15px 35px !important;
-}
-
 .e-appointment.e-read-only {
 	height: 37px !important;
 }
@@ -91,77 +87,4 @@ td.e-work-cells.e-work-days.e-current-date {
 		margin-bottom: 2px;
 		margin-top: 3px;
 	}
-}
-
-/* HIDE COLUMN HOURS */
-
-div.e-table-container > div > table > tbody > tr:nth-child(1) > td.e-left-indent {
-	display: none;
-}
-
-div.e-table-container > div > table > tbody > tr:nth-child(2) > td:nth-child(1) {
-	display: none;
-}
-
-div.calendar-header-day-week {
-	font-family: Mulish;
-	font-style: normal;
-	font-weight: 600;
-	font-size: 12px;
-	line-height: 16px;
-}
-
-div.calendar-header-day {
-	font-family: Mulish;
-	font-style: normal;
-	font-weight: 700;
-	font-size: 14px;
-	line-height: 16px;
-	margin-top: 5px;
-}
-
-div.cell-template-hour {
-	text-align: left;
-	padding-left: 16px;
-	font-family: Mulish;
-	font-style: normal;
-	font-weight: normal;
-	font-size: 12px;
-	line-height: 16px;
-	color: #52575C;
-	height: 100%;
-}
-
-.cell-template-hour-disabled {
-	background-color: #F9F9FA;
-	height: 36px !important;
-	box-sizing: border-box;
-	display: flex;
-	align-items: center;
-}
-
-/* CELLS READ ONLY */
-/*.e-schedule .e-read-only {
-    opacity: 1 !important;
-}*/
-
-div.Layout > div > div > div:nth-child(1) > div > h1 {
-	margin-bottom: 0px !important;
-}
-
-#root > div.Layout {
-	min-height: unset;
-	height: calc(100vh - 190px);
-}
-
-/*#root > div.Footer {
-	position: absolute;
-	bottom: 0px;
-}*/
-
-#root > div.Layout > div > div > div:nth-child(3) > div.loader-scheduler {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	height: 150px;
 }
