@@ -412,26 +412,6 @@ class MentorService extends BaseRequest {
 		});
 	}
 
-	public getSchedulesByMedic(from: string, to: string): Promise<any> {
-		return new Promise((resolve, reject) => {
-			this.instance
-				.get(
-					`ugo/mentors-api/sessions?from=${from}&to=${to}`,
-				)
-				.then((response: any) => {
-					if (response.status === 200 && response.data) {
-						resolve(response.data);
-					} else {
-						reject(null);
-					}
-				})
-				.catch((error: any) => {
-					this.validSession();
-					reject(error);
-				});
-		});
-	}
-
 	public getSkills(): Promise<any> {
 		return new Promise((resolve, reject) => {
 			this.instance
