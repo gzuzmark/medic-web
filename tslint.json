@@ -7,5 +7,7 @@
     ]
   },
   "rules": {
+    "no-console": false,
+    "jsx-no-lambda": false
   }
 }
