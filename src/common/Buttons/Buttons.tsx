@@ -146,6 +146,75 @@ const Link: React.FC<IButtonProps> = props => (
 );
 
 const ButtonNormal = styled(Button)`
+  @properties disabled, loading;
+  align-items: center;
+  border: 1px solid ${colors.BACKGROUND_COLORS.background_green};
+  background: ${(props: IButtonProps) => buttonTheme.colorDefault(props, !INVERSE_COLORS)};
+  border-radius: 3px;
+  cursor: pointer;
+  display: flex;
+  min-height: ${getHeight};
+  justify-content: center;
+  padding: 0 16px;
+  transition-property: background, border, color;
+  transition-timing-function: ease-in-out;
+  transition-duration: 0.3s;
+  ${Body1} {
+    color: ${(props: IButtonProps) => buttonTheme.colorDefault(props, INVERSE_COLORS)};
+  }
+  &:hover:not([loading]) {
+    border: 1px solid ${colors.BACKGROUND_COLORS.background_green};
+    background: ${(props: IButtonProps) => buttonTheme.colorDefault(props, !INVERSE_COLORS)};
+    ${Body1} {
+      color: ${(props: IButtonProps) => buttonTheme.colorDefault(props, INVERSE_COLORS)};
+    }
+  }
+  &:active:not([loading]) {
+    border: 1px solid ${colors.BACKGROUND_COLORS.background_dark_green};
+    background: ${(props: IButtonProps) => buttonTheme.colorActive(props, !INVERSE_COLORS)};
+    ${Body1} {
+      color: ${(props: IButtonProps) => buttonTheme.colorActive(props, INVERSE_COLORS)};
+    }
+  }
+  &[disabled] {
+    border: 1px solid ${colors.BACKGROUND_COLORS.background_disabled}!important;
+    background: ${(props: IButtonProps) => buttonTheme.colorDisabled(props, !INVERSE_COLORS)}!important;
+    cursor: default;
+    ${Body1} {
+      color: ${(props: IButtonProps) => buttonTheme.fontDisabled(props, !INVERSE_COLORS)}!important;
+    }
+  }
+  &[loading] {
+    text-indent: -9999px;
+    white-space: nowrap;
+    overflow: hidden;
+    &:before {
+      color: ${(props: IButtonProps) => props.type === THEME_SECONDARY ?
+    colors.BACKGROUND_COLORS.background_green : colors.BACKGROUND_COLORS.background_white};
+      display: block;
+      filter: progid:DXImageTransform.Microsoft.Alpha(enabled=false);
+      margin: 0 auto;
+      opacity: 1;
+    }
+  }
+  &:before {
+    animation-duration: 1s;
+    animation-iteration-count: infinite;
+    animation-name: rotate;
+    animation-timing-function: linear;
+    border: 4px solid;
+    border-left-color: transparent;
+    border-radius: 50%;
+    content: '';
+    display: none;
+    filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=0);
+    height: 20px;
+    opacity: 0;
+    width: 20px;
+  }
+`;
+
+const ButtonNormalWithIcon = styled(Button)`
     @properties disabled, loading;
     align-items: center;
     border: 1px solid ${colors.BACKGROUND_COLORS.background_green};
@@ -340,4 +409,4 @@ const ButtonLink = styled(Link)`
     }
 `;
 
-export { ButtonLink, ButtonNormal, ButtonSecondary };
+export { ButtonLink, ButtonNormal, ButtonSecondary, ButtonNormalWithIcon };
