@@ -1,5 +1,5 @@
 import * as React from "react";
-import { ButtonNormal, ButtonSecondary } from "../../../../../common/Buttons/Buttons";
+import { ButtonNormal, ButtonNormalWithIcon, ButtonSecondary } from "../../../../../common/Buttons/Buttons";
 import ContentModal from "../../../../../common/ConsoleModal/ContentModal";
 import MentorModalBase from "../../../../../common/ConsoleModal/MentorModalBase";
 import Icon from "../../../../../common/Icon/Icon";
@@ -226,7 +226,7 @@ const FormEditHistoryManager: React.FC<IPropsFormEditHistoryManager> = (props) =
                   </div>
                   <div>
                   <PrescriptionTextContainer>
-                    <ButtonNormal
+                    <ButtonNormalWithIcon
                             text={"Guardar y enviar"}
                             attrs={...buttonAttrUpdate}
                             icon={sendIcon}    
