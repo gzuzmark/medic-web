@@ -1,23 +1,26 @@
 import { L10n } from '@syncfusion/ej2-base';
-// tslint:disable:ordered-imports
 import {
 	Inject,
 	ScheduleComponent,
-	ViewDirective, ViewsDirective, Week
+	ViewDirective, ViewsDirective, WorkWeek
 } from '@syncfusion/ej2-react-schedule';
+import * as _ from 'lodash';
+import * as moment from "moment";
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
+import { Link } from 'react-router-dom';
 import LayoutContext from '../../../common/Layout/Layout.context';
 import Loader from '../../../common/Loader/Loader';
 import { Headline1 } from '../../../common/MentorText';
 import MentorService from '../../../services/Mentor/Mentor.service';
+import CaptionFilter from './components/CaptionFilter/CaptionFilter';
 import MessageService from './components/MessageServices/MessageService';
+import ScheduleCellTemplate from './components/ScheduleCellTemplate/ScheduleCellTemplate';
+import ScheduleEventTemplate from './components/ScheduleEventTemplate/ScheduleEventTemplate';
+import { IAppoitmentData } from './interfaces';
 import { localeTranslations } from './locale';
 import './Scheduler.scss';
-import { Link } from 'react-router-dom';
-import * as moment from "moment";
-import * as _ from 'lodash';
-import CaptionFilter from './components/CaptionFilter/CaptionFilter';
+import { isDateValid, mapApiResponse } from './services';
 
 const headerStyle = {
 	display: 'flex',
@@ -37,34 +40,34 @@ L10n.load({
 	'en-US': localeTranslations,
 });
 
-interface IAppointments {
-	Id: number;
-	Doctor: string;
-	Subject: string;
-	StartTime: Date;
-	EndTime: Date;
-}
-
-// interface IDateHeaderTemplateProps {
-// 	date: Date;
+// interface IAppointments {
+// 	Id: number;
+// 	Doctor: string;
+// 	Subject: string;
+// 	StartTime: Date;
+// 	EndTime: Date;
 // }
+
+
+// duracion: 20
+// 4b555cbf-bf94-4631-bb8f-93afb93dd75f
+// 25b9be97-d739-4a3a-9720-80ff7155b49f
 
 const DEFAULT_INTERVAL_MINUTES = 20;
 const WORKING_DAYS = [0,1,2,3,4,5,6]
 
-const isDateValid = (from: Date) => new Date() < from;
-
 const Scheduler = () => {
 	const { user } = React.useContext(LayoutContext);
-	let scheduleObj: any = React.useRef();
-  	const mentorService = new MentorService();
-	const [loading, setLoading] = React.useState(false);
-	const [appointments, setAppointments] = React.useState<IAppointments[]>([]);
+	const scheduleRef = React.useRef<ScheduleComponent>(null);
+	const mentorService = new MentorService();
+	const [loading, setLoading] = React.useState<boolean>(false);
+	const [appointments, setAppointments] = React.useState<IAppoitmentData[]>([]);
 	const [skills, setSkills] = React.useState<any[]>([]);
 	const [executeService, setExecuteService] = React.useState(false);
 	const [durationInterval, setDurationInterval] = React.useState<number>(DEFAULT_INTERVAL_MINUTES);
     const timeZoneLocal = Intl.DateTimeFormat().resolvedOptions().timeZone // get customer's local zone
-    // function that gets the time from the time zone
+
+	// function that gets the time from the time zone
     const getTimeNowByTimeZone = (tz: any):any => {
         return new Date().toLocaleTimeString('ES',{
             timeZone: tz,
@@ -137,37 +140,7 @@ const Scheduler = () => {
 				mentorService
 					.getSchedulesByMedic(firstDay.toISOString(), lastDay.toISOString())
 					.then((response) => {
-						const schedules = response.items.map(
-							(item: any) => ({
-								Id: item.id,
-								Subject: `${item.doctor_name
-									} ${item.doctor_last_name
-									}`,
-								Subsubject:
-									item.patient_name &&
-										user.id === item.user_id &&
-										item.patient_name
-										? `Paciente: ${item.patient_name
-										} ${item.patient_last_name
-										} `
-										: 'Sin paciente asignado',
-								StartTime: new Date(item.from),
-								EndTime: new Date(item.to),
-								IsReadonly:
-									item.doctor_id !==
-									user.rolId ||
-									!isDateValid(
-										new Date(item.from)
-									),
-								HasPatient:
-									item.patient_name &&
-									user.id === item.user_id,
-								Doctor: item.doctor_id,
-								User: user.id,
-								SessionId: item.id,
-								Description: "fdsf"
-							})
-						);
+						const schedules = mapApiResponse(response.items, user);
 						setAppointments(schedules);
 						resolve();
 					});
@@ -191,19 +164,22 @@ const Scheduler = () => {
 	}, [skills]);
 
 	const onCellClick = (args: any) => {
-		const { startTime, endTime } = args;
-		const isValid = isDateValid(startTime);
-		const isSlot = scheduleObj.isSlotAvailable(startTime, endTime);
-		const isValidSlotDoctor = isValidSlotWhenOccupied(args);
-		const cancel = !isValid || (!isSlot && false) || !isValidSlotDoctor; // (!isSlot && false) is a hack
-		args.cancel = cancel;
+		if (scheduleRef.current) {
+			const { startTime, endTime } = args;
+			const isValid = isDateValid(startTime);
+			const isSlot = scheduleRef.current.isSlotAvailable(startTime, endTime);
+			const isValidSlotDoctor = isValidSlotWhenOccupied(args);
+			const cancel = !isValid || (!isSlot && false) || !isValidSlotDoctor; // (!isSlot && false) is a hack
+			args.cancel = cancel; // ||  true
+			return;
+		}
+		args.cancel = true;
 	};
 
 	const isValidSlotWhenOccupied = (args: any) => {
 		const { startTime, endTime } = args;
 		const totalSlots = appointments.filter((slot) => {
-			return String(slot.Doctor) === String(user.rolId) &&
-				((slot.StartTime >= startTime && slot.StartTime < endTime) ||
+			return ((slot.StartTime >= startTime && slot.StartTime < endTime) ||
 					(slot.StartTime <= startTime && slot.EndTime >= endTime) ||
 					(slot.EndTime > startTime && slot.EndTime <= endTime))
 		});
@@ -261,31 +237,6 @@ const Scheduler = () => {
 		const appointmentDate = new Date(value);
 		return appointmentDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
 	}
-
-	const eventTemplate = (args: any) => {
-		return (
-			<>
-				<div
-					className="template-wrap"
-					style={{ background: !args.HasPatient ? args.SecondaryColor : '#adb7c4' }}
-				>
-					<div
-						className="subject"
-						style={{ background: !args.HasPatient ? args.PrimaryColor : '#adb7c4' }}
-					>
-						{args.Subject}
-					</div>
-					<div
-						className="time"
-						style={{ background: args.PrimaryColor }}
-					>
-						{getTimeString(args.StartTime)} -{" "}
-						{getTimeString(args.EndTime)}
-					</div>
-				</div>
-			</>
-		);
-	};
 
 	const contentTemplate = (props: any) => {
 
@@ -388,25 +339,6 @@ const Scheduler = () => {
 		);
 	}
 
-	const CellTemplate = (props: any) => {
-		// console.log(props);
-		const { type, date } = props;
-		const mdate = moment(date).locale('es');
-		
-		if (type === 'alldayCells') {
-			return <></>;
-		}
-
-		const mNow = moment(new Date); // .add(1, 'hour');
-		if (mNow > mdate) {
-			return <div className="cell-template-hour cell-template-hour-disabled">{mdate.format('hh:mm a')}</div>
-		}
-
-		return (
-			<div className="cell-template-hour">{mdate.format('hh:mm a')}</div>
-		);
-	}
-
 	return (
 		<div className='u-LayoutMargin'>
 			<div style={headerStyle}>
@@ -414,15 +346,16 @@ const Scheduler = () => {
 					<Headline1 style={titleStyle}>Calendario de Citas</Headline1>
 				</div>
 			</div>
-			<CaptionFilter duration={durationInterval} />
+			{ !loading && <CaptionFilter duration={durationInterval} />}
 			<div>
 				{loading && <Loader className={'loader-scheduler'} />}
-				{!loading && (
+				{!loading && (	
 					<ScheduleComponent
-						cssClass='event-template quick-info-template'
-						height='calc(100vh - 320px)'
-						ref={(schedule) => (scheduleObj = schedule)}
-						eventSettings={{ dataSource: appointments, template: eventTemplate }}
+						// cssClass='event-template quick-info-template'
+						// height='calc(100vh - 320px)'
+						width={'auto'}
+						ref={scheduleRef}
+						eventSettings={{ dataSource: appointments,  template: ScheduleEventTemplate }}
 						quickInfoTemplates={{ content: contentTemplate }}
 						popupOpen={onPopUpOpen}
 						timeScale={{ enable: true, interval: durationInterval, slotCount: 1 }}
@@ -432,9 +365,9 @@ const Scheduler = () => {
 						actionComplete={onComplete}
 						allowDragAndDrop={false}
                         timezone={timeZoneLocal}
-                        showHeaderBar={true}
+						showHeaderBar={true}
                         dateHeaderTemplate={DateHeaderTemplate}
-                        cellTemplate={CellTemplate}
+                        cellTemplate={ScheduleCellTemplate}
                         workHours={{
                             highlight: true,
                             start: "0" + hourStartCalendar + ":00",
@@ -445,7 +378,8 @@ const Scheduler = () => {
                         <ViewsDirective>
                             {/* <ViewDirective option='Month' displayName='Vista mensual' /> */}
                             <ViewDirective
-                                option={"Week"}
+                                option={"WorkWeek"}
+								firstDayOfWeek={0}
                                 displayName="Vista semanal"
                                 startHour={"0" + hourStartCalendar + ":00"}
                                 endHour={hourEndCalendar + ":00"}
@@ -457,7 +391,7 @@ const Scheduler = () => {
                                 endHour={hourEndCalendar+":00"}
                             /> */}
                         </ViewsDirective>
-                        <Inject services={[Week]} />
+                        <Inject services={[WorkWeek]} />
                     </ScheduleComponent>
                 )}
             </div>
