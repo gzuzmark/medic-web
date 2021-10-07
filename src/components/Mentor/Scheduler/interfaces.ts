@@ -24,7 +24,7 @@ export interface IAppoitmentData {
     IsReadonly: boolean;
     Doctor: IDoctor;
     Patient: IPatient | null;
-    Session: ISession;
+    Session: ISession | null;
     Mode: AppointmentMode;
 }
 

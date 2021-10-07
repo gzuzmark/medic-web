@@ -40,19 +40,6 @@ L10n.load({
 	'en-US': localeTranslations,
 });
 
-// interface IAppointments {
-// 	Id: number;
-// 	Doctor: string;
-// 	Subject: string;
-// 	StartTime: Date;
-// 	EndTime: Date;
-// }
-
-
-// duracion: 20
-// 4b555cbf-bf94-4631-bb8f-93afb93dd75f
-// 25b9be97-d739-4a3a-9720-80ff7155b49f
-
 const DEFAULT_INTERVAL_MINUTES = 20;
 const WORKING_DAYS = [0,1,2,3,4,5,6]
 
@@ -352,7 +339,7 @@ const Scheduler = () => {
 				{!loading && (	
 					<ScheduleComponent
 						// cssClass='event-template quick-info-template'
-						// height='calc(100vh - 320px)'
+						height='calc(100vh - 320px)'
 						width={'auto'}
 						ref={scheduleRef}
 						eventSettings={{ dataSource: appointments,  template: ScheduleEventTemplate }}
