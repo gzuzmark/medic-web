@@ -13,8 +13,8 @@ const timesToString = (startTime: Date, endTime: Date): string => {
 }
 
 const patientToString = (patient: IPatient): string => {
-    const { name, lastname, secondLastname } = patient;
-    return `${name} ${lastname} ${secondLastname}`;
+    const { name, lastname } = patient;
+    return `${name} ${lastname}`;
 }
 
 const ScheduleEventTemplate = (data: IAppoitmentData) => {
