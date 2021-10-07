@@ -8,14 +8,14 @@ import * as _ from 'lodash';
 import * as moment from "moment";
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import { Link } from 'react-router-dom';
 import LayoutContext from '../../../common/Layout/Layout.context';
 import Loader from '../../../common/Loader/Loader';
 import { Headline1 } from '../../../common/MentorText';
 import MentorService from '../../../services/Mentor/Mentor.service';
-import CaptionFilter from './components/CaptionFilter/CaptionFilter';
+import CaptionFilter, { IFilterGroup } from './components/CaptionFilter/CaptionFilter';
 import MessageService from './components/MessageServices/MessageService';
 import ScheduleCellTemplate from './components/ScheduleCellTemplate/ScheduleCellTemplate';
+import ScheduleContentTemplate from './components/ScheduleContentTemplate/ScheduleContentTemplate';
 import ScheduleEventTemplate from './components/ScheduleEventTemplate/ScheduleEventTemplate';
 import { IAppoitmentData } from './interfaces';
 import { localeTranslations } from './locale';
@@ -49,9 +49,11 @@ const Scheduler = () => {
 	const mentorService = new MentorService();
 	const [loading, setLoading] = React.useState<boolean>(false);
 	const [appointments, setAppointments] = React.useState<IAppoitmentData[]>([]);
+	const [filterAppointments, setFilterAppointments] = React.useState<IAppoitmentData[]>([]);
 	const [skills, setSkills] = React.useState<any[]>([]);
 	const [executeService, setExecuteService] = React.useState(false);
 	const [durationInterval, setDurationInterval] = React.useState<number>(DEFAULT_INTERVAL_MINUTES);
+	const [disabledFilter, setDisabledFilter] = React.useState<boolean>(false);
     const timeZoneLocal = Intl.DateTimeFormat().resolvedOptions().timeZone // get customer's local zone
 
 	// function that gets the time from the time zone
@@ -150,6 +152,10 @@ const Scheduler = () => {
 			.then(() => setLoading(false));
 	}, [skills]);
 
+	React.useEffect(() => {
+		setFilterAppointments(appointments);
+	}, [appointments]);
+
 	const onCellClick = (args: any) => {
 		if (scheduleRef.current) {
 			const { startTime, endTime } = args;
@@ -220,99 +226,16 @@ const Scheduler = () => {
 		}
 	};
 
-	const getTimeString = (value: any) => {
-		const appointmentDate = new Date(value);
-		return appointmentDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-	}
-
-	const contentTemplate = (props: any) => {
-
-		return (
-			<div>
-				{props.elementType === "cell" ? (
-					<div className="e-cell-content e-template">
-						<form className="e-schedule-form">
-							<div className="content-area">
-								<input
-									className="e-subject e-field e-input"
-									type="text"
-									name="Subject"
-									placeholder="Agregar Título"
-									aria-placeholder="Agregar Título"
-								/>
-							</div>
-
-							<div className="content-area">
-								<div className="e-date-time">
-									<div className="e-date-time-icon e-icons">
-										{" "}
-									</div>
-									<div className="e-date-time-details e-text-ellipsis">
-										{props.StartTime.toDateString()}
-										{"("}
-										{getTimeString(
-											props.StartTime
-										)}{" "}
-                                            -{" "}
-										{getTimeString(
-											props.EndTime
-										)}
-										{")"}
-									</div>
-								</div>
-							</div>
-						</form>
-					</div>
-				) : (
-					<div className="event-content">
-						{props.Subject !== undefined ? (
-							<div className="meeting-type-wrap">
-								{props.Subsubject}
-							</div>
-						) : (
-							""
-						)}
-						{props.StartTime !== undefined &&
-							props.EndTime !== undefined ? (
-							<div className="meeting-subject-wrap">
-								<div className="e-date-time-icon e-icons">
-									{" "}
-								</div>
-								<div className="e-date-time-details e-text-ellipsis">
-									{props.StartTime.toDateString()}
-									{"("}
-									{getTimeString(
-										props.StartTime
-									)}{" "}
-                                        -{" "}
-									{getTimeString(
-										props.EndTime
-									)}
-									{")"}
-								</div>
-							</div>
-						) : (
-							""
-						)}
-						{props.HasPatient ? (
-							<Link
-								to={{
-									pathname: `/doctor/sesion/${props.SessionId
-										}`,
-									state: {
-										fromScheduler: true
-									}
-								}}
-							>
-								Ver formato clínico
-							</Link>
-						) : (
-							""
-						)}
-					</div>
-				)}
-			</div>
-		);
+	const onChangeFilters = (filter: IFilterGroup) => {
+		const { scheduled, notScheduled } = filter;
+		console.log('change filters');
+		if (scheduled && notScheduled) {
+			setFilterAppointments(appointments);
+		} else if (scheduled && !notScheduled) {
+			setFilterAppointments(appointments.filter(item => item.Patient));
+		} else if (!scheduled && notScheduled) {
+			setFilterAppointments(appointments.filter(item => !item.Patient));
+		}
 	}
 
 	const DateHeaderTemplate = (props: any) => {
@@ -333,17 +256,20 @@ const Scheduler = () => {
 					<Headline1 style={titleStyle}>Calendario de Citas</Headline1>
 				</div>
 			</div>
-			{ !loading && <CaptionFilter duration={durationInterval} />}
+			{ !loading && <CaptionFilter duration={durationInterval} disabled={disabledFilter} onFilterCheck={onChangeFilters} />}
+			<div>
+				<button onClick={() => setDisabledFilter(!disabledFilter)}>Disabled: {String(disabledFilter)}</button>
+			</div>
 			<div>
 				{loading && <Loader className={'loader-scheduler'} />}
 				{!loading && (	
 					<ScheduleComponent
 						// cssClass='event-template quick-info-template'
-						height='calc(100vh - 320px)'
+						// height='calc(100vh - 320px)' 
 						width={'auto'}
 						ref={scheduleRef}
-						eventSettings={{ dataSource: appointments,  template: ScheduleEventTemplate }}
-						quickInfoTemplates={{ content: contentTemplate }}
+						eventSettings={{ dataSource: filterAppointments,  template: ScheduleEventTemplate }}
+						quickInfoTemplates={{ content: ScheduleContentTemplate }}
 						popupOpen={onPopUpOpen}
 						timeScale={{ enable: true, interval: durationInterval, slotCount: 1 }}
 						cellClick={onCellClick}
@@ -361,6 +287,7 @@ const Scheduler = () => {
                             end: hourEndCalendar + ":00"
                         }}
                         workDays={WORKING_DAYS}
+						immediateRender={true}
                     >
                         <ViewsDirective>
                             {/* <ViewDirective option='Month' displayName='Vista mensual' /> */}
