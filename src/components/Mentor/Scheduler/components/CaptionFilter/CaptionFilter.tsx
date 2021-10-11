@@ -29,17 +29,15 @@ const CaptionFilter = ({ duration, disabled = false, onFilterCheck }: ICaptionFi
                 return;
             }
         }
-        setFilters({
+        const newValue = {
             ...filters,
             [`${itemGroup}`]: isChecked,
-        });
-    }
-
-    React.useEffect(() => {
+        };
+        setFilters(newValue);
         if (onFilterCheck) {
-            onFilterCheck(filters);
+            onFilterCheck(newValue);
         }
-    }, [filters]);
+    }
 
     React.useEffect(() => {
         if (disabled) {

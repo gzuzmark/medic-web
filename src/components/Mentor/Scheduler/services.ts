@@ -33,4 +33,13 @@ export const mapApiResponse = (items: any[], user: any): IAppoitmentData[] => {
     return schedules;
 }
 
+export const changeDataToModeEdit = (data: IAppoitmentData[]): IAppoitmentData[] => {
+    return data.map<IAppoitmentData>((item: IAppoitmentData) => {
+        return {
+            ...item,
+            Mode: 'EDIT',
+        };
+    });
+}
+
 export const isDateValid = (from: Date) => new Date() < from;

@@ -41,16 +41,37 @@ export const CitaReservadaPast = styled(Container as any) `
     border: 1.5px solid #84E4C6;
     color: #FFF !important;
 `
+
+export const CitaReservadaEditPast = styled(Container as any) `
+    background: #CDD4F0 !important;
+    border: 1.5px solid #CDD4F0;
+    color: #FFF !important;
+`
+
 /** APPOIPMENT FUTURE */
 
-export const CitaReservada = styled(Container as any) `
+export const CitaNoReservada = styled(Container as any) `
     background: ${BACKGROUNDS.RESERVADA} !important;
     border: 1.5px solid #1ECD96;
+    position: relative;
+    cursor: unset;
 `
 
 export const CitaReservadaWithPatient = styled(Container as any) `
     background: ${BACKGROUNDS.RESERVADA_PATIENT} !important;
     border: 1.5px solid #00B57C;
+`
+
+export const CitaReservadaWithPatientEdit = styled(Container as any) `
+    background: #A3ABCC !important;
+    border: 1.5px solid #A3ABCC;
+`
+
+export const CloseIcon = styled.img`
+    position: absolute;
+    top: 6px
+    right: 6px;
+    cursor: pointer;
 `
 
 /** HOURS */

@@ -6,7 +6,13 @@ const getTimeString = (value: any) => {
     return appointmentDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
 }
 
+const hide = true;
+
 const ScheduleContentTemplate = (props: any) => {
+
+    if (hide) {
+        return <></>;
+    }
 
     return (
         <div>

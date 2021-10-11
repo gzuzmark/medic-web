@@ -7,7 +7,7 @@ import {
 import * as _ from 'lodash';
 import * as moment from "moment";
 import * as React from 'react';
-import * as ReactDOM from 'react-dom';
+// import * as ReactDOM from 'react-dom';
 import LayoutContext from '../../../common/Layout/Layout.context';
 import Loader from '../../../common/Loader/Loader';
 import { Headline1 } from '../../../common/MentorText';
@@ -17,7 +17,7 @@ import MessageService from './components/MessageServices/MessageService';
 import ScheduleCellTemplate from './components/ScheduleCellTemplate/ScheduleCellTemplate';
 import ScheduleContentTemplate from './components/ScheduleContentTemplate/ScheduleContentTemplate';
 import ScheduleEventTemplate from './components/ScheduleEventTemplate/ScheduleEventTemplate';
-import { IAppoitmentData } from './interfaces';
+import { AppointmentMode, IAppoitmentData } from './interfaces';
 import { localeTranslations } from './locale';
 import './Scheduler.scss';
 import { isDateValid, mapApiResponse } from './services';
@@ -53,7 +53,7 @@ const Scheduler = () => {
 	const [skills, setSkills] = React.useState<any[]>([]);
 	const [executeService, setExecuteService] = React.useState(false);
 	const [durationInterval, setDurationInterval] = React.useState<number>(DEFAULT_INTERVAL_MINUTES);
-	const [disabledFilter, setDisabledFilter] = React.useState<boolean>(false);
+	const [isModeEdit, setIsModeEdit] = React.useState<boolean>(false);
     const timeZoneLocal = Intl.DateTimeFormat().resolvedOptions().timeZone // get customer's local zone
 
 	// function that gets the time from the time zone
@@ -72,51 +72,53 @@ const Scheduler = () => {
     const hourEndCalendar = 22 - (diffHoursTimeZone) // 20 = closing time in America/Lima
 
 	const onPopUpOpen = (args: any) => {
-		if (args.type === 'Editor') {
-			// removing unnecessary fields
-			const elements = [
-				'.e-location-container',
-				'.e-all-day-time-zone-row',
-				'.e-control.e-recurrenceeditor.e-lib',
-			];
-			elements.forEach((sel) => {
-				const querySelector = args.element.querySelector(sel);
-				if (querySelector) {
-					querySelector.style.display = 'none';
-				}
-			});
-		} else if (args.type === 'QuickInfo') {
-			// removing unnecessary fields
-			const elements = ['.e-event-details'];
-			elements.forEach((sel) => {
-				const querySelector = args.element.querySelector(sel);
-				if (querySelector) {
-					querySelector.style.display = 'none'
-				};
-			});
-			const selector = args.element.querySelector('.content-area');
-			if (selector) {
-				const father = selector.parentElement;
-				const html = (
-					<div className="calendar-create-container">
-						<h4 className="calendar-create-title">Registrar en calendario</h4>
-						<p>Recuerde que esta opción es irreversible</p>
-						<p>Después de crear no podrá eliminar ni editar</p>
-						<p>Verifique que la fecha y hora sean las correctas</p>
-					</div>
-				);
-				ReactDOM.render(html, father);
-			}
-		} else if (args.type === 'EditEventInfo') {
-			// removing close button and edit button
-			const elements = ['.e-delete.e-icons.e-control', '.e-edit.e-icons.e-control'];
-			elements.forEach((sel) => {
-				const querySelector = args.element.querySelector(sel);
-				if (querySelector) {
-					querySelector.style.display = 'none'
-				};
-			});
-		};
+		args.cancel = true;
+		console.log('click popup');
+		// if (args.type === 'Editor') {
+		// 	// removing unnecessary fields
+		// 	const elements = [
+		// 		'.e-location-container',
+		// 		'.e-all-day-time-zone-row',
+		// 		'.e-control.e-recurrenceeditor.e-lib',
+		// 	];
+		// 	elements.forEach((sel) => {
+		// 		const querySelector = args.element.querySelector(sel);
+		// 		if (querySelector) {
+		// 			querySelector.style.display = 'none';
+		// 		}
+		// 	});
+		// } else if (args.type === 'QuickInfo') {
+		// 	// removing unnecessary fields
+		// 	const elements = ['.e-event-details'];
+		// 	elements.forEach((sel) => {
+		// 		const querySelector = args.element.querySelector(sel);
+		// 		if (querySelector) {
+		// 			querySelector.style.display = 'none'
+		// 		};
+		// 	});
+		// 	const selector = args.element.querySelector('.content-area');
+		// 	if (selector) {
+		// 		const father = selector.parentElement;
+		// 		const html = (
+		// 			<div className="calendar-create-container">
+		// 				<h4 className="calendar-create-title">Registrar en calendario</h4>
+		// 				<p>Recuerde que esta opción es irreversible</p>
+		// 				<p>Después de crear no podrá eliminar ni editar</p>
+		// 				<p>Verifique que la fecha y hora sean las correctas</p>
+		// 			</div>
+		// 		);
+		// 		ReactDOM.render(html, father);
+		// 	}
+		// } else if (args.type === 'EditEventInfo') {
+		// 	// removing close button and edit button
+		// 	const elements = ['.e-delete.e-icons.e-control', '.e-edit.e-icons.e-control'];
+		// 	elements.forEach((sel) => {
+		// 		const querySelector = args.element.querySelector(sel);
+		// 		if (querySelector) {
+		// 			querySelector.style.display = 'none'
+		// 		};
+		// 	});
+		// };
 	}
 
 	const fillSessionsInCalendar = (): Promise<void> => {
@@ -131,6 +133,7 @@ const Scheduler = () => {
 					.then((response) => {
 						const schedules = mapApiResponse(response.items, user);
 						setAppointments(schedules);
+						setFilterAppointments([...schedules]);
 						resolve();
 					});
 			}
@@ -153,8 +156,10 @@ const Scheduler = () => {
 	}, [skills]);
 
 	React.useEffect(() => {
-		setFilterAppointments(appointments);
-	}, [appointments]);
+		if (!loading) {
+			setFilterAppointments([...appointments]);
+		}
+	}, [appointments, loading]);
 
 	const onCellClick = (args: any) => {
 		if (scheduleRef.current) {
@@ -163,10 +168,11 @@ const Scheduler = () => {
 			const isSlot = scheduleRef.current.isSlotAvailable(startTime, endTime);
 			const isValidSlotDoctor = isValidSlotWhenOccupied(args);
 			const cancel = !isValid || (!isSlot && false) || !isValidSlotDoctor; // (!isSlot && false) is a hack
-			args.cancel = cancel; // ||  true
+			args.cancel = cancel || true; // ||  true
 			return;
 		}
 		args.cancel = true;
+		console.log('click cell');
 	};
 
 	const isValidSlotWhenOccupied = (args: any) => {
@@ -228,15 +234,17 @@ const Scheduler = () => {
 
 	const onChangeFilters = (filter: IFilterGroup) => {
 		const { scheduled, notScheduled } = filter;
-		console.log('change filters');
+		if (isModeEdit) {
+			return;
+		}
 		if (scheduled && notScheduled) {
-			setFilterAppointments(appointments);
+			setFilterAppointments([...appointments]);
 		} else if (scheduled && !notScheduled) {
 			setFilterAppointments(appointments.filter(item => item.Patient));
 		} else if (!scheduled && notScheduled) {
 			setFilterAppointments(appointments.filter(item => !item.Patient));
 		}
-	}
+	};
 
 	const DateHeaderTemplate = (props: any) => {
 		const { date } = props;
@@ -249,6 +257,14 @@ const Scheduler = () => {
 		);
 	}
 
+	const EventTemplate = (props: IAppoitmentData) => {
+		const mode: AppointmentMode = isModeEdit ? 'EDIT': 'VIEW';
+
+		return (
+			<ScheduleEventTemplate {...props} Mode={mode} />
+		);
+	}
+
 	return (
 		<div className='u-LayoutMargin'>
 			<div style={headerStyle}>
@@ -256,19 +272,21 @@ const Scheduler = () => {
 					<Headline1 style={titleStyle}>Calendario de Citas</Headline1>
 				</div>
 			</div>
-			{ !loading && <CaptionFilter duration={durationInterval} disabled={disabledFilter} onFilterCheck={onChangeFilters} />}
+			{ !loading && <CaptionFilter duration={durationInterval} disabled={isModeEdit} onFilterCheck={onChangeFilters} />}
 			<div>
-				<button onClick={() => setDisabledFilter(!disabledFilter)}>Disabled: {String(disabledFilter)}</button>
+				<button onClick={() => setIsModeEdit(!isModeEdit)}>Editar: {String(isModeEdit)}</button>
+				<button onClick={() => null}>Guardar</button>
 			</div>
 			<div>
 				{loading && <Loader className={'loader-scheduler'} />}
-				{!loading && (	
+				{!loading && (
 					<ScheduleComponent
 						// cssClass='event-template quick-info-template'
 						// height='calc(100vh - 320px)' 
+						height='700px'
 						width={'auto'}
 						ref={scheduleRef}
-						eventSettings={{ dataSource: filterAppointments,  template: ScheduleEventTemplate }}
+						eventSettings={{ dataSource: filterAppointments,  template: EventTemplate }}
 						quickInfoTemplates={{ content: ScheduleContentTemplate }}
 						popupOpen={onPopUpOpen}
 						timeScale={{ enable: true, interval: durationInterval, slotCount: 1 }}
@@ -287,7 +305,8 @@ const Scheduler = () => {
                             end: hourEndCalendar + ":00"
                         }}
                         workDays={WORKING_DAYS}
-						immediateRender={true}
+						allowMultiCellSelection={true}
+						allowMultiRowSelection={true}
                     >
                         <ViewsDirective>
                             {/* <ViewDirective option='Month' displayName='Vista mensual' /> */}

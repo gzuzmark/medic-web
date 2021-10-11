@@ -1,7 +1,8 @@
 import * as moment from 'moment';
 import * as React from 'react';
 import { IAppoitmentData, IPatient } from '../../interfaces';
-import { CitaNoReservadaPast, CitaReservada, CitaReservadaPast, HourDiv, HourPatiendDiv, PatientDiv, CitaReservadaWithPatient, HourPastDiv } from './ScheduleStyled';
+import { CitaNoReservadaPast, CitaNoReservada, CitaReservadaPast, HourDiv, HourPatiendDiv, PatientDiv, CitaReservadaWithPatient, HourPastDiv, CitaReservadaEditPast, CitaReservadaWithPatientEdit, CloseIcon } from './ScheduleStyled';
+import * as Close from '../../../../../assets/images/close-deleted.png';
 
 const getTimeString = (value: any) => {
     const appointmentDate = new Date(value);
@@ -17,8 +18,8 @@ const patientToString = (patient: IPatient): string => {
     return `${name} ${lastname}`;
 }
 
-const ScheduleEventTemplate = (data: IAppoitmentData) => {
-    const { StartTime, EndTime, Patient } = data;
+const ScheduleEventTemplate = (props: IAppoitmentData) => {
+    const { StartTime, EndTime, Patient, Mode } = props;
     const limitNow = moment().add(1, 'hour');
 
     // PAST
@@ -29,6 +30,14 @@ const ScheduleEventTemplate = (data: IAppoitmentData) => {
                 <CitaNoReservadaPast>
                     <HourPastDiv>{timesToString(StartTime, EndTime)}</HourPastDiv>
                 </CitaNoReservadaPast>
+            );
+        }
+        if (Mode === 'EDIT') {
+            return (
+                <CitaReservadaEditPast>
+                    <HourPatiendDiv>{timesToString(StartTime, EndTime)}</HourPatiendDiv>
+                    <PatientDiv>{patientToString(Patient)}</PatientDiv>
+                </CitaReservadaEditPast>
             );
         }
         return (
@@ -42,6 +51,14 @@ const ScheduleEventTemplate = (data: IAppoitmentData) => {
     // FUTURE
 
     if (Patient) {
+        if (Mode === 'EDIT') {
+            return (
+                <CitaReservadaWithPatientEdit>
+                    <HourPatiendDiv>{timesToString(StartTime, EndTime)}</HourPatiendDiv>
+                    <PatientDiv>{patientToString(Patient)}</PatientDiv>
+                </CitaReservadaWithPatientEdit>
+            );
+        }
         return (
             <CitaReservadaWithPatient>
                 <HourPatiendDiv>{timesToString(StartTime, EndTime)}</HourPatiendDiv>
@@ -49,10 +66,12 @@ const ScheduleEventTemplate = (data: IAppoitmentData) => {
             </CitaReservadaWithPatient>
         );
     }
+
     return (
-        <CitaReservada>
+        <CitaNoReservada>
+            { Mode === 'EDIT' && <CloseIcon alt={'delete'} src={Close} width={12} />}
             <HourDiv>{timesToString(StartTime, EndTime)}</HourDiv>
-        </CitaReservada>
+        </CitaNoReservada>
     );
 }
 
