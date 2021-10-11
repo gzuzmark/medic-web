@@ -20,7 +20,7 @@ import ScheduleEventTemplate from './components/ScheduleEventTemplate/ScheduleEv
 import { AppointmentMode, IAppoitmentData } from './interfaces';
 import { localeTranslations } from './locale';
 import './Scheduler.scss';
-import { isDateValid, mapApiResponse } from './services';
+import { createTemporalAppointment, isDateValid, mapApiResponse } from './services';
 
 const headerStyle = {
 	display: 'flex',
@@ -50,6 +50,8 @@ const Scheduler = () => {
 	const [loading, setLoading] = React.useState<boolean>(false);
 	const [appointments, setAppointments] = React.useState<IAppoitmentData[]>([]);
 	const [filterAppointments, setFilterAppointments] = React.useState<IAppoitmentData[]>([]);
+	const [addAppointments, setAddAppointments] = React.useState<IAppoitmentData[]>([]);
+	// const [deleteAppointments, setDeleteAppointments] = React.useState<IAppoitmentData[]>([]);
 	const [skills, setSkills] = React.useState<any[]>([]);
 	const [executeService, setExecuteService] = React.useState(false);
 	const [durationInterval, setDurationInterval] = React.useState<number>(DEFAULT_INTERVAL_MINUTES);
@@ -155,35 +157,37 @@ const Scheduler = () => {
 			.then(() => setLoading(false));
 	}, [skills]);
 
-	React.useEffect(() => {
-		if (!loading) {
-			setFilterAppointments([...appointments]);
-		}
-	}, [appointments, loading]);
+	// React.useEffect(() => {
+	// 	if (!loading) {
+	// 		setFilterAppointments([...appointments]);
+	// 	}
+	// }, [appointments, loading, isModeEdit]);
 
 	const onCellClick = (args: any) => {
-		if (scheduleRef.current) {
+		if (scheduleRef.current && isModeEdit) {
 			const { startTime, endTime } = args;
 			const isValid = isDateValid(startTime);
 			const isSlot = scheduleRef.current.isSlotAvailable(startTime, endTime);
-			const isValidSlotDoctor = isValidSlotWhenOccupied(args);
-			const cancel = !isValid || (!isSlot && false) || !isValidSlotDoctor; // (!isSlot && false) is a hack
-			args.cancel = cancel || true; // ||  true
-			return;
+			const allowAdd = isValid && isSlot;
+			if (allowAdd) {
+				const appointment = createTemporalAppointment(startTime, endTime);
+				setFilterAppointments([...filterAppointments, appointment]);
+				setAddAppointments([...addAppointments, appointment]);
+			}
+			console.log('click cell');
 		}
 		args.cancel = true;
-		console.log('click cell');
 	};
 
-	const isValidSlotWhenOccupied = (args: any) => {
-		const { startTime, endTime } = args;
-		const totalSlots = appointments.filter((slot) => {
-			return ((slot.StartTime >= startTime && slot.StartTime < endTime) ||
-					(slot.StartTime <= startTime && slot.EndTime >= endTime) ||
-					(slot.EndTime > startTime && slot.EndTime <= endTime))
-		});
-		return totalSlots.length === 0;
-	}
+	// const isValidSlotWhenOccupied = (args: any) => {
+	// 	const { startTime, endTime } = args;
+	// 	const totalSlots = appointments.filter((slot) => {
+	// 		return ((slot.StartTime >= startTime && slot.StartTime < endTime) ||
+	// 				(slot.StartTime <= startTime && slot.EndTime >= endTime) ||
+	// 				(slot.EndTime > startTime && slot.EndTime <= endTime))
+	// 	});
+	// 	return totalSlots.length === 0;
+	// }
 
 	const onCellDoubleClick = (args: any) => (args.cancel = true);
 
@@ -246,6 +250,17 @@ const Scheduler = () => {
 		}
 	};
 
+	const enterModeEdit = () => {
+		if (!isModeEdit) {
+			setIsModeEdit(true);
+		}
+	}
+
+	const cancelModeEdit = () => {
+		setIsModeEdit(false);
+		setFilterAppointments([...appointments]);
+	};
+
 	const DateHeaderTemplate = (props: any) => {
 		const { date } = props;
 		const mdate = moment(date).locale('es');
@@ -274,8 +289,9 @@ const Scheduler = () => {
 			</div>
 			{ !loading && <CaptionFilter duration={durationInterval} disabled={isModeEdit} onFilterCheck={onChangeFilters} />}
 			<div>
-				<button onClick={() => setIsModeEdit(!isModeEdit)}>Editar: {String(isModeEdit)}</button>
+				<button onClick={() => enterModeEdit()}>Editar: {String(isModeEdit)}</button>
 				<button onClick={() => null}>Guardar</button>
+				<button onClick={() => cancelModeEdit()}>Cancelar</button>
 			</div>
 			<div>
 				{loading && <Loader className={'loader-scheduler'} />}
@@ -305,8 +321,8 @@ const Scheduler = () => {
                             end: hourEndCalendar + ":00"
                         }}
                         workDays={WORKING_DAYS}
-						allowMultiCellSelection={true}
-						allowMultiRowSelection={true}
+						allowMultiCellSelection={isModeEdit}
+						allowMultiRowSelection={false}
                     >
                         <ViewsDirective>
                             {/* <ViewDirective option='Month' displayName='Vista mensual' /> */}

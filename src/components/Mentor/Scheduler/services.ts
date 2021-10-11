@@ -42,4 +42,18 @@ export const changeDataToModeEdit = (data: IAppoitmentData[]): IAppoitmentData[]
     });
 }
 
+export const createTemporalAppointment = (startTime: Date, endTime: Date): IAppoitmentData => {
+    return {
+        Id: null,
+        Subject: '',
+        StartTime: startTime,
+        EndTime: endTime,
+        IsReadonly: false,
+        Doctor: null,
+        Patient: null,
+        Session: null,
+        Mode: 'EDIT',
+    };
+}
+
 export const isDateValid = (from: Date) => new Date() < from;
