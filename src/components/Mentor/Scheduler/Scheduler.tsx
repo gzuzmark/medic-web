@@ -17,10 +17,11 @@ import MessageService from './components/MessageServices/MessageService';
 import ScheduleCellTemplate from './components/ScheduleCellTemplate/ScheduleCellTemplate';
 import ScheduleContentTemplate from './components/ScheduleContentTemplate/ScheduleContentTemplate';
 import ScheduleEventTemplate from './components/ScheduleEventTemplate/ScheduleEventTemplate';
+import useDateRangeWeek from './hooks/useDateRangeWeek';
 import { AppointmentMode, IAppoitmentData } from './interfaces';
 import { localeTranslations } from './locale';
 import './Scheduler.scss';
-import { createTemporalAppointment, isDateValid, isValidSlotWhenOccupied, mapApiResponse } from './services';
+import { createTemporalAppointment, DEFAULT_INTERVAL_MINUTES, FIRST_DAY_OF_WEEK, isDateValid, isValidSlotWhenOccupied, mapApiResponse, removeItemFromAppointments, WORKING_DAYS } from './services';
 
 const headerStyle = {
 	display: 'flex',
@@ -40,14 +41,14 @@ L10n.load({
 	'en-US': localeTranslations,
 });
 
-const DEFAULT_INTERVAL_MINUTES = 20;
-const WORKING_DAYS = [0,1,2,3,4,5,6]
-
 const Scheduler = () => {
 	const { user } = React.useContext(LayoutContext);
 	const scheduleRef = React.useRef<ScheduleComponent>(null);
 	const mentorService = new MentorService();
-	const [loading, setLoading] = React.useState<boolean>(false);
+	const [loading, setLoading] = React.useState<boolean>(false); // setLoading
+	const [selectedDate, setSelectedDate] = React.useState(new Date());
+	const rangeWeek = useDateRangeWeek(selectedDate);
+
 	const [appointments, setAppointments] = React.useState<IAppoitmentData[]>([]);
 	const [filterAppointments, setFilterAppointments] = React.useState<IAppoitmentData[]>([]);
 	const [addAppointments, setAddAppointments] = React.useState<IAppoitmentData[]>([]);
@@ -124,39 +125,50 @@ const Scheduler = () => {
 		// };
 	}
 
-	const fillSessionsInCalendar = (): Promise<void> => {
+	const fillSessionsInCalendar = (): Promise<IAppoitmentData[]> => {
 		return new Promise((resolve: any) => {
-			if (skills && skills.length > 0) {
-				// const skillId = skills[0].id;
-				const date = new Date();
-				const firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
-				const lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0, 23);
+			if (skills && skills.length > 0 && rangeWeek) {
+				const { dateWeekStart, dateWeekEnd } = rangeWeek;
 				mentorService
-					.getSchedulesByMedic(firstDay.toISOString(), lastDay.toISOString())
+					.getSchedulesByMedic(dateWeekStart.toISOString(), dateWeekEnd.toISOString())
 					.then((response) => {
 						const schedules = mapApiResponse(response.items, user);
-						setAppointments(schedules);
-						setFilterAppointments([...schedules]);
-						resolve();
+						resolve(schedules);
 					});
 			}
 		});
 	}
 
 	React.useEffect(() => {
-		setLoading(true);
 		mentorService.getSkills().then((response: any) => {
 			if (response.duration) {
 				setDurationInterval(Number(response.duration));
 			}
-			setSkills(response.skills);
+			if (response.skills) {
+				setSkills(response.skills);
+			}
 		});
 	}, []);
 
 	React.useEffect(() => {
-		fillSessionsInCalendar()
-			.then(() => setLoading(false));
-	}, [skills]);
+		if (rangeWeek != null && skills.length > 0) {
+			setLoading(true);
+			fillSessionsInCalendar()
+			.then((data) => {
+				setAppointments(data);
+			});
+		}
+	}, [skills, rangeWeek]);
+
+	React.useEffect(() => {
+		if (isModeEdit) {
+			const data = removeItemFromAppointments(appointments, deleteAppointments);
+			setFilterAppointments([...data, ...addAppointments]);
+		} else {
+			setFilterAppointments(appointments);
+		}
+		setLoading(false);
+	}, [appointments]);
 
 	React.useEffect(() => {
 		console.log('adds', addAppointments.length);
@@ -180,6 +192,38 @@ const Scheduler = () => {
 	};
 
 	const onCellDoubleClick = (args: any) => (args.cancel = true);
+
+	const saveEditAppoitments = () => {
+		if (addAppointments.length > 0) {
+			setExecuteService(true)
+			const bulk = {
+				credits: 0,
+				interestAreaId: `${process.env.REACT_APP_INTEREST_AREA_ID}`,
+				isWorkshop: false,
+				maxStudents: 1,
+				room: 1,
+				sessions: addAppointments.map((item: IAppoitmentData) => {
+					return {
+						from: item.StartTime.toISOString(),
+						to: item.EndTime.toISOString(),
+					}
+				}),
+				skillId: skills[0].id,
+				type: 'VIRTUAL',
+			};
+			mentorService.createSessionBulk(bulk)
+				.finally(() => {
+					fillSessionsInCalendar()
+						.then((data) => { 
+							setIsModeEdit(false);
+							setAddAppointments([]);
+							setDeleteAppointments([]);
+							setAppointments(data);
+							setExecuteService(false);
+						})
+				});
+		}
+	}
 
 	const onComplete = (args: any) => {
 		if (args.requestType === 'eventCreated') {
@@ -247,10 +291,12 @@ const Scheduler = () => {
 	}
 
 	const cancelModeEdit = () => {
-		setIsModeEdit(false);
-		setFilterAppointments([...appointments]);
-		setAddAppointments([]);
-		setDeleteAppointments([]);
+		if (isModeEdit) {
+			setIsModeEdit(false);
+			setFilterAppointments([...appointments]);
+			setAddAppointments([]);
+			setDeleteAppointments([]);
+		}
 	};
 
 	const onDeletedAppoitment = (Id: string | null, Guid: string | null) => {
@@ -285,6 +331,16 @@ const Scheduler = () => {
 		);
 	}
 
+	const navigation = (args: any) => {
+		if (args && rangeWeek) {
+			const date: Date = args.currentDate;
+			const { dateWeekStart, dateWeekEnd } = rangeWeek;
+			if (date < dateWeekStart || date > dateWeekEnd) {
+				setSelectedDate(date);
+			}
+		}
+	}
+
 	return (
 		<div className='u-LayoutMargin'>
 			<div style={headerStyle}>
@@ -295,7 +351,7 @@ const Scheduler = () => {
 			{ !loading && <CaptionFilter duration={durationInterval} disabled={isModeEdit} onFilterCheck={onChangeFilters} />}
 			<div>
 				<button onClick={() => enterModeEdit()}>Editar: {String(isModeEdit)}</button>
-				<button onClick={() => null}>Guardar</button>
+				<button onClick={() => saveEditAppoitments()}>Guardar</button>
 				<button onClick={() => cancelModeEdit()}>Cancelar</button>
 			</div>
 			<div>
@@ -303,8 +359,7 @@ const Scheduler = () => {
 				{!loading && (
 					<ScheduleComponent
 						// cssClass='event-template quick-info-template'
-						// height='calc(100vh - 320px)' 
-						height='700px'
+						height='calc(100vh - 320px)' 
 						width={'auto'}
 						ref={scheduleRef}
 						eventSettings={{ dataSource: filterAppointments,  template: EventTemplate }}
@@ -328,12 +383,15 @@ const Scheduler = () => {
                         workDays={WORKING_DAYS}
 						allowMultiCellSelection={isModeEdit}
 						allowMultiRowSelection={false}
+						navigating={navigation}
+						selectedDate={selectedDate}
+						immediateRender={true}
                     >
                         <ViewsDirective>
                             {/* <ViewDirective option='Month' displayName='Vista mensual' /> */}
                             <ViewDirective
                                 option={"WorkWeek"}
-								firstDayOfWeek={0}
+								firstDayOfWeek={FIRST_DAY_OF_WEEK}
                                 displayName="Vista semanal"
                                 startHour={"0" + hourStartCalendar + ":00"}
                                 endHour={hourEndCalendar + ":00"}
