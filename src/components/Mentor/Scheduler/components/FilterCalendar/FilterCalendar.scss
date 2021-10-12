@@ -2,7 +2,6 @@
     width: 170px;
     display: flex;
     flex-direction: row;
-    // justify-content: center;
     align-items: center;
     padding: 0px 8px;
     width: 170px;
@@ -11,6 +10,11 @@
     border-radius: 17px;
     cursor: pointer;
     gap: 12px;
+}
+
+.filter-calendar-disabled {
+    cursor: unset;
+    background: #F7F8FC;
 }
 
 .filter-calendar-title {

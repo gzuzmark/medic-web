@@ -63,7 +63,7 @@ td.e-work-cells.e-work-days.e-current-date {
 .e-appointment-details {
 	padding: 3px 4px !important;
 	flex-direction: column !important;
-	cursor: pointer;
+	/* cursor: pointer; */
 }
 
 .e-schedule .e-read-only {
@@ -164,9 +164,9 @@ div.calendar-header-day {
 }
 
 div.cell-template-hour {
-	display: flex;
+	/*display: flex;
 	align-items: center;
-	box-sizing: border-box;
+	box-sizing: border-box;*/
 	text-align: left;
 	padding-left: 16px;
 	font-family: Mulish;
@@ -175,7 +175,7 @@ div.cell-template-hour {
 	font-size: 12px;
 	line-height: 16px;
 	color: #52575C;
-	height: 46px;
+	/*height: 46px;*/
 }
 
 .cell-template-hour-disabled {
@@ -191,10 +191,10 @@ div.Layout > div > div > div:nth-child(1) > div > h1 {
 	margin-bottom: 0px !important;
 }
 
-#root > div.Layout {
+/*#root > div.Layout {
 	min-height: unset;
 	height: calc(100vh - 190px);
-}
+}*/
 
 /*#root > div.Footer {
 	position: absolute;

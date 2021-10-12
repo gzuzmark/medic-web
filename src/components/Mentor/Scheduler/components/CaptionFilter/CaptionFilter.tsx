@@ -9,12 +9,11 @@ export interface IFilterGroup {
 
 export interface ICaptionFilterProps {
     duration: number;
+    disabled?: boolean;
     onFilterCheck?: (filter: IFilterGroup) => void;
 }
 
-// const DEFAULT_TIME_INTERVAL = 5;
-
-const CaptionFilter = ({ duration, onFilterCheck }: ICaptionFilterProps) => {
+const CaptionFilter = ({ duration, disabled = false, onFilterCheck }: ICaptionFilterProps) => {
 
     const [filters, setFilters] = React.useState<IFilterGroup>({
         notScheduled: true,
@@ -22,18 +21,32 @@ const CaptionFilter = ({ duration, onFilterCheck }: ICaptionFilterProps) => {
     });
 
     const filterClick = (isChecked: boolean, itemGroup: string) => {
-        setFilters({
+        const { scheduled, notScheduled } = filters;
+        if (!isChecked) {
+            if (itemGroup === 'scheduled' && !notScheduled) {
+                return;
+            } else if (itemGroup === 'notScheduled' && !scheduled) {
+                return;
+            }
+        }
+        const newValue = {
             ...filters,
             [`${itemGroup}`]: isChecked,
-        });
+        };
+        setFilters(newValue);
+        if (onFilterCheck) {
+            onFilterCheck(newValue);
+        }
     }
 
     React.useEffect(() => {
-        console.log(filters);
-        if (onFilterCheck) {
-            onFilterCheck(filters);
+        if (disabled) {
+            setFilters({
+                scheduled: true,
+                notScheduled: true,
+            });
         }
-    }, [filters]);
+    }, [disabled]);
 
     return (
         <div className={'caption-filter-container'}>
@@ -43,8 +56,8 @@ const CaptionFilter = ({ duration, onFilterCheck }: ICaptionFilterProps) => {
                 <div className={'caption-interval-description'}>{DEFAULT_TIME_INTERVAL} minutos administrativos</div> */}
             </div>
             <div className={'caption-filter-div'}>
-                <Filtercalendar title={'Citas sin agendar'} onClickButton={(isChecked) => filterClick(isChecked, 'notScheduled')} />
-                <Filtercalendar title={'Citas agendadas'} onClickButton={(isChecked) => filterClick(isChecked, 'scheduled')} />
+                <Filtercalendar title={'Citas sin agendar'} isChecked={filters.notScheduled} disabled={disabled} onClickButton={(isChecked) => filterClick(isChecked, 'notScheduled')} />
+                <Filtercalendar title={'Citas agendadas'} isChecked={filters.scheduled} disabled={disabled} onClickButton={(isChecked) => filterClick(isChecked, 'scheduled')} />
             </div>
             <div className={'caption-interval-div'} />
         </div>

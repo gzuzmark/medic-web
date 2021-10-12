@@ -1,7 +1,8 @@
 import * as moment from 'moment';
 import * as React from 'react';
 import { IAppoitmentData, IPatient } from '../../interfaces';
-import { CitaNoReservadaPast, CitaReservada, CitaReservadaPast, HourDiv, HourPatiendDiv, PatientDiv, CitaReservadaWithPatient, HourPastDiv } from './ScheduleStyled';
+import { CitaNoReservadaPast, CitaNoReservada, CitaReservadaPast, HourDiv, HourPatiendDiv, PatientDiv, CitaReservadaWithPatient, HourPastDiv, CitaReservadaEditPast, CitaReservadaWithPatientEdit, CloseIcon } from './ScheduleStyled';
+import * as Close from '../../../../../assets/images/close-deleted.png';
 
 const getTimeString = (value: any) => {
     const appointmentDate = new Date(value);
@@ -13,13 +14,23 @@ const timesToString = (startTime: Date, endTime: Date): string => {
 }
 
 const patientToString = (patient: IPatient): string => {
-    const { name, lastname, secondLastname } = patient;
-    return `${name} ${lastname} ${secondLastname}`;
+    const { name, lastname } = patient;
+    return `${name} ${lastname}`;
 }
 
-const ScheduleEventTemplate = (data: IAppoitmentData) => {
-    const { StartTime, EndTime, Patient } = data;
+interface IScheduleEventTemplateProps extends IAppoitmentData {
+    onDeleted: (Id: string | null) => void;
+}
+
+const ScheduleEventTemplate = (props: IScheduleEventTemplateProps) => {
+    const { StartTime, EndTime, Patient, Session, Mode, Id, onDeleted } = props;
     const limitNow = moment().add(1, 'hour');
+
+    const onClickDelete = () => {
+        if (Session === null) {
+            onDeleted(Id);
+        }
+    }
 
     // PAST
 
@@ -29,6 +40,14 @@ const ScheduleEventTemplate = (data: IAppoitmentData) => {
                 <CitaNoReservadaPast>
                     <HourPastDiv>{timesToString(StartTime, EndTime)}</HourPastDiv>
                 </CitaNoReservadaPast>
+            );
+        }
+        if (Mode === 'EDIT') {
+            return (
+                <CitaReservadaEditPast>
+                    <HourPatiendDiv>{timesToString(StartTime, EndTime)}</HourPatiendDiv>
+                    <PatientDiv>{patientToString(Patient)}</PatientDiv>
+                </CitaReservadaEditPast>
             );
         }
         return (
@@ -42,6 +61,14 @@ const ScheduleEventTemplate = (data: IAppoitmentData) => {
     // FUTURE
 
     if (Patient) {
+        if (Mode === 'EDIT') {
+            return (
+                <CitaReservadaWithPatientEdit>
+                    <HourPatiendDiv>{timesToString(StartTime, EndTime)}</HourPatiendDiv>
+                    <PatientDiv>{patientToString(Patient)}</PatientDiv>
+                </CitaReservadaWithPatientEdit>
+            );
+        }
         return (
             <CitaReservadaWithPatient>
                 <HourPatiendDiv>{timesToString(StartTime, EndTime)}</HourPatiendDiv>
@@ -49,10 +76,12 @@ const ScheduleEventTemplate = (data: IAppoitmentData) => {
             </CitaReservadaWithPatient>
         );
     }
+
     return (
-        <CitaReservada>
+        <CitaNoReservada>
+            { (Mode === 'EDIT' && Session === null ) && <CloseIcon alt={'delete'} src={Close} width={12} onClick={onClickDelete} />}
             <HourDiv>{timesToString(StartTime, EndTime)}</HourDiv>
-        </CitaReservada>
+        </CitaNoReservada>
     );
 }
 

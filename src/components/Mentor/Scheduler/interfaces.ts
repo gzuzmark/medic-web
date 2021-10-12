@@ -17,12 +17,13 @@ export interface IItemApiSchedule {
 }
 
 export interface IAppoitmentData {
-    Id: string;
+    Guid: string | null;
+    Id: string | null;
     Subject: string;
     StartTime: Date;
     EndTime: Date;
     IsReadonly: boolean;
-    Doctor: IDoctor;
+    Doctor: IDoctor | null;
     Patient: IPatient | null;
     Session: ISession | null;
     Mode: AppointmentMode;

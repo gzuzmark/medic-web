@@ -41,16 +41,37 @@ export const CitaReservadaPast = styled(Container as any) `
     border: 1.5px solid #84E4C6;
     color: #FFF !important;
 `
+
+export const CitaReservadaEditPast = styled(Container as any) `
+    background: #CDD4F0 !important;
+    border: 1.5px solid #CDD4F0;
+    color: #FFF !important;
+`
+
 /** APPOIPMENT FUTURE */
 
-export const CitaReservada = styled(Container as any) `
+export const CitaNoReservada = styled(Container as any) `
     background: ${BACKGROUNDS.RESERVADA} !important;
     border: 1.5px solid #1ECD96;
+    position: relative;
+    cursor: unset;
 `
 
 export const CitaReservadaWithPatient = styled(Container as any) `
     background: ${BACKGROUNDS.RESERVADA_PATIENT} !important;
     border: 1.5px solid #00B57C;
+`
+
+export const CitaReservadaWithPatientEdit = styled(Container as any) `
+    background: #A3ABCC !important;
+    border: 1.5px solid #A3ABCC;
+`
+
+export const CloseIcon = styled.img`
+    position: absolute;
+    top: 6px
+    right: 6px;
+    cursor: pointer;
 `
 
 /** HOURS */
@@ -84,4 +105,49 @@ export const PatientDiv = styled.div`
     font-weight: 400;
     font-size: 12px;
     line-height: 16px;
+`;
+
+
+/** BUTTON EDIT, CANCEL, SAVE */
+// por cuestion de tiempo se hizo aquí :v
+
+const ButtonNormal = styled.button`
+    width: 159px;
+    padding: 19px 5px !important;
+    border-radius: 8px;
+    transition-property: background, border, color;
+    transition-timing-function: ease-in-out;
+    transition-duration: 0.3s;
+    font-family: Mulish;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 18px;
+    cursor: pointer;
+`;
+
+export const ButtonAlivia = styled(ButtonNormal as any)`
+    @properties disabled;
+    background: #1ECD96;
+    border: 1px solid #1ECD96;
+    color: #FFFFFF;
+    cursor: pointer;
+    &:disabled {
+        background: #84E4C6;
+        border: 1px solid #84E4C6;
+        cursor: unset;
+    }
+`;
+
+export const ButtonWhite = styled(ButtonNormal as any)`
+    background: #FFFFFF;
+    border: 1px solid #1ECD96;
+    color: #1ECD96;
+`;
+
+export const DivButtons = styled.div`
+    display: flex;
+    justify-content: flex-end;
+    column-gap: 10px;
+    margin: 30px 0px 10px;
 `;
