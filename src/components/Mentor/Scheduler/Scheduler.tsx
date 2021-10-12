@@ -7,7 +7,6 @@ import {
 import * as _ from 'lodash';
 import * as moment from "moment";
 import * as React from 'react';
-// import * as ReactDOM from 'react-dom';
 import LayoutContext from '../../../common/Layout/Layout.context';
 import Loader from '../../../common/Loader/Loader';
 import { Headline1 } from '../../../common/MentorText';
@@ -17,6 +16,7 @@ import MessageService from './components/MessageServices/MessageService';
 import ScheduleCellTemplate from './components/ScheduleCellTemplate/ScheduleCellTemplate';
 import ScheduleContentTemplate from './components/ScheduleContentTemplate/ScheduleContentTemplate';
 import ScheduleEventTemplate from './components/ScheduleEventTemplate/ScheduleEventTemplate';
+import { ButtonAlivia, ButtonWhite, DivButtons } from './components/ScheduleEventTemplate/ScheduleStyled';
 import useDateRangeWeek from './hooks/useDateRangeWeek';
 import { AppointmentMode, IAppoitmentData } from './interfaces';
 import { localeTranslations } from './locale';
@@ -299,7 +299,7 @@ const Scheduler = () => {
 		}
 	};
 
-	const onDeletedAppoitment = (Id: string | null, Guid: string | null) => {
+	const onDeletedAppoitment = (Id: string | null) => {
 		if (isModeEdit) {
 			const appointment = filterAppointments.find((item) => item.Id === Id );
 			if (appointment) {
@@ -350,15 +350,9 @@ const Scheduler = () => {
 			</div>
 			{ !loading && <CaptionFilter duration={durationInterval} disabled={isModeEdit} onFilterCheck={onChangeFilters} />}
 			<div>
-				<button onClick={() => enterModeEdit()}>Editar: {String(isModeEdit)}</button>
-				<button onClick={() => saveEditAppoitments()}>Guardar</button>
-				<button onClick={() => cancelModeEdit()}>Cancelar</button>
-			</div>
-			<div>
 				{loading && <Loader className={'loader-scheduler'} />}
 				{!loading && (
 					<ScheduleComponent
-						// cssClass='event-template quick-info-template'
 						height='calc(100vh - 320px)' 
 						width={'auto'}
 						ref={scheduleRef}
@@ -388,7 +382,6 @@ const Scheduler = () => {
 						immediateRender={true}
                     >
                         <ViewsDirective>
-                            {/* <ViewDirective option='Month' displayName='Vista mensual' /> */}
                             <ViewDirective
                                 option={"WorkWeek"}
 								firstDayOfWeek={FIRST_DAY_OF_WEEK}
@@ -396,17 +389,24 @@ const Scheduler = () => {
                                 startHour={"0" + hourStartCalendar + ":00"}
                                 endHour={hourEndCalendar + ":00"}
                             />
-                            {/* <ViewDirective
-								option='Day'
-								displayName='Vista diaria'
-                                startHour={"0"+hourStartCalendar+":00"}
-                                endHour={hourEndCalendar+":00"}
-                            /> */}
                         </ViewsDirective>
                         <Inject services={[WorkWeek]} />
                     </ScheduleComponent>
                 )}
             </div>
+			{ !loading && 
+				<DivButtons>
+					{ isModeEdit ?
+						(
+							<>
+								<ButtonWhite onClick={() => cancelModeEdit()}>Cancelar</ButtonWhite>
+								<ButtonAlivia disabled={addAppointments.length === 0} onClick={() => saveEditAppoitments()}>Guardar</ButtonAlivia>
+							</>
+						):
+						(<ButtonAlivia onClick={() => enterModeEdit()}>Editar</ButtonAlivia>)
+					}
+				</DivButtons>
+			}
             <MessageService show={executeService} />
         </div>
     );

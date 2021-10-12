@@ -19,18 +19,16 @@ const patientToString = (patient: IPatient): string => {
 }
 
 interface IScheduleEventTemplateProps extends IAppoitmentData {
-    onDeleted: (Id: string | null, Guid: string | null) => void;
+    onDeleted: (Id: string | null) => void;
 }
 
-const SHOW_DELETE_ICON = false;
-
 const ScheduleEventTemplate = (props: IScheduleEventTemplateProps) => {
-    const { StartTime, EndTime, Patient, Mode, Id, Guid, onDeleted } = props;
+    const { StartTime, EndTime, Patient, Session, Mode, Id, onDeleted } = props;
     const limitNow = moment().add(1, 'hour');
 
     const onClickDelete = () => {
-        if (SHOW_DELETE_ICON) {
-            onDeleted(Id, Guid);
+        if (Session === null) {
+            onDeleted(Id);
         }
     }
 
@@ -81,7 +79,7 @@ const ScheduleEventTemplate = (props: IScheduleEventTemplateProps) => {
 
     return (
         <CitaNoReservada>
-            { (Mode === 'EDIT') && <CloseIcon alt={'delete'} src={Close} width={12} onClick={onClickDelete} />}
+            { (Mode === 'EDIT' && Session === null ) && <CloseIcon alt={'delete'} src={Close} width={12} onClick={onClickDelete} />}
             <HourDiv>{timesToString(StartTime, EndTime)}</HourDiv>
         </CitaNoReservada>
     );
