@@ -18,8 +18,12 @@ const patientToString = (patient: IPatient): string => {
     return `${name} ${lastname}`;
 }
 
-const ScheduleEventTemplate = (props: IAppoitmentData) => {
-    const { StartTime, EndTime, Patient, Mode } = props;
+interface IScheduleEventTemplateProps extends IAppoitmentData {
+    onDeleted: (Id: string | null, Guid: string | null) => void;
+}
+
+const ScheduleEventTemplate = (props: IScheduleEventTemplateProps) => {
+    const { StartTime, EndTime, Patient, Mode, Id, Guid, onDeleted } = props;
     const limitNow = moment().add(1, 'hour');
 
     // PAST
@@ -69,7 +73,7 @@ const ScheduleEventTemplate = (props: IAppoitmentData) => {
 
     return (
         <CitaNoReservada>
-            { Mode === 'EDIT' && <CloseIcon alt={'delete'} src={Close} width={12} />}
+            { Mode === 'EDIT' && <CloseIcon alt={'delete'} src={Close} width={12} onClick={() => onDeleted(Id, Guid)} />}
             <HourDiv>{timesToString(StartTime, EndTime)}</HourDiv>
         </CitaNoReservada>
     );

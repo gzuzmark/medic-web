@@ -17,6 +17,7 @@ export interface IItemApiSchedule {
 }
 
 export interface IAppoitmentData {
+    Guid: string | null;
     Id: string | null;
     Subject: string;
     StartTime: Date;

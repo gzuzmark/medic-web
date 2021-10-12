@@ -1,8 +1,10 @@
 import { IAppoitmentData, IItemApiSchedule } from "./interfaces";
+import { v4 as uuidv4 } from 'uuid';
 
 export const mapApiResponse = (items: any[], user: any): IAppoitmentData[] => {
     const schedules = items.map<IAppoitmentData>(
         (item: IItemApiSchedule) => ({
+            Guid: null,
             Id: item.id,
             Subject: '',
             StartTime: new Date(item.from),
@@ -44,7 +46,8 @@ export const changeDataToModeEdit = (data: IAppoitmentData[]): IAppoitmentData[]
 
 export const createTemporalAppointment = (startTime: Date, endTime: Date): IAppoitmentData => {
     return {
-        Id: null,
+        Guid: null,
+        Id: uuidv4(),
         Subject: '',
         StartTime: startTime,
         EndTime: endTime,
@@ -54,6 +57,20 @@ export const createTemporalAppointment = (startTime: Date, endTime: Date): IAppo
         Session: null,
         Mode: 'EDIT',
     };
+}
+
+export const isValidSlotInApppointments = (args: any, data: any[]) => {
+    return isValidSlotWhenOccupied(args, data);
+}
+
+export const isValidSlotWhenOccupied = (args: any, data: any[]) => {
+    const { startTime, endTime } = args;
+    const totalSlots = data.filter((slot) => {
+        return ((slot.StartTime >= startTime && slot.StartTime < endTime) ||
+                (slot.StartTime <= startTime && slot.EndTime >= endTime) ||
+                (slot.EndTime > startTime && slot.EndTime <= endTime))
+    });
+    return totalSlots.length === 0;
 }
 
 export const isDateValid = (from: Date) => new Date() < from;

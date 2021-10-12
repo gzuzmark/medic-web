@@ -20,7 +20,7 @@ import ScheduleEventTemplate from './components/ScheduleEventTemplate/ScheduleEv
 import { AppointmentMode, IAppoitmentData } from './interfaces';
 import { localeTranslations } from './locale';
 import './Scheduler.scss';
-import { createTemporalAppointment, isDateValid, mapApiResponse } from './services';
+import { createTemporalAppointment, isDateValid, isValidSlotWhenOccupied, mapApiResponse } from './services';
 
 const headerStyle = {
 	display: 'flex',
@@ -51,7 +51,7 @@ const Scheduler = () => {
 	const [appointments, setAppointments] = React.useState<IAppoitmentData[]>([]);
 	const [filterAppointments, setFilterAppointments] = React.useState<IAppoitmentData[]>([]);
 	const [addAppointments, setAddAppointments] = React.useState<IAppoitmentData[]>([]);
-	// const [deleteAppointments, setDeleteAppointments] = React.useState<IAppoitmentData[]>([]);
+	const [deleteAppointments, setDeleteAppointments] = React.useState<IAppoitmentData[]>([]);
 	const [skills, setSkills] = React.useState<any[]>([]);
 	const [executeService, setExecuteService] = React.useState(false);
 	const [durationInterval, setDurationInterval] = React.useState<number>(DEFAULT_INTERVAL_MINUTES);
@@ -74,8 +74,9 @@ const Scheduler = () => {
     const hourEndCalendar = 22 - (diffHoursTimeZone) // 20 = closing time in America/Lima
 
 	const onPopUpOpen = (args: any) => {
-		args.cancel = true;
-		console.log('click popup');
+		if (args) {
+			args.cancel = true;
+		}
 		// if (args.type === 'Editor') {
 		// 	// removing unnecessary fields
 		// 	const elements = [
@@ -157,37 +158,26 @@ const Scheduler = () => {
 			.then(() => setLoading(false));
 	}, [skills]);
 
-	// React.useEffect(() => {
-	// 	if (!loading) {
-	// 		setFilterAppointments([...appointments]);
-	// 	}
-	// }, [appointments, loading, isModeEdit]);
+	React.useEffect(() => {
+		console.log('adds', addAppointments.length);
+		console.log('deletes', deleteAppointments.length);
+	}, [addAppointments, deleteAppointments]);
 
 	const onCellClick = (args: any) => {
 		if (scheduleRef.current && isModeEdit) {
 			const { startTime, endTime } = args;
 			const isValid = isDateValid(startTime);
 			const isSlot = scheduleRef.current.isSlotAvailable(startTime, endTime);
-			const allowAdd = isValid && isSlot;
+			const verifySlotsData = isValidSlotWhenOccupied(args, filterAppointments);
+			const allowAdd = isValid && isSlot && verifySlotsData;
 			if (allowAdd) {
 				const appointment = createTemporalAppointment(startTime, endTime);
 				setFilterAppointments([...filterAppointments, appointment]);
 				setAddAppointments([...addAppointments, appointment]);
 			}
-			console.log('click cell');
 		}
 		args.cancel = true;
 	};
-
-	// const isValidSlotWhenOccupied = (args: any) => {
-	// 	const { startTime, endTime } = args;
-	// 	const totalSlots = appointments.filter((slot) => {
-	// 		return ((slot.StartTime >= startTime && slot.StartTime < endTime) ||
-	// 				(slot.StartTime <= startTime && slot.EndTime >= endTime) ||
-	// 				(slot.EndTime > startTime && slot.EndTime <= endTime))
-	// 	});
-	// 	return totalSlots.length === 0;
-	// }
 
 	const onCellDoubleClick = (args: any) => (args.cancel = true);
 
@@ -259,7 +249,22 @@ const Scheduler = () => {
 	const cancelModeEdit = () => {
 		setIsModeEdit(false);
 		setFilterAppointments([...appointments]);
+		setAddAppointments([]);
+		setDeleteAppointments([]);
 	};
+
+	const onDeletedAppoitment = (Id: string | null, Guid: string | null) => {
+		if (isModeEdit) {
+			const appointment = filterAppointments.find((item) => item.Id === Id );
+			if (appointment) {
+				setFilterAppointments(filterAppointments.filter(item => item.Id !== Id));
+				setAddAppointments(addAppointments.filter(item => item.Id !== Id));
+				if (appointment.Session !== null) {
+					setDeleteAppointments([...deleteAppointments, appointment]);
+				}
+			}
+		}
+	}
 
 	const DateHeaderTemplate = (props: any) => {
 		const { date } = props;
@@ -276,7 +281,7 @@ const Scheduler = () => {
 		const mode: AppointmentMode = isModeEdit ? 'EDIT': 'VIEW';
 
 		return (
-			<ScheduleEventTemplate {...props} Mode={mode} />
+			<ScheduleEventTemplate {...props} Mode={mode} onDeleted={onDeletedAppoitment} />
 		);
 	}
 
