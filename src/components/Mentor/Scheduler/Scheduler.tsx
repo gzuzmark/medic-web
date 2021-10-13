@@ -175,14 +175,20 @@ const Scheduler = () => {
 		console.log('deletes', deleteAppointments.length);
 	}, [addAppointments, deleteAppointments]);
 
-	const onCellClick = (args: any) => {
-		if (scheduleRef.current && isModeEdit) {
-			const { startTime, endTime } = args;
+	const allowSlotAdd = (startTime: Date, endTime: Date, args: unknown): boolean => {		
+		if(scheduleRef.current) {
 			const isValid = isDateValid(startTime);
 			const isSlot = scheduleRef.current.isSlotAvailable(startTime, endTime);
 			const verifySlotsData = isValidSlotWhenOccupied(args, filterAppointments);
-			const allowAdd = isValid && isSlot && verifySlotsData;
-			if (allowAdd) {
+			return isValid && isSlot && verifySlotsData;
+		}
+		return false;
+	}
+
+	const onCellClick = (args: any) => {
+		if (isModeEdit) {
+			const { startTime, endTime } = args;			
+			if (allowSlotAdd(startTime, endTime, args)) {
 				const appointment = createTemporalAppointment(startTime, endTime);
 				setFilterAppointments([...filterAppointments, appointment]);
 				setAddAppointments([...addAppointments, appointment]);
@@ -341,6 +347,42 @@ const Scheduler = () => {
 		}
 	}
 
+	const onSelect = (args: any) => {
+        console.log({ args });
+        if (scheduleRef.current) {
+            const selectedSlots: Element[] = scheduleRef.current.getSelectedElements();
+
+            if (selectedSlots.length > 0 && isModeEdit) {                
+                const newAppointmensSlots: IAppoitmentData[] = [];
+                selectedSlots.forEach(dateElement => {
+                    const date =
+                        (dateElement as HTMLElement).dataset.date ||
+                        new Date();
+                    const startTime = new Date(Number(date));
+                    const endTime = moment(startTime)
+                        .add(durationInterval, "m")
+                        .toDate();
+                   
+                    if (allowSlotAdd(startTime, endTime, args)) {
+                        const appointment = createTemporalAppointment(
+                            startTime,
+                            endTime
+                        );
+                        newAppointmensSlots.push(appointment);
+                    }
+                });
+                setFilterAppointments([
+                    ...filterAppointments,
+                    ...newAppointmensSlots
+                ]);
+                setAddAppointments([
+                    ...addAppointments,
+                    ...newAppointmensSlots
+                ]);
+            }            
+        }
+    };
+
 	return (
 		<div className='u-LayoutMargin'>
 			<div style={headerStyle}>
@@ -367,6 +409,7 @@ const Scheduler = () => {
 						allowDragAndDrop={false}
                         timezone={timeZoneLocal}
 						showHeaderBar={true}
+						select={onSelect}
                         dateHeaderTemplate={DateHeaderTemplate}
                         cellTemplate={ScheduleCellTemplate}
                         workHours={{
