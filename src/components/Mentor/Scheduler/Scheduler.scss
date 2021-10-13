@@ -2,10 +2,16 @@
 	padding: 15px 10px 15px 35px !important;
 }
 
-.e-appointment.e-read-only {
+/*.e-appointment.e-read-only {
 	height: 37px !important;
+}*/
+.e-appointment {
+	background-color: transparent !important;
+	display: flex;
+	flex-direction: column;
+	/*display: flex;*/
 }
-.e-appointment,
+
 .e-popup-header {
 	background: #1ecd96 !important;
 }
@@ -22,6 +28,23 @@
 	}
 }
 
+.e-schedule .e-vertical-view .e-day-wrapper .e-appointment {
+	border: none;
+	background-color: transparent !important;
+}
+
+.e-schedule .e-vertical-view .e-day-wrapper .e-appointment.e-appointment-border {
+	box-shadow: none !important;
+}
+
+.e-schedule .e-vertical-view .e-time-cells-wrap table td, .e-schedule .e-vertical-view .e-work-cells {
+	height: 47px;
+}
+
+.e-work-cells .e-work-hours > div {
+	display: flex;
+}
+
 .e-current-timeline {
 	border-top: 1px solid #1ecd96 !important;
 }
@@ -35,13 +58,34 @@ td.e-work-cells.e-work-days.e-current-date {
 	}
 }
 
+/* CELDAS DE CITAS */
 
-
-.event-template.e-schedule .template-wrap {
-  height: 100%;
-  white-space: normal;
+.e-appointment-details {
+	padding: 3px 4px !important;
+	flex-direction: column !important;
+	/* cursor: pointer; */
 }
 
+.e-schedule .e-read-only {
+	opacity: 1 !important;
+}
+
+.e-schedule .e-appointment {
+	transition: none !important;
+}
+
+.template-wrap {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	height: 40px;
+	background: #E9FAF5 !important;
+	border: 1.5px solid #00B57C;
+	box-sizing: border-box;
+	border-radius: 8px;
+	color: #00B57C !important;
+	padding: 5px 12px;
+}
 
 .event-template.e-schedule .e-timeline-view .e-appointment .e-appointment-details {
   padding: 0;
@@ -50,15 +94,14 @@ td.e-work-cells.e-work-days.e-current-date {
   display: block;
 }
 
-.event-template.e-schedule .e-timeline-view .template-wrap {
-  width: 100%;
-}
+/* .event-template.e-schedule .e-timeline-view .template-wrap {
+//   width: 100%;
+// }
 
-.event-template.e-schedule .e-timeline-view .template-wrap .subject {
-  font-size: 16px;
-  height: 36px;
-  text-align: center;
-}
+// .event-template.e-schedule .e-timeline-view .template-wrap .subject {
+//   font-size: 16px;
+//   text-align: center;
+} */
 
 
 .quick-info-template .event-content {
@@ -121,6 +164,9 @@ div.calendar-header-day {
 }
 
 div.cell-template-hour {
+	/*display: flex;
+	align-items: center;
+	box-sizing: border-box;*/
 	text-align: left;
 	padding-left: 16px;
 	font-family: Mulish;
@@ -129,15 +175,11 @@ div.cell-template-hour {
 	font-size: 12px;
 	line-height: 16px;
 	color: #52575C;
-	height: 100%;
+	/*height: 46px;*/
 }
 
 .cell-template-hour-disabled {
 	background-color: #F9F9FA;
-	height: 36px !important;
-	box-sizing: border-box;
-	display: flex;
-	align-items: center;
 }
 
 /* CELLS READ ONLY */
@@ -149,10 +191,10 @@ div.Layout > div > div > div:nth-child(1) > div > h1 {
 	margin-bottom: 0px !important;
 }
 
-#root > div.Layout {
+/*#root > div.Layout {
 	min-height: unset;
 	height: calc(100vh - 190px);
-}
+}*/
 
 /*#root > div.Footer {
 	position: absolute;
@@ -164,4 +206,9 @@ div.Layout > div > div > div:nth-child(1) > div > h1 {
 	justify-content: center;
 	align-items: center;
 	height: 150px;
+}
+
+.e-schedule .e-vertical-view .e-day-wrapper .e-appointment.e-appointment-border, .e-schedule .e-vertical-view .e-day-wrapper .e-appointment:focus {
+    border: none !important;
+    box-shadow: unset !important;
 }
