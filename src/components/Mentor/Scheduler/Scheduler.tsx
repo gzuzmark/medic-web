@@ -45,7 +45,7 @@ const Scheduler = () => {
 	const { user } = React.useContext(LayoutContext);
 	const scheduleRef = React.useRef<ScheduleComponent>(null);
 	const mentorService = new MentorService();
-	const [loading, setLoading] = React.useState<boolean>(false); // setLoading
+	const [loading, setLoading] = React.useState<boolean>(true); // setLoading
 	const [selectedDate, setSelectedDate] = React.useState(new Date());
 	const rangeWeek = useDateRangeWeek(selectedDate);
 
@@ -286,6 +286,7 @@ const Scheduler = () => {
 
 	const enterModeEdit = () => {
 		if (!isModeEdit) {
+			setFilterAppointments([...appointments]);
 			setIsModeEdit(true);
 		}
 	}
