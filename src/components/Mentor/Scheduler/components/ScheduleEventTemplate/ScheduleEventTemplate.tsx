@@ -23,13 +23,11 @@ interface IScheduleEventTemplateProps extends IAppoitmentData {
 }
 
 const ScheduleEventTemplate = (props: IScheduleEventTemplateProps) => {
-    const { StartTime, EndTime, Patient, Session, Mode, Id, onDeleted } = props;
+    const { StartTime, EndTime, Patient, Mode, Id, onDeleted } = props;
     const limitNow = moment().add(1, 'hour');
 
     const onClickDelete = () => {
-        if (Session === null) {
-            onDeleted(Id);
-        }
+        onDeleted(Id);
     }
 
     // PAST
@@ -79,7 +77,7 @@ const ScheduleEventTemplate = (props: IScheduleEventTemplateProps) => {
 
     return (
         <CitaNoReservada>
-            { (Mode === 'EDIT' && Session === null ) && <CloseIcon alt={'delete'} src={Close} width={12} onClick={onClickDelete} />}
+            { (Mode === 'EDIT') && <CloseIcon alt={'delete'} src={Close} width={12} onClick={onClickDelete} />}
             <HourDiv>{timesToString(StartTime, EndTime)}</HourDiv>
         </CitaNoReservada>
     );

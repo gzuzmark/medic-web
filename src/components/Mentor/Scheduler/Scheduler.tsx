@@ -18,10 +18,10 @@ import ScheduleContentTemplate from './components/ScheduleContentTemplate/Schedu
 import ScheduleEventTemplate from './components/ScheduleEventTemplate/ScheduleEventTemplate';
 import { ButtonAlivia, ButtonWhite, DivButtons } from './components/ScheduleEventTemplate/ScheduleStyled';
 import useDateRangeWeek from './hooks/useDateRangeWeek';
-import { AppointmentMode, IAppoitmentData } from './interfaces';
+import { AppointmentMode, IAppoitmentData, ISessionCreate } from './interfaces';
 import { localeTranslations } from './locale';
 import './Scheduler.scss';
-import { createTemporalAppointment, DEFAULT_INTERVAL_MINUTES, FIRST_DAY_OF_WEEK, isDateValid, isValidSlotWhenOccupied, mapApiResponse, removeItemFromAppointments, WORKING_DAYS } from './services';
+import { createTemporalAppointment, DEFAULT_INTERVAL_MINUTES, FIRST_DAY_OF_WEEK, isDateValid, isValidSlotWhenOccupied, mapApiResponse, removeItemFromAppointments, saveAppoitments, WORKING_DAYS } from './services';
 
 const headerStyle = {
 	display: 'flex',
@@ -175,14 +175,20 @@ const Scheduler = () => {
 		console.log('deletes', deleteAppointments.length);
 	}, [addAppointments, deleteAppointments]);
 
-	const onCellClick = (args: any) => {
-		if (scheduleRef.current && isModeEdit) {
-			const { startTime, endTime } = args;
+	const allowSlotAdd = (startTime: Date, endTime: Date, args: unknown): boolean => {		
+		if(scheduleRef.current) {
 			const isValid = isDateValid(startTime);
 			const isSlot = scheduleRef.current.isSlotAvailable(startTime, endTime);
 			const verifySlotsData = isValidSlotWhenOccupied(args, filterAppointments);
-			const allowAdd = isValid && isSlot && verifySlotsData;
-			if (allowAdd) {
+			return isValid && isSlot && verifySlotsData;
+		}
+		return false;
+	}
+
+	const onCellClick = (args: any) => {
+		if (isModeEdit) {
+			const { startTime, endTime } = args;			
+			if (allowSlotAdd(startTime, endTime, args)) {
 				const appointment = createTemporalAppointment(startTime, endTime);
 				setFilterAppointments([...filterAppointments, appointment]);
 				setAddAppointments([...addAppointments, appointment]);
@@ -193,73 +199,25 @@ const Scheduler = () => {
 
 	const onCellDoubleClick = (args: any) => (args.cancel = true);
 
-	const saveEditAppoitments = () => {
-		if (addAppointments.length > 0) {
-			setExecuteService(true)
-			const bulk = {
-				credits: 0,
-				interestAreaId: `${process.env.REACT_APP_INTEREST_AREA_ID}`,
-				isWorkshop: false,
-				maxStudents: 1,
-				room: 1,
-				sessions: addAppointments.map((item: IAppoitmentData) => {
-					return {
-						from: item.StartTime.toISOString(),
-						to: item.EndTime.toISOString(),
-					}
-				}),
-				skillId: skills[0].id,
-				type: 'VIRTUAL',
-			};
-			mentorService.createSessionBulk(bulk)
-				.finally(() => {
-					fillSessionsInCalendar()
-						.then((data) => { 
-							setIsModeEdit(false);
-							setAddAppointments([]);
-							setDeleteAppointments([]);
-							setAppointments(data);
-							setExecuteService(false);
-						})
+	const saveCreateAndDeleteAppoitments = async () => {
+		if ((addAppointments.length > 0 || deleteAppointments.length > 0) && skills) {
+			const skillId = skills[0].id;
+			const creates = addAppointments.map<ISessionCreate>(item => ({ from: item.StartTime.toISOString(), to: item.EndTime.toISOString() }));
+			const deletes = deleteAppointments.map<string>(item => item.Id || '');
+			setExecuteService(true);
+			saveAppoitments(creates, skillId, deletes)
+			.finally(() => {
+				fillSessionsInCalendar()
+				.then((data) => {
+					setIsModeEdit(false);
+					setAddAppointments([]);
+					setDeleteAppointments([]);
+					setAppointments(data);
+					setExecuteService(false);
 				});
-		}
-	}
-
-	const onComplete = (args: any) => {
-		if (args.requestType === 'eventCreated') {
-			setExecuteService(true)
-			const { data } = args;
-			const created = (data && data.length > 0 && data[0]) || {};
-			const startTime: Date = created && (created.StartTime as Date);
-			const endTime: Date = created && (created.EndTime as Date);
-			const bulk = {
-				credits: 0,
-				interestAreaId: `${process.env.REACT_APP_INTEREST_AREA_ID}`,
-				isWorkshop: false,
-				maxStudents: 1,
-				room: 1,
-				sessions: [
-					{
-						from: startTime.toISOString(),
-						to: endTime.toISOString(),
-					},
-				],
-				skillId: skills[0].id,
-				type: 'VIRTUAL',
-			};
-			mentorService.createSessionBulk(bulk)
-				.finally(() => {
-					fillSessionsInCalendar()
-						.then(() => setExecuteService(false))
-				});
-		} else if (args.requestType === 'eventRemoved') {
-			const { data } = args;
-			const toRemove = (data && data.length > 0 && data[0]) || {};
-			mentorService.deleteSession([toRemove.Id]).then((response) => {
-				return;
 			});
 		}
-	};
+	}
 
 	const onActionBegin = (args: any) => {
 		if (args.requestType === 'eventCreate') {
@@ -342,6 +300,42 @@ const Scheduler = () => {
 		}
 	}
 
+	const onSelect = (args: any) => {
+        // console.log({ args });
+        if (scheduleRef.current) {
+            const selectedSlots: Element[] = scheduleRef.current.getSelectedElements();
+
+            if (selectedSlots.length > 0 && isModeEdit) {                
+                const newAppointmensSlots: IAppoitmentData[] = [];
+                selectedSlots.forEach(dateElement => {
+                    const date =
+                        (dateElement as HTMLElement).dataset.date ||
+                        new Date();
+                    const startTime = new Date(Number(date));
+                    const endTime = moment(startTime)
+                        .add(durationInterval, "m")
+                        .toDate();
+                   
+                    if (allowSlotAdd(startTime, endTime, args)) {
+                        const appointment = createTemporalAppointment(
+                            startTime,
+                            endTime
+                        );
+                        newAppointmensSlots.push(appointment);
+                    }
+                });
+                setFilterAppointments([
+                    ...filterAppointments,
+                    ...newAppointmensSlots
+                ]);
+                setAddAppointments([
+                    ...addAppointments,
+                    ...newAppointmensSlots
+                ]);
+            }            
+        }
+    };
+
 	return (
 		<div className='u-LayoutMargin'>
 			<div style={headerStyle}>
@@ -364,10 +358,10 @@ const Scheduler = () => {
 						cellClick={onCellClick}
 						cellDoubleClick={onCellDoubleClick}
 						actionBegin={onActionBegin}
-						actionComplete={onComplete}
 						allowDragAndDrop={false}
                         timezone={timeZoneLocal}
 						showHeaderBar={true}
+						select={onSelect}
                         dateHeaderTemplate={DateHeaderTemplate}
                         cellTemplate={ScheduleCellTemplate}
                         workHours={{
@@ -401,7 +395,10 @@ const Scheduler = () => {
 						(
 							<>
 								<ButtonWhite onClick={() => cancelModeEdit()}>Cancelar</ButtonWhite>
-								<ButtonAlivia disabled={addAppointments.length === 0} onClick={() => saveEditAppoitments()}>Guardar</ButtonAlivia>
+								<ButtonAlivia 
+									disabled={(addAppointments.length === 0 && deleteAppointments.length === 0)}
+									onClick={() => saveCreateAndDeleteAppoitments()}
+								>Guardar</ButtonAlivia>
 							</>
 						):
 						(<ButtonAlivia onClick={() => enterModeEdit()}>Editar</ButtonAlivia>)
