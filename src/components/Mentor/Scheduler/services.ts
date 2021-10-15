@@ -1,6 +1,7 @@
-import { IAppoitmentData, IItemApiSchedule } from "./interfaces";
+import { IAppoitmentData, IItemApiSchedule, ISessionCreate } from "./interfaces";
 import { v4 as uuidv4 } from 'uuid';
 import * as moment from "moment";
+import MentorService from "src/services/Mentor/Mentor.service";
 
 export const DAYS = {
     SUNDAY: 0,
@@ -117,4 +118,39 @@ export const removeItemFromAppointments = (data: IAppoitmentData[], remove: IApp
     return [...(data.filter((item: IAppoitmentData) => {
         return !idsRemove.includes(item.Id);
     }))];
+}
+
+
+
+export const saveAppoitments = async (creates: any[], skillId: string, deletes: string[]): Promise<void> => {
+    try {
+        if (deletes.length > 0) {
+            deleteAppoitments(deletes);
+        }
+        if (creates.length > 0) {
+            await createAppoitments(creates, skillId);
+        }
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+const createAppoitments = (sessions: ISessionCreate[], skillId: string): Promise<any> => {
+    const mentorService = new MentorService();
+    const bulk = {
+        credits: 0,
+        interestAreaId: `${process.env.REACT_APP_INTEREST_AREA_ID}`,
+        isWorkshop: false,
+        maxStudents: 1,
+        room: 1,
+        sessions,
+        skillId,
+        type: 'VIRTUAL',
+    };
+    return mentorService.createSessionBulk(bulk);
+}
+
+const deleteAppoitments = (ids: string[]): Promise<any> => {
+    const mentorService = new MentorService();
+    return mentorService.deleteSession(ids);
 }
