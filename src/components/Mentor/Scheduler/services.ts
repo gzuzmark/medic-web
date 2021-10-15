@@ -89,7 +89,11 @@ export const isValidSlotWhenOccupied = (args: any, data: any[]) => {
     return totalSlots.length === 0;
 }
 
-export const isDateValid = (from: Date) => new Date() < from;
+export const isDateValid = (from: Date) => { 
+    const nowLimit = moment(new Date()).add(1, 'hour');
+    const mFrom = moment(from);
+    return nowLimit < mFrom;
+}
 
 export const getRangeWeek = (date: Date): [Date, Date] => {
     const dayWeek = date.getDay();
@@ -125,7 +129,7 @@ export const removeItemFromAppointments = (data: IAppoitmentData[], remove: IApp
 export const saveAppoitments = async (creates: any[], skillId: string, deletes: string[]): Promise<void> => {
     try {
         if (deletes.length > 0) {
-            deleteAppoitments(deletes);
+            await deleteAppoitments(deletes);
         }
         if (creates.length > 0) {
             await createAppoitments(creates, skillId);
