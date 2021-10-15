@@ -298,42 +298,71 @@ const Scheduler = () => {
 				setSelectedDate(date);
 			}
 		}
+	}	
+
+	// const isDeleted = (appoinment: any) => (deleted: unknown[])  => !deleted.includes(appoinment.Id as string)
+
+	const filterDeleted = (source: IAppoitmentData[], deleted: string[] ) => source.filter(appointment => !deleted.includes(appointment.Id as  string))
+
+	const getAppointments = (selectedSlots: Element[], args: unknown) => {	
+		let newAppointmensSlots: IAppoitmentData[] = [];
+		const deletedPersistedAppointmentSlots: IAppoitmentData[] = [];
+		const deletedNonPersistedSlots: IAppoitmentData[] = [];
+
+		selectedSlots.forEach(dateElement => {
+			const date =
+				(dateElement as HTMLElement).dataset.date ||
+				new Date();
+			const startTime = new Date(Number(date));
+			const endTime = moment(startTime)
+				.add(durationInterval, "m")
+				.toDate();
+			
+			if (allowSlotAdd(startTime, endTime, args)) {
+				const appointment = createTemporalAppointment(
+					startTime,
+					endTime
+				);
+				newAppointmensSlots.push(appointment);
+			}
+			const appointmentDelete = filterAppointments.find((item) => item.StartTime.getTime() === startTime.getTime());					
+			if (appointmentDelete && appointmentDelete.Patient === null) {
+				newAppointmensSlots = newAppointmensSlots.filter(item => item.Id !== appointmentDelete.Id)												
+				if (appointmentDelete.Id && appointmentDelete.Session !== null) {
+					deletedPersistedAppointmentSlots.push(appointmentDelete);							
+				} else {
+					deletedNonPersistedSlots.push(appointmentDelete);
+				}
+			}
+		});
+
+		return { newAppointmensSlots, deletedPersistedAppointmentSlots, deletedNonPersistedSlots }
 	}
 
-	const onSelect = (args: any) => {
-        // console.log({ args });
-        if (scheduleRef.current) {
-            const selectedSlots: Element[] = scheduleRef.current.getSelectedElements();
+	const onSelect = (args: unknown) => {        
+        if (!scheduleRef.current) {
+			return
+		}
 
-            if (selectedSlots.length > 0 && isModeEdit) {                
-                const newAppointmensSlots: IAppoitmentData[] = [];
-                selectedSlots.forEach(dateElement => {
-                    const date =
-                        (dateElement as HTMLElement).dataset.date ||
-                        new Date();
-                    const startTime = new Date(Number(date));
-                    const endTime = moment(startTime)
-                        .add(durationInterval, "m")
-                        .toDate();
-                   
-                    if (allowSlotAdd(startTime, endTime, args)) {
-                        const appointment = createTemporalAppointment(
-                            startTime,
-                            endTime
-                        );
-                        newAppointmensSlots.push(appointment);
-                    }
-                });
-                setFilterAppointments([
-                    ...filterAppointments,
-                    ...newAppointmensSlots
-                ]);
-                setAddAppointments([
-                    ...addAppointments,
-                    ...newAppointmensSlots
-                ]);
-            }            
-        }
+		const selectedSlots: Element[] = scheduleRef.current.getSelectedElements();		
+		if (isModeEdit && selectedSlots.length > 0) {                
+			const { newAppointmensSlots, deletedPersistedAppointmentSlots, deletedNonPersistedSlots } = getAppointments(selectedSlots, args); 			
+			const allDeleted = deletedNonPersistedSlots
+								.concat(deletedPersistedAppointmentSlots)
+								.map(deleted => deleted.Id || '');
+								
+			const filterwithDeleted = filterDeleted(filterAppointments, allDeleted);
+			const addAppointmentsWithDeleted = filterDeleted(addAppointments, allDeleted);			
+			setFilterAppointments([
+				...filterwithDeleted,
+				...newAppointmensSlots
+			]);
+			setAddAppointments([                    
+				...addAppointmentsWithDeleted,
+				...newAppointmensSlots
+			]);
+			setDeleteAppointments([...deleteAppointments, ...deletedPersistedAppointmentSlots]);
+		}                    
     };
 
 	return (
