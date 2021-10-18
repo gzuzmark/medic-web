@@ -78,51 +78,6 @@ const Scheduler = () => {
 		if (args) {
 			args.cancel = true;
 		}
-		// if (args.type === 'Editor') {
-		// 	// removing unnecessary fields
-		// 	const elements = [
-		// 		'.e-location-container',
-		// 		'.e-all-day-time-zone-row',
-		// 		'.e-control.e-recurrenceeditor.e-lib',
-		// 	];
-		// 	elements.forEach((sel) => {
-		// 		const querySelector = args.element.querySelector(sel);
-		// 		if (querySelector) {
-		// 			querySelector.style.display = 'none';
-		// 		}
-		// 	});
-		// } else if (args.type === 'QuickInfo') {
-		// 	// removing unnecessary fields
-		// 	const elements = ['.e-event-details'];
-		// 	elements.forEach((sel) => {
-		// 		const querySelector = args.element.querySelector(sel);
-		// 		if (querySelector) {
-		// 			querySelector.style.display = 'none'
-		// 		};
-		// 	});
-		// 	const selector = args.element.querySelector('.content-area');
-		// 	if (selector) {
-		// 		const father = selector.parentElement;
-		// 		const html = (
-		// 			<div className="calendar-create-container">
-		// 				<h4 className="calendar-create-title">Registrar en calendario</h4>
-		// 				<p>Recuerde que esta opción es irreversible</p>
-		// 				<p>Después de crear no podrá eliminar ni editar</p>
-		// 				<p>Verifique que la fecha y hora sean las correctas</p>
-		// 			</div>
-		// 		);
-		// 		ReactDOM.render(html, father);
-		// 	}
-		// } else if (args.type === 'EditEventInfo') {
-		// 	// removing close button and edit button
-		// 	const elements = ['.e-delete.e-icons.e-control', '.e-edit.e-icons.e-control'];
-		// 	elements.forEach((sel) => {
-		// 		const querySelector = args.element.querySelector(sel);
-		// 		if (querySelector) {
-		// 			querySelector.style.display = 'none'
-		// 		};
-		// 	});
-		// };
 	}
 
 	const fillSessionsInCalendar = (): Promise<IAppoitmentData[]> => {
@@ -186,7 +141,8 @@ const Scheduler = () => {
 	}
 
 	const onCellClick = (args: any) => {
-		if (isModeEdit) {
+		const { isAllDay } = args;
+		if (isModeEdit && !isAllDay ) {
 			const { startTime, endTime } = args;			
 			if (allowSlotAdd(startTime, endTime, args)) {
 				const appointment = createTemporalAppointment(startTime, endTime);
@@ -283,8 +239,8 @@ const Scheduler = () => {
 	}
 
 	const EventTemplate = (props: IAppoitmentData) => {
+		// console.log(props);
 		const mode: AppointmentMode = isModeEdit ? 'EDIT': 'VIEW';
-
 		return (
 			<ScheduleEventTemplate {...props} Mode={mode} onDeleted={onDeletedAppoitment} />
 		);
@@ -298,42 +254,71 @@ const Scheduler = () => {
 				setSelectedDate(date);
 			}
 		}
+	}	
+
+	// const isDeleted = (appoinment: any) => (deleted: unknown[])  => !deleted.includes(appoinment.Id as string)
+
+	const filterDeleted = (source: IAppoitmentData[], deleted: string[] ) => source.filter(appointment => !deleted.includes(appointment.Id as  string))
+
+	const getAppointments = (selectedSlots: Element[], args: unknown) => {	
+		let newAppointmensSlots: IAppoitmentData[] = [];
+		const deletedPersistedAppointmentSlots: IAppoitmentData[] = [];
+		const deletedNonPersistedSlots: IAppoitmentData[] = [];
+
+		selectedSlots.forEach(dateElement => {
+			const date =
+				(dateElement as HTMLElement).dataset.date ||
+				new Date();
+			const startTime = new Date(Number(date));
+			const endTime = moment(startTime)
+				.add(durationInterval, "m")
+				.toDate();
+			
+			if (allowSlotAdd(startTime, endTime, args)) {
+				const appointment = createTemporalAppointment(
+					startTime,
+					endTime
+				);
+				newAppointmensSlots.push(appointment);
+			}
+			const appointmentDelete = filterAppointments.find((item) => item.StartTime.getTime() === startTime.getTime());					
+			if (appointmentDelete && appointmentDelete.Patient === null) {
+				newAppointmensSlots = newAppointmensSlots.filter(item => item.Id !== appointmentDelete.Id)												
+				if (appointmentDelete.Id && appointmentDelete.Session !== null) {
+					deletedPersistedAppointmentSlots.push(appointmentDelete);							
+				} else {
+					deletedNonPersistedSlots.push(appointmentDelete);
+				}
+			}
+		});
+
+		return { newAppointmensSlots, deletedPersistedAppointmentSlots, deletedNonPersistedSlots }
 	}
 
-	const onSelect = (args: any) => {
-        // console.log({ args });
-        if (scheduleRef.current) {
-            const selectedSlots: Element[] = scheduleRef.current.getSelectedElements();
+	const onSelect = (args: unknown) => {        
+        if (!scheduleRef.current) {
+			return
+		}
 
-            if (selectedSlots.length > 0 && isModeEdit) {                
-                const newAppointmensSlots: IAppoitmentData[] = [];
-                selectedSlots.forEach(dateElement => {
-                    const date =
-                        (dateElement as HTMLElement).dataset.date ||
-                        new Date();
-                    const startTime = new Date(Number(date));
-                    const endTime = moment(startTime)
-                        .add(durationInterval, "m")
-                        .toDate();
-                   
-                    if (allowSlotAdd(startTime, endTime, args)) {
-                        const appointment = createTemporalAppointment(
-                            startTime,
-                            endTime
-                        );
-                        newAppointmensSlots.push(appointment);
-                    }
-                });
-                setFilterAppointments([
-                    ...filterAppointments,
-                    ...newAppointmensSlots
-                ]);
-                setAddAppointments([
-                    ...addAppointments,
-                    ...newAppointmensSlots
-                ]);
-            }            
-        }
+		const selectedSlots: Element[] = scheduleRef.current.getSelectedElements();		
+		if (isModeEdit && selectedSlots.length > 0) {                
+			const { newAppointmensSlots, deletedPersistedAppointmentSlots, deletedNonPersistedSlots } = getAppointments(selectedSlots, args); 			
+			const allDeleted = deletedNonPersistedSlots
+								.concat(deletedPersistedAppointmentSlots)
+								.map(deleted => deleted.Id || '');
+								
+			const filterwithDeleted = filterDeleted(filterAppointments, allDeleted);
+			const addAppointmentsWithDeleted = filterDeleted(addAppointments, allDeleted);			
+			setFilterAppointments([
+				...filterwithDeleted,
+				...newAppointmensSlots
+			]);
+			setAddAppointments([                    
+				...addAppointmentsWithDeleted,
+				...newAppointmensSlots
+			]);
+			setDeleteAppointments([...deleteAppointments, ...deletedPersistedAppointmentSlots]);
+		}                    
     };
 
 	return (

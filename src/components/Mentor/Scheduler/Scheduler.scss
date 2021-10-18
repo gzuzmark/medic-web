@@ -164,9 +164,6 @@ div.calendar-header-day {
 }
 
 div.cell-template-hour {
-	/*display: flex;
-	align-items: center;
-	box-sizing: border-box;*/
 	text-align: left;
 	padding-left: 16px;
 	font-family: Mulish;
@@ -175,18 +172,15 @@ div.cell-template-hour {
 	font-size: 12px;
 	line-height: 16px;
 	color: #52575C;
-	/*height: 46px;*/
 }
 
 .cell-template-hour-disabled {
-	/*background-color: #F9F9FA;*/
-	color: #52575C;
+	background-color: #F9F9FA !important;
 }
 
-/* CELLS READ ONLY */
-/*.e-schedule .e-read-only {
-    opacity: 1 !important;
-}*/
+.cell-template-hour-disabled > div > div {
+	color: #797D81 !important;
+}
 
 div.Layout > div > div > div:nth-child(1) > div > h1 {
 	margin-bottom: 0px !important;
@@ -212,4 +206,10 @@ div.Layout > div > div > div:nth-child(1) > div > h1 {
 .e-schedule .e-vertical-view .e-day-wrapper .e-appointment.e-appointment-border, .e-schedule .e-vertical-view .e-day-wrapper .e-appointment:focus {
     border: none !important;
     box-shadow: unset !important;
+}
+
+.custom-class.e-schedule .e-vertical-view .e-all-day-appointment-wrapper .e-appointment,
+.custom-class.e-schedule .e-vertical-view .e-day-wrapper .e-appointment,
+.custom-class.e-schedule .e-month-view .e-appointment {
+	background: #000;
 }
