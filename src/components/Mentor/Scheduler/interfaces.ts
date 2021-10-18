@@ -53,3 +53,8 @@ export interface IPatient {
 
 export type SessionStatusType = 'SCHEDULED' | '';
 export type AppointmentMode = 'VIEW' | 'EDIT';
+
+export interface ISessionCreate {
+    from: string;
+    to: string;
+}
