@@ -17,6 +17,9 @@ import PatientPhotoModal from './PatientPhotoModal/PatientPhotoModal';
 
 import SessionService from '../../../../../../services/Session/Session.service';
 
+import * as moment from "moment";
+import {ButtonNormal, THEME_PRIMARY, THEME_SECONDARY} from "../../../../../../common/Buttons/Buttons";
+import InputDatePicker from "../../../../../Admin/Reports/components/InputDatePicker/InputDatePicker";
 
 
 interface IPropsCurrentSessionForm {
@@ -43,6 +46,7 @@ const PrescriptionTextContainer = styled.div`
     margin-right: 30px;
 `;
 
+
 const CurrentSessionForm: React.FC<IPropsCurrentSessionForm> = ({ forceDisable, showSeeRecipeButton, folioNumber, photos, getPrescriptionURL }) => {
   const { values, handleBlur, handleChange, setFieldValue, errors} = React.useContext(PatientBackgroundFormContext);
 
@@ -51,11 +55,34 @@ const CurrentSessionForm: React.FC<IPropsCurrentSessionForm> = ({ forceDisable, 
   const [flag, setFlag] = React.useState(true);
   const [diagnosticOptions, setDiagnosticOptions] = React.useState<
 		IPropsMentorOptionsDropDown[]
-	>([]);  
+	>([]);
   
   const service = new MentorService();
   const sessionService = new SessionService();
-	
+
+    function hasMedicalLeave() {
+        return values.case.medicalLeaveStartDate != null
+    }
+    const setMedicalLeaveStartDate = (value: {medicalLeaveStartDate: Date}) => {
+        setFieldValue('case.medicalLeaveStartDate', value.medicalLeaveStartDate)
+    }
+
+    const setMedicalLeaveEndDate = (value: {medicalLeaveEndDate: Date}) => {
+        setFieldValue('case.medicalLeaveEndDate', value.medicalLeaveEndDate)
+
+    }
+
+    const enableMedicalLeave = () => {
+        if(!hasMedicalLeave()) {
+            setFieldValue('case.medicalLeaveStartDate',  moment().toDate())
+            setFieldValue('case.medicalLeaveEndDate',  moment().add(1, 'days').toDate())
+        }
+    }
+    const disableMedicalLeave = () => {
+        setFieldValue('case.medicalLeaveStartDate',  null)
+        setFieldValue('case.medicalLeaveEndDate',  null)
+    }
+
   const handleOpenRecipe = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
     getPrescriptionURL();
@@ -69,7 +96,7 @@ const CurrentSessionForm: React.FC<IPropsCurrentSessionForm> = ({ forceDisable, 
 
   React.useEffect(() => {
     async function retrieveDiagnostic() {
-      const diagnostic = values.case.diagnostic;     
+      const diagnostic = values.case.diagnostic;
       const { items } = await service.getDiagnosticCodes(
 				diagnostic,
 				false,
@@ -239,6 +266,35 @@ const CurrentSessionForm: React.FC<IPropsCurrentSessionForm> = ({ forceDisable, 
         </FormColumn>
         
       ]}/>
+        <div style={{ marginTop: 20, border: 'solid 1px #1ECD96', padding: 10}}>
+            <div style={{display: 'flex', flexDirection: 'row'}}>
+                <div>¿El paciente necesita un descanso médico?</div>
+                <div style={{justifyContent: 'flex-end', display: 'flex', flexDirection: 'row', flex: '1'}}>
+                    <ButtonNormal text="Si" type={hasMedicalLeave() ? THEME_PRIMARY : THEME_SECONDARY} attrs={{ type: 'button', style: {marginRight: 10}, onClick: enableMedicalLeave }} />
+                    <ButtonNormal text="No" type={!hasMedicalLeave() ? THEME_PRIMARY : THEME_SECONDARY} attrs={{ type: 'button', style: {marginRight: 10}, onClick: disableMedicalLeave}} />
+                </div>
+            </div>
+           <div style={{ marginTop: 10}}>
+               {
+                   hasMedicalLeave() && (<div style={{display:'flex', flexDirection: 'row'}}>
+                       <div style={{marginRight: 10 }}>
+                           <InputDatePicker
+                               id="medicalLeaveStartDate"
+                               date={values.case.medicalLeaveStartDate || new Date()}
+                               updateState={setMedicalLeaveStartDate}
+                           />
+                       </div>
+                       <div>
+                           <InputDatePicker
+                               id="medicalLeaveEndDate"
+                               date={values.case.medicalLeaveEndDate || moment().add(1, 'day').toDate()}
+                               updateState={setMedicalLeaveEndDate}
+                           />
+                       </div>
+                   </div>)
+               }
+           </div>
+        </div>
     { flag && (
       <div style={{ marginTop: 20 }}>        
         {showSeeRecipeButton && (
@@ -253,7 +309,7 @@ const CurrentSessionForm: React.FC<IPropsCurrentSessionForm> = ({ forceDisable, 
               </button>
             </div>
           </div>
-        )}        
+        )}
       </div>
 
     )}

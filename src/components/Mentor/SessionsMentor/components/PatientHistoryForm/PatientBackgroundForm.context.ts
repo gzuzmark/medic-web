@@ -37,7 +37,10 @@ export interface IPatientCaseFormValidations {
 	diagnosticDesc?: string;
 	recommendation: string;
 	treatments: IPatientTreatmentFormValidations[];
+    medicalLeaveStartDate: Date | null;
+    medicalLeaveEndDate: Date | null;
 }
+
 
 export interface ISessionPatientHistoryFormValidations {
 	history: IPatientBackgroundFormValidations;
@@ -81,7 +84,7 @@ const defaultValue: IPatientBackgroundFormContext = {
 			stomachIssues: '-',
 			waterConsumption: '-',
 			weight: '0',
-		},
+		}
 	} as ISessionPatientHistoryFormValidations,
 };
 

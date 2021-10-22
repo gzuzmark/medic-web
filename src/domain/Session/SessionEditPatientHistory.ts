@@ -59,6 +59,8 @@ export interface ISessionPatientCaseForm {
     folioNumber?: string,
     prescriptionPath?: string,
     triage?: ISessionTriage,
+    medicalLeaveEndDate: Date | null,
+    medicalLeaveStartDate: Date | null,
 }
 
 export interface ISessionPatientPastCase {
@@ -76,8 +78,20 @@ export interface ISessionPatientHistoryForm {
     nutritionist: ISessionNutritionistFormValidations;
 }
 
+
+function strToDate(str: string | Date | null): Date | null{
+    if(!str) { return null }
+    if(str instanceof Date) { return str }
+    try {
+        return moment(str.split("T")[0], 'YYYY-MM-DD').toDate(); // Si utilizo new Date(str) coge el gmt 00 y el date termina siendo -5 horas en el gmt peru.
+    }catch (e) {
+        return null;
+    }
+}
+
 class SessionEditPatientHistoryData {
     public patient: ISessionPatientHistoryForm;
+
     constructor(patient?: ISessionPatientHistoryForm) {
         const defaultPatient = {
             case: {} as ISessionPatientCaseForm,
@@ -119,6 +133,8 @@ class SessionEditPatientHistoryData {
             external_exams: this.patient.case.external_exams || "",
             from: this.patient.case.from || "",
             id: this.patient.case.id || "",
+            medicalLeaveEndDate: this.patient.case.medicalLeaveEndDate,
+            medicalLeaveStartDate: this.patient.case.medicalLeaveStartDate,
             recommendation: this.patient.case.recommendation || "",
             treatments: newTreatments || []
         };
@@ -164,17 +180,20 @@ class SessionEditPatientHistoryData {
     get getCaseValues(): IPatientCaseFormValidations {
         const p = { ...this.patient.case };
         const diagnostic = p.diagnostic || "";
-        const formValues = {
+        const formValues:IPatientCaseFormValidations = {
             anamnesis: p.anamnesis || "",
             diagnostic,
             exams: this.patient.case.exams || "",
             external_exams: this.patient.case.external_exams || "",
+            medicalLeaveEndDate: strToDate(this.patient.case.medicalLeaveEndDate),
+            medicalLeaveStartDate: strToDate(this.patient.case.medicalLeaveStartDate),
             recommendation: p.recommendation || "",
             treatments: p.treatments || []
         };
 
         return formValues;
     }
+
 
     public setCurrentCase(currentCase: ISessionPatientCaseForm) {
         this.patient.case.id = currentCase.id || "";
@@ -237,6 +256,9 @@ class SessionEditPatientHistoryData {
         this.patient.case.diagnostic = values.diagnostic.trim();
         this.patient.case.exams = values.exams.trim();
         this.patient.case.external_exams = values.external_exams.trim();
+        this.patient.case.recommendation = values.recommendation.trim();
+        this.patient.case.medicalLeaveStartDate = values.medicalLeaveStartDate;
+        this.patient.case.medicalLeaveEndDate = values.medicalLeaveEndDate;
         this.patient.case.recommendation = values.recommendation.trim();
         this.preparePatientCaseTreatmentData(values.treatments);
     }
