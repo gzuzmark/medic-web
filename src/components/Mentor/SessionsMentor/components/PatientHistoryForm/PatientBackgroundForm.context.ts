@@ -37,6 +37,9 @@ export interface IPatientCaseFormValidations {
 	diagnosticDesc?: string;
 	recommendation: string;
 	treatments: IPatientTreatmentFormValidations[];
+    // medicalLeaveStartDate: Date | null;
+    // medicalLeaveEndDate: Date | null;
+	rescheduleAppointmentWeek: number | null;
 }
 
 export interface ISessionPatientHistoryFormValidations {
