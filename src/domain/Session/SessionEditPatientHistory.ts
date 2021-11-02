@@ -59,6 +59,7 @@ export interface ISessionPatientCaseForm {
     folioNumber?: string,
     prescriptionPath?: string,
     triage?: ISessionTriage,
+    rescheduleAppointment: number | null,
 }
 
 export interface ISessionPatientPastCase {
@@ -120,7 +121,8 @@ class SessionEditPatientHistoryData {
             from: this.patient.case.from || "",
             id: this.patient.case.id || "",
             recommendation: this.patient.case.recommendation || "",
-            treatments: newTreatments || []
+            treatments: newTreatments || [],
+            rescheduleAppointment: this.patient.case.rescheduleAppointment,
         };
     }
 
@@ -170,7 +172,8 @@ class SessionEditPatientHistoryData {
             exams: this.patient.case.exams || "",
             external_exams: this.patient.case.external_exams || "",
             recommendation: p.recommendation || "",
-            treatments: p.treatments || []
+            treatments: p.treatments || [],
+            rescheduleAppointmentWeek: this.patient.case.rescheduleAppointment,
         };
 
         return formValues;
@@ -238,6 +241,9 @@ class SessionEditPatientHistoryData {
         this.patient.case.exams = values.exams.trim();
         this.patient.case.external_exams = values.external_exams.trim();
         this.patient.case.recommendation = values.recommendation.trim();
+        // this.patient.case.medicalLeaveStartDate = values.medicalLeaveStartDate;
+        // this.patient.case.medicalLeaveEndDate = values.medicalLeaveEndDate;
+        this.patient.case.rescheduleAppointment = values.rescheduleAppointmentWeek;
         this.preparePatientCaseTreatmentData(values.treatments);
     }
 
