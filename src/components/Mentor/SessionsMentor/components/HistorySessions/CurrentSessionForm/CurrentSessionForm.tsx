@@ -1,7 +1,8 @@
+import * as moment from "moment";
 import * as React from 'react';
 import { ITriageMedia } from 'src/domain/Session/SessionMentorBean';
-
 import styled from "styled-components";
+import { ButtonNormal, THEME_PRIMARY, THEME_SECONDARY } from "../../../../../../common/Buttons/Buttons";
 import FormColumn from "../../../../../../common/FormRow/components/FormColumn/FormColumn";
 import FormRow from "../../../../../../common/FormRow/FormRow";
 import { IPropsMentorOptionsDropDown } from '../../../../../../common/MentorDropDown/MentorDropDown';
@@ -9,18 +10,13 @@ import { Heading2 } from '../../../../../../common/MentorText';
 import MentorTextArea from '../../../../../../common/MentorTextArea/MentorTextArea';
 import MentorTypeAhead from '../../../../../../common/MentorTypeAhead/MentorTypeAhead';
 import MentorService from '../../../../../../services/Mentor/Mentor.service';
+import SessionService from '../../../../../../services/Session/Session.service';
+import InputDatePicker from "../../../../../Admin/Reports/components/InputDatePicker/InputDatePicker";
 import PatientBackgroundFormContext from '../../PatientHistoryForm/PatientBackgroundForm.context';
+import RescheduleAppointment, { IOptionRescheduleAppointment } from '../../RescheduleAppointment/RescheduleAppointment';
 import { mapResponse } from '../HistoryTreatmentForm/Utils';
-
 import './CurrentSessionForm.scss';
 import PatientPhotoModal from './PatientPhotoModal/PatientPhotoModal';
-
-import SessionService from '../../../../../../services/Session/Session.service';
-
-import * as moment from "moment";
-import {ButtonNormal, THEME_PRIMARY, THEME_SECONDARY} from "../../../../../../common/Buttons/Buttons";
-import InputDatePicker from "../../../../../Admin/Reports/components/InputDatePicker/InputDatePicker";
-
 
 interface IPropsCurrentSessionForm {
   forceDisable?: boolean;
@@ -93,6 +89,14 @@ const CurrentSessionForm: React.FC<IPropsCurrentSessionForm> = ({ forceDisable, 
     setShowPhoto(true);
   };
   const onCloseModal = () => setShowPhoto(false);
+
+  const onChangeRescheduleAppointment = (change: IOptionRescheduleAppointment) => {
+    if (change.isYes && change.option != null) {
+      setFieldValue('case.rescheduleAppointmentWeek', change.option.value);
+    } else {
+      setFieldValue('case.rescheduleAppointmentWeek', null);
+    }
+  }
 
   React.useEffect(() => {
     async function retrieveDiagnostic() {
@@ -295,6 +299,7 @@ const CurrentSessionForm: React.FC<IPropsCurrentSessionForm> = ({ forceDisable, 
                }
            </div>
         </div>
+    <RescheduleAppointment onChange={onChangeRescheduleAppointment} value={values.case.rescheduleAppointmentWeek} />
     { flag && (
       <div style={{ marginTop: 20 }}>        
         {showSeeRecipeButton && (
