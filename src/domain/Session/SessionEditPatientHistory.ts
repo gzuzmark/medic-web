@@ -61,6 +61,7 @@ export interface ISessionPatientCaseForm {
     triage?: ISessionTriage,
     medicalLeaveEndDate: Date | null,
     medicalLeaveStartDate: Date | null,
+    medicalLeaveIndication?: string
 }
 
 export interface ISessionPatientPastCase {
@@ -135,6 +136,7 @@ class SessionEditPatientHistoryData {
             id: this.patient.case.id || "",
             medicalLeaveEndDate: this.patient.case.medicalLeaveEndDate,
             medicalLeaveStartDate: this.patient.case.medicalLeaveStartDate,
+            medicalLeaveIndication: this.patient.case.medicalLeaveIndication || '',
             recommendation: this.patient.case.recommendation || "",
             treatments: newTreatments || []
         };
@@ -187,6 +189,7 @@ class SessionEditPatientHistoryData {
             external_exams: this.patient.case.external_exams || "",
             medicalLeaveEndDate: strToDate(this.patient.case.medicalLeaveEndDate),
             medicalLeaveStartDate: strToDate(this.patient.case.medicalLeaveStartDate),
+            medicalLeaveIndication: this.patient.case.medicalLeaveIndication || '',
             recommendation: p.recommendation || "",
             treatments: p.treatments || []
         };
@@ -258,6 +261,7 @@ class SessionEditPatientHistoryData {
         this.patient.case.external_exams = values.external_exams.trim();
         this.patient.case.recommendation = values.recommendation.trim();
         this.patient.case.medicalLeaveStartDate = values.medicalLeaveStartDate;
+        this.patient.case.medicalLeaveIndication = values.medicalLeaveIndication
         this.patient.case.medicalLeaveEndDate = values.medicalLeaveEndDate;
         this.patient.case.recommendation = values.recommendation.trim();
         this.preparePatientCaseTreatmentData(values.treatments);

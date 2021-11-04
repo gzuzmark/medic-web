@@ -16,6 +16,7 @@ export interface ISessionConsult {
     has_prescription: boolean;
     medicalLeaveEndDate: string | null,
     medicalLeaveStartDate: string | null,
+    medicalLeaveIndication?: string
 }
 
 export interface ISessionItemBase {
