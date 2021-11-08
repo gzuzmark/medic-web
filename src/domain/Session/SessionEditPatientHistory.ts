@@ -62,7 +62,7 @@ export interface ISessionPatientCaseForm {
     medicalLeaveEndDate: Date | null,
     medicalLeaveStartDate: Date | null,
     medicalLeaveIndication?: string
-    rescheduleAppointment: number | null,
+    rescheduleAppointment: Date | null,
 }
 
 export interface ISessionPatientPastCase {
@@ -194,7 +194,7 @@ class SessionEditPatientHistoryData {
             medicalLeaveIndication: this.patient.case.medicalLeaveIndication || '',
             recommendation: p.recommendation || "",
             treatments: p.treatments || [],
-            rescheduleAppointmentWeek: this.patient.case.rescheduleAppointment,
+            rescheduleAppointment: this.patient.case.rescheduleAppointment,
         };
 
         return formValues;
@@ -267,7 +267,7 @@ class SessionEditPatientHistoryData {
         this.patient.case.medicalLeaveIndication = values.medicalLeaveIndication
         this.patient.case.medicalLeaveEndDate = values.medicalLeaveEndDate;
         this.patient.case.recommendation = values.recommendation.trim();
-        this.patient.case.rescheduleAppointment = values.rescheduleAppointmentWeek;
+        this.patient.case.rescheduleAppointment = values.rescheduleAppointment;
         this.preparePatientCaseTreatmentData(values.treatments);
     }
 

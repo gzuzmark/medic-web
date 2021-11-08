@@ -40,7 +40,7 @@ export interface IPatientCaseFormValidations {
     medicalLeaveStartDate: Date | null;
     medicalLeaveEndDate: Date | null;
 	medicalLeaveIndication?: string
-	rescheduleAppointmentWeek: number | null;
+	rescheduleAppointment: Date | null;
 }
 
 

@@ -48,8 +48,7 @@ const PrescriptionTextContainer = styled.div`
 
 
 const CurrentSessionForm: React.FC<IPropsCurrentSessionForm> = ({ forceDisable, showSeeRecipeButton, folioNumber, photos, getPrescriptionURL }) => {
-  const { values, handleBlur, handleChange, setFieldValue, errors} = React.useContext(PatientBackgroundFormContext);
-
+  const { values, handleBlur, handleChange, setFieldValue, errors} = React.useContext(PatientBackgroundFormContext);  
   const [selectedPhoto, setSelectedPhoto] = React.useState('');
   const [showPhoto, setShowPhoto] = React.useState(false);
   const [flag, setFlag] = React.useState(true);
@@ -86,18 +85,7 @@ const CurrentSessionForm: React.FC<IPropsCurrentSessionForm> = ({ forceDisable, 
         setFieldValue('case.medicalLeaveStartDate',  moment().toDate())
         setFieldValue('case.medicalLeaveEndDate',  moment().add(1, 'days').toDate())
       }
-    }
-
-    // const enableMedicalLeave = () => {
-    //     if(!hasMedicalLeave()) {
-    //         setFieldValue('case.medicalLeaveStartDate',  moment().toDate())
-    //         setFieldValue('case.medicalLeaveEndDate',  moment().add(1, 'days').toDate())
-    //     }
-    // }
-    // const disableMedicalLeave = () => {
-    //     setFieldValue('case.medicalLeaveStartDate',  null)
-    //     setFieldValue('case.medicalLeaveEndDate',  null)
-    // }
+    }   
 
   const handleOpenRecipe = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
@@ -111,10 +99,11 @@ const CurrentSessionForm: React.FC<IPropsCurrentSessionForm> = ({ forceDisable, 
   const onCloseModal = () => setShowPhoto(false);
 
   const onChangeRescheduleAppointment = (change: IOptionRescheduleAppointment) => {
+    console.log({change});
     if (change.isYes && change.option != null) {
-      setFieldValue('case.rescheduleAppointmentWeek', change.option.value);
+      setFieldValue('case.rescheduleAppointment', change.option);
     } else {
-      setFieldValue('case.rescheduleAppointmentWeek', null);
+      setFieldValue('case.rescheduleAppointment', null);
     }
   }
 
@@ -309,51 +298,7 @@ const CurrentSessionForm: React.FC<IPropsCurrentSessionForm> = ({ forceDisable, 
             }} />
         </FormColumn>
         
-      ]}/>
-        {/* <div style={{ marginTop: 20, padding: 10}}>
-            <div style={{display: 'flex', flexDirection: 'row'}}>
-                <Heading2>¿El paciente necesita un descanso médico?</Heading2>    
-                <div style={{justifyContent: 'flex-end', display: 'flex', flexDirection: 'row', flex: '1'}}>
-                    <ButtonNormal text="Si" type={hasMedicalLeave() ? THEME_PRIMARY : THEME_SECONDARY} attrs={{ type: 'button', style: {marginRight: 10}, onClick: enableMedicalLeave }} />
-                    <ButtonNormal text="No" type={!hasMedicalLeave() ? THEME_PRIMARY : THEME_SECONDARY} attrs={{ type: 'button', style: {marginRight: 10}, onClick: disableMedicalLeave}} />
-                    <CheckBoxWrapper>
-                      <CheckBox id="checkbox" type="checkbox" checked={hasMedicalLeave()} onChange={e => onChangeMedicalLeave(e.target.checked)}/>
-                      <CheckBoxLabel htmlFor="checkbox" />
-                    </CheckBoxWrapper>
-                </div>
-            </div> */}
-            
-           {/* <div style={{ marginTop: 10}}>
-               {
-                   hasMedicalLeave() && (<div style={{display:'flex', flexDirection: 'row'}}>
-                       <div style={{marginRight: 10 }}>
-                            <FormLabel
-                                label={'Fecha de Inicio'}  
-                                info={'Fecha de inicio del descanso médico'}                                                           
-                            />
-                           <InputDatePicker
-                               id="medicalLeaveStartDate"
-                               date={values.case.medicalLeaveStartDate || new Date()}
-                               updateState={setMedicalLeaveStartDate}       
-                               configDate={{"isDayBlocked": isInitialDateBlocked, "isOutsideRange": () => false}}                      
-                           />
-                       </div>
-                       <div>
-                       <FormLabel
-                                label={'Fecha Fin'}                                                              
-                            />
-                           <InputDatePicker
-                               id="medicalLeaveEndDate"
-                               date={values.case.medicalLeaveEndDate || moment().add(1, 'day').toDate()}
-                               updateState={setMedicalLeaveEndDate}
-                               configDate={{"isDayBlocked": isEndDateBlocked, "isOutsideRange": () => false}}  
-                           />
-                       </div>
-                   </div>)
-               }
-           </div> 
-        </div>*/}
-        
+      ]}/>                
         <FormRow
 				key={'row_7'}
 				style={defaultRowStyle}
@@ -367,7 +312,7 @@ const CurrentSessionForm: React.FC<IPropsCurrentSessionForm> = ({ forceDisable, 
 					</FormColumn>,
 					<FormColumn
 						width={GET_WIDTH_BY_PERCENTAGE(20)}
-						key={'medicalLeaveEndDate'}
+						key={'medicalLeaveCheckbox'}
             style={{alignItems: 'flex-end'}}
 					>						
             <CheckBoxWrapper>
@@ -390,7 +335,7 @@ const CurrentSessionForm: React.FC<IPropsCurrentSessionForm> = ({ forceDisable, 
 					>
 						<FormLabel
                 label={'Fecha de Inicio'}  
-                info={'Fecha de inicio del descanso médico'}    
+                info={'El descanso debe iniciar el día desde el cual el paciente se ausente de sus labores'}    
                 styles={{justifyContent: 'flex-start'}}   
                 infoStyles={{marginBottom: '10px'}}                                                    
             />
@@ -398,7 +343,7 @@ const CurrentSessionForm: React.FC<IPropsCurrentSessionForm> = ({ forceDisable, 
                 id="medicalLeaveStartDate"
                 date={values.case.medicalLeaveStartDate || new Date()}
                 updateState={setMedicalLeaveStartDate}       
-                configDate={{"isDayBlocked": isInitialDateBlocked, "isOutsideRange": () => false}}                      
+                configDate={{"isDayBlocked": isInitialDateBlocked, "isOutsideRange": () => false, 'displayFormat': () => "dddd, D MMM"}}                      
             />
 					</FormColumn>,
 					<FormColumn
@@ -406,13 +351,16 @@ const CurrentSessionForm: React.FC<IPropsCurrentSessionForm> = ({ forceDisable, 
 						key={'medicalLeaveEndDate'}
 					>
 						<FormLabel
-                label={'Fecha Fin'}                                                              
+                label={'Fecha Fin'}    
+                info={'Considerando los diagnósticos presentados en telemedicina que son de baja complejidad, el descanso puede durar hasta 03 días he incluir la fecha de inicio'}     
+                infoStyles={{marginBottom: '10px'}}  
+                styles={{justifyContent: 'flex-start'}}                                                         
             />
             <InputDatePicker
                 id="medicalLeaveEndDate"
                 date={values.case.medicalLeaveEndDate || moment().add(1, 'day').toDate()}
                 updateState={setMedicalLeaveEndDate}
-                configDate={{"isDayBlocked": isEndDateBlocked, "isOutsideRange": () => false}}  
+                configDate={{"isDayBlocked": isEndDateBlocked, "isOutsideRange": () => false, 'displayFormat': () => "dddd, D MMM" }}  
             />
 					</FormColumn>,
 				]}
@@ -437,7 +385,7 @@ const CurrentSessionForm: React.FC<IPropsCurrentSessionForm> = ({ forceDisable, 
       ]}/>
       </>
       )}
-    <RescheduleAppointment onChange={onChangeRescheduleAppointment} value={values.case.rescheduleAppointmentWeek} />
+    <RescheduleAppointment onChange={onChangeRescheduleAppointment} value={values.case.rescheduleAppointment} />
     { flag && (
       <div style={{ marginTop: 20 }}>        
         {showSeeRecipeButton && (

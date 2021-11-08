@@ -1,7 +1,9 @@
 import * as React from 'react';
-import Select from 'react-select';
-import { ActionMeta, ValueType } from 'react-select/lib/types';
-import { ButtonNormal, THEME_PRIMARY, THEME_SECONDARY } from 'src/common/Buttons/Buttons';
+// import Select from 'react-select';
+// import { ActionMeta, ValueType } from 'react-select/lib/types';
+import { CheckBox, CheckBoxLabel, CheckBoxWrapper } from 'src/common/Buttons/Buttons';
+import { Heading2 } from 'src/common/MentorText';
+import InputDatePicker from 'src/components/Admin/Reports/components/InputDatePicker/InputDatePicker';
 
 export interface IOptionWeek {
   value: number;
@@ -10,52 +12,38 @@ export interface IOptionWeek {
 
 export interface IOptionRescheduleAppointment {
   isYes: boolean;
-  option: IOptionWeek | null;
+  option: Date | null;
 }
 
-const options: IOptionWeek[] = [
-  { value: 1, label: '1' },
-  { value: 2, label: '2' },
-  { value: 3, label: '3' },
-  { value: 4, label: '4' },
-  { value: 5, label: '5' },
-  { value: 6, label: '6' },
-  { value: 7, label: '7' },
-  { value: 8, label: '8' },
-  { value: 9, label: '9' },
-  { value: 10, label: '10' },
-]
 
 export interface IRescheduleAppointmentProps {
-  value: number | null,
+  value: Date | null,
   onChange: (change: IOptionRescheduleAppointment) => void;
 }
 
 const RescheduleAppointment = ({ value, onChange }: IRescheduleAppointmentProps) => {
   const [optionYes, setOptionYes] = React.useState<boolean>(false);
-  const [defaultOption, setDefaultOption] = React.useState<IOptionWeek | null>(null);
+  const [defaultOption, setDefaultOption] = React.useState<Date | null>(null);
 
-  const onSelectMenu = (option: ValueType<IOptionWeek>, action: ActionMeta) => {
-    if (option) {
+  const onSelectMenu = (params: { rescheduleDate: Date }) => {    
+    if (params && params.rescheduleDate) {
       onChange({
         isYes: optionYes,
-        option: option as IOptionWeek
+        option: params.rescheduleDate as Date
       });
     }
   };
 
   React.useEffect(() => {
     console.log('change value', value);
-    if (value) {
-      const option = options.find(o => o.value === Number(value)) || null;
-      setDefaultOption(option);
+    if (value) {      
+      setDefaultOption(value);
       setOptionYes(true);
     }
   }, [value]);
 
   const onClickYesNo = (yesNo: boolean) => {
-    setOptionYes(yesNo);
-    setDefaultOption(null);
+    setOptionYes(yesNo);    
     onChange({
       isYes: yesNo,
       option: null,
@@ -70,20 +58,27 @@ const RescheduleAppointment = ({ value, onChange }: IRescheduleAppointmentProps)
   }, []);
 
   return (
-    <div style={{ marginTop: 20, border: 'solid 1px #1ECD96', padding: 10}}>
+    <div style={{ marginTop: 20, padding: 10}}>
       <div style={{display: 'flex', flexDirection: 'row'}}>
-        <div>¿El paciente quiere reagendar una cita?</div>
-          <div style={{justifyContent: 'flex-end', display: 'flex', flexDirection: 'row', flex: '1'}}>
-            <ButtonNormal text="Si" type={optionYes ? THEME_PRIMARY : THEME_SECONDARY} attrs={{ type: 'button', style: {marginRight: 10}, onClick: () => onClickYesNo(true)}} />
-            <ButtonNormal text="No" type={!optionYes ? THEME_PRIMARY : THEME_SECONDARY} attrs={{ type: 'button', style: {marginRight: 10}, onClick: () => onClickYesNo(false)}} />
+      <Heading2>¿El paciente necesita una cita control?</Heading2> 
+          <div style={{justifyContent: 'flex-end', display: 'flex', flexDirection: 'row', flex: '1'}}>            
+            <CheckBoxWrapper>
+              <CheckBox id="reschedule-checkbox" type="checkbox" checked={optionYes} onChange={ (e: any) => onClickYesNo(e.target.checked)}/>
+              <CheckBoxLabel htmlFor="reschedule-checkbox" />
+            </CheckBoxWrapper>
         </div>
       </div>
       <div style={{ marginTop: 10}}>
         {
           optionYes && (
             <div style={{display:'flex', flexDirection: 'row'}}>
-              <div style={{marginRight: 10, width: 200 }}>
-                <Select options={options} placeholder={'semana'} onChange={onSelectMenu} defaultValue={defaultOption} />
+              <div style={{marginRight: 10, width: 200 }}>                
+                <InputDatePicker
+                id="rescheduleDate"
+                date={defaultOption || new Date()}
+                updateState={onSelectMenu}
+                configDate={{ 'displayFormat': () => "dddd, D MMM" }}  
+            />
               </div>
             </div>
           )

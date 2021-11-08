@@ -422,7 +422,8 @@ const CheckBoxLabel = styled.label`
   background: #bebebe;
   cursor: pointer;
   &::after {
-    content: "";
+    content: "N";
+    color: #828282;
     display: block;
     border-radius: 50%;
     width: 18px;
@@ -431,6 +432,7 @@ const CheckBoxLabel = styled.label`
     background: #ffffff;
     box-shadow: 1px 3px 3px 1px rgba(0, 0, 0, 0.2);
     transition: 0.2s;
+    text-align: center;
   }
 `;
 const CheckBox = styled.input`
@@ -442,13 +444,15 @@ const CheckBox = styled.input`
   &:checked + ${CheckBoxLabel} {
     background: #1ECD96;
     &::after {
-      content: "";
+      content: "S";
+      color: #1ECD96;
       display: block;
       border-radius: 50%;
       width: 18px;
       height: 18px;
       margin-left: 21px;
       transition: 0.2s;
+      text-align: center;
     }
   }
 `;
