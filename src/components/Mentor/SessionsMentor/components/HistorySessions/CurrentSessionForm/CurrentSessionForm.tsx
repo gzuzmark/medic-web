@@ -1,6 +1,6 @@
+import * as moment from "moment";
 import * as React from 'react';
 import { ITriageMedia } from 'src/domain/Session/SessionMentorBean';
-
 import styled from "styled-components";
 import FormColumn from "../../../../../../common/FormRow/components/FormColumn/FormColumn";
 import FormRow from "../../../../../../common/FormRow/FormRow";
@@ -9,17 +9,15 @@ import { Heading2 } from '../../../../../../common/MentorText';
 import MentorTextArea from '../../../../../../common/MentorTextArea/MentorTextArea';
 import MentorTypeAhead from '../../../../../../common/MentorTypeAhead/MentorTypeAhead';
 import MentorService from '../../../../../../services/Mentor/Mentor.service';
+import SessionService from '../../../../../../services/Session/Session.service';
+import InputDatePicker from "../../../../../Admin/Reports/components/InputDatePicker/InputDatePicker";
 import PatientBackgroundFormContext from '../../PatientHistoryForm/PatientBackgroundForm.context';
+import RescheduleAppointment, { IOptionRescheduleAppointment } from '../../RescheduleAppointment/RescheduleAppointment';
 import { mapResponse } from '../HistoryTreatmentForm/Utils';
-
 import './CurrentSessionForm.scss';
 import PatientPhotoModal from './PatientPhotoModal/PatientPhotoModal';
 
-import SessionService from '../../../../../../services/Session/Session.service';
-
-import * as moment from "moment";
 import { CheckBox,  CheckBoxLabel,  CheckBoxWrapper} from "../../../../../../common/Buttons/Buttons";
-import InputDatePicker from "../../../../../Admin/Reports/components/InputDatePicker/InputDatePicker";
 import FormLabel from 'src/common/FormLabel/FormLabel';
 
 
@@ -32,7 +30,7 @@ interface IPropsCurrentSessionForm {
 }
 
 const DEFAULT_COLUMN_WIDTH = 1;
-const defaultRowStyle = { padding: '15px 0 0 0', margin: 0 };
+const   defaultRowStyle = { padding: '15px 0 0 0', margin: 0 };
 const MAXIMUM_DAYS_MEDICAL_LEAVE = 5
 
 const prescriptionContainerStyle = {
@@ -111,6 +109,14 @@ const CurrentSessionForm: React.FC<IPropsCurrentSessionForm> = ({ forceDisable, 
     setShowPhoto(true);
   };
   const onCloseModal = () => setShowPhoto(false);
+
+  const onChangeRescheduleAppointment = (change: IOptionRescheduleAppointment) => {
+    if (change.isYes && change.option != null) {
+      setFieldValue('case.rescheduleAppointmentWeek', change.option.value);
+    } else {
+      setFieldValue('case.rescheduleAppointmentWeek', null);
+    }
+  }
 
   React.useEffect(() => {
     async function retrieveDiagnostic() {
@@ -304,18 +310,18 @@ const CurrentSessionForm: React.FC<IPropsCurrentSessionForm> = ({ forceDisable, 
         </FormColumn>
         
       ]}/>
-        <div style={{ marginTop: 20, padding: 10}}>
+        {/* <div style={{ marginTop: 20, padding: 10}}>
             <div style={{display: 'flex', flexDirection: 'row'}}>
                 <Heading2>¿El paciente necesita un descanso médico?</Heading2>    
                 <div style={{justifyContent: 'flex-end', display: 'flex', flexDirection: 'row', flex: '1'}}>
-                    {/* <ButtonNormal text="Si" type={hasMedicalLeave() ? THEME_PRIMARY : THEME_SECONDARY} attrs={{ type: 'button', style: {marginRight: 10}, onClick: enableMedicalLeave }} />
-                    <ButtonNormal text="No" type={!hasMedicalLeave() ? THEME_PRIMARY : THEME_SECONDARY} attrs={{ type: 'button', style: {marginRight: 10}, onClick: disableMedicalLeave}} /> */}
+                    <ButtonNormal text="Si" type={hasMedicalLeave() ? THEME_PRIMARY : THEME_SECONDARY} attrs={{ type: 'button', style: {marginRight: 10}, onClick: enableMedicalLeave }} />
+                    <ButtonNormal text="No" type={!hasMedicalLeave() ? THEME_PRIMARY : THEME_SECONDARY} attrs={{ type: 'button', style: {marginRight: 10}, onClick: disableMedicalLeave}} />
                     <CheckBoxWrapper>
                       <CheckBox id="checkbox" type="checkbox" checked={hasMedicalLeave()} onChange={e => onChangeMedicalLeave(e.target.checked)}/>
                       <CheckBoxLabel htmlFor="checkbox" />
                     </CheckBoxWrapper>
                 </div>
-            </div>
+            </div> */}
             
            {/* <div style={{ marginTop: 10}}>
                {
@@ -345,10 +351,35 @@ const CurrentSessionForm: React.FC<IPropsCurrentSessionForm> = ({ forceDisable, 
                        </div>
                    </div>)
                }
-           </div> */}
-        </div>
-
-
+           </div> 
+        </div>*/}
+        
+        <FormRow
+				key={'row_7'}
+				style={defaultRowStyle}
+				columns={[
+					<FormColumn
+						width={GET_WIDTH_BY_PERCENTAGE(80)}
+						key={'medicalLeaveStartDate'}
+					>
+						<Heading2>¿El paciente necesita un descanso médico?</Heading2> 
+            
+					</FormColumn>,
+					<FormColumn
+						width={GET_WIDTH_BY_PERCENTAGE(20)}
+						key={'medicalLeaveEndDate'}
+            style={{alignItems: 'flex-end'}}
+					>						
+            <CheckBoxWrapper>
+              <CheckBox id="checkbox" type="checkbox" checked={hasMedicalLeave()} onChange={e => onChangeMedicalLeave(e.target.checked)}/>
+              <CheckBoxLabel htmlFor="checkbox" />
+            </CheckBoxWrapper>
+					</FormColumn>,
+				]}
+			/>
+        {
+          hasMedicalLeave() && (
+            <>
         <FormRow
 				key={'row_7'}
 				style={defaultRowStyle}
@@ -359,7 +390,9 @@ const CurrentSessionForm: React.FC<IPropsCurrentSessionForm> = ({ forceDisable, 
 					>
 						<FormLabel
                 label={'Fecha de Inicio'}  
-                info={'Fecha de inicio del descanso médico'}                                                           
+                info={'Fecha de inicio del descanso médico'}    
+                styles={{justifyContent: 'flex-start'}}   
+                infoStyles={{marginBottom: '10px'}}                                                    
             />
             <InputDatePicker
                 id="medicalLeaveStartDate"
@@ -402,6 +435,9 @@ const CurrentSessionForm: React.FC<IPropsCurrentSessionForm> = ({ forceDisable, 
         </FormColumn>
         
       ]}/>
+      </>
+      )}
+    <RescheduleAppointment onChange={onChangeRescheduleAppointment} value={values.case.rescheduleAppointmentWeek} />
     { flag && (
       <div style={{ marginTop: 20 }}>        
         {showSeeRecipeButton && (
