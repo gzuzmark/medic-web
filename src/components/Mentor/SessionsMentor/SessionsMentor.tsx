@@ -563,7 +563,7 @@ class SessionsMentor extends React.Component<
             ? nutritionistUpdateParams
             : caseUpdatedParams;
         if (sessionId) {
-            this.setState({ loading: true, modalSuccess: false });            
+            this.setState({ loading: true, modalSuccess: false });
             Promise.all([
                 this.sessionService.updateHistoryBackground(
                     sessionId,
