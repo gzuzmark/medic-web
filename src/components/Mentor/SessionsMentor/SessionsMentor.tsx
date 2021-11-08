@@ -563,14 +563,13 @@ class SessionsMentor extends React.Component<
             ? nutritionistUpdateParams
             : caseUpdatedParams;
         if (sessionId) {
-            this.setState({ loading: true, modalSuccess: false });
-            const payload = {...patientForm, rescheduleAppointment: new Date().toISOString() };
+            this.setState({ loading: true, modalSuccess: false });            
             Promise.all([
                 this.sessionService.updateHistoryBackground(
                     sessionId,
                     historyUpdatedParams
                 ),
-                this.sessionService.updateSessionConsult(sessionId, payload as ISessionNutritionistFormValidations)
+                this.sessionService.updateSessionConsult(sessionId, patientForm)
             ])
                 .then(responses => {
                     // location.reload();
