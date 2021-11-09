@@ -23,6 +23,7 @@ install_stage:
 
 build_stage_dev:
   stage: build
+  environment: Development
   variables:
     REACT_APP_BASE_URL: "$API_BASE_URL_DEV"
     REACT_APP_FIREBASE_KEY: "$FIREBASE_DEPLOY_KEY_DEV"
@@ -44,6 +45,7 @@ build_stage_dev:
     - dev
 deploy_stage_dev:
   stage: deploy
+  environment: Development
   only:
     - dev
   script:
