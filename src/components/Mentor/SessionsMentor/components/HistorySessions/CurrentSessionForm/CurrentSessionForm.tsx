@@ -1,6 +1,6 @@
-// import * as moment from "moment";
 import * as React from 'react';
 import { ITriageMedia } from 'src/domain/Session/SessionMentorBean';
+
 import styled from "styled-components";
 import FormColumn from "../../../../../../common/FormRow/components/FormColumn/FormColumn";
 import FormRow from "../../../../../../common/FormRow/FormRow";
@@ -9,12 +9,14 @@ import { Heading2 } from '../../../../../../common/MentorText';
 import MentorTextArea from '../../../../../../common/MentorTextArea/MentorTextArea';
 import MentorTypeAhead from '../../../../../../common/MentorTypeAhead/MentorTypeAhead';
 import MentorService from '../../../../../../services/Mentor/Mentor.service';
-import SessionService from '../../../../../../services/Session/Session.service';
 import PatientBackgroundFormContext from '../../PatientHistoryForm/PatientBackgroundForm.context';
-import RescheduleAppointment, { IOptionRescheduleAppointment } from '../../RescheduleAppointment/RescheduleAppointment';
 import { mapResponse } from '../HistoryTreatmentForm/Utils';
+
 import './CurrentSessionForm.scss';
 import PatientPhotoModal from './PatientPhotoModal/PatientPhotoModal';
+
+import SessionService from '../../../../../../services/Session/Session.service';
+
 
 
 interface IPropsCurrentSessionForm {
@@ -26,8 +28,7 @@ interface IPropsCurrentSessionForm {
 }
 
 const DEFAULT_COLUMN_WIDTH = 1;
-const   defaultRowStyle = { padding: '15px 0 0 0', margin: 0 };
-// const MAXIMUM_DAYS_MEDICAL_LEAVE = 5
+const defaultRowStyle = { padding: '15px 0 0 0', margin: 0 };
 
 const prescriptionContainerStyle = {
   display: 'flex',
@@ -42,52 +43,19 @@ const PrescriptionTextContainer = styled.div`
     margin-right: 30px;
 `;
 
-
 const CurrentSessionForm: React.FC<IPropsCurrentSessionForm> = ({ forceDisable, showSeeRecipeButton, folioNumber, photos, getPrescriptionURL }) => {
-  const { values, handleBlur, handleChange, setFieldValue, errors} = React.useContext(PatientBackgroundFormContext);  
+  const { values, handleBlur, handleChange, setFieldValue, errors} = React.useContext(PatientBackgroundFormContext);
+
   const [selectedPhoto, setSelectedPhoto] = React.useState('');
   const [showPhoto, setShowPhoto] = React.useState(false);
   const [flag, setFlag] = React.useState(true);
   const [diagnosticOptions, setDiagnosticOptions] = React.useState<
 		IPropsMentorOptionsDropDown[]
-	>([]);
-  // const [initialDate, setInitialDate] = React.useState<Date | undefined>(undefined)
+	>([]);  
   
   const service = new MentorService();
   const sessionService = new SessionService();
-
-  // US-51727 TODO: Add when we enable medical leave in prod
-    /*
-    function hasMedicalLeave() {
-        return values.case.medicalLeaveStartDate != null
-    }
-
-    
-    const setMedicalLeaveStartDate = (value: {medicalLeaveStartDate: Date}) => {
-        setFieldValue('case.medicalLeaveStartDate', value.medicalLeaveStartDate)
-        setInitialDate(value.medicalLeaveStartDate);
-    }
-
-    const setMedicalLeaveEndDate = (value: {medicalLeaveEndDate: Date}) => {
-        setFieldValue('case.medicalLeaveEndDate', value.medicalLeaveEndDate)
-
-    }
-
-    const onChangeMedicalLeave = (enableMedicalLeave: boolean) => {
-
-      if(!enableMedicalLeave) {
-        setFieldValue('case.medicalLeaveStartDate',  null)
-        setFieldValue('case.medicalLeaveEndDate',  null)
-        return
-      }
-
-      if(!hasMedicalLeave() && enableMedicalLeave) {
-        setFieldValue('case.medicalLeaveStartDate',  moment().toDate())
-        setFieldValue('case.medicalLeaveEndDate',  moment().add(1, 'days').toDate())
-      }
-    }  
-    */ 
-
+	
   const handleOpenRecipe = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
     getPrescriptionURL();
@@ -99,18 +67,9 @@ const CurrentSessionForm: React.FC<IPropsCurrentSessionForm> = ({ forceDisable, 
   };
   const onCloseModal = () => setShowPhoto(false);
 
-  const onChangeRescheduleAppointment = (change: IOptionRescheduleAppointment) => {
-    console.log({change});
-    if (change.isYes && change.option != null) {
-      setFieldValue('case.rescheduleAppointment', change.option);
-    } else {
-      setFieldValue('case.rescheduleAppointment', null);
-    }
-  }
-
   React.useEffect(() => {
     async function retrieveDiagnostic() {
-      const diagnostic = values.case.diagnostic;
+      const diagnostic = values.case.diagnostic;     
       const { items } = await service.getDiagnosticCodes(
 				diagnostic,
 				false,
@@ -173,26 +132,6 @@ const CurrentSessionForm: React.FC<IPropsCurrentSessionForm> = ({ forceDisable, 
 
 
   const diag = values.case.diagnostic;
-
-  // const isInitialDateBlocked = (day: any) => {
-  //   const today = moment().startOf('day');
-  //   const tomorrow = moment(today).add(1, 'd');
-  //   const yesterday = moment(today).subtract(1, 'd')
-  //   const availableDates = [tomorrow.toDate(), today.toDate(), yesterday.toDate()];
-  //   return !availableDates.some(date => day.isSame(date, 'day'));
-  // }
-
-  // const isEndDateBlocked = (day: any) => {
-  //   const initial = moment(initialDate).startOf('day');
-  //   const availableDates: Date[] = [];
-  //   for (let index = 0; index < MAXIMUM_DAYS_MEDICAL_LEAVE; index++) {
-  //     availableDates.push(moment(initial).add(index + 1, 'd').toDate());
-  //   }
-    
-  //   return !availableDates.some(date => day.isSame(date, 'day'));
-  // }
-
-  // const GET_WIDTH_BY_PERCENTAGE = (p: number) => 100 / p;
   
 
   return (
@@ -299,8 +238,7 @@ const CurrentSessionForm: React.FC<IPropsCurrentSessionForm> = ({ forceDisable, 
             }} />
         </FormColumn>
         
-      ]}/>        
-    <RescheduleAppointment onChange={onChangeRescheduleAppointment} value={values.case.rescheduleAppointment} />
+      ]}/>
     { flag && (
       <div style={{ marginTop: 20 }}>        
         {showSeeRecipeButton && (
@@ -315,7 +253,7 @@ const CurrentSessionForm: React.FC<IPropsCurrentSessionForm> = ({ forceDisable, 
               </button>
             </div>
           </div>
-        )}
+        )}        
       </div>
 
     )}

@@ -62,7 +62,6 @@ const TABLE_HEADER_TEXTS = [
   'TELÉFONO',
   'URL CITA',
   'LINK PAGO',
-  'DESCANSO MEDICO',
   'RATING',
   'ACCIONES',
 ];
