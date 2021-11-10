@@ -14,9 +14,6 @@ export const SESSION_STATUS = {
 export interface ISessionConsult {
     has_treatments: boolean;
     has_prescription: boolean;
-    medicalLeaveEndDate: string | null,
-    medicalLeaveStartDate: string | null,
-    medicalLeaveIndication?: string
 }
 
 export interface ISessionItemBase {
@@ -57,8 +54,6 @@ export interface ISessionPayment {
     paid: string;
     pending: boolean;
     cipUrl: string;
-    benefit_id: string | null;
-    company_benefit_name: string | null;
 }
 
 export interface ISessionBase {

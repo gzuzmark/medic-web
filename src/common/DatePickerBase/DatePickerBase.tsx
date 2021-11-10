@@ -25,7 +25,7 @@ const DatePickerBase: React.FC<IPropsDatePickerBase> = (props) => {
             verticalSpacing={0}
             readOnly={true}
             {...baseConfigCalendar}
-            {...props.configs}            
+            {...props.configs}
         />
     );
 };

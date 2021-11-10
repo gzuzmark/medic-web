@@ -284,7 +284,7 @@ class SessionService extends BaseRequest {
             this.instance.get(`ugo/mentors-api/me/sessions/${session}/consult`)
                 .then((response: any) => {
                     if (response.status === 200 && response.data) {
-                        resolve(this.consultDataTransform(response.data));
+                        resolve(response.data);
                     } else {
                         reject(null);
                     }
@@ -318,7 +318,7 @@ class SessionService extends BaseRequest {
             this.instance.post(`ugo/mentors-api/me/sessions/${session}/consult`, patientCase)
                 .then((response: any) => {
                     if (response.status === 200 && response.data) {
-                        resolve(this.consultDataTransform(response.data));
+                        resolve(response.data);
                     } else {
                         reject(null);
                     }
@@ -449,30 +449,6 @@ class SessionService extends BaseRequest {
                     reject(error);
                 });
         });
-    }
-
-    private consultDataTransform(data: any): any {
-        const dataConsult = { ...data };
-        if (data.medicalLeaveStartDate) {
-            dataConsult.medicalLeaveStartDate = this.utcStringToTimeZone(data.medicalLeaveStartDate);
-        }
-        if (data.medicalLeaveEndDate) {
-            dataConsult.medicalLeaveEndDate = this.utcStringToTimeZone(data.medicalLeaveEndDate);
-        }
-        if (data.rescheduleAppointment) {
-            dataConsult.rescheduleAppointment = this.utcStringToTimeZone(data.rescheduleAppointment);
-        }
-        return dataConsult;
-    }
-
-    private utcStringToTimeZone(utcString: string): string | null {
-        if (utcString === null) {
-            return null;
-        }
-        const offset = new Date().getTimezoneOffset();
-        const utcDate = new Date(utcString);
-        utcDate.setMinutes(utcDate.getMinutes() + offset);
-        return utcDate.toISOString();
     }
 }
 
