@@ -9,6 +9,8 @@ export interface IPropsFormLabel {
     label?: string;
     info?: string;
     uppercase?: boolean;
+    styles?: React.CSSProperties;
+    infoStyles?: React.CSSProperties;
 }
 
 const LabelContainer = styled.div`
@@ -21,7 +23,7 @@ const LabelContainer = styled.div`
 
 const FormLabel: React.FC<IPropsFormLabel> = (props) => {
     return (
-        <LabelContainer>
+        <LabelContainer style={{...props.styles}}>
             {!!props.label &&
             <label>
                 {!!props.uppercase ?
@@ -38,7 +40,8 @@ const FormLabel: React.FC<IPropsFormLabel> = (props) => {
                           cursor: 'pointer',
                           fill: colors.BACKGROUND_COLORS.background_green,
                           height: 24,
-                          width: 24
+                          width: 24,     
+                          ...props.infoStyles               
                       }}/>
             </React.Fragment>}
         </LabelContainer>
