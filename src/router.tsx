@@ -20,6 +20,7 @@ import Logout from './components/Logout/Logout';
 import MentorHome from "./components/Mentor/MentorHome/MentorHome";
 import Prescription from "./components/Mentor/Prescription/Prescription";
 import SessionsMentor from "./components/Mentor/SessionsMentor/SessionsMentor";
+import MedicalLeaveDownload from "./components/Patient/MedicalLeaveDownload";
 import UserRepository, {ROL_ADMIN, ROL_MENTOR} from "./repository/UserRepository";
 
 
@@ -167,6 +168,7 @@ export const initRouter = () => {
             <React.Suspense fallback={<LoaderFullScreen text={"Cargando..."} styleLoaderContainer={{marginTop: 300}} />}>
                 <Route exact={true} path="/" component={Login} />
                 <Route exact={true} path="/logout" component={Logout} />
+                <Route exact={true} path="/patients/medical-leave/:id" component={MedicalLeaveDownload} />
                 <Route exact={true} path="/coupons" render={GuardComponent(CouponsList, ROL_ADMIN)} />
                 <Route exact={true} path="/patients" render={GuardComponent(PatientsList, ROL_ADMIN)} />
                 <Route exact={true} path="/sessions" render={GuardComponent(SessionsList, ROL_ADMIN)} />
