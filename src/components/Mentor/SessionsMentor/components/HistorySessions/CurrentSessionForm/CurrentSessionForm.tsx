@@ -1,4 +1,4 @@
-// import * as moment from "moment";
+import * as moment from "moment";
 import * as React from 'react';
 import { ITriageMedia } from 'src/domain/Session/SessionMentorBean';
 import styled from "styled-components";
@@ -10,11 +10,15 @@ import MentorTextArea from '../../../../../../common/MentorTextArea/MentorTextAr
 import MentorTypeAhead from '../../../../../../common/MentorTypeAhead/MentorTypeAhead';
 import MentorService from '../../../../../../services/Mentor/Mentor.service';
 import SessionService from '../../../../../../services/Session/Session.service';
+import InputDatePicker from "../../../../../Admin/Reports/components/InputDatePicker/InputDatePicker";
 import PatientBackgroundFormContext from '../../PatientHistoryForm/PatientBackgroundForm.context';
 import RescheduleAppointment, { IOptionRescheduleAppointment } from '../../RescheduleAppointment/RescheduleAppointment';
 import { mapResponse } from '../HistoryTreatmentForm/Utils';
 import './CurrentSessionForm.scss';
 import PatientPhotoModal from './PatientPhotoModal/PatientPhotoModal';
+
+import { CheckBox,  CheckBoxLabel,  CheckBoxWrapper} from "../../../../../../common/Buttons/Buttons";
+import FormLabel from 'src/common/FormLabel/FormLabel';
 
 
 interface IPropsCurrentSessionForm {
@@ -27,7 +31,7 @@ interface IPropsCurrentSessionForm {
 
 const DEFAULT_COLUMN_WIDTH = 1;
 const   defaultRowStyle = { padding: '15px 0 0 0', margin: 0 };
-// const MAXIMUM_DAYS_MEDICAL_LEAVE = 5
+const MAXIMUM_DAYS_MEDICAL_LEAVE = 5
 
 const prescriptionContainerStyle = {
   display: 'flex',
@@ -51,18 +55,14 @@ const CurrentSessionForm: React.FC<IPropsCurrentSessionForm> = ({ forceDisable, 
   const [diagnosticOptions, setDiagnosticOptions] = React.useState<
 		IPropsMentorOptionsDropDown[]
 	>([]);
-  // const [initialDate, setInitialDate] = React.useState<Date | undefined>(undefined)
+  const [initialDate, setInitialDate] = React.useState<Date | undefined>(undefined)
   
   const service = new MentorService();
   const sessionService = new SessionService();
 
-  // US-51727 TODO: Add when we enable medical leave in prod
-    /*
     function hasMedicalLeave() {
         return values.case.medicalLeaveStartDate != null
     }
-
-    
     const setMedicalLeaveStartDate = (value: {medicalLeaveStartDate: Date}) => {
         setFieldValue('case.medicalLeaveStartDate', value.medicalLeaveStartDate)
         setInitialDate(value.medicalLeaveStartDate);
@@ -85,8 +85,7 @@ const CurrentSessionForm: React.FC<IPropsCurrentSessionForm> = ({ forceDisable, 
         setFieldValue('case.medicalLeaveStartDate',  moment().toDate())
         setFieldValue('case.medicalLeaveEndDate',  moment().add(1, 'days').toDate())
       }
-    }  
-    */ 
+    }   
 
   const handleOpenRecipe = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
@@ -174,25 +173,25 @@ const CurrentSessionForm: React.FC<IPropsCurrentSessionForm> = ({ forceDisable, 
 
   const diag = values.case.diagnostic;
 
-  // const isInitialDateBlocked = (day: any) => {
-  //   const today = moment().startOf('day');
-  //   const tomorrow = moment(today).add(1, 'd');
-  //   const yesterday = moment(today).subtract(1, 'd')
-  //   const availableDates = [tomorrow.toDate(), today.toDate(), yesterday.toDate()];
-  //   return !availableDates.some(date => day.isSame(date, 'day'));
-  // }
+  const isInitialDateBlocked = (day: any) => {
+    const today = moment().startOf('day');
+    const tomorrow = moment(today).add(1, 'd');
+    const yesterday = moment(today).subtract(1, 'd')
+    const availableDates = [tomorrow.toDate(), today.toDate(), yesterday.toDate()];
+    return !availableDates.some(date => day.isSame(date, 'day'));
+  }
 
-  // const isEndDateBlocked = (day: any) => {
-  //   const initial = moment(initialDate).startOf('day');
-  //   const availableDates: Date[] = [];
-  //   for (let index = 0; index < MAXIMUM_DAYS_MEDICAL_LEAVE; index++) {
-  //     availableDates.push(moment(initial).add(index + 1, 'd').toDate());
-  //   }
+  const isEndDateBlocked = (day: any) => {
+    const initial = moment(initialDate).startOf('day');
+    const availableDates: Date[] = [];
+    for (let index = 0; index < MAXIMUM_DAYS_MEDICAL_LEAVE; index++) {
+      availableDates.push(moment(initial).add(index + 1, 'd').toDate());
+    }
     
-  //   return !availableDates.some(date => day.isSame(date, 'day'));
-  // }
+    return !availableDates.some(date => day.isSame(date, 'day'));
+  }
 
-  // const GET_WIDTH_BY_PERCENTAGE = (p: number) => 100 / p;
+  const GET_WIDTH_BY_PERCENTAGE = (p: number) => 100 / p;
   
 
   return (
@@ -299,7 +298,93 @@ const CurrentSessionForm: React.FC<IPropsCurrentSessionForm> = ({ forceDisable, 
             }} />
         </FormColumn>
         
-      ]}/>        
+      ]}/>                
+        <FormRow
+				key={'row_7'}
+				style={defaultRowStyle}
+				columns={[
+					<FormColumn
+						width={GET_WIDTH_BY_PERCENTAGE(80)}
+						key={'medicalLeaveStartDate'}
+					>
+						<Heading2>¿El paciente necesita un descanso médico?</Heading2> 
+            
+					</FormColumn>,
+					<FormColumn
+						width={GET_WIDTH_BY_PERCENTAGE(20)}
+						key={'medicalLeaveCheckbox'}
+            style={{alignItems: 'flex-end'}}
+					>						
+            <CheckBoxWrapper>
+              <CheckBox id="checkbox" type="checkbox" checked={hasMedicalLeave()} onChange={e => onChangeMedicalLeave(e.target.checked)}/>
+              <CheckBoxLabel htmlFor="checkbox" />
+            </CheckBoxWrapper>
+					</FormColumn>,
+				]}
+			/>
+        {
+          hasMedicalLeave() && (
+            <>
+        <FormRow
+				key={'row_7'}
+				style={defaultRowStyle}
+				columns={[
+					<FormColumn
+						width={GET_WIDTH_BY_PERCENTAGE(50)}
+						key={'medicalLeaveStartDate'}
+					>
+						<FormLabel
+                label={'Fecha de Inicio'}  
+                info={'El descanso debe iniciar el día desde el cual el paciente se ausente de sus labores'}    
+                styles={{justifyContent: 'flex-start'}}   
+                infoStyles={{marginBottom: '10px'}}                                                    
+            />
+            <InputDatePicker
+                id="medicalLeaveStartDate"
+                date={values.case.medicalLeaveStartDate || new Date()}
+                updateState={setMedicalLeaveStartDate}       
+                configDate={{"isDayBlocked": isInitialDateBlocked, "isOutsideRange": () => false, 'displayFormat': () => "dddd, D MMM"}}                      
+            />
+					</FormColumn>,
+					<FormColumn
+						width={GET_WIDTH_BY_PERCENTAGE(50)}
+						key={'medicalLeaveEndDate'}
+					>
+						<FormLabel
+                label={'Fecha Fin'}    
+                info={'Considerando los diagnósticos presentados en telemedicina que son de baja complejidad, el descanso puede durar hasta 03 días he incluir la fecha de inicio'}     
+                infoStyles={{marginBottom: '10px'}}  
+                styles={{justifyContent: 'flex-start'}}                                                         
+            />
+            <InputDatePicker
+                id="medicalLeaveEndDate"
+                date={values.case.medicalLeaveEndDate || moment().add(1, 'day').toDate()}
+                updateState={setMedicalLeaveEndDate}
+                configDate={{"isDayBlocked": isEndDateBlocked, "isOutsideRange": () => false, 'displayFormat': () => "dddd, D MMM" }}  
+            />
+					</FormColumn>,
+				]}
+			/>
+
+        
+        <FormRow key={'row_6'} style={defaultRowStyle} columns={[
+        <FormColumn width={DEFAULT_COLUMN_WIDTH} key={'medicalLeaveIndication'}>          
+          <MentorTextArea
+            disabled={!!forceDisable}
+            label="Indicaciones sobre el descanso médico"
+            attrs={{
+                name: "case.medicalLeaveIndication",
+                onBlur: handleBlur,
+                onChange: handleChange,
+                rows: 4,
+                style: {  height: 'auto' },
+                value: values.case.medicalLeaveIndication,
+            }} />
+        </FormColumn>
+        
+      ]}/>
+      </>
+      )}
     <RescheduleAppointment onChange={onChangeRescheduleAppointment} value={values.case.rescheduleAppointment} />
     { flag && (
       <div style={{ marginTop: 20 }}>        
