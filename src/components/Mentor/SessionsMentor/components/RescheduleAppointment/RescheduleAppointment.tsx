@@ -35,7 +35,6 @@ const RescheduleAppointment = ({ value, onChange }: IRescheduleAppointmentProps)
   };
 
   React.useEffect(() => {
-    console.log('change value', value);
     if (value) {      
       setDefaultOption(value);
       setOptionYes(true);
