@@ -49,7 +49,7 @@ deploy_stage_dev:
   only:
     - dev
   script:
-    - yarn global add firebase-tools --cache-folder ./.cache_yarn
+    - yarn global add firebase-tools@9.22.0 --cache-folder ./.cache_yarn
     - firebase deploy -m "Pipeline $CI_PIPELINE_ID, build $CI_BUILD_ID" --non-interactive --token $FIREBASE_DEPLOY_KEY_DEV -P default
 
     
@@ -80,7 +80,7 @@ deploy_stage:
   only:
     - staging
   script:
-    - yarn global add firebase-tools --cache-folder ./.cache_yarn
+    - yarn global add firebase-tools@9.22.0 --cache-folder ./.cache_yarn
     - firebase deploy -m "Pipeline $CI_PIPELINE_ID, build $CI_BUILD_ID" --non-interactive --token $FIREBASE_DEPLOY_KEY_STAGE -P admin-stage
 
 build_stage_prod:
@@ -109,5 +109,5 @@ deploy_stage_prod:
   only:
     - master
   script:
-    - yarn global add firebase-tools --cache-folder ./.cache_yarn
+    - yarn global add firebase-tools@9.22.0 --cache-folder ./.cache_yarn
     - firebase deploy -m "Pipeline $CI_PIPELINE_ID, build $CI_BUILD_ID" --non-interactive --token $FIREBASE_DEPLOY_KEY -P prod
