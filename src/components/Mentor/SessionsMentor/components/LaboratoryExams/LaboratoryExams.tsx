@@ -53,7 +53,7 @@ const LaboratoryExams = ({forceDisable}: ILaboratoryExamsProps) => {
         <div>
             <FormRow key={'row_20'} style={defaultRowStyle} columns={[
                 <FormColumn width={DEFAULT_COLUMN_WIDTH} key={'external_exams'}>
-                    <Title>Exámenes de laboratorio clínico</Title>
+                    <Title>Exámenes de laboratorio</Title>
                 </FormColumn>
             ]}/>
             { LaboratoryExamsList.map((examLab, i) => (
