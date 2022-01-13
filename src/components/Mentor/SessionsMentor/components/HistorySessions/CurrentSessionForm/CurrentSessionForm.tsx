@@ -20,8 +20,6 @@ import { mapResponse } from '../HistoryTreatmentForm/Utils';
 import './CurrentSessionForm.scss';
 import PatientPhotoModal from './PatientPhotoModal/PatientPhotoModal';
 
-
-
 interface IPropsCurrentSessionForm {
   forceDisable?: boolean;
   showSeeRecipeButton: boolean;
