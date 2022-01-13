@@ -1,7 +1,9 @@
 import * as moment from "moment";
 import * as React from 'react';
+import FormLabel from 'src/common/FormLabel/FormLabel';
 import { ITriageMedia } from 'src/domain/Session/SessionMentorBean';
 import styled from "styled-components";
+import { CheckBox, CheckBoxLabel, CheckBoxWrapper } from "../../../../../../common/Buttons/Buttons";
 import FormColumn from "../../../../../../common/FormRow/components/FormColumn/FormColumn";
 import FormRow from "../../../../../../common/FormRow/FormRow";
 import { IPropsMentorOptionsDropDown } from '../../../../../../common/MentorDropDown/MentorDropDown';
@@ -11,15 +13,12 @@ import MentorTypeAhead from '../../../../../../common/MentorTypeAhead/MentorType
 import MentorService from '../../../../../../services/Mentor/Mentor.service';
 import SessionService from '../../../../../../services/Session/Session.service';
 import InputDatePicker from "../../../../../Admin/Reports/components/InputDatePicker/InputDatePicker";
+import Exams from "../../Exams/Exams";
 import PatientBackgroundFormContext from '../../PatientHistoryForm/PatientBackgroundForm.context';
 import RescheduleAppointment, { IOptionRescheduleAppointment } from '../../RescheduleAppointment/RescheduleAppointment';
 import { mapResponse } from '../HistoryTreatmentForm/Utils';
 import './CurrentSessionForm.scss';
 import PatientPhotoModal from './PatientPhotoModal/PatientPhotoModal';
-
-import { CheckBox,  CheckBoxLabel,  CheckBoxWrapper} from "../../../../../../common/Buttons/Buttons";
-import FormLabel from 'src/common/FormLabel/FormLabel';
-
 
 interface IPropsCurrentSessionForm {
   forceDisable?: boolean;
@@ -29,9 +28,10 @@ interface IPropsCurrentSessionForm {
   getPrescriptionURL: () => void;
 }
 
-const DEFAULT_COLUMN_WIDTH = 1;
-const   defaultRowStyle = { padding: '15px 0 0 0', margin: 0 };
-const MAXIMUM_DAYS_MEDICAL_LEAVE = 5
+export const DEFAULT_COLUMN_WIDTH = 1;
+export const defaultRowStyle = { padding: '5px 0 0 0', margin: 0 };
+export const MAXIMUM_DAYS_MEDICAL_LEAVE = 5;
+export const GET_WIDTH_BY_PERCENTAGE = (p: number) => 100 / p;
 
 const prescriptionContainerStyle = {
   display: 'flex',
@@ -99,7 +99,6 @@ const CurrentSessionForm: React.FC<IPropsCurrentSessionForm> = ({ forceDisable, 
   const onCloseModal = () => setShowPhoto(false);
 
   const onChangeRescheduleAppointment = (change: IOptionRescheduleAppointment) => {
-    console.log({change});
     if (change.isYes && change.option != null) {
       setFieldValue('case.rescheduleAppointment', change.option);
     } else {
@@ -190,8 +189,6 @@ const CurrentSessionForm: React.FC<IPropsCurrentSessionForm> = ({ forceDisable, 
     
     return !availableDates.some(date => day.isSame(date, 'day'));
   }
-
-  const GET_WIDTH_BY_PERCENTAGE = (p: number) => 100 / p;
   
 
   return (
@@ -249,39 +246,6 @@ const CurrentSessionForm: React.FC<IPropsCurrentSessionForm> = ({ forceDisable, 
           />
         </FormColumn>,
       ]}/>
-     
-      <FormRow key={'row_1'} style={defaultRowStyle} columns={[
-        <FormColumn width={DEFAULT_COLUMN_WIDTH} key={'external_exams'}>
-        <Heading2>Exámenes de laboratorio</Heading2>
-          <MentorTextArea
-            disabled={!!forceDisable}
-            label=""
-            attrs={{
-                name: "case.external_exams",
-                onBlur: handleBlur,
-                onChange: handleChange,
-                rows: 4,
-                style: {  height: 'auto' },
-                value: values.case.external_exams,
-            }} />
-        </FormColumn>
-      ]}/>
-      <FormRow key={'row_2'} style={defaultRowStyle} columns={[
-        <FormColumn width={DEFAULT_COLUMN_WIDTH} key={'exams'}>
-        <Heading2>Exámenes o procedimientos auxiliares</Heading2>
-          <MentorTextArea
-            disabled={forceDisable}
-            label=""
-            attrs={{
-                name: "case.exams",
-                onBlur: handleBlur,
-                onChange: handleChange,
-                rows: 4,
-                style: {  height: 'auto' },
-                value: values.case.exams,
-            }} />
-        </FormColumn>
-      ]}/>
       <FormRow key={'row_5'} style={defaultRowStyle} columns={[
         <FormColumn width={DEFAULT_COLUMN_WIDTH} key={'recommendation'}>
           <Heading2>Tratamiento no-farmacológico:</Heading2>
@@ -297,8 +261,8 @@ const CurrentSessionForm: React.FC<IPropsCurrentSessionForm> = ({ forceDisable, 
                 value: values.case.recommendation,
             }} />
         </FormColumn>
-        
-      ]}/>                
+      ]}/>
+        <Exams />
         <FormRow
 				key={'row_7'}
 				style={defaultRowStyle}

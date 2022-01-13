@@ -24,7 +24,7 @@ const MISC = {
     blue_grey: "#748e98",
     green: '#82d2ad',
     light_blue: '#87b8fd',
-    light_grey_1: '#adb7c4',
+    light_grey_1: '#494F66',
     light_grey_2: '#e6edf2',
     light_grey_3: '#eef2f6',
     light_grey_4: '#ccd6dc',
