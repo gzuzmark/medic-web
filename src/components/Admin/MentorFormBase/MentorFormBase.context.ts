@@ -8,6 +8,7 @@ export interface IMentorFormBaseContext {
     handleChange: any;
     listSites: IPropsMentorOptionsDropDown[];
     listSkills: IPropsMentorOptionsDropDown[];
+    listDiagnostics : IPropsMentorOptionsDropDown[];
     selectedImage: string;
     setFieldTouched: any;
     setFieldValue: any;
@@ -15,7 +16,8 @@ export interface IMentorFormBaseContext {
     setValues: (fields: { [field: string]: any }) => void,
     touched: any;
     updateImage: (image: string) => void;
-    updateListSkills?: (siteId: string) => Promise<any>;
+    updateListSkills?: () => Promise<any>;
+    updateListDiagnostics?: (skillId: string) => Promise<any>;
     values: IMentorFormValidations;
 }
 
@@ -25,6 +27,7 @@ const defaultValue: IMentorFormBaseContext = {
     handleChange: (event: any) => void(0),
     listSites: [] as IPropsMentorOptionsDropDown[],
     listSkills: [] as IPropsMentorOptionsDropDown[],
+    listDiagnostics: [] as IPropsMentorOptionsDropDown[],
     selectedImage: '',
     setFieldTouched: (field: string, isTouched?: boolean) => void(0),
     setFieldValue: (field: string, value: string) => void(0),
@@ -32,7 +35,8 @@ const defaultValue: IMentorFormBaseContext = {
     setValues: (fields: { [field: string]: any }) => void(0),
     touched: {},
     updateImage: (image: string) => void(0),
-    updateListSkills: (siteId: string) => new Promise<any>((resolve) => resolve()),
+    updateListSkills: () => new Promise<any | void>((resolve) => resolve()),
+    updateListDiagnostics: (skillId: string) => new Promise<any | void>((resolve) => resolve()),
     values: {} as IMentorFormValidations
 };
 

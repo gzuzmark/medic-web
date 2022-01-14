@@ -91,11 +91,10 @@ const UpdateStatus: React.FC<IPropsUpdateStatus> = (props) => {
             <MentorModalBase show={state.success} hideClose={true}>
                 <ContentModal.Success description={`Mentor ${finalStatus}`} />
             </MentorModalBase>
-            <ButtonNormal text={`${nexStatus} mentor`} type={THEME_SECONDARY} attrs={{
+            <ButtonNormal text={`${nexStatus} especialista`} type={THEME_SECONDARY} attrs={{
                 onClick: openModal,
                 style: {
                     bottom: 10,
-                    position: 'absolute',
                     right: 0,
                 },
                 type: "button",

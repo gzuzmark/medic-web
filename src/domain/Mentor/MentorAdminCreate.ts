@@ -1,4 +1,4 @@
-import MentorBaseForm, {IMentorBaseForm, IMentorExperience, IMentorFormExperience} from "./MentorBaseForm";
+import MentorBaseForm, {IMentorBaseForm, IMentorEducationInfo, IMentorEducationInfoForm, IMentorExperience, IMentorFormExperience,IAwardsItem} from "./MentorBaseForm";
 
 export interface IMentorAdminCreateData extends IMentorBaseForm {
     exist: boolean;
@@ -17,6 +17,18 @@ class MentorAdminCreateData extends MentorBaseForm {
                 to: "",
             }
         ]
+        this.mentor.education = [
+            {
+                degree: "",
+                school: "",
+                to: "",
+            }
+        ]
+        this.mentor.awards = [
+            {
+                name:""
+            }
+        ]
     }
 
     public getFormExperiences(): IMentorFormExperience[] {
@@ -32,6 +44,28 @@ class MentorAdminCreateData extends MentorBaseForm {
                 position: item.title ,
                 toMonth: !!toDate ? toDate.getMonth().toString() : '',
                 toYear: !!toDate ? toDate.getFullYear().toString() : ''
+            }
+        });
+    }
+    public getFormEducation(): IMentorEducationInfoForm[] {
+        const education = this.mentor.education ? [...this.mentor.education] : [];
+        return education.map((item: IMentorEducationInfo) => {
+            const {to} = item;
+            const toDate = !!to ? new Date(to) : '';
+            return {
+                educationType:item.educationType,
+                city: item.city,
+                degree: item.degree,
+                school: item.school ,
+                year: !!toDate ? toDate.getFullYear().toString() : ''
+            }
+        });
+    }
+    public getAwardsInfo(): IAwardsItem[] {
+        const awards = this.mentor.awards ? [...this.mentor.awards] : [];
+        return awards.map((item: IAwardsItem) => {
+            return{
+                name:item.name
             }
         });
     }

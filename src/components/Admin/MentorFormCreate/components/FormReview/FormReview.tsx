@@ -51,13 +51,13 @@ class FormReview extends React.Component <IPropsFormReview, IStateFormReview> {
                                <BasicInformation>
                                    <Heading3 className={"FormReview_name"}>{context.values.firstName} {context.values.lastName}</Heading3>
                                    <div>
-                                       <Subhead1 color={FONTS.medium}>{context.values.currentPosition}</Subhead1>
+                                     { /* <Subhead1 color={FONTS.medium}>{context.values.currentPosition}</Subhead1>
                                        <Subhead1 color={FONTS.medium}>{context.values.currentCompany}</Subhead1>
                                        {(context.values.currentPosition.trim().length === 0 || context.values.currentCompany.trim().length === 0) &&
                                         <React.Fragment>
                                             <Subhead1 color={FONTS.error}>Experiencia Laboral</Subhead1>
                                             <Subhead1 color={FONTS.error}>(Pendiente)</Subhead1>
-                                        </React.Fragment>}
+                                        </React.Fragment>} */}
                                    </div>
                                    <Body1 weight={LIGHT_TEXT}>{context.values.email}</Body1>
                                    <Body1 weight={LIGHT_TEXT}>{context.values.contactNumber}</Body1>
@@ -66,12 +66,12 @@ class FormReview extends React.Component <IPropsFormReview, IStateFormReview> {
                            <Separator />
                            <FormReviewHeader>
                                <Subhead1>Descripción</Subhead1>
-                               {context.values.description.trim().length === 0 &&
+                               {// context.values.description.trim().length === 0 &&
                                <Subhead1 color={FONTS.error}>(Pendiente)</Subhead1>}
                            </FormReviewHeader>
-                           {context.values.description.trim().length > 0 &&
+                           {// context.values.description.trim().length > 0 &&
                            <div style={{background: colors.MISC_COLORS.background_grey_1, padding: "22px 16px", borderRadius: 4}}>
-                               <Subhead1 weight={LIGHT_TEXT} style={{overflowWrap: 'break-word'}}>“{context.values.description}”</Subhead1>
+                               <Subhead1 weight={LIGHT_TEXT} style={{overflowWrap: 'break-word'}}>“{/*context.values.description*/}”</Subhead1>
                            </div>}
                            <Separator/>
                            <FormReviewHeader>

@@ -1,5 +1,8 @@
 import MentorBaseForm, {
+    IAwardsItem,
     IMentorBaseForm,
+    IMentorEducationInfo,
+    IMentorEducationInfoForm,
     IMentorExperience,
     IMentorFormExperience,
     IMentorFormValidations
@@ -52,6 +55,31 @@ class MentorProfileData extends MentorBaseForm {
             }
         });
         return formExperiences;
+    }
+    public getFormEducation(): IMentorEducationInfoForm[] {
+        const education = this.mentor.education ? [...this.mentor.education] : [];
+        const formEducation = education.map((item: IMentorEducationInfo) => {
+            const {to} = item;
+            const toDate = !!to ? new Date(to) : '';
+            return {
+                educationType:item.educationType,
+                city: item.city,
+                degree: item.degree,
+                school: item.school ,
+                year: !!toDate ? toDate.getFullYear().toString() : '',
+                currentStudy: !toDate
+            }
+        });
+        return formEducation;
+    }
+    public getAwardsInfo(): IAwardsItem[] {
+        const awards = this.mentor.awards ? [...this.mentor.awards] : [];
+        const listAwards = awards.map((item: IAwardsItem) => {
+            return{
+                name:item.name
+            }
+        });
+        return listAwards;
     }
 }
 
