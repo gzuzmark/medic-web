@@ -2,7 +2,10 @@ import MentorBaseForm, {
     IMentorBaseForm,
     IMentorExperience,
     IMentorFormExperience,
-    IMentorFormValidations
+    IMentorFormValidations,
+    IMentorEducationInfo,
+    IMentorEducationInfoForm,
+    IAwardsItem
 } from "./MentorBaseForm";
 
 export interface IMentorAdminEditCreateData extends IMentorBaseForm {
@@ -46,6 +49,46 @@ class MentorAdminEditData extends MentorBaseForm {
             })
         }
         return formExperiences;
+    }
+    public getFormEducation(): IMentorEducationInfoForm[] {
+        const education = this.mentor.education ? [...this.mentor.education] : [];
+        const formEducation = education.map((item: IMentorEducationInfo) => {
+            const {to} = item;
+            const toDate = !!to ? new Date(to) : '';
+            return {
+                educationType:item.educationType,
+                city: item.city,
+                degree: item.degree,
+                school: item.school ,
+                year: !!toDate ? toDate.getFullYear().toString() : '',
+                currentStudy: !toDate
+            }
+        });
+        if (formEducation.length === 0) {
+            formEducation.push({
+                educationType:"",
+                degree: "",
+                year: "",
+                school: "",
+                city: "",
+                currentStudy: false,
+            })
+        }
+        return formEducation;
+    }
+    public getAwardsInfo(): IAwardsItem[] {
+        const awards = this.mentor.awards ? [...this.mentor.awards] : [];
+        const listAwards = awards.map((item: IAwardsItem) => {
+            return{
+                name:item.name
+            }
+        });
+        if (listAwards.length===0){
+            listAwards.push({
+                name:""
+            })
+        }
+        return listAwards;
     }
 }
 

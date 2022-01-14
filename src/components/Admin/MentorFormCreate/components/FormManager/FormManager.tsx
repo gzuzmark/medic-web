@@ -1,23 +1,29 @@
 import * as React from "react";
+import ProfileDataForm from "src/components/Admin/MentorFormCreate/components/FormsCreateDoctor/ProfileDataForm";
+// import ProfileDataForm from "src/components/Admin/MentorFormBase/components/FormProfile/ProfileDataForm";
 import styled from "styled-components";
 import {ButtonLink, ButtonNormal, THEME_SECONDARY} from "../../../../../common/Buttons/Buttons";
 import ContentModal, {IGenericContentModal} from "../../../../../common/ConsoleModal/ContentModal";
 import MentorModalBase from "../../../../../common/ConsoleModal/MentorModalBase";
 import Icon from "../../../../../common/Icon/Icon";
 import {emailStatus, IMentorFormValidations} from "../../../../../domain/Mentor/MentorBaseForm";
-import FormExperience from "../../../MentorFormBase/components/FormExperience/FormExperience";
-import getExperiencesWithError from "../../../MentorFormBase/components/FormExperience/ValidateExperiences";
 import FormImage from "../../../MentorFormBase/components/FormImage/FormImage";
-import FormPersonalData from "../../../MentorFormBase/components/FormPersonalData/FormPersonalData";
-import FormProfile from "../../../MentorFormBase/components/FormProfile/FormProfile";
+// import FormPersonalData from "../../../MentorFormBase/components/FormPersonalData/FormPersonalData";
+// import FormProfile from "../../../MentorFormBase/components/FormProfile/FormProfile";
 import {formTemplateHOC} from "../../../MentorFormBase/components/FormTemplate/FormTemplateHOC";
 import {
     DOCUMENT_STATUS,
-    limitDescription,
     listValidDocumentStatus
 } from "../../../MentorFormBase/MentorFormBase.validations";
-import FormMail from "../FormMail/FormMail";
 import FormReview from "../FormReview/FormReview";
+import AwardsInfo from "../FormsCreateDoctor/AwardsInfo";
+import DiagnosticsForm from "../FormsCreateDoctor/DiagnosticsForm";
+import EducationDataForm from "../FormsCreateDoctor/EducationDataForm";
+import ExperienceForm from "../FormsCreateDoctor/ExperienceForm";
+import PatientCareInfo from "../FormsCreateDoctor/PatientCareInfo";
+ /* import FormMail from "../FormMail/FormMail";*/
+import PersonalDataForm from "../FormsCreateDoctor/PersonalDataForm";
+import ProfessionalDataForm from "../FormsCreateDoctor/ProfessionalDataForm";
 
 interface IPropsFormManager {
     currentStep: number;
@@ -60,11 +66,13 @@ export const FormManagerContainer = styled.div`
     width: 874px;
 `;
 
-const FormMailTemplate = formTemplateHOC(FormMail);
-const FormPersonalDataTemplate = formTemplateHOC(FormPersonalData);
-const FormExperienceTemplate = formTemplateHOC(FormProfile, FormExperience);
-const FormReviewTemplate = formTemplateHOC(FormReview);
+const FormPersonalDataTemplate = formTemplateHOC(PersonalDataForm);
+const FormOccupationalDataTemplate = formTemplateHOC(ProfessionalDataForm);
 
+const FormPatientInfo = formTemplateHOC(DiagnosticsForm,PatientCareInfo);
+const FormExperienceTemplate = formTemplateHOC(ProfileDataForm,ExperienceForm);
+const EducationInfo = formTemplateHOC(EducationDataForm,AwardsInfo);
+const FormReviewTemplate = formTemplateHOC(FormReview);
 class FormManager extends React.Component <IPropsFormManager, IStateFormManager> {
     public state: IStateFormManager;
     private buttonAttrBack: any;
@@ -126,27 +134,14 @@ class FormManager extends React.Component <IPropsFormManager, IStateFormManager>
                     buttonAttrContinue = {...buttonAttrContinue, disabled: true};
                 }
             }
-        } else if (2 === this.props.currentStep) {
-            if (!!errors.firstName || !touched.firstName) {
-                buttonAttrContinue = {...buttonAttrContinue, disabled: true};
-            } else if (!!errors.lastName || !touched.lastName) {
-                buttonAttrContinue = {...buttonAttrContinue, disabled: true};
-            } else if (!!errors.location || !touched.location) {
-                buttonAttrContinue = {...buttonAttrContinue, disabled: true};
-            } else if (!!errors.skills || !touched.skills) {
-                buttonAttrContinue = {...buttonAttrContinue, disabled: true};
-            } else if (!!errors.contactNumber) {
-                buttonAttrContinue = {...buttonAttrContinue, disabled: true};
-            }
-        } else if (3 === this.props.currentStep) {
-            const experiencesStatus = getExperiencesWithError(values.experiences, errors);
-            if (values.description && values.description.length > limitDescription) {
-                buttonAttrContinue = {...buttonAttrContinue, disabled: true};
-            } else if (experiencesStatus.some(error => !!error)) {
-                buttonAttrContinue = {...buttonAttrContinue, disabled: true};
-            }else if (experiencesStatus.length < values.experiences.length && values.experiences.length > 1 ) {
-                buttonAttrContinue = {...buttonAttrContinue, disabled: true};
-            }
+        }  else if (2 === this.props.currentStep) {
+            if (!!errors.skill || !touched.skill) {
+                buttonAttrContinue = {...buttonAttrContinue, disabled: true}};
+            // const experiencesStatus = getExperiencesWithError(values.experiences, errors);
+            
+        } else if (3 === this.props.currentStep) { console.log(values)
+            if (values.diagnostics.length > 1) {
+                buttonAttrContinue = {...buttonAttrContinue, disabled: true}};
         } else if (4 === this.props.currentStep) {
             buttonAttrContinue = {...buttonAttrContinue, onClick: this.onSubmit(values)};
             submitText = "Guardar";
@@ -160,8 +155,8 @@ class FormManager extends React.Component <IPropsFormManager, IStateFormManager>
                 </MentorModalBase>
                 {1 === this.props.currentStep &&
                     <FormManagerContainer>
-                        <FormMailTemplate
-                            title={"Para empezar, ingresa el correo del doctor"}
+                        <FormPersonalDataTemplate
+                            title={"Para empezar, ingresa los datos personales del especialista"}
                             disableFields={this.state.disabledFields}
                             onChangeDocument={this.onChangeDocument}
                             documentStatus={this.state.documentStatus}
@@ -169,23 +164,21 @@ class FormManager extends React.Component <IPropsFormManager, IStateFormManager>
                     </FormManagerContainer>}
                 {2 === this.props.currentStep &&
                     <FormManagerContainer>
-                        <FormPersonalDataTemplate
-                            disableFields={this.state.disabledFields}
-                            title={"Datos personales del doctor"}
-                            onChangeDocument={this.onChangeDocument}
-                            subTitle={"Ingresa los datos del doctor que deseas agregar"} />
+                        <FormOccupationalDataTemplate 
+                            title={"Informacion Profesional"}
+                            disableFields={this.state.disabledFields}>
+                            <FormImage id={"fileImageUploader"} mentor={false}/>
+                        </FormOccupationalDataTemplate >
                     </FormManagerContainer>}
                 {3 === this.props.currentStep &&
                     <FormManagerContainer>
-                        <FormExperienceTemplate
-                            title={"Perfil del doctor"}
-                            titleForm={"Otras experiencias laborales"}
-                            name={`${values.firstName} ${values.lastName}`}
-                            subTitle={"Esta información será visible en el perfil del doctor"} >
-                            <FormImage id={"fileImageUploader"} mentor={false}/>
-                        </FormExperienceTemplate>
+                        <FormPatientInfo
+                            title={"Ingrese la información que será visible en el perfil"}
+                            name={`${values.firstName} ${values.lastName}`} />
+                            <FormExperienceTemplate/>
+                            <EducationInfo/>
                     </FormManagerContainer>}
-                {4 === this.props.currentStep &&
+                    {4 === this.props.currentStep &&
                     <FormManagerContainer>
                         <FormReviewTemplate
                             title={"Estás agregando al doctor"}

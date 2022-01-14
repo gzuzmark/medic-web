@@ -27,6 +27,7 @@ interface IStateMentorCreate {
     mentorData: IMentorFormValidations;
     listSites: IPropsMentorOptionsDropDown[];
     listSkills: IPropsMentorOptionsDropDown[];
+    listDiagnostics: IPropsMentorOptionsDropDown[];
     loader: boolean;
     modal: boolean;
     saving: boolean;
@@ -50,6 +51,7 @@ class MentorFormCreate extends React.Component <{}, IStateMentorCreate> {
         this.onNextStep = this.onNextStep.bind(this);
         this.onBeforeStep = this.onBeforeStep.bind(this);
         this.updateListSkills = this.updateListSkills.bind(this);
+        this.updateListDiagnostics = this.updateListDiagnostics.bind(this);
         this.updateImage = this.updateImage.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
         this.sitesService = new SitesService();
@@ -60,14 +62,14 @@ class MentorFormCreate extends React.Component <{}, IStateMentorCreate> {
             listSkills: [] as IPropsMentorOptionsDropDown[],
             loader: true,
             mentorData: this.mentorCreateData.getMentorValues,
+            listDiagnostics:[] as IPropsMentorOptionsDropDown[],
             modal: false,
             saving: false,
             selectedImage: "",
             stepActive: 1,
-            stepsBar: [{...defaultStep, title: "Correo"},
-                {...emptyStep, title: "Datos personales"},
-                {...emptyStep, title: "Perfil (opcional)"},
-                {...emptyStep, title: "Confirmación"}],
+            stepsBar: [{...defaultStep, title: "Datos personales"},
+                {...emptyStep, title: "Datos de Ocupación"},
+                {...emptyStep, title: "Creación de perfil"}],
             submitText: "Continuar"
         };
         this.successContent = {
@@ -85,12 +87,20 @@ class MentorFormCreate extends React.Component <{}, IStateMentorCreate> {
         }).catch(() => {
             this.setState({loader: true});
         })
+
+            this.skillService.list().then((skills: ISkill[]) => {
+                const listSkills = skills.map((v) => ({value: v.id, label: v.name,code: v.type_code}));
+                this.setState({listSkills,loader: false});
+            }).catch(() => {
+                this.setState({loader: true});
+            })
     }
 
 
     public render() {
         const listSites = this.state.listSites;
         const listSkills = this.state.listSkills;
+        const listDiagnostics = this.state.listDiagnostics;
         const selectedImage = this.state.selectedImage;
         return (
             <div className="u-LayoutMargin">
@@ -116,6 +126,7 @@ class MentorFormCreate extends React.Component <{}, IStateMentorCreate> {
                                             handleChange,
                                             listSites,
                                             listSkills,
+                                            listDiagnostics,
                                             selectedImage,
                                             setFieldTouched,
                                             setFieldValue,
@@ -124,6 +135,7 @@ class MentorFormCreate extends React.Component <{}, IStateMentorCreate> {
                                             touched,
                                             updateImage: this.updateImage,
                                             updateListSkills: this.updateListSkills,
+                                            updateListDiagnostics: this.updateListDiagnostics,
                                             values: values as IMentorFormValidations
                                         }}>
                                         <form onSubmit={handleSubmit}>
@@ -187,6 +199,13 @@ class MentorFormCreate extends React.Component <{}, IStateMentorCreate> {
             this.setState({stepActive: nextStep, stepsBar}, () => {
                 Utilities.scrollToTop();
             });
+        }// test ultimo paso seccion review
+        if(nextStep===4){
+            let stepsBar = this.updateStepCompleted(counter);
+            stepsBar = this.getActiveStepsBar(nextStep);
+            this.setState({stepActive: nextStep, stepsBar}, () => {
+                Utilities.scrollToTop();
+            });
         }
     }
 
@@ -235,11 +254,12 @@ class MentorFormCreate extends React.Component <{}, IStateMentorCreate> {
         })
     }
 
-    private updateListSkills(siteId: string) {
-        return new Promise((resolve, reject) => {
+    private updateListSkills() {
+        return new Promise<void>((resolve, reject) => {
             this.setState({listSkills: []}, () => {
-                this.skillService.listBySite(siteId).then((skills: ISkill[]) => {
+                this.skillService.list().then((skills: ISkill[]) => {
                     const listSkills = skills.map((v) => ({value: v.id, label: v.name}));
+                    console.log(listSkills)
                     this.setState({listSkills});
                     resolve()
                 }).catch(() => {
@@ -248,7 +268,18 @@ class MentorFormCreate extends React.Component <{}, IStateMentorCreate> {
             })
         })
     }
-
+    
+    private updateListDiagnostics(skillId: string) {
+        return new Promise<void>((resolve, reject) => {
+            this.skillService.listDiagnosticsBySkill(skillId).then((listEl: ISkill[]) => {
+                const listDiagnostics = listEl.map((v) => ({value: v.id, label: v.name}));
+                this.setState({listDiagnostics,loader: false});
+                resolve()
+            }).catch(() => {
+                reject()
+            })
+        })
+    }
     private updateImage(selectedImage: string) {
         this.setState({selectedImage});
     }
