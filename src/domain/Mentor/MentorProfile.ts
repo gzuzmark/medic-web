@@ -1,11 +1,10 @@
 import MentorBaseForm, {
-    IAwardsItem,
     IMentorBaseForm,
     IMentorEducationInfo,
     IMentorEducationInfoForm,
     IMentorExperience,
     IMentorFormExperience,
-    IMentorFormValidations
+    IMentorFormValidations 
 } from "./MentorBaseForm";
 
 export interface IMentorProfileData extends IMentorBaseForm {
@@ -72,6 +71,7 @@ class MentorProfileData extends MentorBaseForm {
         });
         return formEducation;
     }
+    /*
     public getAwardsInfo(): IAwardsItem[] {
         const awards = this.mentor.awards ? [...this.mentor.awards] : [];
         const listAwards = awards.map((item: IAwardsItem) => {
@@ -80,7 +80,7 @@ class MentorProfileData extends MentorBaseForm {
             }
         });
         return listAwards;
-    }
+    }*/
 }
 
 export default MentorProfileData;

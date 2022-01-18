@@ -5,7 +5,7 @@ import MentorBaseForm, {
     IMentorFormValidations,
     IMentorEducationInfo,
     IMentorEducationInfoForm,
-    IAwardsItem
+    // IAwardsItem
 } from "./MentorBaseForm";
 
 export interface IMentorAdminEditCreateData extends IMentorBaseForm {
@@ -76,6 +76,7 @@ class MentorAdminEditData extends MentorBaseForm {
         }
         return formEducation;
     }
+    /*
     public getAwardsInfo(): IAwardsItem[] {
         const awards = this.mentor.awards ? [...this.mentor.awards] : [];
         const listAwards = awards.map((item: IAwardsItem) => {
@@ -89,7 +90,7 @@ class MentorAdminEditData extends MentorBaseForm {
             })
         }
         return listAwards;
-    }
+    }*/
 }
 
 export default MentorAdminEditData;

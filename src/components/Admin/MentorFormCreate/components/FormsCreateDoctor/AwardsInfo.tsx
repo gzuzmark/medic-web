@@ -1,6 +1,5 @@
 import {ArrayHelpers, FieldArray} from "formik";
 import * as React from "react";
-import { IAwardsItem } from "src/domain/Mentor/MentorBaseForm";
 import styled from "styled-components";
 import FormColumn from "../../../../../common/FormRow/components/FormColumn/FormColumn";
 import FormRow from "../../../../../common/FormRow/FormRow";
@@ -118,24 +117,24 @@ class AwardsInfo extends React.Component <IPropsFormAwards,IStateAwards> {
 
     private renderAwards(ctxt: IMentorFormBaseContext) {
         let counter = 0;
-        const awards = !!ctxt.values.awards ? ctxt.values.awards : [] as IAwardsItem[];
+        const awards = !!ctxt.values.awards ? ctxt.values.awards : [] as string[];
         return (arrayHelpers: ArrayHelpers) => {
             const addNewEducation = () => {
-                arrayHelpers.push({
-                    name: ""
-                })
+                arrayHelpers.push("")
             };
-            const removeExperience = (index: number) => { console.log(index)
+            const removeExperience = (index: number) => {
                 return () => {
                     arrayHelpers.remove(index);
-                    if(index === 0){
+                    if(index === 0 && awards.length <=1){
                         this.setState({hasData: false})
-                        ctxt.setFieldValue(`awards[0].name`, '');
+                        ctxt.setFieldValue(`awards[0]`, '');
                     }
                 }
             };
-            return awards.map((valueInfo:IAwardsItem, index: number) => {
-
+            if (awards.length<1){
+                awards.push("")
+            }
+            return awards.map((valueInfo:string, index: number) => {
                 return (
                     <EducationItem key={index} className={'AwardsItem'}>
                         <FormRow style={{ paddingBottom: '30px', margin: 0 }} columns={[
@@ -145,11 +144,11 @@ class AwardsInfo extends React.Component <IPropsFormAwards,IStateAwards> {
                                     disabled={!!this.props.forceDisable}
                                     attrs={{
                                         maxLength: 150,
-                                        name: `awards[${index}].name`,
+                                        name: `awards[${index}]`,
                                         onBlur: ctxt.handleBlur,
                                         onChange: ctxt.handleChange,
                                         placeholder: "",
-                                        value: valueInfo.name}}/>
+                                        value: valueInfo}}/>
                             </FormColumn>
                         ]} />
                         <OptionsHandler>

@@ -259,7 +259,6 @@ class MentorFormCreate extends React.Component <{}, IStateMentorCreate> {
             this.setState({listSkills: []}, () => {
                 this.skillService.list().then((skills: ISkill[]) => {
                     const listSkills = skills.map((v) => ({value: v.id, label: v.name}));
-                    console.log(listSkills)
                     this.setState({listSkills});
                     resolve()
                 }).catch(() => {

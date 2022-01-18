@@ -60,7 +60,7 @@ export interface IMentorFormValidations {
     patientAgeFrom: string;
     patientAgeTo: string;
     diagnostics: string[];
-    awards: IAwardsItem[];
+    awards: string[];
 }
 
 export interface IMentorExperience {
@@ -99,7 +99,7 @@ export interface IMentorBaseForm  extends IBaseUser {
     menorUnAnio?: number,
     city?: string,
     diagnostics?: string[];
-    awards?: IAwardsItem[];
+    awards?: string[];
 }
 export interface  IMentorEducationInfoForm{
     educationType?:string;
@@ -155,7 +155,7 @@ abstract class MentorBaseForm {
         this.mentor.city = mentor.city || '',
         this.mentor.education = mentor.education || [] as IMentorEducationInfo[];
         this.mentor.diagnostics = mentor.diagnostics|| [] as string[];
-        this.mentor.awards = mentor.awards || [] as IAwardsItem[];
+        this.mentor.awards = mentor.awards || [] as string[];
         // this.mentor.skill = mentor.skill || '';
     }
 
@@ -197,7 +197,7 @@ abstract class MentorBaseForm {
             menorUnAnio: m.menorUnAnio || 0,
             city:m.city || '',
             education: [] as IMentorEducationInfoForm[],
-            awards:[] as IAwardsItem[]
+            awards:[] as string[]
         };
 
         formValues.location = {
@@ -218,7 +218,6 @@ abstract class MentorBaseForm {
         
         formValues.experiences = this.getFormExperiences();
         formValues.education = this.getFormEducation();
-        formValues.awards = this.getAwardsInfo();
         formValues.gender = {
             label: m.gender || genderDefaultSelection.label,
             value: m.gender || genderDefaultSelection.value
@@ -290,7 +289,6 @@ abstract class MentorBaseForm {
             }
         });
     }
-    public abstract getAwardsInfo(): IAwardsItem[];
     public abstract getFormExperiences(): IMentorFormExperience[];
     public abstract getFormEducation(): IMentorEducationInfoForm[];
 }
