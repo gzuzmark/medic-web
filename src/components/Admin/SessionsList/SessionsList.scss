@@ -1,10 +1,12 @@
 @import "../../../assets/styles/01-settings/settings";
 
 .ListSessions {
-  padding: 0 70px;
+  // padding: 0 70px;
+  font-family: 'Mulish'!important;
   &_body {
     display: flex;
     flex-direction: column;
+    font-family: 'Mulish';
   }
   &_sticky {
     align-items: center;
@@ -18,7 +20,17 @@
   &_header {
     align-items: center;
     margin-top: 10px;
+    background-color: #494F66;
+    span{
+      font-family: 'Mulish';
+      font-weight: 600;
+    }
   }
+  &_header &_column {
+    font-family: 'Mulish';
+    color: white !important;
+    font-weight: 600;
+    }
   &_row {
     align-items: center;
     &--center {
@@ -51,49 +63,41 @@
         color: #4a4a4a!important;
       }
     }
+    text-align: center;
     //date
     &:nth-child(1) {
       text-align: center;
       width: 10%;
     }
-    //assistance
+    //doctor
     &:nth-child(2) {
-      text-align: center;
-      width: 6%;
-    }
-    //reservation date
-    &:nth-child(3) {
       text-align: center;
       width: 10%;
     }
-    //doctor info
-    &:nth-child(4) {
-      width: 15%;
-    }
     //patient info
-    &:nth-child(5) {
+    &:nth-child(3) {
       width: 15%;
-    }
-    //patient paid
-    &:nth-child(6) {
-      width: 5%;
-    }
-    //patient paid
-    &:nth-child(7) {
-      width: 8%;
     }
     //patient document
-    &:nth-child(8) {
+    &:nth-child(4) {
       width: 8%;
     }
     //patient phone
-    &:nth-child(9) {
+    &:nth-child(5) {
+      width: 8%;
+    }
+    //reservation date
+    &:nth-child(6) {
+      text-align: center;
+      width: 10%;
+    }
+    //patient paid status
+    &:nth-child(7) {
       width: 8%;
     }
     //session url
-    &:nth-child(10) {
-      text-align: left;
-      width: 10%;
+    &:nth-child(8) {
+      width: 15%;
       padding-right: 5px;
       margin-right: 5px;
       a:visited {
@@ -101,18 +105,15 @@
       }
     }
     //session url
-    &:nth-child(11) {
-      text-align: left;
-      width: 7%;
-      padding-right: 5px;
-      margin-right: 5px;
+    &:nth-child(9) {
+      width: 15%;
       justify-content: center;
       a:visited {
         color: #0000EE;
       }
     }
     //actions1
-    &:nth-child(12) {
+    &:nth-child(10) {
       text-align: center;
       width: 5%;
     }
@@ -128,8 +129,7 @@
     align-items: center;
     border-right: 1px solid rgb(193, 193, 193);
     display: flex;
-    height: 45px;
-    padding-top: 2px;
+    height: 40px;
   }
   &_bigtext {
     font-size: 24px;
@@ -173,5 +173,5 @@
 }
 
 .u-ListSessions_padding {
-  padding: 0 20px;
+  padding: 0px;
 }

@@ -12,7 +12,6 @@ import {
 	LIGHT_TEXT,
 	Subhead1,
 } from '../../../../../common/MentorText';
-import { formatStrNumber } from '../../../../../common/Utils/Utilities';
 import { MomentDateParser } from '../../../../../domain/DateManager/MomentDateParser';
 import {
 	ISessionBody,
@@ -43,7 +42,7 @@ const getFormattedAddress = (address: string) => {
 		return address;
 	}
 }
-
+/*
 const renderAssistance = (assistance: string) => {
 	if (!assistance) {
 		return null;
@@ -56,7 +55,7 @@ const renderAssistance = (assistance: string) => {
 				: 'default';
 	return <BadgeLabel color={colorClass}>{assistance}</BadgeLabel>;
 };
-
+*/
 const renderPaymentState = (isPending: boolean) => {
 	const colorClass = isPending ? 'yellow' : 'green';
 	const label = isPending ? 'Pendiente' : 'Confirmado';
@@ -96,7 +95,7 @@ const ListSessionsBody: React.FC<IPropsListSessionsBody> = (props) => {
 		patient,
 		id = '',
 		patient_link: sessionURL = '',
-		paid = '',
+		// 	paid = '',
 		payment,
 	} = props.session;
 	const sessionBean = new SessionBean(props.session);
@@ -108,8 +107,8 @@ const ListSessionsBody: React.FC<IPropsListSessionsBody> = (props) => {
 	const patientURL = sessionURL && id && `${sessionURL}/${doctorId}`;
 	const patientDoc = patient && patient.document_number;
 	const historyURL = `${window.location.origin}/doctor/sesion/${id}`;
-	const medialLeaveURL = sessionBean.session.consult && sessionBean.session.consult.medicalLeaveStartDate && `${window.location.origin}/patients/medical-leave/${id}`;
-	const ratingURL = `https://alivia-conference.web.app/rate/${id}`;
+// const medialLeaveURL = sessionBean.session.consult && sessionBean.session.consult.medicalLeaveStartDate && `${window.location.origin}/patients/medical-leave/${id}`;
+// const ratingURL = `https://alivia-conference.web.app/rate/${id}`;
 	const prescriptionURL = `${process.env.REACT_APP_WEB_STUDENT_BASE_URL}/direccion_receta?sessionId=${id}`;
 	const paymentURL = payment && payment.cipUrl;
 	const usedBenefit = (payment && payment.benefit_id) || '';
@@ -125,7 +124,7 @@ const ListSessionsBody: React.FC<IPropsListSessionsBody> = (props) => {
 	const newSessionURL = `${process.env.REACT_APP_CONFERENCE_BASE_URL
 		}?room=${id}&passcode=${process.env.REACT_APP_CONFERENCE_CODE}`;
 
-	const patientPaid = formatStrNumber(paid);
+	// const patientPaid = formatStrNumber(paid);
 
 	const isPending = payment && (payment.pending as boolean);
 
@@ -163,11 +162,11 @@ const ListSessionsBody: React.FC<IPropsListSessionsBody> = (props) => {
 				toggleOpenMenu();
 			});
 	};
-
+/*
 	const assistanceComponent = React.useMemo(
 		() => renderAssistance(sessionBean.getAssistance()),
 		[props.session],
-	);
+	);*/
 
 	const handleClickOutside = (e: any) => {
 		const current = wrapperRef && (wrapperRef.current as Element | null);
@@ -195,15 +194,7 @@ const ListSessionsBody: React.FC<IPropsListSessionsBody> = (props) => {
 				</Heading3>
 				<TextBold1>{sessionBean.getFromTime(new MomentDateParser())}</TextBold1>
 			</div>
-			<div className='ListSessions_column'>{assistanceComponent}</div>
-			<div className='ListSessions_column ListSessions_column--date'>
-				<Heading3 weight={LIGHT_TEXT} color={FONTS.dark}>
-					{sessionBean.getReservationDate(new MomentDateParser())}
-				</Heading3>
-				<TextBold1>
-					{sessionBean.getReservationTime(new MomentDateParser())}
-				</TextBold1>
-			</div>
+			{/*<div className='ListSessions_column'>{assistanceComponent}</div>*/}
 			<div className='ListSessions_column ListSessions_column--mentor'>
 				<SessionItem name={`${doctorName} ${doctorLN}`} />
 			</div>
@@ -221,12 +212,6 @@ const ListSessionsBody: React.FC<IPropsListSessionsBody> = (props) => {
 				/>
 			</div>
 			<div className='ListSessions_column ListSessions_numbers'>
-				{patientPaid && (
-					<Subhead1 color={FONTS.dark}>S/. {patientPaid}</Subhead1>
-				)}
-			</div>
-			<div className='ListSessions_column'>{renderPaymentState(isPending)}</div>
-			<div className='ListSessions_column ListSessions_numbers'>
 				{patientDoc && <Subhead1 color={FONTS.dark}>{patientDoc}</Subhead1>}
 			</div>
 			<div className='ListSessions_column ListSessions_numbers'>
@@ -234,6 +219,21 @@ const ListSessionsBody: React.FC<IPropsListSessionsBody> = (props) => {
 					<Subhead1 color={FONTS.dark}>{patient && patient.phone}</Subhead1>
 				)}
 			</div>
+			<div className='ListSessions_column ListSessions_column--date'>
+				<Heading3 weight={LIGHT_TEXT} color={FONTS.dark}>
+					{sessionBean.getReservationDate(new MomentDateParser())}
+				</Heading3>
+				<TextBold1>
+					{sessionBean.getReservationTime(new MomentDateParser())}
+				</TextBold1>
+			</div>
+			{/*
+			<div className='ListSessions_column ListSessions_numbers'>
+				{patientPaid && (
+					<Subhead1 color={FONTS.dark}>S/. {patientPaid}</Subhead1>
+				)}
+			</div>*/}
+			<div className='ListSessions_column'>{renderPaymentState(isPending)}</div>
 			<div
 				className='ListSessions_column ListSessions_separator'
 				style={{ borderColor: colors.MISC_COLORS.background_grey_2 }}
@@ -278,12 +278,12 @@ const ListSessionsBody: React.FC<IPropsListSessionsBody> = (props) => {
 					</a>
 				)}
 			</div>
-            <div className='ListSessions_column ListSessions_separator'>
+            {/*<div className='ListSessions_column ListSessions_separator'>
                 {
                     medialLeaveURL && (<a href={medialLeaveURL} style={{cursor: "pointer"}}>Con descanso médico</a>)
                 }
-            </div>
-			<div
+            </div>*/}
+			{/*<div
 				className='ListSessions_column ListSessions_separator'
 				style={{ borderColor: colors.MISC_COLORS.background_grey_2 }}
 			>
@@ -292,7 +292,7 @@ const ListSessionsBody: React.FC<IPropsListSessionsBody> = (props) => {
 						Link
 					</a>
 				)}
-			</div>
+			</div>*/}
 			<div title='Acciones' className='ListSessions_column'>
 				<div className='ListSessions_dropdownContainer' ref={wrapperRef}>
 					<Icon

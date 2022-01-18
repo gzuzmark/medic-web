@@ -51,20 +51,16 @@ const PAGE_SIZE = 30;
 const DEFAULT_STICKY_HEIGHT = 244;
 const DEFAULT_STICKY_TOP = 80;
 const TABLE_HEADER_TEXTS = [
-  'DIA Y HORA',
-  'ASISTENCIA',
-  'RESERVA',
-  'NOMBRE DEL DOCTOR',
-  'NOMBRE DEL PACIENTE',
-  'PAGADO',
-  'ESTADO',
-  'DNI O CE',
-  'TELÉFONO',
-  'URL CITA',
-  'LINK PAGO',
-  'DESCANSO MEDICO',
-  'RATING',
-  'ACCIONES',
+  'Día y Hora',
+  'Especialista',
+  'Paciente',
+  'DNI o CE',
+  'Teléfono',
+  'Reserva',
+  'Estado',
+  'Enlaces cita',
+  'Enlaces documentacion médica',
+  'Opciones',
 ];
 
 const compareDropdownObject = (obj1: IPropsMentorOptionsDropDown, obj2: IPropsMentorOptionsDropDown) => {

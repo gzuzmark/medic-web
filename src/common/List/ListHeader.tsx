@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { FONTS } from '../MentorColor';
 import { Small1 } from '../MentorText';
 
 interface IPropsListHeader {
@@ -22,7 +21,7 @@ const ListHeader: React.FC<IPropsListHeader> = React.memo((props) => {
 								className={`${props.baseClass}_column`}
 								key={'header-' + index}
 							>
-								<Small1 color={FONTS.blue_grey}>{item}</Small1>
+								<Small1 color={"#fff"}>{item}</Small1>
 							</div>
 						);
 					})}
