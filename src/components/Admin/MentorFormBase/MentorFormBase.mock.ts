@@ -88,8 +88,8 @@ export const getFullValues = ():IMentorFormBaseContext => (
                 city: 'Lima',
             }],            
             awards:[ 
-                {name:'Premio al altruismo'},
-                {name:'Reconocimiento a la trayectoria Profesional'}
+                'Premio al altruismo',
+                'Reconocimiento a la trayectoria Profesional'
             ],
             formation: '', 
             status: '',

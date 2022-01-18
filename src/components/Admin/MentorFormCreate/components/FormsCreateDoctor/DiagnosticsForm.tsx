@@ -52,31 +52,32 @@ export const ItemDiagnostic = styled.div`
     }
 `;
 class DiagnosticsForm extends React.Component<IProfileData> {
+    public listItemsD: string[];
     // const {values, handleBlur, handleChange } = React.useContext(MentorFormBaseContext);
     // const isEdit = !!props.isEdit;
-
-    
+       
     public render() {
         let counter = 0;  
-        
+        const listItemsD= [] as string[];
         return (
             <MentorFormBaseContext.Consumer>
                 {(context: IMentorFormBaseContext) => {
                     const diagnostics = context.listDiagnostics;
-                    const listItems = [] as string[];
-                    const selectDiagnostic =(event: React.ChangeEvent<HTMLInputElement>)=>{
-                        const target = event.target;
-                        if(target.checked){
-                            listItems.push(target.value)
-                        }else{
-                            listItems.forEach( (item, index) => {
-                                if(item === target.value){
-                                   listItems.splice(index,1); 
-                                } 
-                              });
-                        }
-                        context.setFieldValue('diagnostics', listItems);
+                    const selectDiagnostico =  (val:string)=>{
+                        return (e: any) => {
+                            if (e.target.checked) {
+                                listItemsD.push(val)
+                                // cont.handleChange(e);
+                            }else if (!e.target.checked){
+                                listItemsD.forEach( (item, index) => {
+                                    if(item === val){
+                                        listItemsD.splice(index,1); 
+                                    } 
+                                  });
+                            }
+                            context.setFieldValue('diagnostics', listItemsD);
                         context.setFieldTouched('diagnostics');
+                        }
                     }
                     return(
                         <React.Fragment>
@@ -95,7 +96,7 @@ class DiagnosticsForm extends React.Component<IProfileData> {
                                             return(
                                             <ItemDiagnostic key={index} className={'ItemDiagnostic'}>
                                                 <label>
-                                                    <input className="item-check" name="`${index}`" type="checkbox" value={ele.value} onChange={selectDiagnostic}/>
+                                                    <input className="item-check" name="`${index}`" type="checkbox" value={ele.value} onChange={selectDiagnostico(ele.value)}/>
                                                     <div className="item-name">{ele.label}</div>
                                                 </label>
                                                 {/*<button  onClick={this.selectDiagnostic(ele.value,context)}>
@@ -113,15 +114,6 @@ class DiagnosticsForm extends React.Component<IProfileData> {
             </MentorFormBaseContext.Consumer>
         )
         }
-        
-    /*private selectDiagnostic(idx:any,context: IMentorFormBaseContext){
-        return ()=>{ 
-            console.log(idx)
-            
-            // listItems.push({id:idx})
-            context.setFieldValue('diagnostics', []);
-        }
-    }    */
     
 };
 export default DiagnosticsForm;

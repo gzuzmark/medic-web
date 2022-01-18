@@ -1,4 +1,4 @@
-import MentorBaseForm, {IMentorBaseForm, IMentorEducationInfo, IMentorEducationInfoForm, IMentorExperience, IMentorFormExperience,IAwardsItem} from "./MentorBaseForm";
+import MentorBaseForm, {IMentorBaseForm, IMentorEducationInfo, IMentorEducationInfoForm, IMentorExperience, IMentorFormExperience} from "./MentorBaseForm";
 
 export interface IMentorAdminCreateData extends IMentorBaseForm {
     exist: boolean;
@@ -22,11 +22,6 @@ class MentorAdminCreateData extends MentorBaseForm {
                 degree: "",
                 school: "",
                 to: "",
-            }
-        ]
-        this.mentor.awards = [
-            {
-                name:""
             }
         ]
     }
@@ -58,14 +53,6 @@ class MentorAdminCreateData extends MentorBaseForm {
                 degree: item.degree,
                 school: item.school ,
                 year: !!toDate ? toDate.getFullYear().toString() : ''
-            }
-        });
-    }
-    public getAwardsInfo(): IAwardsItem[] {
-        const awards = this.mentor.awards ? [...this.mentor.awards] : [];
-        return awards.map((item: IAwardsItem) => {
-            return{
-                name:item.name
             }
         });
     }

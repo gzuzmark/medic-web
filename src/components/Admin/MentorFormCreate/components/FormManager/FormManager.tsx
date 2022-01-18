@@ -139,7 +139,7 @@ class FormManager extends React.Component <IPropsFormManager, IStateFormManager>
                 buttonAttrContinue = {...buttonAttrContinue, disabled: true}};
             // const experiencesStatus = getExperiencesWithError(values.experiences, errors);
             
-        } else if (3 === this.props.currentStep) { console.log(values)
+        } else if (3 === this.props.currentStep) {
             if (values.diagnostics.length > 1) {
                 buttonAttrContinue = {...buttonAttrContinue, disabled: true}};
         } else if (4 === this.props.currentStep) {
