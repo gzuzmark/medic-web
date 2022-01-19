@@ -19,9 +19,7 @@ export interface IFormItemBase {
 export interface IMentorFormExperience {
     position?: string;
     company?: string;
-    fromMonth?: string;
     fromYear?: string;
-    toMonth?: string;
     toYear?: string;
     currentJob?: boolean;
     type?:string;
@@ -69,6 +67,7 @@ export interface IMentorExperience {
     from?: string;
     to?: string | null;
     type?:string;
+    location?:string;
 }
 
 export interface IMentorBaseForm  extends IBaseUser {
@@ -245,6 +244,7 @@ abstract class MentorBaseForm {
         // this.mentor.company = values.currentCompany.trim();
         // this.mentor.title = values.currentPosition.trim();
         // this.mentor.skill = values.skill.value;
+        this.mentor.awards = values.awards;
         this.mentor.utp = values.utp;
         this.mentor.gender = values.gender.value;
         this.mentor.college = values.college;
@@ -255,20 +255,16 @@ abstract class MentorBaseForm {
         this.mentor.menorUnAnio = values.menorUnAnio;
         this.mentor.city = values.city 
         const experiences =values.experiences.filter((v) => {
-            const required = !!v.fromMonth && !!v.fromYear && !!v.company && !!v.position;
-            return required && (!!v.currentJob || (!!v.toMonth && !!v.toYear))
+            const required = !!v.fromYear && !!v.company && !!v.position;
+            return required && (!!v.currentJob || (!!v.toYear))
         });
         this.mentor.experiences = experiences.map((v) => {
-            const from = new Date(Number(v.fromYear), Number(v.fromMonth));
-            let to = new Date();
-            if (!v.currentJob) {
-                to = new Date(Number(v.toYear), Number(v.toMonth));
-            }
             return {type:v.type,
                 company: v.company,
-                from: from.toISOString(),
+                from: v.fromYear,
                 title: v.position,
-                to: v.currentJob ? null : to.toISOString(),
+                to: v.toYear,
+                location: v.location
             }
         });
         const education =values.education.filter((v) => {
@@ -276,16 +272,17 @@ abstract class MentorBaseForm {
             return required && (!!v.currentStudy || (!!v.year))
         });
         this.mentor.education = education.map((v) => {
-            let to = new Date();
-            if (!v.currentStudy) {
+            // const to = new Date();
+            // const currentYear = to.getFullYear.toString();
+            /*if (!v.currentStudy) {
                 to = new Date(Number(v.year));
-            }
+            }*/
             return {
                 degree: v.degree,
                 school: v.school,
                 educationType:v.educationType,
                 city:v.city,
-                to: v.currentStudy ? null : to.toISOString(),
+                to: v.year // v.currentStudy ? currentYear : v.year,
             }
         });
     }

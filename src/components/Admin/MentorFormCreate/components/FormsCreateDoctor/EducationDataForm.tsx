@@ -108,24 +108,23 @@ class EducationDataForm extends React.Component <IPropsFormEducationData, {}> {
         const hasError = this.connectValidations(touched.education, errors.education);
 
         const educationType = [
-            {value: "m", label: "Maestría"},
-            {value: "d", label: "Doctorado"},
-            {value: "t", label: "Titulado"},
-            {value: "b", label: "Bachiller"},
-            {value: "c", label: "Curso"},
-            {value: "s", label: "Seminario"},
-            {value: "p", label: "Programa"}];
+            {value: "Maestría", label: "Maestría"},
+            {value: "Doctorado", label: "Doctorado"},
+            {value: "Titulado", label: "Titulado"},
+            {value: "Bachiller", label: "Bachiller"},
+            {value: "Curso", label: "Curso"},
+            {value: "Seminario", label: "Seminario"},
+            {value: "Programa", label: "Programa"}];
 
         return (arrayHelpers: ArrayHelpers) => {
             const addNewEducation = () => {
                 arrayHelpers.push({
-                    company: "",
-                    currentJob: false,
-                    fromMonth: "",
-                    fromYear: "",
-                    position: "",
-                    toMonth: "",
-                    toYear: ""
+                    currentStudy: false,
+                    educationType: "",
+                    degree:  "",
+                    year:  "",
+                    school:  "",
+                    city: "",
                 })
             };
             const removeExperience = (index: number) => {
@@ -141,7 +140,7 @@ class EducationDataForm extends React.Component <IPropsFormEducationData, {}> {
                 const school = counter === 0 && !value.school && isEdit;
                 */
                 return (
-                    <EducationItem key={index} className={'ExperienceItem'}>
+                    <EducationItem key={index} className={'EducationItem'}>
                          <FormRow style={{ paddingBottom: '30px', margin: 0 }} columns={[
                             <FormColumn width={1} key={`FormColumn-PersonalData_${++counter}`}>
                                 <MentorDropDown lowercaseLabel={true}
@@ -187,7 +186,7 @@ class EducationDataForm extends React.Component <IPropsFormEducationData, {}> {
                                         checked: !!ctxt.values.education[index].currentStudy,
                                         name: `education[${index}].currentStudy`,
                                         onBlur: ctxt.handleBlur,
-                                        onChange: this.handlerCurrentJob(ctxt, index)
+                                        onChange: this.handlerCurrentStudy(ctxt, index)
                                     }}/>
                             </FormColumn>
                         ]}/>
@@ -244,13 +243,12 @@ class EducationDataForm extends React.Component <IPropsFormEducationData, {}> {
         }
     }
 
-    private handlerCurrentJob(context: IMentorFormBaseContext, index: number) {
+    private handlerCurrentStudy(context: IMentorFormBaseContext, index: number) {
         return (e: any) => {
             if (!this.props.forceDisable) {
-                context.setFieldTouched(`experiences[${index}].fromMonth`);
-                context.setFieldTouched(`experiences[${index}].fromYear`);
-                context.setFieldValue(`experiences[${index}].toMonth`, '');
-                context.setFieldValue(`experiences[${index}].toYear`, '');
+                const currentTime = new Date();
+                const year = currentTime.getFullYear().toString();
+                context.setFieldValue(`education[${index}].year`, year);
                 context.handleChange(e);
             }
         }

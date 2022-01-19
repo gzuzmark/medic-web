@@ -116,10 +116,12 @@ class ExperienceForm extends React.Component <IPropsFormExperience, {}> {
             const addNewExperience = () => {
                 arrayHelpers.push({
                     company: "",
+                    type:"",
                     currentJob: false,
                     fromYear: "",
                     position: "",
                     toYear: "",
+                    location:"",
                 })
             };
             const removeExperience = (index: number) => {
@@ -141,9 +143,9 @@ class ExperienceForm extends React.Component <IPropsFormExperience, {}> {
                                     label={"Tipo de experiencia"}
                                     value={value.type}
                                     disabled={!!this.props.forceDisable}
-                                    error={hasError(index, "educationType")}
-                                    name={`education[${index}].educationType`}
-                                    triggerChange={this.handlerDate(ctxt)}
+                                    error={hasError(index, "type")}
+                                    name={`experiences[${index}].type`}
+                                    triggerChange={this.handlerExpType(ctxt)}
                                     placeholder="Profesional, Residentado, Serums, Intercambio..."
                                     options={experienceType.map(a => ({label: a.label, value: a.value}))} />
                             </FormColumn>
@@ -171,7 +173,7 @@ class ExperienceForm extends React.Component <IPropsFormExperience, {}> {
                                             value={value.fromYear}
                                             empty={fromYearEmpty}
                                             disabled={!!this.props.forceDisable}
-                                            error={(hasError(index, "toYear") || hasError(index, "fromYear")) && "  "}
+                                            error={hasError(index, "year") && "  "}
                                             name={`experiences[${index}].fromYear`}
                                             triggerChange={this.handlerDate(ctxt)}
                                             placeholder="Año"
@@ -183,7 +185,7 @@ class ExperienceForm extends React.Component <IPropsFormExperience, {}> {
                                             value={value.toYear}
                                             empty={toYearEmpty}
                                             disabled={value.currentJob || !!this.props.forceDisable}
-                                            error={hasError(index, "toYear") && "  "}
+                                            error={hasError(index, "year") && "  "}
                                             name={`experiences[${index}].toYear`}
                                             triggerChange={this.handlerDate(ctxt)}
                                             placeholder="Año"
@@ -224,14 +226,12 @@ class ExperienceForm extends React.Component <IPropsFormExperience, {}> {
                                 <MentorInput lowercaseLabel={true}
                                     label={"Ubicación*"}
                                     error={hasError(index, "location")}
-                                    disabled={!!this.props.forceDisable}
                                     attrs={{
                                         maxLength: 150,
                                         name: `experiences[${index}].location`,
                                         onBlur: ctxt.handleBlur,
                                         onChange: ctxt.handleChange,
-                                        placeholder: "",
-                                        style: {borderColor: getBorderColor(positionEmpty, isEdit)},
+                                        placeholder: "Ciudad",
                                         value: value.location}}/>
                             </FormColumn>
                         ]}/>
@@ -261,10 +261,10 @@ class ExperienceForm extends React.Component <IPropsFormExperience, {}> {
     private handlerCurrentJob(context: IMentorFormBaseContext, index: number) {
         return (e: any) => {
             if (!this.props.forceDisable) {
-                context.setFieldTouched(`experiences[${index}].fromMonth`);
+                const currentTime = new Date();
+                const year = currentTime.getFullYear().toString();
                 context.setFieldTouched(`experiences[${index}].fromYear`);
-                context.setFieldValue(`experiences[${index}].toMonth`, '');
-                context.setFieldValue(`experiences[${index}].toYear`, '');
+                context.setFieldValue(`experiences[${index}].toYear`, year);
                 context.handleChange(e);
             }
         }
@@ -277,6 +277,12 @@ class ExperienceForm extends React.Component <IPropsFormExperience, {}> {
                 context.setFieldTouched(name);
             }
         };
+    }
+    private handlerExpType(context: IMentorFormBaseContext) {
+        return (name: string, option: IPropsMentorOptionsDropDown) => {
+            context.setFieldValue(name, option.value);
+            context.setFieldTouched(name);
+        }
     }
 }
 

@@ -119,6 +119,7 @@ class AwardsInfo extends React.Component <IPropsFormAwards,IStateAwards> {
         let counter = 0;
         const awards = !!ctxt.values.awards ? ctxt.values.awards : [] as string[];
         return (arrayHelpers: ArrayHelpers) => {
+            console.log(awards)
             const addNewEducation = () => {
                 arrayHelpers.push("")
             };
@@ -132,7 +133,7 @@ class AwardsInfo extends React.Component <IPropsFormAwards,IStateAwards> {
                 }
             };
             if (awards.length<1){
-                awards.push("")
+                arrayHelpers.push("")
             }
             return awards.map((valueInfo:string, index: number) => {
                 return (
