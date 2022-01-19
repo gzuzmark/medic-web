@@ -25,27 +25,27 @@ class MentorAdminEditData extends MentorBaseForm {
         const experiences = this.mentor.experiences ? [...this.mentor.experiences] : [];
         const formExperiences = experiences.map((item: IMentorExperience) => {
             const {from, to} = item;
-            const fromDate = !!from ? new Date(from) : '';
-            const toDate = !!to ? new Date(to) : '';
+            const fromDate = !!from ? from : '';
+            const toDate = !!to ? to : '';
             return {
                 company: item.company,
+                type: item.type,
                 currentJob: !toDate,
-                fromMonth: !!fromDate ? fromDate.getMonth().toString() : '',
-                fromYear: !!fromDate ? fromDate.getFullYear().toString() : '',
+                fromYear: !!fromDate ? fromDate : '',
                 position: item.title ,
-                toMonth: !!toDate ? toDate.getMonth().toString() : '',
-                toYear: !!toDate ? toDate.getFullYear().toString() : ''
+                toYear: !!toDate ? toDate : '',
+                location: item.location
             }
         });
         if (formExperiences.length === 0) {
             formExperiences.push({
                     company: "",
+                    type:"",
                     currentJob: false,
-                    fromMonth: "",
                     fromYear: "",
                     position: "",
-                    toMonth: "",
-                    toYear: ""
+                    toYear: "",
+                    location:""
             })
         }
         return formExperiences;
@@ -54,13 +54,13 @@ class MentorAdminEditData extends MentorBaseForm {
         const education = this.mentor.education ? [...this.mentor.education] : [];
         const formEducation = education.map((item: IMentorEducationInfo) => {
             const {to} = item;
-            const toDate = !!to ? new Date(to) : '';
+            const toDate = !!to ? to : '';
             return {
                 educationType:item.educationType,
                 city: item.city,
                 degree: item.degree,
                 school: item.school ,
-                year: !!toDate ? toDate.getFullYear().toString() : '',
+                year: !!toDate ? toDate : '',
                 currentStudy: !toDate
             }
         });
