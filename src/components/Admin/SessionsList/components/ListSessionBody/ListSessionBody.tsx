@@ -109,7 +109,7 @@ const ListSessionsBody: React.FC<IPropsListSessionsBody> = (props) => {
 	const patientDoc = patient && patient.document_number;
 	const historyURL = `${window.location.origin}/doctor/sesion/${id}`;
 	const medialLeaveURL = sessionBean.session.consult && sessionBean.session.consult.medicalLeaveStartDate && `${window.location.origin}/patients/medical-leave/${id}`;
-	const ratingURL = `https://alivia-conference.web.app/rate/${id}`;
+	const ratingURL = `${process.env.REACT_APP_WEB_STUDENT_BASE_URL}/rating/session/${id}`;
 	const prescriptionURL = `${process.env.REACT_APP_WEB_STUDENT_BASE_URL}/direccion_receta?sessionId=${id}`;
 	const paymentURL = payment && payment.cipUrl;
 	const usedBenefit = (payment && payment.benefit_id) || '';
