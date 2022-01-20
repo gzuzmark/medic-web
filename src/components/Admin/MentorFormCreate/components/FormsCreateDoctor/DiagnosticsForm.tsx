@@ -13,6 +13,10 @@ import getBorderColor from "../../../MentorFormBase/components/FormTemplate/Form
 export interface IProfileData {
     isEdit?: boolean;
     forceDisable?: boolean;
+
+}
+export interface IDiagnosticsFormState {
+    listItemsD: string[];
 }
 export const ItemDiagnostic = styled.div`
     
@@ -51,32 +55,38 @@ export const ItemDiagnostic = styled.div`
     }
     }
 `;
-class DiagnosticsForm extends React.Component<IProfileData> {
-    public listItemsD: string[];
+class DiagnosticsForm extends React.Component<IProfileData, IDiagnosticsFormState> {
+    // public listItemsD: string[] = [];
+    public state: IDiagnosticsFormState;
     // const {values, handleBlur, handleChange } = React.useContext(MentorFormBaseContext);
     // const isEdit = !!props.isEdit;
-       
+    constructor(props: IProfileData) {
+        super(props);
+        this.state = {
+            listItemsD: [],
+        };
+
+    }
     public render() {
-        let counter = 0;  
-        const listItemsD= [] as string[];
+        let counter = 0;
+        // const listItemsD= [] as string[];
         return (
             <MentorFormBaseContext.Consumer>
                 {(context: IMentorFormBaseContext) => {
                     const diagnostics = context.listDiagnostics;
                     const selectDiagnostico =  (val:string)=>{
+                        let listNewItemsD = [...this.state.listItemsD]
                         return (e: any) => {
                             if (e.target.checked) {
-                                listItemsD.push(val)
+                                listNewItemsD.push(val)
                                 // cont.handleChange(e);
                             }else if (!e.target.checked){
-                                listItemsD.forEach( (item, index) => {
-                                    if(item === val){
-                                        listItemsD.splice(index,1); 
-                                    } 
-                                  });
+                                listNewItemsD = listNewItemsD.filter( (item, index) => (item !== val));
                             }
-                            context.setFieldValue('diagnostics', listItemsD);
+                        context.setFieldValue('diagnostics', listNewItemsD);
                         context.setFieldTouched('diagnostics');
+                        this.setState({...this.state, listItemsD: listNewItemsD})
+                        console.log(listNewItemsD)
                         }
                     }
                     return(
