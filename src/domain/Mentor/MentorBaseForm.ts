@@ -99,6 +99,7 @@ export interface IMentorBaseForm  extends IBaseUser {
     city?: string,
     diagnostics?: string[];
     awards?: string[];
+    description?: string;
 }
 export interface  IMentorEducationInfoForm{
     educationType?:string;
@@ -113,7 +114,7 @@ export interface IMentorEducationInfo {
     educationType?:string;
     degree?: string;
     city?: string;
-    to?: string | null;
+    year?: string | null;
 }
 export const genderList = [
     {value: "M", label: "Masculino"},
@@ -131,14 +132,14 @@ abstract class MentorBaseForm {
         this.mentor.document = mentor.document || '';
         this.mentor.medicCollegeNumber = mentor.medicCollegeNumber || '';        
         this.mentor.contactNumber = mentor.contactNumber || '';
-        this.mentor.sitesId = mentor.sitesId || [] as number[];
+        this.mentor.sitesId = mentor.sitesId || [1];
         this.mentor.skillsId = mentor.skillsId || [] as string[];
         this.mentor.photo = mentor.photo || '';
         this.mentor.photoPath = mentor.photoPath || '';
-        // this.mentor.description = mentor.description || '';
+        this.mentor.description = mentor.description || '';
         this.mentor.experiences = mentor.experiences || [] as IMentorExperience[];
-       // this.mentor.company = mentor.company || '';
-        // this.mentor.title = mentor.title || '';
+        this.mentor.company = mentor.company || '';
+        this.mentor.title = mentor.title || '';
         this.mentor.timeZone = mentor.timeZone || 'America/Lima';
         this.mentor.utp = !!mentor.utp;
         // this.mentor.shortDescription = mentor.shortDescription || '';
@@ -261,9 +262,9 @@ abstract class MentorBaseForm {
         this.mentor.experiences = experiences.map((v) => {
             return {type:v.type,
                 company: v.company,
-                from: v.fromYear,
+                from: new Date(v.fromYear || "").toISOString(),
                 title: v.position,
-                to: v.toYear,
+                to: new Date(v.toYear || "").toISOString(),
                 location: v.location
             }
         });
@@ -282,7 +283,7 @@ abstract class MentorBaseForm {
                 school: v.school,
                 educationType:v.educationType,
                 city:v.city,
-                to: v.year // v.currentStudy ? currentYear : v.year,
+                year: v.year // v.currentStudy ? currentYear : v.year,
             }
         });
     }

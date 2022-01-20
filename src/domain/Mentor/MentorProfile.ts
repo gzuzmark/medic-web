@@ -58,8 +58,8 @@ class MentorProfileData extends MentorBaseForm {
     public getFormEducation(): IMentorEducationInfoForm[] {
         const education = this.mentor.education ? [...this.mentor.education] : [];
         const formEducation = education.map((item: IMentorEducationInfo) => {
-            const {to} = item;
-            const toDate = !!to ? to : '';
+            const {year} = item;
+            const toDate = !!year ? year : '';
             return {
                 educationType:item.educationType,
                 city: item.city,

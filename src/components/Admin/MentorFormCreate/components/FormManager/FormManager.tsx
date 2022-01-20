@@ -141,7 +141,8 @@ class FormManager extends React.Component <IPropsFormManager, IStateFormManager>
             
         } else if (3 === this.props.currentStep) {
             if (values.diagnostics.length > 1) {
-                buttonAttrContinue = {...buttonAttrContinue, disabled: true}};
+                // buttonAttrContinue = {...buttonAttrContinue, disabled: true}
+            };
         } else if (4 === this.props.currentStep) {
             buttonAttrContinue = {...buttonAttrContinue, onClick: this.onSubmit(values)};
             submitText = "Guardar";

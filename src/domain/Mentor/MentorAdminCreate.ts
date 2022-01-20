@@ -23,7 +23,7 @@ class MentorAdminCreateData extends MentorBaseForm {
             {
                 degree: "",
                 school: "",
-                to: "",
+                year: "",
                 educationType: "",
                 city:""
             }
@@ -50,8 +50,8 @@ class MentorAdminCreateData extends MentorBaseForm {
     public getFormEducation(): IMentorEducationInfoForm[] {
         const education = this.mentor.education ? [...this.mentor.education] : [];
         return education.map((item: IMentorEducationInfo) => {
-            const {to} = item;
-            const toDate = !!to ? to : '';
+            const {year} = item;
+            const toDate = !!year ? year : '';
             return {
                 educationType:item.educationType,
                 city: item.city,
