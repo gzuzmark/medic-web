@@ -46,7 +46,7 @@ class MentorEditProfileData extends MentorAdminEditData {
         return {
             about_me: this.mentor.about_me || '',
             company: this.mentor.company || '',
-            description: this.mentor.description || '',
+            description: '',// this.mentor.description || '',
             experiences: this.mentor.experiences || [] as IMentorExperience[],
             formation: this.mentor.formation || '',
             photoPath: this.mentor.photoPath || '',

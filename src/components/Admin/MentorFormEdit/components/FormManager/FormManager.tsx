@@ -16,7 +16,6 @@ import {
     IFormManagerDisabledFields,
     IFormManagerInfoFields
 } from "../../../MentorFormCreate/components/FormManager/FormManager";
-import UpdateStatus from "../UpdateStatus/UpdateStatus";
 
 export interface IPropsFormManager {
     disablePersonalData: boolean;
@@ -124,11 +123,8 @@ class FormManager extends React.Component <IPropsFormManager, IStateFormManager>
                 </MentorModalBase>
                 <FormImage id={"FormImageEdit"}
                            forceDisable={forceDisable}
-                           mentor={false}>
-                    <UpdateStatus status={this.props.mentor.status}
-                                  idMentor={this.props.mentor.id}
-                                  updateMentor={this.props.mentor.updateMentor}/>
-                </FormImage>
+                           mentor={false}/>
+                    
                 <FormPersonalDataTemplate
                     titleForm={"Datos Personales"}
                     disableFields={this.disabledFields}

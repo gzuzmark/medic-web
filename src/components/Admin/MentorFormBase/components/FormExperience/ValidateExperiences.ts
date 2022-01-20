@@ -22,16 +22,16 @@ const isValidFields = (experience: IMentorFormExperience, keys: string[], mode: 
 const getExperiencesWithError = (experiences: IMentorFormExperience[], errors: any) => {
     const experiencesCompleted = experiences.filter((experience, index) => {
         return (!experience.currentJob && experience.toYear && experience.toYear.length > 0) ||
-            (!experience.currentJob && experience.toMonth && experience.toMonth.length > 0) ||
+            // (!experience.currentJob && experience.toMonth && experience.toMonth.length > 0) ||
             (!!experience.currentJob) ||
-            isValidFields(experience, ["fromMonth", "fromYear", "company", "position"], filter.SOME);
+            isValidFields(experience, [/*"fromMonth",*/ "fromYear", "company", "position"], filter.SOME);
     });
     const experiencesStatus = experiencesCompleted.map((experience, index) => {
         let hasError = false;
         const allShouldBeFull =
             (!!experience.currentJob || (!experience.currentJob && experience.toYear && experience.toYear.length > 0)) &&
-            (!!experience.currentJob ||(!experience.currentJob && experience.toMonth && experience.toMonth.length > 0)) &&
-            isValidFields(experience, ["fromMonth", "fromYear", "company", "position"], filter.EVERY);
+            // (!!experience.currentJob ||(!experience.currentJob && experience.toMonth && experience.toMonth.length > 0)) &&
+            isValidFields(experience, [/*"fromMonth",*/ "fromYear", "company", "position"], filter.EVERY);
         hasError = !allShouldBeFull || (!!errors.experiences && !!errors.experiences[index]);
         return hasError;
     });

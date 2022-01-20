@@ -21,10 +21,12 @@ import SkillService from "../../../services/Skill/Skill.service";
 import MentorFormBaseContext from "../MentorFormBase/MentorFormBase.context";
 import mentorFormBaseSchema from "../MentorFormBase/MentorFormBase.validations";
 import FormManager from "./components/FormManager/FormManager";
+import UpdateStatus from './components/UpdateStatus/UpdateStatus';
 
 interface IStateMentorEdit  {
     listSites: IPropsMentorOptionsDropDown[];
     listSkills: IPropsMentorOptionsDropDown[];
+    listDiagnostics: IPropsMentorOptionsDropDown[];
     selectedImage: string;
     mentor: IMentorAdminEditFormValidations | null;
     modal: boolean;
@@ -71,6 +73,7 @@ class MentorFormEditCore  extends React.Component <IPropsMentorEditCore, IStateM
             error: false,
             listSites: [] as IPropsMentorOptionsDropDown[],
             listSkills: [] as IPropsMentorOptionsDropDown[],
+            listDiagnostics: [] as IPropsMentorOptionsDropDown[],
             mentor: null,
             modal: false,
             saving: false,
@@ -84,7 +87,7 @@ class MentorFormEditCore  extends React.Component <IPropsMentorEditCore, IStateM
             const mentorEdit = {...mentor};
             this.mentorEditData = new MentorAdminEditData(mentorEdit);
             if (!!mentor.sitesId) {
-                this.updateListSkills(mentor.sitesId[0].toString());
+                this.updateListSkillsBySite(mentor.sitesId[0].toString());
             }
             this.setState({
                 mentor: {...this.mentorEditData.getMentorValues},
@@ -107,6 +110,7 @@ class MentorFormEditCore  extends React.Component <IPropsMentorEditCore, IStateM
     public render() {
         const listSites = this.state.listSites;
         const listSkills = this.state.listSkills;
+        const listDiagnostics = this.state.listDiagnostics;
         const selectedImage = this.state.selectedImage;
         const disablePersonalData = !!this.state.mentor && !!this.state.mentor.otherUtpRole;
         return (
@@ -124,7 +128,13 @@ class MentorFormEditCore  extends React.Component <IPropsMentorEditCore, IStateM
                     {!this.state.mentor &&
                         <Loader style={{marginTop: 100}}/>}
                     {!!this.state.mentor &&
-                        <Heading2 color={FONTS.green}>{this.state.mentor.firstName} {this.state.mentor.lastName}</Heading2>}
+                        <div style={{display:'flex',width:'100%',justifyContent:'space-between'}}>
+                            <Heading2 color={FONTS.green}>{this.state.mentor.firstName} {this.state.mentor.lastName}</Heading2>
+                            <UpdateStatus status={this.state.mentor ? this.state.mentor.status : ''}
+                                  idMentor={this.idMentor}
+                                  updateMentor={this.updateMentor}/>
+                        </div>
+                        }
                     {!!this.state.mentor && this.state.listSkills &&
                     <Formik
                         initialValues={this.state.mentor}
@@ -141,6 +151,7 @@ class MentorFormEditCore  extends React.Component <IPropsMentorEditCore, IStateM
                                         handleChange,
                                         listSites,
                                         listSkills,
+                                        listDiagnostics,
                                         selectedImage,
                                         setFieldTouched,
                                         setFieldValue,
@@ -235,8 +246,21 @@ class MentorFormEditCore  extends React.Component <IPropsMentorEditCore, IStateM
         this.saveMentor();
     }
 
-    private updateListSkills(siteId: string) {
-        return new Promise((resolve, reject) => {
+    private updateListSkills() {
+        return new Promise<void>((resolve, reject) => {
+            this.setState({listSkills: []}, () => {
+                this.skillService.list().then((skills: ISkill[]) => {
+                    const listSkills = skills.map((v) => ({value: v.id, label: v.name}));
+                    this.setState({listSkills});
+                    resolve()
+                }).catch(() => {
+                    reject()
+                })
+            })
+        })
+    }
+    private updateListSkillsBySite(siteId: string) {
+        return new Promise<void>((resolve, reject) => {
             this.setState({listSkills: []}, () => {
                 this.skillService.listBySite(siteId).then((skills: ISkill[]) => {
                     const listSkills = skills.map((v) => ({value: v.id, label: v.name}));
