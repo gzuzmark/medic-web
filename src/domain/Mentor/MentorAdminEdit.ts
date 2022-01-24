@@ -2,7 +2,10 @@ import MentorBaseForm, {
     IMentorBaseForm,
     IMentorExperience,
     IMentorFormExperience,
-    IMentorFormValidations
+    IMentorFormValidations,
+    IMentorEducationInfo,
+    IMentorEducationInfoForm,
+    // IAwardsItem
 } from "./MentorBaseForm";
 
 export interface IMentorAdminEditCreateData extends IMentorBaseForm {
@@ -22,31 +25,72 @@ class MentorAdminEditData extends MentorBaseForm {
         const experiences = this.mentor.experiences ? [...this.mentor.experiences] : [];
         const formExperiences = experiences.map((item: IMentorExperience) => {
             const {from, to} = item;
-            const fromDate = !!from ? new Date(from) : '';
-            const toDate = !!to ? new Date(to) : '';
+            const fromDate = !!from ? from : '';
+            const toDate = !!to ? to : '';
             return {
                 company: item.company,
+                type: item.type,
                 currentJob: !toDate,
-                fromMonth: !!fromDate ? fromDate.getMonth().toString() : '',
-                fromYear: !!fromDate ? fromDate.getFullYear().toString() : '',
+                fromYear: !!fromDate ? fromDate : '',
                 position: item.title ,
-                toMonth: !!toDate ? toDate.getMonth().toString() : '',
-                toYear: !!toDate ? toDate.getFullYear().toString() : ''
+                toYear: !!toDate ? toDate : '',
+                location: item.location
             }
         });
         if (formExperiences.length === 0) {
             formExperiences.push({
                     company: "",
+                    type:"",
                     currentJob: false,
-                    fromMonth: "",
                     fromYear: "",
                     position: "",
-                    toMonth: "",
-                    toYear: ""
+                    toYear: "",
+                    location:""
             })
         }
         return formExperiences;
     }
+    public getFormEducation(): IMentorEducationInfoForm[] {
+        const education = this.mentor.education ? [...this.mentor.education] : [];
+        const formEducation = education.map((item: IMentorEducationInfo) => {
+            const {year} = item;
+            const toDate = !!year ? year : '';
+            return {
+                educationType:item.educationType,
+                city: item.city,
+                degree: item.degree,
+                school: item.school ,
+                year: !!toDate ? toDate : '',
+                currentStudy: !toDate
+            }
+        });
+        if (formEducation.length === 0) {
+            formEducation.push({
+                educationType:"",
+                degree: "",
+                year: "",
+                school: "",
+                city: "",
+                currentStudy: false,
+            })
+        }
+        return formEducation;
+    }
+    /*
+    public getAwardsInfo(): IAwardsItem[] {
+        const awards = this.mentor.awards ? [...this.mentor.awards] : [];
+        const listAwards = awards.map((item: IAwardsItem) => {
+            return{
+                name:item.name
+            }
+        });
+        if (listAwards.length===0){
+            listAwards.push({
+                name:""
+            })
+        }
+        return listAwards;
+    }*/
 }
 
 export default MentorAdminEditData;

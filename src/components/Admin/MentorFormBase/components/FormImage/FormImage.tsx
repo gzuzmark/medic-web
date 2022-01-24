@@ -12,6 +12,9 @@ import { Body1, Heading2 } from "../../../../../common/MentorText";
 import MentorService from "../../../../../services/Mentor/Mentor.service";
 import MentorFormBaseContext, {IMentorFormBaseContext} from "../../MentorFormBase.context";
 import ImageProfile from '../ImageProfile/ImageProfile';
+import { Text } from '../../../../../common/ConsoleText';
+import * as PerfilDoctor from '../../../../../assets/images/perfil_doctor.png';
+import * as AlertIcon from '../../../../../assets/images/alert_icon.png';
 import './FormImage.scss';
 import './ReactCrop.scss';
 
@@ -34,7 +37,7 @@ export interface IPropsFormImage {
 
 const TextInput = styled(Body1)`
     color: ${(props: {disabled: boolean}) => {
-        return props.disabled ? colors.TEXT_COLORS.font_disabled : colors.BACKGROUND_COLORS.background_dark_green;
+        return props.disabled ? colors.TEXT_COLORS.font_disabled : colors.BACKGROUND_COLORS.background_green;
     }};
 `;
 
@@ -80,7 +83,6 @@ class FormImage extends React.Component <IPropsFormImage, IStateFormImage> {
     public render() {
         const CropDefault = (ReactCrop as any).default;
         const defaultImage = camera;
-
         let propsButton = {};
         if (this.state.loading) {
             propsButton = {
@@ -99,7 +101,7 @@ class FormImage extends React.Component <IPropsFormImage, IStateFormImage> {
                                 onCloseModal={this.closeModal}>
                                 {this.state.src ?
                                 <div className={"FormImage_modal"}>
-                                    <Heading2 style={{textAlign: 'center'}}>Subir la foto del mentor</Heading2>
+                                    <Heading2 style={{textAlign: 'center'}}>Añade una foto de perfil </Heading2>
                                     <div className={"FormImage_crop"}>
                                         <CropDefault src={this.state.src}
                                                      keepSelection={true}
@@ -116,27 +118,58 @@ class FormImage extends React.Component <IPropsFormImage, IStateFormImage> {
                                 </div>:
                                 <ContentModal.Generic generic={this.errorImage} loading={false} confirm={this.newUploadImage} error={true} />}
                             </MentorModalBase>
-                            <div className={this.props.forceDisable ? 'FormImage_disabled' : ''} style={{textAlign: 'center'}}>
-                                <label className={"FormImage_label"}
-                                       htmlFor={this.props.id} ref={this.labelImage}
-                                       data-for="FormImageToolTip"
-                                       data-tip={'La foto debe ser amigable (se recomienda una foto sonriente), <br>con fondo blanco y mirada al frente.'}>
-                                    <ImageProfile src={context.selectedImage || defaultImage}
-                                                  width={this.props.size || 160}
-                                                  height={this.props.size || 160}
-                                                  title="Perfil de mentor" filled={!!context.selectedImage}/>
-                                    <div className={"FormImage_text"}>
-                                        <Icon name={"upload"} style={{
-                                            fill: this.props.forceDisable ? colors.TEXT_COLORS.font_disabled : colors.BACKGROUND_COLORS.background_green,
-                                            marginRight: 4
-                                        }}/>
-                                        <TextInput disabled={!!this.props.forceDisable}>
-                                            {!!context.selectedImage ? 'Cambiar foto' : 'Subir foto del mentor' }
-                                        </TextInput>
-                                    </div>
-                                </label>
+                            <div>
+                                <div className={this.props.forceDisable ? 'FormImage_disabled' : ''} style={{textAlign: 'center'}}>
+                                    <label className={"FormImage_label"}
+                                        htmlFor={this.props.id} ref={this.labelImage}
+                                        data-for="FormImageToolTip"
+                                        data-tip={'La foto debe ser amigable (se recomienda una foto sonriente), <br>con fondo blanco y mirada al frente.'}>
+                                        <ImageProfile src={context.selectedImage || defaultImage}
+                                                    width={this.props.size || 160}
+                                                    height={this.props.size || 160}
+                                                    title="Perfil de mentor" filled={!!context.selectedImage}/>
+                                        <div className={"FormImage_text"}>
+                                            <Icon name={"upload"} style={{
+                                                fill: this.props.forceDisable ? colors.TEXT_COLORS.font_disabled : colors.BACKGROUND_COLORS.background_green,
+                                                marginRight: 4
+                                            }}/>
+                                            <TextInput disabled={!!this.props.forceDisable}>
+                                                {!!context.selectedImage ? 'Cambiar foto' : 'Añade una foto de perfil' }
+                                            </TextInput>
+                                        </div>
+                                        <div style={{marginTop:22}}>
+                                            <Text >Formatos permitidos: JPG, JPEG, PNG.</Text>
+                                        </div>
+                                    </label>
+                                </div>
+                                <input type={"file"} id={this.props.id} accept="image/*" className={"FormImage_file"} onChange={this.onSelectFile} />
                             </div>
-                            <input type={"file"} id={this.props.id} accept="image/*" className={"FormImage_file"} onChange={this.onSelectFile} />
+                            <div className={'TipsImageSection'}>
+                                <Text style={{color:'#2C7BFD',fontWeight:700}}>Consideraciones de foto de perfil</Text>
+                                <div className={'TipsImageSection_description'}>
+                                    <img alt={'check'} src={PerfilDoctor} height={62} />
+                                    <div>
+                                        Recomendaciones de imagen:
+                                        <ul>
+                                            <li><span>Sonrisa y mirada a la cámara</span></li>
+                                            <li><span>Dar importancia al rostro</span></li>
+                                            <li><span>Uniforme de especialidad</span></li>
+                                        </ul>
+                                    </div>
+                                    <div>
+                                        Recomendaciones técnicas
+                                        <ul>
+                                            <li><span>Luz blanca y frente al rosto</span></li>
+                                            <li><span>Imagen reciente</span></li>
+                                            <li><span>Fondo neutro (blanco)</span></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div className={'TipsImageSection_info'}>
+                                    <img alt={'check'} src={AlertIcon} height={18} />
+                                    <Text style={{color:'#2C7BFD',fontWeight:400,marginLeft:10}}>Evitar usar foto tipo carnet</Text>
+                                </div>
+                            </div>
                             {this.props.children}
                         </div>
                     )

@@ -48,17 +48,17 @@ describe('FormExperience Test',() => {
     it("render: should have only one add option in item list with two items", () => {
         ctxt.values.experiences =  [{
             company: '',
-            fromMonth: '',
+            // fromMonth: '',
             fromYear: '',
             position: '' ,
-            toMonth:  '',
+            // toMonth:  '',
             toYear:  ''
         },{
             company: '',
-            fromMonth: '',
+            // fromMonth: '',
             fromYear: '',
             position: '' ,
-            toMonth:  '',
+            // toMonth:  '',
             toYear:  ''
         }];
         const component = getComponent();
