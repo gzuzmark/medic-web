@@ -85,7 +85,7 @@ const PatientCareInfo: React.FC<IPatientCareInfo> = (props) => {
                                     placeholder: "18 Años",
                                     value: values.patientAgeTo}}/>
                             <MentorCheckbox
-                                    text={"Actualmente estudia aquí"}
+                                    text={"Pacientes de la tercera edad"}
                                     disabled={!!props.forceDisable}
                                     attr={{
                                         checked: values.terceraEdad === 0 ? false : true,
