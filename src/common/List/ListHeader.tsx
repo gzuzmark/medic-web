@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Small1 } from '../MentorText';
+import { Small2 } from '../MentorText';
 
 interface IPropsListHeader {
 	baseClass: string;
@@ -11,9 +11,9 @@ const ListHeader: React.FC<IPropsListHeader> = React.memo((props) => {
 		<React.Fragment>
 			<div className={`${props.baseClass}`}>
 				<div
-					className={`${props.baseClass}_header u-LayoutMargin u-${
+					className={`${props.baseClass}_header ${
 						props.baseClass
-					}_padding`}
+					}_margin`}
 				>
 					{props.header.map((item, index) => {
 						return (
@@ -21,13 +21,12 @@ const ListHeader: React.FC<IPropsListHeader> = React.memo((props) => {
 								className={`${props.baseClass}_column`}
 								key={'header-' + index}
 							>
-								<Small1 color={"#fff"}>{item}</Small1>
+								<Small2 color={"#fff"}>{item}</Small2>
 							</div>
 						);
 					})}
 				</div>
 			</div>
-			<hr className={`${props.baseClass}_line`} />
 		</React.Fragment>
 	);
 });

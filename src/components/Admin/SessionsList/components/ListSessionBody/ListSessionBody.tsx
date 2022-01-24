@@ -2,15 +2,33 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import BadgeLabel from '../../../../../common/Badge/BadgeLabel';
-import { TextBold1 } from '../../../../../common/ConsoleText';
 import DropdownItem from '../../../../../common/DropdownItem/DropdownItem';
 import DropdownMenu from '../../../../../common/DropdownMenu/DropdownMenu';
 import Icon from '../../../../../common/Icon/Icon';
-import colors, { FONTS } from '../../../../../common/MentorColor';
+import colors from '../../../../../common/MentorColor';
+import receta from "../../../../../assets/images/linksAdmin/receta-medica.png";
+import citaMed from "../../../../../assets/images/linksAdmin/cita_medica.png";
+import callP from "../../../../../assets/images/linksAdmin/cita.png";
+import historyM from "../../../../../assets/images/linksAdmin/historia-clinica.png";
+import rating from "../../../../../assets/images/linksAdmin/rating.png";
+import exams from "../../../../../assets/images/linksAdmin/examenes-med.png";
+import descansoM from "../../../../../assets/images/linksAdmin/descanso-med.png";
+import pacienteHover from "../../../../../assets/images/linksAdmin/pacienteH.png";
+import doctorHover from "../../../../../assets/images/linksAdmin/doctorHover.png";
+import descansoHover from "../../../../../assets/images/linksAdmin/descansoHover.png";
+import examenesHover from "../../../../../assets/images/linksAdmin/examenesHover.png";
+import historiaCHover from "../../../../../assets/images/linksAdmin/historiaCHover.png";
+import recetaHover from "../../../../../assets/images/linksAdmin/recetaHover.png";
+import ratingHover from "../../../../../assets/images/linksAdmin/ratingHover.png";
+import pacienteDisabled from "../../../../../assets/images/linksAdmin/pacienteDisabled.png";
+import doctorDisabled from "../../../../../assets/images/linksAdmin/doctorDisabled.png";
+import descansoDisabled from "../../../../../assets/images/linksAdmin/descansoDisabled.png";
+import examenesDisabled from "../../../../../assets/images/linksAdmin/examenesDisabled.png";
+import historiaDisabled from "../../../../../assets/images/linksAdmin/historiaDisabled.png";
+import recetaDisabled from "../../../../../assets/images/linksAdmin/recetaDisabled.png";
+import ratingDisabled from "../../../../../assets/images/linksAdmin/ratingDisabled.png";
 import {
-	Heading3,
-	LIGHT_TEXT,
-	Subhead1,
+	Small2,
 } from '../../../../../common/MentorText';
 import { MomentDateParser } from '../../../../../domain/DateManager/MomentDateParser';
 import {
@@ -94,7 +112,7 @@ const ListSessionsBody: React.FC<IPropsListSessionsBody> = (props) => {
 		doctor,
 		patient,
 		id = '',
-		patient_link: sessionURL = '',
+		// patient_link= '',// :sessionURL = '',
 		// 	paid = '',
 		payment,
 	} = props.session;
@@ -104,13 +122,16 @@ const ListSessionsBody: React.FC<IPropsListSessionsBody> = (props) => {
 	const doctorName = (doctor && doctor.name) || '';
 	const doctorLN = (doctor && doctor.last_name) || '';
 
-	const patientURL = sessionURL && id && `${sessionURL}/${doctorId}`;
+	// const patientURL = sessionURL && id && `${sessionURL}/${doctorId}`;
 	const patientDoc = patient && patient.document_number;
 	const historyURL = `${window.location.origin}/doctor/sesion/${id}`;
 // const medialLeaveURL = sessionBean.session.consult && sessionBean.session.consult.medicalLeaveStartDate && `${window.location.origin}/patients/medical-leave/${id}`;
-// const ratingURL = `https://alivia-conference.web.app/rate/${id}`;
-	const prescriptionURL = `${process.env.REACT_APP_WEB_STUDENT_BASE_URL}/direccion_receta?sessionId=${id}`;
-	const paymentURL = payment && payment.cipUrl;
+	const ratingURL = `${process.env.REACT_APP_WEB_STUDENT_BASE_URL}/rating/session/${id}`;
+// const prescriptionURL = `${process.env.REACT_APP_WEB_STUDENT_BASE_URL}/direccion_receta?sessionId=${id}`;
+// const paymentURL = payment && payment.cipUrl; 
+ 	const prescriptionURL = sessionBean.getURL_prescription(); 
+ 	const leaveURL = sessionBean.getMedicalLeave();
+	const examsURL = sessionBean.getMedicalExams();
 	const usedBenefit = (payment && payment.benefit_id) || '';
 	const patientId = (patient && patient.id) || '';
 	const patientName = (patient && patient.name) || '';
@@ -189,14 +210,17 @@ const ListSessionsBody: React.FC<IPropsListSessionsBody> = (props) => {
 	return (
 		<ContainerRow>
 			<div className='ListSessions_column ListSessions_column--date'>
-				<Heading3 weight={LIGHT_TEXT} color={FONTS.dark}>
+				<Small2 weight={"400"} color={'#000000'}>
 					{sessionBean.getShorterDay(new MomentDateParser())}
-				</Heading3>
-				<TextBold1>{sessionBean.getFromTime(new MomentDateParser())}</TextBold1>
+				</Small2>
+				<Small2 weight={"400"} color={'#000000'}>
+					{sessionBean.getFromTime(new MomentDateParser())}
+					</Small2>
 			</div>
 			{/*<div className='ListSessions_column'>{assistanceComponent}</div>*/}
 			<div className='ListSessions_column ListSessions_column--mentor'>
-				<SessionItem name={`${doctorName} ${doctorLN}`} />
+				<h6>{doctorName}  </h6>
+				<h6>{doctorLN} </h6>
 			</div>
 			<div className='ListSessions_column ListSessions_column--mentor'>
 				<SessionItem
@@ -212,20 +236,20 @@ const ListSessionsBody: React.FC<IPropsListSessionsBody> = (props) => {
 				/>
 			</div>
 			<div className='ListSessions_column ListSessions_numbers'>
-				{patientDoc && <Subhead1 color={FONTS.dark}>{patientDoc}</Subhead1>}
+				{patientDoc && <Small2 weight={"400"} color={"#000000"}>{patientDoc}</Small2>}
 			</div>
 			<div className='ListSessions_column ListSessions_numbers'>
 				{patient && !!patient.phone && (
-					<Subhead1 color={FONTS.dark}>{patient && patient.phone}</Subhead1>
+					<Small2 weight={"400"} color={"#000000"}>{patient && patient.phone}</Small2>
 				)}
 			</div>
 			<div className='ListSessions_column ListSessions_column--date'>
-				<Heading3 weight={LIGHT_TEXT} color={FONTS.dark}>
+				<Small2 weight={"400"} >
 					{sessionBean.getReservationDate(new MomentDateParser())}
-				</Heading3>
-				<TextBold1>
+				</Small2>
+				<Small2 weight={"400"} >
 					{sessionBean.getReservationTime(new MomentDateParser())}
-				</TextBold1>
+				</Small2>
 			</div>
 			{/*
 			<div className='ListSessions_column ListSessions_numbers'>
@@ -235,39 +259,88 @@ const ListSessionsBody: React.FC<IPropsListSessionsBody> = (props) => {
 			</div>*/}
 			<div className='ListSessions_column'>{renderPaymentState(isPending)}</div>
 			<div
-				className='ListSessions_column ListSessions_separator'
+				className='ListSessions_column '
 				style={{ borderColor: colors.MISC_COLORS.background_grey_2 }}
 			>
-				{!!newSessionURL && (
-					<a href={newSessionURL} target='blank'>
-						Pac
-					</a>
-				)}
-				{!!sessionURL && !!patientURL && (
-					<div className='ListSessions_linkseparator' />
-				)}
-				{!!newSessionURL && (
-					<a href={`${newSessionURL}&doctor=1`} target='blank'>
-						Doc
-					</a>
-				)}
-				{!!sessionURL && !!historyURL && (
-					<div className='ListSessions_linkseparator' />
-				)}
-				{!!historyURL && (
-					<a href={historyURL} target='blank'>
-						HC
-					</a>
-				)}
-				{(!!prescriptionURL && sessionBean.isValidPrescription()) && (
-					<div className='ListSessions_linkseparator' />
-				)}
-				{(!!prescriptionURL && sessionBean.isValidPrescription()) && (
-					<a href={prescriptionURL} target='blank'>
-						RM
-					</a>
-				)}
+				<div>
+					{!!newSessionURL && (
+						<a href={newSessionURL} target='blank' className='ListSessions_btnLinks'>
+							<img src={callP} />
+							<img src={pacienteHover} />
+						</a>
+					)}
+					{!newSessionURL && (<img src={pacienteDisabled} style={{paddingLeft:'4px',paddingRight:'4px'}}/>)}
+				</div>
+				<div>
+					{!!newSessionURL && (
+						<a href={`${newSessionURL}&doctor=1`} target='blank'
+						className='ListSessions_btnLinks'>
+							<img src={citaMed}/>
+							<img src={doctorHover} />
+						</a>
+					)}
+					{!newSessionURL && (<img src={doctorDisabled} style={{paddingLeft:'4px',paddingRight:'4px'}}/>)}
+				</div>
+				<div>
+					{!!historyURL && (
+						<a href={historyURL} target='blank' className='ListSessions_btnLinks'>
+							<img src={historyM}/>
+							<img src={historiaCHover} />
+						</a>
+					)}
+					{!historyURL && (<img src={historiaDisabled} style={{paddingLeft:'4px',paddingRight:'4px'}}/>)}
+				</div>
+				<div>
+					{!!ratingURL && (
+						<a href={ratingURL} target='blank' className='ListSessions_btnLinks'>
+							<img src={rating}/>
+							<img src={ratingHover} />
+						</a>
+					)}
+					{!ratingURL && (<img src={ratingDisabled} style={{paddingLeft:'4px',paddingRight:'4px'}}/>)}
+				</div>
 			</div>
+			<div
+				className='ListSessions_column'
+			>
+				<div>
+					{(!!prescriptionURL && sessionBean.isValidPrescription()) && (
+						<a href={prescriptionURL} target='blank' className='ListSessions_btnLinks'>
+							<img src={receta}/>
+							<img src={recetaHover} />
+						</a>
+					)}
+					{!prescriptionURL && (
+						<img src={recetaDisabled} style={{paddingLeft:'4px',paddingRight:'4px'}}/>
+						)
+					}
+				</div>
+				<div>
+					{(!!examsURL && sessionBean.isValidPrescription()) && (
+						<a href={examsURL} target='blank' className='ListSessions_btnLinks'>
+							<img src={exams}/>
+							<img src={examenesHover} />
+						</a>
+					)}
+					{!examsURL && (
+						<img src={examenesDisabled} style={{paddingLeft:'4px',paddingRight:'4px'}}/>
+						)
+					}
+				</div>
+				<div>
+					{!!leaveURL && (
+					<a href={leaveURL} target='blank' className='ListSessions_btnLinks'>
+						<img src={descansoM}/>
+						<img src={descansoHover} />
+					</a>)}
+					{
+					  !leaveURL && (
+					  <img src={descansoDisabled} style={{paddingLeft:'4px',paddingRight:'4px'}}/>
+					  )
+					}
+				</div>
+			</div>
+			{/*
 			<div
 				className='ListSessions_column ListSessions_separator'
 				style={{ borderColor: colors.MISC_COLORS.background_grey_2 }}
@@ -277,7 +350,7 @@ const ListSessionsBody: React.FC<IPropsListSessionsBody> = (props) => {
 						Pago
 					</a>
 				)}
-			</div>
+				</div>*/}
             {/*<div className='ListSessions_column ListSessions_separator'>
                 {
                     medialLeaveURL && (<a href={medialLeaveURL} style={{cursor: "pointer"}}>Con descanso médico</a>)

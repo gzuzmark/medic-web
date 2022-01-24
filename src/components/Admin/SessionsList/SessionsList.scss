@@ -7,11 +7,16 @@
     display: flex;
     flex-direction: column;
     font-family: 'Mulish';
+    padding-top: 50px;
   }
   &_sticky {
     align-items: center;
     display: flex;
     justify-content: space-between;
+  }
+  &_margin{
+    margin-left: 13px;
+    margin-right: 13px;
   }
   &_header, &_row {
     display: flex;
@@ -19,8 +24,10 @@
   }
   &_header {
     align-items: center;
-    margin-top: 10px;
+    margin-top: 20px;
     background-color: #494F66;
+    padding-top: 16px;
+    padding-bottom: 16px;
     span{
       font-family: 'Mulish';
       font-weight: 600;
@@ -55,12 +62,18 @@
     }
   }
   &_column {
+    display: flex;
+    flex-direction: column;
     &--mentor {
-      min-height: 70px;
+      color: #000000!important;
+      h6 {
+        line-height: 17px;
+        font-weight: 700;
+      }
     }
     &--date {
       span {
-        color: #4a4a4a!important;
+        color: #000000!important;
       }
     }
     text-align: center;
@@ -80,7 +93,7 @@
     }
     //patient document
     &:nth-child(4) {
-      width: 8%;
+      width: 12%;
     }
     //patient phone
     &:nth-child(5) {
@@ -94,19 +107,22 @@
     //patient paid status
     &:nth-child(7) {
       width: 8%;
+      padding-right: 5px;
+      padding-left: 5px;
     }
     //session url
     &:nth-child(8) {
-      width: 15%;
-      padding-right: 5px;
-      margin-right: 5px;
+      width: 12%;
+      flex-direction: row;
+      justify-content: center;
       a:visited {
         color: #0000EE;
       }
     }
     //session url
     &:nth-child(9) {
-      width: 15%;
+      width: 10%;
+      flex-direction: row;
       justify-content: center;
       a:visited {
         color: #0000EE;
@@ -114,8 +130,8 @@
     }
     //actions1
     &:nth-child(10) {
-      text-align: center;
-      width: 5%;
+      justify-content: center;
+      width: 6%;
     }
   }
   &_line {
@@ -170,8 +186,20 @@
     position: relative;
     display: inline-block;
   }
+  &_btnLinks{
+    img{
+      margin-left: 4px;
+      margin-right: 4px;
+    }
+    img:last-child{
+      display: none;
+    }
+    &:hover img:last-child{
+      display: block;
+    }
+    &:hover img:first-child{
+      display: none;
+    }
+  }
 }
 
-.u-ListSessions_padding {
-  padding: 0px;
-}
