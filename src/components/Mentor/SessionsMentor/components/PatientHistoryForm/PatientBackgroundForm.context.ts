@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { SEND_EMAIL } from '../../SessionsContants';
 import { ISessionNutritionistFormValidations } from '../NutritionistForm/NutritionistForm.context';
 
 export interface IPatientBackgroundFormValidations {
@@ -48,6 +49,7 @@ export interface ISessionPatientHistoryFormValidations {
 	history: IPatientBackgroundFormValidations;
 	case: IPatientCaseFormValidations;
 	nutritionist?: ISessionNutritionistFormValidations;
+	sendEmail?: SEND_EMAIL;
 }
 
 export interface IPatientBackgroundFormContext {
