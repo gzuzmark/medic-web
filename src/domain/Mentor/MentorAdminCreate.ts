@@ -1,4 +1,4 @@
-import MentorBaseForm, {IMentorBaseForm, IMentorExperience, IMentorFormExperience} from "./MentorBaseForm";
+import MentorBaseForm, {IMentorBaseForm, IMentorEducationInfo, IMentorEducationInfoForm, IMentorExperience, IMentorFormExperience} from "./MentorBaseForm";
 
 export interface IMentorAdminCreateData extends IMentorBaseForm {
     exist: boolean;
@@ -15,6 +15,17 @@ class MentorAdminCreateData extends MentorBaseForm {
                 from: "",
                 title: "",
                 to: "",
+                type:"",
+                location:""
+            }
+        ]
+        this.mentor.education = [
+            {
+                degree: "",
+                school: "",
+                year: "",
+                educationType: "",
+                city:""
             }
         ]
     }
@@ -23,15 +34,30 @@ class MentorAdminCreateData extends MentorBaseForm {
         const experiences = this.mentor.experiences ? [...this.mentor.experiences] : [];
         return experiences.map((item: IMentorExperience) => {
             const {from, to} = item;
-            const fromDate = !!from ? new Date(from) : '';
-            const toDate = !!to ? new Date(to) : '';
+            const fromDate = !!from ? from : '';
+            const toDate = !!to ? to : '';
             return {
                 company: item.company,
-                fromMonth: !!fromDate ? fromDate.getMonth().toString() : '',
-                fromYear: !!fromDate ? fromDate.getFullYear().toString() : '',
+                type: item.type,
+                fromYear: fromDate,
                 position: item.title ,
-                toMonth: !!toDate ? toDate.getMonth().toString() : '',
-                toYear: !!toDate ? toDate.getFullYear().toString() : ''
+                toYear: toDate,
+                location: item.location
+            }
+            
+        });
+    }
+    public getFormEducation(): IMentorEducationInfoForm[] {
+        const education = this.mentor.education ? [...this.mentor.education] : [];
+        return education.map((item: IMentorEducationInfo) => {
+            const {year} = item;
+            const toDate = !!year ? year : '';
+            return {
+                educationType:item.educationType,
+                city: item.city,
+                degree: item.degree,
+                school: item.school ,
+                year: !!toDate ? toDate : ''
             }
         });
     }

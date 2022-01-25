@@ -1,8 +1,10 @@
 .FormImage {
-  display: flex;
+  display: block;
   justify-content: center;
-  padding: 55px 0 20px 0;
+  padding: 55px 70px;
+  margin-top: 70px;
   position: relative;
+  border: 1px solid #E0E0E0;
   &_label {
     cursor: pointer;
   }
@@ -20,7 +22,7 @@
     align-items: center;
     display: flex;
     justify-content: center;
-    margin-top: 8px;
+    margin-top: 28px;
   }
   &_file {
     height: 0.1px;
@@ -38,5 +40,41 @@
   }
   &_modal {
 
+  }
+}
+.TipsImageSection{
+  background-color: #E5EFFF;
+  padding: 23px 80px;
+  font-family: Mulish;
+  margin-top: 29px;
+  border-radius: 4px;
+  &_description {
+    align-items: center;
+    display: flex;
+    margin: auto;
+    justify-content: space-between;
+    margin-top: 16px;
+    padding-bottom: 21px;
+    border-bottom: 0.5px solid #B0CEFE;
+    color:#676F8F;
+    font-weight: 800;
+  }
+  ul{
+    list-style-type: circle;
+    padding-inline-start: 20px;
+    color: #2F80ED
+  }
+  li span{
+    color:#676F8F;
+    font-weight: 400;
+  }
+  &_info{
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    margin-top: 10px;
+  }
+  span{
+    font-family: Mulish;
   }
 }

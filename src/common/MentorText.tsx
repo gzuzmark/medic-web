@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import MentorColor from './MentorColor';
 
-export const defaultFont = 'Lato, sans-serif';
+export const defaultFont = 'Mulish';
 
 const getTextColor = (key: string) => {
     let color ='';

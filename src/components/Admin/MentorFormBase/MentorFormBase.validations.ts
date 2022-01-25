@@ -59,7 +59,7 @@ const mentorFormBaseSchema = Yup.object().shape({
                 } else if (documentType.value === "CARNET_EXT") {
                     isValid = document.length <= 12
                 }
-            }
+            } 
             return isValid;
         }),    
     documentType: Yup.object().required(errorRequired),

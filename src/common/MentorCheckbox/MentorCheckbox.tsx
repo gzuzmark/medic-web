@@ -1,7 +1,7 @@
 import * as React from "react";
 import styled from "styled-components";
 import colors from "../MentorColor";
-import {Body1, LIGHT_TEXT} from "../MentorText";
+import {LIGHT_TEXT, Small1} from "../MentorText";
 
 export interface IPropsMentorCheckbox {
     attr?: object;
@@ -21,24 +21,17 @@ export const CheckboxStyled = styled.span`
         }
         return background;
     }};
-    border: 1px solid ${colors.MISC_COLORS.background_grey_2};
+    position: absolute;
+    color: #BDBDBD;
     height: 16px;
     left: 0;
     margin-right: 7px;
-    position: relative;
     top: 0;
     width: 16px;
     &:after {
-        border: solid ${colors.MISC_COLORS.dark};
-        border-width: 0 1px 1px 0;
         content: "";
-        display: none;
-        left: 5px;
-        height: 7px;
         position: absolute;
-        top: 2px;
-        transform: rotate(45deg);
-        width: 3px;
+        display: none;
     }
 `;
 
@@ -51,24 +44,49 @@ export const CheckboxContainer = styled.label`
         }
         return cursor;
     }};
-    display: flex;
+    display: block;
     position: relative;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
     user-select: none;
     align-items: center;
-    flex-direction: row-reverse;
     justify-content: flex-end;
-    padding: 9px 0;
+    padding: 16px 0 0 22px;
     input {
-        height: 0;     
-        opacity: 0;
+         position: absolute;
+            opacity: 0;
+            cursor: pointer;
+    }
+    .check {
         position: absolute;
-        width: 0;
+        top: 18px;
+        left: 0;
+        height: 14px;
+        width: 14px;
+        border-radius: 2px;
+        background-color: #fff;
+        border: 1px solid #1ECD96;
+    } 
+    input:checked ~ .check {
+        background-color: #1ECD96;
+        border:none;
     }
-    input:checked(:not[disabled]) ~ ${CheckboxStyled} {
-        background: ${colors.BACKGROUND_COLORS.background_white};
-    }
-    input:checked ~ ${CheckboxStyled}:after {
+    input:checked ~ .check:after {
         display: block;
+    }
+    
+    .check:after {
+        left: 4px;
+        top: 1px;
+        width: 6px;
+        height: 9px;
+        border-radius: 1px;
+        border: solid white;
+        border-width: 0 2px 2px 0;
+        -webkit-transform: rotate(45deg);
+        -ms-transform: rotate(45deg);
+        transform: rotate(45deg);
     }
 `;
 
@@ -94,9 +112,9 @@ class MentorCheckbox extends React.Component<IPropsMentorCheckbox, {}> {
         const attr = {...properties, ...this.props.attr};
         return (
             <CheckboxContainer disabled={!!this.props.disabled}>
-                <Body1 weight={LIGHT_TEXT}>{this.props.text}</Body1>
+                <Small1 weight={LIGHT_TEXT}>{this.props.text}</Small1>
                 <input type="checkbox" {...attr}/>
-                <CheckboxStyled disabled={!!this.props.disabled}/>
+                <CheckboxStyled disabled={!!this.props.disabled} className="check"/>
             </CheckboxContainer>
         );
     }

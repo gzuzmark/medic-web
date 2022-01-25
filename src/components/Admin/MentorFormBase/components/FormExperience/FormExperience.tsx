@@ -126,9 +126,9 @@ class FormExperience extends React.Component <IPropsFormExperience, {}> {
                 const isEdit = !!this.props.isEdit;
                 const positionEmpty = counter === 0 && !value.position ? '' : PASS;
                 const companyEmpty = counter === 0 && !value.company ? '' : PASS;
-                const fromMonthEmpty = counter === 0 && !value.fromMonth && isEdit;
+                const fromMonthEmpty = counter === 0 && /*!value.fromMonth &&*/ isEdit;
                 const fromYearEmpty = counter === 0 && !value.fromYear && isEdit;
-                const toMonthEmpty = counter === 0 && !value.toMonth && isEdit && !value.currentJob;
+                const toMonthEmpty = counter === 0 /* && !value.toMonth && isEdit*/ && !value.currentJob;
                 const toYearEmpty = counter === 0 && !value.toYear && isEdit && !value.currentJob;
                 return (
                     <ExperienceItem key={index} className={'ExperienceItem'}>
@@ -168,7 +168,7 @@ class FormExperience extends React.Component <IPropsFormExperience, {}> {
                                     <FormColumn width={2} key={`FormColumn-PersonalData_${++counter}`}>
                                         <MentorDropDown
                                             label={"FECHA DE INICIO"}
-                                            value={value.fromMonth}
+                                            value={value.fromYear /*fromMonth*/}
                                             disabled={!!this.props.forceDisable}
                                             empty={fromMonthEmpty}
                                             error={(hasError(index, "toYear") || hasError(index, "fromYear")) && "  " }
@@ -195,7 +195,7 @@ class FormExperience extends React.Component <IPropsFormExperience, {}> {
                                     <FormColumn width={2} key={`FormColumn-PersonalData_${++counter}`}>
                                         <MentorDropDown
                                             label={"FECHA DE FIN"}
-                                            value={value.toMonth}
+                                            value={value.toYear/*value.toMonth*/}
                                             empty={toMonthEmpty}
                                             disabled={value.currentJob || !!this.props.forceDisable}
                                             error={hasError(index, "toYear") && "  "}
