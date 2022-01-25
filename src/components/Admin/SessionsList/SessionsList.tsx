@@ -51,20 +51,16 @@ const PAGE_SIZE = 30;
 const DEFAULT_STICKY_HEIGHT = 244;
 const DEFAULT_STICKY_TOP = 80;
 const TABLE_HEADER_TEXTS = [
-  'DIA Y HORA',
-  'ASISTENCIA',
-  'RESERVA',
-  'NOMBRE DEL DOCTOR',
-  'NOMBRE DEL PACIENTE',
-  'PAGADO',
-  'ESTADO',
-  'DNI O CE',
-  'TELÉFONO',
-  'URL CITA',
-  'LINK PAGO',
-  'DESCANSO MEDICO',
-  'RATING',
-  'ACCIONES',
+  'Día y Hora',
+  'Especialista',
+  'Paciente',
+  'DNI o CE',
+  'Teléfono',
+  'Reserva',
+  'Estado',
+  'Enlaces cita',
+  'Enlaces documentacion médica',
+  'Opciones',
 ];
 
 const compareDropdownObject = (obj1: IPropsMentorOptionsDropDown, obj2: IPropsMentorOptionsDropDown) => {
@@ -174,7 +170,7 @@ class SessionsList extends React.Component <{}, IStateListSession> {
           icon={'calendar'}
           items={[{text: `Citas (Total: ${total}${statusText})`, url: '/sessions'}]}
         />
-        <div className='u-LayoutMargin u-ListSessions_padding ListSessions_sticky'>
+        <div className='u-LayoutMargin ListSessions_sticky '>
           <FormRow style={{ width: '100%' }} columns={[
             <FormColumn key="startDate" width={8}>
               <Text style={{paddingLeft: 12, paddingBottom: 6}}>Desde el:</Text>
@@ -477,7 +473,7 @@ class SessionsList extends React.Component <{}, IStateListSession> {
     );
 
     return (
-      <div className="ListSessions_body u-LayoutMargin">
+      <div className="ListSessions_body">
           {!this.state.loading && noResults && renderNoResults()}
           {this.state.loading && noResults && renderLoader()}
           {!this.state.initialLoad && this.state.sessions.map(item => {
@@ -486,7 +482,7 @@ class SessionsList extends React.Component <{}, IStateListSession> {
             return (
               <div
                 key={'list-mentor-row' + item.id}
-                className={`ListSessions_row ListSessions_row--border u-ListSessions_padding`}
+                className={`ListSessions_row ListSessions_margin`}
                 style={{ ...newMentorStyle, ...withRowStyle }}>
                 <ListSessionsBody
                   session={item}

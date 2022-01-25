@@ -71,8 +71,8 @@ const FormProfile: React.FC<IPropsFormProfile> = (props) => {
                             onBlur: handleBlur,
                             onChange: handleChange,
                             placeholder: "Ingresa una descripción para el doctor. Por ejemplo: ¡Hola! Soy Fabbian y mi objetivo es ser tu mejor compañero de estudios fuera de clase, conmigo podrás resolver tus dudas acerca de los cursos de química.",
-                            style: { height: 112, borderColor: getBorderColor(values.description, isEdit) },
-                            value: values.description
+                            style: { height: 112, borderColor: getBorderColor(values.about_me, isEdit) },
+                            value: values.about_me
                         }} />
                 </FormColumn>
             ]} />
@@ -104,8 +104,8 @@ const FormProfile: React.FC<IPropsFormProfile> = (props) => {
                             onBlur: handleBlur,
                             onChange: handleChange,
                             placeholder: "Ingresa su cargo actual",
-                            style: { borderColor: getBorderColor(values.currentPosition, isEdit) },
-                            value: values.currentPosition
+                            /*style: { borderColor: getBorderColor(values.currentPosition, isEdit) },
+                            value: values.currentPosition*/
                         }} />
                 </FormColumn>,
                 <FormColumn width={2} key={`FormColumn-PersonalData_${++counter}`}>
@@ -119,8 +119,8 @@ const FormProfile: React.FC<IPropsFormProfile> = (props) => {
                             onBlur: handleBlur,
                             onChange: handleChange,
                             placeholder: "Ingresa el nombre del centro laboral",
-                            style: { borderColor: getBorderColor(values.currentCompany, isEdit) },
-                            value: values.currentCompany
+                            // style: { borderColor: getBorderColor(values.currentCompany, isEdit) },
+                           //  value: values.currentCompany
                         }} />
                 </FormColumn>
             ]} />

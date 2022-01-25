@@ -180,7 +180,7 @@ class FormPersonalDataCore extends React.Component <IPropsFormPersonalDataCore, 
             context.setFieldTouched('skills', false);
             this.setState({loadingSkills: true});
             if (context.updateListSkills) {
-                context.updateListSkills(option.value).then(() => {
+                context.updateListSkills().then(() => {
                     this.setState({loadingSkills: false});
                 });
             }
