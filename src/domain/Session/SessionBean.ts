@@ -16,7 +16,10 @@ export interface ISessionConsult {
     has_prescription: boolean;
     medicalLeaveEndDate: string | null,
     medicalLeaveStartDate: string | null,
-    medicalLeaveIndication?: string
+    medicalLeaveIndication?: string,
+    prescriptionPath: string | null | undefined;
+    url_medical_exams: string | null |undefined;
+    url_medical_leave: string | null |undefined;
 }
 
 export interface ISessionItemBase {
@@ -63,7 +66,7 @@ export interface ISessionPayment {
 
 export interface ISessionBase {
     id?: string;
-    from: string;
+    from: string; 
     to: string;
     location?: ISessionLocation;
     skill?: ISessionItemBase;
@@ -128,7 +131,30 @@ export class SessionBean {
         const isConsult = !!this.session.consult && this.session.consult.has_prescription;
         return isConsult;
     }
-
+    public getURL_prescription(){
+        if(!!this.session.consult){
+           if(!! this.session.consult.prescriptionPath){
+               return this.session.consult.prescriptionPath
+           }
+        }
+        return null
+    }
+    public getMedicalLeave(){
+        if(!!this.session.consult){
+            if(!! this.session.consult.url_medical_leave){
+                return this.session.consult.url_medical_leave
+            }
+            }
+        return null
+    }
+    public getMedicalExams(){
+        if(!!this.session.consult){
+            if(!! this.session.consult.url_medical_exams){
+                return this.session.consult.url_medical_exams
+            }
+            }
+        return null
+    }
     public getReservationDate(dateFormatter: AbstractDateParser): string {
         if (!this.session.reservation_date) {
             return '';
