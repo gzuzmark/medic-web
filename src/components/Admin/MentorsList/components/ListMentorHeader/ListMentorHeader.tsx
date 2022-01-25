@@ -15,7 +15,7 @@ class ListMentorsHeader extends React.Component <IPropsListMentorsHeader, {}> {
         return (
           <React.Fragment>
               <div className="ListMentors">
-                  <div className="ListMentors_header u-LayoutMargin u-ListMentors_padding">
+                  <div className="ListMentors_header u-ListMentors_padding">
                       {this.props.header.map((item, index) => {
                           return (
                               <div className="ListMentors_column" key={'header-' + index}>

@@ -1,8 +1,10 @@
 .SessionItem {
-  display: flex;
-  flex-direction: row;
+  display: block;
   &_basicInformation {
-    margin-right: 10px;
+    align-items: center;
+    justify-content: center;
+    display: flex; 
+    flex-direction: column; 
   }
   &_tagWrapper {
     margin-bottom: 12px;
@@ -11,7 +13,6 @@
   &_tag {
     border-radius: 3px;
     display: inline-block;
-    margin-right: 10px;
     margin-top: 7px;
     padding: 2px 8px;
   }
