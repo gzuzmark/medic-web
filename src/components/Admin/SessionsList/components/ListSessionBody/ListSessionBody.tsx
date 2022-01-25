@@ -4,7 +4,6 @@ import styled from 'styled-components';
 import BadgeLabel from '../../../../../common/Badge/BadgeLabel';
 import DropdownItem from '../../../../../common/DropdownItem/DropdownItem';
 import DropdownMenu from '../../../../../common/DropdownMenu/DropdownMenu';
-import Icon from '../../../../../common/Icon/Icon';
 import colors from '../../../../../common/MentorColor';
 import receta from "../../../../../assets/images/linksAdmin/receta-medica.png";
 import citaMed from "../../../../../assets/images/linksAdmin/cita_medica.png";
@@ -27,6 +26,7 @@ import examenesDisabled from "../../../../../assets/images/linksAdmin/examenesDi
 import historiaDisabled from "../../../../../assets/images/linksAdmin/historiaDisabled.png";
 import recetaDisabled from "../../../../../assets/images/linksAdmin/recetaDisabled.png";
 import ratingDisabled from "../../../../../assets/images/linksAdmin/ratingDisabled.png";
+import calendar from "../../../../../assets/images/linksAdmin/calendarIcon.png";
 import {
 	Small2,
 } from '../../../../../common/MentorText';
@@ -368,12 +368,7 @@ const ListSessionsBody: React.FC<IPropsListSessionsBody> = (props) => {
 			</div>*/}
 			<div title='Acciones' className='ListSessions_column'>
 				<div className='ListSessions_dropdownContainer' ref={wrapperRef}>
-					<Icon
-						name='calendar-check'
-						click={toggleOpenMenu}
-						attr={{ 'data-tip': 'Acciones' }}
-						style={{ cursor: 'pointer', fill: '#1ECD96' }}
-					/>
+					<img src={calendar} onClick={toggleOpenMenu} style={{ cursor: 'pointer' }}/>
 					<DropdownMenu open={openMenu} position='left' loading={loadingMenu}>
 						<DropdownItem onClick={handleCancelClick}>
 							Cancelar Cita
