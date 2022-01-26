@@ -20,6 +20,7 @@ import './FormEditHistoryManager.scss';
 import sendIcon from "../../../../../assets/images/send.png";
 import recetaMedicaIcon from "../../../../../assets/images/Rx.png";
 import styled from "styled-components";
+import { SEND_EMAIL } from "../../SessionsContants";
 // tslint:disable:ordered-imports
 
 export interface IPropsFormEditHistoryManager {
@@ -76,6 +77,7 @@ const buildPatientInfoBlocks = (patient: any) => {
 const FormEditHistoryManager: React.FC<IPropsFormEditHistoryManager> = (props) => {
   const { validateForm, isValid } = React.useContext(PatientBackgroundFormContext);
   const [modal, setModal] = React.useState(false);  
+
   const openModal = () => {
     validateForm(props.formData.values);
     if (isValidForm(props)) {
@@ -100,7 +102,7 @@ const FormEditHistoryManager: React.FC<IPropsFormEditHistoryManager> = (props) =
     title: "¿Estás seguro que deseas guardar los cambios?"
   };
 
-  const onHandleSubmit = () => {
+  const onHandleSubmit = (op: SEND_EMAIL) => {
     closeModal();    
     // TODO: El problema con esta validación - metodo validateForm, ya que la version de formik que estamos utilizando tiene un bug https://github.com/formium/formik/issues/1605
     // Deberiamos actualizar las herramientas que tenemos tanto formik como yup y a la vez el resto de librerias que utilizamos.
@@ -108,7 +110,11 @@ const FormEditHistoryManager: React.FC<IPropsFormEditHistoryManager> = (props) =
     // ya no validamos un form de ello
     validateForm(props.formData.values);
     if (isValidForm(props)) {
-       props.onHandleSubmit(props.formData.values)
+        const data = { 
+            ...props.formData.values,
+            sendEmail: op,
+        }
+        props.onHandleSubmit(data);
     }
   };
 
@@ -121,7 +127,7 @@ const FormEditHistoryManager: React.FC<IPropsFormEditHistoryManager> = (props) =
   };
 
   const buttonAttrRecetaMedica: any = {
-    onClick: onHandleSubmit,
+    onClick: () => onHandleSubmit(0),
     style: { margin: '40px 0 0 auto' },
     type: "button"
   };
@@ -139,7 +145,7 @@ const FormEditHistoryManager: React.FC<IPropsFormEditHistoryManager> = (props) =
               <ContentModal.Generic
                   generic={warningContent}
                   loading={false}
-                  confirm={onHandleSubmit}
+                  confirm={ () => onHandleSubmit(1)}
               />
           </MentorModalBase>
           <div className={"PatientClinicHistory_info"}>

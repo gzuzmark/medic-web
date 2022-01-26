@@ -63,6 +63,7 @@ import { IStudentChecklistCard } from "./components/StudentFullCard/StudentFullC
 import UploadPrescriptionModal from "./components/UploadPrescriptionModal/UploadPrescriptionModal";
 import "./SessionsMentor.scss";
 import MentorService from "../../../services/Mentor/Mentor.service";
+import { SEND_EMAIL } from "./SessionsContants";
 // tslint:disable:ordered-imports
 
 interface IPropsSessionsMentor {
@@ -547,7 +548,7 @@ class SessionsMentor extends React.Component<
         );
     }
 
-    private updateHistory() {
+    private updateHistory(sendEmail: SEND_EMAIL) {
         const sessionId = this.sessionId;
         const isNutrition = this.state.isNutrition;
         const historyUpdatedParams = this.patientHistoryData
@@ -562,6 +563,10 @@ class SessionsMentor extends React.Component<
         const patientForm = isNutrition
             ? nutritionistUpdateParams
             : caseUpdatedParams;
+        const formData = {
+            ...patientForm,
+            sendEmail
+        };
         if (sessionId) {
             this.setState({ loading: true, modalSuccess: false });
             Promise.all([
@@ -569,7 +574,7 @@ class SessionsMentor extends React.Component<
                     sessionId,
                     historyUpdatedParams
                 ),
-                this.sessionService.updateSessionConsult(sessionId, patientForm)
+                this.sessionService.updateSessionConsult(sessionId, formData)
             ])
                 .then(responses => {
                     // location.reload();
@@ -645,7 +650,7 @@ class SessionsMentor extends React.Component<
         } else {
             this.patientHistoryData.preparePatientCaseData(values.case);
         }
-        this.updateHistory();
+        this.updateHistory(values.sendEmail !== undefined? values.sendEmail: 0);
     }
     private togglePhotosModal(showPhotosModal: boolean) {
         this.setState({ showPhotosModal });
