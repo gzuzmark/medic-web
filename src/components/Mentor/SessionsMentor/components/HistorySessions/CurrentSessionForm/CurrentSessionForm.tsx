@@ -30,7 +30,7 @@ interface IPropsCurrentSessionForm {
 
 export const DEFAULT_COLUMN_WIDTH = 1;
 export const defaultRowStyle = { padding: '5px 0 0 0', margin: 0 };
-export const MAXIMUM_DAYS_MEDICAL_LEAVE = 5;
+export const MAXIMUM_DAYS_MEDICAL_LEAVE = 10;
 export const GET_WIDTH_BY_PERCENTAGE = (p: number) => 100 / p;
 
 const prescriptionContainerStyle = {
