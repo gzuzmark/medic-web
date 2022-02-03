@@ -6,7 +6,6 @@ import MentorInput from "../../../../../common/MentorInput/MentorInput";
 import useHandlerDocument, {
     IUseHandlerDocument
 } from "../../../MentorFormCreate/components/FormMail/UseHandlerDocument";
-import {IFormManagerDisabledFields, IFormManagerInfoFields} from "../../../MentorFormCreate/components/FormManager/FormManager";
 import MentorFormBaseContext, {IMentorFormBaseContext} from "../../../MentorFormBase/MentorFormBase.context";
 import {DOCUMENT_STATUS} from "../../../MentorFormBase/MentorFormBase.validations";
 
@@ -17,8 +16,6 @@ interface IStateFormProfessionalData {
 }
 
 interface IPropsFormProfessionalData {
-    disableFields: IFormManagerDisabledFields;
-    infoFields?: IFormManagerInfoFields;
     isEdit?: boolean;
     forceDisable?: boolean;
     loadingSkills?: boolean;

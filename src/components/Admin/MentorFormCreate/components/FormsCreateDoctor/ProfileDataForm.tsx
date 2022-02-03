@@ -19,10 +19,11 @@ const ProfileDataForm: React.FC<IProfileData> = (props) => {
     
     return (
         <React.Fragment>
-            <div style={{ padding: '20px 0', margin: 0 }} >
+            {!isEdit &&(
+            <div style={{ paddingTop: '20px', margin: 0 }} >
             <span style={{color:'#1ECD96',fontWeight:700,fontSize:'18px'}}>SOBRE EL ESPECIALISTA</span>
-            </div>
-            <FormRow style={{ paddingBottom: '30px', margin: 0 }} columns={[
+            </div>)}
+            <FormRow style={{ paddingBottom: '30px', margin: 0, paddingTop:'20px' }} columns={[
                 <FormColumn width={1} key={`FormColumn-PersonalData_${++counter}`}>
                     <MentorTextArea
                         limit={limitDescription}
