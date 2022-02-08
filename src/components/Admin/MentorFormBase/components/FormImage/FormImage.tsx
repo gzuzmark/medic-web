@@ -192,7 +192,7 @@ class FormImage extends React.Component <IPropsFormImage, IStateFormImage> {
 
     private onSelectFile(event: any) {
         if (event.target.files && event.target.files.length > 0) {
-            if (event.target.files[0].size < 500 * 1024) {
+            if (event.target.files[0].size < 5000 * 1024) {
                 this.setState({selectedFile: event.target.files[0]});
                 const reader = new FileReader();
                 reader.addEventListener('load', () => {

@@ -4,6 +4,7 @@ import mentorFormBaseSchema, {errorRequired} from "../MentorFormBase/MentorFormB
 
 export const emailRequired = emailStatus.EMAIL_NOT_VALID;
 
+
 const mentorCreateSchema = mentorFormBaseSchema.clone().shape({
     email: Yup.string().required(errorRequired)
         .test('emailValidation', emailRequired, (email: string) => {
@@ -13,6 +14,21 @@ const mentorCreateSchema = mentorFormBaseSchema.clone().shape({
                 isValid = re.test(email.trim());
             }
             return isValid
-        }),});
+        }),
 
-export default mentorCreateSchema;
+});
+
+
+const mentorCreateSchemaRNERequired = mentorCreateSchema.clone().shape({
+
+    rne: Yup.string().required(errorRequired).trim()
+
+});
+
+const mentorCreateSchemaRNENotRequired = mentorCreateSchema.clone().shape({
+
+    rne: Yup.string().notRequired().trim()
+
+});
+
+export { mentorCreateSchemaRNERequired, mentorCreateSchemaRNENotRequired };
