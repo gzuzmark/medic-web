@@ -46,8 +46,7 @@ class FormPersonalDataCore extends React.Component <IPropsFormProfessionalDataCo
             <MentorFormBaseContext.Consumer>
                 {(context: IMentorFormBaseContext) => {
                     const {errors, touched, values, handleBlur, handleChange} = context;
-                   // const skills = context.values.skills.map((v: IPropsMentorOptionsDropDown) => v.value);
-                   
+                    // const skills = context.values.skills.map((v: IPropsMentorOptionsDropDown) => v.value);
                     const skillsError = this.hasErrorSkills(context);
                     return (
                         <React.Fragment>

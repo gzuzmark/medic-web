@@ -13,7 +13,7 @@ import MentorModalBase from "../../../../../common/ConsoleModal/MentorModalBase"
 import Icon from "../../../../../common/Icon/Icon";
 import {MENTOR_STATUS} from "../../../../../domain/Mentor/MentorBase";
 import {IMentorFormValidations} from "../../../../../domain/Mentor/MentorBaseForm";
-import getExperiencesWithError from "../../../MentorFormBase/components/FormExperience/ValidateExperiences";
+// import getExperiencesWithError from "../../../MentorFormBase/components/FormExperience/ValidateExperiences";
 import FormImage from "../../../MentorFormBase/components/FormImage/FormImage";
 import {formTemplateHOC} from "../../../MentorFormBase/components/FormTemplate/FormTemplateHOC";
 import {limitDescription} from "../../../MentorFormBase/MentorFormBase.validations";
@@ -115,14 +115,17 @@ class FormManager extends React.Component <IPropsFormManager, IStateFormManager>
         } else if (!!errors.contactNumber) {
             buttonAttrUpdate = {...buttonAttrUpdate, disabled: true};
         } else {
-            const experiencesStatus = getExperiencesWithError(values.experiences, errors);
+            // const experiencesStatus = getExperiencesWithError(values.experiences, errors);
             if (values.description && values.description.length > limitDescription) {
                 buttonAttrUpdate = {...buttonAttrUpdate, disabled: true};
-            } else if (experiencesStatus.some(error => !!error)) {
-                buttonAttrUpdate = {...buttonAttrUpdate, disabled: true};
-            }else if (experiencesStatus.length < values.experiences.length && values.experiences.length > 1 ) {
-                buttonAttrUpdate = {...buttonAttrUpdate, disabled: true};
             }
+            // } else if (experiencesStatus.some(error => !!error)) {
+            //     buttonAttrUpdate = {...buttonAttrUpdate, disabled: true};
+            //     console.log('experiencesStatus.some');
+            // }else if (experiencesStatus.length < values.experiences.length && values.experiences.length > 1 ) {
+            //     console.log('experiencesStatus.length');
+            //     buttonAttrUpdate = {...buttonAttrUpdate, disabled: true};
+            // }
         }
         return (
             <React.Fragment>
@@ -130,8 +133,8 @@ class FormManager extends React.Component <IPropsFormManager, IStateFormManager>
                     <ContentModal.Generic generic={this.warningContent} loading={false} confirm={this.onHandleSubmit} />
                 </MentorModalBase>
                 <FormImage id={"FormImageEdit"}
-                           forceDisable={forceDisable}
-                           mentor={false}/>
+                    forceDisable={forceDisable}
+                    mentor={false}/>
                     
                 <FormPersonalDataTemplate
                     titleForm={"DATOS PERSONALES"}
@@ -152,7 +155,7 @@ class FormManager extends React.Component <IPropsFormManager, IStateFormManager>
                     isEdit={true} />
                 <EducationInfo/>
                 <ButtonNormal text={"Guardar Cambios"}
-                              attrs={...buttonAttrUpdate}/>
+                    attrs={...buttonAttrUpdate}/>
             </React.Fragment>
         )
     }

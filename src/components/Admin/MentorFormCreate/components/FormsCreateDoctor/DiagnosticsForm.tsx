@@ -65,8 +65,8 @@ class DiagnosticsForm extends React.Component<IProfileData, IDiagnosticsFormStat
         this.state = {
             listItemsD: [],
         };
-
     }
+
     public render() {
         let counter = 0;
         // const listItemsD= [] as string[];
@@ -86,7 +86,6 @@ class DiagnosticsForm extends React.Component<IProfileData, IDiagnosticsFormStat
                         context.setFieldValue('diagnostics', listNewItemsD);
                         context.setFieldTouched('diagnostics');
                         this.setState({...this.state, listItemsD: listNewItemsD})
-                        console.log(listNewItemsD)
                         }
                     }
                     return(

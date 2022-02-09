@@ -132,7 +132,7 @@ const FormEditManager: React.FC<IPropsFormEditManager> = (props) => {
                 titleForm={"DATOS DE OCUPACIÓN"}
                 isEdit={true} />
             <FormPatientInfo isEdit={true}/>
-            <FormAboutMe 
+            <FormAboutMe
                 titleForm="SOBRE MI"
                 isEdit={true}/>
             <FormExperienceTemplate
