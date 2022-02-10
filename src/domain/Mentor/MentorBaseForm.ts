@@ -1,5 +1,5 @@
-import {documentDefaultSelection} from "../../repository/DocumentsIdentification";
-import {IBaseUser} from "../User/AbstractUser";
+import { documentDefaultSelection } from "../../repository/DocumentsIdentification";
+import { IBaseUser } from "../User/AbstractUser";
 
 export const emailStatus = {
     ALREADY_REGISTERED: "Este correo pertenece a un mentor ya creado",
@@ -145,7 +145,7 @@ export const genderDefaultSelection = genderList[0];
 abstract class MentorBaseForm {
     public mentor: IMentorBaseForm;
     constructor(mentor: IMentorBaseForm) {
-        this.mentor = mentor;
+        this.mentor = {...mentor};
         this.mentor.email = mentor.email || '';
         this.mentor.name = mentor.name || '';
         this.mentor.lastname = mentor.lastname || '';
@@ -163,7 +163,6 @@ abstract class MentorBaseForm {
         this.mentor.title = mentor.title || '';
         this.mentor.timeZone = mentor.timeZone || 'America/Lima';
         this.mentor.utp = !!mentor.utp;
-        // this.mentor.shortDescription = mentor.shortDescription || '';
         this.mentor.about_me = mentor.about_me || '';
         this.mentor.formation = mentor.formation || '';
         this.mentor.gender = mentor.gender || '';
@@ -175,9 +174,8 @@ abstract class MentorBaseForm {
         this.mentor.menorUnAnio = mentor.menorUnAnio || 0,
         this.mentor.city = mentor.city || '',
         this.mentor.education = mentor.education || [] as IMentorEducationInfo[];
-        this.mentor.diagnostics = mentor.diagnostics|| [] as string[];
+        this.mentor.diagnostics = mentor.diagnostics || [];
         this.mentor.awards = mentor.awards || [] as IMentorAwardsInfo[];
-        // this.mentor.skill = mentor.skill || '';
     }
 
     set setMentor(mentor: IMentorBaseForm) {
@@ -244,6 +242,7 @@ abstract class MentorBaseForm {
             value: m.gender || genderDefaultSelection.value
         } as IFormItemBase;
         formValues.awards = this.mentor.awards ? this.mentor.awards : [];
+        formValues.diagnostics = this.mentor.diagnostics || [];
         
         return formValues;
     }
