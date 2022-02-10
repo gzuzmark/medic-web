@@ -135,7 +135,8 @@ class ExperienceForm extends React.Component <IPropsFormExperience, {}> {
                 const companyEmpty = counter === 0 && !value.company ? '' : PASS;
                 const fromYearEmpty = counter === 0 && !value.fromYear && isEdit;
                 const toYearEmpty = counter === 0 && !value.toYear && isEdit && !value.currentJob;
-
+                const fromYearValue = this.getYearFromDateString(value.fromYear);
+                const toYearValue = this.getYearFromDateString(value.toYear);
                 return (
                     <ExperienceItem key={index} className={'ExperienceItem'}>
                         <FormRow style={{padding: '0px 0 40px 0', margin: 0}} columns={[
@@ -171,7 +172,7 @@ class ExperienceForm extends React.Component <IPropsFormExperience, {}> {
                                     <FormColumn width={2} key={`FormColumn-PersonalData_${++counter}`}>
                                         <MentorDropDown lowercaseLabel={true}
                                             label={"Fecha de Inicio*"}
-                                            value={value.fromYear}
+                                            value={fromYearValue}
                                             empty={fromYearEmpty}
                                             disabled={!!this.props.forceDisable}
                                             error={hasError(index, "year") && "  "}
@@ -183,7 +184,7 @@ class ExperienceForm extends React.Component <IPropsFormExperience, {}> {
                                     <FormColumn width={2} key={`FormColumn-PersonalData_${++counter}`}>
                                         <MentorDropDown lowercaseLabel={true}
                                             label={"Fecha de fin*"}
-                                            value={value.toYear}
+                                            value={toYearValue}
                                             empty={toYearEmpty}
                                             disabled={value.currentJob === 1 || !!this.props.forceDisable}
                                             error={hasError(index, "year") && "  "}
@@ -257,6 +258,16 @@ class ExperienceForm extends React.Component <IPropsFormExperience, {}> {
             const e = errors && errors[index] && errors[index][key];
             return t && e;
         }
+    }
+
+    private getYearFromDateString(dateValue: string | null | undefined): string {
+        if (dateValue === null || dateValue === undefined) {
+            return '';
+        }
+        if (dateValue.length >= 4) {
+            return dateValue.substring(0, 4);
+        }
+        return '';
     }
 
     private handlerCurrentJob(context: IMentorFormBaseContext, index: number) {
