@@ -265,7 +265,8 @@ abstract class MentorBaseForm {
                 from: new Date(v.fromYear || "").toISOString(),
                 title: v.position,
                 to: new Date(v.toYear || "").toISOString(),
-                location: v.location
+                location: v.location,
+                currentJob: v.currentJob
             }
         });
         const education =values.education.filter((v) => {

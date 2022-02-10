@@ -9,13 +9,12 @@ import {errorLocatedNotification} from "../../../common/Layout/Layout";
 import LayoutContext from "../../../common/Layout/Layout.context";
 import LoaderFullScreen from "../../../common/Loader/LoaderFullsScreen";
 import colors, {FONTS} from "../../../common/MentorColor";
-import {Body1, Heading2, Heading3, LIGHT_TEXT, Subhead1} from '../../../common/MentorText';
+import {Body1, Heading2, Heading3,} from '../../../common/MentorText';
 import ImageProfile from '../../../components/Admin/MentorFormBase/components/ImageProfile/ImageProfile';
-import {ExperienceItem, FormReviewHeader} from "../../../components/Admin/MentorFormBase/MentorFormBase.styled";
+import {FormReviewHeader} from "../../../components/Admin/MentorFormBase/MentorFormBase.styled";
 import {MENTOR_STATUS} from "../../../domain/Mentor/MentorBase";
 import MentorProfileData, {IMentorProfileData, IMentorProfileFormValidations} from "../../../domain/Mentor/MentorProfile";
 import MentorService from "../../../services/Mentor/Mentor.service";
-import {getDateExperience} from "../../Admin/MentorFormBase/MentorFormBase.utils";
 import MentorRating from "../components/MentorRating/MentorRating";
 
 // const COLUMN =  'column';
@@ -128,25 +127,34 @@ class ProfileMentorCore extends React.Component<IPropsProfileMentorCore, IStateP
                         <Heading3 color={FONTS.green}>DATOS DE OCUPACIÓN</Heading3>
                             <FormRow style={{ padding: '14px 0 0 0', margin: 0 }} columns={[
                                 <FormColumn width={2} key={`FormColumn-3`}>
-                                    <Body1>Celular: {mentor.contactNumber}</Body1>
-                                    <Body1>Correo: {mentor.email}</Body1>
+                                    <Body1>{mentor.skill.label}</Body1>
                                 </FormColumn>,
                                 <FormColumn width={2} key={`FormColumn-4`}>
-                                    DNI: {mentor.document}
-                                </FormColumn>
+                                    CMP: {mentor.college}
+                                </FormColumn>,
+                                <FormColumn width={2} key={`FormColumn-5`}>
+                                    RNE: {mentor.rne}
+                            </FormColumn>
                                 ]}/> 
+                            <FormRow style={{ padding: '14px 0 0 0', margin: 0 }} columns={[
+                                <FormColumn width={2} key={`FormColumn-6`}>
+                                    <Body1>{mentor.city}</Body1>
+                                </FormColumn>
+                                ]}/>
                     </TemplateContainer>
                 </FormReviewHeader>
-                {
+                {/*
                     mentor.diagnostics.length>0 &&
                     <FormReviewHeader>
                     <TemplateContainer>
                         <Heading3 color={FONTS.green}>DIAGNOSTICOS QUE TRATO</Heading3>
-                            <FormRow style={{ padding: '14px 0 0 0', margin: 0 }} columns={[
-                                <FormColumn width={2} key={`FormColumn-2`}>
-                                    {mentor.document}
-                                </FormColumn>
-                                ]}/> 
+                            <div style={{ padding: '14px 0 0 0', margin: 0 }} >
+                                {mentor.diagnostics.map((value,index)=>(
+                                    <div  key={`FormColumn-${index}`}>
+                                        {value}
+                                    </div>
+                                ))}
+                            </div> 
                     </TemplateContainer>
                 </FormReviewHeader>
                 }
@@ -157,29 +165,26 @@ class ProfileMentorCore extends React.Component<IPropsProfileMentorCore, IStateP
                         <Heading3 color={FONTS.green}>EDAD DE ATENCIÓN DE LOS PACIENTES</Heading3>
                             <FormRow style={{ padding: '14px 0 0 0', margin: 0 }} columns={[
                                 <FormColumn width={2} key={`FormColumn-5`}>
-                                   Pacientes 
+                                   Pacientes a partir de {mentor.patientAgeFrom} años
+                                   {!!mentor.patientAgeTo ? `hasta {mentor.patientAgeTo}` : ''}
                                 </FormColumn>
                                 ]}/> 
                     </TemplateContainer>
                 </FormReviewHeader>
-                }
+                */}
                 {!!mentor.about_me && 
                     <FormReviewHeader>
                     <TemplateContainer>
                         <Heading3 color={FONTS.green}>SOBRE MI</Heading3>
                             <FormRow style={{ padding: '14px 0 0 0', margin: 0 }} columns={[
-                                <FormColumn width={2} key={`FormColumn-1`}>
-                                    <Body1>Celular: {mentor.contactNumber}</Body1>
-                                    <Body1>Correo: {mentor.email}</Body1>
-                                </FormColumn>,
-                                <FormColumn width={2} key={`FormColumn-2`}>
-                                    DNI: {mentor.document}
+                                <FormColumn width={1} key={`FormColumn-1`}>
+                                    <Body1>{mentor.about_me}</Body1>
                                 </FormColumn>
                                 ]}/> 
                     </TemplateContainer>
                     </FormReviewHeader>
                 }
-                
+            {/* // se implentara luego 
                 {mentor.experiences.length > 0 && 
                 <><FormReviewHeader>
                     <TemplateContainer>
@@ -188,15 +193,39 @@ class ProfileMentorCore extends React.Component<IPropsProfileMentorCore, IStateP
                         {mentor.experiences.map((item, index) => {
                             return (
                                 <ExperienceItem key={`form_view_experiences_${index}`}>
-                                    <Subhead1 color={FONTS.medium}>{item.position}</Subhead1>
-                                    <Body1 weight={LIGHT_TEXT}>{item.company}</Body1>
-                                    <Body1 weight={LIGHT_TEXT} color={FONTS.blue_grey}>{getDateExperience(item)}</Body1>
-                                </ExperienceItem>)
+                                    <span style={{color:'#2C7BFD', fontSize:'14px'}}>{item.type}</span>
+                                    <Heading3>{item.position}</Heading3>
+                                    <Heading3 >{item.company}</Heading3>
+                                    <div style={{display:'flex',flexDirection:'row'}}>
+                                    <Body1 weight={LIGHT_TEXT}>{item.fromYear} </Body1> <Body1 weight={LIGHT_TEXT}> {item.toYear}</Body1>
+                                    <Body1 weight={LIGHT_TEXT}>{item.location} </Body1>
+                                    </div>
+                                </ExperienceItem>)    
                         })}
                     </TemplateContainer>
                  </FormReviewHeader>
-                    </>}
-
+                    </>
+                }
+                {mentor.education.length > 0 && 
+                    <>
+                        <FormReviewHeader>
+                            <TemplateContainer>
+                                <Heading3 color={FONTS.green}>FORMACIÓN</Heading3>
+                                {(!this.state.loadingData && !mentor.education.length) && <Subhead1 color={FONTS.error}>(Pendiente)</Subhead1>}
+                                {mentor.education.map((item, index) => {
+                                    return (
+                                        <ExperienceItem key={`form_view_experiences_${index}`}>
+                                            <span style={{color:'#2C7BFD', fontSize:'14px'}}>{item.educationType}</span>
+                                            <Heading3>{item.degree}</Heading3>
+                                            <Heading3 >{item.school}</Heading3>
+                                            <Body1 weight={LIGHT_TEXT}>{item.year} </Body1> <Body1 weight={LIGHT_TEXT}> {item.city}</Body1>
+                                        </ExperienceItem>)
+                                })}
+                            </TemplateContainer>
+                        </FormReviewHeader>
+                    </>
+                }
+            */}
                 <ButtonNormal text={"Editar"} link={true} attrs={{
                     href: '/doctor/editar-perfil',
                     style: {margin: '0 0 0 auto', width: 150}
