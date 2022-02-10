@@ -17,6 +17,7 @@ export interface IFormItemBase {
 }
 
 export interface IMentorFormExperience {
+    id?: string | null;
     position?: string;
     company?: string;
     fromYear?: string;
@@ -26,6 +27,7 @@ export interface IMentorFormExperience {
     location?:string;
 }
 export interface IAwardsItem{
+    id?: string;
     name?:string;
 }
 export interface IMentorFormValidations {
@@ -58,10 +60,12 @@ export interface IMentorFormValidations {
     patientAgeFrom: string;
     patientAgeTo: string;
     diagnostics: string[];
-    awards: string[];
+    awards: IMentorAwardsInfo[];
+
 }
 
 export interface IMentorExperience {
+    id?: string | null;
     title?: string;
     company?: string;
     from?: string;
@@ -70,15 +74,13 @@ export interface IMentorExperience {
     location?:string;
 }
 
-export interface IMentorBaseForm  extends IBaseUser {
+export interface IMentorBase extends IBaseUser {
     documentType?: string;
     document?: string;
     medicCollegeNumber?: string;
     contactNumber?: string;
     sitesId?: number[];
     skillsId?: string[];
-    // skill?: string;
-    experiences?: IMentorExperience[];
     title?: string;
     company?: string;
     photoPath: string;
@@ -91,17 +93,35 @@ export interface IMentorBaseForm  extends IBaseUser {
     gender?: string;
     college?: string;
     rne?: string;
-    education?: IMentorEducationInfo[];
     patientAgeFrom?: string;
     patientAgeTo?: string;
-    terceraEdad?:number,
-    menorUnAnio?: number,
-    city?: string,
-    diagnostics?: string[];
-    awards?: string[];
+    terceraEdad?:number;
+    menorUnAnio?: number;
+    city?: string;
     description?: string;
 }
+
+export interface IMentorBaseForm extends IMentorBase {
+    experiences?: IMentorExperience[];
+    education?: IMentorEducationInfo[];
+    diagnostics?: string[];
+    awards?: IMentorAwardsInfo[];
+}
+
+export interface IMentorBaseFormFull extends IMentorBase {
+    experiences?: IMentorExperience[];
+    education?: IMentorEducationInfo[];
+    diagnostics?: string[];
+    awards?: IMentorAwardsInfo[];
+}
+
+export interface IMentorAwardsInfo {
+    id?: string | null;
+    description: string;
+}
+
 export interface  IMentorEducationInfoForm{
+    id?: string | null;
     educationType?:string;
     degree?: string;
     year?: string;
@@ -110,6 +130,7 @@ export interface  IMentorEducationInfoForm{
     currentStudy?: boolean
 }
 export interface IMentorEducationInfo {
+    id?: string | null;
     school?: string;
     educationType?:string;
     degree?: string;
@@ -155,7 +176,7 @@ abstract class MentorBaseForm {
         this.mentor.city = mentor.city || '',
         this.mentor.education = mentor.education || [] as IMentorEducationInfo[];
         this.mentor.diagnostics = mentor.diagnostics|| [] as string[];
-        this.mentor.awards = mentor.awards || [] as string[];
+        this.mentor.awards = mentor.awards || [] as IMentorAwardsInfo[];
         // this.mentor.skill = mentor.skill || '';
     }
 
@@ -197,7 +218,7 @@ abstract class MentorBaseForm {
             menorUnAnio: m.menorUnAnio || 0,
             city:m.city || '',
             education: [] as IMentorEducationInfoForm[],
-            awards:[] as string[]
+            awards:[] as IMentorAwardsInfo[]
         };
 
         formValues.location = {
@@ -222,6 +243,7 @@ abstract class MentorBaseForm {
             label: m.gender || genderDefaultSelection.label,
             value: m.gender || genderDefaultSelection.value
         } as IFormItemBase;
+        formValues.awards = this.mentor.awards ? this.mentor.awards : [];
         
         return formValues;
     }
@@ -260,7 +282,9 @@ abstract class MentorBaseForm {
             return required && (!!v.currentJob || (!!v.toYear))
         });
         this.mentor.experiences = experiences.map((v) => {
-            return {type:v.type,
+            return {
+                id: v.id || null,
+                type:v.type,
                 company: v.company,
                 from: new Date(v.fromYear || "").toISOString(),
                 title: v.position,
@@ -279,6 +303,7 @@ abstract class MentorBaseForm {
                 to = new Date(Number(v.year));
             }*/
             return {
+                id: v.id || null,
                 degree: v.degree,
                 school: v.school,
                 educationType:v.educationType,
@@ -287,6 +312,18 @@ abstract class MentorBaseForm {
             }
         });
     }
+    public prepareDataCreate() {
+        let awards: string[] = [];
+        if (this.mentor.awards) {
+            awards = this.mentor.awards.map(value => value.description);
+        }
+        
+        return {
+            ...this.mentor,
+            awards
+        };
+    }
+
     public abstract getFormExperiences(): IMentorFormExperience[];
     public abstract getFormEducation(): IMentorEducationInfoForm[];
 }

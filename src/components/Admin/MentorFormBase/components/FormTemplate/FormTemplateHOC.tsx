@@ -42,7 +42,9 @@ export const formTemplateHOC = <P extends object>(Component: React.ComponentType
                         <FormTemplateContainer>
                             <div style={{padding: '30px 85px'}}>
                                 {!!titleForm &&
-                                    <SubTitle>{titleForm}</SubTitle>}
+                                    <span style={{color:'#1ECD96',fontWeight:700,
+                                    fontSize:'18px',marginTop:'10px',display:'flex'}}>
+                                        {titleForm}</span>}
                                 <Component {...this.props}/>
                             </div>
                         </FormTemplateContainer>

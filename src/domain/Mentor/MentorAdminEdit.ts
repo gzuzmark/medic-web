@@ -1,11 +1,8 @@
 import MentorBaseForm, {
-    IMentorBaseForm,
-    IMentorExperience,
+    IMentorBaseForm, IMentorEducationInfo,
+    IMentorEducationInfoForm, IMentorExperience,
     IMentorFormExperience,
-    IMentorFormValidations,
-    IMentorEducationInfo,
-    IMentorEducationInfoForm,
-    // IAwardsItem
+    IMentorFormValidations
 } from "./MentorBaseForm";
 
 export interface IMentorAdminEditCreateData extends IMentorBaseForm {
@@ -28,6 +25,7 @@ class MentorAdminEditData extends MentorBaseForm {
             const fromDate = !!from ? from : '';
             const toDate = !!to ? to : '';
             return {
+                id: item.id || null,
                 company: item.company,
                 type: item.type,
                 currentJob: !toDate,
@@ -39,6 +37,7 @@ class MentorAdminEditData extends MentorBaseForm {
         });
         if (formExperiences.length === 0) {
             formExperiences.push({
+                    id: null,
                     company: "",
                     type:"",
                     currentJob: false,
@@ -76,21 +75,21 @@ class MentorAdminEditData extends MentorBaseForm {
         }
         return formEducation;
     }
-    /*
-    public getAwardsInfo(): IAwardsItem[] {
-        const awards = this.mentor.awards ? [...this.mentor.awards] : [];
-        const listAwards = awards.map((item: IAwardsItem) => {
-            return{
-                name:item.name
-            }
-        });
-        if (listAwards.length===0){
-            listAwards.push({
-                name:""
-            })
-        }
-        return listAwards;
-    }*/
+    
+    // public getAwardsInfo(): IAwardsItem[] {
+    //     const awards = this.mentor.awards ? [...this.mentor.awards] : [];
+    //     const listAwards = awards.map((item: IMentorAwardsInfo) => {
+    //         return{
+    //             name: item.description
+    //         }
+    //     });
+    //     if (listAwards.length===0){
+    //         listAwards.push({
+    //             name: ""
+    //         })
+    //     }
+    //     return listAwards;
+    // }
 }
 
 export default MentorAdminEditData;

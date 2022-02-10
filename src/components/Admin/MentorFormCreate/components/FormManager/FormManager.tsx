@@ -163,14 +163,12 @@ class FormManager extends React.Component <IPropsFormManager, IStateFormManager>
                             title={"Para empezar, ingresa los datos personales del especialista"}
                             disableFields={this.state.disabledFields}
                             onChangeDocument={this.onChangeDocument}
-                            documentStatus={this.state.documentStatus}
                             updateDisabledFields={this.updateDisabledFields}/>
                     </FormManagerContainer>}
                 {2 === this.props.currentStep &&
                     <FormManagerContainer>
                         <FormOccupationalDataTemplate 
-                            title={"Informacion Profesional"}
-                            disableFields={this.state.disabledFields}>
+                            title={"Informacion Profesional"}>
                             <FormImage id={"fileImageUploader"} mentor={false}/>
                         </FormOccupationalDataTemplate >
                     </FormManagerContainer>}

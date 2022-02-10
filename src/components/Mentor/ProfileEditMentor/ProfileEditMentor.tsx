@@ -1,5 +1,8 @@
 import {Formik} from "formik";
 import * as React from 'react';
+import { IPropsMentorOptionsDropDown } from "src/common/MentorDropDown/MentorDropDown";
+import { ISkill } from "src/domain/Skill/Skill";
+import SkillService from "src/services/Skill/Skill.service";
 import styled from "styled-components";
 import ContentModal from "../../../common/ConsoleModal/ContentModal";
 import MentorModalBase from "../../../common/ConsoleModal/MentorModalBase";
@@ -27,6 +30,7 @@ interface IStateProfileEditMentorCore  {
     modalSuccess: boolean;
     saving: boolean;
     selectedImage: string;
+    listDiagnostics: IPropsMentorOptionsDropDown[];
 }
 
 interface IPropsProfileEditMentorCore {
@@ -37,19 +41,22 @@ class ProfileEditMentorCore extends React.Component<IPropsProfileEditMentorCore,
     public state: IStateProfileEditMentorCore;
     private mentorProfileData: MentorEditProfileData;
     private mentorService: MentorService;
+    private skillService: SkillService;
     constructor(props: any) {
         super(props);
         this.mentorProfileData = new MentorEditProfileData({} as IMentorEditProfileData);
         this.onSubmit = this.onSubmit.bind(this);
         this.updateImage = this.updateImage.bind(this);
         this.updateMentor = this.updateMentor.bind(this);
-        this.mentorService =  new MentorService();
+        this.mentorService = new MentorService();
+        this.skillService =  new SkillService();
         this.state = {
             loadingData: true,
             mentor: {...this.mentorProfileData.getMentorValues},
             modalSuccess: false,
             saving: false,
-            selectedImage: ''
+            selectedImage: '',
+            listDiagnostics: []
         };
     }
 
@@ -91,7 +98,7 @@ class ProfileEditMentorCore extends React.Component<IPropsProfileEditMentorCore,
                                         handleChange,
                                         listSites: [],
                                         listSkills: [] ,
-                                        listDiagnostics:[],
+                                        listDiagnostics: this.state.listDiagnostics,
                                         selectedImage,
                                         setFieldTouched,
                                         setFieldValue,
@@ -99,6 +106,7 @@ class ProfileEditMentorCore extends React.Component<IPropsProfileEditMentorCore,
                                         setValues,
                                         touched,
                                         updateImage: this.updateImage,
+                                        updateListDiagnostics: this.updateListDiagnostics,
                                         values: values as IMentorFormValidations
                                     }}>
                                     <form onSubmit={handleSubmit}>
@@ -130,6 +138,17 @@ class ProfileEditMentorCore extends React.Component<IPropsProfileEditMentorCore,
         });
     }
 
+    private updateListDiagnostics(skillId: string) {
+        return new Promise<void>((resolve, reject) => {
+            this.skillService.listDiagnosticsBySkill(skillId).then((listEl: ISkill[]) => {
+                const listDiagnostics = listEl.map((v) => ({value: v.id, label: v.name}));
+                this.setState({...this.state, listDiagnostics });
+                resolve()
+            }).catch(() => {
+                reject()
+            })
+        })
+    }
 
     private closeConfirmModal() {
         this.setState({modalSuccess: false});

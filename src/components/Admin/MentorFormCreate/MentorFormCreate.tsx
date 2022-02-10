@@ -176,7 +176,7 @@ class MentorFormCreate extends React.Component <{}, IStateMentorCreate> {
     private onSubmit(values: IMentorFormValidations) {
         this.mentorCreateData.prepareData(values);
         this.setState({saving: true});
-        this.mentorService.save(this.mentorCreateData.mentor).then((response: any) => {
+        this.mentorService.save(this.mentorCreateData.prepareDataCreate()).then((response: any) => {
             this.setState({saving: false, modal: true});
             MentorRepository.addedMentorsInsert(response);
         }).catch(() => {

@@ -19,20 +19,20 @@ import useHandlerEmail from "../FormMail/UseHandlerEmail";
 export type fnUpdateDisabledFields  = (fields: IFormManagerDisabledFields) => void;
 export type fnOnChangeDocument  = (status: number) => void;
 
-interface IPropsFormMail {
-    updateDisabledFields: fnUpdateDisabledFields,
+interface IPropsPersonalData {
     disableFields: IFormManagerDisabledFields;
-    onChangeDocument: fnOnChangeDocument;
-    documentStatus: number;
     isEdit?: boolean;
     infoFields?: IFormManagerInfoFields;
+    forceDisable?: boolean;
+    onChangeDocument?: fnOnChangeDocument;
+    updateDisabledFields: fnUpdateDisabledFields,
 }
 
 
-const PersonalDataForm: React.FC<IPropsFormMail> = (props) => {
+const PersonalDataForm: React.FC<IPropsPersonalData> = (props) => {
     const [modal, setModal] = React.useState("");
-    const email = useHandlerEmail(props.updateDisabledFields, props.onChangeDocument, setModal);
-    const document = useHandlerDocument(props.onChangeDocument, props.documentStatus, props.updateDisabledFields);
+    const email = useHandlerEmail(props.updateDisabledFields, props.onChangeDocument || (() => void(0)), setModal);
+    const document = useHandlerDocument(props.onChangeDocument || (() => void(0)), DOCUMENT_STATUS.NOT_FOUND);
     const context = React.useContext(MentorFormBaseContext);
     const onCloseModal = () => {
         context.setFieldValue("documentType", documentDefaultSelection);
@@ -42,7 +42,9 @@ const PersonalDataForm: React.FC<IPropsFormMail> = (props) => {
         context.setFieldValue("email", '');
         context.setFieldTouched("email", false);
         context.setFieldValue("status", emailStatus.NO_DATA);
-        props.onChangeDocument(DOCUMENT_STATUS.EMPTY);
+        if(!!props.onChangeDocument){
+           props.onChangeDocument(DOCUMENT_STATUS.EMPTY); 
+        }        
         setModal("");
     };
     const {errors, touched} = context;
@@ -63,6 +65,7 @@ const PersonalDataForm: React.FC<IPropsFormMail> = (props) => {
                 <FormColumn width={2} key={`FormColumn-PersonalData_${++counter}`}>
                     <MentorInput lowercaseLabel={true}
                         label={"Nombre *"}
+                        disabled={props.disableFields.firstName || !!props.forceDisable}
                         error={(touched.lastName && errors.firstName) || (!!props.isEdit && errors.firstName)}
                         attrs={{
                                 maxLength: 150,
@@ -78,7 +81,7 @@ const PersonalDataForm: React.FC<IPropsFormMail> = (props) => {
                         label={"Apellido *"}
                         error={(touched.lastName && errors.lastName) || (props.isEdit && errors.lastName)}
                         info={props.infoFields && props.infoFields.lastName}
-                        disabled={props.disableFields.lastName}
+                        disabled={props.disableFields.lastName || !!props.forceDisable}
                         attrs={{
                                 maxLength: 150,
                                 name: "lastName",
@@ -93,7 +96,6 @@ const PersonalDataForm: React.FC<IPropsFormMail> = (props) => {
                     <MentorDropDown lowercaseLabel={true}
                         label={"Sexo"}
                         name={"gender"}
-                        disabled={props.disableFields.documentType}
                         value={context.values.gender.value}
                         triggerChange={onChangeGender}
                         placeholder="Masculino"
@@ -103,7 +105,6 @@ const PersonalDataForm: React.FC<IPropsFormMail> = (props) => {
                     <MentorInput lowercaseLabel={true}
                         label={"Celular"}
                         error={(touched.contactNumber && errors.contactNumber) || (props.isEdit && errors.lastName)}
-                        disabled={props.disableFields.document}
                         iconStyles={{fill: colors.MISC_COLORS.green}}
                         attrs={{
                             name: "contactNumber",
@@ -121,6 +122,7 @@ const PersonalDataForm: React.FC<IPropsFormMail> = (props) => {
                         loading={email.loading}
                         icon={email.loadSuccess}
                         iconStyles={{fill: colors.MISC_COLORS.green}}
+                        disabled={props.disableFields.document || !!props.forceDisable}
                         attrs={{
                             name: "email",
                             onBlur: email.handleBlur,
@@ -136,7 +138,7 @@ const PersonalDataForm: React.FC<IPropsFormMail> = (props) => {
                     <MentorDropDown lowercaseLabel={true}
                         label={"Tipo de documento"}
                         name={"documentType"}
-                        disabled={props.disableFields.documentType}
+                        disabled={props.disableFields.documentType || !!props.forceDisable}
                         value={document.valueType}
                         triggerChange={document.onChangeType}
                         placeholder="DNI, Carné de extranjería, etc."
@@ -146,7 +148,7 @@ const PersonalDataForm: React.FC<IPropsFormMail> = (props) => {
                     <MentorInput lowercaseLabel={true}
                         label={"Número de documento"}
                         error={document.error}
-                        disabled={props.disableFields.document}
+                        disabled={props.disableFields.document || !!props.forceDisable}
                         icon={document.loadSuccess}
                         iconStyles={{fill: colors.MISC_COLORS.green}}
                         loading={document.loading}
