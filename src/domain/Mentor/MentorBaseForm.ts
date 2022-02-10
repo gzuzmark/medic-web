@@ -22,7 +22,7 @@ export interface IMentorFormExperience {
     company?: string;
     fromYear?: string;
     toYear?: string;
-    currentJob?: boolean;
+    currentJob?: number;
     type?:string;
     location?:string;
 }
@@ -72,6 +72,7 @@ export interface IMentorExperience {
     to?: string | null;
     type?:string;
     location?:string;
+    currentJob?:number;
 }
 
 export interface IMentorBase extends IBaseUser {
@@ -288,7 +289,8 @@ abstract class MentorBaseForm {
                 from: new Date(v.fromYear || "").toISOString(),
                 title: v.position,
                 to: new Date(v.toYear || "").toISOString(),
-                location: v.location
+                location: v.location,
+                currentJob: v.currentJob
             }
         });
         const education =values.education.filter((v) => {

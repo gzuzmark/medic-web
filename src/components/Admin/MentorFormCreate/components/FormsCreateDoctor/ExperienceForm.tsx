@@ -186,7 +186,7 @@ class ExperienceForm extends React.Component <IPropsFormExperience, {}> {
                                             label={"Fecha de fin*"}
                                             value={toYearValue}
                                             empty={toYearEmpty}
-                                            disabled={value.currentJob || !!this.props.forceDisable}
+                                            disabled={value.currentJob === 1 || !!this.props.forceDisable}
                                             error={hasError(index, "year") && "  "}
                                             name={`experiences[${index}].toYear`}
                                             triggerChange={this.handlerDate(ctxt)}
@@ -196,7 +196,7 @@ class ExperienceForm extends React.Component <IPropsFormExperience, {}> {
                                             text={"Actualmente trabaja aquí"}
                                             disabled={!!this.props.forceDisable}
                                             attr={{
-                                                checked: !!ctxt.values.experiences[index].currentJob,
+                                                checked: value.currentJob === 1 ? true : false,
                                                 name: `experiences[${index}].currentJob`,
                                                 onBlur: ctxt.handleBlur,
                                                 onChange: this.handlerCurrentJob(ctxt, index),
@@ -277,7 +277,14 @@ class ExperienceForm extends React.Component <IPropsFormExperience, {}> {
                 const year = currentTime.getFullYear().toString();
                 context.setFieldTouched(`experiences[${index}].fromYear`);
                 context.setFieldValue(`experiences[${index}].toYear`, year);
+                context.setFieldTouched(`experiences[${index}].currentJob`);
                 context.handleChange(e);
+            }
+            if (e.target.checked) {
+                context.setFieldValue(`experiences[${index}].currentJob`, 1);
+                // cont.handleChange(e);
+            }else if (!e.target.checked){
+                context.setFieldValue(`experiences[${index}].currentJob`, 0);
             }
         }
     }

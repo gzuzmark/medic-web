@@ -277,13 +277,10 @@ class MentorFormCreate extends React.Component <{}, IStateMentorCreate> {
     }
     
     private updateListDiagnostics(skillId: string) {
+        this.setState({...this.state, isRNERequired: true})
         skillsIdRneNotRequired.map(id => {
-            console.log(id)
             if (id === skillId) {
-                this.setState({...this.state, isRNERequired: true})
-            }else {
                 this.setState({...this.state, isRNERequired: false})
-
             }
         })
 
