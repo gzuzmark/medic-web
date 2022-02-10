@@ -21,7 +21,7 @@ export interface IMentorFormExperience {
     company?: string;
     fromYear?: string;
     toYear?: string;
-    currentJob?: boolean;
+    currentJob?: number;
     type?:string;
     location?:string;
 }
@@ -68,6 +68,7 @@ export interface IMentorExperience {
     to?: string | null;
     type?:string;
     location?:string;
+    currentJob?:number;
 }
 
 export interface IMentorBaseForm  extends IBaseUser {

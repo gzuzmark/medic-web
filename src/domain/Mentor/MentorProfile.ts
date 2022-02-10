@@ -46,7 +46,7 @@ class MentorProfileData extends MentorBaseForm {
             return {
                 company: item.company,
                 type:item.type,
-                currentJob: !toDate,
+                currentJob: item.currentJob,
                 fromYear: !!fromDate ? fromDate : '',
                 position: item.title ,
                 toYear: !!toDate ? toDate : '',
