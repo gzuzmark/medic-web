@@ -28,7 +28,7 @@ class MentorAdminEditData extends MentorBaseForm {
                 id: item.id || null,
                 company: item.company,
                 type: item.type,
-                currentJob: !toDate,
+                currentJob: item.currentJob,
                 fromYear: !!fromDate ? fromDate : '',
                 position: item.title ,
                 toYear: !!toDate ? toDate : '',
@@ -40,11 +40,11 @@ class MentorAdminEditData extends MentorBaseForm {
                     id: null,
                     company: "",
                     type:"",
-                    currentJob: false,
+                    currentJob: 0,
                     fromYear: "",
                     position: "",
                     toYear: "",
-                    location:""
+                    location:"",
             })
         }
         return formExperiences;
