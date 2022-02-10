@@ -281,7 +281,7 @@ class MentorService extends BaseRequest {
 		});
 	}
 
-	public save(mentor: IMentorBaseForm) {
+	public save(mentor: any) {
 		return new Promise((resolve, reject) => {
 			this.instance
 				.post('ugo-admin/mentors/full', mentor)

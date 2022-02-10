@@ -312,6 +312,18 @@ abstract class MentorBaseForm {
             }
         });
     }
+    public prepareDataCreate() {
+        let awards: string[] = [];
+        if (this.mentor.awards) {
+            awards = this.mentor.awards.map(value => value.description);
+        }
+        
+        return {
+            ...this.mentor,
+            awards
+        };
+    }
+
     public abstract getFormExperiences(): IMentorFormExperience[];
     public abstract getFormEducation(): IMentorEducationInfoForm[];
 }
