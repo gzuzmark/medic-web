@@ -1,15 +1,20 @@
 import * as React from "react";
+import AwardsInfo from "src/components/Admin/MentorFormCreate/components/FormsCreateDoctor/AwardsInfo";
+import DiagnosticsForm from "src/components/Admin/MentorFormCreate/components/FormsCreateDoctor/DiagnosticsForm";
+import EducationDataForm from "src/components/Admin/MentorFormCreate/components/FormsCreateDoctor/EducationDataForm";
+import ExperienceForm from "src/components/Admin/MentorFormCreate/components/FormsCreateDoctor/ExperienceForm";
+import PatientCareInfo from "src/components/Admin/MentorFormCreate/components/FormsCreateDoctor/PatientCareInfo";
+import PersonalDataForm from "src/components/Admin/MentorFormCreate/components/FormsCreateDoctor/PersonalDataForm";
+import ProfessionalDataForm from "src/components/Admin/MentorFormCreate/components/FormsCreateDoctor/ProfessionalDataForm";
+import ProfileDataForm from "src/components/Admin/MentorFormCreate/components/FormsCreateDoctor/ProfileDataForm";
 import {ButtonNormal} from "../../../../../common/Buttons/Buttons";
 import ContentModal, {IGenericContentModal} from "../../../../../common/ConsoleModal/ContentModal";
 import MentorModalBase from "../../../../../common/ConsoleModal/MentorModalBase";
 import Icon from "../../../../../common/Icon/Icon";
 import {MENTOR_STATUS} from "../../../../../domain/Mentor/MentorBase";
 import {IMentorFormValidations} from "../../../../../domain/Mentor/MentorBaseForm";
-import FormExperience from "../../../MentorFormBase/components/FormExperience/FormExperience";
-import getExperiencesWithError from "../../../MentorFormBase/components/FormExperience/ValidateExperiences";
+// import getExperiencesWithError from "../../../MentorFormBase/components/FormExperience/ValidateExperiences";
 import FormImage from "../../../MentorFormBase/components/FormImage/FormImage";
-import FormPersonalData from "../../../MentorFormBase/components/FormPersonalData/FormPersonalData";
-import FormProfile from "../../../MentorFormBase/components/FormProfile/FormProfile";
 import {formTemplateHOC} from "../../../MentorFormBase/components/FormTemplate/FormTemplateHOC";
 import {limitDescription} from "../../../MentorFormBase/MentorFormBase.validations";
 import {
@@ -37,9 +42,12 @@ interface IStateFormManager {
     modal: boolean;
 }
 
-const FormPersonalDataTemplate = formTemplateHOC(FormPersonalData);
-const FormProfileTemplate = formTemplateHOC(FormProfile);
-const FormExperienceTemplate = formTemplateHOC(FormExperience);
+const FormPersonalDataTemplate = formTemplateHOC(PersonalDataForm);
+const FormProfileTemplate = formTemplateHOC(ProfessionalDataForm);
+const FormPatientInfo = formTemplateHOC(DiagnosticsForm,PatientCareInfo);
+const FormAboutMe = formTemplateHOC(ProfileDataForm);
+const FormExperienceTemplate = formTemplateHOC(ExperienceForm);
+const EducationInfo = formTemplateHOC(EducationDataForm,AwardsInfo);
 
 class FormManager extends React.Component <IPropsFormManager, IStateFormManager> {
     public state: IStateFormManager;
@@ -107,14 +115,17 @@ class FormManager extends React.Component <IPropsFormManager, IStateFormManager>
         } else if (!!errors.contactNumber) {
             buttonAttrUpdate = {...buttonAttrUpdate, disabled: true};
         } else {
-            const experiencesStatus = getExperiencesWithError(values.experiences, errors);
+            // const experiencesStatus = getExperiencesWithError(values.experiences, errors);
             if (values.description && values.description.length > limitDescription) {
                 buttonAttrUpdate = {...buttonAttrUpdate, disabled: true};
-            } else if (experiencesStatus.some(error => !!error)) {
-                buttonAttrUpdate = {...buttonAttrUpdate, disabled: true};
-            }else if (experiencesStatus.length < values.experiences.length && values.experiences.length > 1 ) {
-                buttonAttrUpdate = {...buttonAttrUpdate, disabled: true};
             }
+            // } else if (experiencesStatus.some(error => !!error)) {
+            //     buttonAttrUpdate = {...buttonAttrUpdate, disabled: true};
+            //     console.log('experiencesStatus.some');
+            // }else if (experiencesStatus.length < values.experiences.length && values.experiences.length > 1 ) {
+            //     console.log('experiencesStatus.length');
+            //     buttonAttrUpdate = {...buttonAttrUpdate, disabled: true};
+            // }
         }
         return (
             <React.Fragment>
@@ -122,25 +133,29 @@ class FormManager extends React.Component <IPropsFormManager, IStateFormManager>
                     <ContentModal.Generic generic={this.warningContent} loading={false} confirm={this.onHandleSubmit} />
                 </MentorModalBase>
                 <FormImage id={"FormImageEdit"}
-                           forceDisable={forceDisable}
-                           mentor={false}/>
+                    forceDisable={forceDisable}
+                    mentor={false}/>
                     
                 <FormPersonalDataTemplate
-                    titleForm={"Datos Personales"}
+                    titleForm={"DATOS PERSONALES"}
                     disableFields={this.disabledFields}
                     isEdit={true}
                     forceDisable={forceDisable}
-                    infoFields={this.infoFields} />
+                    infoFields={this.infoFields} 
+                    updateDisabledFields={this.updateInfoFields}
+                    />
                 <FormProfileTemplate
-                    titleForm={"Datos de perfil"}
+                    titleForm={"DATOS DE OCUPACIÓN"}
                     forceDisable={forceDisable}
                     isEdit={true} />
+                <FormPatientInfo isEdit={true}/>
+                <FormAboutMe />
                 <FormExperienceTemplate
-                    titleForm={"Otras experiencias laborales"}
                     forceDisable={forceDisable}
                     isEdit={true} />
+                <EducationInfo/>
                 <ButtonNormal text={"Guardar Cambios"}
-                              attrs={...buttonAttrUpdate}/>
+                    attrs={...buttonAttrUpdate}/>
             </React.Fragment>
         )
     }

@@ -56,10 +56,10 @@ const useHandlerEmail = (updateDisabledFields: fnUpdateDisabledFields, onChangeD
         context.setFieldValue("status", value ? emailStatus.FULL_DATA : emailStatus.NO_DATA);
         context.setFieldValue("utp", value ? value.utp : false);
         context.setFieldTouched("utp", !!value);
-        context.setFieldValue("lastName", value ? value.lastname : '');
-        context.setFieldTouched("lastName");
-        context.setFieldValue("firstName", value ? value.name : '');
-        context.setFieldTouched("firstName");
+        // context.setFieldValue("lastName", value ? value.lastname : '');
+        // context.setFieldTouched("lastName");
+        // context.setFieldValue("firstName", value ? value.name : '');
+        // context.setFieldTouched("firstName");
         if (value) {
             context.setFieldValue("documentType", {value: value.documentType});
             context.setFieldTouched("documentType", !value);

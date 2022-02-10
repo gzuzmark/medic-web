@@ -18,7 +18,13 @@ import MentorFormBaseContext from "../MentorFormBase/MentorFormBase.context";
 import FormManager from "./components/FormManager/FormManager";
 import StepsBar, {IStepsBar} from "./components/StepsBar/StepsBar";
 import './MentorFormCreate.scss';
-import mentorCreateSchema from "./MentorFormCreate.validations";
+import {mentorCreateSchemaRNENotRequired, mentorCreateSchemaRNERequired} from "./MentorFormCreate.validations";
+
+const skillsIdRneNotRequired = [
+    "20d7bfad-fa6f-40f7-a084-e0ff7b0bd5ea", // Medicina General ID PROD, STAGING
+    "25b9be97-d739-4a3a-9720-80ff7155b49f", // Nutrición ID PROD, STAGING
+    "1f541097-dc70-4852-a31a-f2956ab4fab4", // Psicología ID PROD, STAGING
+]
 
 interface IStateMentorCreate {
     stepsBar: IStepsBar[];
@@ -32,6 +38,7 @@ interface IStateMentorCreate {
     modal: boolean;
     saving: boolean;
     selectedImage: string;
+    isRNERequired: boolean
 }
 
 const emptyStep = {active: false, animation: true, complete: false};
@@ -70,7 +77,8 @@ class MentorFormCreate extends React.Component <{}, IStateMentorCreate> {
             stepsBar: [{...defaultStep, title: "Datos personales"},
                 {...emptyStep, title: "Datos de Ocupación"},
                 {...emptyStep, title: "Creación de perfil"}],
-            submitText: "Continuar"
+            submitText: "Continuar",
+            isRNERequired: false
         };
         this.successContent = {
             button: "Agregar a otro mentor",
@@ -115,7 +123,7 @@ class MentorFormCreate extends React.Component <{}, IStateMentorCreate> {
                         <Loader style={{marginTop: 140}}/> :
                         <Formik
                             initialValues={this.mentorCreateData.getMentorValues}
-                            validationSchema={mentorCreateSchema}
+                            validationSchema={this.state.isRNERequired ? mentorCreateSchemaRNERequired : mentorCreateSchemaRNENotRequired}
                             onSubmit={this.onSubmit}>
                             {({ errors, touched, values, handleBlur, handleChange, handleSubmit, setFieldValue, setFieldTouched, setValues, setTouched}) => {
                                 return (
@@ -168,7 +176,7 @@ class MentorFormCreate extends React.Component <{}, IStateMentorCreate> {
     private onSubmit(values: IMentorFormValidations) {
         this.mentorCreateData.prepareData(values);
         this.setState({saving: true});
-        this.mentorService.save(this.mentorCreateData.mentor).then((response: any) => {
+        this.mentorService.save(this.mentorCreateData.prepareDataCreate()).then((response: any) => {
             this.setState({saving: false, modal: true});
             MentorRepository.addedMentorsInsert(response);
         }).catch(() => {
@@ -269,6 +277,16 @@ class MentorFormCreate extends React.Component <{}, IStateMentorCreate> {
     }
     
     private updateListDiagnostics(skillId: string) {
+        skillsIdRneNotRequired.map(id => {
+            console.log(id)
+            if (id === skillId) {
+                this.setState({...this.state, isRNERequired: true})
+            }else {
+                this.setState({...this.state, isRNERequired: false})
+
+            }
+        })
+
         return new Promise<void>((resolve, reject) => {
             this.skillService.listDiagnosticsBySkill(skillId).then((listEl: ISkill[]) => {
                 const listDiagnostics = listEl.map((v) => ({value: v.id, label: v.name}));

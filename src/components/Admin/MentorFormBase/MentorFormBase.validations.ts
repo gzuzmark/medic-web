@@ -3,6 +3,7 @@ export const errorRequired = 'Campo es requerido.';
 export const errorLetter = 'Campo solo permite letras.';
 export const phoneRequired = 'Número de contacto incorrecto.';
 export const limitDescription = 150;
+
 export const DOCUMENT_STATUS = {
     EMPTY: 3,
     ERROR: 1,
@@ -126,7 +127,8 @@ const mentorFormBaseSchema = Yup.object().shape({
     picture: Yup.string(),
     skills: Yup.array().required(errorRequired).min(1).of(Yup.string()),
     status: Yup.string(),
-    utp: Yup.boolean()
+    utp: Yup.boolean(),
+
 });
 
 export default mentorFormBaseSchema;

@@ -63,6 +63,7 @@ class MentorFormEditCore  extends React.Component <IPropsMentorEditCore, IStateM
         this.updateListSkills = this.updateListSkills.bind(this);
         this.updateImage = this.updateImage.bind(this);
         this.updateMentor = this.updateMentor.bind(this);
+        this.updateListDiagnostics = this.updateListDiagnostics.bind(this);
         this.saveMentor = this.saveMentor.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
         this.mentorEditData = new MentorAdminEditData({} as IMentorAdminEditCreateData);
@@ -160,18 +161,19 @@ class MentorFormEditCore  extends React.Component <IPropsMentorEditCore, IStateM
                                         touched,
                                         updateImage: this.updateImage,
                                         updateListSkills: this.updateListSkills,
+                                        updateListDiagnostics: this.updateListDiagnostics,
                                         values: values as IMentorFormValidations
                                     }}>
                                     <form onSubmit={handleSubmit}>
                                         <FormManager formData={{errors, touched, values}}
-                                                     mentor={{
-                                                         id: this.idMentor,
-                                                         status: this.state.mentor ? this.state.mentor.status : '',
-                                                         updateMentor: this.updateMentor
-                                                     }}
-                                                     onHandleSubmit={this.onSubmit}
-                                                     validateForm={validateForm}
-                                                     disablePersonalData={disablePersonalData}/>
+                                            mentor={{
+                                                id: this.idMentor,
+                                                status: this.state.mentor ? this.state.mentor.status : '',
+                                                updateMentor: this.updateMentor
+                                            }}
+                                            onHandleSubmit={this.onSubmit}
+                                            validateForm={validateForm}
+                                            disablePersonalData={disablePersonalData}/>
                                     </form>
                                 </MentorFormBaseContext.Provider>
                             )
@@ -269,6 +271,18 @@ class MentorFormEditCore  extends React.Component <IPropsMentorEditCore, IStateM
                 }).catch(() => {
                     reject()
                 })
+            })
+        })
+    }
+
+    private updateListDiagnostics(skillId: string) {
+        return new Promise<void>((resolve, reject) => {
+            this.skillService.listDiagnosticsBySkill(skillId).then((listEl: ISkill[]) => {
+                const listDiagnostics = listEl.map((v) => ({value: v.id, label: v.name}));
+                this.setState({...this.state, listDiagnostics});
+                resolve()
+            }).catch(() => {
+                reject()
             })
         })
     }
