@@ -36,6 +36,13 @@ const PatientCareInfo: React.FC<IPatientCareInfo> = (props) => {
             }
         }
     }
+    const isZero = (value: string | number) => {
+        if (value === '0' || value === 0) {
+            return true;
+        }
+        return false;
+    }
+
     return (
         <React.Fragment>
             <div style={{ padding: '20px 0', margin: 0 }} >
@@ -62,7 +69,7 @@ const PatientCareInfo: React.FC<IPatientCareInfo> = (props) => {
                                     text={"Menor a un año"}
                                     disabled={!!props.forceDisable}
                                     attr={{
-                                        checked: values.menorUnAnio === 0 ? false : true,
+                                        checked: isZero(values.menorUnAnio) ? false : true,
                                         name: `menorUnAnio`,
                                         onChange: selectMenor(context)
                                     }}/>
@@ -88,7 +95,7 @@ const PatientCareInfo: React.FC<IPatientCareInfo> = (props) => {
                                     text={"Pacientes de la tercera edad"}
                                     disabled={!!props.forceDisable}
                                     attr={{
-                                        checked: values.terceraEdad === 0 ? false : true,
+                                        checked: isZero(values.terceraEdad) ? false : true,
                                         name: `terceraEdad`,
                                         onBlur: context.handleBlur,
                                         onChange: selectTerEdad(context)
