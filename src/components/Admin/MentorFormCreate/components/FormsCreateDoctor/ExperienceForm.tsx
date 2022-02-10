@@ -135,6 +135,7 @@ class ExperienceForm extends React.Component <IPropsFormExperience, {}> {
                 const companyEmpty = counter === 0 && !value.company ? '' : PASS;
                 const fromYearEmpty = counter === 0 && !value.fromYear && isEdit;
                 const toYearEmpty = counter === 0 && !value.toYear && isEdit && !value.currentJob;
+                const currentJob = value.currentJob ? value.currentJob : false;
                 return (
                     <ExperienceItem key={index} className={'ExperienceItem'}>
                         <FormRow style={{padding: '0px 0 40px 0', margin: 0}} columns={[
@@ -197,7 +198,7 @@ class ExperienceForm extends React.Component <IPropsFormExperience, {}> {
                                                 checked: !!ctxt.values.experiences[index].currentJob,
                                                 name: `experiences[${index}].currentJob`,
                                                 onBlur: ctxt.handleBlur,
-                                                onChange: this.handlerCurrentJob(ctxt, index),
+                                                onChange: this.handlerCurrentJob(ctxt, index,currentJob),
                                                 style:{fontSize:'11px'}
                                             }}
 
@@ -258,13 +259,16 @@ class ExperienceForm extends React.Component <IPropsFormExperience, {}> {
         }
     }
 
-    private handlerCurrentJob(context: IMentorFormBaseContext, index: number) {
+    private handlerCurrentJob(context: IMentorFormBaseContext, index: number,currentJ:boolean) {
         return (e: any) => {
             if (!this.props.forceDisable) {
                 const currentTime = new Date();
                 const year = currentTime.getFullYear().toString();
+                const cJob = !currentJ;
                 context.setFieldTouched(`experiences[${index}].fromYear`);
                 context.setFieldValue(`experiences[${index}].toYear`, year);
+                context.setFieldTouched(`experiences[${index}].currentJob`);
+                context.setFieldValue(`experiences[${index}].currentJob`, cJob);
                 context.handleChange(e);
             }
         }
