@@ -280,9 +280,9 @@ class MentorFormCreate extends React.Component <{}, IStateMentorCreate> {
         skillsIdRneNotRequired.map(id => {
             console.log(id)
             if (id === skillId) {
-                this.setState({...this.state, isRNERequired: true})
-            }else {
                 this.setState({...this.state, isRNERequired: false})
+            }else {
+                this.setState({...this.state, isRNERequired: true})
 
             }
         })
