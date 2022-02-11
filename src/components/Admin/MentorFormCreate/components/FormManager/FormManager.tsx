@@ -183,9 +183,8 @@ class FormManager extends React.Component <IPropsFormManager, IStateFormManager>
                     {4 === this.props.currentStep &&
                     <FormManagerContainer>
                         <FormReviewTemplate
-                            title={"Estás agregando al doctor"}
                             name={`${values.firstName} ${values.lastName}`}
-                            subTitle={"Revisa la información que agregaste del doctor"} />
+                            />
                     </FormManagerContainer>}
                 <FormManagerContainer
                     style={{display: 'flex', justifyContent: 'flex-end', margin: ' 0 auto'}}>

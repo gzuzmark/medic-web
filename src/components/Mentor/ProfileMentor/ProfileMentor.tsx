@@ -130,7 +130,7 @@ class ProfileMentorCore extends React.Component<IPropsProfileMentorCore, IStateP
                                     <Body1>{mentor.skill.label}</Body1>
                                 </FormColumn>,
                                 <FormColumn width={2} key={`FormColumn-4`}>
-                                    CMP: {mentor.college}
+                                    CMP: {mentor.medicCollegeNumber}
                                 </FormColumn>,
                                 <FormColumn width={2} key={`FormColumn-5`}>
                                     RNE: {mentor.rne}
@@ -197,9 +197,10 @@ class ProfileMentorCore extends React.Component<IPropsProfileMentorCore, IStateP
                                     <Heading3>{item.position}</Heading3>
                                     <Heading3 >{item.company}</Heading3>
                                     <div style={{display:'flex',flexDirection:'row'}}>
-                                    <Body1 weight={LIGHT_TEXT}>{item.fromYear} </Body1> <Body1 weight={LIGHT_TEXT}> {item.toYear}</Body1>
-                                    <Body1 weight={LIGHT_TEXT}>{item.location} </Body1>
-                                    </div>
+                                            <Body1 weight={LIGHT_TEXT}>{item.fromYear} </Body1> {" - "}
+                                            <Body1 weight={LIGHT_TEXT}> {item.toYear}</Body1>{" "}
+                                            <Body1 weight={LIGHT_TEXT} style={{marginLeft:'5px'}}>{item.location} </Body1>
+                                            </div>
                                 </ExperienceItem>)    
                         })}
                     </TemplateContainer>
@@ -210,15 +211,16 @@ class ProfileMentorCore extends React.Component<IPropsProfileMentorCore, IStateP
                     <>
                         <FormReviewHeader>
                             <TemplateContainer>
-                                <Heading3 color={FONTS.green}>FORMACIÓN</Heading3>
-                                {(!this.state.loadingData && !mentor.education.length) && <Subhead1 color={FONTS.error}>(Pendiente)</Subhead1>}
-                                {mentor.education.map((item, index) => {
+                                <Heading3 color={FONTS.green} style={{paddingBottom:'16px'}}>FORMACIÓN</Heading3>
+                                {(!context.values.education.length) && <Subhead1 color={FONTS.error}>(Pendiente)</Subhead1>}
+                                {context.values.education.map((item, index) => {
                                     return (
                                         <ExperienceItem key={`form_view_experiences_${index}`}>
                                             <span style={{color:'#2C7BFD', fontSize:'14px'}}>{item.educationType}</span>
                                             <Heading3>{item.degree}</Heading3>
                                             <Heading3 >{item.school}</Heading3>
-                                            <Body1 weight={LIGHT_TEXT}>{item.year} </Body1> <Body1 weight={LIGHT_TEXT}> {item.city}</Body1>
+                                            <Body1 weight={LIGHT_TEXT}>{item.year} </Body1> 
+                                            <Body1 weight={LIGHT_TEXT} style={{marginLeft:'8px'}}> {item.city}</Body1>
                                         </ExperienceItem>)
                                 })}
                             </TemplateContainer>
