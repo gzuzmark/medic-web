@@ -109,7 +109,7 @@ class FormExperience extends React.Component <IPropsFormExperience, {}> {
             const addNewExperience = () => {
                 arrayHelpers.push({
                     company: "",
-                    currentJob: false,
+                    currentJob: 0,
                     fromMonth: "",
                     fromYear: "",
                     position: "",
