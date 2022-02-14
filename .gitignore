@@ -23,5 +23,3 @@ yarn-error.log*
 
 junit.xml
 output/
-
-.cache_yarn/
