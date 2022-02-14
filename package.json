@@ -79,7 +79,8 @@
     "deploy:prod": "yarn build && firebase deploy -P production"
   },
   "resolutions": {
-    "@types/react": "16.8.6"
+    "@types/react": "16.8.6",
+    "winston": "3.5.1"
   },
   "devDependencies": {
     "@types/chai": "4.1.4",
