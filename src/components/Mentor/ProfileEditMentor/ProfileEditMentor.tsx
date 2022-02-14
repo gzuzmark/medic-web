@@ -199,6 +199,7 @@ class ProfileEditMentorCore extends React.Component<IPropsProfileEditMentorCore,
         })
     }
 
+    
     private closeConfirmModal() {
         this.setState({modalSuccess: false});
     }
