@@ -57,7 +57,7 @@ deploy_stage_dev:
   script:
     - ls -lash
     - pwd
-    - yarn global add firebase-tools@9.22.0 --cache-folder ./.cache_yarn
+    - yarn global add firebase-tools@9.22.0 --ignore-platform --ignore-engines --cache-folder ./.cache_yarn
     - firebase deploy -m "Pipeline $CI_PIPELINE_ID, build $CI_BUILD_ID" --non-interactive --token $FIREBASE_DEPLOY_KEY_DEV -P default
 
     
