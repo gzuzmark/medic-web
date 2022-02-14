@@ -9,9 +9,9 @@ import {errorLocatedNotification} from "../../../common/Layout/Layout";
 import LayoutContext from "../../../common/Layout/Layout.context";
 import LoaderFullScreen from "../../../common/Loader/LoaderFullsScreen";
 import colors, {FONTS} from "../../../common/MentorColor";
-import {Body1, Heading2, Heading3,} from '../../../common/MentorText';
+import {Body1, Heading2, Heading3, LIGHT_TEXT,} from '../../../common/MentorText';
 import ImageProfile from '../../../components/Admin/MentorFormBase/components/ImageProfile/ImageProfile';
-import {FormReviewHeader} from "../../../components/Admin/MentorFormBase/MentorFormBase.styled";
+import {ExperienceItem, FormReviewHeader} from "../../../components/Admin/MentorFormBase/MentorFormBase.styled";
 import {MENTOR_STATUS} from "../../../domain/Mentor/MentorBase";
 import MentorProfileData, {IMentorProfileData, IMentorProfileFormValidations} from "../../../domain/Mentor/MentorProfile";
 import MentorService from "../../../services/Mentor/Mentor.service";
@@ -127,13 +127,20 @@ class ProfileMentorCore extends React.Component<IPropsProfileMentorCore, IStateP
                         <Heading3 color={FONTS.green}>DATOS DE OCUPACIÓN</Heading3>
                             <FormRow style={{ padding: '14px 0 0 0', margin: 0 }} columns={[
                                 <FormColumn width={2} key={`FormColumn-3`}>
+                                    {!!mentor.skill.label ?         
                                     <Body1>{mentor.skill.label}</Body1>
+                                    : <div style={{color:'#2C7BFD'}}>Sin Asignar</div>
+                                    }
                                 </FormColumn>,
                                 <FormColumn width={2} key={`FormColumn-4`}>
-                                    CMP: {mentor.medicCollegeNumber}
+                                    <Body1>CMP: {mentor.medicCollegeNumber}</Body1>
                                 </FormColumn>,
                                 <FormColumn width={2} key={`FormColumn-5`}>
-                                    RNE: {mentor.rne}
+                                    {!!mentor.skill.label ?         
+                                    <Body1>RNE: {mentor.rne}</Body1>
+                                    : <div style={{color:'#2C7BFD'}}>Sin Asignar</div>
+                                    }
+                                    
                             </FormColumn>
                                 ]}/> 
                             <FormRow style={{ padding: '14px 0 0 0', margin: 0 }} columns={[
@@ -143,11 +150,10 @@ class ProfileMentorCore extends React.Component<IPropsProfileMentorCore, IStateP
                                 ]}/>
                     </TemplateContainer>
                 </FormReviewHeader>
-                {/*
-                    mentor.diagnostics.length>0 &&
-                    <FormReviewHeader>
+                <FormReviewHeader>
                     <TemplateContainer>
                         <Heading3 color={FONTS.green}>DIAGNOSTICOS QUE TRATO</Heading3>
+                        {mentor.diagnostics.length>0 ?
                             <div style={{ padding: '14px 0 0 0', margin: 0 }} >
                                 {mentor.diagnostics.map((value,index)=>(
                                     <div  key={`FormColumn-${index}`}>
@@ -155,79 +161,95 @@ class ProfileMentorCore extends React.Component<IPropsProfileMentorCore, IStateP
                                     </div>
                                 ))}
                             </div> 
+                            : <div style={{color:'#2C7BFD'}}>Sin Asignar</div>
+                        }
                     </TemplateContainer>
                 </FormReviewHeader>
-                }
-                {
-                    !!mentor.patientAgeTo || !!mentor.patientAgeFrom && 
+                {!!mentor.patientAgeTo || !!mentor.patientAgeFrom && 
                     <FormReviewHeader>
                     <TemplateContainer>
                         <Heading3 color={FONTS.green}>EDAD DE ATENCIÓN DE LOS PACIENTES</Heading3>
                             <FormRow style={{ padding: '14px 0 0 0', margin: 0 }} columns={[
                                 <FormColumn width={2} key={`FormColumn-5`}>
-                                   Pacientes a partir de {mentor.patientAgeFrom} años
-                                   {!!mentor.patientAgeTo ? `hasta {mentor.patientAgeTo}` : ''}
+                                   Pacientes a partir de {mentor.patientAgeFrom} 
+                                   {!!mentor.patientAgeTo ? ` hasta {mentor.patientAgeTo}` : ''}
                                 </FormColumn>
                                 ]}/> 
                     </TemplateContainer>
                 </FormReviewHeader>
-                */}
-                {!!mentor.about_me && 
-                    <FormReviewHeader>
+                }
+                <FormReviewHeader>
                     <TemplateContainer>
                         <Heading3 color={FONTS.green}>SOBRE MI</Heading3>
-                            <FormRow style={{ padding: '14px 0 0 0', margin: 0 }} columns={[
+                        {!!mentor.about_me &&    
+                        <FormRow style={{ padding: '14px 0 0 0', margin: 0 }} columns={[
                                 <FormColumn width={1} key={`FormColumn-1`}>
                                     <Body1>{mentor.about_me}</Body1>
                                 </FormColumn>
-                                ]}/> 
+                                ]}/>                 
+                                }
                     </TemplateContainer>
-                    </FormReviewHeader>
-                }
-            {/* // se implentara luego 
-                {mentor.experiences.length > 0 && 
-                <><FormReviewHeader>
+                </FormReviewHeader>
+                {<FormReviewHeader>
                     <TemplateContainer>
                         <Heading3 color={FONTS.green}>EXPERIENCIA</Heading3>
-                        {(!this.state.loadingData && !mentor.experiences.length) && <Subhead1 color={FONTS.error}>(Pendiente)</Subhead1>}
-                        {mentor.experiences.map((item, index) => {
-                            return (
-                                <ExperienceItem key={`form_view_experiences_${index}`}>
-                                    <span style={{color:'#2C7BFD', fontSize:'14px'}}>{item.type}</span>
-                                    <Heading3>{item.position}</Heading3>
-                                    <Heading3 >{item.company}</Heading3>
-                                    <div style={{display:'flex',flexDirection:'row'}}>
-                                            <Body1 weight={LIGHT_TEXT}>{item.fromYear} </Body1> {" - "}
-                                            <Body1 weight={LIGHT_TEXT}> {item.toYear}</Body1>{" "}
-                                            <Body1 weight={LIGHT_TEXT} style={{marginLeft:'5px'}}>{item.location} </Body1>
-                                            </div>
-                                </ExperienceItem>)    
-                        })}
+                        {(!this.state.loadingData && !mentor.experiences.length) && 
+                        <span color={FONTS.error}>(Pendiente)</span>}
+                        {mentor.experiences.length > 0 && 
+                            (mentor.experiences.map((item, index) => {
+                                const yearStart = !!item.fromYear ? item.fromYear.substring(0,4) : '';
+                                const yearEnd = !!item.toYear ? item.toYear.substring(0,4): '';
+                                return (
+                                    <ExperienceItem key={`form_view_experiences_${index}`}>
+                                        <span style={{color:'#2C7BFD', fontSize:'14px'}}>{item.type}</span>
+                                        <Heading3>{item.position}</Heading3>
+                                        <Heading3 >{item.company}</Heading3>
+                                        <div style={{display:'flex',flexDirection:'row'}}>
+                                                <Body1 weight={LIGHT_TEXT}>{yearStart} </Body1> {" - "}
+                                                <Body1 weight={LIGHT_TEXT}> {yearEnd}</Body1>{" "}
+                                                <Body1 weight={LIGHT_TEXT} style={{marginLeft:'5px'}}>{item.location} </Body1>
+                                                </div>
+                                    </ExperienceItem>)    
+                            }))
+                        }
                     </TemplateContainer>
                  </FormReviewHeader>
-                    </>
                 }
-                {mentor.education.length > 0 && 
-                    <>
-                        <FormReviewHeader>
-                            <TemplateContainer>
-                                <Heading3 color={FONTS.green} style={{paddingBottom:'16px'}}>FORMACIÓN</Heading3>
-                                {(!context.values.education.length) && <Subhead1 color={FONTS.error}>(Pendiente)</Subhead1>}
-                                {context.values.education.map((item, index) => {
+                <FormReviewHeader>
+                    <TemplateContainer>
+                        <Heading3 color={FONTS.green} style={{paddingBottom:'16px'}}>FORMACIÓN</Heading3>
+                        {(!mentor.education.length) && <span color={FONTS.error}>(Pendiente)</span>}
+                        {mentor.education.length > 0 &&     
+                            (mentor.education.map((item, index) => {
                                     return (
                                         <ExperienceItem key={`form_view_experiences_${index}`}>
                                             <span style={{color:'#2C7BFD', fontSize:'14px'}}>{item.educationType}</span>
                                             <Heading3>{item.degree}</Heading3>
                                             <Heading3 >{item.school}</Heading3>
                                             <Body1 weight={LIGHT_TEXT}>{item.year} </Body1> 
-                                            <Body1 weight={LIGHT_TEXT} style={{marginLeft:'8px'}}> {item.city}</Body1>
+                                            <Body1 weight={LIGHT_TEXT} style={{marginLeft:'8px'}}>{item.city}</Body1>
                                         </ExperienceItem>)
-                                })}
-                            </TemplateContainer>
-                        </FormReviewHeader>
-                    </>
+                                }
+                            ))}
+                    </TemplateContainer>
+                </FormReviewHeader>
+                {!!mentor.awards &&
+                    <FormReviewHeader>
+                    <TemplateContainer>
+                        <Heading3 color={FONTS.green}>DESTACADOS</Heading3>
+                        {mentor.awards.length>0 ?
+                            <div style={{ padding: '14px 0 0 0', margin: 0 }} >
+                                {mentor.diagnostics.map((value,index)=>(
+                                    <div  key={`FormColumn-${index}`}>
+                                        {value}
+                                    </div>
+                                ))}
+                            </div> 
+                            : <div style={{color:'#2C7BFD'}}>Sin Asignar</div>
+                        }
+                    </TemplateContainer>
+                </FormReviewHeader>
                 }
-            */}
                 <ButtonNormal text={"Editar"} link={true} attrs={{
                     href: '/doctor/editar-perfil',
                     style: {margin: '0 0 0 auto', width: 150}
