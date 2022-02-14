@@ -2,7 +2,7 @@ import * as Yup from 'yup';
 export const errorRequired = 'Campo es requerido.';
 export const errorLetter = 'Campo solo permite letras.';
 export const phoneRequired = 'Número de contacto incorrecto.';
-export const limitDescription = 150;
+export const limitDescription = 500;
 
 export const DOCUMENT_STATUS = {
     EMPTY: 3,
