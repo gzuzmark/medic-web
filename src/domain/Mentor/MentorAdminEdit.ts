@@ -27,13 +27,13 @@ class MentorAdminEditData extends MentorBaseForm {
             return {
                 id: item.id || null,
                 company: item.company,
-                type: item.type,
+                type: item.type || null,
                 currentJob: item.currentJob,
                 fromYear: !!fromDate ? fromDate : '',
                 position: item.title ,
                 toYear: !!toDate ? toDate : '',
                 location: item.location
-            }
+            } as IMentorFormExperience;
         });
         if (formExperiences.length === 0) {
             formExperiences.push({
