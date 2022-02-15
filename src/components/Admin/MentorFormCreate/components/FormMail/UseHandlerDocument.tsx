@@ -83,11 +83,11 @@ const useHandlerDocument = (
         handleLoading(false, DOCUMENT_STATUS.EMPTY);
     };
 
-    const updateMentorData = (data?: IMentorBaseForm) => {
-        context.setFieldValue("lastName", data ? data.lastname : '');
+  const updateMentorData = (data?: IMentorBaseForm) => {
+        /*context.setFieldValue("lastName", data ? data.lastname : '');
         context.setFieldTouched("lastName", !!data);
         context.setFieldValue("firstName", data ? data.name : '');
-        context.setFieldTouched("firstName", !!data);
+        context.setFieldTouched("firstName", !!data);*/
         if (!data) {
             handleLoading(false, DOCUMENT_STATUS.EMPTY);
         }
@@ -113,10 +113,10 @@ const useHandlerDocument = (
         }
         const fullDocument = context.values.documentType.value === 'DNI' ? document : document.padStart(12, '0');
         mentorService.verifyDocument(fullDocument).then((mentor: IMentorBaseForm) => {
-            updateMentorData(mentor);
+           // updateMentorData(mentor);
             handleLoading(false, DOCUMENT_STATUS.FOUND);
         }).catch((e) => {
-            updateMentorData();
+            // updateMentorData();
             if (e.response && e.response.data) {
                 handleLoading(false, e.response.data.code);
             }

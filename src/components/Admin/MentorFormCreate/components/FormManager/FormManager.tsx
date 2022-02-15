@@ -137,6 +137,9 @@ class FormManager extends React.Component <IPropsFormManager, IStateFormManager>
         }  else if (2 === this.props.currentStep) {
             if (!!errors.skill || !touched.skill) {
                 buttonAttrContinue = {...buttonAttrContinue, disabled: true}};
+            if (!!errors.rne){
+                buttonAttrContinue = {...buttonAttrContinue, disabled: true}
+            }
             // const experiencesStatus = getExperiencesWithError(values.experiences, errors);
             
         } else if (3 === this.props.currentStep) {
@@ -160,14 +163,12 @@ class FormManager extends React.Component <IPropsFormManager, IStateFormManager>
                             title={"Para empezar, ingresa los datos personales del especialista"}
                             disableFields={this.state.disabledFields}
                             onChangeDocument={this.onChangeDocument}
-                            documentStatus={this.state.documentStatus}
                             updateDisabledFields={this.updateDisabledFields}/>
                     </FormManagerContainer>}
                 {2 === this.props.currentStep &&
                     <FormManagerContainer>
                         <FormOccupationalDataTemplate 
-                            title={"Informacion Profesional"}
-                            disableFields={this.state.disabledFields}>
+                            title={"Informacion Profesional"}>
                             <FormImage id={"fileImageUploader"} mentor={false}/>
                         </FormOccupationalDataTemplate >
                     </FormManagerContainer>}
@@ -182,9 +183,8 @@ class FormManager extends React.Component <IPropsFormManager, IStateFormManager>
                     {4 === this.props.currentStep &&
                     <FormManagerContainer>
                         <FormReviewTemplate
-                            title={"Estás agregando al doctor"}
                             name={`${values.firstName} ${values.lastName}`}
-                            subTitle={"Revisa la información que agregaste del doctor"} />
+                            />
                     </FormManagerContainer>}
                 <FormManagerContainer
                     style={{display: 'flex', justifyContent: 'flex-end', margin: ' 0 auto'}}>

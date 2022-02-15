@@ -1,13 +1,30 @@
 import * as React from "react";
+import FormColumn from "src/common/FormRow/components/FormColumn/FormColumn";
+import FormRow from "src/common/FormRow/FormRow";
 import styled from "styled-components";
 import errorCamera from "../../../../../assets/images/error_camera.png"
 import colors, {FONTS} from "../../../../../common/MentorColor";
 import {Body1, Heading3, LIGHT_TEXT, Subhead1} from "../../../../../common/MentorText";
-import {IMentorFormExperience} from "../../../../../domain/Mentor/MentorBaseForm";
+
 import ImageProfile from '../../../MentorFormBase/components/ImageProfile/ImageProfile'
 import MentorFormBaseContext, {IMentorFormBaseContext} from "../../../MentorFormBase/MentorFormBase.context";
-import {ExperienceItem, FormReviewHeader, Separator} from "../../../MentorFormBase/MentorFormBase.styled";
-import {getDateExperience} from "../../../MentorFormBase/MentorFormBase.utils";
+import {ExperienceItem, FormReviewHeader} from "../../../MentorFormBase/MentorFormBase.styled";
+
+
+const BasicData = styled.div`
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+`;
+const TemplateContainer = styled.div`
+   border: 1px solid ${colors.MISC_COLORS.background_grey_2};
+   border-radius: 4px;
+   margin-top: 30px; 
+   display: flex;
+   width: 100%;
+   padding: 30px 85px;
+   flex-direction: column;
+`;
 
 interface IStateFormReview {
 submitText: string;
@@ -16,14 +33,6 @@ submitText: string;
 interface IPropsFormReview {
     currentStep?: number;
 }
-
-const BasicInformation = styled.div`
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    margin-left: 30px;
-    padding: 10px 0;
-`;
 
 class FormReview extends React.Component <IPropsFormReview, IStateFormReview> {
     public state: IStateFormReview;
@@ -40,51 +49,107 @@ class FormReview extends React.Component <IPropsFormReview, IStateFormReview> {
                 {(context: IMentorFormBaseContext) => {
                    return (
                        <div style={{padding: '20px 0'}}>
-                           <FormReviewHeader>
-                               <Subhead1>Datos personales</Subhead1>
-                           </FormReviewHeader>
-                           <div style={{alignItems: 'center', display: 'flex'}}>
-                               <ImageProfile src={context.selectedImage || errorCamera}
-                                             width={150} height={150}
-                                             title={!!context.selectedImage ? "Foto de perfil" : "Falta foto de perfil"}
+                           <BasicData>
+                                <ImageProfile src={context.selectedImage || errorCamera}
+                                            width={150} height={150}
+                                            title={!!context.selectedImage ? "Foto de perfil" : "Falta foto de perfil"}
                                              filled={!!context.selectedImage }/>
-                               <BasicInformation>
-                                   <Heading3 className={"FormReview_name"}>{context.values.firstName} {context.values.lastName}</Heading3>
-                                   <div>
-                                     { /* <Subhead1 color={FONTS.medium}>{context.values.currentPosition}</Subhead1>
-                                       <Subhead1 color={FONTS.medium}>{context.values.currentCompany}</Subhead1>
-                                       {(context.values.currentPosition.trim().length === 0 || context.values.currentCompany.trim().length === 0) &&
-                                        <React.Fragment>
-                                            <Subhead1 color={FONTS.error}>Experiencia Laboral</Subhead1>
-                                            <Subhead1 color={FONTS.error}>(Pendiente)</Subhead1>
-                                        </React.Fragment>} */}
-                                   </div>
-                                   <Body1 weight={LIGHT_TEXT}>{context.values.email}</Body1>
-                                   <Body1 weight={LIGHT_TEXT}>{context.values.contactNumber}</Body1>
-                               </BasicInformation>
-                           </div>
-                           <Separator />
-                           <FormReviewHeader>
-                               <Subhead1>Descripción</Subhead1>
-                               {// context.values.description.trim().length === 0 &&
-                               <Subhead1 color={FONTS.error}>(Pendiente)</Subhead1>}
-                           </FormReviewHeader>
-                           {// context.values.description.trim().length > 0 &&
-                           <div style={{background: colors.MISC_COLORS.background_grey_1, padding: "22px 16px", borderRadius: 4}}>
-                               <Subhead1 weight={LIGHT_TEXT} style={{overflowWrap: 'break-word'}}>“{/*context.values.description*/}”</Subhead1>
-                           </div>}
-                           <Separator/>
-                           <FormReviewHeader>
-                               <Subhead1>Experiencia laboral</Subhead1>
-                               {(!context.values.experiences.length || !!context.errors.experiences) && <Subhead1 color={FONTS.error}>(Pendiente)</Subhead1>}
-                           </FormReviewHeader>
-                           {context.values.experiences.map((value: IMentorFormExperience, index: number) => (
-                               value.position && value.company && !!getDateExperience(value) &&
-                               <ExperienceItem key={`form_view_experiences_${index}`}>
-                                   <Subhead1 color={FONTS.medium}>{value.position}</Subhead1>
-                                   <Body1 weight={LIGHT_TEXT}>{value.company}</Body1>
-                                   <Body1 weight={LIGHT_TEXT} color={FONTS.blue_grey}>{getDateExperience(value)}</Body1>
-                               </ExperienceItem>))}
+                               {/* <React.Fragment>
+                                    <Heading2 color={FONTS.green} style={{margin: '40px 0 10px 0'}}>{`${context.values.firstName} ${context.values.lastName}`}</Heading2>
+                                </React.Fragment>*/}
+                            </BasicData>
+                            <FormReviewHeader>
+                            <TemplateContainer>
+                                <Heading3 color={FONTS.green}>DATOS PERSONALES</Heading3>
+                                    <FormRow style={{ padding: '14px 0 0 0', margin: 0 }} columns={[
+                                        <FormColumn width={2} key={`FormColumn-1`}>
+                                            <Body1>Celular: {context.values.contactNumber}</Body1>
+                                            <Body1>Correo: {context.values.email}</Body1>
+                                        </FormColumn>,
+                                        <FormColumn width={2} key={`FormColumn-2`}>
+                                            DNI: {context.values.document}
+                                        </FormColumn>
+                                        ]}/> 
+                            </TemplateContainer>
+                        </FormReviewHeader>
+                        <FormReviewHeader>
+                            <TemplateContainer>
+                                <Heading3 color={FONTS.green}>DATOS DE OCUPACIÓN</Heading3>
+                                    <FormRow style={{ padding: '14px 0 0 0', margin: 0 }} columns={[
+                                        <FormColumn width={2} key={`FormColumn-3`}>
+                                            <Body1>{context.values.skill.label}</Body1>
+                                        </FormColumn>,
+                                        <FormColumn width={2} key={`FormColumn-4`}>
+                                            CMP: {context.values.medicCollegeNumber}
+                                        </FormColumn>,
+                                        <FormColumn width={2} key={`FormColumn-5`}>
+                                            RNE: {context.values.rne}
+                                    </FormColumn>
+                                        ]}/> 
+                                    <FormRow style={{ padding: '14px 0 0 0', margin: 0 }} columns={[
+                                        <FormColumn width={2} key={`FormColumn-6`}>
+                                            <Body1>{context.values.city}</Body1>
+                                        </FormColumn>
+                                        ]}/>
+                            </TemplateContainer>
+                        </FormReviewHeader>
+                        {!!context.values.about_me && 
+                            <FormReviewHeader>
+                            <TemplateContainer>
+                                <Heading3 color={FONTS.green}>SOBRE MI</Heading3>
+                                    <FormRow style={{ padding: '14px 0 0 0', margin: 0 }} columns={[
+                                        <FormColumn width={1} key={`FormColumn-1`}>
+                                            <Body1>{context.values.about_me}</Body1>
+                                        </FormColumn>
+                                        ]}/> 
+                            </TemplateContainer>
+                            </FormReviewHeader>
+                        }
+                        {context.values.experiences.length > 0 && 
+                        <><FormReviewHeader>
+                            <TemplateContainer>
+                                <Heading3 color={FONTS.green} style={{paddingBottom:'16px'}}>EXPERIENCIA</Heading3>
+                                {(!context.values.experiences.length) && <Subhead1 color={FONTS.error}>(Pendiente)</Subhead1>}
+                                {context.values.experiences.map((item, index) => {
+                                    return (
+                                        <ExperienceItem key={`form_view_experiences_${index}`}>
+                                            <span style={{color:'#2C7BFD', fontSize:'14px'}}>{item.type}</span>
+                                            <Heading3>{item.position}</Heading3>
+                                            <Heading3 >{item.company}</Heading3>
+                                            <div style={{display:'flex',flexDirection:'row'}}>
+                                            <Body1 weight={LIGHT_TEXT}>{item.fromYear} </Body1> {" - "}
+                                            <Body1 weight={LIGHT_TEXT}> {item.toYear}</Body1>{" "}
+                                            <Body1 weight={LIGHT_TEXT} style={{marginLeft:'8px'}}>{item.location} </Body1>
+                                            </div>
+                                        </ExperienceItem>)    
+                                        })}
+                                    </TemplateContainer>
+                                </FormReviewHeader>
+                            </>
+                        }
+                        {context.values.education.length > 0 && 
+                    <>
+                        <FormReviewHeader>
+                            <TemplateContainer>
+                                <Heading3 color={FONTS.green} style={{paddingBottom:'16px'}}>FORMACIÓN</Heading3>
+                                {(!context.values.education.length) && <Subhead1 color={FONTS.error}>(Pendiente)</Subhead1>}
+                                {context.values.education.map((item, index) => {
+                                    return (
+                                        <ExperienceItem key={`form_view_experiences_${index}`}>
+                                            <span style={{color:'#2C7BFD', fontSize:'14px'}}>{item.educationType}</span>
+                                            <Heading3>{item.degree}</Heading3>
+                                            <Heading3 >{item.school}</Heading3>
+                                            <div style={{display:'flex',flexDirection:'row'}}>
+                                            <Body1 weight={LIGHT_TEXT}>{item.year} </Body1> 
+                                            <Body1 weight={LIGHT_TEXT} style={{marginLeft:'8px'}}> {item.city}</Body1>
+                                            </div>
+                                        </ExperienceItem>)
+                                })}
+                            </TemplateContainer>
+                        </FormReviewHeader>
+                    </>
+                }
+
                        </div>
                    )
                 }}

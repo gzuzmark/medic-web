@@ -109,7 +109,7 @@ class FormExperience extends React.Component <IPropsFormExperience, {}> {
             const addNewExperience = () => {
                 arrayHelpers.push({
                     company: "",
-                    currentJob: false,
+                    currentJob: 0,
                     fromMonth: "",
                     fromYear: "",
                     position: "",
@@ -197,7 +197,7 @@ class FormExperience extends React.Component <IPropsFormExperience, {}> {
                                             label={"FECHA DE FIN"}
                                             value={value.toYear/*value.toMonth*/}
                                             empty={toMonthEmpty}
-                                            disabled={value.currentJob || !!this.props.forceDisable}
+                                            disabled={value.currentJob===1 || !!this.props.forceDisable}
                                             error={hasError(index, "toYear") && "  "}
                                             name={`experiences[${index}].toMonth`}
                                             triggerChange={this.handlerDate(ctxt)}
@@ -209,7 +209,7 @@ class FormExperience extends React.Component <IPropsFormExperience, {}> {
                                             label={" "}
                                             value={value.toYear}
                                             empty={toYearEmpty}
-                                            disabled={value.currentJob || !!this.props.forceDisable}
+                                            disabled={value.currentJob === 1 || !!this.props.forceDisable}
                                             error={hasError(index, "toYear") && "  "}
                                             name={`experiences[${index}].toYear`}
                                             triggerChange={this.handlerDate(ctxt)}

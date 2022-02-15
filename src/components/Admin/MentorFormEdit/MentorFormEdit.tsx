@@ -63,6 +63,7 @@ class MentorFormEditCore  extends React.Component <IPropsMentorEditCore, IStateM
         this.updateListSkills = this.updateListSkills.bind(this);
         this.updateImage = this.updateImage.bind(this);
         this.updateMentor = this.updateMentor.bind(this);
+        this.updateListDiagnostics = this.updateListDiagnostics.bind(this);
         this.saveMentor = this.saveMentor.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
         this.mentorEditData = new MentorAdminEditData({} as IMentorAdminEditCreateData);
@@ -89,7 +90,11 @@ class MentorFormEditCore  extends React.Component <IPropsMentorEditCore, IStateM
             if (!!mentor.sitesId) {
                 this.updateListSkillsBySite(mentor.sitesId[0].toString());
             }
+            if (!!mentor.skillsId && mentor.skillsId.length > 0) {
+                this.updateListDiagnostics(mentor.skillsId[0]);
+            }
             this.setState({
+                ...this.state,
                 mentor: {...this.mentorEditData.getMentorValues},
                 selectedImage: mentor.photo
             });
@@ -101,9 +106,9 @@ class MentorFormEditCore  extends React.Component <IPropsMentorEditCore, IStateM
         });
         this.sitesService.list().then((sites: ISites[]) => {
             const listSites = sites.map((v) => ({value: v.id, label: v.name}));
-            this.setState({listSites});
+            this.setState({...this.state, listSites});
         }).catch(() => {
-            this.setState({listSites: []});
+            this.setState({...this.state, listSites: []});
         })
     }
 
@@ -119,11 +124,11 @@ class MentorFormEditCore  extends React.Component <IPropsMentorEditCore, IStateM
                 <MentorModalBase show={this.state.modal} hideClose={true}>
                     <ContentModal.Success description={"Cambios guardados con éxito"} />
                 </MentorModalBase>
-                <MentorModalBase show={this.state.error}>
+                {/* <MentorModalBase show={this.state.error}>
                     <ContentModal.Warning
                         title={"Desasignar un curso" }
                         description={"Para desasignarle este curso al mentor, primero debes eliminar sus sesiones futuras en el curso"} />
-                </MentorModalBase>
+                </MentorModalBase> */}
                 <MentorEditContainer>
                     {!this.state.mentor &&
                         <Loader style={{marginTop: 100}}/>}
@@ -160,18 +165,19 @@ class MentorFormEditCore  extends React.Component <IPropsMentorEditCore, IStateM
                                         touched,
                                         updateImage: this.updateImage,
                                         updateListSkills: this.updateListSkills,
+                                        updateListDiagnostics: this.updateListDiagnostics,
                                         values: values as IMentorFormValidations
                                     }}>
                                     <form onSubmit={handleSubmit}>
                                         <FormManager formData={{errors, touched, values}}
-                                                     mentor={{
-                                                         id: this.idMentor,
-                                                         status: this.state.mentor ? this.state.mentor.status : '',
-                                                         updateMentor: this.updateMentor
-                                                     }}
-                                                     onHandleSubmit={this.onSubmit}
-                                                     validateForm={validateForm}
-                                                     disablePersonalData={disablePersonalData}/>
+                                            mentor={{
+                                                id: this.idMentor,
+                                                status: this.state.mentor ? this.state.mentor.status : '',
+                                                updateMentor: this.updateMentor
+                                            }}
+                                            onHandleSubmit={this.onSubmit}
+                                            validateForm={validateForm}
+                                            disablePersonalData={disablePersonalData}/>
                                     </form>
                                 </MentorFormBaseContext.Provider>
                             )
@@ -186,7 +192,7 @@ class MentorFormEditCore  extends React.Component <IPropsMentorEditCore, IStateM
         this.showWarningBox(status);
         if (this.state.mentor) {
             const mentor = {...this.state.mentor, status};
-            this.setState({ mentor });
+            this.setState({...this.state, mentor });
         }
     }
 
@@ -213,7 +219,7 @@ class MentorFormEditCore  extends React.Component <IPropsMentorEditCore, IStateM
     }
 
     private saveMentor() {
-        this.setState({saving: true, modal: false});
+        this.setState({ ...this.state, saving: true, modal: false});
         this.mentorService.put(this.idMentor, this.mentorEditData.mentor).then((mentor: IMentorAdminEditCreateData) => {
             const mentorEdit = {...mentor};
             this.mentorEditData = new MentorAdminEditData(mentorEdit);
@@ -221,22 +227,23 @@ class MentorFormEditCore  extends React.Component <IPropsMentorEditCore, IStateM
             const oldMentor = {...this.state.mentor};
             this.showWarningBox(status);
             this.setState({
+                ...this.state,
                 mentor: {...oldMentor, ...this.mentorEditData.getMentorValues},
                 modal: true,
                 saving: false,
                 selectedImage: mentor.photo
             });
             setTimeout( () => {
-                this.setState({modal: false});
+                this.setState({...this.state, modal: false});
             }, 2000)
         }).catch((e) => {
             if (e.response.status === 409) {
-                this.setState({error: true, saving: false, modal: false});
+                this.setState({ ...this.state, error: true, saving: false, modal: false});
                 setTimeout( () => {
-                    this.setState({error: false});
+                    this.setState({ ...this.state, error: false});
                 }, 2000)
             } else {
-                this.setState({saving: false, modal: false});
+                this.setState({ ...this.state, saving: false, modal: false});
             }
         });
     }
@@ -269,6 +276,18 @@ class MentorFormEditCore  extends React.Component <IPropsMentorEditCore, IStateM
                 }).catch(() => {
                     reject()
                 })
+            })
+        })
+    }
+
+    private updateListDiagnostics(skillId: string) {
+        return new Promise<void>((resolve, reject) => {
+            this.skillService.listDiagnosticsBySkill(skillId).then((listEl: ISkill[]) => {
+                const listDiagnostics = listEl.map((v) => ({value: v.id, label: v.name}));
+                this.setState({...this.state, listDiagnostics});
+                resolve()
+            }).catch(() => {
+                reject()
             })
         })
     }

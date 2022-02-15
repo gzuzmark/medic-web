@@ -1,4 +1,13 @@
 import * as React from "react";
+import { IFormManagerDisabledFields } from "src/components/Admin/MentorFormCreate/components/FormManager/FormManager";
+import AwardsInfo from "src/components/Admin/MentorFormCreate/components/FormsCreateDoctor/AwardsInfo";
+import DiagnosticsForm from "src/components/Admin/MentorFormCreate/components/FormsCreateDoctor/DiagnosticsForm";
+import EducationDataForm from "src/components/Admin/MentorFormCreate/components/FormsCreateDoctor/EducationDataForm";
+import ExperienceForm from "src/components/Admin/MentorFormCreate/components/FormsCreateDoctor/ExperienceForm";
+import PatientCareInfo from "src/components/Admin/MentorFormCreate/components/FormsCreateDoctor/PatientCareInfo";
+import PersonalDataForm from "src/components/Admin/MentorFormCreate/components/FormsCreateDoctor/PersonalDataForm";
+import ProfessionalDataForm from "src/components/Admin/MentorFormCreate/components/FormsCreateDoctor/ProfessionalDataForm";
+import ProfileDataForm from "src/components/Admin/MentorFormCreate/components/FormsCreateDoctor/ProfileDataForm";
 import styled from "styled-components";
 import {ButtonNormal} from "../../../../../common/Buttons/Buttons";
 import ContentModal from "../../../../../common/ConsoleModal/ContentModal";
@@ -8,10 +17,8 @@ import {FONTS} from "../../../../../common/MentorColor";
 import { Heading2 } from '../../../../../common/MentorText';
 import {IMentorFormValidations} from "../../../../../domain/Mentor/MentorBaseForm";
 import {IMentorRating} from "../../../../../domain/Mentor/MentorProfile";
-import FormExperience from "../../../../Admin/MentorFormBase/components/FormExperience/FormExperience";
 import getExperiencesWithError from "../../../../Admin/MentorFormBase/components/FormExperience/ValidateExperiences";
 import FormImage from "../../../../Admin/MentorFormBase/components/FormImage/FormImage";
-import FormProfile from "../../../../Admin/MentorFormBase/components/FormProfile/FormProfile";
 import {formTemplateHOC} from "../../../../Admin/MentorFormBase/components/FormTemplate/FormTemplateHOC";
 import MentorFormBaseContext from "../../../../Admin/MentorFormBase/MentorFormBase.context";
 import {limitDescription} from "../../../../Admin/MentorFormBase/MentorFormBase.validations";
@@ -39,16 +46,23 @@ const FormImageColumn = styled(FormImage)`
     display: flex;
     flex-direction: column;
 `;
-
-const FormProfileTemplate = formTemplateHOC(FormProfile);
-const FormExperienceTemplate = formTemplateHOC(FormExperience);
+const FormPersonalDataTemplate = formTemplateHOC(PersonalDataForm);
+const FormProfileTemplate = formTemplateHOC(ProfessionalDataForm);
+const FormPatientInfo = formTemplateHOC(DiagnosticsForm,PatientCareInfo);
+const FormAboutMe = formTemplateHOC(ProfileDataForm);
+const FormExperienceTemplate = formTemplateHOC(ExperienceForm);
+const EducationInfo = formTemplateHOC(EducationDataForm,AwardsInfo);
 
 const FormEditManager: React.FC<IPropsFormEditManager> = (props) => {
     const [modal, setModal] = React.useState(false);
+    const [disabledFields,setDisabledFields] = React.useState<IFormManagerDisabledFields>
+    ({document:false,documentType: false,
+        firstName: false,
+        lastName: false});
     const context = React.useContext(MentorFormBaseContext);
     const validateForm = props.validateForm;
     const openModal = () => setModal(true);
-
+    
     const buttonAttrBase: any = {
         onClick: openModal,
         style: {margin : '40px 0 0 auto'},
@@ -63,6 +77,12 @@ const FormEditManager: React.FC<IPropsFormEditManager> = (props) => {
 
     React.useEffect(() => {
         validateForm();
+        setDisabledFields({
+            document: true,
+            documentType: true,
+            firstName: true,
+            lastName: true
+        })
     }, [0]);
 
     React.useEffect(() => {
@@ -84,6 +104,10 @@ const FormEditManager: React.FC<IPropsFormEditManager> = (props) => {
     };
 
     const closeModal = () => setModal(false);
+    const updateDisableFields = (disableFields: IFormManagerDisabledFields)=>{
+        const newDisabledFields = {...disabledFields,email:true};
+        return newDisabledFields;
+    }
     return (
         <React.Fragment>
             <MentorModalBase show={modal} onCloseModal={closeModal}>
@@ -97,12 +121,23 @@ const FormEditManager: React.FC<IPropsFormEditManager> = (props) => {
                     {props.rating && <MentorRating count={props.rating.count} average={props.rating.average}/>}
                 </BasicData>
             </FormImageColumn>
+            <FormPersonalDataTemplate
+                    titleForm={"DATOS PERSONALES"}
+                    disableFields={disabledFields}
+                    isEdit={true}
+                    forceDisable={true}
+                    updateDisabledFields={updateDisableFields}
+                    />
             <FormProfileTemplate
-                titleForm={"Tu información de perfil"}
+                titleForm={"DATOS DE OCUPACIÓN"}
                 isEdit={true} />
+            <FormPatientInfo isEdit={true}/>
+            <FormAboutMe
+                titleForm="SOBRE MI"
+                isEdit={true}/>
             <FormExperienceTemplate
-                titleForm={"Otras experiencias laborales"}
                 isEdit={true} />
+            <EducationInfo/>
             <ButtonNormal text={"Guardar Cambios"}
                           attrs={...buttonAttrUpdate}/>
         </React.Fragment>

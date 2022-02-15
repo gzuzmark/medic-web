@@ -3,13 +3,8 @@ import * as React from "react";
 import FormColumn from "src/common/FormRow/components/FormColumn/FormColumn";
 import MentorFormBaseContext, { IMentorFormBaseContext } from "src/components/Admin/MentorFormBase/MentorFormBase.context";
 import styled from "styled-components";
-/// import FormColumn from "../../../../../common/FormRow/components/FormColumn/FormColumn";
 import FormRow from "../../../../../common/FormRow/FormRow";
-/*import MentorTextArea from "../../../../../common/MentorTextArea/MentorTextArea";
-import MentorFormBaseContext from "../../../MentorFormBase/MentorFormBase.context";
-import { limitDescription } from "../../../MentorFormBase/MentorFormBase.validations";
-import getBorderColor from "../../../MentorFormBase/components/FormTemplate/FormTemplateField";
-*/
+
 export interface IProfileData {
     isEdit?: boolean;
     forceDisable?: boolean;
@@ -56,7 +51,7 @@ export const ItemDiagnostic = styled.div`
     }
 `;
 class DiagnosticsForm extends React.Component<IProfileData, IDiagnosticsFormState> {
-    // public listItemsD: string[] = [];
+    
     public state: IDiagnosticsFormState;
     // const {values, handleBlur, handleChange } = React.useContext(MentorFormBaseContext);
     // const isEdit = !!props.isEdit;
@@ -65,8 +60,8 @@ class DiagnosticsForm extends React.Component<IProfileData, IDiagnosticsFormStat
         this.state = {
             listItemsD: [],
         };
-
     }
+
     public render() {
         let counter = 0;
         // const listItemsD= [] as string[];
@@ -74,20 +69,18 @@ class DiagnosticsForm extends React.Component<IProfileData, IDiagnosticsFormStat
             <MentorFormBaseContext.Consumer>
                 {(context: IMentorFormBaseContext) => {
                     const diagnostics = context.listDiagnostics;
-                    const selectDiagnostico =  (val:string)=>{
-                        let listNewItemsD = [...this.state.listItemsD]
-                        return (e: any) => {
-                            if (e.target.checked) {
-                                listNewItemsD.push(val)
-                                // cont.handleChange(e);
-                            }else if (!e.target.checked){
-                                listNewItemsD = listNewItemsD.filter( (item, index) => (item !== val));
-                            }
-                        context.setFieldValue('diagnostics', listNewItemsD);
-                        context.setFieldTouched('diagnostics');
-                        this.setState({...this.state, listItemsD: listNewItemsD})
-                        console.log(listNewItemsD)
+                    const selecteds = context.values.diagnostics;
+                    const existsInDiagnostics = (value: string): boolean => {
+                        return selecteds.includes(value);
+                    }
+                    const selectDiagnostico = (val:string)=>{
+                        const exists = selecteds.includes(val);
+                        if (exists) {
+                            context.setFieldValue('diagnostics', [...selecteds.filter(item => item !== val)]);
+                        } else {
+                            context.setFieldValue('diagnostics', [...selecteds, val]);
                         }
+                        context.setFieldTouched('diagnostics');
                     }
                     return(
                         <React.Fragment>
@@ -102,17 +95,19 @@ class DiagnosticsForm extends React.Component<IProfileData, IDiagnosticsFormStat
                             <FormRow style={{ paddingBottom: '30px', margin: 0 }} columns={[
                                 <FormColumn width={1} key={`FormColumn-PersonalData_${++counter}`}>
                                     <div style={{flexFlow:'row wrap',display:'flex'}}>
-                                        {diagnostics.map((ele,index) => {
+                                        {diagnostics.map((ele, index) => {
                                             return(
-                                            <ItemDiagnostic key={index} className={'ItemDiagnostic'}>
-                                                <label>
-                                                    <input className="item-check" name="`${index}`" type="checkbox" value={ele.value} onChange={selectDiagnostico(ele.value)}/>
-                                                    <div className="item-name">{ele.label}</div>
-                                                </label>
-                                                {/*<button  onClick={this.selectDiagnostic(ele.value,context)}>
-                                                <span >{ele.label}</span> 
-                                                </button>*/}
-                                            </ItemDiagnostic>
+                                                <ItemDiagnostic key={index} className={'ItemDiagnostic'}>
+                                                    <label>
+                                                        <input className="item-check" name={`item-diagnostic-${index}`}
+                                                            type="checkbox" 
+                                                            value={ele.value}
+                                                            onChange={() => selectDiagnostico(ele.value)} 
+                                                            checked={existsInDiagnostics(ele.value)}
+                                                        />
+                                                        <div className="item-name">{ele.label}</div>
+                                                    </label>
+                                                </ItemDiagnostic>
                                             )
                                         })}
                                     </div>
@@ -123,7 +118,10 @@ class DiagnosticsForm extends React.Component<IProfileData, IDiagnosticsFormStat
                 }}
             </MentorFormBaseContext.Consumer>
         )
-        }
+    }
     
 };
+
+DiagnosticsForm.contextType = MentorFormBaseContext;
+
 export default DiagnosticsForm;

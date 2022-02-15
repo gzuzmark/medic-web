@@ -1,13 +1,14 @@
-import {ArrayHelpers, FieldArray} from "formik";
+import { ArrayHelpers, FieldArray } from "formik";
 import * as React from "react";
+import { IMentorAwardsInfo } from "src/domain/Mentor/MentorBaseForm";
 import styled from "styled-components";
 import FormColumn from "../../../../../common/FormRow/components/FormColumn/FormColumn";
 import FormRow from "../../../../../common/FormRow/FormRow";
 import Icon from "../../../../../common/Icon/Icon";
 import colors from "../../../../../common/MentorColor";
 import MentorInput from "../../../../../common/MentorInput/MentorInput";
-import {Body1, Subhead1} from "../../../../../common/MentorText";
-import MentorFormBaseContext, {IMentorFormBaseContext} from "../../../MentorFormBase/MentorFormBase.context";
+import { Body1, Subhead1 } from "../../../../../common/MentorText";
+import MentorFormBaseContext, { IMentorFormBaseContext } from "../../../MentorFormBase/MentorFormBase.context";
 // import getBorderColor from "../../../MentorFormBase/components/FormTemplate/FormTemplateField";
 
 export const SubTitle = styled(Subhead1)`
@@ -80,7 +81,7 @@ class AwardsInfo extends React.Component <IPropsFormAwards,IStateAwards> {
         super(props);
         this.renderAwards = this.renderAwards.bind(this);
         this.state = {
-            hasData: false
+            hasData: true
         };
     }
 
@@ -89,7 +90,7 @@ class AwardsInfo extends React.Component <IPropsFormAwards,IStateAwards> {
             <MentorFormBaseContext.Consumer>
                 {(context: IMentorFormBaseContext, ) => {
                     const addNew =()=>{
-                        this.setState({hasData: true})
+                        this.setState({hasData: true});
                     }
                     return (
                         <>
@@ -117,25 +118,24 @@ class AwardsInfo extends React.Component <IPropsFormAwards,IStateAwards> {
 
     private renderAwards(ctxt: IMentorFormBaseContext) {
         let counter = 0;
-        const awards = !!ctxt.values.awards ? ctxt.values.awards : [] as string[];
+        const awards = !!ctxt.values.awards ? ctxt.values.awards : [] as IMentorAwardsInfo[];
         return (arrayHelpers: ArrayHelpers) => {
-            console.log(awards)
             const addNewEducation = () => {
-                arrayHelpers.push("")
+                arrayHelpers.push({ description: '' });
             };
             const removeExperience = (index: number) => {
                 return () => {
                     arrayHelpers.remove(index);
                     if(index === 0 && awards.length <=1){
                         this.setState({hasData: false})
-                        ctxt.setFieldValue(`awards[0]`, '');
+                        ctxt.setFieldValue(`awards[0]`, { description: '' });
                     }
                 }
             };
             if (awards.length<1){
-                arrayHelpers.push("")
+                arrayHelpers.push({ description: '' })
             }
-            return awards.map((valueInfo:string, index: number) => {
+            return awards.map((valueInfo: IMentorAwardsInfo, index: number) => {
                 return (
                     <EducationItem key={index} className={'AwardsItem'}>
                         <FormRow style={{ paddingBottom: '30px', margin: 0 }} columns={[
@@ -145,11 +145,11 @@ class AwardsInfo extends React.Component <IPropsFormAwards,IStateAwards> {
                                     disabled={!!this.props.forceDisable}
                                     attrs={{
                                         maxLength: 150,
-                                        name: `awards[${index}]`,
+                                        name: `awards[${index}].description`,
                                         onBlur: ctxt.handleBlur,
                                         onChange: ctxt.handleChange,
                                         placeholder: "",
-                                        value: valueInfo}}/>
+                                        value: valueInfo? valueInfo.description: '' }}/>
                             </FormColumn>
                         ]} />
                         <OptionsHandler>

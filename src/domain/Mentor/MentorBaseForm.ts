@@ -1,5 +1,5 @@
-import {documentDefaultSelection} from "../../repository/DocumentsIdentification";
-import {IBaseUser} from "../User/AbstractUser";
+import { documentDefaultSelection } from "../../repository/DocumentsIdentification";
+import { IBaseUser } from "../User/AbstractUser";
 
 export const emailStatus = {
     ALREADY_REGISTERED: "Este correo pertenece a un mentor ya creado",
@@ -17,15 +17,17 @@ export interface IFormItemBase {
 }
 
 export interface IMentorFormExperience {
+    id?: string | null;
     position?: string;
     company?: string;
     fromYear?: string;
     toYear?: string;
-    currentJob?: boolean;
+    currentJob?: number;
     type?:string;
     location?:string;
 }
 export interface IAwardsItem{
+    id?: string;
     name?:string;
 }
 export interface IMentorFormValidations {
@@ -58,27 +60,28 @@ export interface IMentorFormValidations {
     patientAgeFrom: string;
     patientAgeTo: string;
     diagnostics: string[];
-    awards: string[];
+    awards: IMentorAwardsInfo[];
+
 }
 
 export interface IMentorExperience {
+    id?: string | null;
     title?: string;
     company?: string;
     from?: string;
     to?: string | null;
     type?:string;
     location?:string;
+    currentJob?:number;
 }
 
-export interface IMentorBaseForm  extends IBaseUser {
+export interface IMentorBase extends IBaseUser {
     documentType?: string;
     document?: string;
     medicCollegeNumber?: string;
     contactNumber?: string;
     sitesId?: number[];
     skillsId?: string[];
-    // skill?: string;
-    experiences?: IMentorExperience[];
     title?: string;
     company?: string;
     photoPath: string;
@@ -91,17 +94,35 @@ export interface IMentorBaseForm  extends IBaseUser {
     gender?: string;
     college?: string;
     rne?: string;
-    education?: IMentorEducationInfo[];
     patientAgeFrom?: string;
     patientAgeTo?: string;
-    terceraEdad?:number,
-    menorUnAnio?: number,
-    city?: string,
-    diagnostics?: string[];
-    awards?: string[];
+    terceraEdad?:number;
+    menorUnAnio?: number;
+    city?: string;
     description?: string;
 }
+
+export interface IMentorBaseForm extends IMentorBase {
+    experiences?: IMentorExperience[];
+    education?: IMentorEducationInfo[];
+    diagnostics?: string[];
+    awards?: IMentorAwardsInfo[];
+}
+
+export interface IMentorBaseFormFull extends IMentorBase {
+    experiences?: IMentorExperience[];
+    education?: IMentorEducationInfo[];
+    diagnostics?: string[];
+    awards?: IMentorAwardsInfo[];
+}
+
+export interface IMentorAwardsInfo {
+    id?: string | null;
+    description: string;
+}
+
 export interface  IMentorEducationInfoForm{
+    id?: string | null;
     educationType?:string;
     degree?: string;
     year?: string;
@@ -110,6 +131,7 @@ export interface  IMentorEducationInfoForm{
     currentStudy?: boolean
 }
 export interface IMentorEducationInfo {
+    id?: string | null;
     school?: string;
     educationType?:string;
     degree?: string;
@@ -124,7 +146,7 @@ export const genderDefaultSelection = genderList[0];
 abstract class MentorBaseForm {
     public mentor: IMentorBaseForm;
     constructor(mentor: IMentorBaseForm) {
-        this.mentor = mentor;
+        this.mentor = {...mentor};
         this.mentor.email = mentor.email || '';
         this.mentor.name = mentor.name || '';
         this.mentor.lastname = mentor.lastname || '';
@@ -142,7 +164,6 @@ abstract class MentorBaseForm {
         this.mentor.title = mentor.title || '';
         this.mentor.timeZone = mentor.timeZone || 'America/Lima';
         this.mentor.utp = !!mentor.utp;
-        // this.mentor.shortDescription = mentor.shortDescription || '';
         this.mentor.about_me = mentor.about_me || '';
         this.mentor.formation = mentor.formation || '';
         this.mentor.gender = mentor.gender || '';
@@ -154,9 +175,8 @@ abstract class MentorBaseForm {
         this.mentor.menorUnAnio = mentor.menorUnAnio || 0,
         this.mentor.city = mentor.city || '',
         this.mentor.education = mentor.education || [] as IMentorEducationInfo[];
-        this.mentor.diagnostics = mentor.diagnostics|| [] as string[];
-        this.mentor.awards = mentor.awards || [] as string[];
-        // this.mentor.skill = mentor.skill || '';
+        this.mentor.diagnostics = mentor.diagnostics || [];
+        this.mentor.awards = mentor.awards || [] as IMentorAwardsInfo[];
     }
 
     set setMentor(mentor: IMentorBaseForm) {
@@ -197,7 +217,7 @@ abstract class MentorBaseForm {
             menorUnAnio: m.menorUnAnio || 0,
             city:m.city || '',
             education: [] as IMentorEducationInfoForm[],
-            awards:[] as string[]
+            awards:[] as IMentorAwardsInfo[]
         };
 
         formValues.location = {
@@ -222,24 +242,26 @@ abstract class MentorBaseForm {
             label: m.gender || genderDefaultSelection.label,
             value: m.gender || genderDefaultSelection.value
         } as IFormItemBase;
+        formValues.awards = this.mentor.awards ? this.mentor.awards : [];
+        formValues.diagnostics = this.mentor.diagnostics || [];
         
         return formValues;
     }
 
     public prepareData(values: IMentorFormValidations) {
-        this.mentor.about_me = values.about_me.trim();
-        this.mentor.formation = values.formation.trim();
-        this.mentor.email = values.email.trim();
-        this.mentor.name = values.firstName.trim();
-        this.mentor.lastname = values.lastName.trim();
-        this.mentor.photoPath = values.picture.trim();
-        this.mentor.document= values.document.trim();
-        this.mentor.medicCollegeNumber= values.medicCollegeNumber.trim();        
-        this.mentor.documentType = values.documentType.value;
+        this.mentor.about_me = this.stringTrimOrNull(values.about_me);
+        this.mentor.formation = this.stringTrimOrNull(values.formation);
+        this.mentor.email = this.stringTrimOrNull(values.email);
+        this.mentor.name = this.stringTrimOrNull(values.firstName);
+        this.mentor.lastname = this.stringTrimOrNull(values.lastName);
+        this.mentor.photoPath = this.stringTrimOrNull(values.picture);
+        this.mentor.document= this.stringTrimOrNull(values.document);
+        this.mentor.medicCollegeNumber= this.stringTrimOrNull(values.medicCollegeNumber);
+        this.mentor.documentType = this.stringTrimOrNull(values.documentType.value);
         this.mentor.skillsId = !!values.skill.value && [String(values.skill.value)] || [];  // values.skills.map((v) => v.value);
         this.mentor.diagnostics = values.diagnostics || [];
         this.mentor.sitesId = !!values.location.value && [Number(values.location.value)] || [];
-        this.mentor.contactNumber = values.contactNumber.trim();
+        this.mentor.contactNumber = this.stringTrimOrNull(values.contactNumber);
         // this.mentor.description = values.description.trim();
         // this.mentor.shortDescription = values.description.trim();
         // this.mentor.company = values.currentCompany.trim();
@@ -254,18 +276,21 @@ abstract class MentorBaseForm {
         this.mentor.patientAgeTo = values.patientAgeTo;
         this.mentor.terceraEdad = values.terceraEdad;
         this.mentor.menorUnAnio = values.menorUnAnio;
-        this.mentor.city = values.city 
-        const experiences =values.experiences.filter((v) => {
+        this.mentor.city = values.city;
+        const experiences = values.experiences.filter((v) => {
             const required = !!v.fromYear && !!v.company && !!v.position;
             return required && (!!v.currentJob || (!!v.toYear))
         });
         this.mentor.experiences = experiences.map((v) => {
-            return {type:v.type,
+            return {
+                id: v.id || null,
+                type:v.type,
                 company: v.company,
                 from: new Date(v.fromYear || "").toISOString(),
                 title: v.position,
                 to: new Date(v.toYear || "").toISOString(),
-                location: v.location
+                location: v.location,
+                currentJob: v.currentJob
             }
         });
         const education =values.education.filter((v) => {
@@ -279,6 +304,7 @@ abstract class MentorBaseForm {
                 to = new Date(Number(v.year));
             }*/
             return {
+                id: v.id || null,
                 degree: v.degree,
                 school: v.school,
                 educationType:v.educationType,
@@ -287,8 +313,27 @@ abstract class MentorBaseForm {
             }
         });
     }
+    public prepareDataCreate() {
+        let awards: string[] = [];
+        if (this.mentor.awards) {
+            awards = this.mentor.awards.map(value => value.description);
+        }
+        
+        return {
+            ...this.mentor,
+            awards
+        };
+    }
+
     public abstract getFormExperiences(): IMentorFormExperience[];
     public abstract getFormEducation(): IMentorEducationInfoForm[];
+
+    protected stringTrimOrNull(value: string | null | undefined) {
+        if (value === null || value === undefined) {
+            return ''
+        }
+        return value.replace(/\s+/g, ' ').trim();
+    }
 }
 
 export default MentorBaseForm;

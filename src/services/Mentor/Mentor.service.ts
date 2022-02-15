@@ -1,8 +1,7 @@
 import Axios from 'axios';
 // import { IMentorAndPatient } from "../../domain/Mentor/MentorAndPatients";
 import { IMentorBase, IMentorPaginated } from '../../domain/Mentor/MentorBase';
-import { IMentorBaseForm } from '../../domain/Mentor/MentorBaseForm';
-import { IMentorEditParams } from '../../domain/Mentor/MentorEditProfile';
+import { IMentorBaseForm, IMentorBaseFormFull } from '../../domain/Mentor/MentorBaseForm';
 import { IMentorSession } from '../../interfaces/Mentor.interface';
 import BaseRequest from '../BaseRequest';
 
@@ -281,7 +280,7 @@ class MentorService extends BaseRequest {
 		});
 	}
 
-	public save(mentor: IMentorBaseForm) {
+	public save(mentor: any) {
 		return new Promise((resolve, reject) => {
 			this.instance
 				.post('ugo-admin/mentors/full', mentor)
@@ -317,7 +316,7 @@ class MentorService extends BaseRequest {
 		});
 	}
 
-	public get(idMentor: string): Promise<IMentorBaseForm> {
+	public get(idMentor: string): Promise<IMentorBaseFormFull> {
 		return new Promise((resolve, reject) => {
 			this.instance
 				.get(`ugo-admin/mentors/${idMentor}/full`)
@@ -490,7 +489,7 @@ class MentorService extends BaseRequest {
 		});
 	}
 
-	public updateProfile(mentor: IMentorEditParams): Promise<any> {
+	public updateProfile(mentor: IMentorBaseForm): Promise<any> {
 		return new Promise((resolve, reject) => {
 			this.instance
 				.put(`ugo/mentors-api/me/full`, mentor)
