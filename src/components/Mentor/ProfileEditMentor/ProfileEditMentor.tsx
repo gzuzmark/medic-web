@@ -1,22 +1,22 @@
-import {Formik} from "formik";
+import { Formik } from "formik";
 import * as React from 'react';
 import { IPropsMentorOptionsDropDown } from "src/common/MentorDropDown/MentorDropDown";
+import FormManager from "src/components/Admin/MentorFormEdit/components/FormManager/FormManager";
 import { ISkill } from "src/domain/Skill/Skill";
 import SkillService from "src/services/Skill/Skill.service";
 import styled from "styled-components";
 import ContentModal from "../../../common/ConsoleModal/ContentModal";
 import MentorModalBase from "../../../common/ConsoleModal/MentorModalBase";
-import {errorLocatedNotification} from "../../../common/Layout/Layout";
+import { errorLocatedNotification } from "../../../common/Layout/Layout";
 import LayoutContext from "../../../common/Layout/Layout.context";
 import LoaderFullScreen from "../../../common/Loader/LoaderFullsScreen";
-import {MENTOR_STATUS} from "../../../domain/Mentor/MentorBase";
-import {IMentorFormValidations} from "../../../domain/Mentor/MentorBaseForm";
-import MentorEditProfileData, {IMentorEditProfileData} from "../../../domain/Mentor/MentorEditProfile";
-import {IMentorProfileData, IMentorProfileFormValidations} from "../../../domain/Mentor/MentorProfile";
+import { MENTOR_STATUS } from "../../../domain/Mentor/MentorBase";
+import { IMentorFormValidations } from "../../../domain/Mentor/MentorBaseForm";
+import MentorEditProfileData, { IMentorEditProfileData } from "../../../domain/Mentor/MentorEditProfile";
+import { IMentorProfileData, IMentorProfileFormValidations } from "../../../domain/Mentor/MentorProfile";
 import MentorService from "../../../services/Mentor/Mentor.service";
 import MentorFormBaseContext from "../../Admin/MentorFormBase/MentorFormBase.context";
 import mentorFormBaseSchema from "../../Admin/MentorFormBase/MentorFormBase.validations";
-import FormEditManager from "./components/FormEditManager/FormEditManager";
 
 const MentorEditContainer = styled.div`
     margin: 0 auto;
@@ -30,6 +30,8 @@ interface IStateProfileEditMentorCore  {
     modalSuccess: boolean;
     saving: boolean;
     selectedImage: string;
+    listSites: IPropsMentorOptionsDropDown[];
+    listSkills: IPropsMentorOptionsDropDown[];
     listDiagnostics: IPropsMentorOptionsDropDown[];
 }
 
@@ -42,6 +44,7 @@ class ProfileEditMentorCore extends React.Component<IPropsProfileEditMentorCore,
     private mentorProfileData: MentorEditProfileData;
     private mentorService: MentorService;
     private skillService: SkillService;
+    private readonly idMentor: string;
     constructor(props: any) {
         super(props);
         this.mentorProfileData = new MentorEditProfileData({} as IMentorEditProfileData);
@@ -56,6 +59,8 @@ class ProfileEditMentorCore extends React.Component<IPropsProfileEditMentorCore,
             modalSuccess: false,
             saving: false,
             selectedImage: '',
+            listSites: [],
+            listSkills: [],
             listDiagnostics: []
         };
     }
@@ -63,6 +68,12 @@ class ProfileEditMentorCore extends React.Component<IPropsProfileEditMentorCore,
     public componentDidMount() {
         this.mentorService.getProfile().then((mentor) => {
             this.mentorProfileData = new MentorEditProfileData(mentor);
+            if (!!mentor.sitesId) {
+                this.updateListSkillsBySite(mentor.sitesId[0].toString());
+            }
+            if (!!mentor.skillsId && mentor.skillsId.length > 0) {
+                this.updateListDiagnostics(mentor.skillsId[0]);
+            }
             this.props.updateProfile(mentor);
             this.setState({
                 loadingData: false,
@@ -74,6 +85,7 @@ class ProfileEditMentorCore extends React.Component<IPropsProfileEditMentorCore,
 
     public render() {
         const selectedImage = this.state.selectedImage;
+        const disablePersonalData = !!this.state.mentor;
         return (
             <div className="u-LayoutMargin">
                 {this.state.saving && <LoaderFullScreen modal={true} text={"Cargando..."}/>}
@@ -96,8 +108,8 @@ class ProfileEditMentorCore extends React.Component<IPropsProfileEditMentorCore,
                                         errors,
                                         handleBlur,
                                         handleChange,
-                                        listSites: [],
-                                        listSkills: [] ,
+                                        listSites: this.state.listSites,
+                                        listSkills: this.state.listSkills,
                                         listDiagnostics: this.state.listDiagnostics,
                                         selectedImage,
                                         setFieldTouched,
@@ -106,15 +118,25 @@ class ProfileEditMentorCore extends React.Component<IPropsProfileEditMentorCore,
                                         setValues,
                                         touched,
                                         updateImage: this.updateImage,
+                                        updateListSkills: this.updateListSkills,
                                         updateListDiagnostics: this.updateListDiagnostics,
                                         values: values as IMentorFormValidations
                                     }}>
                                     <form onSubmit={handleSubmit}>
-                                        <FormEditManager
+                                        {/* <FormEditManager
                                             formData={{errors, touched, values}}
                                             rating={this.state.mentor.rating}
                                             onHandleSubmit={this.onSubmit}
-                                            validateForm={validateForm}/>
+                                            validateForm={validateForm}/> */}
+                                        <FormManager formData={{errors, touched, values}}
+                                            mentor={{
+                                                id: this.idMentor || '',
+                                                status: this.state.mentor ? this.state.mentor.status : '',
+                                                updateMentor: this.updateMentor
+                                            }}
+                                            onHandleSubmit={this.onSubmit}
+                                            validateForm={validateForm}
+                                            disablePersonalData={disablePersonalData}/>
                                     </form>
                                 </MentorFormBaseContext.Provider>
                             )
@@ -127,7 +149,7 @@ class ProfileEditMentorCore extends React.Component<IPropsProfileEditMentorCore,
 
     private updateMentor() {
         this.setState({saving: true, modalSuccess: false});
-        this.mentorService.updateProfile(this.mentorProfileData.mentorUpdateParams).then((mentor: IMentorProfileData) => {
+        this.mentorService.updateProfile(this.mentorProfileData.mentor).then((mentor: IMentorProfileData) => {
             this.setState({saving: false, modalSuccess: true});
             this.props.updateProfile(mentor);
             setTimeout( () => {
@@ -138,9 +160,36 @@ class ProfileEditMentorCore extends React.Component<IPropsProfileEditMentorCore,
         });
     }
 
+    private updateListSkills() {
+        return new Promise<void>((resolve, reject) => {
+            this.setState({listSkills: []}, () => {
+                this.skillService.listByMentor().then((skills: ISkill[]) => {
+                    const listSkills = skills.map((v) => ({value: v.id, label: v.name}));
+                    this.setState({listSkills});
+                    resolve()
+                }).catch(() => {
+                    reject()
+                })
+            })
+        })
+    }
+    private updateListSkillsBySite(siteId: string) {
+        return new Promise<void>((resolve, reject) => {
+            this.setState({listSkills: []}, () => {
+                this.skillService.listBySiteInMentor(siteId).then((skills: ISkill[]) => {
+                    const listSkills = skills.map((v) => ({value: v.id, label: v.name}));
+                    this.setState({listSkills});
+                    resolve()
+                }).catch(() => {
+                    reject()
+                })
+            })
+        })
+    }
+
     private updateListDiagnostics(skillId: string) {
         return new Promise<void>((resolve, reject) => {
-            this.skillService.listDiagnosticsBySkill(skillId).then((listEl: ISkill[]) => {
+            this.skillService.listDiagnosticsBySkillInMentor(skillId).then((listEl: ISkill[]) => {
                 const listDiagnostics = listEl.map((v) => ({value: v.id, label: v.name}));
                 this.setState({...this.state, listDiagnostics });
                 resolve()
@@ -150,6 +199,7 @@ class ProfileEditMentorCore extends React.Component<IPropsProfileEditMentorCore,
         })
     }
 
+    
     private closeConfirmModal() {
         this.setState({modalSuccess: false});
     }

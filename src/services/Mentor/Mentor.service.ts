@@ -2,7 +2,6 @@ import Axios from 'axios';
 // import { IMentorAndPatient } from "../../domain/Mentor/MentorAndPatients";
 import { IMentorBase, IMentorPaginated } from '../../domain/Mentor/MentorBase';
 import { IMentorBaseForm, IMentorBaseFormFull } from '../../domain/Mentor/MentorBaseForm';
-import { IMentorEditParams } from '../../domain/Mentor/MentorEditProfile';
 import { IMentorSession } from '../../interfaces/Mentor.interface';
 import BaseRequest from '../BaseRequest';
 
@@ -490,7 +489,7 @@ class MentorService extends BaseRequest {
 		});
 	}
 
-	public updateProfile(mentor: IMentorEditParams): Promise<any> {
+	public updateProfile(mentor: IMentorBaseForm): Promise<any> {
 		return new Promise((resolve, reject) => {
 			this.instance
 				.put(`ugo/mentors-api/me/full`, mentor)

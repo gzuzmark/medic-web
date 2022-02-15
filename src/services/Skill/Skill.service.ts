@@ -70,9 +70,40 @@ class SkillService extends BaseRequest {
                 });
         });
     }
+
+    public listBySiteInMentor(id: string): Promise<ISkill[]> {
+        return new Promise((resolve, reject) => {
+            this.instance.get(`ugo/mentors-api/me/sites/${id}/skills`)
+                .then((response: any) => {
+                    if (response.status === 200 && response.data) {
+                        resolve(response.data.items);
+                    } else {
+                        reject(null);
+                    }
+                })
+                .catch((error: any) => {
+                    this.validSession();
+                    reject(error);
+                });
+        });
+    }
+
     public listDiagnosticsBySkill(id:string): Promise<ISubSkill[]>{
         return new Promise((resolve,reject)=>{
             this.instance.get(`ugo-admin/skills_specialities/${id}`).
+            then((response:any)=>{
+                if (response.status === 200 && response.data) {
+                    resolve(response.data.items);
+                } else {
+                    reject(null);
+                }
+            })
+        })
+    }
+
+    public listDiagnosticsBySkillInMentor(id: string): Promise<ISubSkill[]>{
+        return new Promise((resolve,reject)=>{
+            this.instance.get(`ugo/mentors-api/skills_specialities/${id}`).
             then((response:any)=>{
                 if (response.status === 200 && response.data) {
                     resolve(response.data.items);
