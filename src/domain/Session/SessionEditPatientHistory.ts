@@ -63,6 +63,11 @@ export interface ISessionPatientCaseForm {
     medicalLeaveStartDate: Date | null,
     medicalLeaveIndication?: string
     rescheduleAppointment: Date | null,
+    isInterconsult: boolean;
+    descriptionInterconsult: string | null;
+    urlInterconsult: string | null;
+    isMedicalCertificate: boolean;
+    urlMedicalCertificate: string | null;
 }
 
 export interface ISessionPatientPastCase {
@@ -141,6 +146,11 @@ class SessionEditPatientHistoryData {
             recommendation: this.patient.case.recommendation || "",
             treatments: newTreatments || [],
             rescheduleAppointment: this.patient.case.rescheduleAppointment,
+            isInterconsult: this.patient.case.isInterconsult || false,
+            descriptionInterconsult: this.patient.case.descriptionInterconsult || null,
+            urlInterconsult: this.patient.case.urlInterconsult || null,
+            isMedicalCertificate: this.patient.case.isMedicalCertificate,
+            urlMedicalCertificate: this.patient.case.urlMedicalCertificate,
         };
     }
 
@@ -195,6 +205,11 @@ class SessionEditPatientHistoryData {
             recommendation: p.recommendation || "",
             treatments: p.treatments || [],
             rescheduleAppointment: this.patient.case.rescheduleAppointment,
+            isInterconsult: this.patient.case.isInterconsult || false,
+            descriptionInterconsult: this.patient.case.descriptionInterconsult || null,
+            urlInterconsult: this.patient.case.urlInterconsult,
+            isMedicalCertificate: this.patient.case.isMedicalCertificate || false,
+            urlMedicalCertificate: this.patient.case.urlMedicalCertificate || null,
         };
 
         return formValues;
@@ -258,6 +273,7 @@ class SessionEditPatientHistoryData {
     }
 
     public preparePatientCaseData(values: IPatientCaseFormValidations) {
+        debugger;
         this.patient.case.anamnesis = values.anamnesis.trim();
         this.patient.case.diagnostic = values.diagnostic.trim();
         this.patient.case.exams = values.exams.trim();
