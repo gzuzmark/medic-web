@@ -14,6 +14,8 @@ import MentorService from '../../../../../../services/Mentor/Mentor.service';
 import SessionService from '../../../../../../services/Session/Session.service';
 import InputDatePicker from "../../../../../Admin/Reports/components/InputDatePicker/InputDatePicker";
 import Exams from "../../Exams/Exams";
+import InterconsultReference from "../../InterconsultReference/InterconsultReference";
+import MedicalCertificate from "../../MedicalCertificate/MedicalCertificate";
 import PatientBackgroundFormContext from '../../PatientHistoryForm/PatientBackgroundForm.context';
 import RescheduleAppointment, { IOptionRescheduleAppointment } from '../../RescheduleAppointment/RescheduleAppointment';
 import { mapResponse } from '../HistoryTreatmentForm/Utils';
@@ -263,6 +265,7 @@ const CurrentSessionForm: React.FC<IPropsCurrentSessionForm> = ({ forceDisable, 
         </FormColumn>
       ]}/>
         <Exams />
+        <InterconsultReference />
         <FormRow
 				key={'row_7'}
 				style={defaultRowStyle}
@@ -350,6 +353,7 @@ const CurrentSessionForm: React.FC<IPropsCurrentSessionForm> = ({ forceDisable, 
       </>
       )}
     <RescheduleAppointment onChange={onChangeRescheduleAppointment} value={values.case.rescheduleAppointment} />
+    <MedicalCertificate />
     { flag && (
       <div style={{ marginTop: 20 }}>        
         {showSeeRecipeButton && (

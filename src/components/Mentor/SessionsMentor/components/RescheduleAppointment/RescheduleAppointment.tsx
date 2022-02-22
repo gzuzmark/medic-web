@@ -57,7 +57,7 @@ const RescheduleAppointment = ({ value, onChange }: IRescheduleAppointmentProps)
   }, []);
 
   return (
-    <div style={{ marginTop: 20}}>
+    <div style={{ marginTop: 15}}>
       <div style={{display: 'flex', flexDirection: 'row'}}>
       <Heading2>¿El paciente necesita una cita control?</Heading2> 
           <div style={{justifyContent: 'flex-end', display: 'flex', flexDirection: 'row', flex: '1'}}>            
