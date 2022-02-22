@@ -42,10 +42,10 @@ export interface IPatientCaseFormValidations {
     medicalLeaveEndDate: Date | null;
 	medicalLeaveIndication?: string
 	rescheduleAppointment: Date | null;
-	isInterconsult: boolean;
+	isInterconsult: number;
 	descriptionInterconsult: string | null;
 	urlInterconsult: string | null;
-	isMedicalCertificate: boolean;
+	isMedicalCertificate: number;
 	urlMedicalCertificate: string | null;
 }
 

@@ -24,12 +24,12 @@ const InterconsultReference = () => {
 
     React.useEffect(() => {
         const isInterconsult = values.case.isInterconsult;
-        setVisible(isInterconsult);
+        setVisible(isInterconsult === 1 ? true: false);
     }, [values.case.isInterconsult]);
 
     const changeVisibility = (e: any) => {
         if (!onlyRead) {
-            setFieldValue('case.isInterconsult', !visible);
+            setFieldValue('case.isInterconsult', !visible? 1: 0);
         }
     }
 

@@ -23,12 +23,12 @@ const MedicalCertificate = () => {
 
     React.useEffect(() => {
         const isCertificate = values.case.isMedicalCertificate;
-        setVisible(isCertificate);
+        setVisible(isCertificate === 1 ? true: false);
     }, [values.case.isMedicalCertificate]);
 
     const changeVisibility = (e: any) => {
         if (!onlyRead) {
-            setFieldValue('case.isMedicalCertificate', !visible);
+            setFieldValue('case.isMedicalCertificate', !visible? 1 : 0);
         }
     }
 
