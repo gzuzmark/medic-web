@@ -298,18 +298,19 @@ class SessionService extends BaseRequest {
 
     public getPastSessionConsults(session: string) {
         return new Promise((resolve, reject) => {
-            this.instance.get(`ugo/mentors-api/me/sessions/${session}/past_consults`)
-                .then((response: any) => {
-                    if (response.status === 200 && response.data) {
-                        resolve(response.data.items);
-                    } else {
-                        reject(null);
-                    }
-                })
-                .catch((error: any) => {
-                    this.validSession();
-                    reject(error);
-                });
+            resolve([]);
+            // this.instance.get(`ugo/mentors-api/me/sessions/${session}/past_consults`)
+            //     .then((response: any) => {
+            //         if (response.status === 200 && response.data) {
+            //             resolve(response.data.items);
+            //         } else {
+            //             reject(null);
+            //         }
+            //     })
+            //     .catch((error: any) => {
+            //         this.validSession();
+            //         reject(error);
+            //     });
         });
     }
 
