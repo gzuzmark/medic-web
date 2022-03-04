@@ -9,6 +9,7 @@ stages:
   - install
   - build
   - deploy
+
 install_stage:
   stage: install
   script:
@@ -43,16 +44,16 @@ build_stage_dev:
     - build/
   only:
     - dev
+
 deploy_stage_dev:
   stage: deploy
   environment: Development
   only:
     - dev
   script:
-    - yarn global add firebase-tools@9.22.0 --cache-folder ./.cache_yarn
+    - yarn global add firebase-tools@9.22.0 --ignore-platform --ignore-engines --cache-folder ./.cache_yarn
     - firebase deploy -m "Pipeline $CI_PIPELINE_ID, build $CI_BUILD_ID" --non-interactive --token $FIREBASE_DEPLOY_KEY_DEV -P default
 
-    
 build_staging:
   stage: build
   variables:
@@ -80,7 +81,7 @@ deploy_stage:
   only:
     - staging
   script:
-    - yarn global add firebase-tools@9.22.0 --cache-folder ./.cache_yarn
+    - yarn global add firebase-tools@9.22.0 --ignore-platform --ignore-engines --cache-folder ./.cache_yarn
     - firebase deploy -m "Pipeline $CI_PIPELINE_ID, build $CI_BUILD_ID" --non-interactive --token $FIREBASE_DEPLOY_KEY_STAGE -P admin-stage
 
 build_stage_prod:
@@ -109,5 +110,5 @@ deploy_stage_prod:
   only:
     - master
   script:
-    - yarn global add firebase-tools@9.22.0 --cache-folder ./.cache_yarn
+    - yarn global add firebase-tools@9.22.0 --ignore-platform --ignore-engines --cache-folder ./.cache_yarn
     - firebase deploy -m "Pipeline $CI_PIPELINE_ID, build $CI_BUILD_ID" --non-interactive --token $FIREBASE_DEPLOY_KEY -P prod

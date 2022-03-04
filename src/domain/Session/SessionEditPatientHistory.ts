@@ -63,6 +63,11 @@ export interface ISessionPatientCaseForm {
     medicalLeaveStartDate: Date | null,
     medicalLeaveIndication?: string
     rescheduleAppointment: Date | null,
+    isInterconsult: number;
+    descriptionInterconsult: string | null;
+    urlInterconsult: string | null;
+    isMedicalCertificate: number;
+    urlMedicalCertificate: string | null;
 }
 
 export interface ISessionPatientPastCase {
@@ -141,6 +146,11 @@ class SessionEditPatientHistoryData {
             recommendation: this.patient.case.recommendation || "",
             treatments: newTreatments || [],
             rescheduleAppointment: this.patient.case.rescheduleAppointment,
+            isInterconsult: this.patient.case.isInterconsult || 0,
+            descriptionInterconsult: this.patient.case.descriptionInterconsult || null,
+            urlInterconsult: this.patient.case.urlInterconsult || null,
+            isMedicalCertificate: this.patient.case.isMedicalCertificate  || 0,
+            urlMedicalCertificate: this.patient.case.urlMedicalCertificate,
         };
     }
 
@@ -195,6 +205,11 @@ class SessionEditPatientHistoryData {
             recommendation: p.recommendation || "",
             treatments: p.treatments || [],
             rescheduleAppointment: this.patient.case.rescheduleAppointment,
+            isInterconsult: this.patient.case.isInterconsult || 0,
+            descriptionInterconsult: this.patient.case.descriptionInterconsult || null,
+            urlInterconsult: this.patient.case.urlInterconsult,
+            isMedicalCertificate: this.patient.case.isMedicalCertificate || 0,
+            urlMedicalCertificate: this.patient.case.urlMedicalCertificate || null,
         };
 
         return formValues;
@@ -268,6 +283,9 @@ class SessionEditPatientHistoryData {
         this.patient.case.medicalLeaveEndDate = values.medicalLeaveEndDate;
         this.patient.case.recommendation = values.recommendation.trim();
         this.patient.case.rescheduleAppointment = values.rescheduleAppointment;
+        this.patient.case.isInterconsult = values.isInterconsult || 0;
+        this.patient.case.descriptionInterconsult = values.descriptionInterconsult || '';
+        this.patient.case.isMedicalCertificate = values.isMedicalCertificate || 0;
         this.preparePatientCaseTreatmentData(values.treatments);
     }
 

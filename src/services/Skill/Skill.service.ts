@@ -25,7 +25,7 @@ class SkillService extends BaseRequest {
             this.instance.get('ugo/mentors-api/me/skills')
                 .then((response: any) => {
                     if (response.status === 200 && response.data) {
-                        resolve(response.data.items);
+                        resolve(response.data.skills);
                     } else {
                         reject(null);
                     }
