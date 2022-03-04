@@ -19,6 +19,12 @@ import examenesHover from "../../../../../assets/images/linksAdmin/examenesHover
 import historiaCHover from "../../../../../assets/images/linksAdmin/historiaCHover.png";
 import recetaHover from "../../../../../assets/images/linksAdmin/recetaHover.png";
 import ratingHover from "../../../../../assets/images/linksAdmin/ratingHover.png";
+import constancia from "../../../../../assets/images/linksAdmin/constancia.png";
+import constanciaHover from "../../../../../assets/images/linksAdmin/constanciaHover.png";
+import constanciaDisabled from "../../../../../assets/images/linksAdmin/constanciaDisabled.png";
+import interconsulta from "../../../../../assets/images/linksAdmin/interconsulta.png";
+import interconsultaHover from "../../../../../assets/images/linksAdmin/interconsultaHover.png";
+import interconsultaDisabled from "../../../../../assets/images/linksAdmin/interconsultaDisabled.png";
 import pacienteDisabled from "../../../../../assets/images/linksAdmin/pacienteDisabled.png";
 import doctorDisabled from "../../../../../assets/images/linksAdmin/doctorDisabled.png";
 import descansoDisabled from "../../../../../assets/images/linksAdmin/descansoDisabled.png";
@@ -132,6 +138,8 @@ const ListSessionsBody: React.FC<IPropsListSessionsBody> = (props) => {
  	const prescriptionURL = sessionBean.getURL_prescription(); 
  	const leaveURL = sessionBean.getMedicalLeave();
 	const examsURL = sessionBean.getMedicalExams();
+	const interconsult = sessionBean.getInterconsult();
+	const medicalCertificate = sessionBean.getMedicalCertificate();
 	const usedBenefit = (payment && payment.benefit_id) || '';
 	const patientId = (patient && patient.id) || '';
 	const patientName = (patient && patient.name) || '';
@@ -269,7 +277,7 @@ const ListSessionsBody: React.FC<IPropsListSessionsBody> = (props) => {
 							<img src={pacienteHover} />
 						</a>
 					)}
-					{!newSessionURL && (<img src={pacienteDisabled} style={{paddingLeft:'4px',paddingRight:'4px'}}/>)}
+					{!newSessionURL && (<img src={pacienteDisabled} style={{paddingLeft:'2px',paddingRight:'2px'}}/>)}
 				</div>
 				<div>
 					{!!newSessionURL && (
@@ -279,7 +287,7 @@ const ListSessionsBody: React.FC<IPropsListSessionsBody> = (props) => {
 							<img src={doctorHover} />
 						</a>
 					)}
-					{!newSessionURL && (<img src={doctorDisabled} style={{paddingLeft:'4px',paddingRight:'4px'}}/>)}
+					{!newSessionURL && (<img src={doctorDisabled} style={{paddingLeft:'2px',paddingRight:'2px'}}/>)}
 				</div>
 				<div>
 					{!!historyURL && (
@@ -288,7 +296,7 @@ const ListSessionsBody: React.FC<IPropsListSessionsBody> = (props) => {
 							<img src={historiaCHover} />
 						</a>
 					)}
-					{!historyURL && (<img src={historiaDisabled} style={{paddingLeft:'4px',paddingRight:'4px'}}/>)}
+					{!historyURL && (<img src={historiaDisabled} style={{paddingLeft:'2px',paddingRight:'2px'}}/>)}
 				</div>
 				<div>
 					{!!ratingURL && (
@@ -297,7 +305,19 @@ const ListSessionsBody: React.FC<IPropsListSessionsBody> = (props) => {
 							<img src={ratingHover} />
 						</a>
 					)}
-					{!ratingURL && (<img src={ratingDisabled} style={{paddingLeft:'4px',paddingRight:'4px'}}/>)}
+					{!ratingURL && (<img src={ratingDisabled} style={{paddingLeft:'2px',paddingRight:'2px'}}/>)}
+				</div>
+				<div>
+					{!!medicalCertificate && (
+					<a href={medicalCertificate} target='blank' className='ListSessions_btnLinks'>
+						<img src={constancia}/>
+						<img src={constanciaHover} />
+					</a>)}
+					{
+					  !medicalCertificate && (
+					  <img src={constanciaDisabled} style={{paddingLeft:'2px',paddingRight:'2px'}}/>
+					  )
+					}
 				</div>
 			</div>
 			<div
@@ -311,19 +331,19 @@ const ListSessionsBody: React.FC<IPropsListSessionsBody> = (props) => {
 						</a>
 					)}
 					{!prescriptionURL && (
-						<img src={recetaDisabled} style={{paddingLeft:'4px',paddingRight:'4px'}}/>
+						<img src={recetaDisabled} style={{paddingLeft:'2px',paddingRight:'2px'}}/>
 						)
 					}
 				</div>
 				<div>
-					{(!!examsURL && sessionBean.isValidPrescription()) && (
+					{!!examsURL && (
 						<a href={examsURL} target='blank' className='ListSessions_btnLinks'>
 							<img src={exams}/>
 							<img src={examenesHover} />
 						</a>
 					)}
-					{!examsURL && (
-						<img src={examenesDisabled} style={{paddingLeft:'4px',paddingRight:'4px'}}/>
+					{!examsURL  && (
+						<img src={examenesDisabled} style={{paddingLeft:'2px',paddingRight:'2px'}}/>
 						)
 					}
 				</div>
@@ -335,7 +355,19 @@ const ListSessionsBody: React.FC<IPropsListSessionsBody> = (props) => {
 					</a>)}
 					{
 					  !leaveURL && (
-					  <img src={descansoDisabled} style={{paddingLeft:'4px',paddingRight:'4px'}}/>
+					  <img src={descansoDisabled} style={{paddingLeft:'2px',paddingRight:'2px'}}/>
+					  )
+					}
+				</div>
+				<div>
+					{!!interconsult && (
+					<a href={interconsult} target='blank' className='ListSessions_btnLinks'>
+						<img src={interconsulta}/>
+						<img src={interconsultaHover} />
+					</a>)}
+					{
+					  !interconsult && (
+					  <img src={interconsultaDisabled} style={{paddingLeft:'2px',paddingRight:'2px'}}/>
 					  )
 					}
 				</div>

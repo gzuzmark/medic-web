@@ -80,7 +80,7 @@
     //date
     &:nth-child(1) {
       text-align: center;
-      width: 10%;
+      width: 8%;
     }
     //doctor
     &:nth-child(2) {
@@ -102,7 +102,7 @@
     //reservation date
     &:nth-child(6) {
       text-align: center;
-      width: 10%;
+      width: 8%;
     }
     //patient paid status
     &:nth-child(7) {
@@ -112,7 +112,7 @@
     }
     //session url
     &:nth-child(8) {
-      width: 12%;
+      width: 14%;
       flex-direction: row;
       justify-content: center;
       a:visited {
@@ -121,7 +121,7 @@
     }
     //session url
     &:nth-child(9) {
-      width: 10%;
+      width: 14%;
       flex-direction: row;
       justify-content: center;
       a:visited {
@@ -131,7 +131,7 @@
     //actions1
     &:nth-child(10) {
       justify-content: center;
-      width: 6%;
+      width: 5%;
     }
   }
   &_line {
@@ -188,8 +188,8 @@
   }
   &_btnLinks{
     img{
-      margin-left: 4px;
-      margin-right: 4px;
+      margin-left: 2px;
+      margin-right: 2px;
     }
     img:last-child{
       display: none;
