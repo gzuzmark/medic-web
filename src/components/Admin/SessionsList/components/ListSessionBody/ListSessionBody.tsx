@@ -33,6 +33,7 @@ import historiaDisabled from "../../../../../assets/images/linksAdmin/historiaDi
 import recetaDisabled from "../../../../../assets/images/linksAdmin/recetaDisabled.png";
 import ratingDisabled from "../../../../../assets/images/linksAdmin/ratingDisabled.png";
 import calendar from "../../../../../assets/images/linksAdmin/calendarIcon.png";
+import copyIcon from "../../../../../assets/images/linksAdmin/copiado.png";
 import {
 	Small2,
 } from '../../../../../common/MentorText';
@@ -42,6 +43,7 @@ import {
 	SessionBean,
 } from '../../../../../domain/Session/SessionBean';
 import SessionItem from '../SessionItem/SessionItem';
+// import { findDOMNode } from 'react-dom';
 
 const ContainerRow = styled.div`
 	align-items: center;
@@ -112,6 +114,8 @@ const downloadPDF = (name: string, base64: string) => {
 const ListSessionsBody: React.FC<IPropsListSessionsBody> = (props) => {
 	const [loadingMenu, setLoadingMenu] = React.useState<boolean>(false);
 	const [openMenu, setOpenMenu] = React.useState<boolean>(false);
+	const [copySuccess, setCopySuccess] = React.useState<string>('');
+	const [isSelected,setIsSelected] = React.useState<boolean>();
 	const toggleOpenMenu = () => setOpenMenu((prev) => !prev);
 	const wrapperRef = React.useRef(null);
 	const {
@@ -214,7 +218,21 @@ const ListSessionsBody: React.FC<IPropsListSessionsBody> = (props) => {
 			document.removeEventListener('click', handleClickOutside, false);
 		};
 	}, []);
-
+	const copyLink = async (event:any)=>{
+		
+		const enlace = event.target;
+		let anyNavigator: any;
+		anyNavigator = window.navigator;
+		
+		try {
+			await anyNavigator.clipboard.writeText(enlace.title);
+			setCopySuccess(enlace.title);
+			setIsSelected(true)
+		  } catch (err) {
+			setCopySuccess('Failed to copy!');
+		  }
+		setTimeout(()=>{setIsSelected(false)},4000)
+	}
 	return (
 		<ContainerRow>
 			<div className='ListSessions_column ListSessions_column--date'>
@@ -272,47 +290,74 @@ const ListSessionsBody: React.FC<IPropsListSessionsBody> = (props) => {
 			>
 				<div>
 					{!!newSessionURL && (
-						<a href={newSessionURL} target='blank' className='ListSessions_btnLinks'>
-							<img src={callP} />
-							<img src={pacienteHover} />
-						</a>
+						<div onClick={copyLink} >
+							{!!isSelected && copySuccess===newSessionURL
+								? <img src={copyIcon} style={{paddingLeft:'2px',paddingRight:'2px'}}/>
+								: 
+								<div className='ListSessions_btnLinks'>
+									<img src={callP}/>
+									<img src={pacienteHover} title={newSessionURL}/>
+								</div>
+							}
+						</div>
 					)}
 					{!newSessionURL && (<img src={pacienteDisabled} style={{paddingLeft:'2px',paddingRight:'2px'}}/>)}
 				</div>
 				<div>
 					{!!newSessionURL && (
-						<a href={`${newSessionURL}&doctor=1`} target='blank'
-						className='ListSessions_btnLinks'>
-							<img src={citaMed}/>
-							<img src={doctorHover} />
-						</a>
+						<div  onClick={copyLink}>
+							{!!isSelected && copySuccess===`${newSessionURL}&doctor=1`
+							? <img src={copyIcon} style={{paddingLeft:'2px',paddingRight:'2px'}}/>
+							: 
+							<div className='ListSessions_btnLinks'>
+								<img src={citaMed}/>
+								<img src={doctorHover} title={`${newSessionURL}&doctor=1`}/>
+							</div>
+							}
+						</div>
 					)}
 					{!newSessionURL && (<img src={doctorDisabled} style={{paddingLeft:'2px',paddingRight:'2px'}}/>)}
 				</div>
 				<div>
 					{!!historyURL && (
-						<a href={historyURL} target='blank' className='ListSessions_btnLinks'>
-							<img src={historyM}/>
-							<img src={historiaCHover} />
+						<a  onClick={copyLink}>
+							{!!isSelected && copySuccess === historyURL
+							? <img src={copyIcon} style={{paddingLeft:'2px',paddingRight:'2px'}}/>
+							: 
+							<div className='ListSessions_btnLinks'>
+								<img src={historyM}/>
+								<img src={historiaCHover} title={historyURL}/></div>
+							}
 						</a>
 					)}
 					{!historyURL && (<img src={historiaDisabled} style={{paddingLeft:'2px',paddingRight:'2px'}}/>)}
 				</div>
 				<div>
 					{!!ratingURL && (
-						<a href={ratingURL} target='blank' className='ListSessions_btnLinks'>
-							<img src={rating}/>
-							<img src={ratingHover} />
-						</a>
+						<div onClick={copyLink}>
+							{!!isSelected && copySuccess === ratingURL
+							? <img src={copyIcon} style={{paddingLeft:'2px',paddingRight:'2px'}}/>: 
+							<div className='ListSessions_btnLinks'>
+								<img src={rating}/>
+								<img src={ratingHover} title={ratingURL}/>
+							</div>
+							}
+						</div>
 					)}
 					{!ratingURL && (<img src={ratingDisabled} style={{paddingLeft:'2px',paddingRight:'2px'}}/>)}
 				</div>
 				<div>
 					{!!medicalCertificate && (
-					<a href={medicalCertificate} target='blank' className='ListSessions_btnLinks'>
-						<img src={constancia}/>
-						<img src={constanciaHover} />
-					</a>)}
+						<div onClick={copyLink}>
+							{!!isSelected && copySuccess === medicalCertificate
+							? <img src={copyIcon} style={{paddingLeft:'2px',paddingRight:'2px'}}/>: 
+							<div className='ListSessions_btnLinks'>
+								<img src={constancia}/>
+								<img src={constanciaHover} title={medicalCertificate}/>
+							</div>
+							}
+						</div>
+					)}
 					{
 					  !medicalCertificate && (
 					  <img src={constanciaDisabled} style={{paddingLeft:'2px',paddingRight:'2px'}}/>
@@ -325,10 +370,15 @@ const ListSessionsBody: React.FC<IPropsListSessionsBody> = (props) => {
 			>
 				<div>
 					{(!!prescriptionURL && sessionBean.isValidPrescription()) && (
-						<a href={prescriptionURL} target='blank' className='ListSessions_btnLinks'>
-							<img src={receta}/>
-							<img src={recetaHover} />
-						</a>
+						<div onClick={copyLink}>
+							{!!isSelected && copySuccess === prescriptionURL
+							? <img src={copyIcon} style={{paddingLeft:'2px',paddingRight:'2px'}}/>: 
+							<div className='ListSessions_btnLinks'>
+								<img src={receta}/>
+								<img src={recetaHover} title={prescriptionURL}/>
+							</div>
+							}
+						</div>
 					)}
 					{!prescriptionURL && (
 						<img src={recetaDisabled} style={{paddingLeft:'2px',paddingRight:'2px'}}/>
@@ -337,10 +387,15 @@ const ListSessionsBody: React.FC<IPropsListSessionsBody> = (props) => {
 				</div>
 				<div>
 					{!!examsURL && (
-						<a href={examsURL} target='blank' className='ListSessions_btnLinks'>
-							<img src={exams}/>
-							<img src={examenesHover} />
-						</a>
+						<div onClick={copyLink}>
+							{!!isSelected && copySuccess === examsURL
+							? <img src={copyIcon} style={{paddingLeft:'2px',paddingRight:'2px'}}/>: 
+							<div className='ListSessions_btnLinks'>
+								<img src={exams}/>
+								<img src={examenesHover} title={examsURL}/>
+							</div>
+							}
+						</div>
 					)}
 					{!examsURL  && (
 						<img src={examenesDisabled} style={{paddingLeft:'2px',paddingRight:'2px'}}/>
@@ -349,10 +404,16 @@ const ListSessionsBody: React.FC<IPropsListSessionsBody> = (props) => {
 				</div>
 				<div>
 					{!!leaveURL && (
-					<a href={leaveURL} target='blank' className='ListSessions_btnLinks'>
-						<img src={descansoM}/>
-						<img src={descansoHover} />
-					</a>)}
+					<div onClick={copyLink}>
+						{!!isSelected && copySuccess === leaveURL
+						? <img src={copyIcon} style={{paddingLeft:'2px',paddingRight:'2px'}}/>: 
+						<div className='ListSessions_btnLinks'>
+							<img src={descansoM}/>
+							<img src={descansoHover} title={leaveURL}/>
+						</div>
+						}
+					</div>
+					)}
 					{
 					  !leaveURL && (
 					  <img src={descansoDisabled} style={{paddingLeft:'2px',paddingRight:'2px'}}/>
@@ -361,10 +422,16 @@ const ListSessionsBody: React.FC<IPropsListSessionsBody> = (props) => {
 				</div>
 				<div>
 					{!!interconsult && (
-					<a href={interconsult} target='blank' className='ListSessions_btnLinks'>
-						<img src={interconsulta}/>
-						<img src={interconsultaHover} />
-					</a>)}
+						<div onClick={copyLink}>
+						{!!isSelected && copySuccess === interconsult
+						? <img src={copyIcon} style={{paddingLeft:'2px',paddingRight:'2px'}}/>: 
+						<div className='ListSessions_btnLinks'>
+							<img src={interconsulta}/>
+							<img src={interconsultaHover} title={interconsult}/>
+						</div>
+						}
+						</div>
+					)}
 					{
 					  !interconsult && (
 					  <img src={interconsultaDisabled} style={{paddingLeft:'2px',paddingRight:'2px'}}/>
