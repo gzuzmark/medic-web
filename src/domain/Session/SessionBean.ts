@@ -20,6 +20,8 @@ export interface ISessionConsult {
     prescriptionPath: string | null | undefined;
     url_medical_exams: string | null |undefined;
     url_medical_leave: string | null |undefined;
+    url_interconsult: string | null |undefined;
+    url_medical_certificate: string | null |undefined;
 }
 
 export interface ISessionItemBase {
@@ -151,6 +153,22 @@ export class SessionBean {
         if(!!this.session.consult){
             if(!! this.session.consult.url_medical_exams){
                 return this.session.consult.url_medical_exams
+            }
+            }
+        return null
+    }
+    public getInterconsult(){
+        if(!!this.session.consult){
+            if(!! this.session.consult.url_interconsult){
+                return this.session.consult.url_interconsult
+            }
+            }
+        return null
+    }
+    public getMedicalCertificate(){
+        if(!!this.session.consult){
+            if(!! this.session.consult.url_medical_certificate){
+                return this.session.consult.url_medical_certificate
             }
             }
         return null
