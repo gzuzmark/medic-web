@@ -554,8 +554,10 @@ class SessionsMentor extends React.Component<
     }
 
     private isNutrition(skill: ISkillData): boolean {
-        const name = skill.name.toLowerCase();
-        if (name === 'nutricion' || name === 'nutrición' || name === 'nutrition') {
+        const name = skill.name;
+        const nameLower = name.toLowerCase();
+        const isN = (name.toLowerCase() === 'nutrición');
+        if (nameLower === 'nutricion' || isN || nameLower === 'nutrition') {
             return true;
         }
         return skill.is_nutrition;
