@@ -66,6 +66,11 @@ import MentorService from "../../../services/Mentor/Mentor.service";
 import { SEND_EMAIL } from "./SessionsContants";
 // tslint:disable:ordered-imports
 
+interface ISkillData {
+    id: string;
+    is_nutrition: boolean;
+    name: string;
+}
 interface IPropsSessionsMentor {
     match: IMatchParam;
 }
@@ -227,7 +232,7 @@ class SessionsMentor extends React.Component<
                 ]).then(
                     (values: any[]) => {
                         const sessionResponse = values[0];
-                        const isNutrition = sessionResponse.skill.is_nutrition;
+                        const isNutrition = this.isNutrition(sessionResponse.skill);
                         this.sessionMentor = new SessionMentorBean(
                             sessionResponse
                         );
@@ -546,6 +551,16 @@ class SessionsMentor extends React.Component<
                 </div>
             </Layout>
         );
+    }
+
+    private isNutrition(skill: ISkillData): boolean {
+        const name = skill.name;
+        const nameLower = name.toLowerCase();
+        const isN = (name.toLowerCase() === 'nutrición');
+        if (nameLower === 'nutricion' || isN || nameLower === 'nutrition') {
+            return true;
+        }
+        return skill.is_nutrition;
     }
 
     private updateHistory(sendEmail: SEND_EMAIL) {
