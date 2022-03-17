@@ -207,14 +207,6 @@ class SessionsMentor extends React.Component<
         this.onClosePhotosModal = this.onClosePhotosModal.bind(this);
     }
 
-    private isNutrition(skill: ISkillData): boolean {
-        const name = skill.name.toLowerCase();
-        if (name === 'nutricion' || name === 'nutrición' || name === 'nutrition') {
-            return true;
-        }
-        return skill.is_nutrition;
-    }
-
     public componentDidMount() {
         const that = this;
         this.setState(
@@ -559,6 +551,14 @@ class SessionsMentor extends React.Component<
                 </div>
             </Layout>
         );
+    }
+
+    private isNutrition(skill: ISkillData): boolean {
+        const name = skill.name.toLowerCase();
+        if (name === 'nutricion' || name === 'nutrición' || name === 'nutrition') {
+            return true;
+        }
+        return skill.is_nutrition;
     }
 
     private updateHistory(sendEmail: SEND_EMAIL) {
